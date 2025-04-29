@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ICUE-VN</title>
+  <link rel="icon" type="image/png" href="public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Bungee+Tint&family=Pinyon+Script&family=Rubik:ital,wght@0,300..900;1,300..900&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+</head>
+
+<body class="preload">
+<div id="app">
+  <!-- ✅ Standalone landing page -->
+  <div id="landing-page" class="content-wrapper">
+    <img src="public/logoIcons/logo.png" class="loading-logo" alt="Logo" />
+
+      <div class="progress-container">
+        <svg width="200" height="200">
+          <circle class="progress-bg" cx="100" cy="100" r="90" stroke-width="20" fill="none" />
+          <circle class="progress-bar" cx="100" cy="100" r="90" stroke-width="20" fill="none"
+                  stroke-dasharray="565.48" stroke-dashoffset="565.48" />
+        </svg>
+        <div class="progress-text" id="progress-text">0%</div>
+        <p class="loading-text"> 
+          <span>Loading</span>
+          <span>Page</span>
+        </p>
+      </div>
+     
+    
+  </div>
+
+  <div class="language-switcher">
+    <a href="https://icuevn-mainsite.netlify.app/#" class="flag-link">
+        <span class="flag-icon flag-icon-vn"></span>    
+    </a>
+  </div>
+
+  <nav class="menu-bar">
+    <div class="logo-banner">
+      <a href="#" onclick="navigateToPage('Home')">
+        <img class="logo-content" src="public/logoIcons/logo.png" alt="Logo" />
+      </a>
+    </div>
+  
+    <!-- Centered Hamburger Menu -->
+    <div class="menu-toggle" onclick="toggleDrawerMenu()">
+      <img id="menuIcon" src="public/logoIcons/menu-icon.png" alt="menu" width="32" />
+    </div>
+  
+    <!-- Contact stays to the right -->
+    <a href="#/Contact" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link">Contact</a>
+  
+    <!-- Fullscreen Drawer Menu -->
+    <div class="drawer-menu" id="drawerMenu">
+      <a href="#/Home" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Home</a>
+      <a href="#/ourWork" onclick="loadPage('ourWork'); closeDrawerMenu();" data-page="ourWork">⇲ Our Work</a>
+      <a href="#/aboutUs" onclick="loadPage('aboutUs'); closeDrawerMenu();" data-page="aboutUs">〶 About Us</a>
+      <a href="#" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople">📉 Our People</a>
+      <div class="submenu">
+        <a href="#/meetOurExperts" onclick="loadPage('meetOurExperts'); closeDrawerMenu();"  data-page="meetOurExperts">Meet Our Experts</a>
+        <a href="#/coreTeam" onclick="loadPage('coreTeam'); closeDrawerMenu();" data-page="coreTeam">Core Team</a>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+  <main id="content">
+  </main>
+  
+  <!-- Load model-viewer once -->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script>
+  window.addEventListener("load", () => {
+    document.body.classList.remove("preload");
+    document.body.classList.add("loaded");
+  });
+</script>
+<!-- Your app's logic -->
+<script type="module" src="/src/script.js"></script>
+  
+</body>
+<footer>Created, Designed, Made by LD⭐️</footer>
+</html>
