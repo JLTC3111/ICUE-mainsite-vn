@@ -38,7 +38,7 @@ h2:hover {
 }
 
 .sub-text {
-  margin-left: -50rem;
+  justify-content: left;
   font-family: 'Rubik';
   font-style: normal;
   color: whitesmoke;
@@ -51,7 +51,7 @@ h2:hover {
   font-family: 'IBM Plex Serif', serif;
   font-weight: 900;
   font-style: italic;
-  font-size: 75px;
+  font-size: 60px;
   color: rgb(250, 250, 127);
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
   letter-spacing:5px;
@@ -109,7 +109,7 @@ nav a {
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 9;
 }
 
 .menu-bar a:hover {
@@ -437,7 +437,7 @@ footer p {
   position: absolute;
   left: 50%;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 5;
   animation: dropDown 4.5s ease-in-out forwards;
 }
 
@@ -467,7 +467,7 @@ footer p {
   padding: 10rem 2.5rem;
   transform: translateX(-100%); /* Hide off-screen initially */
   transition: transform 0.4s ease-in-out;
-  z-index: 1000;
+  z-index: 5;
 }
 
 
@@ -595,7 +595,7 @@ footer p {
   text-align: center;
   margin-top: 3rem;
   margin-bottom: 3rem;
-  z-index: 10;
+  z-index: 3;
 }
 
 
@@ -603,7 +603,7 @@ footer p {
   text-align: center;
   color: rgb(44, 44, 44);
   max-width: 80%;
-  z-index: 10;
+  z-index: 4;
   margin-top: -25px;
 }
 
@@ -1000,7 +1000,7 @@ body.loaded #app {
     height: 20px;
     margin-left: 1px;
     margin-top: -2rem;
-    z-index: 11;
+    z-index: 7;
   }
   /* Shrink big headers */
   h1 {
@@ -1044,7 +1044,7 @@ body.loaded #app {
     text-align: left;
     margin-top: 3.5rem;
     margin-bottom: 2.5rem;
-    z-index: 10;
+    z-index: 3;
   }
 
   .highlight-text {
@@ -1190,7 +1190,7 @@ body.loaded #app {
     position: absolute;
     left: 47.5%;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 5;
   }
 
   .drawer-menu {
@@ -1206,7 +1206,7 @@ body.loaded #app {
     margin-left: -1rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
-    z-index: 1000;
+    z-index: 5;
   }
 
   .drawer-menu a {
