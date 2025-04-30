@@ -1169,7 +1169,7 @@ body.loaded #app {
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
     transform: translateX(0px);
-    z-index: 1100;
+    z-index: 11;
   }
 
   .right-arrow {
@@ -1194,7 +1194,7 @@ body.loaded #app {
     position: absolute;
     left: 47.5%;
     cursor: pointer;
-    z-index: 15;
+    z-index: 12;
   }
 
   .drawer-menu {
