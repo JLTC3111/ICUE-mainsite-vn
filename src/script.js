@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
+console.log("✅ script.js loaded!");
 
 window.attachProfileEvents = () => {
   const profileData = [
@@ -706,3 +707,4 @@ export function animateAboutUsPage() {
 if (window.location.pathname.includes("about")) {
   animateAboutUsPage();
 }
+console.log("Script loaded")

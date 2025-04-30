@@ -1,3 +1,7 @@
+body, html {
+  overflow-x: hidden; /* ✅ allow vertical overflow */
+}
+
 body {
   font-family: sans-serif;
   margin: 0;
@@ -85,12 +89,12 @@ p {
 }
 
 nav {
+  position: sticky;
   display: flex;
   justify-content: space-between; /* space between logo and hamburger */
   align-items: center;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  position: sticky;
   top: 0;
   z-index: 1;
 }
@@ -103,11 +107,11 @@ nav a {
 
 .menu-bar {
   display: flex;
+  position: sticky;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  position: sticky;
   top: 0;
   z-index: 9;
 }
@@ -391,7 +395,7 @@ footer p {
 .language-switcher {
   position: absolute;
   top: 110px;
-  right: 45px;
+  right: 25px;
   display: flex;
   gap: 9px;
   margin-top: -6.0rem;
@@ -401,7 +405,7 @@ footer p {
 
 .flag-link {
   display: flex;
-  position: fixed;
+  position: relative;
   width: 48px;
   height: 48px;
   background-color: #ffffff; 
