@@ -87,9 +87,8 @@
     
     <script> 
        window.animateAboutPage = () => {
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Greeting text slides in on load
+        window.animateAboutPage = () => {
+  // Animate greeting text
   gsap.from(".greeting-text", {
     y: -50,
     opacity: 0,
@@ -97,90 +96,52 @@
     ease: "power3.out"
   });
 
-  // Highlight text animates when scrolled into view
+  // Stagger highlight letters
   gsap.from(".highlight-container span", {
-    scrollTrigger: {
-      trigger: ".highlight-container",
-      start: "top 80%", // when top of element hits 80% viewport
-    },
-    y: 30,
+    y: 20,
     opacity: 0,
     stagger: 0.05,
     duration: 0.6,
+    delay: 0.3,
     ease: "back.out(1.7)"
   });
 
-  // Handwritten headers slide in
-  gsap.utils.toArray(".handwritten").forEach((el) => {
+  // Slide in handwritten headers
+  gsap.utils.toArray(".handwritten").forEach((el, i) => {
     gsap.from(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: "top 85%",
-      },
       x: -100,
       opacity: 0,
       duration: 0.8,
+      delay: 0.8 + i * 0.2,
       ease: "power2.out"
     });
   });
 
-  // Image grid fade in
-  gsap.utils.toArray(".image-grid img").forEach((img) => {
+  // Animate image-grid elements
+  gsap.utils.toArray(".image-grid img").forEach((img, i) => {
     gsap.from(img, {
-      scrollTrigger: {
-        trigger: img,
-        start: "top 90%",
-      },
       scale: 0.8,
       opacity: 0,
       duration: 0.6,
+      delay: 1 + i * 0.2,
       ease: "power2.out"
     });
   });
 
-  // Middle text animation
-  gsap.from(".middle-text", {
-    scrollTrigger: {
-      trigger: ".middle-text",
-      start: "top 85%",
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    ease: "power1.out"
-  });
-
-  // Email & postcard fade in
-  gsap.from(".postcard-image", {
-    scrollTrigger: {
-      trigger: ".contact-section",
-      start: "top 80%",
-    },
-    y: 30,
-    opacity: 0,
-    duration: 0.7,
-    ease: "power1.out"
-  });
-
+  // Email text fade
   gsap.from(".email-text", {
-    scrollTrigger: {
-      trigger: ".contact-section",
-      start: "top 85%",
-    },
-    y: 30,
     opacity: 0,
+    y: 30,
+    delay: 2.2,
     duration: 0.8,
     ease: "power1.out"
   });
 
-  // Balloon button
+  // Balloon button bounce-in
   gsap.from(".balloon-button", {
-    scrollTrigger: {
-      trigger: ".balloon-button",
-      start: "top 95%",
-    },
     y: 50,
     opacity: 0,
+    delay: 2.5,
     duration: 1,
     ease: "elastic.out(1, 0.6)"
   });
@@ -223,8 +184,17 @@ gsap.to(".video-bg", {
       }
     });
   });
-document.addEventListener("DOMContentLoaded", () => {
-  animateAboutPage(); // ✅ run regardless of path
+  document.addEventListener("DOMContentLoaded", () => {
+  if (window.location.pathname.includes("about")) {
+    animateAboutPage();
+  }
+});
+gsap.to(".video-bg", {
+  scale: 1.05,
+  duration: 5,
+  ease: "power1.inOut",
+  yoyo: true,
+  repeat: -1
 });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
