@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 window.attachProfileEvents = () => {
   const profileData = [
@@ -629,3 +630,79 @@ profileData_coreTeam.forEach(profile => {
 
 attachProfileEvents_coreTeam(); // Initialize the function
 
+export function animateAboutUsPage() {
+  // Animate greeting
+  gsap.from(".greeting-text", {
+    y: -50,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out"
+  });
+
+  // Stagger highlight spans
+  gsap.from(".highlight-container span", {
+    y: 20,
+    opacity: 0,
+    stagger: 0.05,
+    duration: 0.6,
+    delay: 0.3,
+    ease: "back.out(1.7)"
+  });
+
+  // Slide-in handwritten titles
+  gsap.utils.toArray(".handwritten").forEach((el, i) => {
+    gsap.from(el, {
+      x: -100,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.6 + i * 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 80%",
+      }
+    });
+  });
+
+  // Animate image grid items
+  gsap.utils.toArray(".image-grid img").forEach((img, i) => {
+    gsap.from(img, {
+      scale: 0.8,
+      opacity: 0,
+      duration: 0.6,
+      delay: 0.8 + i * 0.1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: img,
+        start: "top 85%",
+      }
+    });
+  });
+
+  // Email fade-in
+  gsap.from(".email-text", {
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    ease: "power1.out",
+    scrollTrigger: {
+      trigger: ".email-text",
+      start: "top 85%",
+    }
+  });
+
+  // Balloon bounce
+  gsap.from(".balloon-button", {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: "elastic.out(1, 0.6)",
+    scrollTrigger: {
+      trigger: ".balloon-button",
+      start: "top 90%",
+    }
+  });
+}
+if (window.location.pathname.includes("about")) {
+  animateAboutUsPage();
+}
