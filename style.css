@@ -1014,14 +1014,14 @@ body.loaded #app {
 
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
-    margin-left: -10rem;
+    margin-left: -5.5rem;
   } 
   
   .cursive-default {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
     margin-top: 9.5rem;
-    margin-left: 3.5rem;
+    margin-left: 2.5rem;
     margin-bottom: -1.5rem;
     line-height: 2.0;
   }
