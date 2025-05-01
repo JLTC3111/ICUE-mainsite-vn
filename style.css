@@ -1,7 +1,3 @@
-body, html {
-  overflow-x: hidden; /* ✅ allow vertical overflow */
-}
-
 body {
   font-family: sans-serif;
   margin: 0;
@@ -89,12 +85,12 @@ p {
 }
 
 nav {
-  position: sticky;
   display: flex;
   justify-content: space-between; /* space between logo and hamburger */
   align-items: center;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
+  position: sticky;
   top: 0;
   z-index: 1;
 }
@@ -395,17 +391,17 @@ footer p {
 .language-switcher {
   position: absolute;
   top: 110px;
-  right: 25px;
+  right: 45px;
   display: flex;
   gap: 9px;
   margin-top: -6.0rem;
   margin-right: 9.5rem;
-  z-index: 15;
+  z-index: 1100;
 }
 
 .flag-link {
   display: flex;
-  position: relative;
+  position: fixed;
   width: 48px;
   height: 48px;
   background-color: #ffffff; 
@@ -416,13 +412,14 @@ footer p {
   font-size: 24px; 
   cursor: pointer;
   box-shadow: 0 2px 6px rgb(155, 255, 34);
-  z-index: 15; 
+  z-index: 1100; 
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
   transform: scale(1.5);
   background-color: #acd606;
+  z-index: 1100;
 }
 
 .flag-icon {
@@ -433,14 +430,14 @@ footer p {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
-  z-index: 15;
+  z-index: 1100;
 }
 
 .menu-toggle {
   position: absolute;
   left: 50%;
   cursor: pointer;
-  z-index: 12;
+  z-index: 5;
   animation: dropDown 4.5s ease-in-out forwards;
 }
 
@@ -1159,7 +1156,7 @@ body.loaded #app {
     font-size: 12px; 
     cursor: pointer;
     box-shadow: 0 2px 6px rgb(221, 255, 52);
-    z-index: 11; 
+    z-index: 1100; 
   }
   
   .flag-icon {
@@ -1169,7 +1166,7 @@ body.loaded #app {
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
     transform: translateX(0px);
-    z-index: 11;
+    z-index: 1100;
   }
 
   .right-arrow {
@@ -1187,14 +1184,14 @@ body.loaded #app {
     background-color: #fffb00;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    z-index: 11;
+    z-index: 1001;
   }
 
   .menu-toggle {
     position: absolute;
     left: 47.5%;
     cursor: pointer;
-    z-index: 99;
+    z-index: 5;
   }
 
   .drawer-menu {

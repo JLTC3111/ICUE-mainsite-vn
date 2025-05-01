@@ -1,8 +1,3 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
-console.log("✅ script.js loaded!");
-
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -630,3 +625,4 @@ profileData_coreTeam.forEach(profile => {
 }
 
 attachProfileEvents_coreTeam(); // Initialize the function
+
