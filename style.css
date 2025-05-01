@@ -338,7 +338,7 @@ footer p {
   cursor: pointer;
   transition: transform 1.5s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-  z-index: 3;
+  z-index: 1;
 }
 
 .arrow-button svg {
@@ -354,7 +354,6 @@ footer p {
 .arrow-icon {
   width: 75px;
   height: 75px;
-  z-index: 10;
 }
 
 .arrow-button:hover {
@@ -600,7 +599,6 @@ footer p {
   text-align: center;
   color: rgb(44, 44, 44);
   max-width: 80%;
-  z-index: 4;
   margin-top: -25px;
 }
 
@@ -724,7 +722,7 @@ footer p {
   transition: all 0.3s ease;  
   color: darkgoldenrod;
   background-color: transparent;
-  z-index: 3;
+  z-index: 1;
 }
 
 .arrow-symbol svg {
@@ -781,7 +779,6 @@ footer p {
   height: 125px; /* maintain aspect ratio */
   top: 7.5%;
   left: 20%;
- 
   margin: 2vw; /* relative margin */
   z-index: 2;
 }
@@ -1477,8 +1474,6 @@ body.loaded #app {
     transform: translateX(0%);
   }
 }
-
-
 
 .profile-photo,
 .montserrat-pepple {
