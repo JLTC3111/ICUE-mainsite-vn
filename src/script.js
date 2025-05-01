@@ -489,11 +489,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
-    {name: '<span class="intro-core">Cán Bộ Viện</span>Nhóm của chúng tôi bao gồm 5-6 chuyên gia tận tụy quản lý các hoạt động hàng ngày và các nhiệm vụ thiết yếu, đảm bảo mọi thứ diễn ra suôn sẻ. Với chuyên môn về quản lý dự án, phát triển kỹ thuật, quan hệ khách hàng, tiếp thị và tài chính, mỗi thành viên đều đóng vai trò quan trọng trong việc thúc đẩy thành công của tổ chức. Thông qua sự hợp tác chặt chẽ và giao tiếp cởi mở, họ cùng nhau giải quyết các thách thức và nắm bắt cơ hội. Từ tương tác với khách hàng đến các quy trình nội bộ, những nỗ lực chung của nhóm đảm bảo dịch vụ hàng đầu và hiệu quả hoạt động. Sự cam kết và làm việc chăm chỉ của họ rất quan trọng đối với sự phát triển và thành công liên tục của tổ chức chúng tôi.',
+    {name: '<span class="intro-core">Cán Bộ Viện</span> Nhóm của chúng tôi bao gồm 5-6 chuyên gia tận tụy quản lý các hoạt động hàng ngày và các nhiệm vụ thiết yếu, đảm bảo mọi thứ diễn ra suôn sẻ. Với chuyên môn về quản lý dự án, phát triển kỹ thuật, quan hệ khách hàng, tiếp thị và tài chính, mỗi thành viên đều đóng vai trò quan trọng trong việc thúc đẩy thành công của tổ chức. Thông qua sự hợp tác chặt chẽ và giao tiếp cởi mở, họ cùng nhau giải quyết các thách thức và nắm bắt cơ hội. Từ tương tác với khách hàng đến các quy trình nội bộ, những nỗ lực chung của nhóm đảm bảo dịch vụ hàng đầu và hiệu quả hoạt động. Sự cam kết và làm việc chăm chỉ của họ rất quan trọng đối với sự phát triển và thành công liên tục của tổ chức chúng tôi.',
       img: "public/profilePhotos/coreTeam.jpg"
     },
     {name: 
-      `<span class="intro-core"> Nguyễn Thị Ly </span>Có nền tảng học thuật vững chắc về quy hoạch đô thị, phát triển đô thị bền vững, quản lý cơ sở hạ tầng và thiết kế không gian công cộng. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp bền vững và thân thiện với môi trường.`, 
+      `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về quy hoạch đô thị, phát triển đô thị bền vững, quản lý cơ sở hạ tầng và thiết kế không gian công cộng. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp bền vững và thân thiện với môi trường.`, 
       img: "public/profilePhotos/lyly.png"
     },
     {
@@ -501,7 +501,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span>Chuyên gia tận tụy chuyên về khảo sát số lượng, lập kế hoạch chi tiết và vẽ kỹ thuật. Với kỹ năng làm việc nhóm mạnh mẽ và cách tiếp cận đáng tin cậy, chăm chỉ, tôi đóng góp hiệu quả vào các dự án hợp tác và hoạt động văn phòng. Là một đối tác tích cực của ICUE, tôi đã xây dựng được mạng lưới mạnh mẽ với các chính quyền địa phương, đảm bảo giao tiếp suôn sẻ và hỗ trợ dự án. Tôi rất thành thạo trong các nhiệm vụ hành chính thường xuyên, lập tài liệu dự án và điều phối tại chỗ. Tôi đam mê đóng góp cho nhóm và hỗ trợ sự phát triển và thành công của tổ chức`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Chuyên gia tận tụy chuyên về khảo sát số lượng, lập kế hoạch chi tiết và vẽ kỹ thuật. Với kỹ năng làm việc nhóm mạnh mẽ và cách tiếp cận đáng tin cậy, chăm chỉ, tôi đóng góp hiệu quả vào các dự án hợp tác và hoạt động văn phòng. Là một đối tác tích cực của ICUE, tôi đã xây dựng được mạng lưới mạnh mẽ với các chính quyền địa phương, đảm bảo giao tiếp suôn sẻ và hỗ trợ dự án. Tôi rất thành thạo trong các nhiệm vụ hành chính thường xuyên, lập tài liệu dự án và điều phối tại chỗ. Tôi đam mê đóng góp cho nhóm và hỗ trợ sự phát triển và thành công của tổ chức`,  
       img: "public/profilePhotos/tam.png"
     },
     {
@@ -513,7 +513,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span>Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
+      name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
       img: "public/profilePhotos/hien.png"
     },
     
