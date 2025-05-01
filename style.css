@@ -1021,7 +1021,7 @@ body.loaded #app {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
     margin-top: 9.5rem;
-    margin-left: 1.5rem;
+    margin-left: 3.5rem;
     margin-bottom: -1.5rem;
     line-height: 2.0;
   }
