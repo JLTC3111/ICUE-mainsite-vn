@@ -109,7 +109,7 @@ nav a {
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: sticky;
   top: 0;
-  z-index: 9;
+  z-index: 3;
 }
 
 .menu-bar a:hover {
@@ -396,7 +396,7 @@ footer p {
   gap: 9px;
   margin-top: -6.0rem;
   margin-right: 9.5rem;
-  z-index: 1100;
+  z-index: 12;
 }
 
 .flag-link {
@@ -411,15 +411,13 @@ footer p {
   transition: transform 0.3s, background-color 0.3s;
   font-size: 24px; 
   cursor: pointer;
-  box-shadow: 0 2px 6px rgb(155, 255, 34);
-  z-index: 1100; 
+  box-shadow: 0 2px 6px rgb(155, 255, 34); 
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
   transform: scale(1.5);
   background-color: #acd606;
-  z-index: 1100;
 }
 
 .flag-icon {
@@ -430,14 +428,13 @@ footer p {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
-  z-index: 1100;
 }
 
 .menu-toggle {
   position: absolute;
   left: 50%;
   cursor: pointer;
-  z-index: 5;
+  z-index: 9;
   animation: dropDown 4.5s ease-in-out forwards;
 }
 
@@ -503,7 +500,7 @@ footer p {
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
-  z-index: 1000;
+  z-index: 11;
 }
 
 @keyframes slideInFromRight {
@@ -1141,7 +1138,7 @@ body.loaded #app {
     right: 5vw;
     transform: translate(92.5vw, 2.5vh);
     margin: 0;
-    z-index: 2000;
+    z-index: 20;
   }
   
   .flag-link {
@@ -1156,7 +1153,6 @@ body.loaded #app {
     font-size: 12px; 
     cursor: pointer;
     box-shadow: 0 2px 6px rgb(221, 255, 52);
-    z-index: 1100; 
   }
   
   .flag-icon {
@@ -1166,7 +1162,6 @@ body.loaded #app {
     background-size: cover;
     border-radius: 50%; /* ✅ Makes it circular */
     transform: translateX(0px);
-    z-index: 1100;
   }
 
   .right-arrow {
@@ -1184,14 +1179,14 @@ body.loaded #app {
     background-color: #fffb00;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
-    z-index: 1001;
+    z-index: 11;
   }
 
   .menu-toggle {
     position: absolute;
     left: 47.5%;
     cursor: pointer;
-    z-index: 5;
+    z-index: 7;
   }
 
   .drawer-menu {
