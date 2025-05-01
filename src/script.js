@@ -5,7 +5,7 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Chị Hoàng Thu Hà</span> Chuyên gia kế toán giàu kinh nghiệm với hơn 10 năm trong quản lý tài chính, báo cáo và tuân thủ. Có bằng Cử nhân Kế toán và đã lãnh đạo thành công các phòng kế toán, quản lý các khoản thanh toán tài chính, tiến hành kiểm toán và lập báo cáo tài chính chính xác. Có kỹ năng giám sát các giao dịch tài chính, đảm bảo tuân thủ pháp luật và quy định, và hỗ trợ các hoạt động tài chính theo dự án. Thành thạo phần mềm kế toán và được biết đến với đạo đức nghề nghiệp mạnh mẽ, khả năng thích ứng và chú ý đến từng chi tiết. Mang đến các kỹ năng lãnh đạo và tổ chức mạnh mẽ, tập trung vào việc cung cấp những hiểu biết tài chính chính xác.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span> Chuyên gia kế toán giàu kinh nghiệm với hơn 10 năm trong quản lý tài chính, báo cáo và tuân thủ. Có bằng Cử nhân Kế toán và đã lãnh đạo thành công các phòng kế toán, quản lý các khoản thanh toán tài chính, tiến hành kiểm toán và lập báo cáo tài chính chính xác. Có kỹ năng giám sát các giao dịch tài chính, đảm bảo tuân thủ pháp luật và quy định, và hỗ trợ các hoạt động tài chính theo dự án. Thành thạo phần mềm kế toán và được biết đến với đạo đức nghề nghiệp mạnh mẽ, khả năng thích ứng và chú ý đến từng chi tiết. Mang đến các kỹ năng lãnh đạo và tổ chức mạnh mẽ, tập trung vào việc cung cấp những hiểu biết tài chính chính xác.`,
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
