@@ -1,7 +1,7 @@
 window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, bà có bằng Tiến sĩ trong lĩnh vực này và hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của bà bao gồm chức Phó Viện trưởng tại cả Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc của bà trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố bền vững và được quản lý tốt. Bà đã lãnh đạo các sáng kiến ​​lớn về phát triển đô thị xanh, khả năng phục hồi khí hậu và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
+      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại cả Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố bền vững và được quản lý tốt. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về phát triển đô thị xanh, khả năng phục hồi khí hậu và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
