@@ -288,7 +288,7 @@ footer p {
 
 #profile-text {
   background: rgba(255, 255, 255, 0.1); /* light transparent background */
-  backdrop-filter: blur(25px);          /* frosted glass blur */
+  backdrop-filter: blur(27.5px);          /* frosted glass blur */
   -webkit-backdrop-filter: blur(5px);  /* Safari support */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;  
@@ -1111,7 +1111,7 @@ body.loaded #app {
   .montserrat-pepple {
     font-size: clamp(1rem, 3vw, 1.2rem);
     margin: 1rem 0;
-    line-height: 1.6;
+    line-height: 1.8;
     text-align: center;
   }
 
