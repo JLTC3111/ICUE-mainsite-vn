@@ -673,7 +673,7 @@ footer p {
   position: relative;
   width: 80%;
   max-width: 800px;
-  top: 40vh;
+  top: -15vh;
   left: 12.5vw;
   padding: 10px;
   background: transparent;
@@ -682,8 +682,6 @@ footer p {
 }
 
 .intro-core {
-  margin-right: 100px;
-  margin-bottom: 30px;
   letter-spacing: 1.5px; 
   display: flex;
   justify-content: center;
@@ -700,8 +698,6 @@ footer p {
   position: absolute;
   width: 100%;
   max-width: 800px;
-  margin-top: 100px;
-  margin-left: 200px;
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
@@ -712,23 +708,34 @@ footer p {
 }
 
 .arrow-container {
-  display: flex;
-  flex-direction: row;}
-
-.arrow-symbol {
   position: relative;
   display: flex;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform: translate(-5%, -42.5vh);
+  flex-direction: row;
+  background-color: transparent;
+  z-index: 1;
+}
+
+.arrow-symbol {
   width: 75px;
   height: 75px;
-  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   border-radius: 50%;
-  top: 0.5vh;
   box-shadow: 0 4px 12px rgb(0, 0, 0);
   cursor: pointer;
   transition: all 0.3s ease;  
   color: darkgoldenrod;
-  background-color: transparent;
-  z-index: 1;
+}
+
+.left-arrow-symbol {
+  transform: translateX(-38.5vw);
+}
+
+.right-arrow-symbol {
+  transform: translateX(38.5vw);
 }
 
 .arrow-symbol svg {
@@ -748,7 +755,6 @@ footer p {
 }
 
 .arrow-symbol:hover {
-  transform: translateY(-50%) scale(1.25);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   background-color: rgb(109, 109, 109);
 }
@@ -764,18 +770,6 @@ footer p {
 .arrow-symbol:active .fill-orange,
 .arrow-symbol:active .fill-dark {
   fill: #0b3f10;
-}
-
-.left-arrow-symbol {
-  top: 50%;
-  left: 5%;
-  transform: translateY(-50%);
-}
-
-.right-arrow-symbol {
-  left: 82.5%;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .deco-bg {
@@ -1300,12 +1294,10 @@ body.loaded #app {
     }
   }
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
 
     /* Prevent horizontal scroll globally */
     body, html {
-      margin: 0;
-      padding: 0;
       overflow-x: hidden;
     }
 
@@ -1319,12 +1311,11 @@ body.loaded #app {
   
     .profile-photo-coreTeam {
       width: 200px;
-      transform: translateX(0);
     }
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-15vw, -20vh);
+      transform: translate(-15vw, 35vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
@@ -1339,8 +1330,6 @@ body.loaded #app {
   
     .core-team-text {
       text-align: left;
-      margin-left: auto;
-      margin-top: 40px;
       font-size: 14px;
       line-height: 22px;
     }
