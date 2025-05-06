@@ -946,7 +946,7 @@ body.loaded #app {
   }
 
   nav {
-    margin-top: -2.35rem;
+    margin-top: -2.5rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -980,6 +980,10 @@ body.loaded #app {
     justify-content: center;
     line-height: 2;
     letter-spacing: normal;
+  }
+
+  footer {
+    display: none;
   }
 
   .submenu {
@@ -1047,7 +1051,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: 0.5rem;
+    margin-top: -1.5rem;
     margin-left: -1.2rem;
     gap: 14px;
     z-index: 1;
@@ -1216,31 +1220,15 @@ body.loaded #app {
     content: none;
   }
 
-  footer {
-    display: none;
-  }
-
   .menu-bar .contact-link:hover {
     transform: none;
     color: rgb(2, 2, 2);
-  }
-
-  .about-container .section .greeting-text {
-    font-size: 1.5em;
-    margin: 15px 0;
-    transform: translate(0, -50px) !important;  /* Added specificity and importance */
-    position: relative;  /* Ensure transform works */
-    z-index: 1;  /* Ensure proper stacking */
   }
 
   .middle-text {
     font-size: 20px !important;
     transform: translateX(-15px) !important;
     margin-left: 60px;
-  }
-
-  .image-grid-mid {
-    transform: translateX(100px) !important;
   }
 
   .model-building {
@@ -1272,97 +1260,6 @@ body.loaded #app {
     100% {
       transform: translateY(0);
     }
-  }
-
-  .about-container {
-    padding: 20px;
-    margin: 0;
-  }
-
-  .section {
-      margin: 30px 0;
-      padding: 0 15px;
-  }
-
-  .greeting-text {
-      font-family: 'Caveat', cursive;
-      font-size: 1.5em;
-      margin: 15px 0;
-      transform: translate(0, -50px);
-      color:blueviolet;
-  }
-
-  .highlight-container {
-      transform: translate(0, -75px);  /* Reset X translation, keep Y */
-      width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-  }
-
-  .highlight-firstPart,
-  .highlight-secondPart {
-      margin: 5px;
-      font-size: 1.0em;
-  }
-
-  .handwritten {
-      font-size: 1.5em;
-      margin: 5px 0 15px;
-  }
-
-  .fuzzy-text {
-      font-size: 2em;
-      margin: 10px 0;
-  }
-
-  .regular-text {
-      font-size: 1.2em;
-      margin: 10px 15px;
-      letter-spacing: 2px;
-      text-align: center;
-  }
-
-  .image-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 15px 0;
-  }
-
-  .image-grid img {
-      height: 120px;
-  }
-
-  .highlight-fourthPart {
-      font-size: 1.5em;
-      transform: translate(0, -25px);
-      text-align: center;
-      margin: 10px auto;
-  }
-
-  .contact-methods {
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-  }
-
-  .email-text,
-  .phone-text {
-      margin: 5px 0;
-      font-size: 0.9em;
-      text-align: center;
-      transform: none;
-      min-width: unset;
-      width: 90%;
-  }
-
-  .contact-text {
-      font-size: 1em;
-      text-align: center;
-      margin: 10px 0;
-  }
-
-  .postcard-image {
-      width: 250px !important;
   }
 
 @media (max-width: 768px) {
