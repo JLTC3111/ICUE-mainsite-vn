@@ -710,12 +710,12 @@ footer p {
 .arrow-container {
   position: relative;
   display: flex;
+  flex-direction: row;
   width: 100%;
   height: 100%;
   top: 0;
   left: 50%;
   transform: translate(-5%, -42.5vh);
-  flex-direction: row;
   background-color: transparent;
   z-index: 1;
 }
@@ -1334,11 +1334,15 @@ body.loaded #app {
       line-height: 22px;
     }
 
+    .arrow-container {
+      position: relative;
+      display: flex;
+      top: 0;
+      left: 50%;
+      transform: translate(-20px, -75vh);
+    }
     .arrow-symbol {
       position: absolute;
-      display: flex;
-      top: 50%; /* Always center vertically */
-      transform: translateY(-50%); /* Pull up by 50% of its height */
       width: 42.5px;
       height: 42.5px;
     }
@@ -1348,19 +1352,10 @@ body.loaded #app {
       height: 95%;
       transform: none; /* Make sure SVG is not rotated/moved */
     }
-
-    .left-arrow-symbol {
-      left: 1.5rem;
-    }
-  
-    .right-arrow-symbol {
-      right: 1.5rem;
-    }
     
     .deco-object-container {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
+      transform: translate(-8.5px, -10.5vh);
       width: 100%;
       height: auto;
       z-index: 1;
