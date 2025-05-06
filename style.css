@@ -1339,7 +1339,7 @@ body.loaded #app {
       display: flex;
       top: 0;
       left: 50%;
-      transform: translate(-20px, -75vh);
+      transform: translate(-20px, -55vh);
     }
     .arrow-symbol {
       position: absolute;
