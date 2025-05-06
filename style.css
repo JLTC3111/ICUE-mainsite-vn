@@ -1341,6 +1341,7 @@ body.loaded #app {
       left: 50%;
       transform: translate(-20px, -55vh);
     }
+    
     .arrow-symbol {
       position: absolute;
       width: 42.5px;
