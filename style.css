@@ -1033,7 +1033,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin-top: 3.5rem;
+    margin-top: 3rem;
     margin-bottom: 2.5rem;
     z-index: 3;
   }
@@ -1052,7 +1052,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: -.5rem;
+    margin-top: -1rem;
     margin-left: .75rem;
     gap: 14px;
     z-index: 1;
@@ -1082,7 +1082,7 @@ body.loaded #app {
     top: 50%;
     left: 50%;
     width: 90%;
-    transform: translate(-50%, 10%);
+    transform: translate(-50%, 12.5%);
     padding: 15px;
   }
 
