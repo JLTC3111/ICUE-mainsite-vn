@@ -987,10 +987,6 @@ body.loaded #app {
     display: none;
   }
 
-  .video-bg  {
-    width: auto;
-    height: 100%;
-  }
   .submenu {
     margin-top: 1rem;
     margin-left: -1rem;
@@ -1056,7 +1052,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: -1.5rem;
+    margin-top: -.5rem;
     margin-left: .75rem;
     gap: 14px;
     z-index: 1;
