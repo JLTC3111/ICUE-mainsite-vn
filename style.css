@@ -136,7 +136,7 @@ nav a {
 .video-bg {
   position: fixed;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   object-fit: cover;
   top: 0;
   left: 0;
@@ -987,6 +987,10 @@ body.loaded #app {
     display: none;
   }
 
+  .video-bg  {
+    width: auto;
+    height: 100%;
+  }
   .submenu {
     margin-top: 1rem;
     margin-left: -1rem;
