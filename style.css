@@ -748,14 +748,7 @@ footer p {
 .fill-white  { fill: #FFFFFF; }
 .fill-dark   { fill: #111; }
 
-/* Hover and active effects */
-.arrow-symbol {
-  cursor: pointer;
-  transition: transform 1s ease, box-shadow 0.2s ease;
-}
-
 .arrow-symbol:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
   background-color: rgb(109, 109, 109);
 }
 
@@ -1095,9 +1088,7 @@ body.loaded #app {
 
   .text-container {
     width: 90%;
-    margin: 20px auto;
-    margin-left: 20px;
-    margin-right: 20px;
+    transform: translate(-25vw, 10vh);
     padding: 15px;
   }
 
@@ -1342,19 +1333,20 @@ body.loaded #app {
       top: 0;
       left: 50%;
       transform: translate(-20px, -65vh);
-      z-index: 4;
+      z-index: 1;
     }
 
     .arrow-symbol {
       position: absolute;
-      width: 42.5px;
-      height: 42.5px;
+      display:block;
+      width: 43px;
+      height: 43px;
     }
     
     .arrow-symbol svg {
       width: 95%; /* shrink SVG to fit nicely */
       height: 95%;
-      transform: none; /* Make sure SVG is not rotated/moved */
+      transform: none !important;
     }
     
     .deco-object-container {
