@@ -180,13 +180,16 @@ footer p {
   display: flex;
   object-fit: contain;
 }
+
 .image-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 0;
   width: 300px;
   height: 400px;
   overflow: hidden;
   border-radius: 50px;
-  transform: translate(15vw, -36vh);
+  transform: translate(10vw, -25vh);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
@@ -208,6 +211,7 @@ footer p {
   animation: FadeOut 2s ease-in-out forwards;
   animation-delay: 3s;
 }
+
 @keyframes FadeOut {
   0% {
     opacity: 1;
@@ -285,12 +289,15 @@ footer p {
 }
 
 .text-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 90%;
   max-width: 850px;
-  transform: translate(-.5vw, -31.5vh);
+  transform: translate(-37.5%, -55%);
   padding: 20px;
-  border-radius: 25px;
+  border-radius: 20px;
+  box-shadow: none;
 }
 
 
@@ -486,7 +493,7 @@ footer p {
   color: white;
   font-size: 28px;
   margin-left: auto;
-  margin-right: 15rem;
+  margin-right: 17.5rem;
   text-decoration: none;
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -1057,14 +1064,20 @@ body.loaded #app {
   }
 
   .image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 250px;
     height: 350px;
-    transform: translate(5rem, -50rem);
+    transform: translate(-50%, -75%);
   }
 
   .text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 90%;
-    transform: translate(2.5vw, -50rem);
+    transform: translate(-50%, 10%);
     padding: 15px;
   }
 
@@ -2010,7 +2023,8 @@ button:hover {
 
 .contact-info p {
   font-family: 'Roboto';
-  margin: 5px 0; /* Space above and below paragraphs */
+  letter-spacing: normal;
+  margin: 10px 0; /* Space above and below paragraphs */
   color: #6f6f6f; /* Lighter text color */
 }
 
