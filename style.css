@@ -136,7 +136,7 @@ nav a {
 .video-bg {
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   object-fit: cover;
   top: 0;
   left: 0;
@@ -962,7 +962,7 @@ body.loaded #app {
   /* Shrink big headers */
   h1 {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
-    text-align: left;
+    justify-content: left;
   }
 
   h2 {
@@ -1025,8 +1025,8 @@ body.loaded #app {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
     margin-top: 9.5rem;
-    margin-left: 2.5rem;
-    margin-bottom: -1.5rem;
+    margin-left: .5rem;
+    margin-bottom: -1.75rem;
     line-height: 2.0;
   }
 
@@ -1052,7 +1052,7 @@ body.loaded #app {
     position: relative;
     justify-content: center;
     margin-top: -1.5rem;
-    margin-left: -1.2rem;
+    margin-left: .75rem;
     gap: 14px;
     z-index: 1;
   }
