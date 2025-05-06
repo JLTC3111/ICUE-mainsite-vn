@@ -966,11 +966,12 @@ body.loaded #app {
   }
 
   h2 {
-    color: rgb(0, 0, 0);
+    color: rgb(27, 135, 63);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     left: 50%;
     top: 50%;
     display: flex;
+    margin-top: 1.5rem;
   }
 
   p {
@@ -1018,14 +1019,14 @@ body.loaded #app {
 
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
-    margin-left: -5.5rem;
+    margin-left: -1.5rem;
   } 
   
   .cursive-default {
     font-size: clamp(1rem, 6vw, 1.5rem);
     margin: 2.5rem;
-    margin-top: 9.5rem;
-    margin-left: .5rem;
+    margin-top: 8.5rem;
+    margin-left: -1.5rem;
     margin-bottom: -1.75rem;
     line-height: 2.0;
   }
