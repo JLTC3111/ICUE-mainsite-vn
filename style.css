@@ -1341,7 +1341,8 @@ body.loaded #app {
       display: flex;
       top: 0;
       left: 50%;
-      transform: translate(-20px, -55vh);
+      transform: translate(-20px, -65vh);
+      z-index: 4;
     }
 
     .arrow-symbol {
