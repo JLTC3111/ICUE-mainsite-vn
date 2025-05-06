@@ -694,8 +694,6 @@ footer p {
   position: absolute;
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 100%;
   top: 50%;
   left: 50%;
   transform: translateY(5vh);
@@ -1355,12 +1353,12 @@ body.loaded #app {
   }
 
 @media (max-width: 768px) {
-
+  
     /* Prevent horizontal scroll globally */
     body, html {
       padding:0;
       margin: 0;
-      overflow-x: hidden;
+      overflow-x: hidden !important;
     }
 
     .image-container-coreTeam {
@@ -1396,10 +1394,9 @@ body.loaded #app {
 
     .arrow-container {
       position: absolute;
-      display: flex;
       top: 50%;
       left: 50%;
-      transform: translate(-1rem, -3rem);
+      transform: translate(-1.5rem, -3rem);
       z-index: 1;
     }
 
@@ -1407,15 +1404,21 @@ body.loaded #app {
       width: 43px;
       height: 43px;
     }
-    
-    
 
     .arrow-symbol svg {
       width: 95%; /* shrink SVG to fit nicely */
       height: 95%;
       transform: none !important;
     }
-    
+
+    .left-arrow-symbol {
+      transform: translateX(-35vw); /* or smaller */
+    }
+  
+    .right-arrow-symbol {
+      transform: translateX(30vw); /* or smaller */
+    }
+  
     .deco-object-container {
       position: relative;
       transform: translate(-8.5px, -57.5rem);
@@ -1430,14 +1433,14 @@ body.loaded #app {
       position: absolute;
       width: 200px;
       height: 114px;
-      gap: 5px;
+      gap: 10px;
     }
     
     /* Specific placements */
     .deco-bg4 {
       display: grid;
       top: 10vh;
-      left: -5vw;
+      left: -7.5vw;
       transform: translate(5vw, 0);
     }
     
