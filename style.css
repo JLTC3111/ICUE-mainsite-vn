@@ -128,8 +128,8 @@ nav a {
 
 .video-background {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 200vh;
   z-index: -9; 
 }
 
@@ -1118,7 +1118,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 2.5vh);
+    transform: translate(92.5vw, 1vh);
     margin: 0;
     z-index: 20;
   }
@@ -1152,7 +1152,7 @@ body.loaded #app {
 
   .contact-link {
     margin-top: 0;
-    margin-right: 12.5%;
+    margin-right: 10.5%;
     font-size: 18px;
     font-weight: bold;
     padding: 0.75rem 1.5rem;
@@ -1193,6 +1193,7 @@ body.loaded #app {
     font-size: 1.5rem;
     text-decoration: none;
     border-left: 5px solid transparent;
+    transform: translateY(-3.5rem);
     transition: background 0.3s, border-color 0.3s;
   }
 
