@@ -1303,6 +1303,13 @@ body.loaded #app {
 
   @media (max-width: 768px) {
 
+    /* Prevent horizontal scroll globally */
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
