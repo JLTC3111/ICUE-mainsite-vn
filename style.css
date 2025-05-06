@@ -974,6 +974,42 @@ body.loaded #app {
     overflow-x: hidden;
   }
 
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    margin: 0.3rem 0.8rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Shrink big headers */
+  h1 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    text-align: left;
+  }
+
+  h2 {
+    color: rgb(0, 0, 0);
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    left: 50%;
+    top: 50%;
+    display: flex;
+  }
+
+  p {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin: 2rem 1rem;
+    margin-right: 2rem;
+    justify-content: center;
+    line-height: 2;
+    letter-spacing: normal;
+  }
+
   .submenu {
     margin-top: 1rem;
     margin-left: -1rem;
@@ -1003,20 +1039,6 @@ body.loaded #app {
     margin-top: -2rem;
     z-index: 7;
   }
-  /* Shrink big headers */
-  h1 {
-    font-size: clamp(1.5rem, 6vw, 2.5rem);
-    text-align: left;
-  }
-
-  h2 {
-    color: rgb(0, 0, 0);
-    font-size: clamp(1.2rem, 5vw, 1.8rem);
-    left: 50%;
-    top: 50%;
-    display: flex;
-  }
-
 
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
@@ -1031,16 +1053,6 @@ body.loaded #app {
     margin-bottom: -1.5rem;
     line-height: 2.0;
   }
-
-  p {
-    font-size: clamp(1rem, 4vw, 1.4rem);
-    margin: 2rem 1rem;
-    margin-right: 2rem;
-    justify-content: center;
-    line-height: 2;
-    letter-spacing: normal;
-  }
-
 
   .home-text-slider {
     text-align: left;
@@ -1077,19 +1089,6 @@ body.loaded #app {
     cursor: pointer;
     transition: background-color 0.3s ease;
     z-index: 1;
-  }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  nav a {
-    font-size: 0.85rem;
-    margin: 0.3rem 0.8rem;
-    justify-content: center;
-    text-align: center;
   }
 
   .image-container {
