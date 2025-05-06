@@ -957,10 +957,6 @@ body.loaded #app {
     padding: 1rem;
   }
 
-  body {
-    overflow-x: hidden;
-  }
-
   nav {
     display: flex;
     flex-wrap: wrap;
