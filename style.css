@@ -1027,12 +1027,12 @@ body.loaded #app {
     margin-top: 8.5rem;
     margin-left: -.25rem;
     margin-bottom: -1.75rem;
-    line-height: 2.0;
+    line-height: 1.5;
   }
 
   .home-text-slider {
     text-align: left;
-    margin-top: 3rem;
+    margin-top: 4rem;
     margin-bottom: 2.5rem;
     z-index: 3;
   }
@@ -1051,7 +1051,7 @@ body.loaded #app {
     display: flex;
     position: relative;
     justify-content: center;
-    margin-top: -1rem;
+    margin-top: -.25rem;
     margin-left: .75rem;
     gap: 14px;
     z-index: 1;
@@ -1117,7 +1117,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, .15vh);
+    transform: translate(92.5vw, 2vh);
     margin: 0;
     z-index: 20;
   }
