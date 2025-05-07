@@ -652,10 +652,8 @@ footer p {
 
 .profile-photo-coreTeam {
   position: absolute;
-  transform: translateX(30px);
   width: 335px;
   height: auto;
-  transform: translateX(-15px);
   z-index: 3;
 }
 
