@@ -129,8 +129,7 @@ nav a {
 .video-background {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  z-index: -9; 
+  height: 100dvh; 
 }
 
 .video-bg {
@@ -393,7 +392,7 @@ footer p {
   right: 45px;
   display: flex;
   gap: 9px;
-  margin-top: -6.0rem;
+  margin-top: -5.5rem;
   margin-right: 9.5rem;
   z-index: 12;
 }
