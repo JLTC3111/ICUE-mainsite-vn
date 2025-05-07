@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
-    "gsap": "^3.12.7"
+    "gsap": "^3.12.7",
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "cpy": "^11.1.0",
