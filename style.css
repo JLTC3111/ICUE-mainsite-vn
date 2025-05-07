@@ -392,7 +392,7 @@ footer p {
   right: 45px;
   display: flex;
   gap: 9px;
-  margin-top: -5.5rem;
+  margin-top: -6rem;
   margin-right: 9.5rem;
   z-index: 12;
 }
@@ -1117,7 +1117,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 1.5vh);
+    transform: translate(92.5vw, .15vh);
     margin: 0;
     z-index: 20;
   }
@@ -1274,7 +1274,7 @@ body.loaded #app {
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
-      transform: translate(25vw, -82.5vh);
+      transform: translate(25vw, -70.5vh);
     }
   
     .profile-photo-coreTeam {
