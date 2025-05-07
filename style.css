@@ -1273,7 +1273,7 @@ body.loaded #app {
     .image-container-coreTeam {
       width: 185px;
       height: 262.5px;
-      transform: translate(25vw, -72.5vh);
+      transform: translate(25vw, -78.5vh);
     }
   
     .profile-photo-coreTeam {
@@ -1282,7 +1282,7 @@ body.loaded #app {
   
     .text-container-coreTeam {
       width: 90%;
-      transform: translate(-2.5vw, -75vh);
+      transform: translate(-2.5vw, -80vh);
       margin-left: 5%;
       margin-right: 5%;
       padding: 5px;
