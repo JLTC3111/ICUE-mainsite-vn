@@ -1305,7 +1305,7 @@ body.loaded #app {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-1.5rem, -3rem);
+      transform: translate(-1.5rem, -2rem);
       z-index: 1;
     }
 
