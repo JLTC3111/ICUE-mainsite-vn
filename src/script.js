@@ -626,3 +626,40 @@ profileData_coreTeam.forEach(profile => {
 
 attachProfileEvents_coreTeam(); // Initialize the function
 
+
+window.initLogoSlider = () => {
+  const logoList = document.getElementById('logoList');
+  if (!logoList) return;
+
+  let position = 0;
+  let speed = 1;
+  let isPaused = false;
+
+  const loop = () => {
+    if (!isPaused) {
+      position -= speed;
+      const listWidth = logoList.scrollWidth;
+      const containerWidth = logoList.parentElement.offsetWidth;
+
+      // Reset when it scrolls out of view
+      if (-position >= listWidth) {
+        position = containerWidth;
+      }
+
+      logoList.style.transform = `translateX(${position}px)`;
+    }
+    requestAnimationFrame(loop);
+  };
+
+  requestAnimationFrame(loop);
+
+  // Pause on hover
+  logoList.parentElement.addEventListener('mouseenter', () => isPaused = true);
+  logoList.parentElement.addEventListener('mouseleave', () => isPaused = false);
+
+  const arrowLeft = document.getElementById('arrowLeft');
+  const arrowRight = document.getElementById('arrowRight');
+
+  if (arrowLeft) arrowLeft.addEventListener('click', () => { speed = 1; isPaused = false; });
+  if (arrowRight) arrowRight.addEventListener('click', () => { speed = -1; isPaused = false; });
+};
