@@ -1015,6 +1015,7 @@ body.loaded #app {
   position: relative;
   display: flex;
   flex-direction: row;
+  z-index: 7;
 }
 
 .news-slider {
@@ -1099,22 +1100,26 @@ body.loaded #app {
   background-color: transparent;
   border-radius: 50px;
   cursor: pointer;
-  pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 3;
 }
 
 
+.slider-arrow svg {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: none;
+  rotate: none;
+  z-index: -2;
+}
+
 /* Show arrows on hover */
-.news-slider .logo-list:hover .slider-arrow {
+.news-slider-warpper:hover .slider-arrow svg{
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
-}
-
-.slider-arrow svg {
-  transform: none;
-  rotate: none;
+  z-index: 9;
 }
 
 .left-slider-arrow {

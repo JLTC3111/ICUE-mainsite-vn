@@ -169,6 +169,8 @@ window.loadPage = (page) => {
                 initHomeTextSlider();
                 attachHomeButtonEvents();
               }
+              if (page === "News")
+                initLogoSlider();
             });
 
           }, 400); // After fade-out
