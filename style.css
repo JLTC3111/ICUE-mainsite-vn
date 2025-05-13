@@ -1111,15 +1111,16 @@ body.loaded #app {
   pointer-events: none;
   transform: none;
   rotate: none;
-  z-index: -2;
+  transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
 /* Show arrows on hover */
-.news-slider-warpper:hover .slider-arrow svg{
+.news-slider-wrapper:hover .slider-arrow svg{
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
-  z-index: 9;
+  transform: scale(1.3);
+  
 }
 
 .left-slider-arrow {
