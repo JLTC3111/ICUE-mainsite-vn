@@ -936,61 +936,197 @@ body.loaded #app {
   cursor: url('public/cursors/pencil.cur'), auto;
 }
 
-/* Container for the entire news section */
+
 .news-container {
-  max-width: 900px;
-  margin: 50px auto;
-  padding: 20px;
-  font-family: 'Montserrat', sans-serif;
+  position: relative;
+
+}
+
+.news-image-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top:15%;
+  left:25%;
+  width: 25vw;
+  height: auto;
+  gap: 20px;
+}
+
+.news-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.news-article {
+  position: relative;
+  display: flex;
 }
 
 /* Main title */
 .news-title {
+  position: absolute;
+  top:25%;
+  left:50%;
   font-size: 2.5rem;
+  justify-content: center;
   text-align: center;
-  margin-bottom: 40px;
   color: #222;
 }
 
 /* Each news block */
-.news-item {
-  background-color: #f9f9f9;
-  border-left: 6px solid #ff6600;
-  padding: 20px;
-  margin-bottom: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.news-item:hover {
-  transform: translateY(-5px);
-}
-
-/* Headline of each news event */
 .news-item-title {
+  position: absolute;
+  top:50%;
+  left: 50%;
   font-size: 1.75rem;
-  margin-bottom: 10px;
-  color: #333;
+  margin: 2.5rem 1.5rem;
+  transform: translate(-50%, 15vh);
 }
 
 /* Description under each headline */
 .news-item-description {
+  transform: translateY(37.5vh);
+  font-family: apple-system-ui, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 1rem;
+  letter-spacing: 1.5px;
   color: #555;
-  margin-bottom: 15px;
+  margin: 1.5rem 2.5rem;
+  padding: 2.5rem;
 }
 
 /* "Read More" link */
 .news-item-link {
+  position: absolute;
+  top: 75vh;
+  left: 50vw;
   font-weight: bold;
   color: #ff6600;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.news-item-link:hover {
-  color: #cc5200;
+
+.news-slider-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.news-slider {
+  position: relative;
+  margin: 0 auto;
+  background-color: transparent;
+  width: 75vw;
+  justify-content: center;
+  height: calc(var(--height) + 20px);
+  z-index: 1;
+}
+
+.news-slider .logo-list {
+  display: flex;
+  padding: 1rem;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  min-width: calc(var(--width) * var(--quantity));
+}
+
+.news-slider .logo-list .item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: var(--width); 
+  height: var(--height);
+  left: 60%; 
+  /*animation: scrollLogos 60s linear infinite;
+  animation-delay: calc( (10s / var(--quantity)) * (var(--position) -1) ) !important;*/
+}
+
+.news-slider .logo-list .item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(0.9);
+}
+
+
+.news-slider .logo-list .item:nth-child(1) img {
+  width:100%;
+  height:100%;
+  object-fit: cover !important;
+}
+
+.news-slider .logo-list .item:nth-child(3),
+.news-slider .logo-list .item:nth-child(5) {
+  width: 175px;
+}
+
+.news-slider .logo-list .item:nth-child(6) {
+  width: 275px;
+}
+.news-slider .logo-list .item:nth-child(7) {
+  width: 375px;
+}
+
+@keyframes scrollLogos {
+  from {
+    left: 65%;
+  } to {
+    left: calc(var(--width) * -15);
+  }
+}
+
+.news-slider:hover .logo-list .item {
+  animation-play-state: paused;
+}
+
+.news-slider .logo-list .item img:hover {
+  filter: grayscale(0);
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+
+.slider-arrow {
+  display: flex;
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border-radius: 50px;
+  cursor: pointer;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+
+/* Show arrows on hover */
+.news-slider .logo-list:hover .slider-arrow {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slider-arrow svg {
+  transform: none;
+  rotate: none;
+}
+
+.left-slider-arrow {
+  left: 2.5vw;
+}
+
+.right-slider-arrow {
+  right: 2.5vw;
+}
+
+.fill-colour {
+  fill:grey; 
 }
 
 @media (max-width: 768px) {

@@ -1,22 +1,63 @@
 <main>
-    <div class="news-container">
-        <h1 class="news-title">Tin Tức & Sự Kiện</h1>
-        <div class="news-item">
-            <h2 class="news-item-title">Sự kiện 1</h2>
-            <p class="news-item-description">Mô tả ngắn gọn về sự kiện 1.</p>
-ink">Xem thêm</a>
-        </div>
-        <div class="news-item">
-            <h2 class="news-item-title">Sự kiện 2</h2>
-            <p class="news-item-description">Mô tả ngắn gọn về sự kiện 2.</p>
-            <a href="#/event2" class="news-item-link">Xem thêm</a>
-        </div>
-        <div class="news-item">
-            <h2 class="news-item-title">Sự kiện 3</h2>
-            <p class="news-item-description">Mô tả ngắn gọn về sự kiện 3.</p>
-            <a href="#/event3" class="news-item-link">Xem thêm</a>
-        </div>
+  <div class="news-slider-wrapper">
 
+    <!-- LEFT ARROW -->
+    <div class="slider-arrow left-slider-arrow" id="arrowLeft">
+      <svg width="40px" height="40px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" class="fill-colour" />
+      </svg>
+    </div>
+
+    <!-- SLIDER CONTENT -->
+    <div class="news-slider" style="--width: 200px; --height: 100px; --quantity: 10;" id="sliderNews">
+      <div class="logo-list" id="logoList">
+        <div class="item" style="--position: 1"><img src="public/news/images/greenviet_logo.png" alt=""></div>
+        <div class="item" style="--position: 2"><img src="public/news/images/srd_logo.png" alt=""></div>
+        <div class="item" style="--position: 3"><img src="public/news/images/monre_logo.png" alt=""></div>
+        <div class="item" style="--position: 4"><img src="public/news/images/L&L_logo.png" alt=""></div>
+        <div class="item" style="--position: 5"><img src="public/news/images/cres_logo.png" alt=""></div>
+        <div class="item" style="--position: 6"><img src="public/news/images/awf_logo.png" alt=""></div>
+        <div class="item" style="--position: 7"><img src="public/news/images/giz_logo.png" alt=""></div> 
+        <div class="item" style="--position: 8"><img src="public/news/images/cecr_logo.png" alt=""></div>
+        <div class="item" style="--position: 9"><img src="public/news/images/ccd_logo.png" alt=""></div>
+        <div class="item" style="--position: 10"><img src="public/news/images/rocha_logo.png" alt=""></div>
+      </div>
+    </div>
+  
+    <!-- RIGHT ARROW (MOVED OUTSIDE .news-slider) -->
+    <div class="slider-arrow right-slider-arrow" id="arrowRight">
+      <svg width="40px" height="40px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" class="fill-colour" />
+      </svg>
+    </div>
+  </div>
+  
+
+   
+    <div class="news-container">
+      <div class="news-image-container">
+        <img src="public/news/images/sample1.png">
+        <img src="public/news/images/sample2.png">
+        
+      </div> 
+
+     <!-- News Content -->
+    <div class="news-article">
+      <h2 class="news-title"></h2>
+        <h3 class="news-item-title">ICUE & Hoi An CBF Project</h3>
+            <div class="news-item-description">
+            On May 15, 2025, the Institute of Construction and Urban Economics (ICUE), in collaboration with the Hoi An local government, will host a special event to mark the successful conclusion of the project titled Capacity Building and Finance for National and Local Action on Climate and Biodiversity (CBF). This initiative, launched under a grant agreement between ICUE, Deutsche Gesellschaft für Internationale Zusammenarbeit (GIZ) GmbH, and the International Climate Initiative (IKI), has played a pivotal role in supporting climate action and biodiversity protection efforts in Vietnam.
+
+            The event will serve as both a celebration and a reflection on the progress made through the joint commitment of the three partners. The presence of local stakeholders, experts, and project contributors will further highlight the collaborative nature of the initiative and its impact on sustainable urban development in the Hoi An region. Over the past months, the project has not only strengthened technical and institutional capacity but also deepened cooperation between national and local authorities on climate-related issues.
+
+            The ICUE and the Hoi An local government are honored to have contributed to this meaningful endeavor, which reflects a shared vision for a more climate-resilient and environmentally responsible future. None of this would have been possible without the generous support of GIZ and IKI. Their trust and funding enabled the project to become a reality and to deliver tangible benefits to local communities.
+
+            We extend our heartfelt gratitude to GIZ and IKI for their continued support and belief in our mission. This closing event is not the end but a new beginning for future collaborations aimed at creating greener, more sustainable urban environments in Vietnam and beyond.
+            </div>
+       <a href="#/event1" class="news-item-link">Read More</a>
+    </div>
+   </div>
+  
 </main>
 
 
