@@ -6,6 +6,7 @@ body {
 }
 
 main {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   padding: 0;
 }
 
@@ -62,7 +63,6 @@ h2:hover {
 }
 
 p {
-  font-family: cursive;
   font-size: 24px;
   font-weight: 400;
   color: rgb(0, 0, 0);
@@ -1032,7 +1032,7 @@ body.loaded #app {
   position: relative;
   display: flex;
   flex-direction: row;
-  z-index: 7;
+  z-index: 2;
 }
 
 .news-slider {
@@ -1065,6 +1065,15 @@ body.loaded #app {
   animation-delay: calc( (10s / var(--quantity)) * (var(--position) -1) ) !important;*/
 }
 
+/*
+@keyframes scrollLogos {
+  from {
+    left: 65%;
+  } to {
+    left: calc(var(--width) * -15);
+  }
+}*/
+
 .news-slider .logo-list .item img {
   width: 100%;
   height: 100%;
@@ -1089,14 +1098,6 @@ body.loaded #app {
 }
 .news-slider .logo-list .item:nth-child(7) {
   width: 375px;
-}
-
-@keyframes scrollLogos {
-  from {
-    left: 65%;
-  } to {
-    left: calc(var(--width) * -15);
-  }
 }
 
 .news-slider:hover .logo-list .item {
