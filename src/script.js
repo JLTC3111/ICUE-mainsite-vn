@@ -335,8 +335,8 @@ window.addEventListener('DOMContentLoaded', router);
 window.addEventListener('hashchange', router);
 
 function router() {
-  const hash = window.location.hash || '#/Home';
-  const page = hash.replace('#/', '') || 'Home';
+  const hash = window.location.hash || '#/news';
+  const page = hash.replace('#/', '') || 'news';
 
   window.loadPage(page);
 }
@@ -461,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /*window.onload = () => {
   loadPage('Home');
   highlightActiveLink('Home');
+};*/
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
