@@ -30,7 +30,7 @@
 
   .article-container {
     max-width: 800px;
-    margin: 40px auto;
+    margin: 10px auto;
     padding: 20px;
     color: #333;
     background: #fff;
@@ -106,26 +106,69 @@
   }
 
   nav {
-  background-color: #fff;
+  position: relative;
+  background-color: #333333;
   padding: 1rem 2rem;
   display: flex;
-  gap: 1.5rem;
+  gap: 2.5rem;
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  position: sticky;
   top: 0;
   z-index: 1;
 }
 
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
 nav a {
+  font-size: large;
   text-decoration: none;
-  color: #333;
+  color: #ffffff;
   font-weight: 500;
   transition: color 0.3s;
 }
 
 nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
   color: #007acc;
 }
 
@@ -168,13 +211,14 @@ nav a:hover {
       </figure>
 
       <section class="article-body">
-        <p>Vào ngày 15 tháng 5 năm 2025, Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng chính quyền thành phố Hội An, tổ chức một sự kiện đặc biệt nhằm đánh dấu sự kết thúc thành công của dự án mang tên Tăng Cường Năng Lực và Hành Động Khí Hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương (CBF). Sáng kiến này được triển khai theo thỏa thuận tài trợ giữa ICUE, Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH và Sáng kiến Khí hậu Quốc tế (IKI), đã đóng vai trò then chốt trong việc hỗ trợ các nỗ lực hành động vì khí hậu và bảo vệ đa dạng sinh học tại Việt Nam.
+        <p>Vào ngày 16 tháng 5 năm 2025, Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An, tổ chức một sự kiện đặc biệt là Khánh thành và bàn giao Không gian xanh và công viện ven biển (đã được đặt tên là Công viên Âu Cơ), nhằm đánh dấu sự kết thúc thành công của dự án mang tên “Preventing erosion on Cua Dai beach through green corridors and park” nhằmTăng Cường Năng Lực và Hành Động Khí Hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương (CBF). 
 
-        Sự kiện này vừa là dịp để ăn mừng, vừa là cơ hội để nhìn lại những tiến bộ đạt được nhờ cam kết chung của ba đối tác. Sự có mặt của các bên liên quan, các chuyên gia và những người đóng góp cho dự án sẽ càng làm nổi bật tính hợp tác trong sáng kiến này, cũng như tác động tích cực của nó đối với phát triển đô thị bền vững tại khu vực Cửa Đại, thành phố Hội An. Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến biến đổi khí hậu.
+        Sáng kiến này được triển khai theo thỏa thuận tài trợ của Sáng kiến Khí hậu Quốc tế (IKI), ICUE là đơn vị nhận tài trợ và triển khai thực hiện dự án, Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH là đơn vị quản lý dự án. Dự án này đóng vai trò then chốt trong việc hỗ trợ các nỗ lực hành động vì khí hậu và bảo vệ đa dạng sinh học tại Việt Nam. 
+        Sự kiện này vừa là dịp để tổng kết và đóng dự án, vừa là cơ hội để nhìn lại những tiến bộ đạt được nhờ cam kết chung của các đối tác. Sự có mặt của các bên liên quan, các chuyên gia và những người đóng góp cho dự án sẽ càng làm nổi bật tính hợp tác trong sáng kiến này, cũng như tác động tích cực của nó đối với phát triển đô thị bền vững tại khu vực Cửa Đại, thành phố Hội An. 
+        Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến biến đổi khí hậu. ICUE và chính quyền địa phương thành phố Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. 
+        Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ IKI và sự hỗ trợ nhiệt tình của GIZ trong việc triển khai thực hiện dự án, cũng như việc tạo điều kiện thuận lợi của UBND tỉnh Quảng Nam, sự phối hợp nhịp nhàng UBND thành phố Hội An, UBND phường Cửa Đại và sự cộng tác của cộng đồng dân cư cũng như các tổ chức xã hội ở đây. 
+        Niềm tin và nguồn tài trợ của họ (IKI và GIZ) đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương. Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện khánh thành và bàn giao này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.
 
-        ICUE và chính quyền địa phương thành phố Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ GIZ và IKI. Niềm tin và nguồn tài trợ của họ đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương.
-
-        Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện tổng kết này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.
         </p>
         <h2>Xin Chân Thành Cám Ơn!</h2>
         <p></p>
