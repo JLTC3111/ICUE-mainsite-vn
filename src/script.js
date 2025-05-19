@@ -335,8 +335,8 @@ window.addEventListener('DOMContentLoaded', router);
 window.addEventListener('hashchange', router);
 
 function router() {
-  const hash = window.location.hash || '#/news';
-  const page = hash.replace('#/', '') || 'news';
+  const hash = window.location.hash || '#/Home';
+  const page = hash.replace('#/', '') || 'Home';
 
   window.loadPage(page);
 }
