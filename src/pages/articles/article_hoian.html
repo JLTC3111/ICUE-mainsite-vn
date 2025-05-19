@@ -40,6 +40,7 @@
 
   .article-title {
     font-size: 2rem;
+    text-align: center;
     margin-bottom: 0.5rem;
     color: #1a202c;
   }
@@ -60,6 +61,7 @@
     width: 100%;
     height: auto;
     border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     margin-bottom: 0.5rem;
   }
 
@@ -70,19 +72,27 @@
   }
 
   .article-body {
+    letter-spacing: 0.25px;
+    
     line-height: 1.7;
     font-size: 1.05rem;
   }
 
   .article-body h2 {
+    text-align: center;
     margin-top: 2rem;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+
+  .article-body p {
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   blockquote {
-    margin: 1.5rem 0;
+    margin: 0 auto;
     padding: 1rem;
-    background: #f1f1f1;
+    background: #ffffff;
     border-left: 4px solid #ccc;
     font-style: italic;
     color: #555;
@@ -105,7 +115,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1;
 }
 
 nav a {
@@ -118,35 +128,56 @@ nav a {
 nav a:hover {
   color: #007acc;
 }
+
+.download-btn {
+  position: relative;
+  left: 35%;
+  bottom: 10%;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #f89393, #553aff);
+  border: none;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  background: linear-gradient(to right, #460000, #388E3C);
+}
 </style>
 
 
   <main id="content" class="article-container">
     <article>
       <h1 class="article-title">Lễ Khánh Thành Công Viên Âu Cơ</h1>
-      <p class="lead">Với Sự Tham Dự Của Chủ Tịch Tỉnh - Lê Văn Dũng</p>
+      <p class="lead">Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng</p>
       <div class="meta">
-        <span>Bởi ICUE & Giz & Thành Phố Hội An</span>
+        <span>Bởi ICUE, Giz & Thành Phố Hội An</span>
         <time datetime="2025-05-18">18 Tháng 5, 2025</time>
       </div>
 
       <figure class="featured-image">
         <img src="images/articles/article1/all_together.jpg" alt="Relevant description">
-        <figcaption>Optional caption under the image</figcaption>
+        <figcaption>Các Bên Tham Gia</figcaption>
       </figure>
 
       <section class="article-body">
-        <p>Vào ngày 15 tháng 5 năm 2025, Viện Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng chính quyền địa phương Hội An, sẽ tổ chức một sự kiện đặc biệt nhằm đánh dấu sự kết thúc thành công của dự án mang tên Tăng cường năng lực và tài chính cho hành động khí hậu và đa dạng sinh học ở cấp quốc gia và địa phương (CBF). Sáng kiến này được triển khai theo thỏa thuận tài trợ giữa ICUE, Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH và Sáng kiến Khí hậu Quốc tế (IKI), đã đóng vai trò then chốt trong việc hỗ trợ các nỗ lực hành động vì khí hậu và bảo vệ đa dạng sinh học tại Việt Nam.
+        <p>Vào ngày 15 tháng 5 năm 2025, Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng chính quyền thành phố Hội An, tổ chức một sự kiện đặc biệt nhằm đánh dấu sự kết thúc thành công của dự án mang tên Tăng Cường Năng Lực và Hành Động Khí Hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương (CBF). Sáng kiến này được triển khai theo thỏa thuận tài trợ giữa ICUE, Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH và Sáng kiến Khí hậu Quốc tế (IKI), đã đóng vai trò then chốt trong việc hỗ trợ các nỗ lực hành động vì khí hậu và bảo vệ đa dạng sinh học tại Việt Nam.
 
-        Sự kiện này vừa là dịp để ăn mừng, vừa là cơ hội để nhìn lại những tiến bộ đạt được nhờ cam kết chung của ba đối tác. Sự có mặt của các bên liên quan địa phương, các chuyên gia và những người đóng góp cho dự án sẽ càng làm nổi bật tính hợp tác trong sáng kiến này, cũng như tác động tích cực của nó đối với phát triển đô thị bền vững tại khu vực Hội An. Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến khí hậu.
+        Sự kiện này vừa là dịp để ăn mừng, vừa là cơ hội để nhìn lại những tiến bộ đạt được nhờ cam kết chung của ba đối tác. Sự có mặt của các bên liên quan, các chuyên gia và những người đóng góp cho dự án sẽ càng làm nổi bật tính hợp tác trong sáng kiến này, cũng như tác động tích cực của nó đối với phát triển đô thị bền vững tại khu vực Cửa Đại, thành phố Hội An. Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến biến đổi khí hậu.
 
-        ICUE và chính quyền địa phương Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ GIZ và IKI. Niềm tin và nguồn tài trợ của họ đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương.
+        ICUE và chính quyền địa phương thành phố Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ GIZ và IKI. Niềm tin và nguồn tài trợ của họ đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương.
 
-        Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho sứ mệnh của chúng tôi. Sự kiện tổng kết này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.
+        Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện tổng kết này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.
         </p>
-        <h2>Subheading</h2>
-        <p>More text...</p>
-        <blockquote>Relevant quote or insight</blockquote>
+        <h2>Xin Chân Thành Cám Ơn!</h2>
+        <p></p>
+        <blockquote>"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe - An Vui - Hạnh Phúc - và Thành Công. - T.S. Nguyễn Hồng Hạnh"</blockquote>
         <!-- More content, lists, images, etc. -->
       </section>
     </article>
@@ -155,6 +186,9 @@ nav a:hover {
     <aside class="sidebar">
       <!-- Related articles, social links, etc. -->
     </aside>
+    <a href="public/files/speech.pdf" download class="download-btn">
+            Download Speech ⇲
+    </a>
   </main>
 
   <footer>
