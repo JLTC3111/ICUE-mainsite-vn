@@ -1048,6 +1048,7 @@ body.loaded #app {
 
 .news-slider .logo-list {
   display: flex;
+  gap: 80px;
   padding: 1rem;
   scroll-behavior: smooth;
   white-space: nowrap;
@@ -1088,22 +1089,13 @@ body.loaded #app {
   filter: grayscale(1);
 }
 
-
 .news-slider .logo-list .item:nth-child(1) img {
   width:100%;
   height:100%;
   object-fit: cover !important;
 }
 
-.news-slider .logo-list .item:nth-child(3),
 .news-slider .logo-list .item:nth-child(5) {
-  width: 175px;
-}
-
-.news-slider .logo-list .item:nth-child(6) {
-  width: 275px;
-}
-.news-slider .logo-list .item:nth-child(7) {
   width: 375px;
 }
 
