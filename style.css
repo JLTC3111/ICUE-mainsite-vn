@@ -949,12 +949,29 @@ body.loaded #app {
   margin: 1.5rem 0;
 }
 
+.news-carousel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .news-container {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   padding: 2rem;
   background: #f5f5f5;
+}
+
+.news-arrow {
+  visibility: hidden;
+}
+
+.news-arrow svg {
+  transform: none;
 }
 
 .news-card {
@@ -980,7 +997,7 @@ body.loaded #app {
   color: #2b2b2b;
   padding: 8px;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: clam (0.5rem, 1rem, 1.5rem);
   text-align: center;
   line-height: 1.2;
   border-radius: 4px;
@@ -997,7 +1014,7 @@ body.loaded #app {
 }
 
 .news-item-title {
-  font-size: 1rem;
+  font-size: clam (0.5rem, 1rem, 1.5rem);
   font-weight: bold;
   color: #244b2c;
   margin: 2rem 0;
@@ -1037,22 +1054,23 @@ body.loaded #app {
   position: relative;
   display: flex;
   flex-direction: row;
-  z-index: 2;
+  z-index: 7;
 }
 
 .news-slider {
   position: relative;
-  margin: 3rem auto;
+  margin: 1rem auto;
   background-color: transparent;
-  width: 75vw;
+  width: 50vw;
   justify-content: center;
   height: calc(var(--height) + 20px);
   z-index: 1;
+  mask-image: linear-gradient( to right,transparent, #000 10% 90%,transparent)
 }
 
 .news-slider .logo-list {
   display: flex;
-  gap: 80px;
+  gap: 7.5vw;
   padding: 1rem;
   scroll-behavior: smooth;
   white-space: nowrap;
@@ -1492,6 +1510,7 @@ body.loaded #app {
     }
   }
 
+
 @media (max-width: 768px) {
   
     /* Prevent horizontal scroll globally */
@@ -1602,6 +1621,130 @@ body.loaded #app {
       display: block;
       margin: 0 auto;
     }
+
+    .newsPageContainer {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      width: 100vw;
+      margin: 2rem auto;
+    }
+
+    .news-carousel {
+      position: relative;
+      width: 100%;
+      height: auto;
+      min-height: 550px; /* Adjust based on content */
+    }
+
+    .news-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(-12.5vw, -17.5vh);
+      width: 100%;
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: auto;
+      z-index: 0;
+    }
+
+    .news-container.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    /* Arrows */
+    .news-arrow {
+      position: absolute;
+      top:15%;
+      left:50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      visibility: visible;
+      cursor: pointer;
+      z-index: 5;
+      padding: .25rem;
+      background: rgb(223, 223, 223);
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      opacity: 1;
+    }
+
+    .left-news-arrow {
+      left: 5.5vw;
+    }
+
+    .right-news-arrow {
+      margin-left: 35vw;
+    }
+
+    /* Maintain your news-card styling */
+    .news-card {
+      margin: -1rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow:hidden;
+      width: 93.5vw;
+      height:85vh;
+    }
+
+    .news-date {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #e0ebd3;
+      padding: 8px;
+      font-weight: bold;
+      border-radius: 4px;
+      z-index: 9;
+    }
+
+    .news-image {
+      width: 90%;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .news-content {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .news-item-title {
+      color: #244b2c;
+      font-size: 1.1rem;
+      margin: 1rem 0;
+    }
+
+    .news-item-description {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.6;
+      margin-left: 2.5vw;
+    }
+
+    .news-item-link {
+      display: inline-block;
+      margin-top: -1.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #244b2c;
+      color: #244b2c;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: 0.3s;
+      z-index: 12;
+    }
+
+    .news-item-link:hover {
+      background: #244b2c;
+      color: white;
+    }
+  
   }
   
 }

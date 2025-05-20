@@ -171,6 +171,7 @@ window.loadPage = (page) => {
               }
               if (page === "News")
                 initLogoSlider();
+                initMobileNewsSlider();
             });
 
           }, 400); // After fade-out
@@ -670,3 +671,39 @@ window.initLogoSlider = () => {
   if (arrowLeft) arrowLeft.addEventListener('click', () => { speed = 1; isPaused = false; });
   if (arrowRight) arrowRight.addEventListener('click', () => { speed = -1; isPaused = false; });
 };
+
+// ===================
+// News Slider (Mobile Only)
+// ===================
+window.initMobileNewsSlider = () => {
+  if (window.innerWidth > 768) return; // Only run on small screens
+
+  const containers = document.querySelectorAll(".news-container");
+  const leftArrow = document.getElementById("arrowNewsLeft");
+  const rightArrow = document.getElementById("arrowNewsRight");
+
+  if (!containers.length || !leftArrow || !rightArrow) return;
+
+  let currentIndex = 0;
+
+  function updateSlider() {
+    containers.forEach((container, index) => {
+      container.style.display = index === currentIndex ? "block" : "none";
+    });
+  }
+
+  leftArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + containers.length) % containers.length;
+    updateSlider();
+  });
+
+  rightArrow.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % containers.length;
+    updateSlider();
+  });
+
+  updateSlider();
+}
+
+// Call when DOM is ready
+document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
