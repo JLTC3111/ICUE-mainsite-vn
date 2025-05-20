@@ -1509,6 +1509,7 @@ body.loaded #app {
       transform: translateY(0);
     }
   }
+}
 
 
 @media (max-width: 768px) {
@@ -1744,7 +1745,9 @@ body.loaded #app {
       background: #244b2c;
       color: white;
     }
-  
+    
+    .download-btn {
+      transform: translateX(0px);
   }
   
 }
