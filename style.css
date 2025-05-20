@@ -1007,7 +1007,8 @@ body.loaded #app {
   font-size: 0.9rem;
   color: #555;
   margin: 2rem 2.5rem;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
+  line-height: 1.6;
   word-break: break-word;
 }
 
@@ -1037,7 +1038,7 @@ body.loaded #app {
 
 .news-slider {
   position: relative;
-  margin: 0 auto;
+  margin: 3rem auto;
   background-color: transparent;
   width: 75vw;
   justify-content: center;
@@ -1074,11 +1075,17 @@ body.loaded #app {
   }
 }*/
 
+.news-slider .logo-list .item a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
 .news-slider .logo-list .item img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: grayscale(0.9);
+  filter: grayscale(1);
 }
 
 
