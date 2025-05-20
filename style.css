@@ -38,6 +38,10 @@ h2:hover {
   transition: color 0.5s ease-in-out;
 }
 
+h3:hover {
+  color: #111;
+  transform: scale(1.02);
+}
 .sub-text {
   justify-content: left;
   font-family: 'Rubik';
