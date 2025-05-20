@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tin Tức</title>
+  <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav>
+      <!-- Logo & Navigation Links -->
+      <a href="/">Trang Chính</a>
+      <a href="/#/News">Tin Tức</a>
+      <a href="/#/aboutUs">Về Chúng Tôi</a>
+      <a href="/#/Contact">Liên Hệ</a>
+    </nav>
+  </header>
+  <style>
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f7f7f7;
+  }
+
+  .article-container {
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 20px;
+    color: #333;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+  }
+
+  .article-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 2rem auto;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .meta {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-image figcaption {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+  }
+
+  .article-body {
+    letter-spacing: 0.25px;
+    
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .article-body h2 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .article-body p {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  blockquote {
+    margin: 0 auto;
+    padding: 1rem;
+    background: #ffffff;
+    border-left: 4px solid #ccc;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 0.85rem;
+  }
+
+  nav {
+  position: relative;
+  background-color: #333333;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
+  z-index: 1;
+}
+
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
+nav a {
+  font-size: large;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
+  color: #007acc;
+  transform: scale(1.1);
+}
+
+.download-btn {
+  position: relative;
+  left: 35%;
+  bottom: 10%;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #f89393, #553aff);
+  border: none;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.3);
+  background: linear-gradient(to right, #460000, #388E3C);
+}
+</style>
+
+
+  <main id="content" class="article-container">
+    <article>
+      <h1 class="article-title">Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan</h1>
+      <p class="lead">Ngày 3/9, Diễn đàn Bảo tồn Khu vực Châu Á (RCF) lần thứ 8 của Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.</p>
+      <div class="meta">
+        <span>Bởi ICUE</span>
+        <time datetime="2024-09-26">03 Tháng 9, 2024</time>
+      </div>
+
+      <figure class="featured-image">
+        <img src="/public/news/articles/article3/conference.png" alt="Relevant description">
+        <figcaption>Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024</figcaption>
+      </figure>
+
+      <section class="article-body">
+        <p> Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của IUCN Việt Nam, trong đó đại diện Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) - Viện trưởng TS.Nguyễn Hồng Hạnh tham dự diễn đàn. ICUE là 1 trong các thành viên đã tham dự và có các trình bày về bảo tồn biển, phát triển bền vững nông thôn. ICUE đã có báo cáo tóm tắt một phần trong dự án "Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển". 
+
+        Diễn đàn Bảo tồn Khu vực Châu Á (RCF) diễn ra trong ba ngày với chủ đề 'Tái hiện Bảo tồn tại Châu Á: Tương lai tích cực cho Thiên nhiên', hướng tới đánh giá tiến độ bảo tồn, xem xét lại các mục tiêu ưu tiên và đề xuất các định hướng chiến lược để giải quyết hiệu quả các thách thức về môi trường và đa dạng sinh học trong 20 năm tới.
+
+        Trong khuôn khổ RCF 2024, Diễn đàn Lãnh đạo Thanh niên đầu tiên, do thanh niên từ 23 quốc gia tổ chức, hướng tới nhấn mạnh vai trò của chuyên gia trẻ cũng như đóng góp ngày càng tăng của họ cho công tác bảo tồn thiên nhiên.
+
+        Bên cạnh các cuộc thảo luận cấp cao về những thách thức trong khu vực của nhiều bên liên quan, IUCN Châu Á RCF lần thứ 8 sẽ có tám phiên họp chuyên đề về các ưu tiên chương trình mới và hiện có, cũng như 17 sự kiện bên lề do các Thành viên, Ủy ban và đối tác của IUCN tổ chức. Địa điểm này cũng cung cấp các gian hàng triển lãm để giới thiệu công tác bảo tồn.
+
+        TS.Nguyễn Hồng Hạnh cùng chuyên gia Pornphrom Vikitsreth là nhà phân tích chính sách tại đảng Dân chủ Thái Lan và là người ủng hộ mạnh mẽ các chương trình nghị sự về biến đổi khí hậu của đảng, sử dụng cả các phương pháp giảm thiểu và thích ứng. Ông cũng đã nâng cao nhận thức về các vấn đề biến đổi khí hậu trong các mạng lưới thanh niên và cộng đồng địa phương trên khắp đất nước và có bằng Thạc sĩ về các vấn đề toàn cầu của Đại học New York.
+        
+        Ngoài ra còn kết nối với Viện Môi trường Thái Lan (Thailand Environment Instutite) Trở thành tổ chức hàng đầu về môi trường theo tiêu chuẩn quốc tế, tuân thủ nguyên tắc phi đảng phái , góp phần thúc đẩy phát triển bền vững. 
+
+        CBCGDF là một quỹ gây quỹ công cộng quốc gia tại Trung Quốc. Trong những năm qua, quỹ đã đóng vai trò quan trọng trong lĩnh vực bảo tồn đa dạng sinh học và phát triển xanh. Để thích ứng với sự phát triển của thời đại, quỹ đã được đổi tên thành “Quỹ bảo tồn đa dạng sinh học và phát triển xanh Trung Quốc”. Việc đổi tên đã kết hợp hữu cơ bảo tồn đa dạng sinh học với phát triển xanh, mở rộng hàm ý và biểu thị của bảo tồn đa dạng sinh học, thể hiện bản chất của đa dạng sinh học “phát triển trong bảo tồn và được bảo tồn trong phát triển”, và đóng vai trò tích cực trong việc thúc đẩy tái cấu trúc kinh tế tại Trung Quốc.
+        
+        Trong sự kiện kéo dài ba ngày, một sự kiện học tập chuyên dụng sẽ được tổ chức, bao gồm các buổi chia sẻ kiến ​​thức và đào tạo ngắn hạn do Học viện IUCN tổ chức. Những người tham gia cũng sẽ có cơ hội dự triển lãm, tham khảo nhiều nỗ lực hợp tác khác nhau để bảo tồn thiên nhiên và đa dạng sinh học.
+
+        </p>
+        <h2></h2>
+        <p></p>
+        <blockquote></blockquote>
+        <!-- More content, lists, images, etc. -->
+      </section>
+    </article>
+
+    <!-- Optional sidebar -->
+    <aside class="sidebar">
+      <!-- Related articles, social links, etc. -->
+    </aside>
+   
+  </main>
+
+  <footer>
+    <!-- Footer links & info -->
+  </footer>
+  
+</body>

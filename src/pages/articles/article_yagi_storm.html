@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tin Tức</title>
+  <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav>
+      <!-- Logo & Navigation Links -->
+      <a href="/">Trang Chính</a>
+      <a href="/#/News">Tin Tức</a>
+      <a href="/#/aboutUs">Về Chúng Tôi</a>
+      <a href="/#/Contact">Liên Hệ</a>
+    </nav>
+  </header>
+  <style>
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f7f7f7;
+  }
+
+  .article-container {
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 20px;
+    color: #333;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+  }
+
+  .article-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 2rem auto;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .meta {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-image figcaption {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+  }
+
+  .article-body {
+    letter-spacing: 0.25px;
+    
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .article-body h2 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .article-body p {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  blockquote {
+    margin: 0 auto;
+    padding: 1rem;
+    background: #ffffff;
+    border-left: 4px solid #ccc;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 0.85rem;
+  }
+
+  nav {
+  position: relative;
+  background-color: #333333;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
+  z-index: 1;
+}
+
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
+nav a {
+  font-size: large;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
+  color: #007acc;
+  transform: scale(1.1);
+}
+
+.download-btn {
+  position: relative;
+  left: 35%;
+  bottom: 10%;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #f89393, #553aff);
+  border: none;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.3);
+  background: linear-gradient(to right, #460000, #388E3C);
+}
+</style>
+
+
+  <main id="content" class="article-container">
+    <article>
+      <h1 class="article-title">Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi</h1>
+      <p class="lead">Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.</p>
+      <div class="meta">
+        <span>Bởi ICUE</span>
+        <time datetime="2024-09-26">26 Tháng 9, 2024</time>
+      </div>
+
+      <figure class="featured-image">
+        <img src="/public/news/articles/article2/charity_work.png" alt="Relevant description">
+        <figcaption>Nhóm Tình Nguyện (ICUE)</figcaption>
+      </figure>
+
+      <section class="article-body">
+        <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.
+
+        </p>
+        <h2></h2>
+        <p></p>
+        <blockquote>"Mong bà con sớm ổn định cuộc sống, vượt qua khó khăn, chung tay xây dựng và phát triển vững mạnh. "</blockquote>
+        <!-- More content, lists, images, etc. -->
+      </section>
+    </article>
+
+    <!-- Optional sidebar -->
+    <aside class="sidebar">
+      <!-- Related articles, social links, etc. -->
+    </aside>
+    <a href="/public/files/photos.zip" download class="download-btn">
+            Tải Về - Ảnh Tư Liệu ⇲
+    </a>
+  </main>
+
+  <footer>
+    <!-- Footer links & info -->
+  </footer>
+  
+</body>
