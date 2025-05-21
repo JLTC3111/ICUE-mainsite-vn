@@ -1691,7 +1691,7 @@ body.loaded #app {
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       overflow:hidden;
       width: 93.5vw;
-      height:85vh;
+      height:95vh;
     }
 
     .news-date {
@@ -1719,7 +1719,7 @@ body.loaded #app {
     .news-item-title {
       color: #244b2c;
       font-size: 1.1rem;
-      margin: 1rem 0;
+      margin: .25rem 0;
     }
 
     .news-item-description {
