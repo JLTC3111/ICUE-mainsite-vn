@@ -476,7 +476,7 @@ footer p {
   font-size: 1.4rem;
   text-decoration: none;
   border-left: 5px solid transparent;
-  transition: transform 0.2s ease-in-out, border-color 0.2s ease;
+  transition: transform 0.3s ease-in-out, border-color 0.2s ease;
 }
 
 .drawer-menu a:hover {
