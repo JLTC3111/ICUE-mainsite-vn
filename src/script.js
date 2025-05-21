@@ -169,9 +169,13 @@ window.loadPage = (page) => {
                 initHomeTextSlider();
                 attachHomeButtonEvents();
               }
-              if (page === "News")
+              if (page === "News") {
                 initLogoSlider();
                 initMobileNewsSlider();
+              }
+              if (page === "aboutUs") {
+                createBalloons();
+              }
             });
 
           }, 400); // After fade-out
@@ -464,37 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
   highlightActiveLink('Home');
 };*/
 
-window.createBalloons = () => {
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
-    const container = document.body;
-    
-    // Create 15 balloons
-    for (let i = 0; i < 15; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
-        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
-        
-        container.appendChild(balloon);
-        
-        // Remove balloon after animation completes
-        balloon.addEventListener('animationend', () => {
-            balloon.remove();
-        });
-    }
-}
-
-// Initialize balloon button when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const balloonButton = document.getElementById('balloonButton');
-    if (balloonButton) {
-        balloonButton.addEventListener('click', function() {
-            createBalloons();
-        });
-    }
-});
-
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
     {name: '<span class="intro-core">Cán Bộ Viện</span> Nhóm của chúng tôi bao gồm 5-6 chuyên gia tận tụy quản lý các hoạt động hàng ngày và các nhiệm vụ thiết yếu, đảm bảo mọi thứ diễn ra suôn sẻ. Với chuyên môn về quản lý dự án, phát triển kỹ thuật, quan hệ khách hàng, tiếp thị và tài chính, mỗi thành viên đều đóng vai trò quan trọng trong việc thúc đẩy thành công của tổ chức. Thông qua sự hợp tác chặt chẽ và giao tiếp cởi mở, họ cùng nhau giải quyết các thách thức và nắm bắt cơ hội. Từ tương tác với khách hàng đến các quy trình nội bộ, những nỗ lực chung của nhóm đảm bảo dịch vụ hàng đầu và hiệu quả hoạt động. Sự cam kết và làm việc chăm chỉ của họ rất quan trọng đối với sự phát triển và thành công liên tục của tổ chức chúng tôi.',
@@ -707,3 +680,35 @@ window.initMobileNewsSlider = () => {
 
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
+
+
+window.createBalloons = () => {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
+    const container = document.body;
+    
+    // Create 15 balloons
+    for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
+        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
+        
+        container.appendChild(balloon);
+        
+        // Remove balloon after animation completes
+        balloon.addEventListener('animationend', () => {
+            balloon.remove();
+        });
+    }
+}
+
+// Initialize balloon button when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const balloonButton = document.getElementById('balloonButton');
+    if (balloonButton) {
+        balloonButton.addEventListener('click', function() {
+            createBalloons();
+        });
+    }
+});
