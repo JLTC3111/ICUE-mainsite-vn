@@ -1224,7 +1224,7 @@ body.loaded #app {
   }
 
   h2 {
-    color: rgb(27, 135, 63);
+    color: rgb(0, 0, 0);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     left: 50%;
     top: 50%;
