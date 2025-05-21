@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Liên Hệ</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="contact-page">
   <div class="contact-container">
-    <h1>Contact Us</h1>
+    <h1>Liên Hệ</h1>
 
     <form name="contact" method="POST" data-netlify="true" id="contactForm">
       <input type="hidden" name="form-name" value="contact">
 
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">Tên</label>
         <input type="text" id="name" name="name" required>
       </div>
 
@@ -26,47 +26,26 @@
       </div>
 
       <div class="form-group">
-        <label for="message">Message</label>
+        <label for="message">Tin Nhắn</label>
         <textarea id="message" name="message" required></textarea>
       </div>
 
-      <button type="submit" style="display: block; margin: 0 auto;">Send Message</button>
+      <button type="submit" style="display: block; margin: 0 auto;">Gửi Tin</button>
     </form>
 
     <!-- Thank You Message -->
-    <div id="thankYouMessage" style="display: none; margin-top: 20px; color: green; font-weight: bold;">
-      ✅ Thank you! Your message has been sent.
+    <div class="thank-you-wrapper" id="thankYouMessage">
+      <p id="thankYouMessage">🎉 Cám Ơn Bạn! Tin Nhắn Đã Được Gửi!</p>
     </div>
 
     <div class="contact-info">
-      <h2>Other Ways to Reach Us</h2>
+      <h2>Cách Khác</h2>
       <p><strong>Email:</strong> info@icue.vn</p>
-      <p><strong>Phone:</strong> +84 (24) 3772 8485</p>
-      <p><strong>Address:</strong> 83 Yên Lãng, Đống Đa, HN</p>
+      <p><strong>Điện Thoại:</strong> +84 (24) 3772 8485</p>
+      <p><strong>Văn Phòng:</strong> 83 Yên Lãng, Đống Đa, HN</p>
     </div>
   </div>
 
-  <script>
-    // Intercept Netlify form submission and show message
-    const form = document.getElementById("contactForm");
-    const thankYou = document.getElementById("thankYouMessage");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // Stop regular submission
-      const formData = new FormData(form);
-
-      fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
-      })
-      .then(() => {
-        form.style.display = "none";
-        thankYou.style.display = "block";
-      })
-      .catch((error) => alert("Something went wrong. Please try again."));
-    });
-  </script>
 </body>
 </html>
 
