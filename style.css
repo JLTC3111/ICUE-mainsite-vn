@@ -96,6 +96,8 @@ nav {
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
   position: sticky;
   top: 0;
+  left:0;
+  right:0;
   z-index: 1;
 }
 
@@ -111,8 +113,6 @@ nav a {
   justify-content: space-between;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  position: sticky;
-  top: 0;
   z-index: 3;
 }
 
@@ -402,7 +402,7 @@ footer p {
 
 
 .language-switcher {
-  position: absolute;
+  position: fixed;
   top: 110px;
   right: 45px;
   display: flex;
