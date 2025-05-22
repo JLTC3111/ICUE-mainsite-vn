@@ -700,9 +700,6 @@ footer p {
 
 .core-team-text {
   font-family: 'Montserrat', sans-serif;
-  position: absolute;
-  width: 100%;
-  max-width: 800px;
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
