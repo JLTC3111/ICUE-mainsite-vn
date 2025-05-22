@@ -473,9 +473,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
-    {name: '<span class="intro-core">Cán Bộ Viện</span> Nhóm của chúng tôi bao gồm 5-6 chuyên gia tận tụy quản lý các hoạt động hàng ngày và các nhiệm vụ thiết yếu, đảm bảo mọi thứ diễn ra suôn sẻ. Với chuyên môn về quản lý dự án, phát triển kỹ thuật, quan hệ khách hàng, tiếp thị và tài chính, mỗi thành viên đều đóng vai trò quan trọng trong việc thúc đẩy thành công của tổ chức. Thông qua sự hợp tác chặt chẽ và giao tiếp cởi mở, họ cùng nhau giải quyết các thách thức và nắm bắt cơ hội. Từ tương tác với khách hàng đến các quy trình nội bộ, những nỗ lực chung của nhóm đảm bảo dịch vụ hàng đầu và hiệu quả hoạt động. Sự cam kết và làm việc chăm chỉ của họ rất quan trọng đối với sự phát triển và thành công liên tục của tổ chức chúng tôi.',
-      img: "public/profilePhotos/coreTeam.jpg"
-    },
     {name: 
       `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về quy hoạch đô thị, phát triển đô thị bền vững, quản lý cơ sở hạ tầng và thiết kế không gian công cộng. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp bền vững và thân thiện với môi trường.`, 
       img: "public/profilePhotos/lyly.png"
