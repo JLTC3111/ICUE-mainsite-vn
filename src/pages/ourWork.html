@@ -1,19 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Scope of Work</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #004080;
+      --accent: #0073e6;
+      --bg: #f4f4f4;
+      --text: #333;
+      --white: #fff;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-<h2>3D Showcase</h2>
+    header {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 2rem 1rem;
+      text-align: center;
+    }
 
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
 
-<div style="display: flex; gap: 10px;">
-  <model-viewer src="public/models/tower_crane.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
-  <model-viewer src="public/models/railway_station.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
-  <model-viewer src="public/models/highrise_building.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer>
-</div>
+    .intro {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
 
-<div style="display: flex; gap: 20px;">
-  <model-viewer src="public/models/construction_hat.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer>
-  <model-viewer src="public/models/construction_bucket.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer> 
-  <model-viewer src="public/models/construction_signs.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 400px;"></model-viewer> 
-</div>
-  
-  
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .cta {
+      background-color: var(--primary);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .cta a {
+      display: inline-block;
+      margin-top: 1rem;
+      background-color: var(--accent);
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .cta a:hover {
+      background-color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Our Scope of Work</h1>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p>We deliver specialized technical services to support the development, evaluation, and implementation of infrastructure and building projects.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <i class="fas fa-ruler-combined" aria-hidden="true"></i>
+        <h3>Quantity Surveying</h3>
+        <p>Precise cost estimation and budget control from project planning to completion.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-drone" aria-hidden="true"></i>
+        <h3>Aerial Photography</h3>
+        <p>Drone-based imagery and mapping for land assessment and monitoring.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-city" aria-hidden="true"></i>
+        <h3>Building & Bridge Evaluation</h3>
+        <p>Structural integrity analysis of existing infrastructure in line with standards.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-tools" aria-hidden="true"></i>
+        <h3>Infrastructure Gap Analysis</h3>
+        <p>Identification of missing infrastructure and future development needs.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+        <h3>Standards Comparison</h3>
+        <p>Assessment of current structures against national and global benchmarks.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-pencil-ruler" aria-hidden="true"></i>
+        <h3>Drawings & Documentation</h3>
+        <p>Detailed engineering and architectural plans for planning and execution.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-network-wired" aria-hidden="true"></i>
+        <h3>Networking & ICT</h3>
+        <p>Design and evaluation of data networks for reliable digital infrastructure.</p>
+      </article>
+      <article class="card">
+        <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+        <h3>Comprehensive Evaluations</h3>
+        <p>Reports that synthesize data, identify deficiencies, and provide solutions.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="cta">
+    <h2>Need a Site Evaluation or Expert Consulting?</h2>
+    <p>Get in touch with our team to assess your project and provide a tailored solution.</p>
+    <a href="contact.html" role="button">Contact Us</a>
+  </footer>
+
+</body>
+</html>
