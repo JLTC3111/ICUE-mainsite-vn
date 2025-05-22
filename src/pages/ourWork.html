@@ -1,133 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Scope of Work</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 2rem;
-    }
-    .intro {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card i {
-      font-size: 2rem;
-      color: #004080;
-      margin-bottom: 0.5rem;
-    }
-    .card h3 {
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-    .cta {
-      background: #004080;
-      color: white;
-      text-align: center;
-      padding: 2rem 1rem;
-      margin-top: 3rem;
-    }
-    .cta a {
-      color: white;
-      background: #0073e6;
-      padding: 0.75rem 1.5rem;
-      text-decoration: none;
-      border-radius: 5px;
-      display: inline-block;
-      margin-top: 1rem;
-    }
-  </style>
-</head>
-<body>
 
-  <header>
-    <h1>Our Scope of Work</h1>
-  </header>
 
-  <div class="container">
-    <div class="intro">
-      <p>We deliver specialized technical services to support the development, evaluation, and implementation of infrastructure and building projects.</p>
-    </div>
 
-    <div class="grid">
-      <div class="card">
-        <i class="fas fa-ruler-combined"></i>
-        <h3>Quantity Surveying</h3>
-        <p>Precise cost estimation and budget control from project planning to completion.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-drone"></i>
-        <h3>Aerial Photography</h3>
-        <p>Drone-based imagery and mapping for land assessment and monitoring.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-city"></i>
-        <h3>Building & Bridge Evaluation</h3>
-        <p>Structural integrity analysis of existing infrastructure in line with standards.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-tools"></i>
-        <h3>Infrastructure Gap Analysis</h3>
-        <p>Identification of missing infrastructure and future development needs.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-balance-scale"></i>
-        <h3>Standards Comparison</h3>
-        <p>Assessment of current structures against national and global benchmarks.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-pencil-ruler"></i>
-        <h3>Drawings & Documentation</h3>
-        <p>Detailed engineering and architectural plans for planning and execution.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-network-wired"></i>
-        <h3>Networking & ICT</h3>
-        <p>Design and evaluation of data networks for reliable digital infrastructure.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-clipboard-check"></i>
-        <h3>Comprehensive Evaluations</h3>
-        <p>Reports that synthesize data, identify deficiencies, and provide solutions.</p>
-      </div>
-    </div>
-  </div>
+<h2>3D Showcase</h2>
 
-  <div class="cta">
-    <h2>Need a Site Evaluation or Expert Consulting?</h2>
-    <p>Get in touch with our team to assess your project and provide a tailored solution.</p>
-    <a href="contact.html">Contact Us</a>
-  </div>
 
-</body>
-</html>
+<div style="display: flex; gap: 10px;">
+  <model-viewer src="public/models/tower_crane.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
+  <model-viewer src="public/models/railway_station.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
+  <model-viewer src="public/models/highrise_building.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer>
+</div>
+
+<div style="display: flex; gap: 20px;">
+  <model-viewer src="public/models/construction_hat.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer>
+  <model-viewer src="public/models/construction_bucket.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer> 
+  <model-viewer src="public/models/construction_signs.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 400px;"></model-viewer> 
+</div>
+  
+  
