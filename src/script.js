@@ -649,7 +649,7 @@ window.initLogoSlider = () => {
 // News Slider (Mobile Only)
 // ===================
 window.initMobileNewsSlider = () => {
-  if (window.innerWidth <= 1366) {
+  if (window.innerWidth > 1025) return; // Only run on small screens
 
   const containers = document.querySelectorAll(".news-container");
   const leftArrow = document.getElementById("arrowNewsLeft");
@@ -676,7 +676,7 @@ window.initMobileNewsSlider = () => {
   });
 
   updateSlider();
-}};
+}
 
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
