@@ -1716,7 +1716,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-4.5px, -56rem);
+      transform: translate(-4.5px, -52rem);
       width: 100%;
       height: auto;
       z-index: 1;
