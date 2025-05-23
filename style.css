@@ -1794,14 +1794,13 @@ body.loaded #app {
       width: 100%;
       height: auto;
       min-height: 550px; /* Adjust based on content */
-      overflow-y: auto;
     }
 
     .news-container {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(-10.5vw, -2.5vh);
+      transform: translate(-11.5vw, -2.5vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
