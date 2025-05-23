@@ -1224,7 +1224,108 @@ body.loaded #app {
   fill:grey; 
 }
 
-@media (max-width: 768px) {
+@media only screen and (min-width: 768px) and (max-width: 1338px) {
+  .cursive-default {
+    font-size: 48px;
+    margin: 15% auto auto auto;
+  }
+
+  .sub-text {
+    font-size: 48px;
+  }
+
+  .home-text-slider {
+    margin: 20% auto auto auto;
+  }
+
+  .slider-dots {
+    margin: 20% auto auto auto;
+  }
+
+  .workPageContainer {
+    margin: 12.5% auto auto 2.5%;
+  }
+
+  .news-slider-wrapper {
+    margin: 2.5% auto auto auto;
+  }
+
+  .news-container {
+    margin-left: 37.5%;
+  }
+
+  .news-arrow {
+    position: absolute;
+    visibility: visible;
+  }
+
+  .image-container-coreTeam {
+    position: absolute;
+    top:35%;
+    right:10%;
+    width: 225px;
+    height: 300px;
+    
+  }
+
+  .profile-photo-coreTeam {
+    
+    transform: translateX(-5px);
+    width: 225px;
+    height: auto;
+    
+  }
+
+  .text-container-coreTeam {
+   
+    top:27.5%;
+    left:15%;
+    
+    min-width: 300px;      /* Always has room for decent content */
+    max-width: 45vw;       /* Responsive limit based on screen width */
+    width: 100%;   
+    
+  }
+
+  .core-team-text {
+   
+    font-size: 14px;
+    
+  }
+
+  .intro-core {
+    
+    letter-spacing: 1.5px; 
+    font-size: 32px;
+
+  }
+
+  .arrow-container {
+    
+    top: 37.5%;
+    left: 50%;
+    transform: translateY(5vh);
+    
+  }
+
+  .arrow-symbol {
+    
+    width: 75px;
+    height: 75px;
+    
+  }
+
+  .left-arrow-symbol {
+    transform: translateX(-45vw);
+  }
+
+  .right-arrow-symbol {
+    transform: translateX(40.5vw);
+  }
+ 
+}
+
+@media (max-width: 767px) {
   /* Adjust main layout padding */
   main {
     padding: 1rem;
@@ -1304,7 +1405,7 @@ body.loaded #app {
   } 
   
   .cursive-default {
-    margin: 52.5% 2.5% 3% 7.5%;
+    margin: 45% 2.5% 3% 7.5%;
     font-size: clamp(1rem, 6vw, 1.5rem);
     line-height: 1.5;
   }
@@ -1317,7 +1418,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin: 22% auto .25% auto;
+    margin: 20% auto .25% auto;
     z-index: 3;
   }
 
@@ -1398,7 +1499,7 @@ body.loaded #app {
     position: relative;
     top: 0;
     right: 5vw;
-    transform: translate(92.5vw, 2vh);
+    transform: translate(92.5vw, 2.5vh);
     margin: 0;
     z-index: 20;
   }
@@ -1545,7 +1646,7 @@ body.loaded #app {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   
     /* Prevent horizontal scroll globally */
     body, html {
