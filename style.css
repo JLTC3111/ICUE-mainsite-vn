@@ -391,7 +391,8 @@ footer p {
 .intro-people {
   font-size: 45px;
   font-weight: bold;
-  letter-spacing: 1.5px; 
+  letter-spacing: .5px; 
+  line-height: 1.2;
   justify-content: center;
   transform: translateX(2.5%);
   background: linear-gradient(45deg, #000000, #a09b0e);
@@ -1224,95 +1225,115 @@ body.loaded #app {
   fill:grey; 
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1338px) {
+@media only screen and (min-width: 768px) and (max-width: 1366px) {
   .cursive-default {
     font-size: 48px;
-    margin: 15% auto auto auto;
+    margin: 7.5rem auto auto auto;
   }
 
   .sub-text {
     font-size: 48px;
   }
 
+  .lets-talk {
+    margin: 1rem auto auto 2rem;
+  }
+
   .home-text-slider {
-    margin: 20% auto auto auto;
+    margin: 7.5rem auto auto auto;
   }
 
   .slider-dots {
-    margin: 20% auto auto auto;
+    margin: 7rem auto auto auto;
   }
 
   .workPageContainer {
     margin: 12.5% auto auto 2.5%;
   }
 
+  .image-container {
+    top: 35%;
+    left: 25%;
+  }
+
+  .text-container {
+    top:58rem;
+    left:45%;
+    max-width: 60%;
+  }
+
   .news-slider-wrapper {
     margin: 2.5% auto auto auto;
   }
 
+  .left-arrow {
+    left: 10%;
+  }
+
+  .right-arrow {
+    right: 7.5%;
+  }
+
   .news-container {
-    margin-left: 37.5%;
+    margin: 25% auto 18% auto;
   }
 
   .news-arrow {
     position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
     visibility: visible;
   }
 
+  .right-news-arrow {
+    margin-left: 27.5vw;
+  }
+
+  .left-news-arrow {
+    left: 20vw;
+  }
+
   .image-container-coreTeam {
-    position: absolute;
-    top:35%;
-    right:10%;
+    top:7.5rem;
+    right:2.5rem;
     width: 225px;
     height: 300px;
     
   }
 
   .profile-photo-coreTeam {
-    
     transform: translateX(-5px);
     width: 225px;
     height: auto;
-    
   }
 
   .text-container-coreTeam {
-   
-    top:27.5%;
-    left:15%;
-    
+    top:25vh;
+    left:-.5rem;
     min-width: 300px;      /* Always has room for decent content */
     max-width: 45vw;       /* Responsive limit based on screen width */
     width: 100%;   
-    
   }
 
   .core-team-text {
-   
     font-size: 14px;
-    
   }
 
   .intro-core {
-    
     letter-spacing: 1.5px; 
-    font-size: 32px;
-
+    font-size: 32px
   }
 
   .arrow-container {
-    
-    top: 37.5%;
+    top: 42.5%;
     left: 50%;
     transform: translateY(5vh);
-    
   }
 
   .arrow-symbol {
-    
     width: 75px;
     height: 75px;
-    
   }
 
   .left-arrow-symbol {
@@ -1320,7 +1341,7 @@ body.loaded #app {
   }
 
   .right-arrow-symbol {
-    transform: translateX(40.5vw);
+    transform: translateX(32.5vw);
   }
  
 }

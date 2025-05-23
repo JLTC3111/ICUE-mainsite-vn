@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
+    "@tailwindcss/vite": "^4.1.7",
     "gsap": "^3.12.7",
     "normalize.css": "^8.0.1"
   },
