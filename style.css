@@ -17,10 +17,7 @@ h1 {
 
 h2 {
   color: rgb(0, 0, 0);
-  margin-left: 1.5rem;
-  margin-top: 3rem;
-  font-size: 28px;
-  text-decoration: underline;
+  
   animation: slideUp 2.5s ease-in-out forwards;
 }
 
@@ -41,29 +38,6 @@ h2:hover {
 h3:hover {
   color: #111;
   transform: scale(1.02);
-}
-.sub-text {
-  justify-content: left;
-  font-family: 'Rubik';
-  font-style: normal;
-  color: whitesmoke;
-  font-size: 80px;
-  font-weight: 300;
-}
-
-
-.cursive-default {
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 60px;
-  color: rgb(250, 250, 127);
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-  letter-spacing:5px;
-  margin-left: -7.5px;
-  margin-right: 25rem;
-  margin-top: 2.5rem;
-  margin-bottom: 5rem;
 }
 
 p {
@@ -94,7 +68,7 @@ nav {
   align-items: center;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  position: sticky;
+  position: fixed;
   top: 0;
   left:0;
   right:0;
@@ -113,7 +87,7 @@ nav a {
   justify-content: space-between;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
-  z-index: 3;
+  z-index: 9;
 }
 
 .menu-bar a:hover {
@@ -188,11 +162,100 @@ footer p {
     transform: translateY(0);
   }
 }
+
 .logo-content {
   width: 150px;
   height: auto;
   display: flex;
   object-fit: contain;
+}
+
+
+.sub-text {
+  justify-content: left;
+  font-family: 'Rubik';
+  font-style: normal;
+  color: whitesmoke;
+  font-size: 80px;
+  font-weight: 300;
+}
+
+
+.cursive-default {
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 60px;
+  color: rgb(250, 250, 127);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  letter-spacing:5px;
+  margin:7.5% 25% -4.5% 3%;
+}
+
+.lets-talk {
+  margin: 7.5% 1.5% 2.5% 1.5%;
+  font-size: 28px;
+  text-decoration: underline;
+}
+
+.home-text-slider {
+  display: flex;
+  justify-content: center;
+  line-height: 1.5;
+  align-items: center;
+  height: 120px;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  z-index: 3;
+}
+
+
+.slider-text {
+  text-align: center;
+  color: rgb(44, 44, 44);
+  max-width: 80%;
+  margin-top: -25px;
+}
+
+.highlight-text {
+  font-family: 'Roboto', cursive ;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 200;
+  visibility: visible; 
+  line-height: 2;
+  opacity: 1;          
+  /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+}
+
+.slider-dots {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  margin-top: -2.5rem;
+  margin-left: -1.5rem;
+  gap: 14px;
+  z-index: 1;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  background-color: #9e9d9d;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
+
+.dot:hover {
+  background-color: green;
+}
+
+.dot.active {
+  background-color: #ffcc00; /* Highlight active dot */
 }
 
 .image-container {
@@ -403,12 +466,10 @@ footer p {
 
 .language-switcher {
   position: fixed;
-  top: 110px;
-  right: 45px;
+  top: 1.25%;
+  right: 10%;
   display: flex;
   gap: 9px;
-  margin-top: -6rem;
-  margin-right: 9.5rem;
   z-index: 12;
 }
 
@@ -510,7 +571,7 @@ footer p {
   color: white;
   font-size: 28px;
   margin-left: auto;
-  margin-right: 17.5rem;
+  margin-right: 16%;
   text-decoration: none;
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
@@ -542,7 +603,6 @@ footer p {
 }
 
 .has-submenu::after {
-  
   margin-left: 0.5rem;
   transition: transform 1.5s ease;
 }
@@ -595,66 +655,6 @@ footer p {
 .drawer-menu .submenu a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #000000;
-}
-
-.home-text-slider {
-  display: flex;
-  justify-content: center;
-  line-height: 1.5;
-  align-items: center;
-  height: 120px;
-  padding: 2.5rem;
-  text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  z-index: 3;
-}
-
-
-.slider-text {
-  text-align: center;
-  color: rgb(44, 44, 44);
-  max-width: 80%;
-  margin-top: -25px;
-}
-
-.highlight-text {
-  font-family: 'Roboto', cursive ;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 200;
-  visibility: visible; 
-  line-height: 2;
-  opacity: 1;          
-  /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
-}
-
-.slider-dots {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  margin-top: -2.5rem;
-  margin-left: -1.5rem;
-  gap: 14px;
-  z-index: 1;
-}
-
-.dot {
-  width: 16px;
-  height: 16px;
-  background-color: #9e9d9d;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  z-index: 1;
-}
-
-.dot:hover {
-  background-color: green;
-}
-
-.dot.active {
-  background-color: #ffcc00; /* Highlight active dot */
 }
 
 .image-container-coreTeam {
@@ -715,7 +715,7 @@ footer p {
   flex-direction: row;
   top: 50%;
   left: 50%;
-  transform: translateY(5vh);
+  transform: translateY(-2.5vh);
   background-color: transparent;
   z-index: 1;
 }
@@ -951,6 +951,9 @@ body.loaded #app {
   cursor: url('public/cursors/pencil.cur'), auto;
 }
 
+.workPageContainer {
+  margin: 7.5% 5%;
+}
 
 #thankYouMessage {
   text-align: center;
@@ -1089,14 +1092,13 @@ body.loaded #app {
 
 .news-slider-wrapper {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  place-items: center;
   z-index: 7;
 }
 
 .news-slider {
-  position: relative;
-  margin: -1.5rem auto;
+  margin: 7.5% .5% auto;
   background-color: transparent;
   width: 50vw;
   justify-content: center;
@@ -1171,13 +1173,12 @@ body.loaded #app {
 .slider-arrow {
   display: flex;
   position: absolute;
-  top:50%;
-  transform: translateY(-50%);
+  top:70%;
   background-color: transparent;
   border-radius: 50px;
   cursor: pointer;
   transition: opacity 0.3s ease;
-  z-index: 3;
+  z-index: 1;
 }
 
 
@@ -1230,7 +1231,7 @@ body.loaded #app {
   }
 
   nav {
-    margin-top: -2.5rem;
+    margin-top: .25%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -1252,10 +1253,6 @@ body.loaded #app {
   h2 {
     color: rgb(0, 0, 0);
     font-size: clamp(1.2rem, 5vw, 1.8rem);
-    left: 50%;
-    top: 50%;
-    display: flex;
-    margin-top: 1.5rem;
   }
 
   p {
@@ -1303,22 +1300,24 @@ body.loaded #app {
 
   .sub-text {
     font-size: clamp(2rem, 6vw, 3rem);
-    margin-left: -1.5rem;
+    margin: 2% 2% auto;
   } 
   
   .cursive-default {
+    margin: 52.5% 2.5% 3% 7.5%;
     font-size: clamp(1rem, 6vw, 1.5rem);
-    margin: 2.5rem;
-    margin-top: 8.5rem;
-    margin-left: -.25rem;
-    margin-bottom: -1.75rem;
     line-height: 1.5;
+  }
+
+  .lets-talk {
+    display: flex;
+    margin: -1% auto 2rem 0;
+    font-size: medium;
   }
 
   .home-text-slider {
     text-align: left;
-    margin-top: 4rem;
-    margin-bottom: 2.5rem;
+    margin: 22% auto .25% auto;
     z-index: 3;
   }
 
@@ -1333,11 +1332,8 @@ body.loaded #app {
   }
 
   .slider-dots {
-    display: flex;
-    position: relative;
     justify-content: center;
-    margin-top: -.25rem;
-    margin-left: .75rem;
+    margin: 12.5% auto .5% auto;
     gap: 14px;
     z-index: 1;
   }
@@ -1619,7 +1615,7 @@ body.loaded #app {
   
     .deco-object-container {
       position: relative;
-      transform: translate(-4.5px, -52.5rem);
+      transform: translate(-4.5px, -56rem);
       width: 100%;
       height: auto;
       z-index: 1;
@@ -1996,7 +1992,7 @@ body.contact-page {
 /* Contact Container */
 .contact-container {
   max-width: 600px; /* Limit the width of the contact form */
-  margin: 50px auto; /* Center the container */
+  margin: 150px auto; /* Center the container */
   padding: 20px; /* Add padding */
   background: white; /* White background for the form */
   border-radius: 8px; /* Rounded corners */
