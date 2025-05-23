@@ -1016,7 +1016,6 @@ body.loaded #app {
   background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #7873f5, #4ade80, #9d7d90);
   opacity: 0;
   transition: opacity 0.5s;
-  z-index: -1;
 }
 
 /* Activate gradient on hover */
