@@ -1427,7 +1427,8 @@ body.loaded #app {
   
   .cursive-default {
     margin: 45% 2.5% 3% 7.5%;
-    font-size: clamp(1rem, 6vw, 1.5rem);
+    font-size: clamp(1rem, 1.35rem, 1.65rem);
+    letter-spacing: 1.75px;
     line-height: 1.5;
   }
 
