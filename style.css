@@ -1794,6 +1794,7 @@ body.loaded #app {
       width: 100%;
       height: auto;
       min-height: 550px; /* Adjust based on content */
+      overflow-y: auto;
     }
 
     .news-container {
