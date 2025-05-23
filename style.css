@@ -1832,7 +1832,7 @@ body.loaded #app {
     }
 
     .left-news-arrow {
-      left: 5.5vw;
+      left: -.5vw;
     }
 
     .right-news-arrow {
