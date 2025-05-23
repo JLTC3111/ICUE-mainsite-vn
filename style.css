@@ -1841,7 +1841,7 @@ body.loaded #app {
 
     /* Maintain your news-card styling */
     .news-card {
-      margin: -1rem auto;
+      margin: -1rem 2rem auto auto;
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
