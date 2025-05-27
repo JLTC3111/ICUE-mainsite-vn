@@ -1775,6 +1775,7 @@ body.loaded #app {
     height: 100%;
     object-fit: cover;
     border-radius: 20px;
+    cursor: pointer;
 }
 .work-thumbnail .work-item img:hover{
   transform: scale(1.1);
