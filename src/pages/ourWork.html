@@ -5,17 +5,20 @@
     background-color: #000;
     color: #eee;
     font-family: Poppins;
-    font-size: 12px;
+    font-size: 16px;
 }
 a{
     text-decoration: none;
 }
 @media (max-width: 767px) {
   body{
-    transform: translateX(-1rem);
+    
     overflow: hidden;
-    margin: 0 -1rem;
+    margin: 0 0 0 -2rem;
   }
+  *, *::before, *::after {
+  box-sizing: border-box;
+    }
   .work-carousel .work-list .work-item .work-content{
         padding: 0;
     }
@@ -25,6 +28,16 @@ a{
   .work-carousel .work-list .work-item .work-content .work-topic{
         font-size: 35px;
     }
+  .work-thumbnail{
+    position: absolute;
+    bottom: 150px;
+    left: 25%;
+  }
+  .work-thumbnail .work-item{
+    width: 120px;
+    height: 176px;
+  }
+ 
 }
   
 </style>
