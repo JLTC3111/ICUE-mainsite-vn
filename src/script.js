@@ -791,26 +791,23 @@ window.initializeCarousel = () => {
   };
 
   const goToSlide = (targetIndex) => {
-    const items = Array.from(slider.querySelectorAll(".work-item"));
-    const thumbs = Array.from(thumbnails.querySelectorAll(".work-item"));
+  if (targetIndex === 0) return; // already active
 
-    if (targetIndex === 0) return; // already active
+  // Rotate items to target index
+  for (let i = 0; i < targetIndex; i++) {
+    slider.appendChild(slider.firstElementChild);
+    thumbnails.appendChild(thumbnails.firstElementChild);
+  }
 
-    // Rotate items to target index
-    for (let i = 0; i < targetIndex; i++) {
-      slider.appendChild(slider.firstElementChild);
-      thumbnails.appendChild(thumbnails.firstElementChild);
-    }
+  carousel.classList.add("work-jump");
 
-    carousel.classList.add("work-jump");
+  clearTimeout(animationTimeout);
+  animationTimeout = setTimeout(() => {
+    carousel.classList.remove("work-jump");
+  }, timeRunning);
 
-    clearTimeout(animationTimeout);
-    animationTimeout = setTimeout(() => {
-      carousel.classList.remove("work-jump");
-    }, timeRunning);
-
-    resetAutoAdvance();
-  };
+  resetAutoAdvance();
+};
 
   nextButton.onclick = () => showSlide("work-next");
   prevButton.onclick = () => showSlide("work-prev");
