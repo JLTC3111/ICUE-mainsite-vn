@@ -86,7 +86,7 @@ nav a {
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
+  background: linear-gradient(30deg, #eeedf1, #014d08, rgb(35, 40, 35));
   z-index: 9;
 }
 
