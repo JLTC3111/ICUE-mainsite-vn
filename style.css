@@ -813,6 +813,18 @@ footer p {
   right: -16.5rem;
 }
 
+.model-crane{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; /* Optional: stack on small screens */
+  top: 0;
+  left: 25%;
+  animation: slideDownFromTop 3s ease-in-out;
+  z-index: 11;
+}
+
 .model-butterfly {
   position: absolute;
   display: flex;
@@ -1645,6 +1657,10 @@ body.loaded #app {
     top: -5.5rem;
     right: 2.5rem;
     animation: slideDownFromTop 3s ease-in-out;
+  }
+
+  .model-crane{
+    display:none;
   }
 
   .model-butterfly {
