@@ -1898,14 +1898,13 @@ body.loaded #app {
 /* running time */
 
 .work-carousel .work-time{
-    position: absolute;
+    position: fixed;
     z-index: 10;
     width: 0%;
     height: 2.5px;
     background-color: #f1683a;
-    left: 0;
     top: 0;
-    visibility: hidden;
+    right:0;
     
 }
 
