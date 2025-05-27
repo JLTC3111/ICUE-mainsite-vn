@@ -810,7 +810,7 @@ footer p {
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
   top: .5rem;
-  right: -16.5rem;
+  right: -13.5rem;
   z-index: 11;
 }
 
