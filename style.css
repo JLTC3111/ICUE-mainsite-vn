@@ -1684,12 +1684,6 @@ body.loaded #app {
   }
 }
 
-.model-crane{
-  position: absolute;
-  background: transparent;
-  z-index: 9;
-}
-
 /* work-carousel */
 .work-carousel{
     height: 100vh;
@@ -1726,7 +1720,7 @@ body.loaded #app {
 }
 .work-carousel .work-list .work-item .work-title,
 .work-carousel .work-list .work-item .work-topic{
-    font-size: 5em;
+    font-size: 3em;
     font-weight: bold;
     line-height: 1.3em;
 }
