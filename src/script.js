@@ -761,11 +761,12 @@ window.initializeCarousel = () => {
   let autoAdvanceTimeout;
   let animationTimeout;
   const timeRunning = 3000;
-  const timeAutoNext = 7000;
+  const timeAutoNext = 25000;
 
-  // Move first thumbnail to the end to pre-rotate
-  const initialThumb = thumbnails.querySelector(".work-item");
-  if (initialThumb) thumbnails.appendChild(initialThumb);
+  const resetAutoAdvance = () => {
+    clearTimeout(autoAdvanceTimeout);
+    autoAdvanceTimeout = setTimeout(() => nextButton.click(), timeAutoNext);
+  };
 
   const showSlide = (direction) => {
     const items = slider.querySelectorAll(".work-item");
@@ -775,34 +776,55 @@ window.initializeCarousel = () => {
       slider.appendChild(items[0]);
       thumbnails.appendChild(thumbs[0]);
       carousel.classList.add("work-next");
-    } else {
+    } else if (direction === "work-prev") {
       slider.prepend(items[items.length - 1]);
       thumbnails.prepend(thumbs[thumbs.length - 1]);
       carousel.classList.add("work-prev");
     }
 
-    // Clean up transition class after animation
     clearTimeout(animationTimeout);
     animationTimeout = setTimeout(() => {
       carousel.classList.remove("work-next", "work-prev");
     }, timeRunning);
 
-    // Restart auto-advance
     resetAutoAdvance();
   };
 
-  const resetAutoAdvance = () => {
-    clearTimeout(autoAdvanceTimeout);
-    autoAdvanceTimeout = setTimeout(() => nextButton.click(), timeAutoNext);
+  const goToSlide = (targetIndex) => {
+    const items = Array.from(slider.querySelectorAll(".work-item"));
+    const thumbs = Array.from(thumbnails.querySelectorAll(".work-item"));
+
+    if (targetIndex === 0) return; // already active
+
+    // Rotate items to target index
+    for (let i = 0; i < targetIndex; i++) {
+      slider.appendChild(slider.firstElementChild);
+      thumbnails.appendChild(thumbnails.firstElementChild);
+    }
+
+    carousel.classList.add("work-jump");
+
+    clearTimeout(animationTimeout);
+    animationTimeout = setTimeout(() => {
+      carousel.classList.remove("work-jump");
+    }, timeRunning);
+
+    resetAutoAdvance();
   };
 
   nextButton.onclick = () => showSlide("work-next");
   prevButton.onclick = () => showSlide("work-prev");
 
-  // Start automatic advance
+  // Add click events to thumbnails
+  const initThumbnailClick = () => {
+    const thumbItems = Array.from(thumbnails.querySelectorAll(".work-item"));
+    thumbItems.forEach((thumb, index) => {
+      thumb.addEventListener("click", () => {
+        goToSlide(index);
+      });
+    });
+  };
+
+  initThumbnailClick();
   resetAutoAdvance();
 };
-
-window.addEventListener("DOMContentLoaded", () => {
-  window.initializeCarousel();
-});
