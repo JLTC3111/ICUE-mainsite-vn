@@ -809,8 +809,9 @@ footer p {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 9rem;
+  top: .5rem;
   right: -16.5rem;
+  z-index: 11;
 }
 
 .model-crane{
@@ -1654,8 +1655,8 @@ body.loaded #app {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -5.5rem;
-    right: 2.5rem;
+    top: -7.5rem;
+    right: -1.5rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
