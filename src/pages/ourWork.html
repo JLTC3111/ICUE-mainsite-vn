@@ -1,19 +1,161 @@
-
-<main class="workPageContainer">
-<h2>3D Showcase</h2>
-
-
-<div style="display: flex; gap: 10px;">
-  <model-viewer src="public/models/tower_crane.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
-  <model-viewer src="public/models/railway_station.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
-  <model-viewer src="public/models/highrise_building.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer>
-</div>
-
-<div style="display: flex; gap: 20px;">
-  <model-viewer src="public/models/construction_hat.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer>
-  <model-viewer src="public/models/construction_bucket.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 100px;"></model-viewer> 
-  <model-viewer src="public/models/construction_signs.glb" auto-rotate camera-controls camera-controls style="width: 100%; height: 400px;"></model-viewer> 
-</div>
-</main>
- 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  body{
+    margin: 0;
+    background-color: #000;
+    color: #eee;
+    font-family: Poppins;
+    font-size: 12px;
+}
+a{
+    text-decoration: none;
+}
+@media (max-width: 767px) {
+  body{
+    margin: 2rem -2rem -3rem -2rem;
+  }
+  .work-carousel .work-list .work-item .work-content{
+        padding: 0;
+    }
+  .work-carousel .work-list .work-item .work-content .work-title{
+        font-size: 30px;
+    }
+  .work-carousel .work-list .work-item .work-content .work-topic{
+        font-size: 35px;
+    }
+}
   
+</style>
+
+<main id="content">
+   
+
+
+    <!-- carousel -->
+    <div class="work-carousel">
+    <!--models-->
+    <div class="work-model">
+      <model-viewer src="public/models/tower_crane.glb" alt="A 3D model of a BMW" auto-rotate   camera-controls camera-controls style="width: 100%; height: 800px;"></model-viewer> 
+    </div>
+        <!-- list item -->
+        <div class="work-list">
+          <div class="work-item">
+                <img src="public/work/img1.jpg">
+                <div class="work-content">
+                    <div class="work-author">Phạm Vi Công Việc</div>
+                    <div class="work-title">ĐÁNH GIÁ & BÁO CÁO</div>
+                    <div class="work-topic">CÔNG TRÌNH</div>
+                    <div class="work-des">
+                        Thiết kế và đánh giá dữ liệu cho hạ tầng số đáng tin cậy. Các báo cáo tổng hợp dữ liệu, xác định điểm thiếu sót và đưa ra giải pháp.
+                    </div>
+                    <div class="work-buttons">
+                        <button>XEM THÊM</button>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img2.jpg">
+                <div class="work-content">
+                    <div class="work-author">Phạm Vi Công Việc</div>
+                    <div class="work-title">KHẢO SÁT ĐO LƯỜNG</div>
+                    <div class="work-topic">KĨ THUẬT KẾT CẤU</div>
+                    <div class="work-des">
+                        Chúng tôi cung cấp các dịch vụ chuyên biệt để hỗ trợ việc phát triển, đánh giá và triển khai các dự án hạ tầng và xây dựng – từ dự toán (QS) đến bản vẽ bằng BIM. Thiết kế và đánh giá mạng dữ liệu cho hạ tầng số đáng tin cậy. Các báo cáo tổng hợp dữ liệu, xác định điểm thiếu sót và đưa ra giải pháp.
+                    </div>
+                    <div class="work-buttons">
+                        <button>XEM THÊM</button>
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img3.jpg">
+                <div class="work-content">
+                    <div class="work-author">Phạm Vi Công Việc</div>
+                    <div class="work-title">PHÂN TÍCH CƠ SỞ HẠ TẦNG</div>
+                    <div class="work-topic">QUẢN LÍ DỰ ÁN</div>
+                    <div class="work-des">
+                        Ước tính chi phí chính xác và kiểm soát ngân sách từ giai đoạn lập kế hoạch đến khi hoàn thành dự án. Phân tích độ bền kết cấu của hạ tầng hiện có theo các tiêu chuẩn hiện hành.Đánh giá các công trình hiện tại so với các tiêu chuẩn quốc gia và quốc tế. Các bản vẽ kỹ thuật và kiến trúc chi tiết phục vụ cho công tác quy hoạch và thi công.
+                    </div>
+                    <div class="work-buttons"> 
+                        <button>XEM THÊM</button>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img4.jpg">
+                <div class="work-content">
+                    <div class="work-author">Phạm Vi Công Việc</div>
+                    <div class="work-title">CHỤP ẢNH TRÊN KHÔNG</div>
+                    <div class="work-topic">ARCHITECTURAL ENGINEERING</div>
+                    <div class="work-des">
+                        Chụp ảnh trên không – Hình ảnh và bản đồ từ thiết bị bay không người lái (drone) phục vụ đánh giá và giám sát đất đai. Phân tích khoảng cách hạ tầng – Xác định những hạ tầng còn thiếu và nhu cầu phát triển trong tương lai.
+                    </div>
+                    <div class="work-buttons">
+                        <button>XEM THÊM</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- list thumnail -->
+        <div class="work-thumbnail">
+            <div class="work-item">
+                <img src="public/work/img1.jpg">
+                <div class="work-content">
+                    <div class="work-title">
+                        Đánh Giá Công Trình
+                    </div>
+                    <div class="work-description">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img2.jpg">
+                <div class="work-content">
+                    <div class="work-title">
+                        Khảo Sát Đo Lường
+                    </div>
+                    <div class="work-description">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img3.jpg">
+                <div class="work-content">
+                    <div class="work-title">
+                        Phân Tích Hạ Tầng
+                    </div>
+                    <div class="work-description">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="public/work/img4.jpg">
+                <div class="work-content">
+                    <div class="work-title">
+                        Chụp Ảnh Trên Không
+                    </div>
+                    <div class="work-description">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- next prev -->
+
+        <div class="work-arrows">
+            <button id="work-prev">&lt;</button>
+            <button id="work-next">&gt;</button>
+        </div>
+        <!-- time running -->
+        <div class="work-time"></div>
+    </div>
+
+  </main>

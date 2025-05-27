@@ -179,6 +179,9 @@ window.loadPage = (page) => {
               if (page === 'Contact') {
                 initPostMethod();
               }
+              if (page === 'ourWork') {
+                initializeCarousel();
+              }
             });
 
           }, 400); // After fade-out
@@ -733,3 +736,73 @@ const form = document.getElementById("contactForm");
       .catch((error) => alert("Something went wrong. Please try again."));
     });
   }
+
+   
+//Work-Page Script
+window.initializeCarousel = () => {
+  const nextButton = document.getElementById("work-next");
+  const prevButton = document.getElementById("work-prev");
+  const carousel = document.querySelector(".work-carousel");
+
+  if (!nextButton || !prevButton || !carousel) {
+    console.warn("Carousel initialization failed. Missing key DOM elements.");
+    return;
+  }
+
+  const slider = carousel.querySelector(".work-list");
+  const thumbnails = carousel.querySelector(".work-thumbnail");
+  const timeBar = carousel.querySelector(".work-time");
+
+  if (!slider || !thumbnails || !timeBar) {
+    console.warn("Carousel structure incomplete.");
+    return;
+  }
+
+  let autoAdvanceTimeout;
+  let animationTimeout;
+  const timeRunning = 3000;
+  const timeAutoNext = 7000;
+
+  // Move first thumbnail to the end to pre-rotate
+  const initialThumb = thumbnails.querySelector(".work-item");
+  if (initialThumb) thumbnails.appendChild(initialThumb);
+
+  const showSlide = (direction) => {
+    const items = slider.querySelectorAll(".work-item");
+    const thumbs = thumbnails.querySelectorAll(".work-item");
+
+    if (direction === "work-next") {
+      slider.appendChild(items[0]);
+      thumbnails.appendChild(thumbs[0]);
+      carousel.classList.add("work-next");
+    } else {
+      slider.prepend(items[items.length - 1]);
+      thumbnails.prepend(thumbs[thumbs.length - 1]);
+      carousel.classList.add("work-prev");
+    }
+
+    // Clean up transition class after animation
+    clearTimeout(animationTimeout);
+    animationTimeout = setTimeout(() => {
+      carousel.classList.remove("work-next", "work-prev");
+    }, timeRunning);
+
+    // Restart auto-advance
+    resetAutoAdvance();
+  };
+
+  const resetAutoAdvance = () => {
+    clearTimeout(autoAdvanceTimeout);
+    autoAdvanceTimeout = setTimeout(() => nextButton.click(), timeAutoNext);
+  };
+
+  nextButton.onclick = () => showSlide("work-next");
+  prevButton.onclick = () => showSlide("work-prev");
+
+  // Start automatic advance
+  resetAutoAdvance();
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  window.initializeCarousel();
+});
