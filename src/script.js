@@ -781,7 +781,6 @@ window.initializeCarousel = () => {
       thumbnails.prepend(thumbs[thumbs.length - 1]);
       carousel.classList.add("work-prev");
     }
-
     clearTimeout(animationTimeout);
     animationTimeout = setTimeout(() => {
       carousel.classList.remove("work-next", "work-prev");
@@ -791,10 +790,18 @@ window.initializeCarousel = () => {
   };
 
   const goToSlide = (targetIndex) => {
-  if (targetIndex === 0) return; // already active
+  const currentSlide = slider.querySelector(".work-item");
+  const currentIndex = parseInt(currentSlide.dataset.index, 10);
 
-  // Rotate items to target index
-  for (let i = 0; i < targetIndex; i++) {
+  if (targetIndex === currentIndex) return; // already active
+
+  let steps = targetIndex - currentIndex;
+  const totalItems = slider.querySelectorAll(".work-item").length;
+
+  // Handle wrap-around (shortest path logic)
+  if (steps < 0) steps += totalItems;
+
+  for (let i = 0; i < steps; i++) {
     slider.appendChild(slider.firstElementChild);
     thumbnails.appendChild(thumbnails.firstElementChild);
   }
@@ -809,12 +816,9 @@ window.initializeCarousel = () => {
   resetAutoAdvance();
 };
 
-  nextButton.onclick = () => showSlide("work-next");
-  prevButton.onclick = () => showSlide("work-prev");
-
   // Add click events to thumbnails
-  const initThumbnailClick = () => {
-    const thumbItems = Array.from(thumbnails.querySelectorAll(".work-item"));
+const initThumbnailClick = () => {
+  const thumbItems = Array.from(thumbnails.querySelectorAll(".work-item"));
     thumbItems.forEach((thumb, index) => {
       thumb.addEventListener("click", () => {
         goToSlide(index);
@@ -824,4 +828,7 @@ window.initializeCarousel = () => {
 
   initThumbnailClick();
   resetAutoAdvance();
+
+  nextButton.onclick = () => showSlide("work-next");
+  prevButton.onclick = () => showSlide("work-prev");
 };

@@ -1780,6 +1780,7 @@ body.loaded #app {
 .work-thumbnail .work-item img:hover{
   transform: scale(1.1);
 }
+
 .work-thumbnail .work-item .work-content{
     color: #f1eef9;
     position: absolute;
