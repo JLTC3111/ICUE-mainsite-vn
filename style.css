@@ -1668,6 +1668,11 @@ body.loaded #app {
   }
 }
 
+.model-crane{
+  position: absolute;
+  background: transparent;
+  z-index: 9;
+}
 
 /* work-carousel */
 .work-carousel{
