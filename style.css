@@ -1587,21 +1587,25 @@ body.loaded #app {
   }
 
   .image-container-coreTeam {
-    top:7.5rem;
+    top:5rem;
     right:2.5rem;
-    width: 225px;
-    height: 300px;
-    
+    width: 244px;
+    height: 325px;
   }
 
   .profile-photo-coreTeam {
-    transform: translateX(-5px);
-    width: 225px;
-    height: auto;
+    transform: translateX(-35px);
+  }
+
+  .profile-photo-coreTeam img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .text-container-coreTeam {
-    top:25vh;
+    top:15vh;
     left:-.5rem;
     min-width: 300px;      /* Always has room for decent content */
     max-width: 45vw;       /* Responsive limit based on screen width */
@@ -1618,7 +1622,7 @@ body.loaded #app {
   }
 
   .arrow-container {
-    top: 42.5%;
+    top: 47.5%;
     left: 50%;
     transform: translateY(5vh);
   }
