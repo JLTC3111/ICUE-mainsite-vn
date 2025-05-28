@@ -1732,7 +1732,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin: 18% auto .25% auto;
+    margin: 7.5% auto .25% auto;
     z-index: 3;
   }
 
@@ -1933,8 +1933,8 @@ body.loaded #app {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap; /* Optional: stack on small screens */
-    top: -4.5rem;
-    right: 5.25rem;
+    top: -1.5rem;
+    right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
