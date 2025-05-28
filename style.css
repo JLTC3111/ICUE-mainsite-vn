@@ -1269,7 +1269,7 @@ body.loaded #app {
 }
 .work-carousel .work-list .work-item .work-title,
 .work-carousel .work-list .work-item .work-topic{
-    font-size: 3em;
+    font-size: clamp(3rem, 5vw, 4rem);
     font-weight: bold;
     line-height: 1.3em;
 }
