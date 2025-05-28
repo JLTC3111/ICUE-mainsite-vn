@@ -262,11 +262,11 @@ footer p {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 300px;
-  height: 400px;
+  width: 280px;
+  height: 374px;
   overflow: hidden;
   border-radius: 50px;
-  transform: translate(10vw, -25vh);
+  transform: translate(9.5vw, -20vh);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
@@ -281,7 +281,7 @@ footer p {
   z-index: 5;
 }
 .profile-photo:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .fade-Out {
@@ -355,6 +355,10 @@ footer p {
   }
 }
 
+.moe-container .text-container + .profile-photo {
+  margin-left: clamp(-7.5rem, -2.5vw, -0.25rem); /* ✅ valid negative spacing */
+}
+
 #profile-text {
   background: rgba(255, 255, 255, 0.1); /* light transparent background */
   backdrop-filter: blur(27.5px);          /* frosted glass blur */
@@ -370,8 +374,8 @@ footer p {
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 720px;
-  transform: translate(-37.5%, -55%);
+  max-width: 725px;
+  transform: translate(-37.5%, -47.5%);
   padding: 20px;
   border-radius: 20px;
   box-shadow: none;
@@ -380,7 +384,7 @@ footer p {
 
 .montserrat-pepple {
   font-family: 'Montserrat', sans-serif;
-  font-size: 16.5px;
+  font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
   color: #131313;
   justify-content: center;
@@ -389,7 +393,7 @@ footer p {
 
 
 .intro-people {
-  font-size: 45px;
+  font-size: clamp(24px, 2.5vw, 40px);
   font-weight: bold;
   letter-spacing: .5px; 
   line-height: 1.2;
@@ -1544,14 +1548,21 @@ body.loaded #app {
   }
 
   .image-container {
+    width: 250px;
+    height: 333px;
     top: 35%;
-    left: 25%;
+    left: 30%;
   }
 
   .text-container {
-    top:58rem;
+    top:80%;
     left:45%;
-    max-width: 60%;
+    max-width: 50%;
+    margin-top: clamp(-1.5rem, -.75vw, -3.5rem)
+  }
+
+  .montserrat-pepple{
+    font-size: clamp(14px, 1.25vw, 18px);
   }
 
   .news-slider-wrapper {
@@ -1568,6 +1579,10 @@ body.loaded #app {
 
   .news-container {
     margin: 25% auto 18% auto;
+  }
+
+  .news-card{
+    margin-top: -10rem;
   }
 
   .news-arrow {
