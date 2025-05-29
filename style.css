@@ -1522,20 +1522,21 @@ body.loaded #app {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
-  .sub-text, .cursive-default, .lets-talk {
-    font-size: clamp(28px, 3.5vw, 42px);
+  .cursive-default {
+    font-size: clamp(28px, 4.2vw, 44px);
+    margin: 7.5rem 0 auto;
   }
 
-  .cursive-default {
-    margin: 7.5rem auto auto auto;
-  }
+  .sub-text{
+    font-size: clamp(28px, 5vw, 52px);
+  } 
 
   .lets-talk {
     margin: 1rem auto auto 2rem;
   }
 
   .home-text-slider {
-    margin: 7.5rem auto auto auto;
+    margin: 13.5rem 0 auto;
   }
 
   .highlight-text{
@@ -1543,7 +1544,12 @@ body.loaded #app {
   }
 
   .slider-dots {
-    margin: 7rem auto auto auto;
+    margin: 4.5rem 0 auto;
+  }
+
+  .model-building{
+    top: 12.5%;
+    right: 4.5%;
   }
 
   .workPageContainer {
@@ -1754,7 +1760,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin: 10% auto .25% auto;
+    margin: 15% auto .25% auto;
     z-index: 3;
   }
 
@@ -1770,7 +1776,7 @@ body.loaded #app {
 
   .slider-dots {
     justify-content: center;
-    margin: 7.5% auto .5% auto;
+    margin: 10% auto .5% auto;
     gap: 14px;
     z-index: 1;
   }
