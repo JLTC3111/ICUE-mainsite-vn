@@ -1523,12 +1523,12 @@ body.loaded #app {
 
 @media only screen and (min-width: 768px) and (max-width: 1366px) {
   .cursive-default {
-    font-size: 48px;
+    font-size: clamp(28px, 3vw, 36px);
     margin: 7.5rem auto auto auto;
   }
 
   .sub-text {
-    font-size: 48px;
+    font-size: clamp(28px, 3vw, 36px);
   }
 
   .lets-talk {
@@ -1537,6 +1537,10 @@ body.loaded #app {
 
   .home-text-slider {
     margin: 7.5rem auto auto auto;
+  }
+
+  .highlight-text{
+    font-size: clamp(14px, 1.8vw, 20px);
   }
 
   .slider-dots {
