@@ -61,16 +61,16 @@ window.attachProfileEvents = () => {
   
       tl.fromTo(photo, 
         { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" }
+        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" }
       );
   
       tl.fromTo(textBox, 
         { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 7.5, ease: "power2.out" },
+        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" },
         "-=0.5" // Start slightly overlapping with photo animation
       );
   
-    }, 500); // ← match exit animation duration (0.3s)
+    }, 300); // ← match exit animation duration (0.3s)
   }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {

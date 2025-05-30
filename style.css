@@ -1623,7 +1623,7 @@ body.loaded #app {
   }
 
   .profile-photo-coreTeam {
-    transform: translateX(-35px);
+    transform: translateX(-100px);
   }
 
   .profile-photo-coreTeam img{
@@ -1631,6 +1631,7 @@ body.loaded #app {
     height: 100%;
     object-fit: cover;
     display: block;
+   
   }
 
   .text-container-coreTeam {
