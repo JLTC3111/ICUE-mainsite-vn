@@ -529,6 +529,10 @@ footer p {
   transform: none;
 }
 
+.menu-toggle svg:hover{
+    transform: scale(1.25);
+}
+
 #menuIcon {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -1908,7 +1912,7 @@ body.loaded #app {
     position: absolute;
     left: 45%;
     cursor: pointer;
-    z-index: 7;
+    z-index: 17;
   }
 
   .menu-toggle svg{
