@@ -679,12 +679,17 @@ footer p {
   color: #000000;
 }
 
+.corePageContainer{
+  position: relative;
+  height: 100vh;
+}
+
 .image-container-coreTeam {
   position: relative;
   width: 325px;
   height: 433px;
   overflow: hidden;
-  transform: translate(70vw, -70vh);
+  transform: translate(67vw, -70vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -700,9 +705,9 @@ footer p {
 .text-container-coreTeam {
   position: relative;
   width: 50%;
-  max-width: 720px;
-  transform: translate(17.5vw, -117.5vh);
-  padding: 10px;
+  max-width: 675px;
+  transform: translate(14.5vw, -117.5vh);
+  padding: 25px;
   background: transparent;
   backdrop-filter: none;
   z-index: 2;
@@ -737,19 +742,26 @@ footer p {
   flex-direction: row;
   top: 50%;
   left: 50%;
-  transform: translateY(-2.5vh);
-  background-color: transparent;
+  background-color:transparent;
   z-index: 1;
 }
 
 .arrow-symbol {
-  width: 75px;
-  height: 75px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  height: 65px;
+  background-color: whitesmoke;
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgb(0, 0, 0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: all 0.3s ease;  
-  color: darkgoldenrod;
+  transition: all 0.3s ease; 
+}
+
+.arrow-symbol svg{
+  width: 60px;
+  height: 60px;
 }
 
 .left-arrow-symbol {
@@ -782,24 +794,6 @@ footer p {
 .arrow-symbol:active .fill-dark {
   fill: #0b3f10;
 }
-
-.deco-bg {
-  display: flex;
-  position: absolute;
-  width: 15vw; /* instead of fixed 220px */
-  height: 125px; /* maintain aspect ratio */
-  top: 7.5%;
-  left: 20%;
-  margin: 2vw; /* relative margin */
-  z-index: 2;
-}
-
-/* Individual positions relative to center */
-.deco-bg1 { transform: translate(-12vw, 0vh); }
-.deco-bg2 { transform: translate(4vw, 0vh); }
-.deco-bg3 { transform: translate(20vw, 0vh); }
-.deco-bg4 { transform: translate(36vw, 0vh); }
-.deco-bg5 { transform: translate(52vw, 0vh); }
 
 .download-btn {
   display: inline-block;
@@ -2031,11 +2025,9 @@ body.loaded #app {
     }
 
     .arrow-container {
-      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
-      z-index: 1;
     }
 
     .arrow-symbol {
