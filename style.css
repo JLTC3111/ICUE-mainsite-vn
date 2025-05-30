@@ -500,14 +500,8 @@ footer p {
   justify-content: center;
   align-items: center;
   border-radius: 25px;
-  transition: transform 0.3s, background-color 0.3s;
   cursor: pointer;
   animation: slideInFromRight 4.5s ease-in-out forwards;
-}
-
-.flag-link:hover {
-  transform: scale(1.5);
-  background-color: #ffffff;
 }
 
 .flag-icon {
@@ -516,6 +510,11 @@ footer p {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
+  transition: transform 0.3s;
+}
+
+.flag-icon:hover {
+  transform: scale(1.1);
 }
 
 .menu-toggle {
