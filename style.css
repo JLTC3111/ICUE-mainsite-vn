@@ -1560,19 +1560,19 @@ body.loaded #app {
   .workPageContainer {
     margin: 12.5% auto auto 2.5%;
   }
-
+  
   .image-container {
     width: 250px;
     height: 333px;
     top: 35%;
-    left: 30%;
+    left: 30.5%;
   }
 
   .text-container {
     top:80%;
-    left:45%;
+    left:50%;
     max-width: 50%;
-    margin-top: clamp(-1.5rem, -.75vw, -3.5rem)
+    margin-top: clamp(0, -.75vw, -4rem)
   }
 
   .montserrat-pepple{
