@@ -437,11 +437,6 @@ footer p {
   z-index: 1;
 }
 
-.arrow-button svg {
-  transform: none !important;
-  rotate: 0deg !important;
-}
-
 .fill-bright-blue {fill: #63D3FD;}
 .fill-blue {fill: #3DB9F9;}
 .fill-white {fill: #FFFFFF;}
@@ -523,14 +518,6 @@ footer p {
   cursor: pointer;
   z-index: 9;
   animation: dropDown 4.5s ease-in-out forwards;
-}
-
-.menu-toggle svg{
-  transform: none;
-}
-
-.menu-toggle svg:hover{
-    transform: scale(1.25);
 }
 
 #menuIcon {
@@ -773,10 +760,6 @@ footer p {
   transform: translateX(37.5vw);
 }
 
-.arrow-symbol svg {
-  transform: none !important;
-  rotate: 0deg !important;
-}
 /* Base fills */
 .fill-yellow { fill: #FFE100; }
 .fill-orange { fill: #FFA800; }
@@ -938,10 +921,6 @@ body.loading .video-bg {
   margin-left: 7.5rem;
 }
 
-svg {
-  transform: rotate(-90deg);
-}
-
 .progress-bg {
   stroke: #333;
 }
@@ -1027,10 +1006,6 @@ body.loaded #app {
 
 .news-arrow {
   visibility: hidden;
-}
-
-.news-arrow svg {
-  transform: none;
 }
 
 .news-card {
@@ -1213,13 +1188,10 @@ body.loaded #app {
   z-index: 1;
 }
 
-
 .slider-arrow svg {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transform: none;
-  rotate: none;
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
