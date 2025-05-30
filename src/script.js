@@ -831,4 +831,5 @@ const initThumbnailClick = () => {
 
   nextButton.onclick = () => showSlide("work-next");
   prevButton.onclick = () => showSlide("work-prev");
+  carousel.setAttribute('data-loaded', 'true');
 };

@@ -1259,6 +1259,15 @@ body.loaded #app {
     overflow: hidden;
     position: relative;
 }
+.work-carousel:not([data-loaded="true"]) {
+  visibility: hidden;
+  opacity: 0;
+}
+.work-carousel[data-loaded="true"] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
 .work-carousel .work-list .work-item{
     width: 100%;
     height: 100%;
