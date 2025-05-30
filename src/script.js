@@ -538,7 +538,7 @@ window.attachProfileEvents_coreTeam = () => {
   
       // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
-  
+      
       if (isFirstLoad) {
         // 👑 First time opening animation
         tl.fromTo(photo, 
@@ -555,10 +555,16 @@ window.attachProfileEvents_coreTeam = () => {
       } else {
         // 👉 Normal sliding between profiles
         tl.fromTo(photo, 
-          { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" }
+          { y: 100, scale: 0.8, opacity: 0 },
+          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-  
+        // 👇 Then shift slightly left
+        tl.to(photo, {
+          x: -35,
+          duration: 0.3,
+          ease: "power2.out"
+        }, "-=0.4"); // slight overlap with entry
+        tl.set(photo, { x: -35 }); // ⬅ final hard-set to lock it
         tl.fromTo(textBox, 
           { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
           { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },

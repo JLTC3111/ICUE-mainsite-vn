@@ -1616,14 +1616,11 @@ body.loaded #app {
   }
 
   .image-container-coreTeam {
+    position: relative;
     top:5rem;
     right:2.5rem;
     width: 244px;
     height: 325px;
-  }
-
-  .profile-photo-coreTeam {
-    transform: translateX(-100px);
   }
 
   .profile-photo-coreTeam img{
