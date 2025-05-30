@@ -1910,6 +1910,11 @@ body.loaded #app {
     z-index: 7;
   }
 
+  .menu-toggle svg{
+    width:48px;
+    height:48px;
+  }
+
   .drawer-menu {
     position: fixed;
     top: 0;
