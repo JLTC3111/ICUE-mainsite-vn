@@ -86,7 +86,7 @@ nav a {
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: linear-gradient(30deg, #eeedf1, #014d08, rgb(35, 40, 35));
+  background: transparent;
   z-index: 19;
 }
 
@@ -196,6 +196,11 @@ footer p {
   margin: 7.5% 1.5% 2.5% 1.5%;
   font-size: 28px;
   text-decoration: underline;
+  transition: transform 0.3s ease-in-out;
+}
+
+.lets-talk a{
+  color: #00f7ff;
 }
 
 #homeSliderText {
@@ -489,28 +494,24 @@ footer p {
 
 .flag-link {
   display: flex;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   background-color: #ffffff; 
   justify-content: center;
   align-items: center;
   border-radius: 25px;
   transition: transform 0.3s, background-color 0.3s;
-  font-size: 24px; 
   cursor: pointer;
-  box-shadow: 0 2px 6px rgb(155, 255, 34); 
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link:hover {
   transform: scale(1.5);
-  background-color: #acd606;
+  background-color: #ffffff;
 }
 
 .flag-icon {
   display: inline-block;
-  width: 100%;
-  height: 100%;
   background-size: cover;
   width: 48px;
   height: 48px;
@@ -523,6 +524,10 @@ footer p {
   cursor: pointer;
   z-index: 9;
   animation: dropDown 4.5s ease-in-out forwards;
+}
+
+.menu-toggle svg{
+  transform: none;
 }
 
 #menuIcon {
@@ -582,7 +587,21 @@ footer p {
 }
 
 .contact-link {
-  color: white;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #333 0deg,
+    #666 45deg,
+    #111 90deg,
+    #000 135deg,
+    #222 180deg,
+    #444 225deg,
+    #111 270deg,
+    #000 315deg,
+    #333 360deg
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: 28px;
   margin-left: auto;
   margin-right: 16%;
@@ -590,7 +609,7 @@ footer p {
   font-weight: bold;
   transition: transform 0.3s ease, color 0.3s ease;
   position: relative;
-  z-index: 11;
+  z-index: 25;
 }
 
 @keyframes slideInFromRight {
@@ -606,7 +625,6 @@ footer p {
 
 .menu-bar .contact-link:hover {
   transform: scale(1.25);
-  color: white;
 }
 
 .has-submenu {
@@ -1887,7 +1905,7 @@ body.loaded #app {
 
   .menu-toggle {
     position: absolute;
-    left: 47.5%;
+    left: 45%;
     cursor: pointer;
     z-index: 7;
   }
