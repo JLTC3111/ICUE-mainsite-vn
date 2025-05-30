@@ -560,11 +560,11 @@ window.attachProfileEvents_coreTeam = () => {
         );
         // 👇 Then shift slightly left
         tl.to(photo, {
-          x: -35,
+          y: 10,
           duration: 0.3,
           ease: "power2.out"
         }, "-=0.4"); // slight overlap with entry
-        tl.set(photo, { x: -35 }); // ⬅ final hard-set to lock it
+        tl.set(photo, { y: 10 }); // ⬅ final hard-set to lock it
         tl.fromTo(textBox, 
           { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
           { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
