@@ -12,13 +12,17 @@ a{
     text-decoration: none;
 }
 @media (max-width: 767px) {
-  body{
+:root {--vh: 100vh;}
+body{
     overflow: hidden;
     margin-left: -2rem;
-  }
-  *, *::before, *::after {
+    margin-top: -2rem;
+    padding: 0;
+}
+*, *::before, *::after {
   box-sizing: border-box;
-    }
+ }
+  
   .work-carousel .work-list .work-item .work-content{
         padding: 0;
     }
