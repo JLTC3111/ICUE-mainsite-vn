@@ -1836,7 +1836,7 @@ body.loaded #app {
   }
 
   .language-switcher {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 50%;
     transform: translate(95%, 1.75vh);
