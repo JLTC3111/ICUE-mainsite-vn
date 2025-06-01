@@ -1804,7 +1804,7 @@ body.loaded #app {
     transition: background-color 0.3s ease;
     z-index: 1;
   }
-  
+
   .image-container {
     position: absolute;
     top: 50%;
@@ -2005,6 +2005,9 @@ body.loaded #app {
   }
   .moe-container{
     overflow:auto;
+  }
+  .image-container{
+    margin-top: 2.5rem;
   }
 
 }
