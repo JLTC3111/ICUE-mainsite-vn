@@ -1107,7 +1107,7 @@ body.loaded #app {
   background-color: transparent;
   width: 50vw;
   justify-content: center;
-  height: calc(var(--height) + 20px);
+  height: calc(var(--height) + 10px);
   z-index: 1;
   mask-image: linear-gradient( to right,transparent, #000 10% 90%,transparent)
 }
