@@ -2006,8 +2006,8 @@ body.loaded #app {
   .moe-container{
     overflow:auto;
   }
-  .image-container{
-    top: -2.5rem;
+  .text-container{
+    margin-top: 2rem;
   }
 
 }
