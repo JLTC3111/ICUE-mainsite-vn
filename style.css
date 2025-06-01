@@ -1999,6 +1999,12 @@ body.loaded #app {
   }
 }
 
+@media (aspect-ratio: 2/1) {
+  .text-container-coreTeam{
+    margin-top: clamp(12.5%, 10vh, 15%);
+  }
+}
+
 @media (max-width: 1024px) {
   
     /* Prevent horizontal scroll globally */
@@ -2027,7 +2033,6 @@ body.loaded #app {
       left:0;
       width: 60%;
       padding: 15px;
-      margin-top: clamp(12.5%, 10vh, 15%);
     }
     
     .intro-core {
