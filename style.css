@@ -1547,7 +1547,7 @@ body.loaded #app {
   }
 
   .slider-dots {
-    margin: 2.5rem 0 auto;
+    margin: 1.75rem 0 auto;
   }
 
   .model-building{
@@ -1726,6 +1726,7 @@ body.loaded #app {
     width: 300px;
     height: auto;
     transform: translateX(35px);
+    margin-top: clamp(.5rem, 1rem, 1.25rem);
   }
 
   .progress-container {
