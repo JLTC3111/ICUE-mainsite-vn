@@ -1227,6 +1227,14 @@ body.loaded #app {
 }
 
 /* work-carousel */
+#work-prev{
+  color: black;
+}
+
+#work-next{
+  color: black;
+}
+
 .work-carousel{
     height: 100vh;
     width: 100vw;
