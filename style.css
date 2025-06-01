@@ -2003,6 +2003,9 @@ body.loaded #app {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
+  .arrow-container{
+    top:50%;
+  }
 }
 
 @media (max-width: 1024px) {
