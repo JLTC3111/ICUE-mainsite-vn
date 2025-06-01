@@ -1759,7 +1759,7 @@ body.loaded #app {
   } 
   
   .cursive-default {
-    margin: 25% 2.5% 3% 7.5%;
+    margin: 30% 2.5% 3% 7.5%;
     font-size: clamp(1rem, 1.35rem, 1.65rem);
     letter-spacing: 1.75px;
     line-height: 1.5;
@@ -1767,7 +1767,7 @@ body.loaded #app {
 
   .lets-talk {
     display: flex;
-    margin: -1% auto 3rem 0;
+    margin: -2.5% auto 3rem 0;
     font-size: medium;
   }
 
@@ -1789,7 +1789,7 @@ body.loaded #app {
 
   .slider-dots {
     justify-content: center;
-    margin: 2.5% auto .5% auto;
+    margin: .5% auto .5% auto;
     gap: 14px;
     z-index: 1;
   }
