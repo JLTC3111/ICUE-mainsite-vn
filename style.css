@@ -2159,6 +2159,7 @@ body.loaded #app {
       width: 100vw;
       height: 95vh;
       z-index: 1;
+      padding: 25px;
     }
 
     .news-date {
