@@ -2007,7 +2007,7 @@ body.loaded #app {
     overflow:auto;
   }
   .text-container{
-    margin-top: 2rem;
+    transform: translateY(1vh);
   }
 
 }
