@@ -2010,9 +2010,11 @@ body.loaded #app {
     }
 
     .image-container-coreTeam {
+      top:15%;
+      left:50%;
       width: 185px;
+      transform: translateX(-50%);
       height: 262.5px;
-      transform: translate(25vw, -78.5vh);
     }
   
     .profile-photo-coreTeam {
@@ -2020,11 +2022,10 @@ body.loaded #app {
     }
   
     .text-container-coreTeam {
-      width: 90%;
-      transform: translate(-2.5vw, -80vh);
-      margin-left: 5%;
-      margin-right: 5%;
-      padding: 5px;
+      width:75%;
+      top:50%;
+      left: 12.5%;
+      padding: 10px;
     }
   
     .intro-core {
@@ -2041,7 +2042,7 @@ body.loaded #app {
     }
 
     .arrow-container {
-      top: 50%;
+      top: 40%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
     }
