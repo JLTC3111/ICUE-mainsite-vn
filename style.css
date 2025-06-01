@@ -2508,3 +2508,16 @@ button:hover {
     transform: translate(-6.5vw, -2.5vh);
   }
 }
+
+@media (min-aspect-ratio: 2/1) and (max-aspect-ratio: 2.4/1) {
+  .newsPageContainer{
+    height:100vh;
+    overflow: auto;
+  }
+  .news-card{
+    width: 95%;
+  }
+  .image-container{
+    margin-top:1rem;
+  }
+}
