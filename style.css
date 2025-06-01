@@ -2008,12 +2008,6 @@ body.loaded #app {
   }
 }
 
-@media (min-aspect-ratio: 3/4.5) and (max-aspect-ratio: 3/4) {
-  .news-card{
-    margin-right: -2rem;
-  }
-}
-
 @media (max-width: 1024px) {
   
     /* Prevent horizontal scroll globally */
@@ -2508,4 +2502,9 @@ button:hover {
   color: #6f6f6f; /* Lighter text color */
 }
 
-
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+  .news-container {
+    transform: translate(-6.5vw, -2.5vh);
+  }
+}
