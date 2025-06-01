@@ -2007,7 +2007,7 @@ body.loaded #app {
     overflow:auto;
   }
   .image-container{
-    margin-top: 2.5rem;
+    top: 2.5rem;
   }
 
 }
