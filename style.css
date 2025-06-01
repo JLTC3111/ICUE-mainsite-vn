@@ -2510,6 +2510,9 @@ button:hover {
   .text-container{
     margin-top: 22.5%;
   }
+  .text-container-coreTeam{
+    margin-top: 3.5rem;
+  }
   .news-card{
     width: 95%;
     height:100vh;
