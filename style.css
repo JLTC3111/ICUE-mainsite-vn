@@ -1804,10 +1804,7 @@ body.loaded #app {
     transition: background-color 0.3s ease;
     z-index: 1;
   }
-
-  .moe-container{
-    overflow: auto;
-  }
+  
   .image-container {
     position: absolute;
     top: 50%;
@@ -2006,8 +2003,8 @@ body.loaded #app {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
-  .image-container{
-    transform: translateY(.5vh);
+  .moe-container{
+    overflow:auto;
   }
 
 }
