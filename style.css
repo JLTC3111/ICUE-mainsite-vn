@@ -2509,7 +2509,7 @@ button:hover {
   }
 }
 
-@media (max-width: 975px) and (max-aspect-ratio: 2.5/1)  {
+@media (max-width: 975px) and (min-aspect-ratio: 1.8/1)  {
   .news-card{
     width: 95%;
     height:100vh;
