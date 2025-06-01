@@ -272,32 +272,6 @@ footer p {
   background-color: #ffcc00; /* Highlight active dot */
 }
 
-.image-container {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 280px;
-  height: 374px;
-  overflow: hidden;
-  border-radius: 50px;
-  transform: translate(9.5vw, -20vh);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  transition: transform 0.3s ease-out;
-}
-
-.profile-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-  z-index: 5;
-}
-.profile-photo:hover {
-  transform: scale(1.1);
-}
-
 .fade-Out {
   animation: FadeOut 2s ease-in-out forwards;
   animation-delay: 3s;
@@ -395,6 +369,27 @@ footer p {
   box-shadow: none;
 }
 
+.image-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(9.5vw, -20vh);
+  width: 280px;
+  height: 374px;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  z-index: 5;
+}
+.profile-photo:hover {
+  transform: scale(1.1);
+}
 
 .montserrat-pepple {
   font-family: 'Montserrat', sans-serif;
@@ -404,7 +399,6 @@ footer p {
   justify-content: center;
   text-align: center;
 }
-
 
 .intro-people {
   font-size: clamp(24px, 2.5vw, 40px);
@@ -418,7 +412,6 @@ footer p {
   background-clip: text;
   color: transparent;
 }
-
 
 .arrow-button {
   position: fixed;
@@ -1554,7 +1547,7 @@ body.loaded #app {
   .workPageContainer {
     margin: 12.5% auto auto 2.5%;
   }
-  
+
   .image-container {
     width: 250px;
     height: 333px;
