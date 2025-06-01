@@ -823,7 +823,6 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap; /* Optional: stack on small screens */
   top: .5rem;
   right: -7.5rem;
   z-index: 11;
@@ -1964,11 +1963,6 @@ body.loaded #app {
   }
 
   .model-building {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Optional: stack on small screens */
     top: -3rem;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
