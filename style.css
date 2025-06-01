@@ -2009,8 +2009,8 @@ body.loaded #app {
 }
 
 @media (min-aspect-ratio: 3/4.5) and (max-aspect-ratio: 3/5) {
-  .news-container{
-    transform: translateX(2rem);
+  .news-card{
+    margin-right: -2rem;
   }
 }
 
