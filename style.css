@@ -1963,7 +1963,7 @@ body.loaded #app {
   }
 
   .model-building {
-    top: -3rem;
+    top: -12.5%;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
   }
