@@ -2509,7 +2509,7 @@ button:hover {
   }
 }
 
-@media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.4/1) {
+@media (max-width: 975px) and (orientation: landscape)  {
   .newsPageContainer{
     height:100vh;
     overflow: auto;
