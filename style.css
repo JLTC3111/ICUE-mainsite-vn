@@ -1963,6 +1963,8 @@ body.loaded #app {
   }
 
   .model-building {
+    width: 50%;
+    height: 50%;
     top: -3rem;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
