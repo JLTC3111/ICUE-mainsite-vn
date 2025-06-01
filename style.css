@@ -882,7 +882,7 @@ footer p {
   color: whitesmoke;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
+  margin-top: clamp(2.5rem, 2.5vw, 3.75rem);
   margin-left: 6.5rem;
   text-shadow: 0 0 8px #00ffcc;
   animation: pulse 1.5s ease-in-out infinite;
@@ -1734,7 +1734,7 @@ body.loaded #app {
     width: 300px;
     height: auto;
     transform: translateX(35px);
-    margin-top: clamp(.5rem, 1rem, 1.25rem);
+    margin-bottom: clamp(1.5rem, 1.5vw, 2.25rem);
   }
 
   .progress-container {
