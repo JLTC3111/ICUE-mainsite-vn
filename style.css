@@ -2004,7 +2004,7 @@ body.loaded #app {
     margin-top: clamp(12.5%, 10vh, 15%);
   }
   .image-container{
-    transform: translateY(25%);
+    transform: translateY(5%);
   }
 
 }
