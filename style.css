@@ -2006,10 +2006,6 @@ body.loaded #app {
   .moe-container{
     overflow:auto;
   }
-  .text-container{
-    transform: translateY(1vh);
-  }
-
 }
 
 @media (max-width: 1024px) {
@@ -2156,7 +2152,7 @@ body.loaded #app {
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 100vw;
+      width: 93.5vw;
       height: 95vh;
       z-index: 1;
     }
