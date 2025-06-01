@@ -1759,7 +1759,7 @@ body.loaded #app {
   } 
   
   .cursive-default {
-    margin: 30% 2.5% 3% 7.5%;
+    margin: 15rem 2.5% 3% 7.5%;
     font-size: clamp(1rem, 1.35rem, 1.65rem);
     letter-spacing: 1.75px;
     line-height: 1.5;
@@ -1963,7 +1963,7 @@ body.loaded #app {
   }
 
   .model-building {
-    top: -12.5%;
+    top: -5%;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
   }
