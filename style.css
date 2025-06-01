@@ -1999,7 +1999,7 @@ body.loaded #app {
   }
 }
 
-@media (aspect-ratio: 2/1) {
+@media (min-aspect-ratio: 1.8/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
