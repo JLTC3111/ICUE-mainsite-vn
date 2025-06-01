@@ -2010,11 +2010,12 @@ body.loaded #app {
     }
 
     .image-container-coreTeam {
-      top:15%;
-      left:50%;
+      position: absolute;
       width: 185px;
-      transform: translateX(-50%);
       height: 262.5px;
+      left: 50%;
+      top: 15%; /* or adjust as needed */
+      transform: translateX(-50%);
     }
   
     .profile-photo-coreTeam {
@@ -2022,27 +2023,27 @@ body.loaded #app {
     }
   
     .text-container-coreTeam {
-      width:75%;
-      top:50%;
-      left: 12.5%;
-      padding: 10px;
+      top:60%;
+      left:0;
+      width: 60%;
+      padding: 15px;
     }
-  
+    
     .intro-core {
       text-align: left;
       margin: 0 auto;
-      font-size: 28px;
+      font-size: clamp(26px, 2vh, 30px);
       text-align: center;
     }
   
     .core-team-text {
       text-align: left;
-      font-size: 14px;
+      font-size: clamp(14px, 1.5vh, 16.5px);
       line-height: 22px;
     }
 
     .arrow-container {
-      top: 40%;
+      top: 30%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
     }
@@ -2066,38 +2067,6 @@ body.loaded #app {
       transform: translateX(30vw); /* or smaller */
     }
   
-    .deco-object-container {
-      position: relative;
-      transform: translate(-4.5px, -50rem);
-      width: 100%;
-      height: auto;
-      z-index: 1;
-      pointer-events: none; /* very good idea to let clicks pass through */
-    }
-    
-    .deco-bg {
-      display: none;
-      position: absolute;
-      width: 200px;
-      height: 114px;
-      gap: 10px;
-    }
-    
-    /* Specific placements */
-    .deco-bg4 {
-      display: grid;
-      top: 10vh;
-      left: -7.5vw;
-      transform: translate(5vw, 0);
-    }
-    
-    .deco-bg5 {
-      display: grid;
-      top: 10vh;
-      right: 15vw;
-      transform: translate(27.5vw, 0);
-    }
-
     .download-btn {
       transform: translate(0, 30px); /* Centered horizontally */
       width: 70%; /* More natural width */
