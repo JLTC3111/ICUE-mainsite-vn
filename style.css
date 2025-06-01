@@ -2023,10 +2023,11 @@ body.loaded #app {
     }
   
     .text-container-coreTeam {
-      top:60%;
+      top:70%;
       left:0;
       width: 60%;
       padding: 15px;
+      margin-top: clamp(1.5rem, 5vh, 4.5rem);
     }
     
     .intro-core {
