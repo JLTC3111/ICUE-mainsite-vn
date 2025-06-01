@@ -2008,7 +2008,7 @@ body.loaded #app {
   }
 }
 
-@media (min-aspect-ratio: 3/4.5) and (max-aspect-ratio: 3/5) {
+@media (min-aspect-ratio: 3/4.5) and (max-aspect-ratio: 3/4) {
   .news-card{
     margin-right: -2rem;
   }
