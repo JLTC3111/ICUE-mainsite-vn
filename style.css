@@ -915,7 +915,7 @@ body.loading .video-bg {
   position: relative;
   width: 200px;
   height: 200px;
-  margin-top: -30rem;
+  margin-top: clamp(-30rem, -25rem, -22.5rem);
   margin-left: 7.5rem;
 }
 
