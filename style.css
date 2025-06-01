@@ -2027,7 +2027,7 @@ body.loaded #app {
       left:0;
       width: 60%;
       padding: 15px;
-      margin-top: clamp(4.5rem, 5vh, 7.5rem);
+      margin-top: clamp(7.5rem, 15vh, 15rem);
     }
     
     .intro-core {
