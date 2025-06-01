@@ -1963,8 +1963,6 @@ body.loaded #app {
   }
 
   .model-building {
-    width: 50%;
-    height: 50%;
     top: -3rem;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
@@ -2506,15 +2504,19 @@ button:hover {
 }
 
 @media (max-width: 975px) and (min-aspect-ratio: 1.8/1)  {
-  .news-card{
-    width: 95%;
-    height:100vh;
-    overflow: auto;
+  .model-building{
+    width: 50%;
+    height: 50%;
   }
   .image-container{
     margin-top: 17.5%;
   }
   .text-container{
     margin-top: 22.5%;
+  }
+  .news-card{
+    width: 95%;
+    height:100vh;
+    overflow: auto;
   }
 }
