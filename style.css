@@ -90,12 +90,6 @@ nav a {
   z-index: 19;
 }
 
-.menu-bar a:hover {
-  animation: wiggle 0.25s ease-in-out;
-  transform: scale(1.1);
-  color: rgb(0, 0, 0);
-}
-
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
   25%  { transform: rotate(5deg); }
@@ -156,11 +150,29 @@ footer p {
 
 @keyframes dropDown {
   0% {
+    opacity: 0;
+    visibility: hidden;
     transform: translateY(-100%);
   }
   100% {
+    opacity: 1;
+    visibility: visible;
     transform: translateY(0);
   }
+}
+
+.language-switcher,
+.logo-content:hover{
+  transform: scale(1.1);
+  animation: wiggle .25s ease-in-out;
+}
+
+.logo-banner,
+.menu-toggle,
+.contact-link,
+.flag-link{
+  visibility: hidden;
+  opacity: 0;
 }
 
 .logo-content {
@@ -169,7 +181,6 @@ footer p {
   display: flex;
   object-fit: contain;
 }
-
 
 .sub-text {
   justify-content: left;
@@ -481,7 +492,6 @@ footer p {
   right: 11.5rem;
 }
 
-
 .language-switcher {
   position: fixed;
   top: 1.25%;
@@ -562,7 +572,6 @@ footer p {
   z-index: -2;
 }
 
-
 .drawer-menu a {
   animation: none !important;
   color: #ffffff;
@@ -577,6 +586,7 @@ footer p {
   transform: translateX(45px);
   background-color: #e1e1e1;
   border-left: 2.5px solid #ffffff;
+  color: #000;
 }
 
 .drawer-menu a.active {
@@ -651,7 +661,6 @@ footer p {
   color: #ffffff;
 }
 
-
 .contact-link {
   background: conic-gradient(
     from 180deg at 50% 50%,
@@ -673,24 +682,24 @@ footer p {
   margin-right: 16%;
   text-decoration: none;
   font-weight: bold;
-  transition: transform 0.3s ease, color 0.3s ease;
-  position: relative;
   z-index: 25;
+}
+
+.contact-link.animate {
+  animation: dropDown 4.5s ease-out forwards;
 }
 
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
     opacity: 0;
+    visibility: hidden;
   }
   100% {
     transform: translateX(0);
     opacity: 1;
+    visibility: visible;
   }
-}
-
-.menu-bar .contact-link:hover {
-  transform: scale(1.25);
 }
 
 .corePageContainer{
@@ -2275,15 +2284,15 @@ body.loaded #app {
   }
 }
 
-
-
 @keyframes slideInFromLeft {
   0% {
     opacity: 0;
+    visibility: hidden;
     transform: translateX(-100%);
   }
   100% {
     opacity: 1;
+    visibility: visible;
     transform: translateX(0%);
   }
 }

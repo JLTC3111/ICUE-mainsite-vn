@@ -161,26 +161,33 @@ window.loadPage = (page) => {
             requestAnimationFrame(() => {
               if (page === 'meetOurExperts') {
                 attachProfileEvents();
+                animateNavItems();
               }
               if (page === 'coreTeam') {
                 attachProfileEvents_coreTeam();
+                retriggerMenuAnimations();
               }
               if (page === 'Home') {
                 initHomeTextSlider();
                 attachHomeButtonEvents();
+                retriggerMenuAnimations();
               }
               if (page === 'News') {
                 initLogoSlider();
                 initMobileNewsSlider();
+                retriggerMenuAnimations();
               }
               if (page === 'aboutUs') {
                 createBalloons();
+                retriggerMenuAnimations();
               }
               if (page === 'Contact') {
                 initPostMethod();
+                retriggerMenuAnimations();
               }
               if (page === 'ourWork') {
                 initializeCarousel();
+                retriggerMenuAnimations();
               }
             });
 
@@ -189,6 +196,108 @@ window.loadPage = (page) => {
       },);
     });
 }
+
+window.retriggerMenuAnimations = () => {
+  const animatedSelectors = [
+    '.menu-toggle',
+    '.logo-banner',
+    '.flag-link'
+  ];
+
+  // Function to clone, replace, and fade in elements
+  const cloneAndFadeIn = (selector) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+
+    const newEl = el.cloneNode(true);
+    newEl.style.opacity = '0'; // hide initially
+    el.parentNode.replaceChild(newEl, el);
+
+    // Animate opacity back in
+    gsap.to(newEl, {
+      opacity: 1,
+      duration: 0.5,
+      ease: 'power2.out'
+    });
+  };
+
+  // Apply to standard elements
+  animatedSelectors.forEach(cloneAndFadeIn);
+
+  // 🔁 CONTACT LINK handling separately
+  const contactUs = document.getElementById('contactLink');
+  if (contactUs) {
+    const newContact = contactUs.cloneNode(true);
+    newContact.style.opacity = '0';
+    contactUs.parentNode.replaceChild(newContact, contactUs);
+
+    // Drop-in animation
+    newContact.classList.add('animate');
+    gsap.to(newContact, {
+      opacity: 1,
+      duration: 0.5,
+      ease: 'power2.out'
+    });
+
+    setTimeout(() => {
+      newContact.classList.remove('animate');
+    }, 4500); // adjust as needed
+
+    // Hover wiggle
+    newContact.addEventListener('mouseenter', () => {
+      gsap.to(newContact, {
+        keyframes: [
+          { rotation: -5, duration: 0.1 },
+          { rotation: 5, duration: 0.1 },
+          { rotation: -4, duration: 0.1 },
+          { rotation: 4, duration: 0.1 },
+          { rotation: -2, duration: 0.1 },
+          { rotation: 0, duration: 0.1 }
+        ],
+        ease: 'power1.inOut'
+      });
+    });
+
+    newContact.addEventListener('mouseleave', () => {
+      gsap.to(newContact, {
+        rotation: 0,
+        duration: 0.2,
+        ease: 'power2.out'
+      });
+    });
+  }
+
+  // 🔁 MENU TOGGLE handling
+  const menuToggle = document.getElementById('menuIcon');
+  if (menuToggle) {
+    const newToggle = menuToggle.cloneNode(true);
+    newToggle.style.opacity = '0';
+    menuToggle.parentNode.replaceChild(newToggle, menuToggle);
+
+    gsap.to(newToggle, {
+      opacity: 1,
+      duration: 0.5,
+      ease: 'power2.out'
+    });
+
+    newToggle.addEventListener('mouseenter', () => {
+      gsap.to(newToggle, {
+        scale: 1.25,
+        duration: 0.2,
+        ease: 'power2.out'
+      });
+    });
+
+    newToggle.addEventListener('mouseleave', () => {
+      gsap.to(newToggle, {
+        scale: 1,
+        duration: 0.2,
+        ease: 'power2.inOut'
+      });
+    });
+  }
+};
+
 
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
@@ -622,7 +731,7 @@ window.initLogoSlider = () => {
   if (!logoList) return;
 
   let position = 0;
-  let speed = 1;
+  let speed = 1.75;
   let isPaused = false;
 
   const loop = () => {

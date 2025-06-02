@@ -50,7 +50,7 @@
     </div>
   
     <!-- Contact stays to the right -->
-    <a href="#/Contact" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link">Liên Hệ</a>
+      <a href="#/Contact" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link" id="contactLink">Liên Hệ</a>
   
     <!-- Fullscreen Drawer Menu -->
     <div class="drawer-menu" id="drawerMenu">
@@ -79,27 +79,6 @@
     document.body.classList.remove("preload");
     document.body.classList.add("loaded");
   });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const menuToggle = document.getElementById('menuIcon');
-
-  menuToggle.addEventListener('mouseenter', () => {
-    gsap.to(menuToggle, {
-      scale: 1.25,
-      duration: 0.2,
-      ease: "power2.out"
-    });
-  });
-
-  menuToggle.addEventListener('mouseleave', () => {
-    gsap.to(menuToggle, {
-      scale: 1,
-      duration: 0.2,
-      ease: "power2.inOut"
-    });
-  });
-});
 </script>
 <!-- Your app's logic -->
 <script type="module" src="/src/script.js"></script>
