@@ -544,7 +544,7 @@ footer p {
   left: 0;
   height: 100vh;
   width: 280px;
-  background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
+  background: transparent;
   display: flex;
   flex-direction: column;
   padding: 10rem 2.5rem;
@@ -553,10 +553,19 @@ footer p {
   z-index: 5;
 }
 
+.drawer-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), #000 60%);
+  backdrop-filter: blur(25px);
+  pointer-events: none; /* let clicks pass through */
+  z-index: -2;
+}
+
 
 .drawer-menu a {
   animation: none !important;
-  color: #000000;
+  color: #ffffff;
   padding: 1.2rem 0;
   font-size: 1.4rem;
   text-decoration: none;
@@ -566,59 +575,18 @@ footer p {
 
 .drawer-menu a:hover {
   transform: translateX(45px);
-  background-color: #faff00;
-  border-left: 2.5px solid #000000;
+  background-color: #e1e1e1;
+  border-left: 2.5px solid #ffffff;
 }
 
 .drawer-menu a.active {
   font-weight: bold;
-  background-color: #faff00;
-  border-left: 2.5px solid rgb(0, 0, 0);
+  background-color: #dfdfdf;
+  border-left: 2.5px solid rgb(254, 254, 254);
 }
 
 .drawer-menu.open {
   transform: translateX(0); 
-}
-
-.contact-link {
-  background: conic-gradient(
-    from 180deg at 50% 50%,
-    #333 0deg,
-    #666 45deg,
-    #111 90deg,
-    #000 135deg,
-    #222 180deg,
-    #444 225deg,
-    #111 270deg,
-    #000 315deg,
-    #333 360deg
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-size: 28px;
-  margin-left: auto;
-  margin-right: 16%;
-  text-decoration: none;
-  font-weight: bold;
-  transition: transform 0.3s ease, color 0.3s ease;
-  position: relative;
-  z-index: 25;
-}
-
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.menu-bar .contact-link:hover {
-  transform: scale(1.25);
 }
 
 .has-submenu {
@@ -663,7 +631,7 @@ footer p {
 
 .drawer-menu .submenu a {
   font-size: 1.2rem;
-  color: #000000;
+  color: #ffffff;
   padding-top: 1.5rem;
   padding-left: 0.75rem;
   position: relative;
@@ -672,7 +640,7 @@ footer p {
 
 .drawer-menu .submenu a::before {
   content: "↳";
-  color: #170000; 
+  color: #ffffff; 
   font-size: 1.3rem;
   position: inline-block;
   vertical-align: middle;
@@ -680,7 +648,49 @@ footer p {
 
 .drawer-menu .submenu a:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: #000000;
+  color: #ffffff;
+}
+
+
+.contact-link {
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #333 0deg,
+    #666 45deg,
+    #111 90deg,
+    #000 135deg,
+    #222 180deg,
+    #444 225deg,
+    #111 270deg,
+    #000 315deg,
+    #333 360deg
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 28px;
+  margin-left: auto;
+  margin-right: 16%;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s ease, color 0.3s ease;
+  position: relative;
+  z-index: 25;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.menu-bar .contact-link:hover {
+  transform: scale(1.25);
 }
 
 .corePageContainer{
@@ -1908,7 +1918,7 @@ body.loaded #app {
     height: 100vh;
     width: 100vw;
     overflow: auto;
-    background: linear-gradient(to bottom right, #ffffff, #8b8b8b);
+    background: transparent;
     display: flex;
     flex-direction: column;
     padding: 7.5rem 0.5rem;
@@ -1918,24 +1928,12 @@ body.loaded #app {
   }
 
   .drawer-menu a {
-    color: #000000;
     padding: .75rem 0;
     margin-left: -3rem;
     font-size: 1.5rem;
     text-decoration: none;
     border-left: 5px solid transparent;
     transition: background 0.3s, border-color 0.3s;
-  }
-
-  .drawer-menu a:hover {
-    background-color: #faff00;
-    border-left: 2.5px solid #000000;
-  }
-
-  .drawer-menu a.active {
-    font-weight: bold;
-    background-color: #faff00;
-    border-left: 2.5px solid rgb(0, 0, 0);
   }
 
   .sub-menu {
@@ -1945,7 +1943,6 @@ body.loaded #app {
 
   .drawer-menu .submenu a {
     font-size: 1.1rem;
-    color: #000000;
     padding-top: 0.5rem;
     left: 0rem;
     text-decoration: underline;
