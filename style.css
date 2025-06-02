@@ -167,14 +167,6 @@ footer p {
   animation: wiggle .25s ease-in-out;
 }
 
-.logo-banner,
-.menu-toggle,
-.contact-link,
-.flag-link{
-  visibility: hidden;
-  opacity: 0;
-}
-
 .logo-content {
   width: 150px;
   height: auto;
@@ -190,7 +182,6 @@ footer p {
   font-size: 80px;
   font-weight: 300;
 }
-
 
 .cursive-default {
   font-family: 'IBM Plex Serif', serif;

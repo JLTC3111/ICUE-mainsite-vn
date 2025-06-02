@@ -160,34 +160,41 @@ window.loadPage = (page) => {
             // ✅ Delay script activation *after* loader is gone
             requestAnimationFrame(() => {
               if (page === 'meetOurExperts') {
+                hideMenuBarElements();
                 attachProfileEvents();
                 animateNavItems();
               }
               if (page === 'coreTeam') {
-                attachProfileEvents_coreTeam();
+                hideMenuBarElements();
                 retriggerMenuAnimations();
+                attachProfileEvents_coreTeam();
               }
               if (page === 'Home') {
+                retriggerMenuAnimations();
+                hideMenuBarElements();
                 initHomeTextSlider();
                 attachHomeButtonEvents();
-                retriggerMenuAnimations();
               }
               if (page === 'News') {
+                hideMenuBarElements();
+                retriggerMenuAnimations();
                 initLogoSlider();
                 initMobileNewsSlider();
-                retriggerMenuAnimations();
               }
               if (page === 'aboutUs') {
-                createBalloons();
+                hideMenuBarElements();
                 retriggerMenuAnimations();
+                createBalloons();
               }
               if (page === 'Contact') {
-                initPostMethod();
+                hideMenuBarElements();
                 retriggerMenuAnimations();
+                initPostMethod();
               }
               if (page === 'ourWork') {
-                initializeCarousel();
+                hideMenuBarElements();
                 retriggerMenuAnimations();
+                initializeCarousel();
               }
             });
 
@@ -298,6 +305,33 @@ window.retriggerMenuAnimations = () => {
   }
 };
 
+window.hideMenuBarElements = () => {
+  const selectors = ['.menu-toggle', '.contact-link', '.logo-banner', '.flag-link'];
+
+  const hideIfReady = () => {
+    const allExist = selectors.every(sel => document.querySelector(sel));
+    if (!allExist) return false;
+
+    selectors.forEach(sel => {
+      const el = document.querySelector(sel);
+      el.style.opacity = '0';
+    });
+
+    return true;
+  };
+
+  // Try once immediately
+  if (hideIfReady()) return;
+
+  // If not ready, observe DOM changes
+  const observer = new MutationObserver(() => {
+    if (hideIfReady()) {
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+};
 
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
