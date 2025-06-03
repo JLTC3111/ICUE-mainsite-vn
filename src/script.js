@@ -511,7 +511,6 @@ window.addEventListener('hashchange', router);
 function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
-
   window.loadPage(page);
 }
 
