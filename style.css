@@ -508,6 +508,7 @@ footer p {
   border-radius: 25px;
   cursor: pointer;
   animation: slideInFromRight 4.5s ease-in-out forwards;
+  transition: transform 0.3s;
 }
 
 .flag-icon {
@@ -516,7 +517,6 @@ footer p {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* ✅ Makes it circular */
-  transition: transform 0.3s;
 }
 
 .flag-icon:hover {

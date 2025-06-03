@@ -131,7 +131,7 @@ window.loadPage = (page) => {
 
   landing.style.display = 'grid';
   landing.style.opacity = 1;
-  landing.style.pointerEvents = 'all';
+  landing.style.pointerEvents = 'All';
 
   let fakeProgress = setInterval(() => {
     progress += Math.random() * 1.5;
@@ -142,6 +142,7 @@ window.loadPage = (page) => {
   fetch(`/src/pages/${page}.html`)
   .then(response => response.text())
   .then(data => {
+    content.innerHTML = data;
     clearInterval(fakeProgress); // ensure we clear progress interval
 
     // Finalize progress bar to 100%
@@ -157,9 +158,6 @@ window.loadPage = (page) => {
 
         setTimeout(() => {
           landing.style.display = 'none';
-
-          // Insert content and trigger animations
-          content.innerHTML = data;
 
             requestAnimationFrame(() => {
               retriggerMenuAnimations();
@@ -191,7 +189,7 @@ window.loadPage = (page) => {
               }
             });
 
-          }, 0);
+          }, 10);
         }
       }, 0);
     });
@@ -242,6 +240,43 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
     );
   });
 
+  // 🔁 Language Switcher
+const langSwitcher = document.getElementById('langSwitcher');
+if (langSwitcher) {
+  const newLangSwitcher = langSwitcher.cloneNode(true);
+  preHide(newLangSwitcher);
+  langSwitcher.parentNode.replaceChild(newLangSwitcher, langSwitcher);
+
+  timeline.fromTo(
+    newLangSwitcher,
+    isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
+    {
+      y: 0,
+      opacity: 1,
+      onStart: () => unhide(newLangSwitcher)
+    },
+    '-=0.3'
+  );
+
+  // ✅ Hover animation
+  newLangSwitcher.addEventListener('mouseenter', () => {
+    gsap.killTweensOf(newLangSwitcher);
+    gsap.to(newLangSwitcher, {
+      scale: 1.25,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  });
+
+  newLangSwitcher.addEventListener('mouseleave', () => {
+    gsap.to(newLangSwitcher, {
+      scale: 1,
+      duration: 0.3,
+      ease: 'power2.inOut'
+    });
+  });
+}
+
   // 🔁 CONTACT LINK
   const contactUs = document.getElementById('contactLink');
   if (contactUs) {
@@ -259,30 +294,25 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
       },
       '-=0.3'
     );
-
-    // Hover wiggle
-    newContact.addEventListener('mouseenter', () => {
-      gsap.to(newContact, {
-        keyframes: [
-          { rotation: -5, duration: 0.1 },
-          { rotation: 5, duration: 0.1 },
-          { rotation: -4, duration: 0.1 },
-          { rotation: 4, duration: 0.1 },
-          { rotation: -2, duration: 0.1 },
-          { rotation: 0, duration: 0.1 }
-        ],
-        ease: 'power1.inOut'
-      });
-    });
-
-    newContact.addEventListener('mouseleave', () => {
-      gsap.to(newContact, {
-        rotation: 0,
-        duration: .25,
+    
+    // ✅ Attach hover animation directly to the new clone
+  newContact.addEventListener('mouseenter', () => {
+    gsap.killTweensOf(newContact);
+    gsap.to(newContact, {
+      scale: 1.25,
+        duration: .05,
         ease: 'power2.out'
       });
     });
-  }
+
+  newContact.addEventListener('mouseleave', () => {
+    gsap.to(newContact, {
+      scale: 1,
+        duration: .05,
+        ease: 'power2.inOut'
+      });
+    });
+}
 
   // 🔁 MENU ICON
   const menuToggle = document.getElementById('menuIcon');
