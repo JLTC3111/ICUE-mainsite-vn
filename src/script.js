@@ -203,7 +203,7 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
     { selector: '.contact-link', delay: 1 },
   ];
 
-  const timeline = gsap.timeline({ defaults: { duration: .5, ease: 'power2.out' } });
+  const timeline = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.out' } });
 
   // Utility: set hidden state before animation
   const preHide = (el) => {
@@ -239,6 +239,7 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
       delay
     );
   });
+  
 
   // 🔁 Language Switcher
 const langSwitcher = document.getElementById('langSwitcher');
@@ -314,8 +315,8 @@ if (langSwitcher) {
     });
 }
 
-  // 🔁 MENU ICON
-  const menuToggle = document.getElementById('menuIcon');
+// 🔁 MENU ICON
+const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
     preHide(newToggle);
@@ -323,7 +324,7 @@ if (langSwitcher) {
 
     timeline.fromTo(
       newToggle,
-      isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.9, opacity: 0 },
+      isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.5, opacity: 0 },
       {
         y: 0,
         scale: 1,
@@ -332,7 +333,7 @@ if (langSwitcher) {
       },
       '-=0.4'
     );
-
+    
     newToggle.addEventListener('mouseenter', () => {
       gsap.to(newToggle, {
         scale: 1.25,
