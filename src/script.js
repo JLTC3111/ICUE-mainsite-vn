@@ -162,7 +162,7 @@ window.loadPage = (page) => {
               if (page === 'meetOurExperts') {
                 hideMenuBarElements();
                 attachProfileEvents();
-                animateNavItems();
+                retriggerMenuAnimations();
               }
               if (page === 'coreTeam') {
                 hideMenuBarElements();
@@ -170,8 +170,8 @@ window.loadPage = (page) => {
                 attachProfileEvents_coreTeam();
               }
               if (page === 'Home') {
-                retriggerMenuAnimations();
                 hideMenuBarElements();
+                retriggerMenuAnimations();
                 initHomeTextSlider();
                 attachHomeButtonEvents();
               }
@@ -217,7 +217,8 @@ window.retriggerMenuAnimations = () => {
     if (!el) return;
 
     const newEl = el.cloneNode(true);
-    newEl.style.opacity = '0'; // hide initially
+    newEl.classList.remove('hidden'); // ✨ make visible before animating
+    newEl.style.opacity = '0';
     el.parentNode.replaceChild(newEl, el);
 
     // Animate opacity back in
@@ -235,6 +236,7 @@ window.retriggerMenuAnimations = () => {
   const contactUs = document.getElementById('contactLink');
   if (contactUs) {
     const newContact = contactUs.cloneNode(true);
+    newContact.classList.remove('hidden'); // ✨ make visible before animating
     newContact.style.opacity = '0';
     contactUs.parentNode.replaceChild(newContact, contactUs);
 
@@ -248,7 +250,7 @@ window.retriggerMenuAnimations = () => {
 
     setTimeout(() => {
       newContact.classList.remove('animate');
-    }, 4500); // adjust as needed
+    }, 4500);
 
     // Hover wiggle
     newContact.addEventListener('mouseenter', () => {
@@ -278,6 +280,7 @@ window.retriggerMenuAnimations = () => {
   const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
+    newToggle.classList.remove('hidden'); // ✨ make visible before animating
     newToggle.style.opacity = '0';
     menuToggle.parentNode.replaceChild(newToggle, menuToggle);
 
@@ -306,32 +309,26 @@ window.retriggerMenuAnimations = () => {
 };
 
 window.hideMenuBarElements = () => {
-  const selectors = ['.menu-toggle', '.contact-link', '.logo-banner', '.flag-link'];
+  const elementsToHide = [
+    '.menu-toggle',
+    '#contactLink',
+    '.logo-banner',
+    '.flag-link'
+  ];
 
-  const hideIfReady = () => {
-    const allExist = selectors.every(sel => document.querySelector(sel));
-    if (!allExist) return false;
-
-    selectors.forEach(sel => {
-      const el = document.querySelector(sel);
-      el.style.opacity = '0';
-    });
-
-    return true;
-  };
-
-  // Try once immediately
-  if (hideIfReady()) return;
-
-  // If not ready, observe DOM changes
-  const observer = new MutationObserver(() => {
-    if (hideIfReady()) {
-      observer.disconnect();
+  elementsToHide.forEach(selector => {
+    const el = document.querySelector(selector);
+    if (el) {
+      el.classList.add('hidden');
     }
   });
-
-  observer.observe(document.body, { childList: true, subtree: true });
 };
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+  window.hideMenuBarElements();
+}, 50);
+});
 
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
@@ -590,6 +587,7 @@ window.toggleSubmenu = (e) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
   const submenuTrigger = document.querySelector('.has-submenu');
   const submenu = document.querySelector('.submenu');
 
@@ -832,7 +830,6 @@ window.initMobileNewsSlider = () => {
 
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
-
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];

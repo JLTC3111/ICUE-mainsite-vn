@@ -137,6 +137,11 @@ footer p {
   margin: 0;
 }
 
+.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .logo-banner {
   display: flex;
   margin: 0 auto;
@@ -152,7 +157,7 @@ footer p {
   0% {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-100%);
+    transform: translateY(-200%);
   }
   100% {
     opacity: 1;
@@ -161,7 +166,7 @@ footer p {
   }
 }
 
-.language-switcher,
+.flag-icon,
 .logo-content:hover{
   transform: scale(1.1);
   animation: wiggle .25s ease-in-out;
@@ -522,7 +527,7 @@ footer p {
   left: 50%;
   cursor: pointer;
   z-index: 9;
-  animation: dropDown 4.5s ease-in-out forwards;
+  animation: dropDown 2.5s ease-in-out forwards;
 }
 
 #menuIcon {
