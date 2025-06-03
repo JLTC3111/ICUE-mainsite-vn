@@ -1897,9 +1897,6 @@ body.loaded #app {
     font-size: 18px;
     font-weight: bold;
     padding: 0.5rem 1.5rem;
-    border-radius: 18px;
-    color: rgb(0, 0, 0);
-    background-color: #fffb00;
     text-decoration: none;
     transition: transform 0.3s ease, background-color 0.3s ease;
     z-index: 11;
