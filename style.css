@@ -137,6 +137,7 @@ footer p {
   margin: 0;
 }
 
+.pre-hidden,
 .hidden {
   opacity: 0 !important;
   visibility: hidden !important;
@@ -682,7 +683,7 @@ footer p {
 }
 
 .contact-link.animate {
-  animation: dropDown 4.5s ease-out forwards;
+  animation: dropDown 3.5s ease-out forwards;
 }
 
 @keyframes slideInFromRight {

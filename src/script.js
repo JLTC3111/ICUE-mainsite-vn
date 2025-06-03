@@ -140,117 +140,125 @@ window.loadPage = (page) => {
   }, 80);
 
   fetch(`/src/pages/${page}.html`)
-    .then(response => response.text())
-    .then(data => {
-      content.innerHTML = data;
+  .then(response => response.text())
+  .then(data => {
+    clearInterval(fakeProgress); // ensure we clear progress interval
 
-      clearInterval(fakeProgress);
+    // Finalize progress bar to 100%
+    let finalize = setInterval(() => {
+      progress += 2;
+      setProgress(progress);
+      if (progress >= 100) {
+        clearInterval(finalize);
 
-      let finalize = setInterval(() => {
-        progress += 2;
-        setProgress(progress);
-        if (progress >= 100) {
-          clearInterval(finalize);
-          landing.style.opacity = 0;
-          landing.style.pointerEvents = 'none';
+        // Hide loading overlay
+        landing.style.opacity = 0;
+        landing.style.pointerEvents = 'none';
 
-          setTimeout(() => {
-            landing.style.display = 'none';
+        setTimeout(() => {
+          landing.style.display = 'none';
 
-            // ✅ Delay script activation *after* loader is gone
+          // Insert content and trigger animations
+          content.innerHTML = data;
+
             requestAnimationFrame(() => {
-              if (page === 'meetOurExperts') {
-                hideMenuBarElements();
-                attachProfileEvents();
-                retriggerMenuAnimations();
-              }
-              if (page === 'coreTeam') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                attachProfileEvents_coreTeam();
-              }
-              if (page === 'Home') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                initHomeTextSlider();
-                attachHomeButtonEvents();
-              }
-              if (page === 'News') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                initLogoSlider();
-                initMobileNewsSlider();
-              }
-              if (page === 'aboutUs') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                createBalloons();
-              }
-              if (page === 'Contact') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                initPostMethod();
-              }
-              if (page === 'ourWork') {
-                hideMenuBarElements();
-                retriggerMenuAnimations();
-                initializeCarousel();
+              retriggerMenuAnimations();
+
+              switch (page) {
+                case 'meetOurExperts':
+                  attachProfileEvents();
+                  break;
+                case 'coreTeam':
+                  attachProfileEvents_coreTeam();
+                  break;
+                case 'Home':
+                  initHomeTextSlider();
+                  attachHomeButtonEvents();
+                  break;
+                case 'News':
+                  initLogoSlider();
+                  initMobileNewsSlider();
+                  break;
+                case 'aboutUs':
+                  createBalloons();
+                  break;
+                case 'Contact':
+                  initPostMethod();
+                  break;
+                case 'ourWork':
+                  initializeCarousel();
+                  break;
               }
             });
 
-          }, 400); // After fade-out
+          }, 400);
         }
-      },);
+      }, 30);
     });
-}
+};
 
-window.retriggerMenuAnimations = () => {
+window.retriggerMenuAnimations = (isFirstLoad = true) => {
   const animatedSelectors = [
-    '.menu-toggle',
-    '.logo-banner',
-    '.flag-link'
+    { selector: '.menu-toggle', delay: 0 },
+    { selector: '.logo-banner', delay: -0.3 },
+    { selector: '.flag-link', delay: -0.3 },
+    { selector: '.contact-link', delay: 1 },
   ];
 
-  // Function to clone, replace, and fade in elements
-  const cloneAndFadeIn = (selector) => {
+  const timeline = gsap.timeline({ defaults: { duration: .25, ease: 'power2.out' } });
+
+  // Utility: set hidden state before animation
+  const preHide = (el) => {
+    el.classList.add('pre-hidden');
+    el.style.opacity = '0';
+    el.style.visibility = 'hidden';
+  };
+
+  // Utility: unhide on animation start
+  const unhide = (el) => {
+    el.classList.remove('pre-hidden');
+    el.style.opacity = '';
+    el.style.visibility = '';
+  };
+
+  // Animate standard menu elements
+  animatedSelectors.forEach(({ selector, delay }) => {
     const el = document.querySelector(selector);
     if (!el) return;
 
     const newEl = el.cloneNode(true);
-    newEl.classList.remove('hidden'); // ✨ make visible before animating
-    newEl.style.opacity = '0';
+    preHide(newEl);
     el.parentNode.replaceChild(newEl, el);
 
-    // Animate opacity back in
-    gsap.to(newEl, {
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power2.out'
-    });
-  };
+    timeline.fromTo(
+      newEl,
+      isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        onStart: () => unhide(newEl)
+      },
+      delay
+    );
+  });
 
-  // Apply to standard elements
-  animatedSelectors.forEach(cloneAndFadeIn);
-
-  // 🔁 CONTACT LINK handling separately
+  // 🔁 CONTACT LINK
   const contactUs = document.getElementById('contactLink');
   if (contactUs) {
     const newContact = contactUs.cloneNode(true);
-    newContact.classList.remove('hidden'); // ✨ make visible before animating
-    newContact.style.opacity = '0';
+    preHide(newContact);
     contactUs.parentNode.replaceChild(newContact, contactUs);
 
-    // Drop-in animation
-    newContact.classList.add('animate');
-    gsap.to(newContact, {
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power2.out'
-    });
-
-    setTimeout(() => {
-      newContact.classList.remove('animate');
-    }, 4500);
+    timeline.fromTo(
+      newContact,
+      isFirstLoad ? { y: -50, opacity: 0 } : { opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        onStart: () => unhide(newContact)
+      },
+      '-=0.3'
+    );
 
     // Hover wiggle
     newContact.addEventListener('mouseenter', () => {
@@ -270,30 +278,35 @@ window.retriggerMenuAnimations = () => {
     newContact.addEventListener('mouseleave', () => {
       gsap.to(newContact, {
         rotation: 0,
-        duration: 0.2,
+        duration: .25,
         ease: 'power2.out'
       });
     });
   }
 
-  // 🔁 MENU TOGGLE handling
+  // 🔁 MENU ICON
   const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
-    newToggle.classList.remove('hidden'); // ✨ make visible before animating
-    newToggle.style.opacity = '0';
+    preHide(newToggle);
     menuToggle.parentNode.replaceChild(newToggle, menuToggle);
 
-    gsap.to(newToggle, {
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power2.out'
-    });
+    timeline.fromTo(
+      newToggle,
+      isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.9, opacity: 0 },
+      {
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        onStart: () => unhide(newToggle)
+      },
+      '-=0.4'
+    );
 
     newToggle.addEventListener('mouseenter', () => {
       gsap.to(newToggle, {
         scale: 1.25,
-        duration: 0.2,
+        duration: .05,
         ease: 'power2.out'
       });
     });
@@ -301,34 +314,13 @@ window.retriggerMenuAnimations = () => {
     newToggle.addEventListener('mouseleave', () => {
       gsap.to(newToggle, {
         scale: 1,
-        duration: 0.2,
+        duration: .05,
         ease: 'power2.inOut'
       });
     });
   }
 };
 
-window.hideMenuBarElements = () => {
-  const elementsToHide = [
-    '.menu-toggle',
-    '#contactLink',
-    '.logo-banner',
-    '.flag-link'
-  ];
-
-  elementsToHide.forEach(selector => {
-    const el = document.querySelector(selector);
-    if (el) {
-      el.classList.add('hidden');
-    }
-  });
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-  window.hideMenuBarElements();
-}, 50);
-});
 
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
@@ -561,14 +553,6 @@ window.removeOverlayListener = () => {
   document.removeEventListener('keydown', handleEscKey);
 }
 
-// Navigation handler + page loader
-window.navigateToPage = (page) => {
-  currentPage = page;
-  loadPage(page); // Your existing page loader
-  highlightActiveLink(page);
-  closeDrawerMenu();
-}
-
 // Highlight active link
 window.highlightActiveLink = (page) => {
   const links = document.querySelectorAll('#drawerMenu a');
@@ -609,12 +593,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Auto-highlight on initial load
-/*window.onload = () => {
-  loadPage('Home');
-  highlightActiveLink('Home');
-};*/
-
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
     {name: 
@@ -641,8 +619,7 @@ window.attachProfileEvents_coreTeam = () => {
       name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
       img: "public/profilePhotos/hien.png"
     },
-    
-    
+  
   ];
 
   let currentIndex = 0;
