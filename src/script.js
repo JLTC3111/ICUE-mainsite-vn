@@ -138,7 +138,7 @@ window.loadPage = (page) => {
     if (progress > 90) progress = 90;
     setProgress(progress);
   }, 80);
-
+  
   fetch(`/src/pages/${page}.html`)
   .then(response => response.text())
   .then(data => {
@@ -191,9 +191,9 @@ window.loadPage = (page) => {
               }
             });
 
-          }, 400);
+          }, 0);
         }
-      }, 30);
+      }, 0);
     });
 };
 
@@ -205,7 +205,7 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
     { selector: '.contact-link', delay: 1 },
   ];
 
-  const timeline = gsap.timeline({ defaults: { duration: .25, ease: 'power2.out' } });
+  const timeline = gsap.timeline({ defaults: { duration: .5, ease: 'power2.out' } });
 
   // Utility: set hidden state before animation
   const preHide = (el) => {
