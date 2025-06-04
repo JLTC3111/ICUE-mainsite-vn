@@ -367,9 +367,9 @@ footer p {
 
 .image-container {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 0;
-  transform: translate(9.5vw, -20vh);
+  transform: translate(9.5vw, -17.5vh);
   width: 280px;
   height: 374px;
   border-radius: 350px;
@@ -403,9 +403,10 @@ footer p {
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 675px;
-  transform: translate(-37.5%, -45%);
+  max-width: 650px;
+  transform: translate(-45%, -30.5%);
   padding: 20px;
+  margin: 0 1rem;
   border-radius: 20px;
   box-shadow: none;
 }
@@ -2543,6 +2544,12 @@ button:hover {
   }
 }
 
+@media (min-width: 1025px) and (max-aspect-ratio: 1.81) {
+  #text-slider {
+    transform: translate(-37.5%, -30.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+}
 
 @media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
   #text-slider {
