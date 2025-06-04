@@ -582,7 +582,8 @@ footer p {
 .drawer-menu a:hover {
   transform: translateX(45px);
   background-color: #e1e1e1;
-  border-left: 2.5px solid #ffffff;
+  border-left: 1.5px solid #d5d5d5;
+  padding-left: .5rem;
   color: #000;
 }
 
@@ -606,6 +607,10 @@ footer p {
 .has-submenu::after {
   margin-left: 0.5rem;
   transition: transform 1.5s ease;
+}
+
+.submenu.open ~ .has-submenu::after {
+  transform: rotate(180deg);
 }
 
 .submenu {
@@ -632,10 +637,6 @@ footer p {
   pointer-events: none;
 }
 
-.submenu.open ~ .has-submenu::after {
-  transform: rotate(180deg);
-}
-
 .drawer-menu .submenu a {
   font-size: 1.2rem;
   color: #ffffff;
@@ -648,7 +649,7 @@ footer p {
 .drawer-menu .submenu a::before {
   content: "↳";
   color: #ffffff; 
-  font-size: 1.3rem;
+  font-size: 2.25rem;
   position: inline-block;
   vertical-align: middle;
 }
