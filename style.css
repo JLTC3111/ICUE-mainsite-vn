@@ -2536,3 +2536,9 @@ button:hover {
     transform: translate(14.5vw, -130vh); /* adjust as needed */
   }
 }
+
+@media (min-width: 1025px) and (min-aspect-ratio: 2.45) {
+  #text-slider-coreTeam {
+    transform: translate(14.5vw, -137.5vh); /* adjust as needed */
+  }
+}
