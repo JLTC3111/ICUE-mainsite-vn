@@ -660,71 +660,90 @@ window.attachProfileEvents_coreTeam = () => {
   let touchStartX = 0;
   let touchEndX = 0;
   const MIN_SWIPE_DISTANCE = 15;
-  
+
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.querySelector('.image-container'); // Fixed class name here
+  const container = document.querySelector('.image-container');
+
+
+function updateTransform() {
+  if (window.innerWidth < 1336) return; // ✅ Only apply transform on wide screens
+
+  const vw = window.innerWidth / 100;
+  const vh = window.innerHeight / 100;
+  const aspectRatio = window.innerWidth / window.innerHeight;
+
+  // Use a base translateY value and scale it depending on aspect ratio
+  // Taller screens = higher ratio → increase upward movement
+  const baseTranslateY = -117.5; // Base value for "standard" screen
+  const scaleFactor = (aspectRatio / 1.78); // 1.78 = reference 16:9 ratio
+
+  const translateX = 1.05 * vw;
+  const translateY = baseTranslateY * scaleFactor * vh;
+
+  textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
+}
+
+window.addEventListener('resize', updateTransform);
+updateTransform(); // Initial run
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
-  
-    // Step 1: Add exit animation classes
+
     const isFirstLoad = (currentIndex === 0 && index === 0);
 
     if (!isFirstLoad) {
-    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
-  
+      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    }
+
     setTimeout(() => {
-      // Step 2: Update the content
       textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
       photo.src = profileData_coreTeam[index].img;
-  
-      // Step 3: Remove exit animation classes
+
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-  
-      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
-  
-      // Step 4: Animate using GSAP (✅ after content is updated)
+
       const tl = gsap.timeline();
-      
+
       if (isFirstLoad) {
-        // 👑 First time opening animation
-        tl.fromTo(photo, 
+        tl.fromTo(photo,
           { y: 100, scale: 0.8, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-  
+
         tl.fromTo(textBox,
           { y: -50, opacity: 0 },
           { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
-          "-=0.8" // overlap a bit
+          "-=0.8"
         );
-  
       } else {
-        // 👉 Normal sliding between profiles
-        tl.fromTo(photo, 
+        tl.fromTo(photo,
           { y: 100, scale: 0.8, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
-        // 👇 Then shift slightly left
+
         tl.to(photo, {
           y: 10,
           duration: 0.3,
           ease: "power2.out"
-        }, "-=0.4"); // slight overlap with entry
-        tl.set(photo, { y: 10 }); // ⬅ final hard-set to lock it
-        tl.fromTo(textBox, 
-          { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
+        }, "-=0.4");
+
+        tl.set(photo, { y: 10 });
+
+        tl.fromTo(textBox,
+          { x: direction === 'right' ? 100 : -100, opacity: 0 },
           { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
           "-=0.5"
         );
       }
-  
-    }, isFirstLoad ? 0 : 800); // No delay if first load
+
+      // 🔧 Adjust transform after update
+      updateTransform();
+
+    }, isFirstLoad ? 0 : 800);
   };
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
@@ -737,7 +756,6 @@ window.attachProfileEvents_coreTeam = () => {
     updateProfile_coreTeam(currentIndex, 'left');
   });
 
-  // Add touch support for mobile
   if (container) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
@@ -746,7 +764,7 @@ window.attachProfileEvents_coreTeam = () => {
     container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-      
+
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
           document.getElementById('prev-btn')?.click();
@@ -757,16 +775,15 @@ window.attachProfileEvents_coreTeam = () => {
     });
   }
 
-  // Preload all profile images
-profileData_coreTeam.forEach(profile => {
-  const img = new Image();
-  img.src = profile.img;
-});
-  // Start first profile
-  updateProfile_coreTeam(0); // Fixed here
-}
+  // Preload images
+  profileData_coreTeam.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
+  });
 
-attachProfileEvents_coreTeam(); // Initialize the function
+  // Initialize first profile
+  updateProfile_coreTeam(0);
+};
 
 
 window.initLogoSlider = () => {
