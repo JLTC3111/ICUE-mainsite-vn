@@ -2531,13 +2531,13 @@ button:hover {
   }
 }
 
-@media (min-width: 1025px) and (min-aspect-ratio: 1.35) and (max-width: 2.18) {
+@media (min-width: 1025px) and (min-aspect-ratio: 1.35) {
   #text-slider-coreTeam {
-    transform: translate(14.5vw, -130vh); /* adjust as needed */
+    transform: translate(14.5vw, -125vh); /* adjust as needed */
   }
 }
 
-@media (min-width: 1025px) and (min-aspect-ratio: 2.19) {
+@media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
   #text-slider-coreTeam {
     transform: translate(14.5vw, -145vh); /* adjust as needed */
   }
