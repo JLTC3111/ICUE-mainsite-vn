@@ -2533,6 +2533,6 @@ button:hover {
 
 @media (min-width: 1025px) and (min-aspect-ratio: 1.824) and (max-aspect-ratio: 2.25/1) {
   #text-slider-coreTeam {
-    transform: translate(14.5vw, -130vh); /* adjust as needed */
+    transform: translate(14.5vw, -135vh); /* adjust as needed */
   }
 }
