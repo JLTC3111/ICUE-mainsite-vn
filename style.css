@@ -726,11 +726,14 @@ footer p {
   z-index: 3;
 }
 
+#text-slider-coreTeam{
+  transform: translate(14.5vw, -117.5vh);
+}
+
 .text-container-coreTeam {
   position: relative;
   width: 50%;
   max-width: 675px;
-  transform: translate(14.5vw, -117.5vh);
   padding: 25px;
   background: transparent;
   backdrop-filter: none;

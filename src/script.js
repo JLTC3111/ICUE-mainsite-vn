@@ -668,8 +668,8 @@ window.attachProfileEvents_coreTeam = () => {
 
 function updateResize() {
   if (window.innerWidth < 1336) return;
-
-  if (!textBox) {
+  const textBox2 = document.getElementById('profile-text-coreTeam');
+  if (!textBox2) {
     console.warn("textBox not found.");
     return;
   }
@@ -688,9 +688,9 @@ function updateResize() {
 
   // Responsive font sizing
   const fontSize = Math.min(Math.max(1.2 * (window.innerWidth / 2140), 1), 1.8);
-  textBox.style.fontSize = `${fontSize}rem`;
+  textBox2.style.fontSize = `${fontSize}rem`;
 
-  textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
+  textBox2.style.transform = `translate(${translateX}px, ${translateY}px)`;
 
   console.log({
     aspectRatio,
