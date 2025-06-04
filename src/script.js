@@ -667,21 +667,28 @@ window.attachProfileEvents_coreTeam = () => {
 
 
 function updateTransform() {
-  if (window.innerWidth < 1336) return; // ✅ Only apply transform on wide screens
+  if (window.innerWidth < 1336) return;
 
   const vw = window.innerWidth / 100;
   const vh = window.innerHeight / 100;
   const aspectRatio = window.innerWidth / window.innerHeight;
 
-  // Use a base translateY value and scale it depending on aspect ratio
-  // Taller screens = higher ratio → increase upward movement
-  const baseTranslateY = -117.5; // Base value for "standard" screen
-  const scaleFactor = (16 / 9 * aspectRatio); // 1.78 = reference 16:9 ratio
+  // Base translate for 16:9 (≈1.78 aspect ratio)
+  const baseTranslateY = -117.5;
+  const referenceAspectRatio = 1.78;
+
+  // Scale proportionally based on how much taller the screen is
+  const ratioFactor = aspectRatio / referenceAspectRatio;
+
+  // If screen is taller (e.g. 1.82 ratio), push further up
+  const adjustedTranslateY = baseTranslateY * (1 / ratioFactor); // invert ratio to pull more on taller screens
 
   const translateX = 1.05 * vw;
-  const translateY = baseTranslateY * scaleFactor * vh;
+  const translateY = adjustedTranslateY * vh;
 
-  textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
+  if (textBox) {
+    textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
+  }
 }
 
 window.addEventListener('resize', updateTransform);
