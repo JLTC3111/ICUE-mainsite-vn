@@ -726,17 +726,15 @@ footer p {
   z-index: 3;
 }
 
-@media (min-width: 1337px) and (min-aspect-ratio: 1.76/1) and (max-aspect-ratio: 1.8/1) {
-  #text-slider-coreTeam {
-    transform: translate(14.5vw, -135vh); /* adjust as needed */
-  }
-} 
-
-
 #text-slider-coreTeam{
   transform: translate(14.5vw, -117.5vh);
 }
 
+@media (min-width: 1337px) and (min-aspect-ratio: 1.58) and (max-aspect-ratio: 1.67/1) {
+  #text-slider-coreTeam {
+    transform: translate(14.5vw, -135vh); /* adjust as needed */
+  }
+} 
 
 .text-container-coreTeam {
   position: relative;
