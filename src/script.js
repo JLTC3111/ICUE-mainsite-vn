@@ -596,7 +596,11 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   e.preventDefault(); // prevent page from jumping
-  const submenu = document.getElementById('ourPeopleSubmenu');
+  const submenu = document.getElementById('ourPeopleSubMenu');
+  if (!submenu) {
+    console.warn(`toggleSubmenu: No element found with ID "${id}"`);
+    return;
+  }
   submenu.classList.toggle('open');
 }
 
