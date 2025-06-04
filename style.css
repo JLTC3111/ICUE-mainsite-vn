@@ -403,8 +403,8 @@ footer p {
   top: 50%;
   left: 50%;
   width: 50%;
-  max-width: 725px;
-  transform: translate(-37.5%, -47.5%);
+  max-width: 675px;
+  transform: translate(-37.5%, -45%);
   padding: 20px;
   border-radius: 20px;
   box-shadow: none;
@@ -2540,5 +2540,25 @@ button:hover {
 @media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
   #text-slider-coreTeam {
     transform: translate(14.5vw, -145vh); /* adjust as needed */
+  }
+}
+
+
+@media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
+  #text-slider {
+    transform: translate(-40.5%, -20.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+}
+
+@media (min-width: 1025px) and (min-aspect-ratio: 2.5) {
+  #text-slider {
+    transform: translate(-37.5%, -30.5%); /* adjust as needed */
+  }
+}
+
+@media (min-width: 1025px) and (min-aspect-ratio: 3.5) {
+  #text-slider {
+    transform: translate(-37.5%, -15%); /* adjust as needed */
   }
 }
