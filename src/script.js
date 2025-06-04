@@ -668,40 +668,39 @@ window.attachProfileEvents_coreTeam = () => {
 
 function updateResize() {
   if (window.innerWidth < 1336) return;
-  
+
   if (!textBox) {
     console.warn("textBox not found.");
     return;
   }
+
   const vw = window.innerWidth / 100;
   const vh = window.innerHeight / 100;
   const aspectRatio = window.innerWidth / window.innerHeight;
 
-  // Base translate for 16:9 (≈1.78 aspect ratio)
-  const baseTranslateY = -117.5;
+  const baseTranslateY = -5;
   const referenceAspectRatio = 1.78;
-
-  // Scale proportionally based on how much taller the screen is
   const ratioFactor = aspectRatio / referenceAspectRatio;
-
-  // If screen is taller (e.g. 1.82 ratio), push further up
-  const adjustedTranslateY = baseTranslateY * (1 / ratioFactor); // invert ratio to pull more on taller screens
+  const adjustedTranslateY = baseTranslateY * (1 / ratioFactor);
 
   const translateX = 1.05 * vw;
   const translateY = adjustedTranslateY * vh;
 
-  // 👇 Add this here
+  // Responsive font sizing
+  const fontSize = Math.min(Math.max(1.2 * (window.innerWidth / 2140), 1), 1.8);
+  textBox.style.fontSize = `${fontSize}rem`;
+
+  textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
+
   console.log({
     aspectRatio,
     ratioFactor,
     adjustedTranslateY,
-    translateY
+    translateY,
+    fontSize
   });
-
-  if (textBox) {
-    textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
-  }
 }
+
 updateResize(); // Initial run
 window.addEventListener('resize', updateResize); // Live updates on resize
 
