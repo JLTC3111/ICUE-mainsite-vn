@@ -406,7 +406,6 @@ footer p {
   max-width: 650px;
   transform: translate(-45%, -30.5%);
   padding: 20px;
-  margin: 0 1rem;
   border-radius: 20px;
   box-shadow: none;
 }
@@ -2546,8 +2545,21 @@ button:hover {
 
 @media (min-width: 1025px) and (max-aspect-ratio: 1.81) {
   #text-slider {
-    transform: translate(-37.5%, -30.5%); /* adjust as needed */
+    transform: translate(-36%, -39.5%); /* adjust as needed */
     margin-left: 1rem;
+  }
+  .arrow-button{
+    top:50%;
+  }
+}
+
+@media (min-aspect-ratio:1.8101) and (max-aspect-ratio: 2.0499) {
+  #text-slider {
+    transform: translate(-39.5%, -30.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+  .arrow-button{
+    top:60%;
   }
 }
 
@@ -2556,16 +2568,25 @@ button:hover {
     transform: translate(-40.5%, -20.5%); /* adjust as needed */
     margin-left: 1rem;
   }
+  .arrow-button{
+    top:60%;
+  }
 }
 
 @media (min-width: 1025px) and (min-aspect-ratio: 2.5) {
   #text-slider {
     transform: translate(-37.5%, -30.5%); /* adjust as needed */
   }
+  .arrow-button{
+    top:60%;
+  }
 }
 
 @media (min-width: 1025px) and (min-aspect-ratio: 3.5) {
   #text-slider {
     transform: translate(-37.5%, -15%); /* adjust as needed */
+  }
+  .arrow-button{
+    top:60%;
   }
 }
