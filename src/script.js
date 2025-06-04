@@ -666,9 +666,13 @@ window.attachProfileEvents_coreTeam = () => {
   const container = document.querySelector('.image-container');
 
 
-function updateTransform() {
+function updateResize() {
   if (window.innerWidth < 1336) return;
-
+  
+  if (!textBox) {
+    console.warn("textBox not found.");
+    return;
+  }
   const vw = window.innerWidth / 100;
   const vh = window.innerHeight / 100;
   const aspectRatio = window.innerWidth / window.innerHeight;
@@ -686,13 +690,21 @@ function updateTransform() {
   const translateX = 1.05 * vw;
   const translateY = adjustedTranslateY * vh;
 
+  // 👇 Add this here
+  console.log({
+    aspectRatio,
+    ratioFactor,
+    adjustedTranslateY,
+    translateY
+  });
+
   if (textBox) {
     textBox.style.transform = `translate(${translateX}px, ${translateY}px)`;
   }
 }
+updateResize(); // Initial run
+window.addEventListener('resize', updateResize); // Live updates on resize
 
-window.addEventListener('resize', updateTransform);
-updateTransform(); // Initial run
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
@@ -748,7 +760,7 @@ updateTransform(); // Initial run
       }
 
       // 🔧 Adjust transform after update
-      updateTransform();
+      updateResize();
 
     }, isFirstLoad ? 0 : 800);
   };
