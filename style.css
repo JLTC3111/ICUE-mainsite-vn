@@ -730,6 +730,12 @@ footer p {
   transform: translate(14.5vw, -117.5vh);
 }
 
+@media (min-width: 1337px) and (min-aspect-ratio: 1.75/1) and (max-aspect-ratio: 1.85/1) {
+  #text-slider-coreTeam {
+    transform: translate(14.5vw, -125vh); /* adjust as needed */
+  }
+} 
+
 .text-container-coreTeam {
   position: relative;
   width: 50%;

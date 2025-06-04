@@ -168,6 +168,7 @@ window.loadPage = (page) => {
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
+                  updateResize();
                   break;
                 case 'Home':
                   initHomeTextSlider();
@@ -666,43 +667,6 @@ window.attachProfileEvents_coreTeam = () => {
   const container = document.querySelector('.image-container');
 
 
-function updateResize() {
-  if (window.innerWidth < 1336) return;
-  const textBox2 = document.getElementById('profile-text-coreTeam');
-  if (!textBox2) {
-    console.warn("textBox not found.");
-    return;
-  }
-
-  const vw = window.innerWidth / 100;
-  const vh = window.innerHeight / 100;
-  const aspectRatio = window.innerWidth / window.innerHeight;
-
-  const baseTranslateY = -5;
-  const referenceAspectRatio = 1.78;
-  const ratioFactor = aspectRatio / referenceAspectRatio;
-  const adjustedTranslateY = baseTranslateY * (1 / ratioFactor);
-
-  const translateX = 1.05 * vw;
-  const translateY = adjustedTranslateY * vh;
-
-  // Responsive font sizing
-  const fontSize = Math.min(Math.max(1.2 * (window.innerWidth / 2140), 1), 1.8);
-  textBox2.style.fontSize = `${fontSize}rem`;
-
-  textBox2.style.transform = `translate(${translateX}px, ${translateY}px)`;
-
-  console.log({
-    aspectRatio,
-    ratioFactor,
-    adjustedTranslateY,
-    translateY,
-    fontSize
-  });
-}
-
-updateResize(); // Initial run
-window.addEventListener('resize', updateResize); // Live updates on resize
 
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
