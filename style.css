@@ -1829,7 +1829,7 @@ body.loaded #app {
 
   .image-container {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     width: 250px;
     height: 350px;
@@ -1838,9 +1838,10 @@ body.loaded #app {
 
   .text-container {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
-    width: 90%;
+    width: 100%;
+    max-width: 75vw;
     transform: translate(-50%, 12.5%);
     padding: 15px;
     margin-top: clamp(1.5rem, 1.4vw, 3.5rem);
@@ -2543,6 +2544,7 @@ button:hover {
   }
 }
 
+
 @media (min-width: 1025px) and (max-aspect-ratio: 1.81) {
   #text-slider {
     transform: translate(-36%, -39.5%); /* adjust as needed */
@@ -2588,5 +2590,18 @@ button:hover {
   }
   .arrow-button{
     top:60%;
+  }
+}
+
+@media (max-width: 1024px) and (min-aspect-ratio: 1.65) {
+  .image-container{
+    transform: translate(-50%, -45%);
+  }
+  #text-slider {
+    transform: translate(-45%, 32.5%); /* adjust as needed */
+    margin-left: 1rem;
+  }
+  .arrow-button{
+    top:50%;
   }
 }
