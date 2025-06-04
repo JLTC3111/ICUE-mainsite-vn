@@ -676,7 +676,7 @@ function updateTransform() {
   // Use a base translateY value and scale it depending on aspect ratio
   // Taller screens = higher ratio → increase upward movement
   const baseTranslateY = -117.5; // Base value for "standard" screen
-  const scaleFactor = (aspectRatio / 1.78); // 1.78 = reference 16:9 ratio
+  const scaleFactor = (16 / 9 * aspectRatio); // 1.78 = reference 16:9 ratio
 
   const translateX = 1.05 * vw;
   const translateY = baseTranslateY * scaleFactor * vh;
