@@ -2531,8 +2531,8 @@ button:hover {
   }
 }
 
-@media (min-width: 1025px) and (min-aspect-ratio: 1.73) {
+@media (min-width: 1025px) and (min-aspect-ratio: 1.35) {
   #text-slider-coreTeam {
-    transform: translate(14.5vw, -135vh); /* adjust as needed */
+    transform: translate(14.5vw, -130vh); /* adjust as needed */
   }
 }
