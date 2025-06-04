@@ -436,7 +436,7 @@ footer p {
 .arrow-button {
   position: fixed;
   display: flex;
-  top: 40%;
+  top: 50%;
   width: 75px;
   height: 75px;
   justify-content: center;
