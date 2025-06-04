@@ -728,7 +728,7 @@ footer p {
   position: relative;
   width: 50%;
   max-width: 675px;
-  transform: translate(14.5vw, -137.5vh);
+  transform: translate(14.5vw, -117.5vh);
   padding: 25px;
   background: transparent;
   backdrop-filter: none;
@@ -1661,7 +1661,7 @@ body.loaded #app {
   }
 
   .text-container-coreTeam {
-    top:15vh;
+    top:20vh;
     left:-.5rem;
     min-width: 300px;      /* Always has room for decent content */
     max-width: 45vw;       /* Responsive limit based on screen width */
@@ -2001,7 +2001,7 @@ body.loaded #app {
   }
 }
 
-@media (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
+@media (max-width: 450px) and (min-aspect-ratio: 1.7/1) and (max-aspect-ratio: 2.2/1) {
   .text-container-coreTeam{
     margin-top: clamp(12.5%, 10vh, 15%);
   }
