@@ -213,7 +213,8 @@ footer p {
 
 #homeSliderText {
   background: rgba(236, 236, 236, 0.2); /* Semi-transparent */
-  backdrop-filter: blur(1px);           /* Glass blur */
+  backdrop-filter: blur(1px); 
+  -webkit-backdrop-filter: blur(1px);  /* Safari 15.6.1 or lower */
   border-radius: 15px;
   padding: 1rem 2rem;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
@@ -391,7 +392,7 @@ footer p {
 #profile-text {
   background: rgba(255, 255, 255, 0.1); /* light transparent background */
   backdrop-filter: blur(27.5px);          /* frosted glass blur */
-  -webkit-backdrop-filter: blur(5px);  /* Safari support */
+  -webkit-backdrop-filter: blur(27.5px);  /* Safari 15.6.1 or lower */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;  
   padding: 15px;                
