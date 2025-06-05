@@ -2517,12 +2517,12 @@ button:hover {
   }
 }
 
-@media (max-width: 975px) and (min-aspect-ratio: 1.8/1)  {
+@media (max-width: 1024px) and (min-aspect-ratio: 1.8/1)  {
   .image-container{
     margin-top: 17.5%;
   }
   .text-container{
-    margin-top: 22.5%;
+    margin-top: 18.5%;
   }
   .text-container-coreTeam{
     margin-top: 5.5rem;
@@ -2530,7 +2530,91 @@ button:hover {
   .news-card{
     width: 95%;
     height:100vh;
-    overflow: auto;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 1024px) and (min-aspect-ratio: .78/1) {
+  .home-text-slider{
+    margin-top:-3.5rem;
+  }
+  .slider-dots{
+    margin-top: -3rem;
+  }
+  .image-container{
+    left:47.5%;
+    width:150px;
+    height:210px;
+  }
+  .text-container{
+    left:45%;
+    margin-top: 2rem;
+    width: 70%;
+  }
+  .intro-people{
+    font-size: 28px;
+  }
+  .montserrat-pepple{
+    font-size: 15px;
+  }
+  .image-container-coreTeam{
+    width: 140px;
+    height: 198.5px;
+    left:45%;
+  }
+  .profile-photo-coreTeam {
+      width: 150px;
+    }
+  .text-container-coreTeam{
+    max-width:700px;
+    width:65%;
+    top:70.5%;
+    left:-1.5%;
+  }
+}
+
+@media (max-width: 1024px) and (max-aspect-ratio: .7299/1) {
+  .image-container-coreTeam{
+    left:47.5%;
+  }
+  .text-container-coreTeam{
+    max-width:550px;
+    width:65%;
+    top:30.5%;
+    left:17.5%;
+  }
+}
+
+@media (max-width: 720px) and (min-aspect-ratio: .79/1) {
+  .home-text-slider{
+    margin-top: -4rem;
+  }
+  .image-container{
+    left:50%;
+    width:120px;
+    height:168px;
+  }
+  .text-container{
+    margin-top: .5rem;
+    margin-left: 2rem;
+    width: 70%;
+  }
+  .intro-people{
+    font-size: 20px;
+  }
+  .montserrat-pepple{
+    font-size: 12px;
+  }
+  .image-container-coreTeam{
+    top:25%;
+    left:45%;
+  }
+  .text-container-coreTeam{
+    top:72.5%;
+    left: -1.5%;
+  }
+  .arrow-container{
+    transform: translateY(5rem);
   }
 }
 
