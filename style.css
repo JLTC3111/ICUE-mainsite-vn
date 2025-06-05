@@ -565,6 +565,7 @@ footer p {
   inset: 0;
   background: radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), #000 60%);
   backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   pointer-events: none; /* let clicks pass through */
   z-index: -2;
 }
