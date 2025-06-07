@@ -1341,8 +1341,8 @@ body.loaded #app {
     pointer-events: auto;
 }
 .work-thumbnail .work-item{
-    width: 150px;
-    height: 220px;
+    width: 130px;
+    height: 190px;
     flex-shrink: 0;
     position: relative;
     transition: transform 0.3s ease-in-out;
@@ -1353,9 +1353,13 @@ body.loaded #app {
     object-fit: cover;
     border-radius: 20px;
     cursor: pointer;
+    filter: grayscale(1); /* 👈 move it here */
+    opacity: 0.7;
 }
 .work-thumbnail .work-item img:hover{
   transform: scale(1.1);
+  filter: grayscale(0);
+  opacity: 1;
 }
 
 .work-thumbnail .work-item .work-content{
