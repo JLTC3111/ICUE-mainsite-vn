@@ -2138,7 +2138,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:15%;
+      top:75%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
@@ -2584,7 +2584,7 @@ button:hover {
   .text-container-coreTeam{
     max-width:550px;
     width:80%;
-    top:68.5%;
+    top:70%;
     left:-10%;
   }
 }
