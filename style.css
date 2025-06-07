@@ -1837,8 +1837,8 @@ body.loaded #app {
     position: absolute;
     top: 45%;
     left: 50%;
-    width: 250px;
-    height: 350px;
+    width: 200px;
+    height: 280px;
     transform: translate(-50%, -75%);
   }
 
@@ -1847,7 +1847,7 @@ body.loaded #app {
     top: 45%;
     left: 50%;
     width: 100%;
-    max-width: 75vw;
+    max-width: 90vw;
     transform: translate(-50%, 12.5%);
     padding: 15px;
     margin-top: clamp(1.5rem, 1.4vw, 3.5rem);
@@ -2048,8 +2048,8 @@ body.loaded #app {
     .text-container-coreTeam {
       top:72.5%;
       left:5%;
-      width: 60%;
-      padding: 15px;
+      width:70%;
+      padding:15px;
     }
     
     .intro-core {
@@ -2583,9 +2583,9 @@ button:hover {
   }
   .text-container-coreTeam{
     max-width:550px;
-    width:65%;
-    top:67.5%;
-    left:2.5%;
+    width:80%;
+    top:68.5%;
+    left:-10%;
   }
 }
 
