@@ -1140,7 +1140,7 @@ body.loaded #app {
 }
 
 .news-slider {
-  margin: 7.5% .5% auto;
+  margin: 9.5% 0.25% auto;
   background-color: transparent;
   width: 50vw;
   justify-content: center;
@@ -2134,7 +2134,7 @@ body.loaded #app {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(-11vw, -2.5vh);
+      transform: translate(-11vw, 1.5vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
