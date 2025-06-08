@@ -17,7 +17,6 @@ h1 {
 
 h2 {
   color: rgb(0, 0, 0);
-  
   animation: slideUp 2.5s ease-in-out forwards;
 }
 
@@ -112,10 +111,10 @@ nav a {
   top: 0;
   left: 0;
   z-index: -9;     
-  animation: home-intro 1.5s ease-out forwards;
+  animation: intro 1.5s ease-out forwards;
 }
 
-@keyframes home-intro {
+@keyframes intro {
   0% {
     transform: translateY(-5%);
   }
@@ -136,6 +135,7 @@ nav a {
   left: 0;
   z-index: -9;
   opacity: 0.85;
+  animation: intro 1.5s ease-in-out forwards;
 }
 
 footer {
@@ -357,7 +357,7 @@ footer p {
 @keyframes fadeIn {
   0% {
     opacity: 0;
-    visibility: visible;
+    visibility: hidden;
   }
   100% {
     opacity: 1;
