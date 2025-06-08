@@ -111,7 +111,20 @@ nav a {
   object-fit: cover;
   top: 0;
   left: 0;
-  z-index: -9;
+  z-index: -9;     
+  animation: home-intro 1.5s ease-out forwards;
+}
+
+@keyframes home-intro {
+  0% {
+    transform: translateY(-5%);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .video-bg-moe {
