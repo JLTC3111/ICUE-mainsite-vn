@@ -591,7 +591,7 @@ footer p {
   font-size: 1.4rem;
   text-decoration: none;
   border-left: 5px solid transparent;
-  transition: transform 0.3s ease-in-out, border-color 0.2s ease;
+  transition: all 1.25s ease, border-color 0.2s ease;
 }
 
 .drawer-menu a:hover {
@@ -670,7 +670,14 @@ footer p {
   font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif; /* force consistency */
 }
 
-.drawer-menu .submenu a:hover {
+.drawer-menu .moe-subMenu:hover {
+  font-style: bold;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffff03;
+}
+
+.drawer-menu .core-subMenu:hover {
+  font-style: bold;
   background-color: rgba(255, 255, 255, 0.1);
   color: #9afc93;
 }
@@ -1973,9 +1980,8 @@ body.loaded #app {
 
   .drawer-menu .submenu a {
     font-size: 1.1rem;
-    padding-top: 0.5rem;
+    padding-top: 0.15rem;
     left: 0rem;
-    text-decoration: underline;
     position: relative;
     transition: all 1.5s ease;
   }
