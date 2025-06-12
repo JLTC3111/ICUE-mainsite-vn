@@ -1875,8 +1875,8 @@ body.loaded #app {
     position: absolute;
     top: 45%;
     left: 50%;
-    width: 200px;
-    height: 280px;
+    width: 150px;
+    height: 200px;
     transform: translate(-50%, -75%);
   }
 
@@ -1899,7 +1899,7 @@ body.loaded #app {
   }
 
   .intro-people {
-    font-size: 30px;
+    font-size: 22px;
     margin-right: 20px;
     margin-bottom: 20px;
   }
