@@ -1044,6 +1044,8 @@ body.loaded #app {
   gap: 2rem;
   padding: 2rem;
   background: #f5f5f5;
+  overflow: auto;
+  height: 100vh;
 }
 
 .news-arrow {
@@ -1053,6 +1055,7 @@ body.loaded #app {
 .news-card {
   position: relative;
   width: 350px;
+  height: auto;
   background: white;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
@@ -2121,7 +2124,7 @@ body.loaded #app {
     }
 
     .newsPageContainer {
-      position: fixed;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2154,6 +2157,17 @@ body.loaded #app {
       z-index: 1;
     }
 
+    /* Maintain your news-card styling */
+    .news-card {
+      margin: -1rem 2rem auto auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 93.5vw;
+      height: 95vh;
+      z-index: 1;
+    }
+
     /* Arrows */
     .news-arrow {
       position: absolute;
@@ -2179,16 +2193,6 @@ body.loaded #app {
       margin-left: 38vw;
     }
 
-    /* Maintain your news-card styling */
-    .news-card {
-      margin: -1rem 2rem auto auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 93.5vw;
-      height: 95vh;
-      z-index: 1;
-    }
 
     .news-date {
       position: absolute;
