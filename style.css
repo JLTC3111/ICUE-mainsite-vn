@@ -2723,7 +2723,7 @@ button:hover {
 
 @media (max-width: 1024px) and (min-aspect-ratio: 1.65) {
   .image-container{
-    transform: translate(-50%, -45%);
+    transform: translate(-50%, -105%);
   }
   #text-slider {
     transform: translate(-45%, 32.5%); /* adjust as needed */
