@@ -24,6 +24,9 @@ h2 {
   0% {
     transform: translateY(100%);
   }
+  50% {
+    transform: translateY(-50%);
+  }
   100% {
     transform: translateY(0);
   }
@@ -235,10 +238,6 @@ footer p {
   font-size: 28px;
   text-decoration: underline;
   transition: transform 0.3s ease-in-out;
-  background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 0 #000000,       /* hard shadow base */
@@ -1020,17 +1019,6 @@ body.preload #app {
 body.loaded #app {
   visibility: visible;
   opacity: 1;
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .cursor-symbol {
