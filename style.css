@@ -197,16 +197,11 @@ footer p {
   justify-content: left;
   font-family: 'Rubik';
   font-style: normal;
-  color: whitesmoke;
-  font-size: clamp(48px, 52.5px, 55px);
+  font-size: clamp(32px, 2.5vw, 42px);
   font-weight: 400;
-  background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   /* Add text shadow for 3D depth */
   text-shadow:
-    1px 1px 0 #000000,       /* hard shadow base */
+    1px 1px 0 yellow,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
 
@@ -218,7 +213,7 @@ footer p {
   font-family: 'IBM Plex Serif', serif;
   font-weight: 600;
   font-style: italic;
-  font-size: clamp(40px, 42.5px, 45px);
+  font-size: clamp(30px, 2.5vw, 40px);
   background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
   -webkit-background-clip: text;
   background-clip: text;
@@ -232,7 +227,7 @@ footer p {
 
   /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
-  line-height: 2;
+  line-height: 1.8;
 }
 
 .lets-talk {
