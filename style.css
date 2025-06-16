@@ -22,12 +22,15 @@ h2 {
 
 @keyframes slideUp {
   0% {
+    opacity: 0;
     transform: translateY(100%);
   }
   50% {
+    opacity: 0.25;
     transform: translateY(-50%);
   }
   100% {
+    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -292,6 +295,7 @@ footer p {
   line-height: 2;
   opacity: 1;          
   /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+  transition: opacity 0.5s ease-in-out;
 }
 
 .slider-dots {
@@ -2351,12 +2355,14 @@ body.loaded #app {
 @keyframes slideInFromLeft {
   0% {
     opacity: 0;
-    visibility: hidden;
     transform: translateX(-100%);
+  }
+  50% {
+    opacity: .25;
+    transform: translateX(25%);
   }
   100% {
     opacity: 1;
-    visibility: visible;
     transform: translateX(0%);
   }
 }
