@@ -899,7 +899,7 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: .5rem;
+  top: 3.5%;
   right: -7.5rem;
   z-index: 11;
 }
@@ -1630,8 +1630,8 @@ body.loaded #app {
   }
 
   .model-building{
-    top: 12.5%;
-    right: 4.5%;
+    top: 15%;
+    right: -7.5%;
     z-index:2;
   }
 
@@ -2041,7 +2041,7 @@ body.loaded #app {
   }
 
   .model-building {
-    top: -7.5%;
+    top: -1.5%;
     right: 25%;
     animation: slideDownFromTop 3s ease-in-out;
     z-index: 1;
