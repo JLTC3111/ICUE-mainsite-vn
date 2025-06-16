@@ -902,6 +902,7 @@ footer p {
   top: 3.5%;
   right: -7.5rem;
   z-index: 11;
+  animation: slideInFromRight 3.5s ease-in-out;
 }
 
 .model-crane{
