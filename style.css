@@ -1634,6 +1634,7 @@ body.loaded #app {
     top: 15%;
     right: -7.5%;
     z-index:2;
+    animation: slideInFromRight 3.5s ease-in-out;
   }
 
   .workPageContainer {
