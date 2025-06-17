@@ -1328,6 +1328,7 @@ body.loaded #app {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 1;
 }
 .work-carousel .work-list .work-item .work-content{
     position: absolute;
@@ -1339,7 +1340,6 @@ body.loaded #app {
     padding-right: 30%;
     box-sizing: border-box;
     color: #000000;
-    text-shadow: 0 5px 10px #0004;
 }
 .work-carousel .work-list .work-item .work-author{
     font-weight: bold;
@@ -1407,7 +1407,7 @@ body.loaded #app {
 }
 
 .work-thumbnail .work-item .work-content{
-    color: #f1eef9;
+    color: #5e5e5e;
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -1416,7 +1416,7 @@ body.loaded #app {
 .work-thumbnail .work-item .work-content .work-title{
     font-weight: 500;
 }
-.work-thumbnail .work-item .work-content .work-description{
+.work-thumbnail .work-item .work-content .work-des{
     font-weight: 300;
 }
 /* arrows */
@@ -1428,22 +1428,20 @@ body.loaded #app {
     width: 300px;
     max-width: 30%;
     display: flex;
-    gap: 10px;
+    gap: 12.5px;
     align-items: center;
 }
 .work-arrows button{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #eee4;
-    border: none;
-    color: #fff;
-    font-family: monospace;
-    font-weight: bold;
-    transition: .5s;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 2px 4px 8px rgb(115, 115, 115);
+    transition: .3s;
 }
 .work-arrows button:hover{
-    background-color: #fff;
+    transform: scale(1.1);
+    background-color: #b9ff80;
     color: #000;
 }
 
@@ -1993,15 +1991,16 @@ body.loaded #app {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     overflow: auto;
     background: transparent;
     display: flex;
     flex-direction: column;
-    padding: 7.5rem 0.5rem;
+    padding: auto 0.5rem;
     transform: translateX(-100%); /* Hide off-screen initially */
     transition: transform 0.4s ease-in-out;
+    contain: layout;
     z-index: 5;
   }
 
