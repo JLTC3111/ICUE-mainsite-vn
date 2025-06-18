@@ -841,6 +841,7 @@ footer p {
 
 .text-container-coreTeam {
   position: relative;
+  top:5%;
   width: 50%;
   max-width: 650px;
   padding: 25px;
