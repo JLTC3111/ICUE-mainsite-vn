@@ -156,6 +156,50 @@ footer p {
   margin: 0;
 }
 
+.contact-sidebar {
+    position: fixed; /* Stays in place as the user scrolls */
+    right: 1.5%; /* Adjust as needed for desired distance from the right edge */
+    top: 50%; /* Center vertically */
+    transform: translateY(-60%); /* Adjust for perfect vertical centering */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 12.5px; /* Space between icons */
+    z-index: 14; /* Ensure it stays on top of other content */
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0;
+    width: fit-content;
+}
+
+.contact-sidebar .contact-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:50px;
+    height:50px;
+    background-color: transparent; /* Or the specific color from the image */
+}
+
+.contact-sidebar .contact-item svg {
+    width: 70%; /* Adjust icon size within the circle */
+    height: 70%; /* Adjust icon size within the circle */
+}
+
+/* Hover effects for a better user experience */
+.contact-item:hover {
+    transform: scale(1.25); /* Slightly enlarge on hover */
+    transition: all 0.5s ease-in-out; /* Smooth transition */
+}
+
+.icon-bar {
+  width: 15px;            /* Or any thickness you want */
+  height: 1px;          /* Set a visible height */
+  background-color:rgba(0, 0, 0, 0.25);
+  margin: -7.5px auto;     /* Space around the bar */
+  border-left: .5px dotted black; /* Creates a vertical dotted line */
+  border-right: .5px dotted black;
+}
+
 .pre-hidden,
 .hidden {
   opacity: 0 !important;
@@ -1598,6 +1642,16 @@ body.loaded #app {
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
+  .contact-sidebar .contact-item {
+    width:44px;
+    height:44px;
+  }
+  
+  .contact-sidebar .contact-item svg{
+    width:60%;
+    height:60%;
+  }
+
   .menu-toggle svg{
     width: 58px;
     height: 58px;
@@ -1795,6 +1849,20 @@ body.loaded #app {
 
   footer {
     display: none;
+  }
+
+  .contact-sidebar {
+    right:2.25%;
+  }
+
+  .contact-sidebar .contact-item {
+    width:38px;
+    height:38px;
+  }
+
+  .contact-sidebar .contact-item svg{
+    width:55%;
+    height:55%;
   }
 
   .submenu {
