@@ -1414,8 +1414,8 @@ body.loaded #app {
 /* Container for the buttons (Grid setup) */
 .work-carousel .work-list .work-item .work-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 130px);
-    grid-template-rows: 40px;
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: 25px;
     gap: 5px;
     margin-top: 20px;
 }
@@ -1423,12 +1423,12 @@ body.loaded #app {
 .work-carousel .work-list .work-item .work-buttons button {
     border: none;
     letter-spacing: 3px;
-    font-size: medium;
+    font-size: 12px;
     font-family: Poppins;
     font-weight: 500;
     color: white; /* Assuming your default text color is white for contrast with the general button gradient */
     cursor: pointer; /* Ensure pointer cursor */
-    padding: auto;
+    padding: 1.5px;
 
     /* --- Essential for the hover wipe animation on EACH BUTTON --- */
     position: relative; /* Make sure pseudo-element positions relative to the button */
