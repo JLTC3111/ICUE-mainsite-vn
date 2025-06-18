@@ -1929,14 +1929,21 @@ body.loaded #app {
     top:40%;
     width: 36px;
     height: 36px;
+    background: transparent;
+    box-shadow: 2px 4px 8px;
   }  
 
+  .arrow-button svg {
+    width:24px;
+    height:24px;
+  }
+
   .left-arrow {
-    left: 15%;
+    left: 25%;
   }
 
   .right-arrow {
-    right: 15%;
+    right: 25%;
   }
 
   .language-switcher {
