@@ -1935,8 +1935,8 @@ body.loaded #app {
   }
 
   .contact-sidebar {
-    top:35%;
-    right:3.75%;
+    top:37.5%;
+    right:1.75%;
   }
 
   .contact-sidebar .contact-item {
@@ -1994,33 +1994,33 @@ body.loaded #app {
   }
 
   .sub-text {
-    font-size: clamp(16px, 3vw, 20px);
+    font-size: clamp(14px, 3vw, 16px);
     z-index: 2;
-    margin-left:-1rem;
+    margin-left:-3.5rem;
   } 
   
   .cursive-default {
-    margin: 15rem 2.5% 3% 7.5%;
-    font-size: clamp(14px, 3vw, 18px);
+    margin: 15rem 2.5% 5% 7.5%;
+    font-size: clamp(12px, 2.5vw, 14px);
     letter-spacing: 1.75px;
   }
 
   .lets-talk {
     display: flex;
-    margin: 2.5% auto 3rem 0;
-    font-size: medium;
+    margin-bottom: 1rem;
+    font-size: small;
   }
 
   .home-text-slider {
     text-align: left;
-    margin: 5% auto .25% auto;
+    margin: auto;
     z-index: 3;
   }
 
   .highlight-text {
     color:rgb(44, 44, 44);
     font-family: 'Roboto', cursive ;
-    font-size: 13.5px;
+    font-size: 12px;
     font-weight: 400;
     visibility: visible; /* Ensure it's visible */
     opacity: 1;          /* Ensure it's not transparent */
@@ -2091,11 +2091,11 @@ body.loaded #app {
   }
 
   .left-arrow {
-    left: 25%;
+    left: 20%;
   }
 
   .right-arrow {
-    right: 25%;
+    right: 20%;
   }
 
   .language-switcher {
