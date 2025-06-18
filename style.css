@@ -1410,19 +1410,61 @@ body.loaded #app {
 .work-carousel .work-list .work-item .work-topic{
     color: #f1683a;
 }
-.work-carousel .work-list .work-item .work-buttons{
+/* Container for the buttons (Grid setup) */
+.work-carousel .work-list .work-item .work-buttons {
     display: grid;
     grid-template-columns: repeat(2, 130px);
     grid-template-rows: 40px;
     gap: 5px;
     margin-top: 20px;
 }
-.work-carousel .work-list .work-item .work-buttons button{
+
+/* Styles for the individual buttons */
+.work-carousel .work-list .work-item .work-buttons button {
     border: none;
-    background-color: #000000;
     letter-spacing: 3px;
     font-family: Poppins;
     font-weight: 500;
+    color: white; /* Assuming your default text color is white for contrast with the general button gradient */
+    cursor: pointer; /* Ensure pointer cursor */
+
+    /* --- Essential for the hover wipe animation on EACH BUTTON --- */
+    position: relative; /* Make sure pseudo-element positions relative to the button */
+    overflow: hidden; /* Hides the ::before element until it slides in */
+    z-index: 1; /* Ensures text is above the pseudo-element background */
+
+    /* Default button background (from your global button style, but you might want to specify here for clarity) */
+    /* Example if it needs to be specific: background: linear-gradient(to bottom, #5d82c6, #0a1a3a); */
+
+    /* Smooth transition for the button's own properties */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Pseudo-element for the sliding background animation */
+.work-carousel .work-list .work-item .work-buttons button::before { /* Target the button's ::before */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* This is the vibrant multi-color gradient that will slide in on hover */
+  background: linear-gradient(to right, #1d9ae7, #0077c2, #004b8d, #0a1a3a);
+  z-index: -1; /* Puts this layer behind the button's text */
+  transform: translateX(-100%); /* Starts off-screen to the left */
+  transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
+}
+
+/* Hover state for the button's pseudo-element (to trigger the wipe) */
+.work-carousel .work-list .work-item .work-buttons button:hover::before { /* Corrected selector */
+  transform: translateX(0%); /* Slides the pseudo-element to cover the button */
+}
+
+/* Hover effects for the button itself (scale, shadow, text color) */
+.work-carousel .work-list .work-item .work-buttons button:hover { /* Target the individual button on hover */
+    transform: scale(1.1); /* Scales the individual button */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Changes shadow on the individual button */
+    color: #fff; /* Changes text color to black on hover for contrast with new background */
 }
 .work-carousel .work-list .work-item .work-buttons button:nth-child(2){
     background-color: transparent;
@@ -1475,6 +1517,7 @@ body.loaded #app {
 .work-thumbnail .work-item .work-content .work-des{
     font-weight: 300;
 }
+
 /* arrows */
 .work-arrows{
     position: absolute;
@@ -1491,13 +1534,13 @@ body.loaded #app {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     box-shadow: 2px 4px 8px rgb(115, 115, 115);
     transition: .3s;
 }
 .work-arrows button:hover{
     transform: scale(1.1);
-    background-color: #b9ff80;
+    background: #b9ff80;
     color: #000;
 }
 
@@ -2679,7 +2722,7 @@ textarea {
 /* Button Styles */
 button {
   padding: 10px; /* Padding inside button */
-  background: linear-gradient(to bottom, #5d82c6, #0a1a3a);
+  background: linear-gradient(to right, #5d82c6, #0a1a3a);
   color: rgb(255, 255, 255); /* White text */
   border: none; /* No border */
   border-radius: 4px; /* Rounded corners */
@@ -2728,7 +2771,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, #1d9ae7, #0a1a3a);
+  background: linear-gradient(to right, #1d9ae7, #0a1a3a);
   z-index: -1; /* Puts the pseudo-element behind the button's text */
   transform: translateX(-100%); /* Starts completely off to the left, outside the button */
   transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
