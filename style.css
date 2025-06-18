@@ -2647,7 +2647,7 @@ textarea {
   padding: 10px; /* Padding inside input fields */
   border: 1px solid #ccc; /* Light border */
   border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size */
+  font-size: 14px; /* Font size */
   width: 100%; /* Full width */
 }
 
@@ -2698,7 +2698,6 @@ button:hover {
 .submit-button {
   display: block;
   margin: 0 auto;
-  
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
