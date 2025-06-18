@@ -1414,8 +1414,8 @@ body.loaded #app {
 /* Container for the buttons (Grid setup) */
 .work-carousel .work-list .work-item .work-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 100px);
-    grid-template-rows: 25px;
+    grid-template-columns: repeat(2, 130px);
+    grid-template-rows: 30px;
     gap: 5px;
     margin-top: 20px;
 }
