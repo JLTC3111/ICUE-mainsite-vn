@@ -821,7 +821,7 @@ footer p {
   width: 325px;
   height: 433px;
   overflow: hidden;
-  transform: translate(65vw, -70vh);
+  transform: translate(62.5vw, -70vh);
   background: transparent;
   border-radius: 450px;
   z-index: 2;
@@ -842,7 +842,7 @@ footer p {
 .text-container-coreTeam {
   position: relative;
   width: 50%;
-  max-width: 675px;
+  max-width: 650px;
   padding: 25px;
   background: transparent;
   backdrop-filter: none;
@@ -896,8 +896,8 @@ footer p {
 }
 
 .arrow-symbol svg{
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
 }
 
 .left-arrow-symbol {
@@ -905,7 +905,7 @@ footer p {
 }
 
 .right-arrow-symbol {
-  transform: translateX(37.5vw);
+  transform: translateX(35vw);
 }
 
 /* Base fills */
@@ -1827,23 +1827,23 @@ body.loaded #app {
     position: relative;
     top:5rem;
     right:2.5rem;
-    width: 225px;
-    height: 300px;
+    width: 200px;
+    height: 266px;
   }
 
   .profile-photo-coreTeam {
     position: absolute;
     transform: translateX(-5px);
-    width: 225px;
+    width: 200px;
     height: auto;
     z-index: 3;
   }
 
   .text-container-coreTeam {
-    top:20vh;
+    top:25vh;
     left:-.5rem;
     min-width: 300px;      /* Always has room for decent content */
-    max-width: 45vw;       /* Responsive limit based on screen width */
+    max-width: 40vw;       /* Responsive limit based on screen width */
     width: 100%;   
   }
 
@@ -1863,8 +1863,13 @@ body.loaded #app {
   }
 
   .arrow-symbol {
-    width: 75px;
-    height: 75px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .arrow-symbol svg {
+    width:100%;
+    height:100%;
   }
 
   .left-arrow-symbol {
