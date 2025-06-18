@@ -1659,8 +1659,12 @@ body.loaded #app {
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
 
     .submit-button {
-      font-size: 20px;
+      font-size: 22px;
     }
+
+    .contact-info h2 {
+    font-size: 20px;
+  }
 
     .contact-info p {
       font-size: 16px;
