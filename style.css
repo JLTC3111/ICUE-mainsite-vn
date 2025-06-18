@@ -169,6 +169,7 @@ footer p {
     border-radius: 12px;
     padding: 0;
     width: fit-content;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     animation: fadeIn 4.5s ease-in-out;
 }
 
@@ -1647,12 +1648,24 @@ body.loaded #app {
     }
 }
 @media (min-width: 1367px) {
+  .contact-info p{
+    font-size: 20px;
+  }
   .news-card:hover {
     transform: scale(1.03);
   }
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
+
+    .submit-button {
+      font-size: 20px;
+    }
+
+    .contact-info p {
+      font-size: 16px;
+    }
+
   .contact-sidebar .contact-item {
     width:44px;
     height:44px;
@@ -1862,8 +1875,14 @@ body.loaded #app {
     display: none;
   }
 
+  .contact-container {
+      max-width:325px;
+      width:75%;
+  }
+
   .contact-sidebar {
-    right:2.25%;
+    top:35%;
+    right:3.75%;
   }
 
   .contact-sidebar .contact-item {
@@ -2176,6 +2195,14 @@ body.loaded #app {
       padding:0;
       margin: 0;
       overflow-x: hidden !important;
+    }
+
+    .submit-button {
+      font-size: 16px;
+    }
+
+    .contact-info p {
+      font-size: 14px;
     }
 
     .image-container-coreTeam {
@@ -2606,6 +2633,7 @@ h1 {
 
 .form-group {
   margin-bottom: 15px; /* Space between form groups */
+  margin-right: 12px;
 }
 
 label {
@@ -2646,21 +2674,31 @@ button:hover {
 /* Contact Info Styles */
 .contact-info {
   letter-spacing: 1px;
-  margin-top: 30px; /* Space above contact info */
+  margin-top: 15px; /* Space above contact info */
   text-align: center; /* Center the text */
+}
+
+.contact-info h1{
+  font-size: x-large;
 }
 
 .contact-info h2 {
   justify-content: center;
-  margin-bottom: 10px; /* Space below the heading */
+  margin-bottom: 7.5px; /* Space below the heading */
   color: #333; /* Dark text color */
 }
 
 .contact-info p {
   font-family: 'Roboto';
   letter-spacing: normal;
-  margin: 10px 0; /* Space above and below paragraphs */
+  margin: 5px 0; /* Space above and below paragraphs */
   color: #6f6f6f; /* Lighter text color */
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto;
+  
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {

@@ -1027,3 +1027,9 @@ window.updateCalendarSvgTime = () => {
     // Log for debugging (optional)
     console.log(`Updated calendar SVG: ${month} ${day}, ${timeString}`);
 }
+
+// Initial update when the page loads
+updateCalendarSvgTime();
+
+// Update the time every minute (60,000 milliseconds)
+setInterval(updateCalendarSvgTime, 60 * 1000);
