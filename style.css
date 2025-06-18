@@ -159,7 +159,7 @@ footer p {
 .contact-sidebar {
     position: fixed; /* Stays in place as the user scrolls */
     right: 1.5%; /* Adjust as needed for desired distance from the right edge */
-    top: 50%; /* Center vertically */
+    top: 40%; /* Center vertically */
     transform: translateY(-60%); /* Adjust for perfect vertical centering */
     display: flex;
     flex-direction: column; /* Stack items vertically */
@@ -169,6 +169,7 @@ footer p {
     border-radius: 12px;
     padding: 0;
     width: fit-content;
+    animation: fadeIn 4.5s ease-in-out;
 }
 
 .contact-sidebar .contact-item {
@@ -434,6 +435,9 @@ footer p {
   0% {
     opacity: 0;
     visibility: hidden;
+  }
+  50% {
+    opacity: .25;
   }
   100% {
     opacity: 1;

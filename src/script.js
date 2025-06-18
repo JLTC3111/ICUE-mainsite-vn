@@ -189,7 +189,16 @@ window.loadPage = (page) => {
                   break;
               }
             });
-
+           
+          // Hide contact sidebar on News page
+          const contactSidebar = document.querySelector('.contact-sidebar');
+          if (contactSidebar) {
+            if (page === 'News') {
+              contactSidebar.style.display = 'none';
+            } else {
+              contactSidebar.style.display = '';
+            }
+           }     
           }, 10);
         }
       }, 0);
@@ -202,6 +211,7 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
     { selector: '.logo-banner', delay: -0.3 },
     { selector: '.flag-link', delay: -0.3 },
     { selector: '.contact-link', delay: 1 },
+    { selector: '.contact-sidebar', delay: 1.25 },
   ];
 
   const timeline = gsap.timeline({ defaults: { duration: 0.5, ease: 'power2.out' } });
