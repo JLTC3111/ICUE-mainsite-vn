@@ -1423,10 +1423,12 @@ body.loaded #app {
 .work-carousel .work-list .work-item .work-buttons button {
     border: none;
     letter-spacing: 3px;
+    font-size: medium;
     font-family: Poppins;
     font-weight: 500;
     color: white; /* Assuming your default text color is white for contrast with the general button gradient */
     cursor: pointer; /* Ensure pointer cursor */
+    padding: auto;
 
     /* --- Essential for the hover wipe animation on EACH BUTTON --- */
     position: relative; /* Make sure pseudo-element positions relative to the button */
