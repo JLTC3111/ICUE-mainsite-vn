@@ -1487,7 +1487,7 @@ body.loaded #app {
     height: 190px;
     flex-shrink: 0;
     position: relative;
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.5s ease-in;
 }
 .work-thumbnail .work-item img{
     width: 100%;
