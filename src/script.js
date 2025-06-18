@@ -526,13 +526,20 @@ function router() {
   window.loadPage(page);
 }
 
+// Ensure menuIcon is indeed your SVG element in HTML:
+// <svg id="menuIcon" ...>...</svg>
+
 window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon'); // This now correctly references your <svg> element
   const isOpen = drawerMenu.classList.contains('open');
 
   // Toggle the 'is-open' class on the SVG icon.
-  menuIcon.classList.toggle('is-open');
+  // Your CSS will handle the transformation based on this class.
+  if (menuIcon) { // Good practice: check if element exists before manipulating
+      menuIcon.classList.toggle('is-open');
+  }
+
   if (isOpen) {
     drawerMenu.classList.remove('open');
     removeOverlayListener();
@@ -540,50 +547,56 @@ window.toggleDrawerMenu = () => {
     drawerMenu.classList.add('open');
     addOverlayListener();
   }
-}
+};
 
+// Simplified window.closeDrawerMenu to work with SVG transformations
 window.closeDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
-  const menuIcon = document.getElementById('menuIcon');
+  const menuIcon = document.getElementById('menuIcon'); // This is your SVG element
 
+  // Ensure menu and listeners are closed
   drawerMenu.classList.remove('open');
   removeOverlayListener();
 
-  // Animate icon switch
-  menuIcon.classList.remove('fade-in');
-  menuIcon.classList.add('fade-out');
+  // Simply remove the 'is-open' class from the SVG icon.
+  // Your CSS transitions will automatically animate it back to its original (hamburger) form.
+  if (menuIcon) {
+      menuIcon.classList.remove('is-open');
+  }
+  // The image swap logic (src changes, fade-in/fade-out classes, setTimeout)
+  // is removed as it's not needed for SVG transformations.
+};
 
-  setTimeout(() => {
-    menuIcon.src = '/public/logoIcons/menu-icon.png';
-    menuIcon.classList.remove('fade-out');
-    menuIcon.classList.add('fade-in');
-  }, 200);
-}
 
+// These functions remain correct as they are
 window.handleOutsideClick = (e) => {
   const drawer = document.getElementById('drawerMenu');
-  const toggle = document.querySelector('.menu-toggle');
+  const toggle = document.querySelector('.menu-toggle'); // Assuming this refers to your menuIcon or its wrapper
+
+  // IMPORTANT: Make sure `toggle` refers to `menuIcon` or its clickable parent
+  // If your menu-icon <svg> is directly clickable, you might use:
+  // const toggle = document.getElementById('menuIcon');
 
   if (!drawer.contains(e.target) && !toggle.contains(e.target)) {
     closeDrawerMenu();
   }
-}
+};
 
 window.handleEscKey = (e) => {
   if (e.key === 'Escape') {
     closeDrawerMenu();
   }
-}
+};
 
 window.addOverlayListener = () => {
   document.addEventListener('click', handleOutsideClick);
   document.addEventListener('keydown', handleEscKey);
-}
+};
 
 window.removeOverlayListener = () => {
   document.removeEventListener('click', handleOutsideClick);
   document.removeEventListener('keydown', handleEscKey);
-}
+};
 
 // Highlight active link
 window.highlightActiveLink = (page) => {
