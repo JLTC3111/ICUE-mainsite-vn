@@ -527,21 +527,11 @@ function router() {
 
 window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
-  const menuIcon = document.getElementById('menuIcon');
+  const menuIcon = document.getElementById('menuIcon'); // This now correctly references your <svg> element
   const isOpen = drawerMenu.classList.contains('open');
 
-  // Start fade out
-  menuIcon.classList.remove('fade-in');
-  menuIcon.classList.add('fade-out');
-
-  // Wait for fade-out to finish, then swap the icon and fade in
-  setTimeout(() => {
-    menuIcon.src = isOpen ? '/public/logoIcons/menu-icon.png' : '/public/logoIcons/close-icon.png';
-    menuIcon.classList.remove('fade-out');
-    menuIcon.classList.add('fade-in');
-  }, 200); // Timing should match CSS transition duration
-
-  // Toggle menu state
+  // Toggle the 'is-open' class on the SVG icon.
+  menuIcon.classList.toggle('is-open');
   if (isOpen) {
     drawerMenu.classList.remove('open');
     removeOverlayListener();

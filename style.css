@@ -624,18 +624,25 @@ footer p {
   animation: dropDown 2.5s ease-in-out forwards;
 }
 
-#menuIcon {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+#menuIcon rect { /* Selects all <rect> elements inside the SVG with id="menuIcon" */
+    transition: transform 0.5s ease, opacity 0.3s ease; /* Smooth animation for all changes */
+    transform-origin: center; /* Crucial: Ensures rotations happen from the center of each bar */
+    fill: #000000; /* Sets the default color of the bars to black */
 }
 
-#menuIcon.fade-out {
-  opacity: 0;
-  transform: scale(0.8);
+/* State when the menu is open (when the 'is-open' class is applied to the SVG) */
+#menuIcon.is-open #top-bar {
+    /* Translate it down to roughly the center of the icon, then rotate 45deg */
+    transform: translateY(0px) rotate(-47.5deg);
 }
 
-#menuIcon.fade-in {
-  opacity: 1;
-  transform: scale(1);
+#menuIcon.is-open #middle-bar {
+    opacity: 0; /* Make the middle bar disappear */
+}
+
+#menuIcon.is-open #bottom-bar {
+    /* Translate it up to roughly the center of the icon, then rotate -45deg */
+    transform: translateY(-5.5px) rotate(47.5deg);
 }
 
 .drawer-menu {
