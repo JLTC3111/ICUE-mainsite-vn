@@ -2722,7 +2722,7 @@ textarea {
 /* Button Styles */
 button {
   padding: 10px; /* Padding inside button */
-  background: linear-gradient(to right, #5d82c6, #0a1a3a);
+  background: linear-gradient(to bottom, #5d82c6, #0a1a3a);
   color: rgb(255, 255, 255); /* White text */
   border: none; /* No border */
   border-radius: 4px; /* Rounded corners */
@@ -2771,7 +2771,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, #1d9ae7, #0a1a3a);
+  background: linear-gradient(to bottom, #1d9ae7, #0a1a3a);
   z-index: -1; /* Puts the pseudo-element behind the button's text */
   transform: translateX(-100%); /* Starts completely off to the left, outside the button */
   transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
