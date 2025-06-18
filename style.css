@@ -1418,7 +1418,6 @@ body.loaded #app {
     gap: 5px;
     margin-top: 20px;
 }
-
 /* Styles for the individual buttons */
 .work-carousel .work-list .work-item .work-buttons button {
     border: none;
