@@ -2338,6 +2338,10 @@ body.loaded #app {
       margin: 2rem auto;
     }
 
+    .news-slider {
+      margin-top: 22.5%;
+    }
+
     .news-carousel {
       position: relative;
       width: 100%;
