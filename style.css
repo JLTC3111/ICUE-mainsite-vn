@@ -1404,12 +1404,13 @@ body.loaded #app {
 }
 .work-carousel .work-list .work-item .work-title,
 .work-carousel .work-list .work-item .work-topic{
-    font-size: clamp(3rem, 5vw, 4rem);
+    font-size: clamp(2.5rem, 4.5vw, 3rem);
     font-weight: bold;
-    line-height: 1.3em;
+    line-height: 1em;
 }
 .work-carousel .work-list .work-item .work-topic{
     color: #f1683a;
+    margin: 8px auto;
 }
 /* Container for the buttons (Grid setup) */
 .work-carousel .work-list .work-item .work-buttons {
