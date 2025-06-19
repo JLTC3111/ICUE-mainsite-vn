@@ -1147,7 +1147,7 @@ body.loaded #app {
   content: "";
   position: absolute;
   inset: 0;
-  background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #7873f5, #4ade80, #9d7d90);
+  background: conic-gradient(from 180deg at 50% 50%, #9d7d90, #9d7d90);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s;
@@ -1155,7 +1155,7 @@ body.loaded #app {
 
 /* Activate gradient on hover */
 .news-card:hover::before {
-  opacity: 0.2;
+  opacity: 0.1;
 }
 
 .news-date {
@@ -2792,11 +2792,14 @@ button {
 .submit-button:hover {
   color: #fff; /* Darker text color on hover */
 }
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  
+@media (min-width: 430px) and (max-width: 768px) {
   .news-container {
-    transform: translate(-3.25vw, -2.5vh);
+    transform: translate(-3.75vw, 4vh);
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .news-container {
+    transform: translate(-3.25vw, 2.75vh);
   }
 }
 
