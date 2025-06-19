@@ -2001,14 +2001,15 @@ body.loaded #app {
   } 
   
   .cursive-default {
-    margin: 15rem 2.5% 5% 7.5%;
+    margin: 16.5rem 0 0 0;
     font-size: clamp(12px, 2.5vw, 14px);
     letter-spacing: 1.75px;
   }
 
   .lets-talk {
     display: flex;
-    margin-bottom: 1rem;
+    margin-top:1.5rem;
+    margin-bottom: 2.5rem;
     font-size: small;
   }
 
