@@ -2383,7 +2383,7 @@ body.loaded #app {
     /* Arrows */
     .news-arrow {
       position: absolute;
-      top:100%;
+      top:120%;
       left:50%;
       transform: translate(-50%, -50%);
       display: flex;
