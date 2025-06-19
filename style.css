@@ -2360,6 +2360,7 @@ body.loaded #app {
       transition: opacity 0.5s ease-in-out;
       pointer-events: auto;
       z-index: 0;
+      overflow-x: hidden;
     }
 
     .news-container.active {
@@ -2374,7 +2375,7 @@ body.loaded #app {
       background: white;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 93.5vw;
+      width: 97.5%;
       height: 95vh;
       z-index: 1;
     }
@@ -2797,9 +2798,14 @@ button {
 .submit-button:hover {
   color: #fff; /* Darker text color on hover */
 }
-@media (max-width: 499px) and (max-aspect-ratio: .7299) {
+@media (max-width: 399px) {
   .news-container {
-    transform: translate(-4vw, 4.5vh);
+    transform: translate(-4.25vw, 4.5vh);
+  }
+}
+@media (min-width: 400px) and (max-width: 499px) {
+  .news-container {
+    transform: translate(-3.75vw, 4.5vh);
   }
 }
 @media (min-width: 500px) and (max-width: 768px) {
