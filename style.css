@@ -2349,7 +2349,7 @@ body.loaded #app {
       position: absolute;
       top: 0;
       left: 0;
-      transform: translate(-11vw, 1.5vh);
+      transform: translate(-4.5vw, 1.5vh);
       width: 100%;
       opacity: 1;
       transition: opacity 0.5s ease-in-out;
@@ -2392,11 +2392,11 @@ body.loaded #app {
     }
 
     .left-news-arrow {
-      left: -.5vw;
+      left: 4.5vw;
     }
 
     .right-news-arrow {
-      margin-left: 38vw;
+      margin-left: 43.5vw;
     }
 
 
@@ -2796,7 +2796,7 @@ button {
 @media (min-width: 768px) and (max-width: 1024px) {
   
   .news-container {
-    transform: translate(-6.5vw, -2.5vh);
+    transform: translate(-3.25vw, -2.5vh);
   }
 }
 
