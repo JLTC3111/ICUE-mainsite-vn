@@ -1889,7 +1889,7 @@ body.loaded #app {
 @media (max-width: 1024px) {
   /* Adjust main layout padding */
   main {
-    padding: 1rem;
+    padding: 0;
   }
 
   nav {
@@ -2864,7 +2864,7 @@ button {
     max-width:550px;
     width:80%;
     top:70%;
-    left:-10%;
+    left:-5%;
   }
 }
 
