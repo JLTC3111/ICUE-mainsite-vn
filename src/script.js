@@ -178,6 +178,7 @@ window.loadPage = (page) => {
                 case 'News':
                   initLogoSlider();
                   initMobileNewsSlider();
+                  triggerFanfare();
                   break;
                 case 'aboutUs':
                   createBalloons();
@@ -1046,3 +1047,42 @@ updateCalendarSvgTime();
 
 // Update the time every minute (60,000 milliseconds)
 setInterval(updateCalendarSvgTime, 60 * 1000);
+
+// Preload the sound (optional)
+  const fanfareAudio = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_b91cc18f4b.mp3'); // Royalty-free fanfare
+
+  // Make sure the audio is allowed to autoplay (you might need to trigger it from user interaction)
+  fanfareAudio.load();
+
+  window.triggerFanfare = function () {
+    // Play sound
+    fanfareAudio.currentTime = 0;
+    fanfareAudio.play().catch(e => console.warn('Autoplay blocked:', e));
+
+    // Confetti burst!
+    const duration = 3 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      // since particles fall down, start a bit higher than random
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: {
+          x: randomInRange(0.1, 0.9),
+          y: Math.random() - 0.2
+        }
+      }));
+    }, 250);
+  };
