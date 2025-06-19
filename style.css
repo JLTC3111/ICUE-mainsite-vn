@@ -2800,12 +2800,12 @@ button {
 }
 @media (max-width: 399px) {
   .news-container {
-    transform: translate(-3.75vw, 4.5vh);
+    transform: translate(-2.5vw, 4.5vh);
   }
 }
 @media (min-width: 400px) and (max-width: 499px) {
   .news-container {
-    transform: translate(-3.25vw, 4.5vh);
+    transform: translate(-2.25vw, 4.5vh);
   }
 }
 @media (min-width: 500px) and (max-width: 768px) {
