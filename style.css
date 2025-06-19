@@ -2799,7 +2799,7 @@ button {
 }
 @media (max-width: 499px) and (max-aspect-ratio: .7299) {
   .news-container {
-    transform: translate(-5vw, 4.5vh);
+    transform: translate(-4vw, 4.5vh);
   }
 }
 @media (min-width: 500px) and (max-width: 768px) {
