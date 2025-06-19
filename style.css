@@ -2796,7 +2796,12 @@ button {
 .submit-button:hover {
   color: #fff; /* Darker text color on hover */
 }
-@media (min-width: 430px) and (max-width: 768px) {
+@media (max-width: 499px) and (max-aspect-ratio: .7299) {
+  .news-container {
+    transform: translate(-5vw, 4.5vh);
+  }
+}
+@media (min-width: 500px) and (max-width: 768px) {
   .news-container {
     transform: translate(-3.75vw, 4vh);
   }
