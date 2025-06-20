@@ -421,15 +421,9 @@ window.initHomeTextSlider = () => {
       console.error("highlight-text element not found!");
       return;
     }
-  
-    textElement.classList.add("fadeOut");
-    textElement.classList.remove("fadeIn");
     
     setTimeout(() => {
-      textElement.textContent = messages[index];
-      textElement.classList.remove("fadeOut");
-      textElement.classList.add("fadeIn");
-      
+      textElement.textContent = messages[index];  
       // Update dot states
       dots.forEach((dot, i) => {
         if (i === index) {
@@ -458,13 +452,13 @@ window.initHomeTextSlider = () => {
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 4000);
+      window.homeSliderIntervalId = setInterval(nextText, 8000);
     }
   }
 
   // Initialize the slider
   updateText(index);
-  window.homeSliderIntervalId = setInterval(nextText, 4000);
+  window.homeSliderIntervalId = setInterval(nextText, 8000);
 
   // Add event listeners to dots
   dots.forEach((dot, i) => {
