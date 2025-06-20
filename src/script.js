@@ -416,14 +416,34 @@ window.initHomeTextSlider = () => {
   function updateText(newIndex) {
     index = newIndex;
     const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
-    
+  
     if (!textElement) {
       console.error("highlight-text element not found!");
       return;
     }
+  
+    // GSAP: fade out & scale down
+    gsap.to(textElement, {
+      duration: 0.3,
+      y: 50,
+      scale: 0.25,
+      opacity: 0,
+      ease: "power2.out",
+      onComplete: () => {
+        // Update text content
+        textElement.textContent = messages[index];
+  
+        // Fade in and scale up
+        gsap.fromTo(
+          textElement,
+          { opacity: 0, y: -10, scale: 1.15 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
+          );
+        }
+    });
     
     setTimeout(() => {
-      textElement.textContent = messages[index];  
+      textElement.textContent = messages[index];
       // Update dot states
       dots.forEach((dot, i) => {
         if (i === index) {

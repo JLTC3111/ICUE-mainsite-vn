@@ -357,6 +357,7 @@ footer p {
 .slider-dots {
   display: flex;
   position: relative;
+  align-items: center;
   justify-content: center;
   margin-top: -2.5rem;
   margin-left: -1.5rem;
