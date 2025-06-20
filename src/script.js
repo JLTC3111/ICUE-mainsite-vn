@@ -415,44 +415,68 @@ window.initHomeTextSlider = () => {
 
   function updateText(newIndex) {
     index = newIndex;
-    const textElement = document.getElementById("homeSliderText").querySelector(".highlight-text");
+    const textElement = document.querySelector("#homeSliderText .highlight-text");
   
     if (!textElement) {
       console.error("highlight-text element not found!");
       return;
     }
   
-    // GSAP: fade out & scale down
+    const message = messages[index];
+    const typingSpeed = 25; // ms per character
+  
+    // Step 1: Animate out old text
     gsap.to(textElement, {
-      duration: 0.5,
-      y: 50,
-      scale: 0.25,
+      duration: 0.2,
       opacity: 0,
+      scale: 0.95,
+      y: 10,
       ease: "power2.out",
       onComplete: () => {
-        // Update text content
-        textElement.textContent = messages[index];
+        textElement.textContent = ""; // Clear content
+        textElement.style.opacity = 1; // Reset visibility for typing
   
-        // Fade in and scale up
-        gsap.fromTo(
-          textElement,
-          { opacity: 0, y: -10, scale: 1.15 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
-          );
-        }
+        // Step 2: Typewriter loop
+        let i = 0;
+        const typeNextChar = () => {
+          if (i < message.length) {
+            textElement.textContent += message.charAt(i);
+            i++;
+            setTimeout(typeNextChar, typingSpeed);
+          } else {
+            // Optional: little GSAP bounce after typing completes
+            gsap.fromTo(
+              textElement,
+              { scale: 0.98 },
+              { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
+            );
+          }
+        };
+  
+        typeNextChar();
+      }
     });
-    
-    setTimeout(() => {
-      textElement.textContent = messages[index];
-      // Update dot states
-      dots.forEach((dot, i) => {
-        if (i === index) {
-          dot.classList.add("active");
-        } else {
-          dot.classList.remove("active");
+  
+    // Step 3: Update dot states and restart progress bar
+    dots.forEach((dot, i) => {
+      const progress = dot.querySelector(".progress-dot");
+      dot.classList.remove("active");
+  
+      if (progress) {
+        progress.style.animation = "none";
+        void progress.offsetWidth;
+      }
+  
+      if (i === index) {
+        dot.classList.add("active");
+  
+        if (progress) {
+          progress.style.animation = "none";
+          void progress.offsetWidth;
+          progress.style.animation = "slide-progress 8s linear forwards";
         }
-      });
-    }, 300);
+      }
+    });
   }
 
   function nextText() {

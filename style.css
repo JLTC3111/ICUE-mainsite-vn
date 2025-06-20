@@ -344,7 +344,7 @@ footer p {
 
 .highlight-text {
   font-family: 'Roboto', cursive ;
-  font-size: 24px;
+  font-size: 21px;
   font-style: normal;
   font-weight: 250;
   visibility: visible; 
@@ -1800,7 +1800,7 @@ body.loaded #app {
   }
 
   .highlight-text{
-    font-size: clamp(14px, 1.8vw, 20px);
+    font-size: clamp(14px, 1.8vw, 18px);
   }
 
   .slider-dots {
