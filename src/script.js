@@ -162,6 +162,8 @@ window.loadPage = (page) => {
             requestAnimationFrame(() => {
               retriggerMenuAnimations();
               updateCalendarSvgTime();
+              initAudioVisualizer();
+              updateMusicBarColor(page);
 
               switch (page) {
                 case 'meetOurExperts':
@@ -1086,3 +1088,111 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       }));
     }, 250);
   };
+
+  function initAudioVisualizer(
+    audioSrc = 'public/music/royalty_free.mp3',
+    barSelector = 'contact-sidebar .music-bars',
+    clickTargetSelector = '#visualizer'
+  ) {
+    const clickTarget = document.querySelector(clickTargetSelector);
+  
+    // ✅ Reuse existing audio if already created
+    if (window.__audioVisualizer) {
+      const { audio, ctx } = window.__audioVisualizer;
+  
+      if (clickTarget) {
+        clickTarget.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (ctx.state === 'suspended') ctx.resume();
+          audio.paused ? audio.play() : audio.pause();
+        });
+      }
+  
+      return;
+    }
+  
+    // ❌ First-time setup
+    const audio = new Audio(audioSrc);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = ctx.createMediaElementSource(audio);
+    const analyser = ctx.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+  
+    const freqData = new Uint8Array(analyser.frequencyBinCount);
+  
+    function toggleAudio() {
+      if (ctx.state === 'suspended') ctx.resume();
+      audio.paused ? audio.play() : audio.pause();
+    }
+  
+    if (clickTarget) {
+      clickTarget.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleAudio();
+      });
+    }
+  
+    // ✅ Save audio setup globally
+    window.__audioVisualizer = {
+      audio,
+      ctx,
+      analyser,
+      freqData
+    };
+  }
+  
+  // ✅ Global animation loop — only runs once
+  function startAudioVisualizerLoop(barSelector = '.music-bars') {
+    function loop() {
+      requestAnimationFrame(loop);
+  
+      const av = window.__audioVisualizer;
+      if (!av) return;
+  
+      const { analyser, freqData } = av;
+      const bars = document.querySelectorAll(barSelector);
+  
+      if (!analyser || bars.length === 0) return;
+  
+      analyser.getByteFrequencyData(freqData);
+  
+      bars.forEach((bar, i) => {
+        const value = freqData[i];
+        const scale = Math.max(0.5, value / 256);
+        bar.style.transform = `scaleY(${scale})`;
+      });
+    }
+  
+    loop();
+  }
+  
+  // ✅ Call this once globally on startup (e.g. inside DOMContentLoaded)
+  window.addEventListener('DOMContentLoaded', () => {
+    startAudioVisualizerLoop(); // Start global animation once
+  });
+
+  function updateMusicBarColor(page) {
+    const paths = document.querySelectorAll('.music-bars svg path');
+  
+    let color = '#ffffff'; // default
+  
+    switch (page) {
+      case 'ourWork':
+        color = '#ffcc00';
+        break;
+      case 'Contact':
+        color = '#000000';
+        break;
+      case 'coreTeam':
+        color = '#000000';
+        break;
+    }
+  
+    paths.forEach(path => {
+      path.setAttribute('stroke', color);
+      path.setAttribute('fill', color); // Only needed if your SVG uses `fill`
+    });
+  }
