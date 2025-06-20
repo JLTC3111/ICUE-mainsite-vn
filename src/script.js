@@ -424,7 +424,7 @@ window.initHomeTextSlider = () => {
   
     // GSAP: fade out & scale down
     gsap.to(textElement, {
-      duration: 0.3,
+      duration: 0.5,
       y: 50,
       scale: 0.25,
       opacity: 0,
@@ -437,7 +437,7 @@ window.initHomeTextSlider = () => {
         gsap.fromTo(
           textElement,
           { opacity: 0, y: -10, scale: 1.15 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" }
+          { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out" }
           );
         }
     });
