@@ -108,11 +108,11 @@ window.attachProfileEvents = () => {
       // Step 2: Update content with typewriter
       textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
-      const container = document.createElement("div");
+      const moetextcontainer = document.createElement("div");
       textBox.appendChild(container);
 
-      typeHTMLString(container, message, 12, () => {
-        gsap.fromTo(container, 
+      typeHTMLString(moetextcontainer, message, 12, () => {
+        gsap.fromTo(moetextcontainer, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
