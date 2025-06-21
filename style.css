@@ -1092,7 +1092,7 @@ body.loading .video-bg {
 }
 
 .content-wrapper {
-  margin-left: 5%;
+  margin-top: 0rem;
 }
 
 .progress-container {
@@ -2069,7 +2069,7 @@ body.loaded #app {
   .progress-container {
     width:120px;
     height:120px;
-    margin-left: .5rem;
+    margin-left: 5%;
   }
 
   .progress-container svg {
