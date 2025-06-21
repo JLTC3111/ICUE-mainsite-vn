@@ -131,13 +131,13 @@ window.attachProfileEvents = () => {
       const tl = gsap.timeline();
   
       tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" }
+        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
   
       tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" },
+        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
         "-=0.5" // Start slightly overlapping with photo animation
       );
   
