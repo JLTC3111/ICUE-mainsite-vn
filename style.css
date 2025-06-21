@@ -56,17 +56,6 @@ p {
   margin-right: 15rem;
 }
 
-.montserrat-aboutUs {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  color: black;
-  font-optical-sizing: auto;
-  font-weight: 100; /* Make sure this weight is imported */
-  text-shadow: none;
-  line-height: 1.5;
-  word-spacing: 2px;
-}
-
 nav {
   display: flex;
   justify-content: space-between; /* space between logo and hamburger */
@@ -84,6 +73,25 @@ nav a {
   color: rgb(0, 0, 0);
   margin-right: 50px;
   text-decoration: none; /* Remove default underline */
+}
+
+.svg-blinking-cursor {
+  display: inline-block;
+  margin-left: -1.5px;
+  vertical-align:-4px;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: .25;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .menu-bar {
@@ -532,6 +540,17 @@ footer p {
   padding: 20px;
   border-radius: 20px;
   box-shadow: none;
+}
+
+.montserrat-aboutUs {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  color: black;
+  font-optical-sizing: auto;
+  font-weight: 100; /* Make sure this weight is imported */
+  text-shadow: none;
+  line-height: 1.5;
+  word-spacing: 2px;
 }
 
 .montserrat-pepple {
@@ -1754,18 +1773,21 @@ body.loaded #app {
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
-
-    .submit-button {
+  .svg-blinking-cursor {
+    height: 1.35em; /* optional scaling */
+    width: auto;
+  }
+  .submit-button {
       font-size: 22px;
-    }
+  }
 
-    .contact-info h2 {
+  .contact-info h2 {
     font-size: 20px;
   }
 
-    .contact-info p {
+  .contact-info p {
       font-size: 16px;
-    }
+  }
 
   .contact-sidebar .contact-item {
     width:44px;
@@ -1979,6 +2001,11 @@ body.loaded #app {
 
   footer {
     display: none;
+  }
+
+  .svg-blinking-cursor {
+    height: 1.25em; /* optional scaling */
+    width: auto;
   }
 
   .contact-container {

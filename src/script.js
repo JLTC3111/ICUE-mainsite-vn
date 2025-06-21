@@ -1,3 +1,64 @@
+function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null) {
+  targetElement.innerHTML = "";
+
+  const tempContainer = document.createElement("div");
+  tempContainer.innerHTML = htmlString;
+
+  const nodes = Array.from(tempContainer.childNodes);
+  let nodeIndex = 0;
+
+  // Create and append cursor initially
+  const cursor = document.createElement("span");
+  cursor.className = "svg-blinking-cursor";
+  targetElement.appendChild(cursor);
+  // Create your custom SVG
+  const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgCursor.setAttribute("width", "24");
+  svgCursor.setAttribute("height", "24");
+  svgCursor.setAttribute("viewBox", "0 0 24 24");
+  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("fill", "black"); // or darkblue, your choice
+  path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
+
+  svgCursor.appendChild(path);
+  targetElement.appendChild(svgCursor);
+  function typeNextNode() {
+    if (nodeIndex >= nodes.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+
+    const node = nodes[nodeIndex];
+    nodeIndex++;
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent;
+      const span = document.createElement("span");
+      targetElement.insertBefore(span, cursor); // always before cursor
+
+      let charIndex = 0;
+      function typeChar() {
+        if (charIndex < text.length) {
+          span.textContent += text.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, speed);
+        } else {
+          typeNextNode();
+        }
+      }
+      typeChar();
+    } else {
+      const clone = node.cloneNode(true);
+      targetElement.insertBefore(clone, cursor);
+      typeNextNode();
+    }
+  }
+
+  typeNextNode();
+}
+
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -44,8 +105,19 @@ window.attachProfileEvents = () => {
     photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
   
     setTimeout(() => {
-      // Step 2: Update the content
-      textBox.innerHTML = `<div>${profileData[index].name}</div>`;
+      // Step 2: Update content with typewriter
+      
+      textBox.innerHTML = ""; // clear previous
+      const message = profileData[index].name;
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+
+      typeHTMLString(container, message, 12, () => {
+        gsap.fromTo(container, 
+          { opacity: 0, y: 10, scale: 0.98 }, 
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+        );
+      });
       photo.src = profileData[index].img;
   
       // Step 3: Remove exit animation classes
