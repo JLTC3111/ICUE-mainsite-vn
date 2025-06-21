@@ -163,9 +163,11 @@ window.attachProfileEvents = () => {
       
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          document.getElementById('prev-btn')?.click();
+          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+          updateProfile(currentIndex, 'left');
         } else {
-          document.getElementById('next-btn')?.click();
+          currentIndex = (currentIndex + 1) % profileData.length;
+          updateProfile(currentIndex, 'right');
         }
       }
     });
