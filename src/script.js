@@ -160,28 +160,19 @@ window.attachProfileEvents = () => {
       touchStartX = e.changedTouches[0].screenX;
     });
 
-    let swipeLocked = false;
-
-container.addEventListener('touchend', (e) => {
-  if (swipeLocked) return; // 🔒 prevent multiple triggers
-  swipeLocked = true;
-
-  touchEndX = e.changedTouches[0].screenX;
-  const swipeDistance = touchEndX - touchStartX;
-
-  if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-    if (swipeDistance > 0) {
-      document.getElementById('prev-btn')?.click();
-    } else {
-      document.getElementById('next-btn')?.click();
-    }
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchEndX - touchStartX;
+      
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        if (swipeDistance > 0) {
+          document.getElementById('prev-btn')?.click();
+        } else {
+          document.getElementById('next-btn')?.click();
+        }
+      }
+    });
   }
-
-  // 🕒 Re-enable swipe after animation duration (adjust if needed)
-  setTimeout(() => {
-    swipeLocked = false;
-  }, 1000); // 1 second = same as GSAP animation duration
-});
 
   // Preload all profile images
 profileData.forEach(profile => {
