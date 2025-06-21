@@ -97,8 +97,6 @@ window.attachProfileEvents = () => {
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo) return;
   
-    currentIndex = index; // ✅ Ensure global index stays in sync
-  
     const isFirstLoad = (currentIndex === 0 && index === 0);
   
     if (!isFirstLoad) {
