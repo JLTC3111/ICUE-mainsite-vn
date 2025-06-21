@@ -900,10 +900,10 @@ window.attachProfileEvents_coreTeam = () => {
   
         if (swipeDistance > 0) {
           currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
+          updateProfile_coreTeam(currentIndex, 'left');
         } else {
           currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
+          updateProfile_coreTeam(currentIndex, 'right');
         }
   
         setTimeout(() => swipeLocked = false, 1000); // match to animation duration
