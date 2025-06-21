@@ -1951,6 +1951,8 @@ body.loaded #app {
     top: 47.5%;
     left: 50%;
     transform: translateY(5vh);
+    display: none;
+    pointer-events: none;
   }
 
   .arrow-symbol {
@@ -2397,6 +2399,8 @@ body.loaded #app {
       top: 30%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
+      display: none;
+      pointer-events: none;
     }
 
     .arrow-symbol {
