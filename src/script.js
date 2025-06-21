@@ -182,7 +182,7 @@ window.attachProfileEvents = () => {
     });
   });
   
-
+  
   // Preload all profile images
 profileData.forEach(profile => {
   const img = new Image();
@@ -823,6 +823,7 @@ window.attachProfileEvents_coreTeam = () => {
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
       });
+      
       photo.src = profileData_coreTeam[index].img;
 
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
@@ -880,36 +881,26 @@ window.attachProfileEvents_coreTeam = () => {
     updateProfile_coreTeam(currentIndex, 'left');
   });
 
-  const swipeElements = [container, photo];
-
-  let swipeLocked = false;
-  
-  swipeElements.forEach(el => {
-    el.addEventListener('touchstart', (e) => {
+  if (container) {
+    container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
-  
-    el.addEventListener('touchend', (e) => {
-      if (swipeLocked) return;
-  
+
+    container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-  
+
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        swipeLocked = true;
-  
         if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
           updateProfile_coreTeam(currentIndex, 'left');
         } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
           updateProfile_coreTeam(currentIndex, 'right');
         }
-  
-        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
-  });
+  }
 
   // Preload images
   profileData_coreTeam.forEach(profile => {
