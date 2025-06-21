@@ -106,7 +106,6 @@ window.attachProfileEvents = () => {
   
     setTimeout(() => {
       // Step 2: Update content with typewriter
-      
       textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
       const container = document.createElement("div");
@@ -793,9 +792,6 @@ window.attachProfileEvents_coreTeam = () => {
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.querySelector('.image-container');
 
-
-
-
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
 
@@ -807,7 +803,17 @@ window.attachProfileEvents_coreTeam = () => {
     }
 
     setTimeout(() => {
-      textBox.innerHTML = `<div>${profileData_coreTeam[index].name}</div>`;
+      textBox.innerHTML = "";
+      const message = profileData_coreTeam[index].name;
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+
+      typeHTMLString(container, message, 14, () => {
+        gsap.fromTo(container, 
+          { opacity: 0, y: 10, scale: 0.98 }, 
+          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+        );
+      });
       photo.src = profileData_coreTeam[index].img;
 
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');

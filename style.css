@@ -1863,6 +1863,7 @@ body.loaded #app {
     width: 50px;
     height: 50px;
     display: none;
+    pointer-events: none;
   }
 
   .left-arrow {
@@ -2160,11 +2161,12 @@ body.loaded #app {
 
   .arrow-button {
     top:40%;
-    width: 36px;
-    height: 36px;
+    width:36px;
+    height:36px;
     background: transparent;
     box-shadow: 2px 4px 8px;
     display: none;
+    pointer-events: none;
   }  
 
   .arrow-button svg {
