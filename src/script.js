@@ -108,11 +108,11 @@ window.attachProfileEvents = () => {
       // Step 2: Update content with typewriter
       textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
-      const moetextcontainer = document.createElement("div");
-      textBox.appendChild(moetextcontainer);
+      const container = document.createElement("div");
+      textBox.appendChild(container);
 
-      typeHTMLString(moetextcontainer, message, 12, () => {
-        gsap.fromTo(moetextcontainer, 
+      typeHTMLString(container, message, 12, () => {
+        gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
@@ -181,7 +181,7 @@ profileData.forEach(profile => {
 });
   // Start first profile
   updateProfile(0);
-}
+  
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
