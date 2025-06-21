@@ -2069,7 +2069,7 @@ body.loaded #app {
   .progress-container {
     width:120px;
     height:120px;
-    margin-left: 10%;
+    margin-left: 15%;
   }
 
   .progress-container svg {
