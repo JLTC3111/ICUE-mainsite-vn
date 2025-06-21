@@ -882,9 +882,11 @@ window.attachProfileEvents_coreTeam = () => {
 
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          document.getElementById('prev-btn')?.click();
+          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'left');
         } else {
-          document.getElementById('next-btn')?.click();
+          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+          updateProfile_coreTeam(currentIndex, 'right');
         }
       }
     });
