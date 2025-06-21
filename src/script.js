@@ -184,6 +184,7 @@ profileData.forEach(profile => {
   // Start first profile
   updateProfile(0);
 }
+  
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
