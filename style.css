@@ -1778,6 +1778,16 @@ body.loaded #app {
     height: 1.35em; /* optional scaling */
     width: auto;
   }
+
+  @keyframes slide-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 3.5%;
+    }
+  }
+
   .submit-button {
       font-size: 22px;
   }
@@ -2009,6 +2019,15 @@ body.loaded #app {
   .svg-blinking-cursor {
     height: 1.25em; /* optional scaling */
     width: auto;
+  }
+
+  @keyframes slide-progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 5.5%;
+    }
   }
 
   .contact-container {
