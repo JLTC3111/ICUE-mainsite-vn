@@ -1954,6 +1954,8 @@ body.loaded #app {
   }
 
   .arrow-symbol {
+    display: none;
+    pointer-events: none;
     width: 50px;
     height: 50px;
   }
@@ -2398,6 +2400,8 @@ body.loaded #app {
     }
 
     .arrow-symbol {
+      display: none;
+      pointer-events: none;
       width: 43px;
       height: 43px;
     }
@@ -2971,7 +2975,7 @@ button {
   }
   .text-container-coreTeam{
     max-width:550px;
-    width:80%;
+    width:70%;
     top:70%;
     left:-5%;
   }
