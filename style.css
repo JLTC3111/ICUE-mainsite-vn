@@ -257,7 +257,7 @@ footer p {
 
 .sub-text {
   justify-content: left;
-  font-family: 'Rubik';
+  font-family: 'Press Start 2P';
   font-style: normal;
   font-size: clamp(32px, 2.5vw, 42px);
   font-weight: 400;
@@ -272,7 +272,7 @@ footer p {
 }
 
 .cursive-default {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: 'Monospace', serif;
   font-weight: 600;
   font-style: italic;
   font-size: clamp(30px, 2.5vw, 40px);
@@ -2053,7 +2053,7 @@ body.loaded #app {
   
   .cursive-default {
     margin: 16.5rem 0 0 0;
-    font-size: clamp(12px, 2.5vw, 14px);
+    font-size: clamp(14px, 2.5vw, 16px);
     letter-spacing: 1.75px;
   }
 
