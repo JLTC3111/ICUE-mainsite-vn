@@ -109,7 +109,7 @@ window.attachProfileEvents = () => {
       textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
       const moetextcontainer = document.createElement("div");
-      textBox.appendChild(container);
+      textBox.appendChild(moetextcontainer);
 
       typeHTMLString(moetextcontainer, message, 12, () => {
         gsap.fromTo(moetextcontainer, 
