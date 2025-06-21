@@ -182,7 +182,7 @@ window.attachProfileEvents = () => {
     });
   });
   
-  
+
   // Preload all profile images
 profileData.forEach(profile => {
   const img = new Image();
@@ -814,11 +814,11 @@ window.attachProfileEvents_coreTeam = () => {
     setTimeout(() => {
       textBox.innerHTML = "";
       const message = profileData_coreTeam[index].name;
-      const container = document.createElement("div");
-      textBox.appendChild(container);
+      const coreContainer = document.createElement("div");
+      textBox.appendChild(coreContainer);
 
-      typeHTMLString(container, message, 14, () => {
-        gsap.fromTo(container, 
+      typeHTMLString(coreContainer, message, 14, () => {
+        gsap.fromTo(coreContainer, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
@@ -880,26 +880,36 @@ window.attachProfileEvents_coreTeam = () => {
     updateProfile_coreTeam(currentIndex, 'left');
   });
 
-  if (container) {
-    container.addEventListener('touchstart', (e) => {
+  const swipeElements = [container, photo];
+
+  let swipeLocked = false;
+  
+  swipeElements.forEach(el => {
+    el.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
-
-    container.addEventListener('touchend', (e) => {
+  
+    el.addEventListener('touchend', (e) => {
+      if (swipeLocked) return;
+  
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-
+  
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        swipeLocked = true;
+  
         if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
+          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+          updateProfile(currentIndex, 'left');
         } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
+          currentIndex = (currentIndex + 1) % profileData.length;
+          updateProfile(currentIndex, 'right');
         }
+  
+        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
-  }
+  });
 
   // Preload images
   profileData_coreTeam.forEach(profile => {

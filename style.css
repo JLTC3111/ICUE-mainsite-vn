@@ -2991,7 +2991,7 @@ button {
   }
 }
 
-@media (min-width: 400px) and (max-aspect-ratio: .7299/1) {
+@media (min-width: 400px) and (max-aspect-ratio: .7799/1) {
   .image-container-coreTeam{
     left:45%;
   }
