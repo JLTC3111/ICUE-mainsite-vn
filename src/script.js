@@ -790,7 +790,7 @@ window.attachProfileEvents_coreTeam = () => {
 
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.querySelector('.image-container');
+  const container = document.querySelector('.image-container-coreTeam');
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
@@ -825,7 +825,7 @@ window.attachProfileEvents_coreTeam = () => {
 
       if (isFirstLoad) {
         tl.fromTo(photo,
-          { y: 100, scale: 0.8, opacity: 0 },
+          { y: 100, scale: 0.25, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
 
@@ -836,7 +836,7 @@ window.attachProfileEvents_coreTeam = () => {
         );
       } else {
         tl.fromTo(photo,
-          { y: 100, scale: 0.8, opacity: 0 },
+          { y: 100, scale: 0.25, opacity: 0 },
           { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
         );
 
