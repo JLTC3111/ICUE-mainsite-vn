@@ -580,11 +580,11 @@ footer p {
   position: fixed;
   display: flex;
   top: 50%;
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   justify-content: center;
   align-items: center;
-  background-color: linear-gradient(to bottom right, #ffffff, #585858); /* Transparent background */
+  background: transparent; /* Transparent background */
   border-radius: 50%;               /* Removes the circular shape */
   box-shadow: none;              /* Removes the shadow */
   cursor: pointer;
@@ -597,11 +597,6 @@ footer p {
 .fill-blue {fill: #3DB9F9;}
 .fill-white {fill: #FFFFFF;}
 .fill-dark {fill: #111;}
-
-.arrow-icon {
-  width: 75px;
-  height: 75px;
-}
 
 .arrow-button:hover {
   transform: scale(1.2);
@@ -625,12 +620,17 @@ footer p {
   fill: #41ff51;
 }
 
+.arrow-button svg {
+  width:90%;
+  height:90%;
+}
+
 .left-arrow {
   left: 2.5rem;
 }
 
 .right-arrow {
-  right: 11.5rem;
+  right: 9.5rem;
 }
 
 .language-switcher {
