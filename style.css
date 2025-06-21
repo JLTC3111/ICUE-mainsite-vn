@@ -264,6 +264,7 @@ footer p {
 }
 
 .sub-text {
+  display: inline;
   justify-content: left;
   font-family: 'Press Start 2P';
   font-style: normal;
@@ -280,14 +281,14 @@ footer p {
 }
 
 .cursive-default {
-  font-family: 'Monospace', serif;
+  font-family: 'Playfair Display', serif;
   font-weight: 600;
   font-style: italic;
   font-size: clamp(30px, 2.5vw, 40px);
   background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
   -webkit-background-clip: text;
+  word-spacing: 1vw;
   background-clip: text;
-  letter-spacing:5px;
   margin:7.5% 25% -4.5% 3%;
   /* Add text shadow for 3D depth */
   text-shadow:
@@ -579,7 +580,7 @@ footer p {
 .arrow-button {
   position: fixed;
   display: flex;
-  top: 50%;
+  top: 55%;
   width: 65px;
   height: 65px;
   justify-content: center;
@@ -2097,7 +2098,6 @@ body.loaded #app {
   .sub-text {
     font-size: clamp(14px, 3vw, 16px);
     z-index: 2;
-    margin-left:-3.5rem;
   } 
   
   .cursive-default {
