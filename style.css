@@ -2100,13 +2100,13 @@ body.loaded #app {
   }
 
   .sub-text {
-    font-size: clamp(14px, 3vw, 16px);
+    font-size: clamp(14px, 2.5vw, 16px);
     z-index: 2;
   } 
   
   .cursive-default {
     margin: 16.5rem 0 0 0;
-    font-size: clamp(14px, 2.5vw, 16px);
+    font-size: clamp(12px, 2vw, 14px);
     letter-spacing: 1.75px;
   }
 
@@ -2897,6 +2897,12 @@ button {
   color: #fff; /* Darker text color on hover */
 }
 @media (max-width: 399px) {
+  .sub-text {
+    font-size: 12px;
+  }
+  .cursive-default{
+    font-size: 10px;
+  }
   .news-container {
     transform: translate(-2.75vw, 4.5vh);
   }
