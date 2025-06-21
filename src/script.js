@@ -97,37 +97,35 @@ window.attachProfileEvents = () => {
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo) return;
   
-    // Step 1: Add exit animation classes
+    currentIndex = index; // ✅ Ensure global index stays in sync
+  
     const isFirstLoad = (currentIndex === 0 && index === 0);
-
+  
     if (!isFirstLoad) {
-    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
+      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    }
   
     setTimeout(() => {
-      // Step 2: Update content with typewriter
-      textBox.innerHTML = ""; // clear previous
+      textBox.innerHTML = "";
       const message = profileData[index].name;
       const container = document.createElement("div");
       textBox.appendChild(container);
-
+  
       typeHTMLString(container, message, 12, () => {
         gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
       });
+  
       photo.src = profileData[index].img;
   
-      // Step 3: Remove exit animation classes
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-  
-      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
   
-      // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
   
       tl.fromTo(photo, 
@@ -138,11 +136,10 @@ window.attachProfileEvents = () => {
       tl.fromTo(textBox, 
         { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
-        "-=0.5" // Start slightly overlapping with photo animation
+        "-=0.5"
       );
-  
-    }, 300); // ← match exit animation duration (0.3s)
-  }
+    }, 300);
+  };
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
@@ -163,14 +160,12 @@ window.attachProfileEvents = () => {
     container.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-
+      
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile(currentIndex, 'left');
+          document.getElementById('prev-btn')?.click();
         } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile(currentIndex, 'right');
+          document.getElementById('next-btn')?.click();
         }
       }
     });
@@ -184,7 +179,6 @@ profileData.forEach(profile => {
   // Start first profile
   updateProfile(0);
 }
-  
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
