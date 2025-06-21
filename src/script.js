@@ -167,10 +167,10 @@ window.attachProfileEvents = () => {
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
           currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
+          updateProfile(currentIndex, 'left');
         } else {
           currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
+          updateProfile(currentIndex, 'right');
         }
       }
     });
