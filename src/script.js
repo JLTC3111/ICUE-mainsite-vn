@@ -150,28 +150,29 @@ window.attachProfileEvents = () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex, 'left');
   });
+  let swipeLocked = false;
 
-  // Add touch support for mobile
-  if (container) {
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
+container.addEventListener('touchend', (e) => {
+  if (swipeLocked) return;
 
-    container.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-      
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
-      }
-    });
+  touchEndX = e.changedTouches[0].screenX;
+  const swipeDistance = touchEndX - touchStartX;
+
+  if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+    swipeLocked = true;
+    
+    if (swipeDistance > 0) {
+      currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+      updateProfile(currentIndex, 'left');
+    } else {
+      currentIndex = (currentIndex + 1) % profileData.length;
+      updateProfile(currentIndex, 'right');
+    }
+
+    setTimeout(() => swipeLocked = false, 1000); // Adjust timeout to match animation duration
   }
+});
+
 
   // Preload all profile images
 profileData.forEach(profile => {
