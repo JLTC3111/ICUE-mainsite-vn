@@ -2296,13 +2296,8 @@ body.loaded #app {
   }
 
   .model-butterfly {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; /* Optional: stack on small screens */
-    top: 17.5rem;
-    right: 2.5rem;
+    top: .5rem;
+    right: .25rem;
     animation: slideDownFromTop 3s ease-in-out;
   }
 
