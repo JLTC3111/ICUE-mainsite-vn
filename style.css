@@ -563,6 +563,7 @@ footer p {
 }
 
 .intro-people {
+  display: inline;
   font-size: clamp(24px, 2.5vw, 40px);
   font-weight: bold;
   letter-spacing: .5px; 
