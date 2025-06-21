@@ -790,7 +790,7 @@ window.attachProfileEvents_coreTeam = () => {
 
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.querySelector('.image-container-coreTeam');
+  const container = document.getElementById('profile-text-coreTeam')?.parentElement;
 
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
