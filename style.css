@@ -302,10 +302,11 @@ footer p {
 }
 
 .lets-talk {
+  font-family: 'Poppins';
   margin: 7.5% 1.5% 2.5% 1.5%;
   font-size: 28px;
   text-decoration: underline;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 0 #000000,       /* hard shadow base */
