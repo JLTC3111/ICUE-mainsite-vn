@@ -339,9 +339,13 @@ footer p {
   height: 120px;
   padding: 2.5rem;
   text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin: 3rem auto;
   z-index: 3;
+  transition: all .5s ease;
+}
+
+.home-text-slider:hover {
+  transform: scale(1.05);
 }
 
 .slider-text {
@@ -636,8 +640,8 @@ footer p {
 
 .language-switcher {
   position: fixed;
-  top: 1.25%;
-  right: 10%;
+  top: 1.75%;
+  right: 7.5%;
   display: flex;
   gap: 9px;
   z-index: 22;
@@ -645,8 +649,8 @@ footer p {
 
 .flag-link {
   display: flex;
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   background-color: #ffffff; 
   justify-content: center;
   align-items: center;
@@ -659,9 +663,10 @@ footer p {
 .flag-icon {
   display: inline-block;
   background-size: cover;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%; /* ✅ Makes it circular */
+  box-shadow: 2px 4px 12px #fff;
 }
 
 .flag-icon:hover {
@@ -2208,9 +2213,9 @@ body.loaded #app {
 
   .language-switcher {
     position: fixed;
-    top: 0;
+    top: -1%;
     left: 50%;
-    transform: translate(95%, 2.75vh);
+    transform: translate(85%, 2.75vh);
     margin: 0;
     z-index: 20;
   }
