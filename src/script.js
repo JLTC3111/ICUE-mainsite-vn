@@ -690,8 +690,6 @@ window.initHomeTextSlider = () => {
   console.log("✅ Slider initialized with enhanced features");  
 }
 
-
-
 let currentPage = 'Home'; // default
 window.addEventListener('DOMContentLoaded', router);
 window.addEventListener('hashchange', router);

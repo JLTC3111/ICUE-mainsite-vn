@@ -103,6 +103,12 @@ nav a {
   z-index: 19;
 }
 
+.menu-bar a:hover {
+  animation: wiggle 0.25s ease-in-out;
+  transform: scale(1.1);
+  color: rgb(0, 0, 0);
+}
+
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
   25%  { transform: rotate(5deg); }
@@ -250,12 +256,6 @@ footer p {
   }
 }
 
-.flag-icon,
-.logo-content:hover{
-  transform: scale(1.1);
-  animation: wiggle .25s ease-in-out;
-}
-
 .logo-content {
   width: 150px;
   height: auto;
@@ -334,8 +334,8 @@ footer p {
 }
 
 #homeTextSlider:active {
-  transform: scale(0.98);
-  transition: transform 0.5s ease;
+  transform: scale(0.9);
+  transition: transform 1.5s ease;
 }
 
 .home-text-slider {
@@ -362,6 +362,7 @@ footer p {
   color: rgb(44, 44, 44);
   max-width: 80%;
   margin-top: -25px;
+  pointer-events: all;
 }
 
 .highlight-text {
@@ -651,10 +652,11 @@ footer p {
 .language-switcher {
   position: fixed;
   top: 1.75%;
-  right: 7.5%;
+  right: 5.5%;
   display: flex;
   gap: 9px;
   z-index: 22;
+  animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
 .flag-link {
@@ -666,8 +668,11 @@ footer p {
   align-items: center;
   border-radius: 25px;
   cursor: pointer;
-  animation: slideInFromRight 4.5s ease-in-out forwards;
-  transition: transform 0.3s;
+  transition: transform 0.75s;
+}
+
+.flag-link:hover {
+  transform: scale(1.05);
 }
 
 .flag-icon {
@@ -679,8 +684,8 @@ footer p {
   box-shadow: 2px 4px 12px #fff;
 }
 
-.flag-icon:hover {
-  transform: scale(1.1);
+.flag-icon:hover{
+  animation: wiggle .25s ease-in-out;
 }
 
 .menu-toggle {
@@ -2223,9 +2228,8 @@ body.loaded #app {
 
   .language-switcher {
     position: fixed;
-    top: -1%;
-    left: 50%;
-    transform: translate(85%, 2.75vh);
+    top: 1.75;
+    left: 87.5%;
     margin: 0;
     z-index: 20;
   }
