@@ -110,7 +110,7 @@ window.attachProfileEvents = () => {
       const moetextcontainer = document.createElement("div");
       textBox.appendChild(moetextcontainer);
   
-      typeHTMLString(moetextcontainer, message, 12, () => {
+      typeHTMLString(moetextcontainer, message, 8, () => {
         gsap.fromTo(moetextcontainer, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
@@ -838,7 +838,7 @@ window.attachProfileEvents_coreTeam = () => {
       const coreContainer = document.createElement("div");
       textBox.appendChild(coreContainer);
 
-      typeHTMLString(coreContainer, message, 14, () => {
+      typeHTMLString(coreContainer, message, 10, () => {
         gsap.fromTo(coreContainer, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
