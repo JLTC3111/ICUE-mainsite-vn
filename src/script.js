@@ -59,6 +59,39 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null)
   typeNextNode();
 }
 
+window.makeItRainText = () => {
+  const el = document.querySelector("#rainText");
+  if (!el) return;
+
+  const text = el.textContent.trim();
+  el.textContent = "";
+
+  text.split("").forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char;
+    span.style.display = "inline-block";
+    span.style.opacity = 0;
+    el.appendChild(span);
+
+    gsap.fromTo(
+      span,
+      { y: "-40vh", opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        delay: i * 0.25,
+        duration: 3,
+        ease: "bounce.out"
+      }
+    );
+  });
+};
+
+// Call when DOM is ready
+window.addEventListener("DOMContentLoaded", () => {
+  window.makeItRainText();
+});
+
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -252,6 +285,7 @@ window.loadPage = (page) => {
                   updateResize();
                   break;
                 case 'Home':
+                  makeItRainText();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   break;
