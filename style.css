@@ -17,7 +17,6 @@ h1 {
 
 h2 {
   color: rgb(0, 0, 0);
-  animation: slideUp 2.5s ease-in-out forwards;
 }
 
 @keyframes slideUp {
@@ -301,12 +300,47 @@ footer p {
   line-height: 1.8;
 }
 
+.slam-container {
+  perspective: 1200px;
+  overflow: visible;
+  text-align: left;
+  margin-left: 1.5rem;
+  margin-top: 5.5%;
+}
+
+.slam-text {
+  font-size: 2.5rem;
+  font-weight: 900;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.slam-dust {
+  position: absolute;
+  bottom: 0;
+  left: 8.5%;
+  width: 220px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 80%);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.lets-talk:hover{
+  background: transparent; /* no background color to avoid visible box */
+  text-shadow: 1px 4px 18px rgba(0, 217, 255, 0.5);
+  border-radius: 50px; /* rounder edges help hide boxiness */
+  transition: all 0.3s ease;
+}
+
 .lets-talk {
-  font-family: 'Poppins';
+  font-family: 'Playfair Display';
   margin: 7.5% 1.5% 2.5% 1.5%;
   font-size: 28px;
   text-decoration: underline;
-  transition: all 0.3s ease-in-out;
   /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 0 #000000,       /* hard shadow base */

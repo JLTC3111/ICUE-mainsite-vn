@@ -92,6 +92,85 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
+window.realSlamnorSlam = function () {
+  const text = document.querySelector('#textSlam .slam-text');
+  const dust = document.querySelector('#textSlam .slam-dust');
+
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
+
+  // Reset state
+  gsap.set(text, {
+    x: 0,
+    y: 0,
+    rotationX: 0,
+    scale: 1.05,
+    opacity: 0,
+    transformOrigin: "50% 50%",
+    perspective: 1200
+  });
+
+  gsap.set(dust, {
+    scale: 0.5,
+    opacity: 0,
+    filter: "brightness(1)"
+  });
+
+  const tl = gsap.timeline();
+
+  // 🌀 Spin + Drop Slam
+  tl.to(text, {
+    opacity: 1,
+    y: 0,
+    rotationX: 2880,
+    rotationY: 2880,
+    rotationZ: 2880,
+    scale: 1.5,
+    duration: 1.1,
+    ease: "back.out(1.7)",
+    transformPerspective: 1200
+  })
+
+  // 💥 Slam Impact
+  .to(text, {
+    scaleY: 2.5,
+    scaleX: 2.5,
+    duration: 0.6,
+    ease: "power4.inOut"
+  })
+
+  // 👊 Bounce Back
+  .to(text, {
+    scaleY: 1,
+    scaleX: 1,
+    duration: 0.7,
+    ease: "elastic.out(1, 0.5)"
+  })
+
+  // 💨 Dust Puff
+  .to(dust, {
+    opacity: 1,
+    scale: 1.4,
+    filter: "brightness(1.5)",
+    duration: 0.75,
+    ease: "power2.out"
+  }, "-=1") // overlap dust with squash
+
+  .to(dust, {
+    opacity: 0,
+    scale: 2.2,
+    filter: "brightness(.75)",
+    duration: 1.2,
+    ease: "power2.in"
+  }, "-=0.6"); // overlap exit
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  realSlamnorSlam();
+});
+
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -286,6 +365,7 @@ window.loadPage = (page) => {
                   break;
                 case 'Home':
                   makeItRainText();
+                  realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   break;
