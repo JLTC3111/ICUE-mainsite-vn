@@ -301,10 +301,11 @@ footer p {
 }
 
 .slam-container {
+  max-width: fit-content;
   perspective: 1200px;
   overflow: visible;
-  text-align: left;
-  margin-left: 1.5rem;
+  text-align: center;
+  margin-left: .75rem;
   margin-top: 5.5%;
 }
 
@@ -320,7 +321,7 @@ footer p {
   bottom: 0;
   left: 8.5%;
   width: 220px;
-  height: 40px;
+  height: 20px;
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 80%);
   border-radius: 50%;
   transform: translateX(-50%);
@@ -337,6 +338,7 @@ footer p {
 }
 
 .lets-talk {
+  white-space: nowrap;
   font-family: 'Playfair Display';
   margin: 7.5% 1.5% 2.5% 1.5%;
   font-size: 28px;
@@ -381,7 +383,6 @@ footer p {
   height: 120px;
   padding: 2.5rem;
   text-align: center;
-  margin: 3rem auto;
   z-index: 3;
   transition: all .5s ease;
   pointer-events: all;
@@ -396,7 +397,7 @@ footer p {
   text-align: center;
   color: rgb(44, 44, 44);
   max-width: 80%;
-  margin-top: -25px;
+  margin-top: auto;
   pointer-events: all;
 }
 
@@ -413,13 +414,15 @@ footer p {
   pointer-events: none; /* So the container gets the click */
 }
 
+#sliderDots {
+  margin-top: -1rem;
+}
+
 .slider-dots {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
-  margin-top: -2.5rem;
-  margin-left: -1.5rem;
   gap: 14px;
   z-index: 1;
 }

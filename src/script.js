@@ -124,9 +124,9 @@ window.realSlamnorSlam = function () {
   tl.to(text, {
     opacity: 1,
     y: 0,
-    rotationX: 2880,
-    rotationY: 2880,
-    rotationZ: 2880,
+    rotationX: 0,
+    rotationY: 360,
+    rotationZ: 360,
     scale: 1.5,
     duration: 1.1,
     ease: "back.out(1.7)",
