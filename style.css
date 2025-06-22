@@ -329,6 +329,13 @@ footer p {
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.37);
   border: 1px solid rgba(255, 255, 255, 0.18);
   animation: slideUp 4.5s ease-in-out; 
+  cursor: pointer;
+  pointer-events: all;
+}
+
+#homeTextSlider:active {
+  transform: scale(0.98);
+  transition: transform 0.5s ease;
 }
 
 .home-text-slider {
@@ -342,6 +349,8 @@ footer p {
   margin: 3rem auto;
   z-index: 3;
   transition: all .5s ease;
+  pointer-events: all;
+  user-select: none;
 }
 
 .home-text-slider:hover {
@@ -365,6 +374,7 @@ footer p {
   opacity: 1;          
   /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
   transition: opacity 0.5s ease-in-out;
+  pointer-events: none; /* So the container gets the click */
 }
 
 .slider-dots {

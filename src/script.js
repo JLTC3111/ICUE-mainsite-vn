@@ -459,6 +459,7 @@ window.initHomeTextSlider = () => {
   // Clean up existing event listeners and intervals
   const sliderContainer = document.querySelector("#homeTextSlider");
   const dotsContainer = document.querySelector("#sliderDots");
+  let isAnimating = false;
   
   // Remove existing event listeners
   if (window.homeSliderIntervalId) {
@@ -492,18 +493,22 @@ window.initHomeTextSlider = () => {
   let isPaused = true;
 
   function updateText(newIndex) {
+    if (isAnimating) return; // 🚫 Block if already animating
+    isAnimating = true;
+  
     index = newIndex;
     const textElement = document.querySelector("#homeSliderText .highlight-text");
   
     if (!textElement) {
       console.error("highlight-text element not found!");
+      isAnimating = false;
       return;
     }
   
     const message = messages[index];
-    const typingSpeed = 25; // ms per character
+    const typingSpeed = 25;
   
-    // Step 1: Animate out old text
+    // Animate out
     gsap.to(textElement, {
       duration: 0.2,
       opacity: 0,
@@ -511,23 +516,26 @@ window.initHomeTextSlider = () => {
       y: 10,
       ease: "power2.out",
       onComplete: () => {
-        textElement.textContent = ""; // Clear content
-        textElement.style.opacity = 1; // Reset visibility for typing
+        textElement.textContent = "";
+        textElement.style.opacity = 1;
   
-        // Step 2: Typewriter loop
         let i = 0;
+  
         const typeNextChar = () => {
           if (i < message.length) {
             textElement.textContent += message.charAt(i);
             i++;
             setTimeout(typeNextChar, typingSpeed);
           } else {
-            // Optional: little GSAP bounce after typing completes
+            // bounce
             gsap.fromTo(
               textElement,
               { scale: 0.98 },
               { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
             );
+  
+            // ✅ Done animating
+            isAnimating = false;
           }
         };
   
@@ -557,19 +565,20 @@ window.initHomeTextSlider = () => {
     });
   }
 
-  function nextText() {
-    if (!isPaused) {
+  function nextText(force = false) {
+    if (!isPaused || force) {
       index = (index + 1) % messages.length;
       updateText(index);
     }
   }
-
-  function prevText() {
-    if (!isPaused) {
+  
+  function prevText(force = false) {
+    if (!isPaused || force) {
       index = (index - 1 + messages.length) % messages.length;
       updateText(index);
     }
   }
+  
 
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
@@ -627,12 +636,37 @@ window.initHomeTextSlider = () => {
 
   sliderContainer.addEventListener("mouseleave", () => {
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 4000);
+      window.homeSliderIntervalId = setInterval(nextText, 8000);
     }
+  });
+
+  // Click-to-navigate feature with double-click protection
+  let lastClickTime = 0;
+  
+  sliderContainer.addEventListener("click", (event) => {
+    const now = Date.now();
+    if (now - lastClickTime < 500) {
+      // Throttle: ignore if too soon
+      return;
+    }
+    lastClickTime = now;
+
+    const rect = sliderContainer.getBoundingClientRect();
+    const clickX = event.clientX - rect.left; // X relative to container
+    const containerWidth = rect.width;
+
+    if (clickX < containerWidth / 2) {
+      prevText(true);
+    } else {
+      nextText(true);
+    }
+
+    restartInterval();
   });
 
   console.log("✅ Slider initialized with enhanced features");  
 }
+
 
 
 let currentPage = 'Home'; // default
