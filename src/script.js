@@ -460,6 +460,8 @@ window.initHomeTextSlider = () => {
   const sliderContainer = document.querySelector("#homeTextSlider");
   const dotsContainer = document.querySelector("#sliderDots");
   let isAnimating = false;
+  let typingSessionId = 0;
+  let isTyping = false;
   
   // Remove existing event listeners
   if (window.homeSliderIntervalId) {
@@ -493,55 +495,51 @@ window.initHomeTextSlider = () => {
   let isPaused = true;
 
   function updateText(newIndex) {
-    if (isAnimating) return; // 🚫 Block if already animating
-    isAnimating = true;
-  
     index = newIndex;
-    const textElement = document.querySelector("#homeSliderText .highlight-text");
-  
-    if (!textElement) {
-      console.error("highlight-text element not found!");
-      isAnimating = false;
-      return;
-    }
+    typingSessionId += 1;
+    const thisSession = typingSessionId;
   
     const message = messages[index];
-    const typingSpeed = 25;
+    const typingSpeed = 12;
   
-    // Animate out
-    gsap.to(textElement, {
-      duration: 0.2,
-      opacity: 0,
-      scale: 0.95,
-      y: 10,
-      ease: "power2.out",
-      onComplete: () => {
-        textElement.textContent = "";
-        textElement.style.opacity = 1;
+    isTyping = true;
+    textElement.textContent = "";
+    gsap.killTweensOf(textElement);
   
-        let i = 0;
+    gsap.fromTo(
+      textElement,
+      { opacity: 0, scale: 0.95, y: 10 },
+      {
+        duration: 0.2,
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        ease: "power2.out",
+        onComplete: () => {
+          let i = 0;
   
-        const typeNextChar = () => {
-          if (i < message.length) {
-            textElement.textContent += message.charAt(i);
-            i++;
-            setTimeout(typeNextChar, typingSpeed);
-          } else {
-            // bounce
-            gsap.fromTo(
-              textElement,
-              { scale: 0.98 },
-              { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
-            );
+          const typeNextChar = () => {
+            // ❌ Skip if this is not the current session
+            if (typingSessionId !== thisSession) return;
   
-            // ✅ Done animating
-            isAnimating = false;
-          }
-        };
+            if (i < message.length) {
+              textElement.textContent += message.charAt(i);
+              i++;
+              setTimeout(typeNextChar, typingSpeed);
+            } else {
+              isTyping = false; // ✅ Done typing
+              gsap.fromTo(
+                textElement,
+                { scale: 0.98 },
+                { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
+              );
+            }
+          };
   
-        typeNextChar();
+          typeNextChar();
+        }
       }
-    });
+    );
   
     // Step 3: Update dot states and restart progress bar
     dots.forEach((dot, i) => {
@@ -629,33 +627,24 @@ window.initHomeTextSlider = () => {
     }
   });
 
-  // Pause on hover
-  sliderContainer.addEventListener("mouseenter", () => {
-    clearInterval(window.homeSliderIntervalId);
-  });
-
-  sliderContainer.addEventListener("mouseleave", () => {
-    if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 8000);
-    }
-  });
-
-  // Click-to-navigate feature with double-click protection
   let lastClickTime = 0;
-  
   sliderContainer.addEventListener("click", (event) => {
     const now = Date.now();
-    if (now - lastClickTime < 500) {
-      // Throttle: ignore if too soon
-      return;
-    }
+    if (now - lastClickTime < 200) return; // protect from double fire
     lastClickTime = now;
 
     const rect = sliderContainer.getBoundingClientRect();
-    const clickX = event.clientX - rect.left; // X relative to container
-    const containerWidth = rect.width;
+    const clickX = event.clientX - rect.left;
 
-    if (clickX < containerWidth / 2) {
+    if (isTyping) {
+      typingSessionId++; // 🔥 Cancel current typing
+      isTyping = false;
+      textElement.textContent = messages[index]; // 🧾 Show full message
+      gsap.to(textElement, { scale: 1, duration: 0.2, ease: "power1.out" });
+      return;
+    }
+
+    if (clickX < rect.width / 2) {
       prevText(true);
     } else {
       nextText(true);
