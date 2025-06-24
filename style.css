@@ -2197,9 +2197,8 @@ body.loaded #app {
   }
 
   .slider-dots {
-    margin-top:10vh;
+    margin-top:20vh;
     gap: 10px;
-    z-index: 1;
   }
 
   .dot {
