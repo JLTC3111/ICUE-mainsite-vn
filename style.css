@@ -93,6 +93,11 @@ nav a {
   }
 }
 
+.highlight-text-phrase {
+  color: rgb(0, 0, 0);
+  text-shadow: 0 1px 2px #ffffff, 0 0 8px rgb(181, 243, 252);
+}
+
 .menu-bar {
   display: flex;
   align-items: center;

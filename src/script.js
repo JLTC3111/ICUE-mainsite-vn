@@ -25,38 +25,82 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null)
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
   function typeNextNode() {
-    if (nodeIndex >= nodes.length) {
-      if (typeof onComplete === "function") onComplete();
-      return;
-    }
-
-    const node = nodes[nodeIndex];
-    nodeIndex++;
-
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      const span = document.createElement("span");
-      targetElement.insertBefore(span, cursor); // always before cursor
-
-      let charIndex = 0;
-      function typeChar() {
-        if (charIndex < text.length) {
-          span.textContent += text.charAt(charIndex);
-          charIndex++;
-          setTimeout(typeChar, speed);
-        } else {
-          typeNextNode();
-        }
-      }
-      typeChar();
-    } else {
-      const clone = node.cloneNode(true);
-      targetElement.insertBefore(clone, cursor);
-      typeNextNode();
-    }
+  if (nodeIndex >= nodes.length) {
+    if (typeof onComplete === "function") onComplete();
+    return;
   }
 
-  typeNextNode();
+  const node = nodes[nodeIndex];
+  nodeIndex++;
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    const span = document.createElement("span");
+    targetElement.insertBefore(span, cursor); // always before cursor
+
+    let charIndex = 0;
+    function typeChar() {
+      if (charIndex < text.length) {
+        span.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, speed);
+      } else {
+        typeNextNode();
+      }
+    }
+    typeChar();
+
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    const wrapper = node.cloneNode(false); // Clone just the tag, not children
+    targetElement.insertBefore(wrapper, cursor);
+
+    const childNodes = Array.from(node.childNodes);
+    let childIndex = 0;
+
+    function typeChildNode() {
+      if (childIndex >= childNodes.length) {
+        typeNextNode();
+        return;
+      }
+
+      const child = childNodes[childIndex];
+      childIndex++;
+
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent;
+        const span = document.createElement("span");
+        wrapper.appendChild(span);
+
+        let charIndex = 0;
+        function typeChar() {
+          if (charIndex < text.length) {
+            span.textContent += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, speed);
+          } else {
+            typeChildNode();
+          }
+        }
+        typeChar();
+
+      } else {
+        // If it's an element inside another (nested), just append it and continue
+        wrapper.appendChild(child.cloneNode(true));
+        typeChildNode();
+      }
+    }
+
+    typeChildNode();
+
+  } else {
+    // Fallback: just clone and insert if it's a comment or unsupported node
+    const clone = node.cloneNode(true);
+    targetElement.insertBefore(clone, cursor);
+    typeNextNode();
+  }
+  }
+
+typeNextNode();
 }
 
 window.makeItRainText = () => {
@@ -589,12 +633,12 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    "Hơn 10 năm kinh nghiệm, nhóm 11 chuyên gia chúng tôi đã thiết kế những thành phố thông minh — cân bằng giữa chức năng, khả năng phục hồi và nhu cầu của cộng đồng. ⏳ ",
-    "Thúc đẩy bởi giá trị chung, sự thống nhất. Tri Ân, làm việc chăm chỉ và không ngừng tự hoàn thiện. Những giá trị cốt lõi truyền cảm hứng cho các đối tác với các chuyên gia địa phương, cơ quan chính phủ. 🤝 ",
-    "Từ tích hợp thành phố thông minh đến các chiến lược thích ứng với khí hậu, chúng tôi đã sử dụng công nghệ và thông tin chi tiết dựa trên dữ liệu để nâng cao hiệu quả, khả năng kết nối — xây dựng các thành phố sẵn sàng cho tương lai. 💡 ",
-    "Lãnh đạo sáng kiến ​​quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với chiến lược toàn cảnh và kết quả thực tế. 🏆 ",
-    "Định hình thành phố, cải thiện cuộc sống. Các giải pháp chúng tôi cung cấp đều bắt nguồn từ một sứ mệnh: tạo ra 1 đô thị tương lai bao trùm, bền vững và lấy con người làm trung tâm. 🌱 ",
-    "💥 Tạo ra những trải nghiệm trường tồn mãi mãi."
+    `Hơn 10 năm kinh nghiệm, nhóm 11 chuyên gia chúng tôi đã thiết kế những thành phố thông minh — <strong class="highlight-text-phrase"> cân bằng </strong> giữa chức năng, khả năng phục hồi và nhu cầu của cộng đồng. ⏳ `,
+    `Thúc đẩy bởi <strong class="highlight-text-phrase"> giá trị chung </strong>, sự thống nhất. Tri Ân, làm việc chăm chỉ và <strong class="highlight-text-phrase"> không ngừng tự hoàn thiện </strong>. Những giá trị cốt lõi truyền cảm hứng cho các đối tác với các chuyên gia địa phương, cơ quan chính phủ. 🤝 `,
+    `Từ tích hợp thành phố thông minh đến các chiến lược thích ứng với khí hậu, chúng tôi đã sử dụng công nghệ và thông tin chi tiết dựa trên dữ liệu để nâng cao <strong class="highlight-text-phrase"> hiệu quả </strong>, khả năng kết nối — xây dựng các thành phố <strong class="highlight-text-phrase"> sẵn sàng cho tương lai </strong>. 💡 `,
+    `Lãnh đạo sáng kiến ​​quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với <strong class="highlight-text-phrase"> chiến lược toàn cảnh </strong> và <strong class="highlight-text-phrase"> kết quả thực tế </strong>. 🏆 `,
+    `Định hình thành phố, cải thiện cuộc sống. Các giải pháp chúng tôi cung cấp đều bắt nguồn từ một sứ mệnh: tạo ra 1 đô thị tương lai bao trùm, <strong class="highlight-text-phrase"> bền vững </strong> và lấy con người làm trung tâm. 🌱 `,
+    `💥 Tạo ra những <strong class="highlight-text-phrase"> trải nghiệm trường tồn </strong> mãi mãi.`
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
@@ -614,10 +658,10 @@ window.initHomeTextSlider = () => {
     const thisSession = typingSessionId;
   
     const message = messages[index];
-    const typingSpeed = 12;
+    const typingSpeed = 50;
   
     isTyping = true;
-    textElement.textContent = "";
+    textElement.innerHTML = "";
     gsap.killTweensOf(textElement);
   
     gsap.fromTo(
@@ -630,25 +674,10 @@ window.initHomeTextSlider = () => {
         y: 0,
         ease: "power2.out",
         onComplete: () => {
-          let i = 0;
-  
-          const typeNextChar = () => {
-            // ❌ Skip if this is not the current session
-            if (typingSessionId !== thisSession) return;
-  
-            if (i < message.length) {
-              textElement.textContent += message.charAt(i);
-              i++;
-              setTimeout(typeNextChar, typingSpeed);
-            } else {
-              isTyping = false; // ✅ Done typing
-              gsap.fromTo(
-                textElement,
-                { scale: 0.98 },
-                { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" }
-              );
-            }
-          };
+          typeHTMLString(textElement, message, typingSpeed, () => {
+          isTyping = false;
+          gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+        });
   
           typeNextChar();
         }
