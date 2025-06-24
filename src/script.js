@@ -637,7 +637,7 @@ window.initHomeTextSlider = () => {
     `Thúc đẩy bởi <strong class="highlight-text-phrase"> giá trị chung </strong>, sự thống nhất. Tri Ân, làm việc chăm chỉ và <strong class="highlight-text-phrase"> không ngừng tự hoàn thiện </strong>. Những giá trị cốt lõi truyền cảm hứng cho các đối tác với các chuyên gia địa phương, cơ quan chính phủ. 🤝 `,
     `Từ tích hợp thành phố thông minh đến các chiến lược thích ứng với khí hậu, chúng tôi đã sử dụng công nghệ và thông tin chi tiết dựa trên dữ liệu để nâng cao <strong class="highlight-text-phrase"> hiệu quả </strong>, khả năng kết nối — xây dựng các thành phố <strong class="highlight-text-phrase"> sẵn sàng cho tương lai </strong>. 💡 `,
     `Lãnh đạo sáng kiến ​​quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với <strong class="highlight-text-phrase"> chiến lược toàn cảnh </strong> và <strong class="highlight-text-phrase"> kết quả thực tế </strong>. 🏆 `,
-    `Định hình thành phố, cải thiện cuộc sống. Các giải pháp chúng tôi cung cấp đều bắt nguồn từ một sứ mệnh: tạo ra 1 đô thị tương lai bao trùm, <strong class="highlight-text-phrase"> bền vững </strong> và lấy con người làm trung tâm. 🌱 `,
+    `Định hình thành phố, cải thiện cuộc sống. Các giải pháp chúng tôi cung cấp đều bắt nguồn từ một sứ mệnh: tạo ra 1 đô thị tương lai bao trùm, <strong class="highlight-text-phrase"> bền vững </strong> và lấy <strong class="highlight-text-phrase"> con người </strong>làm trung tâm. 🌱 `,
     `💥 Tạo ra những <strong class="highlight-text-phrase"> trải nghiệm trường tồn </strong> mãi mãi.`
   ];
 
