@@ -724,13 +724,13 @@ window.initHomeTextSlider = () => {
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 8000);
+      window.homeSliderIntervalId = setInterval(nextText, 15000);
     }
   }
 
   // Initialize the slider
   updateText(index);
-  window.homeSliderIntervalId = setInterval(nextText, 8000);
+  window.homeSliderIntervalId = setInterval(nextText, 15000);
 
   // Add event listeners to dots
   dots.forEach((dot, i) => {
@@ -759,6 +759,18 @@ window.initHomeTextSlider = () => {
     });
   });
 
+  // Pause on hover
+  sliderContainer.addEventListener("mouseenter", () => {
+    clearInterval(window.homeSliderIntervalId);
+  });
+
+  sliderContainer.addEventListener("mouseleave", () => {
+    if (!isPaused) {
+      clearInterval(window.homeSliderIntervalId);
+      window.homeSliderIntervalId = setInterval(nextText, 15000);
+    }
+  });
+
   // Keyboard navigation
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") {
@@ -782,7 +794,7 @@ window.initHomeTextSlider = () => {
     if (isTyping) {
       typingSessionId++; // 🔥 Cancel current typing
       isTyping = false;
-      textElement.textContent = messages[index]; // 🧾 Show full message
+      textElement.innerHTML = messages[index]; // 🧾 Show full message
       gsap.to(textElement, { scale: 1, duration: 0.2, ease: "power1.out" });
       return;
     }
