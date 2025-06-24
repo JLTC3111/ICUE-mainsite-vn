@@ -2182,7 +2182,7 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin: auto;
+    margin-top: -3rem;
     z-index: 3;
   }
 
@@ -2197,9 +2197,8 @@ body.loaded #app {
   }
 
   .slider-dots {
-    justify-content: center;
-    margin: .5% auto .5% auto;
-    gap: 14px;
+    margin-top:10vh;
+    gap: 10px;
     z-index: 1;
   }
 
