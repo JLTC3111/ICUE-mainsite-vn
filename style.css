@@ -98,6 +98,17 @@ nav a {
   text-shadow: 0 1px 2px #ffffff, 0 0 8px rgb(181, 243, 252);
 }
 
+.highlight-text-phrase-moe {
+  font-weight: bold;
+  color: rgb(32, 32, 32);
+  text-shadow: 0 .5px 1px #fffca3, 0 0 2px rgb(253, 252, 252);
+}
+
+.highlight-text-phrase-core {
+  color: rgb(140, 138, 138);
+  text-shadow: 0 .5px 1px #fffefe, 0 0 2px rgb(252, 255, 50);
+}
+
 .menu-bar {
   display: flex;
   align-items: center;
