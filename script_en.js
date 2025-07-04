@@ -1,3 +1,4 @@
+console.log('[script.js] Loaded ✅');
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
   targetElement.innerHTML = "";
 
@@ -25,8 +26,12 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
 
+  // Typing skip logic
+  let skipTyping = false;
+  if (typingSessionObj) typingSessionObj.skip = false;
+
   function typeNextNode() {
-    if ((typingSessionObj && typingSessionObj.skip) || nodeIndex >= nodes.length) {
+    if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
       // Instantly show all remaining nodes
       for (; nodeIndex < nodes.length; nodeIndex++) {
         const node = nodes[nodeIndex];
@@ -46,18 +51,19 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
       if (typeof onComplete === "function") onComplete();
       return;
     }
-
+    if (nodeIndex >= nodes.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
     const node = nodes[nodeIndex];
     nodeIndex++;
-
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent;
       const span = document.createElement("span");
       targetElement.insertBefore(span, cursor); // always before cursor
-
       let charIndex = 0;
       function typeChar() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
           span.textContent = text;
           typeNextNode();
           return;
@@ -71,16 +77,13 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
         }
       }
       typeChar();
-
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const wrapper = node.cloneNode(false);
+      const wrapper = node.cloneNode(false); // Clone just the tag, not children
       targetElement.insertBefore(wrapper, cursor);
-
       const childNodes = Array.from(node.childNodes);
       let childIndex = 0;
-
       function typeChildNode() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
           wrapper.innerHTML = node.innerHTML;
           typeNextNode();
           return;
@@ -89,18 +92,15 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
           typeNextNode();
           return;
         }
-
         const child = childNodes[childIndex];
         childIndex++;
-
         if (child.nodeType === Node.TEXT_NODE) {
           const text = child.textContent;
           const span = document.createElement("span");
           wrapper.appendChild(span);
-
           let charIndex = 0;
           function typeChar() {
-            if ((typingSessionObj && typingSessionObj.skip)) {
+            if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
               span.textContent = text;
               typeChildNode();
               return;
@@ -114,16 +114,13 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
             }
           }
           typeChar();
-
         } else {
           // If it's an element inside another (nested), just append it and continue
           wrapper.appendChild(child.cloneNode(true));
           typeChildNode();
         }
       }
-
       typeChildNode();
-
     } else {
       // Fallback: just clone and insert if it's a comment or unsupported node
       const clone = node.cloneNode(true);
@@ -131,157 +128,35 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
       typeNextNode();
     }
   }
-
   typeNextNode();
-}
-
-window.makeItRainText = () => {
-  const el = document.querySelector("#rainText");
-  if (!el) return;
-
-  const text = el.textContent.trim();
-  el.textContent = "";
-
-  text.split("").forEach((char, i) => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char;
-    span.style.display = "inline-block";
-    span.style.opacity = 0;
-    el.appendChild(span);
-
-    gsap.fromTo(
-      span,
-      { y: "-40vh", opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        delay: i * 0.25,
-        duration: 3,
-        ease: "bounce.out"
-      }
-    );
-  });
-};
-
-// Call when DOM is ready
-window.addEventListener("DOMContentLoaded", () => {
-  window.makeItRainText();
-});
-
-window.realSlamnorSlam = function () {
-  const text = document.querySelector('#textSlam .slam-text');
-  const dust = document.querySelector('#textSlam .slam-dust');
-
-  if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
-    return;
-  }
-
-  // Reset state
-  gsap.set(text, {
-    x: 0,
-    y: 0,
-    rotationX: 0,
-    scale: 1.05,
-    opacity: 0,
-    transformOrigin: "50% 50%",
-    perspective: 1200
-  });
-
-  gsap.set(dust, {
-    scale: 0.5,
-    opacity: 0,
-    filter: "brightness(1)"
-  });
-
-  const tl = gsap.timeline();
-
-  // 🌀 Spin + Drop Slam
-  tl.to(text, {
-    opacity: 1,
-    y: 0,
-    rotationX: 0,
-    rotationY: 360,
-    rotationZ: 360,
-    scale: 1.5,
-    duration: 1.1,
-    ease: "back.out(1.7)",
-    transformPerspective: 1200
-  })
-
-  // 💥 Slam Impact
-  .to(text, {
-    scaleY: 2.5,
-    scaleX: 2.5,
-    duration: 0.6,
-    ease: "power4.inOut"
-  })
-
-  // 👊 Bounce Back
-  .to(text, {
-    scaleY: 1,
-    scaleX: 1,
-    duration: 0.7,
-    ease: "elastic.out(1, 0.5)"
-  })
-
-  // 💨 Dust Puff
-  .to(dust, {
-    opacity: 1,
-    scale: 1.4,
-    filter: "brightness(1.5)",
-    duration: 0.75,
-    ease: "power2.out"
-  }, "-=1") // overlap dust with squash
-
-  .to(dust, {
-    opacity: 0,
-    scale: 2.2,
-    filter: "brightness(.75)",
-    duration: 1.2,
-    ease: "power2.in"
-  }, "-=0.6"); // overlap exit
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  realSlamnorSlam();
-});
-
-// --- Preload images utility ---
-function preloadImages(imageUrls) {
-  imageUrls.forEach(url => {
-    const img = new Image();
-    img.src = url;
-  });
+  // Expose skip function
+  return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
 window.attachProfileEvents = () => {
   const profileData = [
     {
-      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố bền vững. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về phát triển đô thị xanh, khả năng phục hồi khí hậu và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
+      name: `<span class="intro-people">Dr. Nguyễn Hồng Hạnh</span><br> An expert in urban development and construction management, she holds a PhD in the field and is currently Director of the Institute for Economic, Urban and Construction Research under the Vietnam Construction Association. Her long career includes serving as Deputy Director at both the Institute for Economic, Urban and Construction Research (2013–2018) and the Urban Development Agency under the Ministry of Construction (2008–2013). Her work spans legal frameworks, urban planning and architectural design, with a strong focus on sustainable and well-managed cities. She has led major initiatives on green urban development, climate resilience and policy advice for national and regional planning, with support from international partners such as the World Bank and ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Chuyên gia kế toán giàu kinh nghiệm trong quản lý tài chính, báo cáo và tuân thủ. Có bằng Cử nhân Kế toán và đã lãnh đạo thành công các phòng kế toán, quản lý các khoản thanh toán tài chính, tiến hành kiểm toán và lập báo cáo tài chính chính xác. Có kỹ năng giám sát các giao dịch tài chính, đảm bảo tuân thủ pháp luật và quy định, và hỗ trợ các hoạt động tài chính theo dự án. Thành thạo phần mềm kế toán và được biết đến với đạo đức nghề nghiệp mạnh mẽ, khả năng thích ứng và chú ý đến từng chi tiết. Mang đến các kỹ năng lãnh đạo và tổ chức mạnh mẽ, tập trung vào việc cung cấp những hiểu biết tài chính chính xác.`,
+      name: `<span class="intro-people">Ms. Hoàng Thu Hà</span><br> Experienced accounting professional with over 10 years of financial management, reporting and compliance. Holds a Bachelor of Accounting degree and has successfully led accounting departments, managed financial payments, conducted audits and prepared accurate financial reports. Skilled in overseeing financial transactions, ensuring legal and regulatory compliance and supporting project finance activities. Proficient in accounting software and known for strong work ethic, adaptability and attention to detail. Brings strong leadership and organizational skills with a focus on delivering accurate financial insights.`,
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị với hơn 10 năm kinh nghiệm trong thiết kế đô thị chiến lược, hoạch định chính sách và phát triển bền vững. Có bằng Tiến sĩ và Thạc sĩ từ Đại học Tokyo, nền tảng vững chắc về thích ứng với biến đổi khí hậu, luật phân loại đô thị và chiến lược phát triển quốc gia. Cựu Phó Tổng giám đốc Cơ quan Phát triển Đô thị Việt Nam, lãnh đạo các chương trình lớn về khả năng phục hồi và quy hoạch đô thị đến năm 2050. Một nhà nghiên cứu, nhà giáo dục đã xuất bản và là thành viên tích cực của các hiệp hội chuyên nghiệp. Có kỹ năng điều phối các dự án quy mô lớn, khuôn khổ pháp lý và hợp tác liên ngành. Thông thạo nhiều ngôn ngữ và đam mê định hình tương lai đô thị bền vững, đáng sống.`,
+      name: `<span class="intro-people">Ms. Lan Anh</span><br> Urban planning and development expert with over 20 years of experience in strategic urban design, policy making and sustainable development. PhD and Master's degrees from the University of Tokyo, with a strong background in climate change adaptation, urban classification law and national development strategy. Former Deputy General Director of the Vietnam Urban Development Agency, leading major programs on resilience and urban planning to 2050. Published researcher, educator and active member of key professional associations. Skilled in coordinating large-scale projects, regulatory frameworks and cross-sectoral collaboration. Fluent in multiple languages ​​and passionate about shaping a sustainable, livable urban future.`,
       img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
-      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> Quy hoạch đô thị và biến đổi khí hậu với hơn 15 năm kinh nghiệm trong lĩnh vực cơ sở hạ tầng bền vững, quy hoạch giao thông và khả năng phục hồi khí hậu. Có bằng Kỹ sư cầu đường và hầm và đã đảm nhiệm các vai trò lãnh đạo chủ chốt trong Bộ Giao thông vận tải Việt Nam và các hiệp hội kỹ thuật dân dụng. Có kỹ năng tư vấn chính sách, quy hoạch thành phố thông minh và phát triển chiến lược tăng trưởng xanh. Dẫn dắt các dự án quốc gia lớn tập trung vào tính di động của đô thị, tính bền vững của môi trường và cải cách pháp luật. Một giảng viên và chuyên gia đào tạo được kính trọng cho các tổ chức như Ngân hàng Thế giới và ADB, được biết đến với chuyên môn sâu rộng, tư duy chiến lược và cam kết xây dựng tương lai đô thị có khả năng phục hồi khí hậu.`,
+      name: `<span class="intro-people">Mr. Trần Quốc Toản </span><br> Urban Planning and Climate Change with over 25 years of experience in sustainable infrastructure, transport planning and climate resilience. Degree in Bridge and Tunnel Engineering and has held key leadership roles in the Vietnamese Ministry of Transport and civil engineering associations. Skilled in policy consulting, smart city planning and green growth strategy development. Led major national projects focused on urban mobility, environmental sustainability and regulatory reform. A respected lecturer and trainer for organizations such as the World Bank and ADB, known for his extensive expertise, strategic thinking and commitment to building a climate resilient urban future.`,
       img: "public/profilePhotos/tranquoctoan.jpg"
     },
     {
-      name: `<span class="intro-people"> Long Đỗ - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, quản lý hợp đồng (thông minh) và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm thiết kế và giải quyết vấn đề sáng tạo. 🔧💬
+      name: `<span class="intro-people"> Long Đỗ - Project Manager </span><br> A dedicated Project Officer with a Masters in Project Management from the University of Salford, UK, along with CCNA and Cyber ​​Security certifications. Over 5 years of extensive experience in banking, retail, (smart) contract management and finance, with a proven ability to manage complex projects and deliver effective results. Combines strong technical skills with practical implementation, ensuring seamless collaboration between teams and stakeholders. Highly adaptable and detail-oriented, with a passion for computer hardware, coding and gaming. Experience in design and creative problem solving. 🔧💬
       https://dobaolongicueltd.netlify.app/`,
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
-
-  // Preload all expert images
-  preloadImages(profileData.map(profile => profile.img));
 
   let currentIndex = 0;
   let touchStartX = 0;
@@ -330,21 +205,26 @@ window.attachProfileEvents = () => {
   let skipOnNextClick = false;
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo) return;
+  
+    // Step 1: Add exit animation classes
     const isFirstLoad = (currentIndex === 0 && index === 0);
+
     if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    }
+    textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+    photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');}
+  
     setTimeout(() => {
-      textBox.innerHTML = "";
+      // Step 2: Update content with typewriter
+      textBox.innerHTML = ""; // clear previous
       const message = profileData[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+
       typingSessionObj = { skip: false };
       isTyping = true;
       skipOnNextClick = false;
-      typeHTMLString(containerDiv, message, 25, () => {
-        gsap.fromTo(containerDiv, 
+      const skipTypingFn = typeHTMLString(container, message, 25, () => {
+        gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
@@ -352,44 +232,60 @@ window.attachProfileEvents = () => {
         skipOnNextClick = false;
       }, typingSessionObj);
       photo.src = profileData[index].img;
+  
+      // Step 3: Remove exit animation classes
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
+  
+      // (Optional) remove old enter classes in case
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
+  
+      // Step 4: Animate using GSAP (✅ after content is updated)
       const tl = gsap.timeline();
+  
       tl.fromTo(photo, 
         { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
+  
       tl.fromTo(textBox, 
         { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
-        "-=0.5"
+        "-=0.5" // Start slightly overlapping with photo animation
       );
-    }, 300);
-  };
+  
+    }, 300); // ← match exit animation duration (0.3s)
+  }
 
   document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
     updateProfile(currentIndex, 'right');
   });
+
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex, 'left');
   });
 
   const swipeElements = [container, textBox];
+
   let swipeLocked = false;
+  
   swipeElements.forEach(el => {
     el.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
+  
     el.addEventListener('touchend', (e) => {
       if (swipeLocked) return;
+  
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
+  
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         swipeLocked = true;
+  
         if (swipeDistance > 0) {
           currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
           updateProfile(currentIndex, 'left');
@@ -397,16 +293,17 @@ window.attachProfileEvents = () => {
           currentIndex = (currentIndex + 1) % profileData.length;
           updateProfile(currentIndex, 'right');
         }
-        setTimeout(() => swipeLocked = false, 1000);
+  
+        setTimeout(() => swipeLocked = false, 1000); // match to animation duration
       }
     });
   });
 
   // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
+profileData.forEach(profile => {
+  const img = new Image();
+  img.src = profile.img;
+});
   // Start first profile
   updateProfile(0);
 
@@ -506,20 +403,19 @@ window.loadPage = (page) => {
               updateCalendarSvgTime();
               initAudioVisualizer();
               updateMusicBarColor(page);
-
+              
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
-                  updateResize();
                   break;
                 case 'Home':
-                  makeItRainText();
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
+                  makeItRainText("#rainText"); // <-- THIS is now safe to call!
                   break;
                 case 'News':
                   initLogoSlider();
@@ -537,7 +433,7 @@ window.loadPage = (page) => {
                   break;
               }
             });
-           
+
           // Hide contact sidebar on News page
           const contactSidebar = document.querySelector('.contact-sidebar');
           if (contactSidebar) {
@@ -546,12 +442,12 @@ window.loadPage = (page) => {
             } else {
               contactSidebar.style.display = '';
             }
-           }     
+           }
           }, 10);
         }
       }, 0);
     });
-};
+}
 
 window.retriggerMenuAnimations = (isFirstLoad = true) => {
   const animatedSelectors = [
@@ -598,9 +494,8 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
       delay
     );
   });
-  
 
-  // 🔁 Language Switcher
+// Flag-Icon Animation 
 const langSwitcher = document.getElementById('langSwitcher');
 if (langSwitcher) {
   const newLangSwitcher = langSwitcher.cloneNode(true);
@@ -618,7 +513,7 @@ if (langSwitcher) {
     '-=0.3'
   );
 
-  // ✅ Hover animation
+// 🇬🇧 Flag-Icon Hover
   newLangSwitcher.addEventListener('mouseenter', () => {
     gsap.killTweensOf(newLangSwitcher);
     gsap.to(newLangSwitcher, {
@@ -637,8 +532,8 @@ if (langSwitcher) {
   });
 }
 
-  // 🔁 CONTACT LINK
-  const contactUs = document.getElementById('contactLink');
+// 🔁 CONTACT LINK
+const contactUs = document.getElementById('contactLink');
   if (contactUs) {
     const newContact = contactUs.cloneNode(true);
     preHide(newContact);
@@ -654,8 +549,8 @@ if (langSwitcher) {
       },
       '-=0.3'
     );
-    
-    // ✅ Attach hover animation directly to the new clone
+
+// CONTACT LINK HOVER
   newContact.addEventListener('mouseenter', () => {
     gsap.killTweensOf(newContact);
     gsap.to(newContact, {
@@ -664,7 +559,7 @@ if (langSwitcher) {
         ease: 'power2.out'
       });
     });
-
+    
   newContact.addEventListener('mouseleave', () => {
     gsap.to(newContact, {
       scale: 1,
@@ -674,26 +569,26 @@ if (langSwitcher) {
     });
 }
 
-// 🔁 MENU ICON
+// 🔁 MENU ICON ANIMATION
 const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
     preHide(newToggle);
     menuToggle.parentNode.replaceChild(newToggle, menuToggle);
-
     timeline.fromTo(
       newToggle,
-      isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.5, opacity: 0 },
-      {
-        y: 0,
-        scale: 1,
-        opacity: 1,
-        onStart: () => unhide(newToggle)
-      },
-      '-=0.4'
-    );
-    
-    newToggle.addEventListener('mouseenter', () => {
+        isFirstLoad ? { y: -60, opacity: 0 } : { scale: 0.5, opacity: 0 },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          onStart: () => unhide(newToggle)
+        },
+        '-=0.4'
+      );
+  
+  // MENU ICON HOVER
+  newToggle.addEventListener('mouseenter', () => {
       gsap.to(newToggle, {
         scale: 1.25,
         duration: .05,
@@ -701,7 +596,7 @@ const menuToggle = document.getElementById('menuIcon');
       });
     });
 
-    newToggle.addEventListener('mouseleave', () => {
+  newToggle.addEventListener('mouseleave', () => {
       gsap.to(newToggle, {
         scale: 1,
         duration: .05,
@@ -711,7 +606,6 @@ const menuToggle = document.getElementById('menuIcon');
   }
 };
 
-
 window.attachHomeButtonEvents = () => {
   document.querySelectorAll('.home-button').forEach(button => {
     button.addEventListener('click', () => {
@@ -720,6 +614,118 @@ window.attachHomeButtonEvents = () => {
     });
   });
 }
+
+window.makeItRainText = () => {
+  const el = document.querySelector("#rainText");
+  if (!el) return;
+
+  const text = el.textContent.trim();
+  el.textContent = "";
+
+  text.split("").forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char;
+    span.style.display = "inline-block";
+    span.style.opacity = 0;
+    el.appendChild(span);
+
+    gsap.fromTo(
+      span,
+      { y: "-40vh", opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        delay: i * 0.25,
+        duration: 3,
+        ease: "bounce.out"
+      }
+    );
+  });
+};
+
+// Call when DOM is ready
+window.addEventListener("DOMContentLoaded", () => {
+  window.makeItRainText();
+});
+
+window.realSlamnorSlam = function () {
+  const text = document.querySelector('#textSlam .slam-text');
+  const dust = document.querySelector('#textSlam .slam-dust');
+
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
+
+  // Reset state
+  gsap.set(text, {
+    x: 0,
+    y: 0,
+    rotationX: 0,
+    scale: 1.05,
+    opacity: 0,
+    transformOrigin: "50% 50%",
+    perspective: 1000
+  });
+
+  gsap.set(dust, {
+    scale: 0.5,
+    opacity: 0,
+    filter: "brightness(0.25)"
+  });
+
+  const tl = gsap.timeline();
+
+  // 🌀 Spin + Drop Slam
+  tl.to(text, {
+    opacity: 1,
+    y: 0,
+    rotationX: 0,
+    rotationY: 360,
+    rotationZ: 360,
+    scale: 1.5,
+    duration: 1.1,
+    ease: "back.out(1.7)",
+    transformPerspective: 1200
+  })
+
+  // 💥 Slam Impact
+  .to(text, {
+    scaleY: 2.5,
+    scaleX: 2.5,
+    duration: 0.6,
+    ease: "power4.inOut"
+  })
+
+  // 👊 Bounce Back
+  .to(text, {
+    scaleY: 1,
+    scaleX: 1,
+    duration: 0.7,
+    ease: "elastic.out(1, 0.5)"
+  })
+
+  // 💨 Dust Puff
+  .to(dust, {
+    opacity: 1,
+    scale: 1.4,
+    filter: "brightness(1.5)",
+    duration: 0.75,
+    ease: "power2.out"
+  }, "-=1") // overlap dust with squash
+
+  .to(dust, {
+    opacity: 0,
+    scale: 2.2,
+    filter: "brightness(.75)",
+    duration: 1.2,
+    ease: "power2.in"
+  }, "-=0.6"); // overlap exit
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  realSlamnorSlam();
+});
 
 window.initHomeTextSlider = () => {
   // Clean up existing event listeners and intervals
@@ -741,12 +747,12 @@ window.initHomeTextSlider = () => {
   }
 
   const messages = [
-    `Hơn 10 năm kinh nghiệm, nhóm 11 chuyên gia chúng tôi đã thiết kế những thành phố thông minh — <strong class="highlight-text-phrase"> cân bằng </strong> giữa chức năng, khả năng phục hồi và nhu cầu của cộng đồng. ⏳ `,
-    `Thúc đẩy bởi <strong class="highlight-text-phrase"> giá trị chung </strong>, sự thống nhất. Tri Ân, làm việc chăm chỉ và <strong class="highlight-text-phrase"> không ngừng tự hoàn thiện </strong>. Những giá trị cốt lõi truyền cảm hứng cho các đối tác với các chuyên gia địa phương, cơ quan chính phủ. 🤝 `,
-    `Từ tích hợp thành phố thông minh đến các chiến lược thích ứng với khí hậu, chúng tôi đã sử dụng công nghệ và thông tin chi tiết dựa trên dữ liệu để nâng cao <strong class="highlight-text-phrase"> hiệu quả </strong>, khả năng kết nối — xây dựng các thành phố <strong class="highlight-text-phrase"> sẵn sàng cho tương lai </strong>. 💡 `,
-    `Lãnh đạo sáng kiến ​​quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với <strong class="highlight-text-phrase"> chiến lược toàn cảnh </strong> và <strong class="highlight-text-phrase"> kết quả thực tế </strong>. 🏆 `,
-    `Định hình thành phố, cải thiện cuộc sống. Các giải pháp chúng tôi cung cấp đều bắt nguồn từ một sứ mệnh: tạo ra 1 đô thị tương lai bao trùm, <strong class="highlight-text-phrase"> bền vững </strong> và lấy <strong class="highlight-text-phrase"> con người </strong>làm trung tâm. 🌱 `,
-    `💥 Tạo ra những <strong class="highlight-text-phrase"> trải nghiệm trường tồn </strong> mãi mãi.`
+    '10+ years of urban excellence. Dedicated Professionals who are passionate about <strong class="highlight-text-phrase"> urban planning </strong>, construction, and <strong class="highlight-text-phrase"> climate change. </strong> ⏳ ',
+    `Built on Unity, <strong class="highlight-text-phrase"> Driven by Values! </strong> ​​We believe in <strong class="highlight-text-phrase"> giving back </strong>, and constantly striving for self-improvement. These <strong class="highlight-text-phrase"> core values </strong> ​​shape our approach & inspire our partnerships with local professionals, government agencies. 🤝 `,
+    `Smart Cities, Smarter Solutions. We use technology and <strong class="highlight-text-phrase"> data-driven insights </strong> to improve <strong class="highlight-text-phrase"> efficiency </strong>, connectivity, and future-ready cities. 💡 `,
+    `Led <strong class="highlight-text-phrase"> Đà Nẵng citywide </strong> planning initiative for both tier 1 and tier 2 cities — a transformational project that reflects our commitment to <strong class="highlight-text-phrase"> big-picture </strong> strategy and real results. 🏆 `,
+    `Shaping cities, <strong class="highlight-text-phrase"> improving lives. </strong> Every solution we deliver is rooted in a mission: to create a better urban future that is inclusive, <strong class="highlight-text-phrase"> sustainable </strong> and <strong class="highlight-text-phrase"> people-centered. </strong> 🌱  `,
+    `💥 Create beautiful <strong class="highlight-text-phrase"> experiences </strong> that last forever.`
   ];
 
   const textElement = document.querySelector("#homeSliderText .highlight-text");
@@ -827,12 +833,11 @@ window.initHomeTextSlider = () => {
       updateText(index);
     }
   }
-  
 
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 15000);
+      window.homeSliderIntervalId = setInterval(nextText, 8000);
     }
   }
 
@@ -867,6 +872,17 @@ window.initHomeTextSlider = () => {
     });
   });
 
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      prevText();
+      restartInterval();
+    } else if (e.key === "ArrowRight") {
+      nextText();
+      restartInterval();
+    }
+  });
+
   // Pause on hover
   sliderContainer.addEventListener("mouseenter", () => {
     clearInterval(window.homeSliderIntervalId);
@@ -879,17 +895,7 @@ window.initHomeTextSlider = () => {
     }
   });
 
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") {
-      prevText();
-      restartInterval();
-    } else if (e.key === "ArrowRight") {
-      nextText();
-      restartInterval();
-    }
-  });
-
+  // Click-to-navigate feature with double-click protection
   let lastClickTime = 0;
   sliderContainer.addEventListener("click", (event) => {
     const now = Date.now();
@@ -902,7 +908,8 @@ window.initHomeTextSlider = () => {
     if (isTyping) {
       typingSessionId++; // 🔥 Cancel current typing
       isTyping = false;
-      textElement.innerHTML = messages[index]; // 🧾 Show full message
+      textElement.innerHTML = messages[index];
+      // 🧾 Show full message
       gsap.to(textElement, { scale: 1, duration: 0.2, ease: "power1.out" });
       return;
     }
@@ -919,14 +926,31 @@ window.initHomeTextSlider = () => {
   console.log("✅ Slider initialized with enhanced features");  
 }
 
-let currentPage = 'Home'; // default
+let currentPage = ''; // default
 window.addEventListener('DOMContentLoaded', router);
 window.addEventListener('hashchange', router);
 
 function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
+
   window.loadPage(page);
+}
+
+window.toggleDrawerMenu = () => {
+  const drawerMenu = document.getElementById('drawerMenu');
+  const menuIcon = document.getElementById('menuIcon'); // This now correctly references your <svg> element
+  const isOpen = drawerMenu.classList.contains('open');
+
+  // Toggle the 'is-open' class on the SVG icon.
+  menuIcon.classList.toggle('is-open');
+  if (isOpen) {
+    drawerMenu.classList.remove('open');
+    removeOverlayListener();
+  } else {
+    drawerMenu.classList.add('open');
+    addOverlayListener();
+  }
 }
 
 // Ensure menuIcon is indeed your SVG element in HTML:
@@ -1001,6 +1025,14 @@ window.removeOverlayListener = () => {
   document.removeEventListener('keydown', handleEscKey);
 };
 
+// Navigation handler + page loader
+window.navigateToPage = (page) => {
+  currentPage = page;
+  loadPage(page); // Your existing page loader
+  highlightActiveLink(page);
+  closeDrawerMenu();
+}
+
 // Highlight active link
 window.highlightActiveLink = (page) => {
   const links = document.querySelectorAll('#drawerMenu a');
@@ -1014,16 +1046,11 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   e.preventDefault(); // prevent page from jumping
-  const submenu = document.getElementById('ourPeopleSubMenu');
-  if (!submenu) {
-    console.warn(`toggleSubmenu: No element found with ID "${id}"`);
-    return;
-  }
+  const submenu = document.getElementById('ourPeopleSubmenu');
   submenu.classList.toggle('open');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const submenuTrigger = document.querySelector('.has-submenu');
   const submenu = document.querySelector('.submenu');
 
@@ -1045,37 +1072,72 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Auto-highlight on initial load
+/*window.onload = () => {
+  loadPage('Home');
+  highlightActiveLink('Home');
+};*/
+
+window.createBalloons = () => {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
+    const container = document.body;
+    
+    // Create 15 balloons
+    for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
+        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
+        
+        container.appendChild(balloon);
+        
+        // Remove balloon after animation completes
+        balloon.addEventListener('animationend', () => {
+            balloon.remove();
+        });
+    }
+}
+
+// Initialize balloon button when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const balloonButton = document.getElementById('balloonButton');
+    if (balloonButton) {
+        balloonButton.addEventListener('click', function() {
+            createBalloons();
+        });
+    }
+});
+
 window.attachProfileEvents_coreTeam = () => {
   const profileData_coreTeam = [
     {name: 
-      `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về quy hoạch đô thị, phát triển đô thị bền vững, quản lý cơ sở hạ tầng và thiết kế không gian công cộng. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp bền vững và thân thiện với môi trường.`, 
+      `<span class="intro-core"> Nguyễn Thị Ly </span> Strong academic background in urban planning, sustainable urban development, infrastructure management and public space design. Contribute to numerous research and technical assistance projects focusing on public spaces, community development and urban development programs. Demonstrate excellent teamwork spirit, clear organizational skills and a high sense of responsibility. Proactive, eager to learn and committed to advancing the profession through participation in urban projects that prioritize sustainable and environmentally friendly solutions.`, 
       img: "public/profilePhotos/lyly.png"
     },
     {
-      name: `<span class="intro-core">Đinh Tùng Dương</span> Tôi có bằng Quản lý Đô thị của Đại học Kiến trúc Hà Nội, nơi tôi vinh dự được vinh danh là Thủ khoa của Hà Nội năm 2023. Trong hai năm qua, tôi đã tích cực đóng góp vào các dự án phát triển đô thị tập trung vào quy hoạch không gian, cải thiện cảnh quan và cuộc sống đô thị bền vững. Tôi có khả năng phân tích và tổ chức mạnh mẽ, cùng với sự thành thạo trong cả phần mềm văn phòng và phần mềm kỹ thuật. Tôi cam kết phát triển chuyên môn liên tục và đặt mục tiêu đóng góp hiệu quả cho một tổ chức tiến bộ, có uy tín. `,
+      name: `<span class="intro-core">Đinh Tùng Dương</span> I hold a degree in Urban Management from Hanoi Architectural University, where I was honored to be named Hanoi's Valedictorian in 2023. Over the past two years, I have been actively contributing to urban development projects focusing on spatial planning, landscape improvement, and sustainable urban living. I have strong analytical and organizational skills, along with proficiency in both office and technical software. I am committed to continuous professional development and aim to contribute effectively to a progressive, reputable organization. `,
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Chuyên gia tận tụy chuyên về khảo sát số lượng, lập kế hoạch chi tiết và vẽ kỹ thuật. Với kỹ năng làm việc nhóm mạnh mẽ và cách tiếp cận đáng tin cậy, chăm chỉ, tôi đóng góp hiệu quả vào các dự án hợp tác và hoạt động văn phòng. Là một đối tác tích cực của ICUE, tôi đã xây dựng được mạng lưới mạnh mẽ với các chính quyền địa phương, đảm bảo giao tiếp suôn sẻ và hỗ trợ dự án. Tôi rất thành thạo trong các nhiệm vụ hành chính thường xuyên, lập tài liệu dự án và điều phối tại chỗ. Tôi đam mê đóng góp cho nhóm và hỗ trợ sự phát triển và thành công của tổ chức`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Dedicated professional specializing in quantity surveying, detailed planning and technical drawing. With strong team working skills and a reliable, hard-working approach, I contribute effectively to collaborative projects and office operations. As an active partner of ICUE, I have built strong networks with local authorities, ensuring smooth communication and project support. I am proficient in routine administrative tasks, project documentation and on-site coordination. I am passionate about contributing to the team and supporting the growth and success of the organization.`,  
       img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Tốt nghiệp chuyên ngành Quản trị kinh doanh tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có trách nhiệm, luôn khao khát học hỏi và phát triển. Với tinh thần chi tiết và trách nhiệm cao, tôi coi trọng tinh thần làm việc nhóm và áp dụng kinh nghiệm tích lũy được để mang lại kết quả chất lượng. Tôi mong muốn phát triển sự nghiệp của mình hơn nữa trong một môi trường chuyên nghiệp, nơi tôi có thể đóng góp tích cực vào thành công của tổ chức.`,
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Graduated from Hanoi College of Tourism with a major in Business Administration. In addition to managing office administrative tasks, I also contribute and support various scientific research projects. I am a dynamic and responsible individual, always eager to learn and develop. With a high sense of detail and responsibility, I value teamwork and apply the accumulated experience to bring about quality results. I wish to further develop my career in a professional environment where I can actively contribute to the success of the organization.`,
       img: "public/profilePhotos/tinh.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> Tôi tốt nghiệp Đại học Kinh tế Quốc dân, được đào tạo bài bản và có tinh thần trách nhiệm cao trong công việc. Tôi có kinh nghiệm đấu thầu các dự án máy móc thiết bị, cũng như các dự án liên quan đến quy hoạch đô thị. Ngoài ra, tôi có khả năng xử lý nhiều công việc hành chính khác nhau. Những vai trò này đã giúp tôi xây dựng được các kỹ năng chuyên môn và làm việc nhóm mạnh mẽ. Tôi mong muốn được làm việc trong một môi trường chuyên nghiệp, nơi tôi có thể áp dụng các khả năng của mình và đóng góp vào sự phát triển của tổ chức.`,
+      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> I graduated from the National Economics University, have a thorough training and a high sense of responsibility in my work. I have experience in bidding for machinery and equipment projects, as well as projects related to urban planning. In addition, I am capable of handling various administrative tasks. These roles have helped me build strong technical and teamwork skills. I wish to work in a professional environment where I can apply my abilities and contribute to the development of the organization.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
+      name: `<span class="intro-core">Phan Thị Hiến </span> Graduated from Hanoi Open University with a major in accounting. Currently, I am working in the accounting field. With experience, I have accumulated a lot of knowledge and skills in accounting, financial reporting and data analysis. I always pay attention to accuracy and transparency in my work. In addition, I also have the ability to work in a team, which helps me coordinate effectively with other departments. I hope to continue to develop my accounting career and contribute to the success of the company.`,
       img: "public/profilePhotos/hien.png"
     },
-  
+    
+    
   ];
-
-  // Preload all core team images
-  preloadImages(profileData_coreTeam.map(profile => profile.img));
 
   let currentIndex = 0;
   let touchStartX = 0;
@@ -1132,13 +1194,13 @@ window.attachProfileEvents_coreTeam = () => {
     setTimeout(() => {
       textBox.innerHTML = "";
       const message = profileData_coreTeam[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
+      const container = document.createElement("div");
+      textBox.appendChild(container);
       typingSessionObj = { skip: false };
       isTyping = true;
       skipOnNextClick = false;
-      typeHTMLString(containerDiv, message, 30, () => {
-        gsap.fromTo(containerDiv, 
+      const skipTypingFn = typeHTMLString(container, message, 30, () => {
+        gsap.fromTo(container, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
         );
@@ -1263,15 +1325,14 @@ window.attachProfileEvents_coreTeam = () => {
       }
     });
   }
-}
-
+};
 
 window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
   if (!logoList) return;
 
   let position = 0;
-  let speed = 1.75;
+  let speed = 1;
   let isPaused = false;
 
   const loop = () => {
@@ -1307,7 +1368,7 @@ window.initLogoSlider = () => {
 // News Slider (Mobile Only)
 // ===================
 window.initMobileNewsSlider = () => {
-  if (window.innerWidth > 1025) return; // Only run on small screens
+  if (window.innerWidth > 768) return; // Only run on small screens
 
   const containers = document.querySelectorAll(".news-container");
   const leftArrow = document.getElementById("arrowNewsLeft");
@@ -1339,37 +1400,6 @@ window.initMobileNewsSlider = () => {
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
-window.createBalloons = () => {
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
-    const container = document.body;
-    
-    // Create 15 balloons
-    for (let i = 0; i < 15; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
-        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
-        
-        container.appendChild(balloon);
-        
-        // Remove balloon after animation completes
-        balloon.addEventListener('animationend', () => {
-            balloon.remove();
-        });
-    }
-}
-
-// Initialize balloon button when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const balloonButton = document.getElementById('balloonButton');
-    if (balloonButton) {
-        balloonButton.addEventListener('click', function() {
-            createBalloons();
-        });
-    }
-});
-
 window.initPostMethod = () => {
 const form = document.getElementById("contactForm");
     const thankYou = document.getElementById("thankYouMessage");
@@ -1390,8 +1420,7 @@ const form = document.getElementById("contactForm");
       .catch((error) => alert("Something went wrong. Please try again."));
     });
   }
-
-   
+  
 //Work-Page Script
 window.initializeCarousel = () => {
   const nextButton = document.getElementById("work-next");
@@ -1486,6 +1515,7 @@ const initThumbnailClick = () => {
   nextButton.onclick = () => showSlide("work-next");
   prevButton.onclick = () => showSlide("work-prev");
   carousel.setAttribute('data-loaded', 'true');
+
 };
 
 window.updateCalendarSvgTime = () => {
@@ -1667,7 +1697,7 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       case 'Contact':
         color = '#000000';
         break;
-      case 'coreTeam':
+        case 'coreTeam':
         color = '#000000';
         break;
     }
@@ -1701,3 +1731,52 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
   
   // ✅ Enable it
   enableCursorGradientTrail(); // Default: yellow
+  
+  
+
+
+
+  
+  
+
+  
+  
+
+// === Preload all profile images for meetourexperts.html and coreTeam.html on DOMContentLoaded ===
+window.preloadProfileImages = () => {
+  // Images for meetourexperts.html
+  const expertImages = [
+    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hoangthuha.jpg",
+    "public/profilePhotos/tranthilananh.jpg",
+    "public/profilePhotos/tranquoctoan.jpg",
+    "public/profilePhotos/longdo.jpg"
+  ];
+  // Images for coreTeam.html
+  const coreTeamImages = [
+    "public/profilePhotos/lyly.png",
+    "public/profilePhotos/duong.png",
+    "public/profilePhotos/tam.png",
+    "public/profilePhotos/tinh.png",
+    "public/profilePhotos/lyicue.png",
+    "public/profilePhotos/hien.png"
+  ];
+  [...expertImages, ...coreTeamImages].forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  window.preloadProfileImages();
+});
+  
+  
+
+
+
+  
+  
+
+  
+  
