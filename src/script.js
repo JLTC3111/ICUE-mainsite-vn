@@ -411,15 +411,19 @@ profileData.forEach(profile => {
 
   // Add click/tap navigation on textBox
   if (textBox) {
+    let justSkipped = false;
+
     textBox.addEventListener('click', (e) => {
       const rect = textBox.getBoundingClientRect();
       const x = e.clientX - rect.left;
       if (isTyping) {
-        if (!skipOnNextClick) {
-          typingSessionObj.skip = true;
-          skipOnNextClick = true;
-          return;
-        }
+        typingSessionObj.skip = true;
+        justSkipped = true;
+        return;
+      }
+      if (justSkipped) {
+        justSkipped = false;
+        return; // Prevent navigation immediately after skipping
       }
       if (x < rect.width / 2) {
         currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
@@ -435,11 +439,13 @@ profileData.forEach(profile => {
         const rect = textBox.getBoundingClientRect();
         const x = e.changedTouches[0].clientX - rect.left;
         if (isTyping) {
-          if (!skipOnNextClick) {
-            typingSessionObj.skip = true;
-            skipOnNextClick = true;
-            return;
-          }
+          typingSessionObj.skip = true;
+          justSkipped = true;
+          return;
+        }
+        if (justSkipped) {
+          justSkipped = false;
+          return; // Prevent navigation immediately after skipping
         }
         if (x < rect.width / 2) {
           currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
@@ -512,7 +518,6 @@ window.loadPage = (page) => {
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
-                  updateResize();
                   break;
                 case 'Home':
                   makeItRainText();
@@ -1221,11 +1226,8 @@ window.attachProfileEvents_coreTeam = () => {
       const rect = textBox.getBoundingClientRect();
       const x = e.clientX - rect.left;
       if (isTyping) {
-        if (!skipOnNextClick) {
-          typingSessionObj.skip = true;
-          skipOnNextClick = true;
-          return;
-        }
+        typingSessionObj.skip = true;
+        return;
       }
       if (x < rect.width / 2) {
         currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
@@ -1241,11 +1243,8 @@ window.attachProfileEvents_coreTeam = () => {
         const rect = textBox.getBoundingClientRect();
         const x = e.changedTouches[0].clientX - rect.left;
         if (isTyping) {
-          if (!skipOnNextClick) {
-            typingSessionObj.skip = true;
-            skipOnNextClick = true;
-            return;
-          }
+          typingSessionObj.skip = true;
+          return;
         }
         if (x < rect.width / 2) {
           currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
