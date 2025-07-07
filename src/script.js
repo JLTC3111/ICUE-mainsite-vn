@@ -43,96 +43,96 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
           targetElement.insertBefore(clone, cursor);
         }
       }
-      if (typeof onComplete === "function") onComplete();
-      return;
-    }
+    if (typeof onComplete === "function") onComplete();
+    return;
+  }
 
-    const node = nodes[nodeIndex];
-    nodeIndex++;
+  const node = nodes[nodeIndex];
+  nodeIndex++;
 
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      const span = document.createElement("span");
-      targetElement.insertBefore(span, cursor); // always before cursor
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    const span = document.createElement("span");
+    targetElement.insertBefore(span, cursor); // always before cursor
 
-      let charIndex = 0;
-      function typeChar() {
+    let charIndex = 0;
+    function typeChar() {
         if ((typingSessionObj && typingSessionObj.skip)) {
           span.textContent = text;
           typeNextNode();
           return;
         }
-        if (charIndex < text.length) {
-          span.textContent += text.charAt(charIndex);
-          charIndex++;
-          setTimeout(typeChar, speed);
-        } else {
-          typeNextNode();
-        }
+      if (charIndex < text.length) {
+        span.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, speed);
+      } else {
+        typeNextNode();
       }
-      typeChar();
+    }
+    typeChar();
 
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
       const wrapper = node.cloneNode(false);
-      targetElement.insertBefore(wrapper, cursor);
+    targetElement.insertBefore(wrapper, cursor);
 
-      const childNodes = Array.from(node.childNodes);
-      let childIndex = 0;
+    const childNodes = Array.from(node.childNodes);
+    let childIndex = 0;
 
-      function typeChildNode() {
+    function typeChildNode() {
         if ((typingSessionObj && typingSessionObj.skip)) {
           wrapper.innerHTML = node.innerHTML;
           typeNextNode();
           return;
         }
-        if (childIndex >= childNodes.length) {
-          typeNextNode();
-          return;
-        }
+      if (childIndex >= childNodes.length) {
+        typeNextNode();
+        return;
+      }
 
-        const child = childNodes[childIndex];
-        childIndex++;
+      const child = childNodes[childIndex];
+      childIndex++;
 
-        if (child.nodeType === Node.TEXT_NODE) {
-          const text = child.textContent;
-          const span = document.createElement("span");
-          wrapper.appendChild(span);
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent;
+        const span = document.createElement("span");
+        wrapper.appendChild(span);
 
-          let charIndex = 0;
-          function typeChar() {
+        let charIndex = 0;
+        function typeChar() {
             if ((typingSessionObj && typingSessionObj.skip)) {
               span.textContent = text;
               typeChildNode();
               return;
             }
-            if (charIndex < text.length) {
-              span.textContent += text.charAt(charIndex);
-              charIndex++;
-              setTimeout(typeChar, speed);
-            } else {
-              typeChildNode();
-            }
+          if (charIndex < text.length) {
+            span.textContent += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, speed);
+          } else {
+            typeChildNode();
           }
-          typeChar();
-
-        } else {
-          // If it's an element inside another (nested), just append it and continue
-          wrapper.appendChild(child.cloneNode(true));
-          typeChildNode();
         }
+        typeChar();
+
+      } else {
+        // If it's an element inside another (nested), just append it and continue
+        wrapper.appendChild(child.cloneNode(true));
+        typeChildNode();
       }
-
-      typeChildNode();
-
-    } else {
-      // Fallback: just clone and insert if it's a comment or unsupported node
-      const clone = node.cloneNode(true);
-      targetElement.insertBefore(clone, cursor);
-      typeNextNode();
     }
+
+    typeChildNode();
+
+  } else {
+    // Fallback: just clone and insert if it's a comment or unsupported node
+    const clone = node.cloneNode(true);
+    targetElement.insertBefore(clone, cursor);
+    typeNextNode();
+  }
   }
 
-  typeNextNode();
+typeNextNode();
 }
 
 window.makeItRainText = () => {
@@ -400,12 +400,12 @@ window.attachProfileEvents = () => {
       }
     });
   });
-
+  
   // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
+profileData.forEach(profile => {
+  const img = new Image();
+  img.src = profile.img;
+});
   // Start first profile
   updateProfile(0);
 
@@ -785,8 +785,6 @@ window.initHomeTextSlider = () => {
           isTyping = false;
           gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
         });
-  
-          typeNextChar();
         }
       }
     );
@@ -1526,12 +1524,6 @@ updateCalendarSvgTime();
 
 // Update the time every minute (60,000 milliseconds)
 setInterval(updateCalendarSvgTime, 60 * 1000);
-
-// Preload the sound (optional)
-  const fanfareAudio = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_b91cc18f4b.mp3'); // Royalty-free fanfare
-
-  // Make sure the audio is allowed to autoplay (you might need to trigger it from user interaction)
-  fanfareAudio.load();
 
   window.triggerFanfare = function () {
     // Play sound
