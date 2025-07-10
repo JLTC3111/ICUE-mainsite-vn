@@ -201,8 +201,8 @@ window.realSlamnorSlam = function () {
     opacity: 1,
     y: 0,
     rotationX: 0,
-    rotationY: 360,
-    rotationZ: 360,
+    rotationY: 0,
+    rotationZ: 0,
     scale: 1.5,
     duration: 1.1,
     ease: "back.out(1.7)",
@@ -211,9 +211,9 @@ window.realSlamnorSlam = function () {
 
   // 💥 Slam Impact
   .to(text, {
-    scaleY: 2.5,
-    scaleX: 2.5,
-    duration: 0.6,
+    scaleY: 1.25,
+    scaleX: 1.25,
+    duration: 0.1,
     ease: "power4.inOut"
   })
 
