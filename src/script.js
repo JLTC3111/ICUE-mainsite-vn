@@ -1016,7 +1016,7 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   e.preventDefault(); // prevent page from jumping
-  const submenu = document.getElementById('ourPeopleSubMenu');
+  const submenu = document.getElementById('ourPeopleSubmenu');
   if (!submenu) {
     console.warn(`toggleSubmenu: No element found with ID "${id}"`);
     return;
@@ -1040,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Wait for animation to finish, then clean up
       setTimeout(() => {
         submenu.classList.remove('closing');
-      }, 400); // match the CSS transition duration
+      }, 300); // match the CSS transition duration
     } else {
       submenu.classList.add('open');
     }
