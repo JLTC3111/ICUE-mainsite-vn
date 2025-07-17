@@ -834,7 +834,7 @@ footer p {
 
 .has-submenu::after {
   margin-left: 0.5rem;
-  transition: transform 1.5s ease;
+  transition: transform .3s ease;
 }
 
 .submenu.open ~ .has-submenu::after {
@@ -844,7 +844,7 @@ footer p {
 .submenu {
   transform: translateX(-100%) translateY(0);
   opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: all .3s ease;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -871,7 +871,7 @@ footer p {
   padding-top: 1.5rem;
   padding-left: 0.75rem;
   position: relative;
-  transition: all 1.5s ease;
+  transition: all .3s ease;
 }
 
 .drawer-menu .submenu a::before {
