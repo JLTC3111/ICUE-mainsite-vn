@@ -1,3 +1,57 @@
+// Web Audio API swoosh sound effect
+let audioContext = null;
+
+// Initialize Web Audio Context
+function initAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioContext;
+}
+
+// Generate swoosh sound effect using Web Audio API
+function playProfileSwoosh() {
+  try {
+    const ctx = initAudioContext();
+    
+    // Resume context if suspended (for autoplay policy)
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+    
+    // Create oscillator for the swoosh sound
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    // Connect audio nodes
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    
+    // Configure swoosh sound characteristics
+    const now = ctx.currentTime;
+    const duration = 0.3; // 300ms swoosh
+    
+    // Frequency sweep from high to low for swoosh effect
+    oscillator.frequency.setValueAtTime(800, now);
+    oscillator.frequency.exponentialRampToValueAtTime(200, now + duration);
+    
+    // Volume envelope for smooth swoosh
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(0.1, now + 0.05); // Quick attack
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration); // Smooth decay
+    
+    // Use sawtooth wave for richer swoosh sound
+    oscillator.type = 'sawtooth';
+    
+    // Play the sound
+    oscillator.start(now);
+    oscillator.stop(now + duration);
+    
+  } catch (error) {
+    console.warn('Error playing Web Audio swoosh:', error);
+  }
+}
+
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
   targetElement.innerHTML = "";
 
@@ -338,6 +392,10 @@ window.attachProfileEvents = () => {
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
+    
+    // Play Web Audio API swoosh sound effect
+    playProfileSwoosh();
+    
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -462,6 +520,19 @@ profileData.forEach(profile => {
           currentIndex = (currentIndex + 1) % profileData.length;
           updateProfile(currentIndex, 'right');
         }
+      }
+    });
+  }
+  
+  // Touch device skip typing - simple tap to skip typing animation
+  if (textBox && isTouchDevice) {
+    textBox.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // On touch devices, tapping during typing skips the animation
+      if (isAnimating) {
+        typingSessionObj.skip = true;
       }
     });
   }
@@ -1143,6 +1214,10 @@ window.attachProfileEvents_coreTeam = () => {
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
+    
+    // Play Web Audio API swoosh sound effect
+    playProfileSwoosh();
+    
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -1282,6 +1357,19 @@ window.attachProfileEvents_coreTeam = () => {
           currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
           updateProfile_coreTeam(currentIndex, 'right');
         }
+      }
+    });
+  }
+  
+  // Touch device skip typing - simple tap to skip typing animation
+  if (textBox && isTouchDevice) {
+    textBox.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // On touch devices, tapping during typing skips the animation
+      if (isAnimating) {
+        typingSessionObj.skip = true;
       }
     });
   }
