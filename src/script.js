@@ -1136,7 +1136,6 @@ window.attachProfileEvents_coreTeam = () => {
   let touchStartX = 0;
   let touchEndX = 0;
   const MIN_SWIPE_DISTANCE = 15;
-
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-text-coreTeam')?.parentElement;
@@ -1206,7 +1205,7 @@ window.attachProfileEvents_coreTeam = () => {
     }, isFirstLoad ? 0 : 800);
   };
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  /*document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'right');
   });
@@ -1214,7 +1213,7 @@ window.attachProfileEvents_coreTeam = () => {
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'left');
-  });
+  });*/
 
   if (container) {
     container.addEventListener('touchstart', (e) => {
