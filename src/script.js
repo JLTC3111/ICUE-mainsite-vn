@@ -341,7 +341,7 @@ window.attachProfileEvents = () => {
     }
   ];
 
-  // Preload all expert images
+  // Preload all images
   preloadImages(profileData.map(profile => profile.img));
   let currentIndex = 0;
   let touchStartX = 0;
@@ -426,8 +426,6 @@ window.attachProfileEvents = () => {
       }
     });
   });
-  
-  updateProfile(0);
 
   // Add click/tap navigation on textBox (disabled for touch devices to prevent duplication)
   if (textBox && !isTouchDevice) {
@@ -489,7 +487,8 @@ window.attachProfileEvents = () => {
         typingSessionObj.skip = true;
       }
     });
-  }
+  } 
+  updateProfile(0);
 }
 
 window.loadPage = (page) => {
