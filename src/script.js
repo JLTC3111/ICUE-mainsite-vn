@@ -341,8 +341,6 @@ window.attachProfileEvents = () => {
     }
   ];
 
-  // Preload all images
-  preloadImages(profileData.map(profile => profile.img));
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -1114,8 +1112,6 @@ window.attachProfileEvents_coreTeam = () => {
     },
   ];
 
-  // Preload all core team images
-  preloadImages(profileData_coreTeam.map(profile => profile.img));
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
