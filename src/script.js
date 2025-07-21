@@ -400,14 +400,14 @@ window.attachProfileEvents = () => {
     }, 300);
   };
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  /*document.getElementById('next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
     updateProfile(currentIndex, 'right');
   });
   document.getElementById('prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
     updateProfile(currentIndex, 'left');
-  });
+  });*/
 
   const swipeElements = [container, textBox];
   let swipeLocked = false;
@@ -1140,40 +1140,6 @@ window.attachProfileEvents_coreTeam = () => {
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-text-coreTeam')?.parentElement;
-
-  // Visual cues: add left/right overlays
-  if (textBox && !document.getElementById('profile-cue-left-core')) {
-    const leftCue = document.createElement('div');
-    leftCue.id = 'profile-cue-left-core';
-    leftCue.style.position = 'absolute';
-    leftCue.style.left = 0;
-    leftCue.style.top = 0;
-    leftCue.style.width = '40%';
-    leftCue.style.height = '100%';
-    leftCue.style.pointerEvents = 'none';
-    leftCue.style.display = 'flex';
-    leftCue.style.alignItems = 'center';
-    leftCue.style.justifyContent = 'flex-start';
-    leftCue.style.zIndex = 2;
-    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
-    textBox.style.position = 'relative';
-    textBox.appendChild(leftCue);
-    const rightCue = document.createElement('div');
-    rightCue.id = 'profile-cue-right-core';
-    rightCue.style.position = 'absolute';
-    rightCue.style.right = 0;
-    rightCue.style.top = 0;
-    rightCue.style.width = '40%';
-    rightCue.style.height = '100%';
-    rightCue.style.pointerEvents = 'none';
-    rightCue.style.display = 'flex';
-    rightCue.style.alignItems = 'center';
-    rightCue.style.justifyContent = 'flex-end';
-    rightCue.style.zIndex = 2;
-    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
-    textBox.appendChild(rightCue);
-  }
-
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
