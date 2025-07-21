@@ -318,7 +318,6 @@ window.attachProfileEvents = () => {
   
   // Detect touch devices
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-  
   const profileData = [
     {
       name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố <span class="highlight-text-phrase-moe">bền vững</span>. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về <span class="highlight-text-phrase-moe">phát triển đô thị xanh</span>, <span class="highlight-text-phrase-moe">khả năng phục hồi khí hậu</span> và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
@@ -344,7 +343,6 @@ window.attachProfileEvents = () => {
 
   // Preload all expert images
   preloadImages(profileData.map(profile => profile.img));
-
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -358,10 +356,6 @@ window.attachProfileEvents = () => {
   window.updateProfile = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
-    
-    // Play Web Audio API swoosh sound effect
-    playProfileSwoosh();
-    
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -433,12 +427,6 @@ window.attachProfileEvents = () => {
     });
   });
   
-  // Preload all profile images
-profileData.forEach(profile => {
-  const img = new Image();
-  img.src = profile.img;
-});
-  // Start first profile
   updateProfile(0);
 
   // Add click/tap navigation on textBox (disabled for touch devices to prevent duplication)
@@ -1098,10 +1086,8 @@ window.attachProfileEvents_coreTeam = () => {
     return;
   }
   window.profileEventsAttached_coreTeam = true;
-  
   // Detect touch devices
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
-  
   const profileData_coreTeam = [
     {name: 
       `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về <span class="highlight-text-phrase-core">quy hoạch đô thị</span>, <span class="highlight-text-phrase-core">phát triển đô thị bền vững</span>, <span class="highlight-text-phrase-core">quản lý cơ sở hạ tầng</span> và <span class="highlight-text-phrase-core">thiết kế không gian công cộng</span>. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp <span class="highlight-text-phrase-core">bền vững</span> và thân thiện với môi trường.`, 
@@ -1131,7 +1117,6 @@ window.attachProfileEvents_coreTeam = () => {
 
   // Preload all core team images
   preloadImages(profileData_coreTeam.map(profile => profile.img));
-
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -1145,10 +1130,6 @@ window.attachProfileEvents_coreTeam = () => {
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo || isAnimating) return;
     isAnimating = true;
-    
-    // Play Web Audio API swoosh sound effect
-    playProfileSwoosh();
-    
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
@@ -1233,14 +1214,7 @@ window.attachProfileEvents_coreTeam = () => {
       }
     });
   }
-
-  // Preload images
-  profileData_coreTeam.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-
-  // Initialize first profile
+  
   updateProfile_coreTeam(0);
 
   // Add click/tap navigation on textBox for core team (disabled for touch devices to prevent duplication)
