@@ -222,21 +222,16 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
-window.realSlamnorSlam = function () {
+window.letstalk = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
-
-  if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
-    return;
-  }
 
   // Reset state
   gsap.set(text, {
     x: 0,
     y: 0,
     rotationX: 0,
-    scale: 1.05,
+    scale: 1,
     opacity: 0,
     transformOrigin: "50% 50%",
     perspective: 1200
@@ -250,23 +245,22 @@ window.realSlamnorSlam = function () {
 
   const tl = gsap.timeline();
 
-  // 🌀 Spin + Drop Slam
   tl.to(text, {
     opacity: 1,
+    x: 0,
     y: 0,
     rotationX: 0,
     rotationY: 0,
     rotationZ: 0,
-    scale: 1.5,
+    scale: 1.05,
     duration: 1.1,
     ease: "back.out(1.7)",
     transformPerspective: 1200
   })
 
-  // 💥 Slam Impact
   .to(text, {
-    scaleY: 1.25,
-    scaleX: 1.25,
+    scaleY: 1.05,
+    scaleX: 1.05,
     duration: 0.1,
     ease: "power4.inOut"
   })
@@ -298,7 +292,7 @@ window.realSlamnorSlam = function () {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  realSlamnorSlam();
+  letstalk();
 });
 
 // --- Preload images utility ---
@@ -550,8 +544,9 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
+                  showCalendarModal();
                   makeItRainText();
-                  realSlamnorSlam();
+                  letstalk();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   break;
@@ -1348,6 +1343,39 @@ window.initMobileNewsSlider = () => {
 
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
+
+window.showCalendarModal = () => {
+    // Calendar modal logic
+    const calendarIcon = document.querySelector('.calendar-icon svg');
+    const calendarLink = document.querySelector('.calendar-icon');
+    const calendarModal = document.getElementById('calendar-modal');
+    const calendarModalContent = document.getElementById('calendar-modal-content');
+    const calendarModalSvg = document.getElementById('calendar-modal-svg');
+    const calendarModalClose = document.getElementById('calendar-modal-close');
+
+    if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calendarModalClose) {
+        calendarLink.addEventListener('click', function(e) {
+            // Clone the calendar SVG
+            const clone = calendarIcon.cloneNode(true);
+            // Clear previous
+            calendarModalSvg.innerHTML = '';
+            calendarModalSvg.appendChild(clone);
+            // Style the SVG
+            clone.style.width = '340px';
+            clone.style.height = '340px';
+            clone.style.display = 'block';
+            calendarModal.style.display = 'flex';
+        });
+        calendarModalClose.addEventListener('click', function() {
+            calendarModal.style.display = 'none';
+        })
+        // Close modal when clicking outside modal content
+        calendarModal.addEventListener('click', function(e) {
+            if (e.target === calendarModal) {
+                calendarModal.style.display = 'none';
+            }
+        });
+  }};
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
