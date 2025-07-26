@@ -6,6 +6,7 @@ const isTouchDevice = (
   navigator.maxTouchPoints > 0 ||
   navigator.msMaxTouchPoints > 0
 );
+let isAnimating = false;
 
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
   targetElement.innerHTML = "";
@@ -327,6 +328,7 @@ window.attachProfileEvents = () => {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
+    
     setTimeout(() => {
       textBox.innerHTML = "";
       const message = profileData[index].name;
