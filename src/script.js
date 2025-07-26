@@ -172,11 +172,6 @@ window.realSlamnorSlam = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
 
-  if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
-    return;
-  }
-
   // Reset state
   gsap.set(text, {
     x: 0,
@@ -247,14 +242,6 @@ window.addEventListener("DOMContentLoaded", () => {
   realSlamnorSlam();
 });
 
-// --- Preload images utility ---
-function preloadImages(imageUrls) {
-  imageUrls.forEach(url => {
-    const img = new Image();
-    img.src = url;
-  });
-}
-
 window.attachProfileEvents = () => {
   const profileData = [
     {
@@ -278,9 +265,6 @@ window.attachProfileEvents = () => {
       img: "public/profilePhotos/longdo.jpg"
     }
   ];
-
-  // Preload all expert images
-  preloadImages(profileData.map(profile => profile.img));
 
   let currentIndex = 0;
   let touchStartX = 0;
@@ -401,12 +385,6 @@ window.attachProfileEvents = () => {
     });
   });
   
-  // Preload all profile images
-profileData.forEach(profile => {
-  const img = new Image();
-  img.src = profile.img;
-});
-  // Start first profile
   updateProfile(0);
 
   // Add click/tap navigation on textBox
@@ -1075,9 +1053,6 @@ window.attachProfileEvents_coreTeam = () => {
     },
   ];
 
-  // Preload all core team images
-  preloadImages(profileData_coreTeam.map(profile => profile.img));
-
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -1211,13 +1186,6 @@ window.attachProfileEvents_coreTeam = () => {
     });
   }
 
-  // Preload images
-  profileData_coreTeam.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
-
-  // Initialize first profile
   updateProfile_coreTeam(0);
 
   // Add click/tap navigation on textBox for core team
