@@ -360,7 +360,7 @@ window.attachProfileEvents = () => {
       textBox.appendChild(containerDiv);
       typingSessionObj = { skip: false };
       isTyping = true;
-      typeHTMLString(containerDiv, message, 25, () => {
+      typeHTMLString(containerDiv, message, 50, () => {
         gsap.fromTo(containerDiv, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
@@ -1073,15 +1073,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.attachProfileEvents_coreTeam = () => {
-  // Guard against multiple calls
-  if (window.profileEventsAttached_coreTeam) {
-    return;
-  }
-  window.profileEventsAttached_coreTeam = true;
-  // Detect touch devices
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  // Prevent duplicate event listener attachments
+  if (window.coreTeamEventsAttached) return;
+  window.coreTeamEventsAttached = true;
+  
   const profileData_coreTeam = [
-    {name: 
+    {name:
       `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về <span class="highlight-text-phrase-core">quy hoạch đô thị</span>, <span class="highlight-text-phrase-core">phát triển đô thị bền vững</span>, <span class="highlight-text-phrase-core">quản lý cơ sở hạ tầng</span> và <span class="highlight-text-phrase-core">thiết kế không gian công cộng</span>. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp <span class="highlight-text-phrase-core">bền vững</span> và thân thiện với môi trường.`, 
       img: "public/profilePhotos/lyly.png"
     },
@@ -1097,55 +1094,119 @@ window.attachProfileEvents_coreTeam = () => {
       name: `<span class="intro-core">Trịnh Thị Tình </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">Quản trị kinh doanh</span> tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có trách nhiệm, luôn khao khát học hỏi và phát triển. Với tinh thần chi tiết và trách nhiệm cao, tôi coi trọng tinh thần làm việc nhóm và áp dụng kinh nghiệm tích lũy được để mang lại kết quả chất lượng. Tôi mong muốn phát triển sự nghiệp của mình hơn nữa trong một môi trường chuyên nghiệp, nơi tôi có thể đóng góp tích cực vào thành công của tổ chức.`,
       img: "public/profilePhotos/tinh.png"
     },
-    {
+   {
       name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> Tôi tốt nghiệp <span class="highlight-text-phrase-core">Đại học Kinh tế Quốc dân</span>, được đào tạo bài bản và có tinh thần trách nhiệm cao trong công việc. Tôi có kinh nghiệm <span class="highlight-text-phrase-core">đấu thầu các dự án máy móc thiết bị</span>, cũng như các dự án liên quan đến <span class="highlight-text-phrase-core">quy hoạch đô thị</span>. Ngoài ra, tôi có khả năng xử lý nhiều công việc hành chính khác nhau. Những vai trò này đã giúp tôi xây dựng được các kỹ năng chuyên môn và làm việc nhóm mạnh mẽ. Tôi mong muốn được làm việc trong một môi trường chuyên nghiệp, nơi tôi có thể áp dụng các khả năng của mình và đóng góp vào sự phát triển của tổ chức.`,
       img: "public/profilePhotos/lyicue.png"
     },
     {
-      name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">kế toán</span> tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về <span class="highlight-text-phrase-core">kế toán</span>, <span class="highlight-text-phrase-core">báo cáo tài chính</span> và <span class="highlight-text-phrase-core">phân tích dữ liệu</span>. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
+      name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">kế toán</span> tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến thức và kỹ năng về <span class="highlight-text-phrase-core">kế toán</span>, <span class="highlight-text-phrase-core">báo cáo tài chính</span> và <span class="highlight-text-phrase-core">phân tích dữ liệu</span>. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
       img: "public/profilePhotos/hien.png"
     },
   ];
 
+  // Cache DOM elements
+  const textBox = document.getElementById('profile-text-coreTeam');
+  const photo = document.getElementById('profile-photo-coreTeam');
+  const container = document.getElementById('profile-coreTeam-container');
+  
+  // Return early if required elements don't exist
+  if (!textBox || !photo) {
+    console.error('Required elements not found for core team profile');
+    return;
+  } 
+  const MIN_SWIPE_DISTANCE = 50;
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
-  const MIN_SWIPE_DISTANCE = 15;
-  const textBox = document.getElementById('profile-text-coreTeam');
-  const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.getElementById('profile-text-coreTeam')?.parentElement;
+  let swipeLocked = false;
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let isAnimating = false;
-  window.updateProfile_coreTeam = (index, direction = 'right') => {
-    if (!textBox || !photo || isAnimating) return;
+  
+  // Initialize the first profile immediately
+  if (profileData_coreTeam.length > 0) {
+    textBox.innerHTML = ''; 
+    photo.src = profileData_coreTeam[0].img;
+    typeHTMLString(
+      textBox, 
+      profileData_coreTeam[0].name, 
+      1, 
+      null, 
+      typingSessionObj, 
+      'highlight'
+    );
+  }
+  
+  const updateProfile_coreTeam = (index, direction = 'right') => {
+    if (isAnimating) return;
     isAnimating = true;
+    
+    if (index < 0 || index >= profileData_coreTeam.length) {
+      console.error('Invalid profile index');
+      isAnimating = false;
+      return;
+    }
+
+    currentIndex = index;
+    
+    playProfileChangeSound();
     const isFirstLoad = (currentIndex === 0 && index === 0);
+    
     if (!isFirstLoad) {
       textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
-    setTimeout(() => {
+    
+    const transitionEndHandler = () => {
       textBox.innerHTML = "";
-      const message = profileData_coreTeam[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
+      
+      const container = document.createElement("div");
+      textBox.appendChild(container);
+      
+      const profile = profileData_coreTeam[index];
+      
+      const nextImg = new Image();
+      nextImg.src = profile.img;
+      nextImg.onload = () => {
+        photo.src = profile.img;
+        photo.alt = `Profile of ${profile.name}`;
+      };
+      nextImg.onerror = () => {
+        console.error(`Failed to load image: ${profile.img}`);
+        photo.src = 'public/profilePhotos/placeholder.jpg';
+      };
+      
       typingSessionObj = { skip: false };
       isTyping = true;
-      typeHTMLString(containerDiv, message, 30, () => {
-        gsap.fromTo(containerDiv, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
+      
+      typeHTMLString(container, profile.name, 30, () => {
+        gsap.fromTo(container,
+          { opacity: 0, y: 10, scale: 0.98 },
+          { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            duration: 0.4, 
+            ease: "power1.out",
+            onComplete: () => {
+              isTyping = false;
+              isAnimating = false;
+            }
+          }
         );
-        isTyping = false;
-        isAnimating = false;
-      }, typingSessionObj);
-      photo.src = profileData_coreTeam[index].img;
+      }, typingSessionObj, 'highlight-text-phrase-core');
+      
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
-      const tl = gsap.timeline();
+      
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (isAnimating) isAnimating = false;
+        }
+      });
+      
       if (isFirstLoad) {
         tl.fromTo(photo,
           { y: 100, scale: 0.25, opacity: 0 },
@@ -1173,102 +1234,97 @@ window.attachProfileEvents_coreTeam = () => {
           "-=0.5"
         );
       }
-    }, isFirstLoad ? 0 : 800);
+    };
+    
+    setTimeout(transitionEndHandler, isFirstLoad ? 50 : 100);
+  };
+  
+  // Function to handle profile navigation
+  const navigateProfile = (direction) => {
+    if (isAnimating) {
+      if (typingSessionObj) {
+        typingSessionObj.skip = true;
+      }
+      return;
+    }
+
+    let newIndex;
+    if (direction === 'left') {
+      newIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+      updateProfile_coreTeam(newIndex, 'left');
+    } else if (direction === 'right') {
+      newIndex = (currentIndex + 1) % profileData_coreTeam.length;
+      updateProfile_coreTeam(newIndex, 'right');
+    }
   };
 
-  /*document.getElementById('next-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'right');
-  });
-
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'left');
-  });*/
-
+  // Touch event handlers for swipe navigation
   if (container) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
-    });
+    }, { passive: true });
 
     container.addEventListener('touchend', (e) => {
+      if (swipeLocked) return;
+      
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
 
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        if (swipeDistance > 0) {
-          document.getElementById('prev-btn')?.click();
-        } else {
-          document.getElementById('next-btn')?.click();
-        }
-      }
-    });
-  }
-  
-  updateProfile_coreTeam(0);
-
-  // Add click/tap navigation on textBox for core team (disabled for touch devices to prevent duplication)
-  if (textBox && !isTouchDevice) {
-    textBox.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // If any animation is running, the only action is to skip the typewriter.
-      if (isAnimating) {
-        typingSessionObj.skip = true;
-        return;
-      }
-
-      // Otherwise, navigate.
-      const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'right');
-      }
-    });
-    // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        e.preventDefault();
-        e.stopPropagation();
+        swipeLocked = true;
         
-        // If any animation is running, the only action is to skip the typewriter.
-        if (isAnimating) {
-          typingSessionObj.skip = true;
-          return;
-        }
-
-        // Otherwise, navigate.
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
+        if (swipeDistance > 0) {
+          // Swipe right → go to previous profile
+          navigateProfile('left');
         } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
+          // Swipe left → go to next profile
+          navigateProfile('right');
         }
+        
+        setTimeout(() => swipeLocked = false, 800);
       }
-    });
+    }, { passive: true });
   }
-  
-  // Touch device skip typing - simple tap to skip typing animation
-  if (textBox && isTouchDevice) {
-    textBox.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // On touch devices, tapping during typing skips the animation
-      if (isAnimating) {
+
+  if (!isTouchDevice) {
+  textBox.addEventListener('click', (e) => {
+    const clickedIntro = e.target.closest('.intro-core');
+    const clickedTextBox = e.target.closest('#profile-text-coreTeam');
+
+    // Step 1: Skip typing on first click if still typing
+    if ((clickedIntro || clickedTextBox) && isTyping) {
+      if (typingSessionObj) {
         typingSessionObj.skip = true;
+        isTyping = false;
       }
+      return; // ⛔ Don't navigate yet — wait for second click
+    }
+      
+      // Get click position
+      const rect = textBox.getBoundingClientRect();
+      const clickX = e.clientX;
+      if (clickX === undefined) return;
+
+      // Determine if click was on left or right side
+      const x = clickX - rect.left;
+      const isLeftClick = (x < rect.width / 2);
+      
+      // Navigate based on click position
+      navigateProfile(isLeftClick ? 'left' : 'right');
     });
   }
-}
+
+  if (isTouchDevice) {
+    textBox.addEventListener('touchend', (e) => {
+      if (isAnimating && typingSessionObj) {
+        typingSessionObj.skip = true;
+        isTyping = false;
+      }
+    }, { passive: true });
+  }
+
+  updateProfile_coreTeam(0);
+};
 
 
 window.initLogoSlider = () => {
