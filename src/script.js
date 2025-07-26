@@ -1,3 +1,12 @@
+console.log('[script.js] Loaded ✅');
+
+// Touch device detection
+const isTouchDevice = (
+  'ontouchstart' in window ||
+  navigator.maxTouchPoints > 0 ||
+  navigator.msMaxTouchPoints > 0
+);
+
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
   targetElement.innerHTML = "";
 
@@ -411,20 +420,21 @@ window.attachProfileEvents = () => {
         updateProfile(currentIndex, 'right');
       }
     });
-    // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (isTyping) {
+
+    if (textBox && !isTouchDevice) {
+      const handleClick = (e) => {
+        // If any animation is running, the only action is to skip the typewriter.
+        if (isAnimating) {
           typingSessionObj.skip = true;
-          justSkipped = true;
           return;
         }
-        if (justSkipped) {
-          justSkipped = false;
-          return; // Prevent navigation immediately after skipping
-        }
+        // Otherwise, navigate.
+        const rect = textBox.getBoundingClientRect();
+        const clickX = e.clientX;
+        if (clickX === undefined) return;
+        
+        const x = clickX - rect.left;
+
         if (x < rect.width / 2) {
           currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
           updateProfile(currentIndex, 'left');
@@ -432,8 +442,21 @@ window.attachProfileEvents = () => {
           currentIndex = (currentIndex + 1) % profileData.length;
           updateProfile(currentIndex, 'right');
         }
-      }
-    });
+      };
+
+      textBox.addEventListener('click', handleClick);
+    }
+    
+    if (textBox && isTouchDevice) {
+      const handleTouchSkip = (e) => {
+        // If any animation is running, skip the typewriter
+        if (isAnimating) {
+          typingSessionObj.skip = true;
+        }
+        // Note: No navigation for touch devices, only skip functionality
+      };
+      textBox.addEventListener('touchend', handleTouchSkip);
+    }
   }
 }
 
