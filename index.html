@@ -23,7 +23,7 @@
 
 <body class="preload">
 <div id="app">
-  <!-- ✅ Standalone landing page -->
+  
   <div id="landing-page" class="content-wrapper">
     <img src="public/logoIcons/logo.png" class="loading-logo" alt="Logo" />
 
@@ -60,10 +60,8 @@
     </svg>
     </div>
   
-    <!-- Contact stays to the right -->
       <a href="#/Contact" onclick="loadPage('Contact'); closeDrawerMenu();" data-page="Contact" class="contact-link" id="contactLink">Liên Hệ</a>
   
-    <!-- Fullscreen Drawer Menu -->
     <div class="drawer-menu" id="drawerMenu">
        <div class="drawer-blur-overlay"></div>
       <a href="#/Home" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Trang Chủ</a>
@@ -174,7 +172,7 @@
   if (navigator.userAgent.includes('Headless')) {
     document.body.innerHTML = '<img src="public/preview.jpg" style="width:100vw;height:100vh;object-fit:cover;" />';
   }</script>
-<!-- Your app's logic -->
+
 <script type="module" src="src/script.js"></script>
 </body>
 <footer>Designed, Coded, and Maintained by LD⭐️</footer>

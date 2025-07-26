@@ -2,89 +2,41 @@ function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 }
 
-let profileChangeAudioCtx;
-function playProfileChangeSound() {
-  if (!profileChangeAudioCtx) {
-    profileChangeAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  const audioCtx = profileChangeAudioCtx;
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-
-  const duration = 0.4;
-  const now = audioCtx.currentTime;
-
-  const bufferSize = audioCtx.sampleRate * duration;
-  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = noiseBuffer.getChannelData(0);
- 
-  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-  for (let i = 0; i < bufferSize; i++) {
-    const white = Math.random() * 2 - 1;
-    b0 = 0.99886 * b0 + white * 0.0555179;
-    b1 = 0.99332 * b1 + white * 0.0750759;
-    b2 = 0.96900 * b2 + white * 0.1538520;
-    b3 = 0.86650 * b3 + white * 0.3104856;
-    b4 = 0.55000 * b4 + white * 0.5329522;
-    b5 = -0.7616 * b5 - white * 0.0168980;
-    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-    output[i] *= 0.11; 
-    b6 = white * 0.115926;
-  }
-
-  const noiseSource = audioCtx.createBufferSource();
-  noiseSource.buffer = noiseBuffer;
-
-  const filter = audioCtx.createBiquadFilter();
-  filter.type = 'bandpass';
-  filter.frequency.setValueAtTime(2000, now);
-  filter.frequency.exponentialRampToValueAtTime(200, now + duration);
-  filter.Q.setValueAtTime(2, now);
-
-  const gainNode = audioCtx.createGain();
-  gainNode.gain.setValueAtTime(0, now);
-  gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-  noiseSource.connect(filter);
-  filter.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-
-  noiseSource.start(now);
-  noiseSource.stop(now + duration);
-}
-
-function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
+function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null, highlightClass = null) {
   targetElement.innerHTML = "";
+  let processedHtmlString = htmlString;
+  if (highlightClass) {
+    processedHtmlString = processedHtmlString.replace(/<strong>(.*?)<\/strong>/g, `<span class=\"${highlightClass}\">$1<\/span>`);
+  }
 
   const tempContainer = document.createElement("div");
-  tempContainer.innerHTML = htmlString;
+  tempContainer.innerHTML = processedHtmlString;
 
   const nodes = Array.from(tempContainer.childNodes);
   let nodeIndex = 0;
 
-  // Create and append cursor initially
   const cursor = document.createElement("span");
   cursor.className = "svg-blinking-cursor";
   targetElement.appendChild(cursor);
-  // Create your custom SVG
+
   const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgCursor.setAttribute("width", "24");
   svgCursor.setAttribute("height", "24");
   svgCursor.setAttribute("viewBox", "0 0 24 24");
-  svgCursor.setAttribute("class", "svg-blinking-cursor"); // custom class
+  svgCursor.setAttribute("class", "svg-blinking-cursor");
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("fill", "black"); // or darkblue, your choice
+  path.setAttribute("fill", "black");
   path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
 
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
 
+  let skipTyping = false;
+  if (typingSessionObj) typingSessionObj.skip = false;
+
   function typeNextNode() {
-    if ((typingSessionObj && typingSessionObj.skip) || nodeIndex >= nodes.length) {
-      // Instantly show all remaining nodes
+    if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
       for (; nodeIndex < nodes.length; nodeIndex++) {
         const node = nodes[nodeIndex];
         if (node.nodeType === Node.TEXT_NODE) {
@@ -100,96 +52,86 @@ function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null,
           targetElement.insertBefore(clone, cursor);
         }
       }
-    if (typeof onComplete === "function") onComplete();
-    return;
-  }
-
-  const node = nodes[nodeIndex];
-  nodeIndex++;
-
-  if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent;
-    const span = document.createElement("span");
-    targetElement.insertBefore(span, cursor); // always before cursor
-
-    let charIndex = 0;
-    function typeChar() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+    if (nodeIndex >= nodes.length) {
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+    const node = nodes[nodeIndex];
+    nodeIndex++;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent;
+      const span = document.createElement("span");
+      targetElement.insertBefore(span, cursor); 
+      let charIndex = 0;
+      function typeChar() {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
           span.textContent = text;
           typeNextNode();
           return;
         }
-      if (charIndex < text.length) {
-        span.textContent += text.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeChar, speed);
-      } else {
-        typeNextNode();
+        if (charIndex < text.length) {
+          span.textContent += text.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, speed);
+        } else {
+          typeNextNode();
+        }
       }
-    }
-    typeChar();
-
-  } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const wrapper = node.cloneNode(false);
-    targetElement.insertBefore(wrapper, cursor);
-
-    const childNodes = Array.from(node.childNodes);
-    let childIndex = 0;
-
-    function typeChildNode() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+      typeChar();
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const wrapper = node.cloneNode(false); 
+      targetElement.insertBefore(wrapper, cursor);
+      const childNodes = Array.from(node.childNodes);
+      let childIndex = 0;
+      function typeChildNode() {
+        if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
           wrapper.innerHTML = node.innerHTML;
           typeNextNode();
           return;
         }
-      if (childIndex >= childNodes.length) {
-        typeNextNode();
-        return;
-      }
-
-      const child = childNodes[childIndex];
-      childIndex++;
-
-      if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent;
-        const span = document.createElement("span");
-        wrapper.appendChild(span);
-
-        let charIndex = 0;
-        function typeChar() {
-            if ((typingSessionObj && typingSessionObj.skip)) {
+        if (childIndex >= childNodes.length) {
+          typeNextNode();
+          return;
+        }
+        const child = childNodes[childIndex];
+        childIndex++;
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.textContent;
+          const span = document.createElement("span");
+          wrapper.appendChild(span);
+          let charIndex = 0;
+          function typeChar() {
+            if (skipTyping || (typingSessionObj && typingSessionObj.skip)) {
               span.textContent = text;
               typeChildNode();
               return;
             }
-          if (charIndex < text.length) {
-            span.textContent += text.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeChar, speed);
-          } else {
-            typeChildNode();
+            if (charIndex < text.length) {
+              span.textContent += text.charAt(charIndex);
+              charIndex++;
+              setTimeout(typeChar, speed);
+            } else {
+              typeChildNode();
+            }
           }
+          typeChar();
+        } else {
+          wrapper.appendChild(child.cloneNode(true));
+          typeChildNode();
         }
-        typeChar();
-
-      } else {
-        // If it's an element inside another (nested), just append it and continue
-        wrapper.appendChild(child.cloneNode(true));
-        typeChildNode();
       }
+      typeChildNode();
+    } else {
+      const clone = node.cloneNode(true);
+      targetElement.insertBefore(clone, cursor);
+      typeNextNode();
     }
-
-    typeChildNode();
-
-  } else {
-    // Fallback: just clone and insert if it's a comment or unsupported node
-    const clone = node.cloneNode(true);
-    targetElement.insertBefore(clone, cursor);
-    typeNextNode();
   }
-  }
-
-typeNextNode();
+  typeNextNode();
+  return () => { skipTyping = true; if (typingSessionObj) typingSessionObj.skip = true; };
 }
 
 window.makeItRainText = () => {
@@ -220,100 +162,17 @@ window.makeItRainText = () => {
   });
 };
 
-// Call when DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
-window.letstalk = function () {
-  const text = document.querySelector('#textSlam .slam-text');
-  const dust = document.querySelector('#textSlam .slam-dust');
-
-  // Reset state
-  gsap.set(text, {
-    x: 0,
-    y: 0,
-    rotationX: 0,
-    scale: 1,
-    opacity: 0,
-    transformOrigin: "50% 50%",
-    perspective: 1200
-  });
-
-  gsap.set(dust, {
-    scale: 0.5,
-    opacity: 0,
-    filter: "brightness(1)"
-  });
-
-  const tl = gsap.timeline();
-
-  tl.to(text, {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    rotationX: 0,
-    rotationY: 0,
-    rotationZ: 0,
-    scale: 1.05,
-    duration: 1.1,
-    ease: "back.out(1.7)",
-    transformPerspective: 1200
-  })
-
-  .to(text, {
-    scaleY: 1.05,
-    scaleX: 1.05,
-    duration: 0.1,
-    ease: "power4.inOut"
-  })
-
-  // 👊 Bounce Back
-  .to(text, {
-    scaleY: 1,
-    scaleX: 1,
-    duration: 0.7,
-    ease: "elastic.out(1, 0.5)"
-  })
-
-  // 💨 Dust Puff
-  .to(dust, {
-    opacity: 1,
-    scale: 1.4,
-    filter: "brightness(1.5)",
-    duration: 0.75,
-    ease: "power2.out"
-  }, "-=1") // overlap dust with squash
-
-  .to(dust, {
-    opacity: 0,
-    scale: 2.2,
-    filter: "brightness(.75)",
-    duration: 1.2,
-    ease: "power2.in"
-  }, "-=0.6"); // overlap exit
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  letstalk();
-});
-
-// --- Preload images utility ---
-function preloadImages(imageUrls) {
-  imageUrls.forEach(url => {
-    const img = new Image();
-    img.src = url;
-  });
-}
-
 window.attachProfileEvents = () => {
-  // Guard against multiple calls
+  
   if (window.profileEventsAttached) {
     return;
   }
   window.profileEventsAttached = true;
   
-  // Detect touch devices
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   const profileData = [
     {
@@ -547,9 +406,7 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
-                  showCalendarModal();
                   makeItRainText();
-                  letstalk();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   break;
@@ -1107,12 +964,10 @@ window.attachProfileEvents_coreTeam = () => {
     },
   ];
 
-  // Cache DOM elements
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-coreTeam-container');
   
-  // Return early if required elements don't exist
   if (!textBox || !photo) {
     console.error('Required elements not found for core team profile');
     return;
@@ -1126,7 +981,6 @@ window.attachProfileEvents_coreTeam = () => {
   let isTyping = false;
   let isAnimating = false;
   
-  // Initialize the first profile immediately
   if (profileData_coreTeam.length > 0) {
     textBox.innerHTML = ''; 
     photo.src = profileData_coreTeam[0].img;
@@ -1151,8 +1005,7 @@ window.attachProfileEvents_coreTeam = () => {
     }
 
     currentIndex = index;
-    
-    playProfileChangeSound();
+  
     const isFirstLoad = (currentIndex === 0 && index === 0);
     
     if (!isFirstLoad) {
@@ -1182,7 +1035,7 @@ window.attachProfileEvents_coreTeam = () => {
       typingSessionObj = { skip: false };
       isTyping = true;
       
-      typeHTMLString(container, profile.name, 30, () => {
+      typeHTMLString(container, profile.name, 50, () => {
         gsap.fromTo(container,
           { opacity: 0, y: 10, scale: 0.98 },
           { 
