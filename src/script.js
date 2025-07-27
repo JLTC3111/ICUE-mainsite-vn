@@ -6,6 +6,7 @@ const isTouchDevice = (
   navigator.maxTouchPoints > 0 ||
   navigator.msMaxTouchPoints > 0
 );
+
 let isAnimating = false;
 
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
@@ -252,7 +253,7 @@ window.addEventListener("DOMContentLoaded", () => {
   realSlamnorSlam();
 });
 
-window.attachProfileEvents = () => {
+window.attachProfileEvents_moe = () => {
   const profileData = [
     {
       name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố <span class="highlight-text-phrase-moe">bền vững</span>. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về <span class="highlight-text-phrase-moe">phát triển đô thị xanh</span>, <span class="highlight-text-phrase-moe">khả năng phục hồi khí hậu</span> và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
@@ -321,7 +322,8 @@ window.attachProfileEvents = () => {
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let skipOnNextClick = false;
-  window.updateProfile = (index, direction = 'right') => {
+
+  window.updateProfile_moe = (index, direction = 'right') => {
     if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
@@ -345,6 +347,7 @@ window.attachProfileEvents = () => {
         isTyping = false;
         skipOnNextClick = false;
       }, typingSessionObj);
+      
       photo.src = profileData[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
@@ -363,104 +366,67 @@ window.attachProfileEvents = () => {
     }, 300);
   };
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  document.getElementById('moe-next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData.length;
-    updateProfile(currentIndex, 'right');
+    updateProfile_moe(currentIndex, 'right');
   });
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
+  document.getElementById('moe-prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-    updateProfile(currentIndex, 'left');
+    updateProfile_moe(currentIndex, 'left');
   });
 
-  const swipeElements = [container, textBox];
-  let swipeLocked = false;
-  swipeElements.forEach(el => {
-    el.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-    el.addEventListener('touchend', (e) => {
-      if (swipeLocked) return;
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        swipeLocked = true;
-        if (swipeDistance > 0) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
-        setTimeout(() => swipeLocked = false, 1000);
-      }
-    });
+  // Preload all profile images
+  profileData.forEach(profile => {
+    const img = new Image();
+    img.src = profile.img;
   });
   
-  updateProfile(0);
+  updateProfile_moe(0);
 
-  // Add click/tap navigation on textBox
-  if (textBox) {
+  if (textBox && !isTouchDevice) {
     let justSkipped = false;
-
-    textBox.addEventListener('click', (e) => {
-      const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (isTyping) {
-        typingSessionObj.skip = true;
-        justSkipped = true;
-        return;
-      }
-      if (justSkipped) {
-        justSkipped = false;
-        return; // Prevent navigation immediately after skipping
-      }
-      if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-        updateProfile(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData.length;
-        updateProfile(currentIndex, 'right');
-      }
-    });
-
-    if (textBox && !isTouchDevice) {
       const handleClick = (e) => {
-        // If any animation is running, the only action is to skip the typewriter.
-        if (isAnimating) {
+        if (isTyping) {
           typingSessionObj.skip = true;
           return;
         }
-        // Otherwise, navigate.
-        const rect = textBox.getBoundingClientRect();
-        const clickX = e.clientX;
-        if (clickX === undefined) return;
-        
-        const x = clickX - rect.left;
-
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-          updateProfile(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData.length;
-          updateProfile(currentIndex, 'right');
-        }
       };
-
       textBox.addEventListener('click', handleClick);
     }
-    
+    let swipeLocked = false;
+
     if (textBox && isTouchDevice) {
-      const handleTouchSkip = (e) => {
-        // If any animation is running, skip the typewriter
-        if (isAnimating) {
-          typingSessionObj.skip = true;
-        }
-        // Note: No navigation for touch devices, only skip functionality
-      };
-      textBox.addEventListener('touchend', handleTouchSkip);
+      const swipeElements = [container, textBox];
+      let swipeLocked = false;
+      swipeElements.forEach(el => {
+        el.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+        el.addEventListener('touchend', (e) => {
+          if (swipeLocked) return;
+          touchEndX = e.changedTouches[0].screenX;
+          const swipeDistance = touchEndX - touchStartX;
+          if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+            swipeLocked = true;
+            if (swipeDistance > 0) {
+              currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+              updateProfile_moe(currentIndex, 'left');
+            } else {
+              currentIndex = (currentIndex + 1) % profileData.length;
+              updateProfile_moe(currentIndex, 'right');
+            }
+            setTimeout(() => swipeLocked = false, 1000);
+          }
+        });
+      });
+
+      // Optional: Add tap-to-skip listener
+      textBox.addEventListener('touchend', () => {
+        if (isAnimating) typingSessionObj.skip = true;
+      });
     }
   }
-}
+
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
@@ -517,7 +483,7 @@ window.loadPage = (page) => {
 
               switch (page) {
                 case 'meetOurExperts':
-                  attachProfileEvents();
+                  attachProfileEvents_moe();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
@@ -1123,6 +1089,7 @@ window.attachProfileEvents_coreTeam = () => {
   let typingSessionObj = { skip: false };
   let isTyping = false;
   let skipOnNextClick = false;
+
   window.updateProfile_coreTeam = (index, direction = 'right') => {
     if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
@@ -1182,17 +1149,29 @@ window.attachProfileEvents_coreTeam = () => {
     }, isFirstLoad ? 0 : 800);
   };
 
-  document.getElementById('next-btn')?.addEventListener('click', () => {
+  document.getElementById('core-next-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'right');
   });
 
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
+  document.getElementById('core-prev-btn')?.addEventListener('click', () => {
     currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
     updateProfile_coreTeam(currentIndex, 'left');
   });
 
-  if (container) {
+  updateProfile_coreTeam(0);
+
+  if (textBox && !isTouchDevice) {
+    textBox.addEventListener('click', (e) => {
+      const rect = textBox.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (isTyping) {
+        typingSessionObj.skip = true;
+        return;
+      }
+    });
+    
+  if (textBox && isTouchDevice) {
     container.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     });
@@ -1203,51 +1182,12 @@ window.attachProfileEvents_coreTeam = () => {
 
       if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         if (swipeDistance > 0) {
-          document.getElementById('prev-btn')?.click();
+          document.getElementById('core-prev-btn')?.click();
         } else {
-          document.getElementById('next-btn')?.click();
+          document.getElementById('core-next-btn')?.click();
         }
       }
-    });
-  }
-
-  updateProfile_coreTeam(0);
-
-  // Add click/tap navigation on textBox for core team
-  if (textBox) {
-    textBox.addEventListener('click', (e) => {
-      const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (isTyping) {
-        typingSessionObj.skip = true;
-        return;
-      }
-      if (x < rect.width / 2) {
-        currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'left');
-      } else {
-        currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-        updateProfile_coreTeam(currentIndex, 'right');
-      }
-    });
-    // Touch support
-    textBox.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const rect = textBox.getBoundingClientRect();
-        const x = e.changedTouches[0].clientX - rect.left;
-        if (isTyping) {
-          typingSessionObj.skip = true;
-          return;
-        }
-        if (x < rect.width / 2) {
-          currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'left');
-        } else {
-          currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-          updateProfile_coreTeam(currentIndex, 'right');
-        }
-      }
-    });
+    });}
   }
 }
 
