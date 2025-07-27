@@ -393,7 +393,6 @@ window.attachProfileEvents_moe = () => {
       };
       textBox.addEventListener('click', handleClick);
     }
-    let swipeLocked = false;
 
     if (textBox && isTouchDevice) {
       const swipeElements = [container, textBox];
@@ -1168,28 +1167,43 @@ window.attachProfileEvents_coreTeam = () => {
     }
 
     if (textBox && isTouchDevice) {
-      const swipeElements = [container, textBox];
+      const swipeTarget = container || textBox; // fallback if container is null
       let swipeLocked = false;
-      swipeElements.forEach(el => {
-        el.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-        });
-        el.addEventListener('touchend', (e) => {
-          if (swipeLocked) return;
-          touchEndX = e.changedTouches[0].screenX;
-          const swipeDistance = touchEndX - touchStartX;
-          if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-            swipeLocked = true;
-            if (swipeDistance > 0) {
-              currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
-              updateProfile_coreTeam(currentIndex, 'left');
-            } else {
-              currentIndex = (currentIndex + 1) % profileData.length;
-              updateProfile_coreTeam(currentIndex, 'right');
-            }
-            setTimeout(() => swipeLocked = false, 1000);
-          }
-        });
+      const MIN_SWIPE_DISTANCE = 15;
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      swipeTarget.addEventListener('touchstart', (e) => {
+        const touch = e.changedTouches[0];
+        touchStartX = touch.screenX;
+        touchStartY = touch.screenY;
+      });
+
+      swipeTarget.addEventListener('touchend', (e) => {
+        if (swipeLocked) return;
+
+        const touch = e.changedTouches[0];
+        const touchEndX = touch.screenX;
+        const touchEndY = touch.screenY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Ignore diagonal or mostly vertical swipes
+        if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+        swipeLocked = true;
+
+        if (deltaX > 0 && currentIndex > 0) {
+          currentIndex--;
+          updateProfile_coreTeam(currentIndex, 'left');
+        } else if (deltaX < 0 && currentIndex < profileData.length - 1) {
+          currentIndex++;
+          updateProfile_coreTeam(currentIndex, 'right');
+        }
+
+        setTimeout(() => swipeLocked = false, 500); // debounce faster for UX
       });
     }
   }

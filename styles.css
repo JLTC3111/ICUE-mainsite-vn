@@ -99,9 +99,9 @@ nav a {
 }
 
 .highlight-text-phrase-moe {
-  font-weight: bold;
-  color: rgb(32, 32, 32);
-  text-shadow: 0 .5px 1px #fffca3, 0 0 2px rgb(253, 252, 252);
+  font-weight: 300;
+  color:rgb(140, 138, 138);
+  text-shadow: 0 .5px 1px #04ff00, 0 0 2px rgb(0, 255, 174);
 }
 
 .highlight-text-phrase-core {
