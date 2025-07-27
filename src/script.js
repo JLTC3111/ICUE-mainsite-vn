@@ -279,6 +279,7 @@ window.attachProfileEvents_moe = () => {
 
   let currentIndex = 0;
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
   let touchEndY = 0;
   const MIN_SWIPE_DISTANCE = 15;
