@@ -101,7 +101,7 @@ nav a {
 .highlight-text-phrase-moe {
   font-weight: 300;
   font-style: italic;
-  background: linear-gradient(45deg, #ffffff, #7a4aff, #00f7ff, #000000);
+  background: linear-gradient(45deg, #ffffff, #e2d7ff, #00f7ff, #ffe5e5, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
