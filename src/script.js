@@ -1156,35 +1156,43 @@ window.attachProfileEvents_coreTeam = () => {
 
   updateProfile_coreTeam(0);
 
-  if (textBox && !isTouchDevice) {
-    textBox.addEventListener('click', (e) => {
-      const rect = textBox.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (isTyping) {
-        typingSessionObj.skip = true;
-        return;
-      }
-    });
-    
-  if (textBox && isTouchDevice) {
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    container.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeDistance = touchEndX - touchStartX;
-
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        if (swipeDistance > 0) {
-          document.getElementById('core-prev-btn')?.click();
-        } else {
-          document.getElementById('core-next-btn')?.click();
+  if (textBox) {
+    let justSkipped = false;
+      const handleClick = (e) => {
+        if (isTyping) {
+          typingSessionObj.skip = true;
+          return;
         }
-      }
-    });}
+      };
+      textBox.addEventListener('click', handleClick);
+    }
+
+    if (textBox && isTouchDevice) {
+      const swipeElements = [container, textBox];
+      let swipeLocked = false;
+      swipeElements.forEach(el => {
+        el.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+        el.addEventListener('touchend', (e) => {
+          if (swipeLocked) return;
+          touchEndX = e.changedTouches[0].screenX;
+          const swipeDistance = touchEndX - touchStartX;
+          if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+            swipeLocked = true;
+            if (swipeDistance > 0) {
+              currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+              updateProfile_coreTeam(currentIndex, 'left');
+            } else {
+              currentIndex = (currentIndex + 1) % profileData.length;
+              updateProfile_coreTeam(currentIndex, 'right');
+            }
+            setTimeout(() => swipeLocked = false, 1000);
+          }
+        });
+      });
+    }
   }
-}
 
 
 window.initLogoSlider = () => {
