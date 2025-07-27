@@ -100,8 +100,12 @@ nav a {
 
 .highlight-text-phrase-moe {
   font-weight: 300;
-  color:rgb(140, 138, 138);
-  text-shadow: 0 .5px 1px #04ff00, 0 0 2px rgb(0, 255, 174);
+  font-style: italic;
+  background: linear-gradient(45deg, #ffffff, #7a4aff, #00f7ff, #000000);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  
 }
 
 .highlight-text-phrase-core {
@@ -566,6 +570,7 @@ footer p {
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+   
   }
 
 .image-container {
@@ -577,7 +582,7 @@ footer p {
   height: 374px;
   border-radius: 350px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 1);
 }
 
 .profile-photo {
@@ -608,9 +613,9 @@ footer p {
   width: 50%;
   max-width: 650px;
   transform: translate(-45%, -30.5%);
-  padding: 20px;
+  padding: 0px;
   border-radius: 20px;
-  box-shadow: none;
+  box-shadow: 0px 4px 12px rgba(255, 255, 255, 1);
 }
 
 .montserrat-aboutUs {
@@ -641,7 +646,7 @@ footer p {
   line-height: 1.2;
   justify-content: center;
   transform: translateX(2.5%);
-  background: linear-gradient(45deg, #000000, #a09b0e);
+  background: linear-gradient(-90deg, #d3c6c6, #767e38, #55bac0, #767e38);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -952,6 +957,7 @@ footer p {
   border-radius: 450px;
   z-index: 2;
   margin-left:1rem;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 1);
 }
 
 .profile-photo-coreTeam {
@@ -963,17 +969,21 @@ footer p {
 
 #text-slider-coreTeam{
   transform: translate(14.5vw, -117.5vh);
+  background: rgba(0, 0, 0, 0.01);
+  backdrop-filter: blur(2.5px);          /* frosted glass blur */
+  -webkit-backdrop-filter: blur(2.5px);  /* Safari 15.6.1 or lower */
 }
 
 .text-container-coreTeam {
   position: relative;
-  top:5%;
+  top:10%;
   width: 50%;
   max-width: 650px;
   padding: 25px;
-  background: transparent;
-  backdrop-filter: none;
+  background: transparent; 
   z-index: 2;
+  box-shadow: 2px 4px 12px #6e77dc;
+  border-radius: 24px;
 }
 
 .intro-core {
@@ -982,7 +992,7 @@ footer p {
   justify-content: center;
   font-size: 45px;
   font-weight: bold;
-  background: linear-gradient(to left, #000000, #a09b0e, rgb(45, 73, 4), rgb(174, 15, 15));
+  background: linear-gradient(to left, #000000, #742222, #a09b0e, rgb(148, 246, 1));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -2240,6 +2250,7 @@ body.loaded #app {
     transform: translate(-50%, 12.5%);
     padding: 15px;
     margin-top: clamp(1.5rem, 1.4vw, 3.5rem);
+    box-shadow: none;
   }
 
   .montserrat-pepple {
