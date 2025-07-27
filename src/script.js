@@ -332,7 +332,7 @@ window.attachProfileEvents_moe = () => {
     
     setTimeout(() => {
       textBox.innerHTML = "";
-      const message = profileData[index].name;
+      const message = profileData_moe[index].name;
       const containerDiv = document.createElement("div");
       textBox.appendChild(containerDiv);
       typingSessionObj = { skip: false };
@@ -347,7 +347,7 @@ window.attachProfileEvents_moe = () => {
         skipOnNextClick = false;
       }, typingSessionObj);
       
-      photo.src = profileData[index].img;
+      photo.src = profileData_moe[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       textBox.classList.remove('slide-enter-left', 'slide-enter-right');
