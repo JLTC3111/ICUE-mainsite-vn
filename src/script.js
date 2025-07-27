@@ -264,7 +264,7 @@ window.attachProfileEvents_moe = () => {
       img: "public/profilePhotos/hoangthuha.jpg"
     },
     {
-      name: `<span class="intro-people">Ms. Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị với hơn 10 năm kinh nghiệm trong <span class="highlight-text-phrase-moe">thiết kế đô thị chiến lược</span>, hoạch định chính sách và <span class="highlight-text-phrase-moe">phát triển bền vững</span>. Có bằng Tiến sĩ và Thạc sĩ từ Đại học Tokyo, nền tảng vững chắc về <span class="highlight-text-phrase-moe">thích ứng với biến đổi khí hậu</span>, luật phân loại đô thị và chiến lược phát triển quốc gia. Cựu Phó Tổng giám đốc Cơ quan Phát triển Đô thị Việt Nam, lãnh đạo các chương trình lớn về <span class="highlight-text-phrase-moe">khả năng phục hồi</span> và quy hoạch đô thị đến năm 2050. Một nhà nghiên cứu, nhà giáo dục đã xuất bản và là thành viên tích cực của các hiệp hội chuyên nghiệp. Có kỹ năng điều phối các dự án quy mô lớn, khuôn khổ pháp lý và hợp tác liên ngành. Thông thạo nhiều ngôn ngữ và đam mê định hình tương lai đô thị <span class="highlight-text-phrase-moe">bền vững</span>, đáng sống.`,
+      name: `<span class="intro-people">Dr. Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị với hơn 10 năm kinh nghiệm trong <span class="highlight-text-phrase-moe">thiết kế đô thị chiến lược</span>, hoạch định chính sách và <span class="highlight-text-phrase-moe">phát triển bền vững</span>. Có bằng Tiến sĩ và Thạc sĩ từ Đại học Tokyo, nền tảng vững chắc về <span class="highlight-text-phrase-moe">thích ứng với biến đổi khí hậu</span>, luật phân loại đô thị và chiến lược phát triển quốc gia. Cựu Phó Tổng giám đốc Cơ quan Phát triển Đô thị Việt Nam, lãnh đạo các chương trình lớn về <span class="highlight-text-phrase-moe">khả năng phục hồi</span> và quy hoạch đô thị đến năm 2050. Một nhà nghiên cứu, nhà giáo dục đã xuất bản và là thành viên tích cực của các hiệp hội chuyên nghiệp. Có kỹ năng điều phối các dự án quy mô lớn, khuôn khổ pháp lý và hợp tác liên ngành. Thông thạo nhiều ngôn ngữ và đam mê định hình tương lai đô thị <span class="highlight-text-phrase-moe">bền vững</span>, đáng sống.`,
       img: "public/profilePhotos/tranthilananh.jpg"
     },
     {
@@ -357,7 +357,7 @@ window.attachProfileEvents_moe = () => {
       photo.classList.remove('slide-enter-left', 'slide-enter-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
-        { x: direction === 'right' ? 100 : -100, scale: 0.5, opacity: 0 }, 
+        { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 }, 
         { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
       );
       tl.fromTo(textBox, 
