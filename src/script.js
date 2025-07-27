@@ -380,6 +380,16 @@ window.attachProfileEvents_moe = () => {
   
   updateProfile_moe(0);
 
+  if (textBox) {
+      const handleClick = (e) => {
+        if (isTyping) {
+          typingSessionObj.skip = true;
+          return;
+        }
+      };
+      textBox.addEventListener('click', handleClick);
+    }
+
   if (textBox && isTouchDevice) {
   const swipeElements = [container, textBox];
   let swipeLocked = false;
