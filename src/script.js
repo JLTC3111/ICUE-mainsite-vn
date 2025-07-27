@@ -383,7 +383,7 @@ window.attachProfileEvents_moe = () => {
   
   updateProfile_moe(0);
 
-  if (textBox && !isTouchDevice) {
+  if (textBox) {
     let justSkipped = false;
       const handleClick = (e) => {
         if (isTyping) {
@@ -418,11 +418,6 @@ window.attachProfileEvents_moe = () => {
             setTimeout(() => swipeLocked = false, 1000);
           }
         });
-      });
-
-      // Optional: Add tap-to-skip listener
-      textBox.addEventListener('touchend', () => {
-        if (isAnimating) typingSessionObj.skip = true;
       });
     }
   }
