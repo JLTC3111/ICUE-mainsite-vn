@@ -254,7 +254,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 window.attachProfileEvents_moe = () => {
-  const profileData = [
+  const profileData_moe = [
     {
       name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Là một chuyên gia về phát triển đô thị và quản lý xây dựng, hiện đang giữ chức Viện trưởng Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng thuộc Hội Xây dựng Việt Nam. Sự nghiệp lâu dài của tiến sỹ bao gồm chức Phó Viện trưởng tại Viện Nghiên cứu Kinh tế Đô thị và Xây dựng (2013–2018) và phó cục trưởng Cục Phát triển Đô thị thuộc Bộ Xây dựng (2008–2013). Công việc trải dài trên các khuôn khổ pháp lý, quy hoạch đô thị và thiết kế kiến ​​trúc, tập trung mạnh vào các thành phố <span class="highlight-text-phrase-moe">bền vững</span>. Tiến sỹ đã lãnh đạo các sáng kiến ​​lớn về <span class="highlight-text-phrase-moe">phát triển đô thị xanh</span>, <span class="highlight-text-phrase-moe">khả năng phục hồi khí hậu</span> và tư vấn chính sách cho quy hoạch quốc gia và khu vực, với sự hỗ trợ của các đối tác quốc tế như Ngân hàng Thế giới và ADB.`,
       img: "public/profilePhotos/nguyenhonghanh.jpg"
@@ -366,11 +366,11 @@ window.attachProfileEvents_moe = () => {
   };
 
   document.getElementById('moe-next-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % profileData.length;
+    currentIndex = (currentIndex + 1) % profileData_moe.length;
     updateProfile_moe(currentIndex, 'right');
   });
   document.getElementById('moe-prev-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+    currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
     updateProfile_moe(currentIndex, 'left');
   });
 
@@ -383,7 +383,6 @@ window.attachProfileEvents_moe = () => {
   updateProfile_moe(0);
 
   if (textBox) {
-    let justSkipped = false;
       const handleClick = (e) => {
         if (isTyping) {
           typingSessionObj.skip = true;
@@ -407,13 +406,13 @@ window.attachProfileEvents_moe = () => {
           if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
             swipeLocked = true;
             if (swipeDistance > 0) {
-              currentIndex = (currentIndex - 1 + profileData.length) % profileData.length;
+              currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
               updateProfile_moe(currentIndex, 'left');
             } else {
-              currentIndex = (currentIndex + 1) % profileData.length;
+              currentIndex = (currentIndex + 1) % profileData_moe.length;
               updateProfile_moe(currentIndex, 'right');
             }
-            setTimeout(() => swipeLocked = false, 1000);
+            setTimeout(() => swipeLocked = false, 500);
           }
         });
       });
