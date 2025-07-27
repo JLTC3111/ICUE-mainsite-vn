@@ -588,6 +588,7 @@ footer p {
 .profile-photo {
   width: 100%;
   height: 100%;
+  border-radius: 150px;
   object-fit: cover;
   transition: transform 0.3s ease;
   z-index: 5;
