@@ -280,6 +280,7 @@ window.attachProfileEvents_moe = () => {
   let currentIndex = 0;
   let touchStartX = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
   const MIN_SWIPE_DISTANCE = 15;
   
   const textBox = document.getElementById('profile-text');
@@ -379,45 +380,49 @@ window.attachProfileEvents_moe = () => {
   updateProfile_moe(0);
 
   if (textBox && isTouchDevice) {
-      const swipeTarget = container || textBox; // fallback if container is null
-      let swipeLocked = false;
-      const MIN_SWIPE_DISTANCE = 25;
+  const swipeElements = [container, textBox];
+  let swipeLocked = false;
 
-      let touchStartX = 0;
-      let touchStartY = 0;
+  swipeElements.forEach(el => {
+    el.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;  // Track vertical position
+    });
 
-      swipeTarget.addEventListener('touchstart', (e) => {
-        const touch = e.changedTouches[0];
-        touchStartX = touch.screenX;
-        touchStartY = touch.screenY;
-      });
+    el.addEventListener('touchend', (e) => {
+      if (swipeLocked) return;
 
-      swipeTarget.addEventListener('touchend', (e) => {
-        if (swipeLocked) return;
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;  // Track vertical position
 
-        const touch = e.changedTouches[0];
-        const touchEndX = touch.screenX;
-        const touchEndY = touch.screenY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
 
-        const deltaX = touchEndX - touchStartX;
-        const deltaY = touchEndY - touchStartY;
+      // Ignore diagonal or mostly vertical swipes
+      if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaY) > Math.abs(deltaX)) {
+        return;  // Vertical or diagonal swipe
+      }
 
-        // Ignore diagonal or mostly vertical swipes
-        if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
+      const swipeDistance = deltaX;
 
+      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
         swipeLocked = true;
+          // Right swipe (next)
+            if (swipeDistance > 0) {
+                currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
+                updateProfile_moe(currentIndex, 'left');
+              }
+              // Left swipe (previous)
+              else {
+                currentIndex = (currentIndex + 1) % profileData_moe.length;
+                updateProfile_moe(currentIndex, 'right');
+              }
 
-        if (deltaX > 0 && currentIndex > 0) {
-          currentIndex--;
-          updateProfile_moe(currentIndex, 'left');
-        } else if (deltaX < 0 && currentIndex < profileData_moe.length - 1) {
-          currentIndex++;
-          updateProfile_moe(currentIndex, 'right');
-        }
-
-        setTimeout(() => swipeLocked = false, 500); // debounce faster for UX
-      });
-    }
+              setTimeout(() => swipeLocked = false, 500); // Debounce
+            }
+          });
+        });
+      }
   }
 
 
