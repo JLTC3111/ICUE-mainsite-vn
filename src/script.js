@@ -321,7 +321,6 @@ window.attachProfileEvents_moe = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
-  let skipOnNextClick = false;
 
   window.updateProfile_moe = (index, direction = 'right') => {
     if (!textBox || !photo) return;
@@ -1039,9 +1038,6 @@ window.attachProfileEvents_coreTeam = () => {
   ];
 
   let currentIndex = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const MIN_SWIPE_DISTANCE = 15;
 
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
@@ -1156,7 +1152,6 @@ window.attachProfileEvents_coreTeam = () => {
   updateProfile_coreTeam(0);
 
   if (textBox) {
-    let justSkipped = false;
       const handleClick = (e) => {
         if (isTyping) {
           typingSessionObj.skip = true;
@@ -1169,7 +1164,7 @@ window.attachProfileEvents_coreTeam = () => {
     if (textBox && isTouchDevice) {
       const swipeTarget = container || textBox; // fallback if container is null
       let swipeLocked = false;
-      const MIN_SWIPE_DISTANCE = 15;
+      const MIN_SWIPE_DISTANCE = 25;
 
       let touchStartX = 0;
       let touchStartY = 0;
@@ -1198,7 +1193,7 @@ window.attachProfileEvents_coreTeam = () => {
         if (deltaX > 0 && currentIndex > 0) {
           currentIndex--;
           updateProfile_coreTeam(currentIndex, 'left');
-        } else if (deltaX < 0 && currentIndex < profileData.length - 1) {
+        } else if (deltaX < 0 && currentIndex < profileData_coreTeam.length - 1) {
           currentIndex++;
           updateProfile_coreTeam(currentIndex, 'right');
         }
