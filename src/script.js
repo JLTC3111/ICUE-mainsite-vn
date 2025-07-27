@@ -321,8 +321,9 @@ window.attachProfileEvents_moe = () => {
 
   let typingSessionObj = { skip: false };
   let isTyping = false;
+  let skipOnNextClick = false;
 
-  window.updateProfile_moe = (index, direction = 'right') => {
+  function updateProfile_moe (index, direction = 'right') {
     if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
@@ -374,11 +375,6 @@ window.attachProfileEvents_moe = () => {
     updateProfile_moe(currentIndex, 'left');
   });
 
-  // Preload all profile images
-  profileData.forEach(profile => {
-    const img = new Image();
-    img.src = profile.img;
-  });
   
   updateProfile_moe(0);
 
