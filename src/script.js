@@ -1203,18 +1203,17 @@ window.attachProfileEvents_coreTeam = () => {
 
         // Ignore diagonal or mostly vertical swipes
         if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
-
-        swipeLocked = true;
-
-        if (deltaX > 0 && currentIndex > 0) {
-          currentIndex--;
-          updateProfile_coreTeam(currentIndex, 'left');
-        } else if (deltaX < 0 && currentIndex < profileData_coreTeam.length - 1) {
-          currentIndex++;
-          updateProfile_coreTeam(currentIndex, 'right');
-        }
-
-        setTimeout(() => swipeLocked = false, 500); // debounce faster for UX
+          swipeLocked = true;
+          if (deltaX > 0) {
+            // Swipe right = previous profile
+            currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
+            updateProfile_coreTeam(currentIndex, 'left');
+          } else if (deltaX < 0) {
+            // Swipe left = next profile
+            currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
+            updateProfile_coreTeam(currentIndex, 'right');
+          }
+          setTimeout(() => swipeLocked = false, 500);
       });
     }
   }
