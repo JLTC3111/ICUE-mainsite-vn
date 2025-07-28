@@ -1081,7 +1081,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/tam.png"
     },
     {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">Quản trị kinh doanh</span> tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có trách nhiệm, luôn khao khát học hỏi và phát triển. Với tinh thần chi tiết và trách nhiệm cao, tôi coi trọng tinh thần làm việc nhóm và áp dụng kinh nghiệm tích lũy được để mang lại kết quả chất lượng. Tôi mong muốn phát triển sự nghiệp của mình hơn nữa trong một môi trường chuyên nghiệp, nơi tôi có thể đóng góp tích cực vào thành công của tổ chức.`,
+      name: `<span class="intro-core">Trịnh Thị Tình </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">Quản trị kinh doanh</span> tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có <span class="highlight-text-phrase-core">trách nhiệm</span>, luôn khao khát học hỏi và phát triển. Với tinh thần trách nhiệm cao, tôi coi trọng tinh thần làm việc theo nhóm và áp dụng kinh nghiệm tích lũy được để mang lại kết quả chất lượng. Tôi mong muốn phát triển sự nghiệp của mình hơn nữa trong một môi trường chuyên nghiệp, nơi tôi có thể đóng góp tích cực vào thành công của tổ chức.`,
       img: "public/profilePhotos/tinh.png"
     },
     {
