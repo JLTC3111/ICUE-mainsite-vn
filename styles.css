@@ -970,18 +970,17 @@ footer p {
 
 #text-slider-coreTeam{
   transform: translate(14.5vw, -117.5vh);
-  background: rgba(0, 0, 0, 0.01);
-  backdrop-filter: blur(2.5px);          /* frosted glass blur */
-  -webkit-backdrop-filter: blur(2.5px);  /* Safari 15.6.1 or lower */
 }
 
 .text-container-coreTeam {
   position: relative;
   top:10%;
   width: 50%;
-  max-width: 650px;
+  max-width: 625px;
   padding: 25px;
   background: transparent; 
+  backdrop-filter: blur(15px);          
+  -webkit-backdrop-filter: blur(15px);
   z-index: 2;
   box-shadow: 2px 4px 12px #6d6d6d;
   border-radius: 24px;
