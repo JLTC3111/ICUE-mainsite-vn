@@ -436,6 +436,37 @@ window.attachProfileEvents_moe = () => {
       }
   }
 
+window.calendarModal = () => {
+    const calendarIcon = document.querySelector('.calendar-icon svg');
+    const calendarLink = document.querySelector('.calendar-icon');
+    const calendarModal = document.getElementById('calendar-modal');
+    const calendarModalContent = document.getElementById('calendar-modal-content');
+    const calendarModalSvg = document.getElementById('calendar-modal-svg');
+    const calendarModalClose = document.getElementById('calendar-modal-close');
+
+if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calendarModalClose) {
+        calendarLink.addEventListener('click', function(e) {
+            // Clone the calendar SVG
+            const clone = calendarIcon.cloneNode(true);
+            // Clear previous
+            calendarModalSvg.innerHTML = '';
+            calendarModalSvg.appendChild(clone);
+            // Style the SVG
+            clone.style.width = '340px';
+            clone.style.height = '340px';
+            clone.style.display = 'block';
+            calendarModal.style.display = 'flex';
+        });
+        calendarModalClose.addEventListener('click', function() {
+            calendarModal.style.display = 'none';
+        });
+        // Close modal when clicking outside modal content
+        calendarModal.addEventListener('click', function(e) {
+            if (e.target === calendarModal) {
+                calendarModal.style.display = 'none';
+      }
+  });
+}}
 
 window.loadPage = (page) => {
   const content = document.getElementById('content');
@@ -492,9 +523,11 @@ window.loadPage = (page) => {
 
               switch (page) {
                 case 'meetOurExperts':
+                  calendarModal();
                   attachProfileEvents_moe();
                   break;
                 case 'coreTeam':
+                  calendarModal();
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
@@ -502,6 +535,7 @@ window.loadPage = (page) => {
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
+                  calendarModal();
                   break;
                 case 'News':
                   initLogoSlider();
@@ -510,12 +544,15 @@ window.loadPage = (page) => {
                   break;
                 case 'aboutUs':
                   createBalloons();
+                  calendarModal();
                   break;
                 case 'Contact':
                   initPostMethod();
+                  calendarModal();
                   break;
                 case 'ourWork':
                   initializeCarousel();
+                  calendarModal();
                   break;
               }
             });
@@ -1485,10 +1522,6 @@ updateCalendarSvgTime();
 setInterval(updateCalendarSvgTime, 60 * 1000);
 
   window.triggerFanfare = function () {
-    // Play sound
-    fanfareAudio.currentTime = 0;
-    fanfareAudio.play().catch(e => console.warn('Autoplay blocked:', e));
-
     // Confetti burst!
     const duration = 3 * 1000;
     const animationEnd = Date.now() + duration;
@@ -1516,6 +1549,8 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
       }));
     }, 250);
   };
+
+  window.triggerFanfare();
 
   function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
