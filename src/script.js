@@ -183,6 +183,11 @@ window.realSlamnorSlam = function () {
   const text = document.querySelector('#textSlam .slam-text');
   const dust = document.querySelector('#textSlam .slam-dust');
 
+  if (!text || !dust) {
+    console.warn("Missing .slam-text or .slam-dust");
+    return;
+  }
+
   // Reset state
   gsap.set(text, {
     x: 0,
@@ -534,6 +539,7 @@ window.loadPage = (page) => {
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   calendarModal();
+                  triggerFanfare();
                   break;
                 case 'News':
                   initLogoSlider();
@@ -1544,9 +1550,7 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
     }, 250);
   };
 
-  window.triggerFanfare();
-
-  function initAudioVisualizer(
+function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
     barSelector = 'contact-sidebar .music-bars',
     clickTargetSelector = '#visualizer'
