@@ -2721,6 +2721,34 @@ body.loaded #app {
   }
 }
 
+/* Photo hover effects */
+.photo-hover-effect {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.photo-hover-effect:hover img {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(3, 74, 228, 0.15);
+  transition: all 0.3s ease;
+}
+
+.photo-hover-effect:hover::before {
+  left: 100%;
+}
+
 .profile-photo,
 .montserrat-pepple {
   will-change: transform, opacity;

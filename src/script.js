@@ -329,7 +329,7 @@ window.attachProfileEvents_moe = () => {
     if (!textBox || !photo) return;
     const isFirstLoad = (currentIndex === 0 && index === 0);
     if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
+      textBox.classList.add(direction === 'right' ? 'slide-exit-right' : 'slide-exit-left');
       photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
     }
     
@@ -353,8 +353,6 @@ window.attachProfileEvents_moe = () => {
       photo.src = profileData_moe[index].img;
       textBox.classList.remove('slide-exit-left', 'slide-exit-right');
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
-      photo.classList.remove('slide-enter-left', 'slide-enter-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
         { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 }, 
