@@ -1087,7 +1087,7 @@ footer p {
   background: linear-gradient(to right, #460000, #388E3C);
 }
 
-.model-building {
+.model-home {
   position: absolute;
   display: flex;
   align-items: center;
@@ -1926,7 +1926,7 @@ body.loaded #app {
     margin: 1.75rem 0 auto;
   }
 
-  .model-building{
+  .model-home{
     top: 15%;
     right: -7.5%;
     z-index:2;
@@ -2390,10 +2390,10 @@ body.loaded #app {
     margin-left: 60px;
   }
 
-  .model-building {
+  .model-home {
     top: -1.5%;
     right: 25%;
-    animation: slideDownFromTop 3s ease-in-out;
+    animation: slideInFromRight 3s ease-in-out;
     z-index: 1;
   }
 
