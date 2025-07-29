@@ -2393,7 +2393,7 @@ body.loaded #app {
   .model-home {
     top: -1.5%;
     right: 25%;
-    animation: slideInFromRight 3s ease-in-out;
+    animation: slideInFromRight 7.5s ease-in-out;
     z-index: 1;
   }
 
