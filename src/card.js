@@ -16,7 +16,7 @@ const cards = [
     description: "TTổng diện tích: 2.693,3 ha. Quy hoạch xây dựng chi tiết tỷ lệ 1/500 cho xã Hợp Thành, thành phố Lào Cai, bao gồm 2.693,3 ha. Kế hoạch này đặt nền tảng cho sự phát triển đô thị trong tương lai, quy hoạch phân khu và điều chỉnh hạ tầng để hỗ trợ tăng trưởng bền vững đến năm 2025.",
     images: [
       "/pastProjects/project_2/pp_2a.png",  
-      "/pastProject/project_2/pp_2b.png", 
+      "/pastProjects/project_2/pp_2b.png", 
     ],
     year: "2025",
     location: "Xã Hợp Thành, thành phố Lào Cai"

@@ -156,26 +156,48 @@ nav a:hover {
     height:500px;
     border-radius: 12px;
     overflow: hidden;
-  }
+}
 
-  .swiper-slide {
+.swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
 
-  .swiper-slide img {
+.swiper-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
     will-change: transform;
-  }
+}
 
-  .swiper-slide:hover img {
+.swiper-slide:hover img {
   transform: scale(1.1);
-  }
+}
+
+.swiper-pagination {
+  bottom: 10px !important;
+  text-align: center;
+}
+
+/* Default bullet style */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.65);
+  opacity: 1;
+  margin: 0 4px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 50%;
+}
+
+/* Active bullet */
+.swiper-pagination-bullet-active {
+  background: #007bff; /* primary color */
+  transform: scale(1.2);
+}
 
 @media (max-width: 600px) {
   .card-detail {
@@ -184,7 +206,6 @@ nav a:hover {
     margin: 2rem 1rem;
   }
   .swiper {
-    aspect-ratio: 4 / 3;
     max-height: 350px;
     border-radius: 8px;
   }
