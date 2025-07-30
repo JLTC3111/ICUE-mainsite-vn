@@ -13,23 +13,38 @@
 }
 
 body {
-  margin-top: 5%;
   font-family: sans-serif;
   background: #ffffff;
   padding: 5%;
 }
 
 .grid {
+  margin-top: 5%;
   display: grid;
-  gap: 10px;
+  gap: 25px;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: minmax(300px, auto) auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
 /* Responsive stacking layout for small screens */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .grid {
+    margin-top: 15%;
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .tall {
+    grid-row: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1368px) {
+  .grid {
+    grid-template-columns: repeat(2, auto);
     grid-template-rows: auto;
   }
 
@@ -42,7 +57,7 @@ body {
   background: #c4c4c4;
   border-radius: 8px;
   overflow: hidden;
-  padding: 12.5px;
+  padding: 1.5px;
   text-align: center;
   transition: all 0.5s ease-in-out;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
@@ -50,9 +65,21 @@ body {
 
 .card:hover {
   background-color: #3310ff;
-  transform: scale(1.02);
+  transform: scale(1.025);
   will-change: transform; 
   transform: translateY(-5px)
+}
+
+.card:hover .description {
+  background-color: transparent;
+}
+
+.card:hover .location {
+  color: #ffffff;
+}
+
+.card:hover .year {
+  color: #ffffff;
 }
 
 .dark {
@@ -71,11 +98,20 @@ body {
 }
 
 .image-card img {
+  filter: grayscale(25%);
   width: 100%;
   height: 500px; 
   object-fit: cover;
   display: block;
   border-radius: 4px;
+  transition: all 0.5s ease-in-out;
+}
+
+.image-card:hover img {
+  filter: grayscale(0%);
+  transform: translateY (-2px);
+  transform: scale(1.025);
+  will-change: transform;
 }
 
 /* Tall card spans 2 rows on desktop */
@@ -85,12 +121,12 @@ body {
 
 .card-info {
   text-align: left;
-  padding-top: 10px;
+  padding: 20px 10px 10px;
 }
 
 .card-info h3 {
   color: #fff;
-  font-size: 1.1rem;
+  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
   margin-bottom: 5px;
 }
 
@@ -102,7 +138,7 @@ body {
 .card-info .description,
 .card-info .location,
 .card-info .year {
-  font-size: 0.9rem;
+  font-size: clamp(0.65rem, 2.5vw, 1rem);
   color: #000000;
   margin-bottom: 4px;
   font-weight: 400;
@@ -117,6 +153,7 @@ body {
   color: #ffffff;
   background: #000000;
 }
+
 
 </style>
 <body>
