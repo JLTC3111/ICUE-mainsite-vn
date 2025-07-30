@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News</title>
+  <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <!-- Logo & Navigation Links -->
+      <a href="/">Trang Chủ</a>
+      <a href="/#/News">Tin Tức</a>
+      <a href="/#/ourWork">Công Việc</a>
+      <a href="/#/pastProjects">Đề Tài</a>
+      <a href="/#/aboutUs">Về Chúng Tôi</a>
+      <a href="/#/Contact">Liên Hệ</a>
+        <div class="language-switcher">
+          <a href="https://icue.vn/src/pages/articles/article_hoian" class="flag-link">
+              <span class="flag-icon flag-icon-vn"></span>    
+          </a>
+        </div>
+    </nav>
+  </header>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+nav {
+  position: relative;
+  background-color: #333333;
+  padding: 1rem 2rem;
+  display: flex;
+  gap: clamp(1.5rem, 5vw, 2.5rem);
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
+  z-index: 1;
+}
+
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
+nav a {
+  font-size: clamp(0.75rem, 2.75vw, 1.15rem);
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
+  color: #007acc;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+
+  nav {
+    margin-right: -1.5rem;
+    gap: 1rem;
+  }
+  .flag-link {
+    margin-left: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+.page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-detail {
+  max-width: 600px;
+  margin: auto 2rem;
+  padding: 3.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+.card-detail h1 {
+  text-align: center;
+  font-size: clamp(0.9rem, 3.75vw, 1.75rem);;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.card-detail p {
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+.card-detail p strong {
+  color: #222;
+  margin-right: 0.5rem;
+}
+
+.swiper {
+    margin: 2rem auto;
+    width: 100%;
+    max-width: 700px;
+    height:500px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    will-change: transform;
+  }
+
+  .swiper-slide:hover img {
+  transform: scale(1.1);
+  }
+
+@media (max-width: 600px) {
+  .card-detail {
+    max-width: 350px;
+    padding: .5rem;
+    margin: 2rem 1rem;
+  }
+  .swiper {
+    aspect-ratio: 4 / 3;
+    max-height: 350px;
+    border-radius: 8px;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 16px;
+    height: 16px;
+  }
+}
+</style>
+
+<section id="carousel-container"></section>
+
+<section id="card-container" class="page-container">
+  <article class="card-detail">
+    <h1 id="card-title"></h1>
+    <p><strong>Description:</strong> <span id="card-description"></span></p>
+    <p><strong>Location:</strong> <span id="card-location"></span></p>
+    <p><strong>Year of Completion:</strong> <span id="card-year"></span></p>
+  </article>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="../card.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const cardId = params.get('id');
+    const card = cards.find(c => c.id === cardId);
+
+    if (!card) {
+      document.body.innerHTML = "<h1>Card not found 😞</h1>";
+    } else {
+      const carouselContainer = document.getElementById("carousel-container");
+        const swiperHTML = document.createElement("div");
+        swiperHTML.className = "swiper mySwiper";
+        swiperHTML.innerHTML = `
+          <div class="swiper-wrapper">
+            ${card.images.map(src => `
+              <div class="swiper-slide">
+                <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            `).join('')}
+          </div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        `;
+      carouselContainer.appendChild(swiperHTML);
+      document.getElementById("card-title").textContent = card.title;
+      document.getElementById("card-description").textContent = card.description;
+      document.getElementById("card-location").textContent = card.location;
+      document.getElementById("card-year").textContent = card.year;
+    // Init Swiper (no import needed!)
+    new Swiper('.swiper', {
+      loop: true,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+  }
+  </script>
+
+</body>
+</html>
