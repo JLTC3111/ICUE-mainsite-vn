@@ -539,7 +539,6 @@ window.loadPage = (page) => {
                   initHomeTextSlider();
                   attachHomeButtonEvents();
                   calendarModal();
-                  triggerFanfare();
                   break;
                 case 'News':
                   initLogoSlider();
