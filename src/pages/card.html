@@ -165,8 +165,9 @@ nav a:hover {
 }
 
 .swiper-slide img {
-    width: 100%;
-    height: 100%;
+    filter: grayscale(50%);
+    width: 90%;
+    height: 90%;
     object-fit: cover;
     border-radius: 12px;
     transition: all 0.3s ease-in-out;
@@ -175,6 +176,8 @@ nav a:hover {
 
 .swiper-slide:hover img {
   transform: scale(1.1);
+  filter: grayscale(0%);
+  filter: brightness(1);
 }
 
 .swiper-pagination {
