@@ -1083,8 +1083,10 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 3.5%;
-  right: -7.5rem;
+  width: 40%;
+  height: 325px;
+  top: 5%;
+  right: -4.5rem;
   z-index: 11;
   animation: slideInFromRight 3.5s ease-in-out;
 }
@@ -1921,6 +1923,7 @@ body.loaded #app {
     top: 15%;
     right: -7.5%;
     z-index:2;
+    height: 250px;
     animation: slideInFromRight 3.5s ease-in-out;
   }
 
@@ -2382,8 +2385,9 @@ body.loaded #app {
   }
 
   .model-home {
-    top: -1.5%;
+    top: 7.5%;
     right: 25%;
+    height: 200px;
     animation: slideInFromRight 7.5s ease-in-out;
     z-index: 1;
   }
