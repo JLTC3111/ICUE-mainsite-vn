@@ -1,12 +1,5 @@
 console.log('[script.js] Loaded ✅');
 
-// Touch device detection
-const isTouchDevice = (
-  'ontouchstart' in window ||
-  navigator.maxTouchPoints > 0 ||
-  navigator.msMaxTouchPoints > 0
-);
-
 let isAnimating = false;
 
 function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
@@ -556,6 +549,9 @@ window.loadPage = (page) => {
                 case 'ourWork':
                   initializeCarousel();
                   calendarModal();
+                  break;
+                case 'pastProjects:':
+                  handleAOSByScreenSize();
                   break;
               }
             });
