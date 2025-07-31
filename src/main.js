@@ -18,6 +18,8 @@ window.handleAOSByScreenSize = () => {
   }
 }
 
+window.handleAOSByScreenSize();
+
 
  
 
