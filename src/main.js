@@ -1,6 +1,4 @@
 import './script.js';
-import AOS from './aos';
-import './aos/dist/aos.css';
 
 window.handleAOSByScreenSize = () => {
   if (window.innerWidth > 550) {
