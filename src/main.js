@@ -20,8 +20,6 @@ window.handleAOSByScreenSize = () => {
   }
 }
 
-window.addEventListener('DOMContentLoaded', handleAOSByScreenSize);
-
 
  
 
