@@ -61,7 +61,7 @@ p {
 
 nav {
   display: flex;
-  justify-content: space-between; /* space between logo and hamburger */
+  justify-content: space-between; 
   align-items: center;
   padding: 1rem;
   background: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
@@ -75,7 +75,7 @@ nav {
 nav a {
   color: rgb(0, 0, 0);
   margin-right: 50px;
-  text-decoration: none; /* Remove default underline */
+  text-decoration: none; 
 }
 
 .svg-blinking-cursor {
@@ -194,14 +194,14 @@ footer p {
 }
 
 .contact-sidebar {
-    position: fixed; /* Stays in place as the user scrolls */
-    right: 1.5%; /* Adjust as needed for desired distance from the right edge */
-    top: 40%; /* Center vertically */
-    transform: translateY(-60%); /* Adjust for perfect vertical centering */
+    position: fixed; 
+    right: 1.5%; 
+    top: 40%; 
+    transform: translateY(-60%);
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    gap: 12.5px; /* Space between icons */
-    z-index: 14; /* Ensure it stays on top of other content */
+    flex-direction: column; 
+    gap: 12.5px; 
+    z-index: 14; 
     background: rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 0;
@@ -216,12 +216,12 @@ footer p {
     align-items: center;
     width:50px;
     height:50px;
-    background-color: transparent; /* Or the specific color from the image */
+    background-color: transparent; 
 }
 
 .contact-sidebar .contact-item svg {
-    width: 70%; /* Adjust icon size within the circle */
-    height: 70%; /* Adjust icon size within the circle */
+    width: 70%;
+    height: 70%; 
 }
 
 .contact-sidebar .music-bars {
@@ -233,19 +233,17 @@ footer p {
   transform: rotate(90deg);
 }
 
-
-/* Hover effects for a better user experience */
 .contact-item:hover {
-    transform: scale(1.25); /* Slightly enlarge on hover */
-    transition: all 0.5s ease-in-out; /* Smooth transition */
+    transform: scale(1.25); 
+    transition: all 0.5s ease-in-out; 
 }
 
 .icon-bar {
-  width: 15px;            /* Or any thickness you want */
-  height: 1px;          /* Set a visible height */
+  width: 15px;           
+  height: 1px;        
   background-color:rgba(0, 0, 0, 0.25);
-  margin: -7.5px auto;     /* Space around the bar */
-  border-left: .5px dotted black; /* Creates a vertical dotted line */
+  margin: -7.5px auto;    
+  border-left: .5px dotted black; 
   border-right: .5px dotted black;
 }
 
@@ -293,13 +291,10 @@ footer p {
   font-style: normal;
   font-size: clamp(32px, 2.5vw, 42px);
   font-weight: 400;
-  /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 0 yellow,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
-
-  /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
 }
 
@@ -313,13 +308,10 @@ footer p {
   word-spacing: 1vw;
   background-clip: text;
   margin:7.5% 25% -4.5% 3%;
-  /* Add text shadow for 3D depth */
   text-shadow:
     .25px .25px 0 #9be1ff,       /* hard shadow base */
     1px 1px 1.5px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -.25px -.25px 0 rgb(253, 253, 253); /* slight highlight */
-
-  /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
   line-height: 1.8;
 }
@@ -355,9 +347,9 @@ footer p {
 }
 
 .lets-talk:hover{
-  background: transparent; /* no background color to avoid visible box */
+  background: transparent;
   text-shadow: 1px 4px 18px rgba(0, 217, 255, 0.5);
-  border-radius: 50px; /* rounder edges help hide boxiness */
+  border-radius: 50px; 
   transition: all 0.3s ease;
 }
 
@@ -367,13 +359,10 @@ footer p {
   margin: 7.5% 1.5% 2.5% 1.5%;
   font-size: 28px;
   text-decoration: underline;
-  /* Add text shadow for 3D depth */
   text-shadow:
     1px 1px 0 #000000,       /* hard shadow base */
     2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
-
-  /* Optional: add a slight transform for perspective */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
 }
 
@@ -382,7 +371,7 @@ footer p {
 }
 
 #homeSliderText {
-  background: rgba(236, 236, 236, 0.2); /* Semi-transparent */
+  background: rgba(236, 236, 236, 0.2); 
   backdrop-filter: blur(5px); 
   -webkit-backdrop-filter: blur(5px);  /* Safari 15.6.1 or lower */
   border-radius: 15px;
@@ -434,9 +423,8 @@ footer p {
   visibility: visible; 
   line-height: 2;
   opacity: 1;          
-  /*transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
   transition: opacity 0.5s ease-in-out;
-  pointer-events: none; /* So the container gets the click */
+  pointer-events: none; 
 }
 
 #sliderDots {
@@ -470,11 +458,11 @@ footer p {
   width: 36px;
   height: 12px;
   border-radius: 12px;
-  background-color: yellowgreen; /* Highlight active dot */
+  background-color: yellowgreen;
 }
 
 .dot.active {
-  animation: slide-progress .75s linear forwards; /* duration = slide time */
+  animation: slide-progress .75s linear forwards; 
 }
 
 @keyframes slide-progress {
@@ -518,11 +506,11 @@ footer p {
 @keyframes shutterOpen {
   0% {
     opacity: 1;
-    transform: scaleY(0); /* fully closed */
+    transform: scaleY(0); 
   }
   100% {
     opacity: 0;
-    transform: scaleY(1); /* fully open */
+    transform: scaleY(1); 
   }
 }
 
@@ -541,11 +529,11 @@ footer p {
 @keyframes shutterClose {
   0% {
     opacity: 1;
-    transform: scaleY(0); /* fully closed */
+    transform: scaleY(0); 
   }
   100% {
     opacity: 0;
-    transform: scaleY(1); /* fully open */
+    transform: scaleY(1); 
   }
 }
 
@@ -564,7 +552,7 @@ footer p {
 }
 
 .moe-container .text-container + .profile-photo {
-  margin-left: clamp(-7.5rem, -2.5vw, -0.25rem); /* ✅ valid negative spacing */
+  margin-left: clamp(-7.5rem, -2.5vw, -0.25rem); 
 }
 
 .moe-card{
@@ -602,7 +590,7 @@ footer p {
 }
 
 #profile-text {
-  background: rgba(255, 255, 255, 0.1); /* light transparent background */
+  background: rgba(255, 255, 255, 0.1); 
   backdrop-filter: blur(27.5px);          /* frosted glass blur */
   -webkit-backdrop-filter: blur(27.5px);  /* Safari 15.6.1 or lower */
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -628,7 +616,7 @@ footer p {
   font-size: 24px;
   color: black;
   font-optical-sizing: auto;
-  font-weight: 100; /* Make sure this weight is imported */
+  font-weight: 100; 
   text-shadow: none;
   line-height: 1.5;
   word-spacing: 2px;
@@ -665,9 +653,9 @@ footer p {
   height: 65px;
   justify-content: center;
   align-items: center;
-  background: transparent; /* Transparent background */
-  border-radius: 50%;               /* Removes the circular shape */
-  box-shadow: none;              /* Removes the shadow */
+  background: transparent; 
+  border-radius: 50%;              
+  box-shadow: none;            
   cursor: pointer;
   transition: transform 1.5s ease;
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
@@ -745,7 +733,7 @@ footer p {
   background-size: cover;
   width: 42px;
   height: 42px;
-  border-radius: 50%; /* ✅ Makes it circular */
+  border-radius: 50%; 
   box-shadow: 2px 4px 12px #fff;
 }
 
@@ -762,23 +750,21 @@ footer p {
 }
 
 #menuIcon rect { /* Selects all <rect> elements inside the SVG with id="menuIcon" */
-    transition: transform 0.5s ease, opacity 0.3s ease; /* Smooth animation for all changes */
+    transition: transform 0.5s ease, opacity 0.3s ease; 
     transform-origin: center; /* Crucial: Ensures rotations happen from the center of each bar */
     fill: #000000; /* Sets the default color of the bars to black */
 }
 
-/* State when the menu is open (when the 'is-open' class is applied to the SVG) */
 #menuIcon.is-open #top-bar {
     /* Translate it down to roughly the center of the icon, then rotate 45deg */
     transform: translateY(0px) rotate(-47.5deg);
 }
 
 #menuIcon.is-open #middle-bar {
-    opacity: 0; /* Make the middle bar disappear */
+    opacity: 0; 
 }
 
 #menuIcon.is-open #bottom-bar {
-    /* Translate it up to roughly the center of the icon, then rotate -45deg */
     transform: translateY(-5.5px) rotate(47.5deg);
 }
 
@@ -787,14 +773,15 @@ footer p {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 280px;
+  width: 320px;
   background: transparent;
   display: flex;
   flex-direction: column;
   padding: 10rem 2.5rem;
-  transform: translateX(-100%); /* Hide off-screen initially */
-  transition: transform 0.4s ease-in-out;
+  transform: translateX(-100%);
+  transition: all 0.35s ease-in-out;
   z-index: 5;
+  box-shadow: 4px -2px 12px rgba(255, 255, 255, 1);
 }
 
 .drawer-blur-overlay {
@@ -803,26 +790,27 @@ footer p {
   background: radial-gradient(circle at 85% 10%, rgba(255,255,255,0.08), #000 60%);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  pointer-events: none; /* let clicks pass through */
+  pointer-events: none; 
   z-index: -2;
 }
 
 .drawer-menu a {
   animation: none !important;
   color: #ffffff;
-  padding: 1.2rem 0;
+  padding: 1.25rem 0;
   font-size: 1.4rem;
   text-decoration: none;
   border-left: 5px solid transparent;
-  transition: all 1.25s ease, border-color 0.2s ease;
+  transition: all .75s ease, border-color 0.2s ease;
 }
 
 .drawer-menu a:hover {
   transform: translateX(45px);
-  background-color: #e1e1e1;
-  border-left: 1.5px solid #d5d5d5;
+  background-color: #f3f8ff;
+  border-left: 12.5px solid #737373;
   padding-left: .5rem;
   color: #000;
+  box-shadow: -4px -6px 12px rgba(255, 255, 255, 1);
 }
 
 .drawer-menu a.active {
@@ -837,7 +825,7 @@ footer p {
 
 .has-submenu {
   cursor: pointer;
-  padding: 1rem 0;
+  padding: 0;
   color: #ffffff;
   display: block;
 }
@@ -859,16 +847,15 @@ footer p {
   flex-direction: column;
   gap: 0.5rem;
   padding-left: 1.5rem;
-  pointer-events: none; /* prevent clicking when hidden */
+  pointer-events: none; 
 }
 
 .submenu.open {
-  transform: translateX(0) translateY(0); /* Slide in */
+  transform: translateX(0) translateY(0); 
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Optional: animate out vertically when closing */
 .submenu.closing {
   transform: translateX(0) translateY(50px);
   opacity: 0;
@@ -878,7 +865,7 @@ footer p {
 .drawer-menu .submenu a {
   font-size: 1.2rem;
   color: #ffffff;
-  padding-top: 1.5rem;
+  padding-top: 0.75rem;
   padding-left: 0.75rem;
   position: relative;
   transition: all .3s ease;
@@ -887,10 +874,10 @@ footer p {
 .drawer-menu .submenu a::before {
   content: "↳";
   color: #ffffff; 
-  font-size: 2.25rem;
+  font-size: 1.95rem;
   display: inline-block;
   vertical-align: middle;
-  font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif; /* force consistency */
+  font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif; 
 }
 
 .drawer-menu .moe-subMenu:hover {
