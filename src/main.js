@@ -1,5 +1,3 @@
-// src/main.js
-// src/main.js
 import './script.js';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
