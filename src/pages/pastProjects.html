@@ -16,10 +16,6 @@ html {
   scroll-behavior: smooth;
 }
 
-[data-aos] {
-  will-change: transform, opacity;
-}
-
 body {
   font-family: sans-serif;
   background: #ffffff;
@@ -42,18 +38,16 @@ body {
 }
 
 /* Responsive stacking layout for small screens */
-@media (max-width: 767px) {
+@media (max-width: 550px) {
   .grid {
     margin-top: 15%;
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
   }
 }
 
-@media (min-width: 768px) and (max-width: 1368px) {
+@media (min-width: 551px) and (max-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: auto;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
   }
 }
 
@@ -170,6 +164,7 @@ body {
 .card.image-card.aos-animate {
   filter: blur(0);
   opacity: 1;
+  transition: all 0.75s ease-in-out;
 }
 
 </style>
