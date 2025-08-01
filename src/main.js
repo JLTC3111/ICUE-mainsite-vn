@@ -3,18 +3,33 @@ import './script.js';
 const AOSManager = (() => {
   const originalAOS = new Map();
 
-  function restoreAOSAttributes() {
-    document.querySelectorAll('[data-aos]').forEach(el => {
-      if (!originalAOS.has(el)) {
-        originalAOS.set(el, el.getAttribute('data-aos'));
-      }
-    });
-    originalAOS.forEach((value, el) => {
-      el.setAttribute('data-aos', value);
-    });
+  function cacheAOSAttributes() {
+  document.querySelectorAll('.card.image-card').forEach(el => {
+    if (!originalAOS.has(el)) {
+      originalAOS.set(el, el.getAttribute('data-aos'));
+    }
+  });
+}
+
+function restoreAOSAttributes() {
+  console.log('[AOS] Restoring AOS attributes');
+  originalAOS.forEach((value, el) => {
+    el.setAttribute('data-aos', value || 'flip-down');
+    el.classList.add('aos-init'); // Add AOS classes back
+    el.classList.remove('aos-animate'); // Let AOS re-trigger animation
+    el.style.opacity = null; // Reset styles
+    el.style.transform = null;
+    el.style.filter = null;
+  });
+
+  if (window.AOS) {
+    window.AOS.refreshHard(); // Recalculate positions and states
   }
+}
+
 
   function clearAOSAttributes() {
+    console.log('[AOS] Clearing AOS attributes');
     document.querySelectorAll('[data-aos]').forEach(el => {
       if (!originalAOS.has(el)) {
         originalAOS.set(el, el.getAttribute('data-aos'));
@@ -43,7 +58,8 @@ const AOSManager = (() => {
   } else {
     console.log('[AOS] Large screen mode – Enabling AOS');
     restoreAOSAttributes();
-    AOS.init({
+    window.AOS.init({
+      disable: false,
       duration: 750,
       offset: 200,
       once: false
@@ -69,6 +85,7 @@ window.addEventListener('resize', debounce(() => {
 }, 50));
 
 window.addEventListener('DOMContentLoaded', () => {
+  cacheAOSAttributes();
   console.log('[AOS] DOMContentLoaded');
   AOSManager.handleAOSByScreenSize();
 });
