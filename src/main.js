@@ -51,8 +51,7 @@ function restoreAOSAttributes() {
     return;
   }
 
-  // Always restore attributes before initializing AOS
-  if (width < 1024) {
+  if (width < 1025) {
     console.log('[AOS] Small screen – disabling AOS');
     clearAOSAttributes();
   } else {
