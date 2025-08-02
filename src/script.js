@@ -185,8 +185,8 @@ window.realSlamnorSlam = function () {
   gsap.set(text, {
     x: 0,
     y: 0,
-    rotationX: 0,
-    scale: 1.05,
+    rotateX: 0,
+    scale: 1,
     opacity: 0,
     transformOrigin: "50% 50%",
     perspective: 1200
@@ -203,26 +203,31 @@ window.realSlamnorSlam = function () {
   // 🌀 Spin + Drop Slam
   tl.to(text, {
     opacity: 1,
+    x: 1000,
     y: 0,
-    rotationX: 0,
-    rotationY: 0,
-    rotationZ: 0,
-    scale: 1.5,
-    duration: 1.1,
+    rotationX: 360,
+    rotationY: 360,
+    rotationZ: 360,
+    scale: 1.05,
+    duration: 1.5,
     ease: "back.out(1.7)",
     transformPerspective: 1200
   })
-
+  
   // 💥 Slam Impact
   .to(text, {
-    scaleY: 1.25,
-    scaleX: 1.25,
-    duration: 0.1,
+    x: -1000,
+    y: 0,
+    scaleY: 1.05,
+    scaleX: 1.05,
+    duration: 0.7,
     ease: "power4.inOut"
   })
 
   // 👊 Bounce Back
   .to(text, {
+    x:0,
+    y:0,
     scaleY: 1,
     scaleX: 1,
     duration: 0.7,
@@ -1553,7 +1558,6 @@ function initAudioVisualizer(
   ) {
     const clickTarget = document.querySelector(clickTargetSelector);
   
-    // ✅ Reuse existing audio if already created
     if (window.__audioVisualizer) {
       const { audio, ctx } = window.__audioVisualizer;
   
@@ -1569,7 +1573,6 @@ function initAudioVisualizer(
       return;
     }
   
-    // ❌ First-time setup
     const audio = new Audio(audioSrc);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const source = ctx.createMediaElementSource(audio);
@@ -1592,7 +1595,6 @@ function initAudioVisualizer(
       });
     }
   
-    // ✅ Save audio setup globally
     window.__audioVisualizer = {
       audio,
       ctx,
@@ -1601,7 +1603,6 @@ function initAudioVisualizer(
     };
   }
   
-  // ✅ Global animation loop — only runs once
   function startAudioVisualizerLoop(barSelector = '.music-bars') {
     function loop() {
       requestAnimationFrame(loop);
@@ -1618,7 +1619,7 @@ function initAudioVisualizer(
   
       bars.forEach((bar, i) => {
         const value = freqData[i];
-        const scale = Math.max(0.5, value / 256);
+        const scale = Math.max(0.5, value / 180);
         bar.style.transform = `scaleY(${scale})`;
       });
     }
@@ -1626,9 +1627,8 @@ function initAudioVisualizer(
     loop();
   }
   
-  // ✅ Call this once globally on startup (e.g. inside DOMContentLoaded)
   window.addEventListener('DOMContentLoaded', () => {
-    startAudioVisualizerLoop(); // Start global animation once
+    startAudioVisualizerLoop(); 
   });
 
   function updateMusicBarColor(page) {
@@ -1653,7 +1653,7 @@ function initAudioVisualizer(
   
     paths.forEach(path => {
       path.setAttribute('stroke', color);
-      path.setAttribute('fill', color); // Only needed if your SVG uses `fill`
+      path.setAttribute('fill', color); 
     });
   }
 
@@ -1671,12 +1671,38 @@ function initAudioVisualizer(
   
       document.body.appendChild(trail);
   
-      // Remove after animation completes
       setTimeout(() => {
         trail.remove();
-      }, 500); // match animation duration
+      }, 500); 
     });
   }
   
-  // ✅ Enable it
-  enableCursorGradientTrail(); // Default: yellow
+  enableCursorGradientTrail(); 
+
+  window.preloadProfileImages = () => {
+  // Images for meetourexperts.html
+  const expertImages = [
+    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hoangthuha.jpg",
+    "public/profilePhotos/tranthilananh.jpg",
+    "public/profilePhotos/tranquoctoan.jpg",
+    "public/profilePhotos/longdo.jpg"
+  ];
+  // Images for coreTeam.html
+  const coreTeamImages = [
+    "public/profilePhotos/lyly.png",
+    "public/profilePhotos/duong.png",
+    "public/profilePhotos/tam.png",
+    "public/profilePhotos/tinh.png",
+    "public/profilePhotos/lyicue.png",
+    "public/profilePhotos/hien.png"
+  ];
+  [...expertImages, ...coreTeamImages].forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  window.preloadProfileImages();
+});

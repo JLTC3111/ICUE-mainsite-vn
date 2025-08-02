@@ -233,15 +233,20 @@ footer p {
   transform: rotate(90deg);
 }
 
-.contact-item:hover {
-    transform: scale(1.25); 
-    transition: all 0.5s ease-in-out; 
+.contact-item:hover svg {
+  transform: rotate(-360deg) scale(1.25);
+  transition: transform 0.3s ease-in-out;
+}
+
+.contact-sidebar .music-bars:hover svg {
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease-in-out;
 }
 
 .icon-bar {
   width: 15px;           
   height: 1px;        
-  background-color:rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.25);
   margin: -7.5px auto;    
   border-left: .5px dotted black; 
   border-right: .5px dotted black;

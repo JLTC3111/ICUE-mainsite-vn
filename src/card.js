@@ -49,8 +49,8 @@ const cards = [
     title: "📍 QUY HOẠCH CHUNG ĐÔ THỊ ĐÔNG YÊN, HUYỆN BẮC GIANG",
     description: "Đô thị Đông Yên là một quy hoạch tổng thể đầy tham vọng với quy mô gần 4,500 ha, mang trong mình tầm nhìn dài hạn đến năm 2050. Dự án nhắm đến việc xây dựng một đô thị vệ tinh thông minh, hội tụ đầy đủ các chức năng sống – làm việc – vui chơi. Với định hướng quy hoạch bài bản, Đông Yên kỳ vọng trở thành điểm đến hấp dẫn cho đầu tư, nơi khởi nguồn cho các mô hình đô thị hiện đại bền vững tại khu vực phía Bắc.",
     images: [
-      "public/pastProjects/project_5/pp_5a.png",  
-      "public/pastProjects/project_5/pp_5b.png", 
+      "public/pastProjects/project_5/pp_5a.jpg",  
+      "public/pastProjects/project_5/pp_5b.jpg", 
     ],
     year: "2025",
     location: "Xã Đồng Yên, TP Hà Giang"
@@ -60,8 +60,9 @@ const cards = [
     title: "📍 QUY HOẠCH CHUNG ĐÔ THỊ NÀ CHÌ, HUYỆN XÍN MẦN",
     description: "Dự án đô thị Nà Chì là một trong những quy hoạch có quy mô lớn nhất tại khu vực miền núi phía Bắc. Với hơn 8,000 ha, đây là bước đi chiến lược giúp Xín Mần bứt phá về hạ tầng, dịch vụ và khả năng thu hút đầu tư. Đô thị được định hướng phát triển bền vững, kết hợp hài hòa giữa bảo tồn bản sắc vùng cao và đưa vào các mô hình hạ tầng thông minh. Một cánh cửa mới đang mở ra cho Hà Giang.",
     images: [
-      "public/pastProjects/project_6/pp_6a.png",  
-      "public/pastProjects/project_6/pp_6b.png", 
+      "public/pastProjects/project_6/pp_6a.jpg",  
+      "public/pastProjects/project_6/pp_6b.jpg", 
+      "public/pastProjects/project_6/pp_6c.jpg",
     ],
     year: "2025",
     location: "Xã Nà Chì, Xín Màn, Hà Giang"
