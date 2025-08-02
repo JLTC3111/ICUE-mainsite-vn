@@ -6,6 +6,9 @@ const cards = [
     images: [
       "public/pastProjects/project_1/pp_1a.png", 
       "public/pastProjects/project_1/pp_1b.png",
+      "public/pastProjects/project_1/pp_1c.jpg", 
+      "public/pastProjects/project_1/pp_1d.jpg",
+      "public/pastProjects/project_1/pp_1e.jpg",
     ],
     year: "2024",
     location: "Thành phố Lào Cai"
@@ -72,8 +75,10 @@ const cards = [
     title: "📍 QUY HOẠCH CHUNG ĐÔ THỊ TÂN BẮC, HUYỆN QUANG BÌNH",
     description: "Tân Bắc đang từng bước trở thành trung tâm mới nổi của huyện Quang Bình. Quy hoạch đô thị với hơn 6,000 ha này tập trung vào việc phát triển không gian sống hiện đại, hệ sinh thái công nghệ xanh và các tiện ích công cộng đồng bộ. Tầm nhìn đến năm 2050 mang tính cách mạng, biến Tân Bắc thành mô hình điển hình về quy hoạch vùng cao mang bản sắc địa phương, nhưng vẫn bắt nhịp kịp với tốc độ đô thị hóa quốc gia.",
     images: [
-      "public/pastProjects/project_7/pp_7a.png",  
-      "public/pastProjects/project_7/pp_7b.png", 
+      "public/pastProjects/project_7/pp_7a.jpg",  
+      "public/pastProjects/project_7/pp_7b.jpg", 
+      "public/pastProjects/project_7/pp_7c.jpg",  
+      "public/pastProjects/project_7/pp_7d.jpg", 
     ],
     year: "2025",
     location: "Xã Tân Bắc, Quang Bình, Hà Giang"
@@ -83,8 +88,14 @@ const cards = [
     title: "📍 QUY HOẠCH PHÂN KHU 5A (PHÂN KHU KHU VỰC PHƯỜNG NAM ĐỒNG) THÀNH PHỐ HẢI DƯƠNG",
     description: "Phân khu 5A là một phần cốt lõi trong chiến lược phát triển bền vững của Hải Dương. Với diện tích trên 330 ha, dự án đặt trọng tâm vào quy hoạch không gian đô thị hiện đại, tăng cường khả năng kết nối và tạo lập hệ sinh thái đô thị linh hoạt. Đây là nỗ lực cụ thể nhằm nâng cao chất lượng sống cho cư dân và tăng cường sức hút cho khu vực Nam Đồng trong giai đoạn phát triển tiếp theo.",
     images: [
-      "public/pastProjects/project_8/pp_8a.png",  
-      "public/pastProjects/project_8/pp_8b.png", 
+      "public/pastProjects/project_8/pp_8a.jpg",  
+      "public/pastProjects/project_8/pp_8b.jpg", 
+      "public/pastProjects/project_8/pp_8c.jpg",  
+      "public/pastProjects/project_8/pp_8d.jpg",   
+      "public/pastProjects/project_8/pp_8f.jpg", 
+      "public/pastProjects/project_8/pp_8g.jpg",  
+      "public/pastProjects/project_8/pp_8h.jpg", 
+      "public/pastProjects/project_8/pp_8i.jpg",  
     ],
     year: "2025",
     location: "TP HẢI DƯƠNG, TỈNH HẢI DƯƠNG"
@@ -94,8 +105,10 @@ const cards = [
     title: "📍 QUY HOẠCH CHI TIẾT KHU ĐÔ THỊ SINH THÁI PARK CITY XUÂN AN",
     description: "Park City Xuân An là một khu đô thị sinh thái cao cấp với thiết kế tinh tế, diện tích gần 28 ha và mật độ phát triển hợp lý. Với định hướng \"sống xanh, sống khỏe\", dự án tích hợp không gian xanh rộng lớn, các tiện ích thương mại – dịch vụ hiện đại và hạ tầng đồng bộ. Đây là một điểm sáng mới của thị trường bất động sản Hà Tĩnh, hứa hẹn tạo nên làn sóng đô thị hóa cao cấp và bền vững tại khu vực miền Trung.",
     images: [
-      "public/pastProjects/project_9/pp_9a.png",  
-      "public/pastProjects/project_9/pp_9b.png", 
+      "public/pastProjects/project_9/pp_9a.jpg",  
+      "public/pastProjects/project_9/pp_9b.jpg", 
+      "public/pastProjects/project_9/pp_9c.jpg",  
+      "public/pastProjects/project_9/pp_9d.jpg", 
     ],
     year: "2025",
     location: "Thị trấn Xuân An, huyện Nghi Xuân, tỉnh Hà Tĩnh"
