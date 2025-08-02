@@ -38,8 +38,8 @@ const cards = [
     title: "📍 QUY HOẠCH PHÂN KHU XÂY DỰNG CỐC SAN",
     description: "Phân khu xây dựng Cốc San là một phần trọng điểm trong chiến lược mở rộng không gian đô thị của thành phố Lào Cai. Dự án không chỉ tập trung phát triển hạ tầng kỹ thuật tiên tiến mà còn khéo léo tích hợp các yếu tố cảnh quan tự nhiên để hình thành một đô thị sinh thái cân bằng. Đây là tiền đề để phát triển các khu dân cư chất lượng cao, khu thương mại – dịch vụ và các công trình công cộng liên kết chặt chẽ với trục giao thông liên vùng.",
     images: [
-      "public/pastProjects/project_4/pp_4a.png",  
-      "public/pastProjects/project_4/pp_4b.png", 
+      "public/pastProjects/project_4/pp_4a.webp",  
+      "public/pastProjects/project_4/pp_4b.webp",   
     ],
     year: "2025",
     location: "Thành Phố Lào Cai"
