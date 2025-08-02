@@ -203,6 +203,55 @@ nav a:hover {
   transform: scale(1.2);
 }
 
+.card-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+.card-nav button {
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #657faf;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.card-nav button:hover {
+    background: #005fa3;
+    transform: scale(1.05);
+}
+
+.btn-hover-effect {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(3, 74, 228, 0.15);
+}
+
+.btn-hover-effect:hover::before {
+  left: 100%;
+}
+
+
+
 @media (max-width: 600px) {
   .card-detail {
     max-width: 350px;
@@ -217,13 +266,23 @@ nav a:hover {
   .swiper-slide img {
     max-width: 375px;
   }
-
-  .swiper-button-prev,
-  .swiper-button-next {
-    width: 16px;
-    height: 16px;
-  }
 }
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  transition: all 0.25s ease-in-out;
+}
+
+.swiper-button-prev:hover::after,
+.swiper-button-next:hover::after {
+  transform: scale(1.2);
+}
+
+.swiper-button-prev:active::after,
+.swiper-button-next:active::after {
+  transform: rotateY(180deg);
+}
+
 </style>
 
 <section id="carousel-container"></section>
@@ -234,39 +293,57 @@ nav a:hover {
     <p><strong>Mô Tả:</strong> <span id="card-description"></span></p>
     <p><strong>Vị Trí:</strong> <span id="card-location"></span></p>
     <p><strong>Năm Hoàn Thành:</strong> <span id="card-year"></span></p>
+    <div class="card-nav">
+      <button class="btn-hover-effect" id="prev-card">Previous</button>
+      <button class="btn-hover-effect" id="next-card">Next</button>
+    </div>
   </article>
 </section>
+
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="../card.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const cardId = params.get('id');
-    const card = cards.find(c => c.id === cardId);
+  // Get cardId from URL
+  const params = new URLSearchParams(window.location.search);
+  let cardId = params.get('id');
 
+  // Render card and carousel
+  function renderCard(cardId) {
+    const card = cards.find(c => c.id === cardId);
     if (!card) {
       document.body.innerHTML = "<h1>Card not found 😞</h1>";
-    } else {
-      const carouselContainer = document.getElementById("carousel-container");
-        const swiperHTML = document.createElement("div");
-        swiperHTML.className = "swiper mySwiper";
-        swiperHTML.innerHTML = `
-          <div class="swiper-wrapper">
-            ${card.images.map(src => `
-              <div class="swiper-slide">
-                <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
-            `).join('')}
+      return;
+    }
+
+    // Update card info
+    document.getElementById("card-title").textContent = card.title;
+    document.getElementById("card-description").textContent = card.description;
+    document.getElementById("card-location").textContent = card.location;
+    document.getElementById("card-year").textContent = card.year;
+
+    // Render carousel
+    const carouselContainer = document.getElementById("carousel-container");
+    carouselContainer.innerHTML = ""; // Clear previous carousel
+    const swiperHTML = document.createElement("div");
+    swiperHTML.className = "swiper mySwiper";
+    swiperHTML.innerHTML = `
+      <div class="swiper-wrapper">
+        ${card.images.map(src => `
+          <div class="swiper-slide">
+            <img src="${src}" alt="${card.title}" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-pagination"></div>
-        `;
-      carouselContainer.appendChild(swiperHTML);
-      document.getElementById("card-title").textContent = card.title;
-      document.getElementById("card-description").textContent = card.description;
-      document.getElementById("card-location").textContent = card.location;
-      document.getElementById("card-year").textContent = card.year;
-    // Init Swiper (no import needed!)
+        `).join('')}
+      </div>
+
+      <div class="button-wrapper">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+      <div class="swiper-pagination"></div>
+    `;
+    carouselContainer.appendChild(swiperHTML);
+
+    // Init Swiper
     new Swiper('.swiper', {
       loop: true,
       spaceBetween: 10,
@@ -280,7 +357,29 @@ nav a:hover {
       },
     });
   }
-  </script>
+
+  // Navigation handlers
+  document.getElementById('prev-card').onclick = () => {
+    const idx = cards.findIndex(c => c.id === cardId);
+    if (idx > 0) {
+      cardId = cards[idx - 1].id;
+      window.history.replaceState({}, '', `?id=${cardId}`);
+      renderCard(cardId);
+    }
+  };
+
+  document.getElementById('next-card').onclick = () => {
+    const idx = cards.findIndex(c => c.id === cardId);
+    if (idx < cards.length - 1) {
+      cardId = cards[idx + 1].id;
+      window.history.replaceState({}, '', `?id=${cardId}`);
+      renderCard(cardId);
+    }
+  };
+
+  // Initial render
+  renderCard(cardId);
+</script>
 
 </body>
 </html>

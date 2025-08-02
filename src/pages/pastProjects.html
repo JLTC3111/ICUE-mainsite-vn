@@ -19,7 +19,7 @@ html {
 [data-aos] {
   will-change: transform, opacity;
   transition-property: opacity, transform;
-  transition-duration: 0.75s;
+  transition-duration: 0.85s;
 }
 
 body {
@@ -32,7 +32,7 @@ body {
   margin-top: 5%;
   display: grid;
   gap: 25px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
   grid-template-rows: minmax(300px, auto) auto;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,7 @@ body {
 .image-card img {
   filter: grayscale(25%);
   width: 100%;
-  height: 500px; 
+  height: 550px; 
   object-fit: cover;
   display: block;
   border-radius: 4px;
@@ -163,14 +163,14 @@ body {
 .card.image-card {
   filter: blur(8px);
   opacity: 0;
-  transition: all 0.75s ease-in-out;
+  transition: all 0.85s ease-in-out;
 }
 
 /* When AOS activates */
 .card.image-card.aos-animate {
   filter: blur(0);
   opacity: 1;
-  transition: all 0.75s ease-in-out;
+  transition: all 0.85s ease-in-out;
 }
 
 </style>
@@ -178,7 +178,7 @@ body {
   <main class="grid">
     <a href="src/pages/card.html?id=1" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_1.jpg">
+      <img src="public/pastProjects/pp_1.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>ĐIỀU CHỈNH QUY HOẠCH CHUNG TP LÀO CAI</h3>
@@ -190,7 +190,7 @@ body {
 
     <a href="src/pages/card.html?id=2" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_2.jpg">
+      <img src="public/pastProjects/pp_2.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH CHUNG XÂY DỰNG TỶ LỆ 1/500</h3>
@@ -202,7 +202,7 @@ body {
 
     <a href="src/pages/card.html?id=3" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_3.jpg">
+      <img src="public/pastProjects/pp_3.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH PHÂN KHU 6B (PHƯỜNG NGUYỄN ÁI QUỐC)</h3>
@@ -214,7 +214,7 @@ body {
 
     <a href="src/pages/card.html?id=4" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_4.jpg">
+      <img src="public/pastProjects/pp_4.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH PHÂN KHU XÂY DỰNG CỐC SAN</h3>
@@ -226,7 +226,7 @@ body {
 
     <a href="src/pages/card.html?id=5" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_5.jpg">
+      <img src="public/pastProjects/pp_5.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH CHUNG ĐÔ THỊ ĐÔNG YÊN, HUYỆN BẮC GIANG</h3>
@@ -238,7 +238,7 @@ body {
 
     <a href="src/pages/card.html?id=6" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_6.jpg">
+      <img src="public/pastProjects/pp_6.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH CHUNG ĐÔ THỊ NÀ CHÌ, HUYỆN XÍN MẦN</h3>
@@ -250,7 +250,7 @@ body {
 
     <a href="src/pages/card.html?id=7" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_7.jpg">
+      <img src="public/pastProjects/pp_7.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH CHUNG ĐÔ THỊ TÂN BẮC, HUYỆN QUANG BÌNH</h3>
@@ -262,7 +262,7 @@ body {
 
     <a href="src/pages/card.html?id=8" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_8.jpg">
+      <img src="public/pastProjects/pp_8.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH PHÂN KHU 5A (PHÂN KHU KHU VỰC PHƯỜNG NAM ĐỒNG) THÀNH PHỐ HẢI DƯƠNG</h3>
@@ -274,7 +274,7 @@ body {
 
     <a href="src/pages/card.html?id=9" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-      <img src="public/pastProjects/pp_9.jpg">
+      <img src="public/pastProjects/pp_9.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>QUY HOẠCH CHI TIẾT KHU ĐÔ THỊ SINH THÁI PARK CITY XUÂN AN</h3>

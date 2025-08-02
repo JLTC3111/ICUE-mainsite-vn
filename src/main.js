@@ -16,7 +16,7 @@ function restoreAOSAttributes() {
   originalAOS.forEach((value, el) => {
     el.setAttribute('data-aos', value || 'flip-down');
     el.classList.add('aos-init'); // Add AOS classes back
-    el.classList.remove('aos-animate'); // Let AOS re-trigger animation
+    el.classList.remove('aos-animate'); 
     el.style.opacity = null; // Reset styles
     el.style.transform = null;
     el.style.filter = null;
@@ -27,8 +27,7 @@ function restoreAOSAttributes() {
   }
 }
 
-
-  function clearAOSAttributes() {
+function clearAOSAttributes() {
     console.log('[AOS] Clearing AOS attributes');
     document.querySelectorAll('[data-aos]').forEach(el => {
       if (!originalAOS.has(el)) {
@@ -42,8 +41,8 @@ function restoreAOSAttributes() {
     });
   }
 
-  window.handleAOSByScreenSize = () => {
-    const width = window.innerWidth;
+window.handleAOSByScreenSize = () => {
+  const width = window.innerWidth;
     console.log(`[AOS] Window resized to: ${width}px`);
 
   if (typeof window.AOS === 'undefined') {
@@ -59,7 +58,7 @@ function restoreAOSAttributes() {
     restoreAOSAttributes();
     window.AOS.init({
       disable: false,
-      duration: 850,
+      duration: 1850,
       offset: 225,
       once: false
     });
@@ -68,6 +67,8 @@ function restoreAOSAttributes() {
 
   return { handleAOSByScreenSize };
 })();
+
+window.handleAOSByScreenSize = AOSManager.handleAOSByScreenSize;
 
 // Debounce utility
 function debounce(fn, delay) {
