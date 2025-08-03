@@ -4,8 +4,8 @@ const cards = [
     title: "📍 Điều chỉnh quy hoạch chung thành phố Lào Cai",
     description: "Tổng diện tích: 28.162,64 ha, dự kiến hoàn thành vào năm 2045. Kế hoạch tập trung vào tối ưu hóa sử dụng đất, cải thiện hạ tầng, định hướng tăng trưởng dân số và nâng cao vai trò của thành phố như một trung tâm kinh tế và giao thông trong khu vực.",
     images: [
-      "public/pastProjects/project_1/pp_1a.png", 
-      "public/pastProjects/project_1/pp_1b.png",
+      "public/pastProjects/project_1/pp_1a.jpg", 
+      "public/pastProjects/project_1/pp_1b.jpg",
       "public/pastProjects/project_1/pp_1c.jpg", 
       "public/pastProjects/project_1/pp_1d.jpg",
       "public/pastProjects/project_1/pp_1e.jpg",
@@ -15,11 +15,14 @@ const cards = [
   },
   {
     id: "2",
-    title: "📍 Quy hoạch xây dựng chi tiết tỷ lệ 1/500",
+    title: "📍 Quy hoạch xây dựng chi tiết xã Hợp Thành tỷ lệ 1/500",
     description: "Tổng diện tích: 2.693,3 ha. Quy hoạch xây dựng chi tiết tỷ lệ 1/500 cho xã Hợp Thành, thành phố Lào Cai, bao gồm 2.693,3 ha. Kế hoạch này đặt nền tảng cho sự phát triển đô thị trong tương lai, quy hoạch phân khu và điều chỉnh hạ tầng để hỗ trợ tăng trưởng bền vững đến năm 2025.",
     images: [
-      "public/pastProjects/project_2/pp_2a.png",  
-      "public/pastProjects/project_2/pp_2b.png", 
+      "public/pastProjects/project_2/pp_2a.jpg",  
+      "public/pastProjects/project_2/pp_2b.jpg", 
+      "public/pastProjects/project_2/pp_2c.jpg",  
+      "public/pastProjects/project_2/pp_2d.jpg", 
+      "public/pastProjects/project_2/pp_2e.jpg",  
     ],
     year: "2025",
     location: "Xã Hợp Thành, thành phố Lào Cai"
@@ -32,6 +35,7 @@ const cards = [
       "public/pastProjects/project_3/pp_3a.jpg",  
       "public/pastProjects/project_3/pp_3b.jpg", 
       "public/pastProjects/project_3/pp_3c.jpg",  
+      "public/pastProjects/project_3/pp_3d.jpg",  
     ],
     year: "2025",
     location: "Thành Phố Hải Dương"
@@ -42,7 +46,8 @@ const cards = [
     description: "Phân khu xây dựng Cốc San là một phần trọng điểm trong chiến lược mở rộng không gian đô thị của thành phố Lào Cai. Dự án không chỉ tập trung phát triển hạ tầng kỹ thuật tiên tiến mà còn khéo léo tích hợp các yếu tố cảnh quan tự nhiên để hình thành một đô thị sinh thái cân bằng. Đây là tiền đề để phát triển các khu dân cư chất lượng cao, khu thương mại – dịch vụ và các công trình công cộng liên kết chặt chẽ với trục giao thông liên vùng.",
     images: [
       "public/pastProjects/project_4/pp_4a.webp",  
-      "public/pastProjects/project_4/pp_4b.webp",   
+      "public/pastProjects/project_4/pp_4b.webp",
+      "public/pastProjects/project_4/pp_4c.webp",   
     ],
     year: "2025",
     location: "Thành Phố Lào Cai"
@@ -53,7 +58,10 @@ const cards = [
     description: "Đô thị Đông Yên là một quy hoạch tổng thể đầy tham vọng với quy mô gần 4,500 ha, mang trong mình tầm nhìn dài hạn đến năm 2050. Dự án nhắm đến việc xây dựng một đô thị vệ tinh thông minh, hội tụ đầy đủ các chức năng sống – làm việc – vui chơi. Với định hướng quy hoạch bài bản, Đông Yên kỳ vọng trở thành điểm đến hấp dẫn cho đầu tư, nơi khởi nguồn cho các mô hình đô thị hiện đại bền vững tại khu vực phía Bắc.",
     images: [
       "public/pastProjects/project_5/pp_5a.jpg",  
-      "public/pastProjects/project_5/pp_5b.jpg", 
+      "public/pastProjects/project_5/pp_5b.jpg",
+      "public/pastProjects/project_5/pp_5c.jpg",  
+      "public/pastProjects/project_5/pp_5d.jpg",
+      "public/pastProjects/project_5/pp_5e.jpg",   
     ],
     year: "2025",
     location: "Xã Đồng Yên, TP Hà Giang"
@@ -65,7 +73,10 @@ const cards = [
     images: [
       "public/pastProjects/project_6/pp_6a.jpg",  
       "public/pastProjects/project_6/pp_6b.jpg", 
-      "public/pastProjects/project_6/pp_6c.jpg",
+      "public/pastProjects/project_6/pp_6c.jpg", 
+      "public/pastProjects/project_6/pp_6d.jpg",  
+      "public/pastProjects/project_6/pp_6e.jpg", 
+      "public/pastProjects/project_6/pp_6f.jpg",
     ],
     year: "2025",
     location: "Xã Nà Chì, Xín Màn, Hà Giang"
