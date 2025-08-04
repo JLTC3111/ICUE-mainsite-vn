@@ -29,21 +29,23 @@
         </div>
     </nav>
   </header>
-  <style>
-  body {
+<style>
+body {
     margin: 0;
     font-family: 'Helvetica Neue', sans-serif;
     background-color: #f7f7f7;
     overflow-x: hidden;
-  }
+}
 
-  nav {
+nav {
   position: relative;
   background-color: #333333;
   padding: 0.5rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: clamp(0.5rem, 4.5vw, 3.5rem);
   align-items: center;
+  text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   top: 0;
   z-index: 1;
@@ -89,7 +91,7 @@ nav::after {
 }
 
 nav a {
-  font-size: clamp(0.65rem, 2.5vw, 1.25rem);
+  font-size: clamp(0.5rem, 2.5vw, 1.25rem);
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
