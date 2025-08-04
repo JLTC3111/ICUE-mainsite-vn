@@ -123,7 +123,6 @@ nav a:hover {
 }
 
 @media (max-width: 768px) {
-
   nav {
     margin-right: -1.5rem;
   }
@@ -377,12 +376,6 @@ nav a:hover {
   font-family: sans-serif;
 }
 
-@media (min-width: 769px) {
-  .footer {
-    height: 150px; 
-  }
-}
-
 .footer-container {
   height: 100%;
   width: 100%;
@@ -409,12 +402,11 @@ nav a:hover {
   text-align: center;    /* centers text content */
   padding: 0 1.5rem;
 }
-
-.footer-heading {
-  font-size: 1.125rem;
-  font-weight: bold;
+.footer-toggle {
+  all: unset; /* Nukes all inherited browser styles */
+  color: #ffffff;
+  background-color: #1a202c;
 }
-
 .footer-text {
   font-size: 0.875rem;
   color: #d1d5db;
@@ -448,13 +440,57 @@ nav a:hover {
     align-items: center;
     text-align: center;
   }
-
   .footer-section {
+    min-width: none;
     width: 100%;
   }
+  .footer-section .collapsible {
+    display: none;
+    flex-direction: column;
+    transform-origin: bottom;
+    animation: slide-up 0.3s ease-out forwards;
+  }
+  .footer-toggle {
+    background-color: #1a202c;
+    padding: 0;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  .footer-section.open .collapsible {
+    display: flex;
+  }
+  .footer-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .footer-section.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Optional: collapse padding/margin to reduce vertical space */
+  .footer-section:not(.open) .collapsible * {
+    margin: 0;
+    padding: 0;
+  }
 }
-
-
 </style>
 
 <section id="carousel-container"></section>
@@ -475,8 +511,10 @@ nav a:hover {
   <div class="footer-container">
     <div class="footer-grid">
       <div class="footer-section">
-        <h3 class="footer-heading">Tham Gia</h3>
-        <ul class="footer-links">
+         <button class="footer-heading footer-toggle" aria-expanded="false">
+          Tham Gia <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
           <li><a href="/youtube" class="footer-link"><svg width="20px" height="20px" viewBox="0 -7 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
                   </defs>
@@ -515,8 +553,10 @@ nav a:hover {
       </div>
 
       <div class="footer-section">
-        <h3 class="footer-heading">Các Trang Khác</h3>
-        <ul class="footer-links">
+        <button class="footer-heading footer-toggle" aria-expanded="false">
+          Các Trang Khác <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
           <li><a href="/" class="footer-link"></a></li>
           <li><a href="/news" class="footer-link">Tin Tức</a></li>
           <li><a href="/meetOurExperts" class="footer-link">Chuyên Gia</a></li>
@@ -525,14 +565,33 @@ nav a:hover {
       </div>
 
       <div class="footer-section">
-        <h3 class="footer-heading">Liên Hệ</h3>
-        <p class="footer-text">📍 Hà Nội, Việt Nam</p>
-        <p class="footer-text">📧 info@icue.vn</p>
-        <p class="footer-text">📞 +84 (24) 3772 8485</p>
+        <button class="footer-heading footer-toggle" aria-expanded="false">
+          Liên Hệ <span class="arrow">⌃</span>
+        </button>
+        <ul class="footer-links collapsible">
+          <p class="footer-text">📍 Hà Nội, Việt Nam</p>
+          <p class="footer-text">📧 info@icue.vn</p>
+          <p class="footer-text">📞 +84 (24) 3772 8485</p>
+        </ul>
       </div>
     </div>
   </div>
 </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggles = document.querySelectorAll(".footer-toggle");
+
+    toggles.forEach(toggle => {
+      toggle.addEventListener("click", () => {
+        const section = toggle.closest(".footer-section");
+        section.classList.toggle("open");
+
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", !expanded);
+      });
+    });
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="../card.js"></script>
