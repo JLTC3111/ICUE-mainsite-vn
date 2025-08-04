@@ -540,6 +540,7 @@ window.loadPage = (page) => {
                   break;
                 case 'News':
                   initLogoSlider();
+                  calendarModal();
                   initMobileNewsSlider();
                   triggerFanfare();
                   break;
