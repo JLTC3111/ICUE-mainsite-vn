@@ -2,7 +2,7 @@ const cards = [
   {
     id: "1",
     title: "📍 Điều chỉnh quy hoạch chung thành phố Lào Cai",
-    description: "Tổng diện tích: 28.162,64 ha, dự kiến hoàn thành vào năm 2045. Kế hoạch tập trung vào tối ưu hóa sử dụng đất, cải thiện hạ tầng, định hướng tăng trưởng dân số và nâng cao vai trò của thành phố như một trung tâm kinh tế và giao thông trong khu vực.",
+    description: "Tổng diện tích quy hoạch lên đến 28.162,64 ha, với mục tiêu hoàn thành vào năm 2045. Đây là một chiến lược phát triển dài hạn, hướng đến việc tái cấu trúc không gian đô thị một cách hiệu quả, nhằm tận dụng tối đa tiềm năng sử dụng đất theo hướng linh hoạt, bền vững và thích ứng với biến đổi khí hậu. Kế hoạch đặt trọng tâm vào việc tối ưu hóa sử dụng đất đai, từ đất ở, đất thương mại, công nghiệp cho đến không gian công cộng và mảng xanh – tất cả được phân bổ khoa học, phục vụ cho sự phát triển cân bằng giữa kinh tế, xã hội và môi trường. Bên cạnh đó, quy hoạch cũng bao gồm các giải pháp cải thiện và mở rộng hệ thống hạ tầng giao thông, cấp thoát nước, năng lượng và công nghệ thông tin, tạo nền tảng vững chắc cho sự tăng trưởng bền vững.Đồng thời, kế hoạch cũng định hướng rõ ràng cho sự tăng trưởng dân số và phát triển các khu dân cư mới, phù hợp với nhu cầu về nhà ở, việc làm và dịch vụ đô thị. Mục tiêu cuối cùng là nâng cao vai trò và vị thế của thành phố như một trung tâm kinh tế – giao thông chiến lược trong khu vực, kết nối hiệu quả với các địa phương lân cận và hành lang kinh tế trọng điểm.",
     images: [
       "public/pastProjects/project_1/pp_1a.jpg", 
       "public/pastProjects/project_1/pp_1b.jpg",
@@ -16,7 +16,7 @@ const cards = [
   {
     id: "2",
     title: "📍 Quy hoạch xây dựng chi tiết xã Hợp Thành tỷ lệ 1/500",
-    description: "Tổng diện tích: 2.693,3 ha. Quy hoạch xây dựng chi tiết tỷ lệ 1/500 cho xã Hợp Thành, thành phố Lào Cai, bao gồm 2.693,3 ha. Kế hoạch này đặt nền tảng cho sự phát triển đô thị trong tương lai, quy hoạch phân khu và điều chỉnh hạ tầng để hỗ trợ tăng trưởng bền vững đến năm 2025.",
+    description: "Tổng diện tích quy hoạch là 2.693,3 ha, thuộc địa bàn xã Hợp Thành, thành phố Lào Cai. Đây là đồ án quy hoạch xây dựng chi tiết tỷ lệ 1/500, nhằm cụ thể hóa các định hướng phát triển đã được xác lập trong quy hoạch chung, đồng thời xác định rõ ràng các khu chức năng, mạng lưới giao thông, hệ thống hạ tầng kỹ thuật và xã hội. Mục tiêu của quy hoạch này là đặt nền tảng cho quá trình đô thị hóa bền vững, hướng tới việc hình thành một đô thị hiện đại, đồng bộ, thân thiện với môi trường và có khả năng thích ứng linh hoạt với nhu cầu phát triển kinh tế - xã hội trong tương lai. Kế hoạch cũng bao gồm việc phân khu chức năng hợp lý, cải tạo và nâng cấp hạ tầng hiện hữu, từ đó đáp ứng nhu cầu dân sinh và thu hút đầu tư. Dự kiến, toàn bộ hệ thống quy hoạch sẽ được triển khai theo lộ trình, với tầm nhìn đến năm 2025, phù hợp với định hướng phát triển đô thị của tỉnh Lào Cai nói chung và thành phố Lào Cai nói riêng.",
     images: [
       "public/pastProjects/project_2/pp_2a.jpg",  
       "public/pastProjects/project_2/pp_2b.jpg", 
