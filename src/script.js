@@ -565,8 +565,8 @@ window.loadPage = (page) => {
           // Hide contact sidebar on News page
           const contactSidebar = document.querySelector('.contact-sidebar');
           if (contactSidebar) {
-            if (page === 'News') {
-              contactSidebar.style.display = 'none';
+            if (page === 'News' && isTouchDevice) {
+              contactSidebar.style.display = '';
             } else {
               contactSidebar.style.display = '';
             }
