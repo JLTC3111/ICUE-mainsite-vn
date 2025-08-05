@@ -65,7 +65,7 @@ window.handleAOSByScreenSize = () => {
   }
 }
 
-  return { handleAOSByScreenSize };
+  return { handleAOSByScreenSize, cacheAOSAttributes, restoreAOSAttributes, clearAOSAttributes };
 })();
 
 window.handleAOSByScreenSize = AOSManager.handleAOSByScreenSize;
@@ -85,7 +85,7 @@ window.addEventListener('resize', debounce(() => {
 }, 50));
 
 window.addEventListener('DOMContentLoaded', () => {
-  cacheAOSAttributes();
+  AOSManager.cacheAOSAttributes();
   console.log('[AOS] DOMContentLoaded');
   AOSManager.handleAOSByScreenSize();
 });
