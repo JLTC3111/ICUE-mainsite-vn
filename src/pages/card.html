@@ -433,6 +433,29 @@ nav a:hover {
   filter: brightness(1.2);
 }
 
+.underline-hover {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+}
+
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%; /* start at 25% */
+  width: 50%; /* span only the middle */
+  height: 1px;
+  background-color: #ffffff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.underline-hover:hover::after {
+  transform: scaleX(1);
+}
 /* 📱 Mobile responsiveness */
 @media (max-width: 768px) {
   .footer-grid {
@@ -511,7 +534,7 @@ nav a:hover {
   <div class="footer-container">
     <div class="footer-grid">
       <div class="footer-section">
-         <button class="footer-heading footer-toggle" aria-expanded="false">
+         <button class="footer-heading footer-toggle underline-hover" aria-expanded="false">
           Tham Gia <span class="arrow">⌃</span>
         </button>
         <ul class="footer-links collapsible">
@@ -553,7 +576,7 @@ nav a:hover {
       </div>
 
       <div class="footer-section">
-        <button class="footer-heading footer-toggle" aria-expanded="false">
+        <button class="footer-heading footer-toggle underline-hover" aria-expanded="false">
           Các Trang Khác <span class="arrow">⌃</span>
         </button>
         <ul class="footer-links collapsible">
@@ -565,13 +588,15 @@ nav a:hover {
       </div>
 
       <div class="footer-section">
-        <button class="footer-heading footer-toggle" aria-expanded="false">
+        <button class="footer-heading footer-toggle underline-hover" aria-expanded="false">
           Liên Hệ <span class="arrow">⌃</span>
         </button>
         <ul class="footer-links collapsible">
-          <p class="footer-text">📍 Hà Nội, Việt Nam</p>
-          <p class="footer-text">📧 info@icue.vn</p>
-          <p class="footer-text">📞 +84 (24) 3772 8485</p>
+          <a href="https://www.google.com/maps?q=21.010758110472064,105.80686021983787" target="_blank" rel="noopener noreferrer" class="footer-link">
+            📍 Hà Nội, Việt Nam
+          </a>
+          <a href="mailto:info@icue.vn" class="footer-link">📧 info@icue.vn</a>
+          <a href="tel:+842437728485" target="_blank" class="footer-link">📞 +84 (24) 3772 8485</a>
         </ul>
       </div>
     </div>
