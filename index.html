@@ -65,15 +65,31 @@
   
     <div class="drawer-menu" id="drawerMenu">
        <div class="drawer-blur-overlay"></div>
-      <a href="#/Home" onclick="loadPage('Home'); closeDrawerMenu();" data-page="Home">🏚️ Trang Chủ</a>
-      <a href="#/ourWork" onclick="loadPage('ourWork'); closeDrawerMenu();" data-page="ourWork">🗄️ Công Việc</a>
-      <a href="#/pastProjects" onclick="closeDrawerMenu();" data-page="pastProjects">🛠️ Đề Tài, Dự Án</a>
-      <a href="#/News" onclick="loadPage('News'); closeDrawerMenu();" data-page="News">🗞️ Tin Tức & Sự Kiện</a>
-      <a href="#/aboutUs" onclick="loadPage('aboutUs'); closeDrawerMenu();" data-page="aboutUs">🎨 Về Chúng Tôi</a>
-      <a href="#" class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople">👩🏻‍💻 Nhân Lực</a>
+      <a href="#/Home" onclick="closeDrawerMenu();" data-page="Home"><svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg> Trang Chủ</a>
+      <a href="#/ourWork" onclick="closeDrawerMenu();" data-page="ourWork"><svg width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor">
+        <path stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5ZM14 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5ZM4 16a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3ZM14 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6Z"/>
+      </svg> Công Việc</a>
+      <a href="#/pastProjects" onclick="closeDrawerMenu();" data-page="pastProjects"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path stroke="#ffffff" fill-rule="evenodd" clip-rule="evenodd" d="M4 4C4.55228 4 5 4.44772 5 5V11.5858L7.29289 9.29289C7.59725 8.98853 8.06222 8.91308 8.44721 9.10557L11.6576 10.7108L15.1679 5.4453C15.4477 5.02568 15.9961 4.88003 16.4472 5.10557L20.4472 7.10557C20.786 7.27496 21 7.62123 21 8V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V14.0002C3 14.0001 3 13.9999 3 13.9998V5C3 4.44772 3.44772 4 4 4ZM5 14.4142V18H19V8.61803L16.3424 7.28922L12.8321 12.5547C12.5523 12.9743 12.0039 13.12 11.5528 12.8944L8.19745 11.2168L5 14.4142Z" fill="#000000"/>
+      </svg> Đề Tài, Dự Án</a>
+      <a href="#/News" onclick="closeDrawerMenu();" data-page="News"><svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+      </svg>
+      Tin Tức & Sự Kiện</a>
+      <a href="#/aboutUs" onclick="closeDrawerMenu();" data-page="aboutUs"><svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+      </svg>
+      Về Chúng Tôi</a>
+      <a href="#"  class="has-submenu" onclick="toggleSubmenu(event);" data-page="ourPeople"><svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+      </svg>
+      Nhân Lực</a>
         <div id="ourPeopleSubmenu" class="submenu">
-          <a class="moe-subMenu" href="#/meetOurExperts" onclick="loadPage('meetOurExperts'); closeDrawerMenu();"  data-page="meetOurExperts">Chuyên Gia</a>
-          <a class="core-subMenu" href="#/coreTeam" onclick="loadPage('coreTeam'); closeDrawerMenu();" data-page="coreTeam">Cán Bộ</a>
+          <a class="moe-subMenu" href="#/meetOurExperts" onclick="closeDrawerMenu();"  data-page="meetOurExperts">Chuyên Gia</a>
+          <a class="core-subMenu" href="#/coreTeam" onclick="closeDrawerMenu();" data-page="coreTeam">Cán Bộ</a>
         </div>
     </div>
   </nav>
