@@ -881,7 +881,7 @@ footer p {
 }
 
 .drawer-menu .submenu a::before {
-  content: "↳";
+  content: "";
   color: #ffffff; 
   font-size: 1.95rem;
   display: inline-block;
