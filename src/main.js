@@ -65,7 +65,7 @@ window.handleAOSByScreenSize = () => {
   }
 }
 
-  return { handleAOSByScreenSize, cacheAOSAttributes, restoreAOSAttributes, clearAOSAttributes };
+  return { handleAOSByScreenSize, cacheAOSAttributes };
 })();
 
 window.handleAOSByScreenSize = AOSManager.handleAOSByScreenSize;
