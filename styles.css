@@ -817,7 +817,7 @@ footer p {
 }
 
 .drawer-menu a:hover {
-  transform: translateX(45px);
+  transform: translateX(40px);
   background-color: #f3f8ff;
   border-left: 12.5px solid #737373;
   padding-left: .5rem;
@@ -832,7 +832,7 @@ footer p {
 }
 
 .drawer-menu.open {
-  transform: translateX(0); 
+  transform: translateX(0px); 
 }
 
 .has-submenu {
@@ -863,7 +863,7 @@ footer p {
 }
 
 .submenu.open {
-  transform: translateX(0) translateY(0); 
+  transform: translateX(15px) translateY(0); 
   opacity: 1;
   pointer-events: auto;
 }
