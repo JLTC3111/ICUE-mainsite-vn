@@ -782,11 +782,10 @@ footer p {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 400px;
+  width: 280px;
   background: transparent;
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 10rem 2.5rem;
   transform: translateX(-100%);
   transition: all 0.35s ease-in-out;
@@ -807,10 +806,11 @@ footer p {
 .drawer-menu a {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   animation: none !important;
   color: #ffffff;
   padding: 1rem 0;
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 3.5vh, 1.35rem);
   text-decoration: none;
   border-left: 5px solid transparent;
   transition: all .75s ease, border-color 0.2s ease;
