@@ -875,7 +875,11 @@ footer p {
 }
 
 .drawer-menu .submenu a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.2rem;
+  text-decoration: underline;
   color: #ffffff;
   padding-top: 0.75rem;
   padding-left: 0.75rem;
@@ -883,22 +887,15 @@ footer p {
   transition: all .3s ease;
 }
 
-.drawer-menu .submenu a::before {
-  content: "";
-  color: #ffffff; 
-  font-size: 1.95rem;
-  display: inline-block;
-  vertical-align: middle;
-  font-family: 'Arial', 'Segoe UI Symbol', 'Noto Sans Symbols', sans-serif; 
-}
-
 .drawer-menu .moe-subMenu:hover {
+  text-decoration: none;
   font-style: bold;
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffff03;
 }
 
 .drawer-menu .core-subMenu:hover {
+  text-decoration: none;
   font-style: bold;
   background-color: rgba(255, 255, 255, 0.1);
   color: #9afc93;
@@ -1872,6 +1869,57 @@ body.loaded #app {
   }
 }
 
+@media (max-width: 1440px) {
+  .drawer-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 100vw;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    padding: 3.5rem 0.5rem;
+    transform: translateY(-100%); 
+    transition: transform 0.4s ease-in-out;
+    contain: layout;
+    z-index: 5;
+  }
+  .sub-menu {
+    position: relative;
+    margin: 2rem auto; 
+  } 
+  .submenu.open {
+  transform: translateX(0px) translateY(0); 
+  }
+  a.moe-subMenu svg {
+  display: none;
+  }
+  a.core-subMenu svg {
+  display: none;
+  }
+  .drawer-menu a {
+    padding: 1.5rem 0;
+    margin-left: 3.5rem;
+    font-size: clamp(1.15rem, 3vw, 1.75rem);
+    text-decoration: none;
+    border-left: 5px solid transparent;
+    transition: all 0.3s;
+  }
+  .drawer-menu .submenu a {
+    font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+    padding: 0.5rem 1rem;
+    padding-top: 0.15rem;
+    left: 0rem;
+    position: relative;
+    transition: all 1.5s ease;
+  }
+}
+
 @media only screen and (min-width: 1025px) and (max-width: 1366px) {
   .svg-blinking-cursor {
     height: 1.35em; /* optional scaling */
@@ -2348,49 +2396,6 @@ body.loaded #app {
   .menu-toggle svg{
     width:38px;
     height:38px;
-  }
-
-  .drawer-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100dvh;
-    width: 100vw;
-    overflow: auto;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    padding: auto 0.5rem;
-    transform: translateX(-100%); /* Hide off-screen initially */
-    transition: transform 0.4s ease-in-out;
-    contain: layout;
-    z-index: 5;
-  }
-
-  .drawer-menu a {
-    padding: .75rem 0;
-    margin-left: -3rem;
-    font-size: 1.15rem;
-    text-decoration: none;
-    border-left: 5px solid transparent;
-    transition: background 0.3s, border-color 0.3s;
-  }
-
-  .sub-menu {
-    position: relative;
-    margin: 2rem auto; /* pushes it to the bottom if needed */
-  } 
-
-  .drawer-menu .submenu a {
-    font-size: .95rem;
-    padding-top: 0.15rem;
-    left: 0rem;
-    position: relative;
-    transition: all 1.5s ease;
-  }
-  
-  .drawer-menu .submenu a::before {
-    content: none;
   }
 
   .menu-bar .contact-link:hover {
