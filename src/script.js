@@ -1303,34 +1303,61 @@ window.initLogoSlider = () => {
 // News Slider (Mobile Only)
 // ===================
 window.initMobileNewsSlider = () => {
-  if (window.innerWidth > 1025) return; // Only run on small screens
+    const cards = document.querySelectorAll(".card.image-card");
+    const gridContainer = document.querySelector("main.grid");
 
-  const containers = document.querySelectorAll(".news-container");
-  const leftArrow = document.getElementById("arrowNewsLeft");
-  const rightArrow = document.getElementById("arrowNewsRight");
+    if (!cards.length || !gridContainer) return;
 
-  if (!containers.length || !leftArrow || !rightArrow) return;
+    let currentIndex = 0;
 
-  let currentIndex = 0;
+    // Swipe detection variables
+    let startX = 0;
+    let endX = 0;
 
-  function updateSlider() {
-    containers.forEach((container, index) => {
-      container.style.display = index === currentIndex ? "block" : "none";
+    function updateSlider() {
+      if (window.innerWidth <= 1440) {
+        cards.forEach((card, i) => {
+          card.style.display = i === currentIndex ? "block" : "none";
+        });
+      } else {
+        cards.forEach(card => {
+          card.style.display = "block";
+        });
+      }
+    }
+
+    function handleSwipe() {
+      if (endX < startX - 50) {
+        // Swiped left
+        currentIndex = (currentIndex + 1) % cards.length;
+        updateSlider();
+      } else if (endX > startX + 50) {
+        // Swiped right
+        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+        updateSlider();
+      }
+    }
+
+    // Attach touch listeners to the grid container
+    gridContainer.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
     });
-  }
 
-  leftArrow.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + containers.length) % containers.length;
+    gridContainer.addEventListener("touchend", (e) => {
+      endX = e.changedTouches[0].clientX;
+      handleSwipe();
+    });
+
+    // Run it on load
     updateSlider();
-  });
 
-  rightArrow.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % containers.length;
-    updateSlider();
-  });
+    // Re-check on resize
+    window.addEventListener("resize", updateSlider);
+  };
 
-  updateSlider();
-}
+  document.addEventListener("DOMContentLoaded", () => {
+    window.initMobileNewsSlider();
+  });
 
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
@@ -1649,6 +1676,9 @@ function initAudioVisualizer(
         break;
       case 'pastProjects':
         color = '#a1c900ff';
+        break;
+      case 'pastProjects':
+        color = '#000000';
         break;
     }
   
