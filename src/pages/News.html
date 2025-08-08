@@ -198,7 +198,7 @@ body {
   overflow: hidden;
   padding: 1.5rem;
   text-align: center;
-  transition: all 0.75s ease-in-out;
+  transition: all 0.15s ease-in-out;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
 }
 
@@ -209,20 +209,15 @@ body {
   transform: translateY(-5px)
 }
 
-.card:hover .description {
-  background-color: transparent;
-}
-
-.card:hover .location {
-  color: #ffffff;
-}
-
-.card:hover .year {
-  color: #ffffff;
-}
-
+.card:hover .description,
+.card:hover .location,
+.card:hover .year,
 .card:hover .date {
   color: #ffffff;
+}
+
+.card:hover .description {
+  background-color: transparent;
 }
 
 .dark {
@@ -264,10 +259,15 @@ body {
 }
 
 .card-info h3 {
-  color: #fff;
+  color: #000000;
   font-size: clamp(0.75rem, 2.5vw, 1.1rem);
   margin-bottom: 5px;
 }
+
+.card:hover .card-info h3 {
+  color: #ffffff;
+}
+
 
 .card-info p {
   margin: 3px 0;
@@ -289,8 +289,8 @@ body {
 }
 
 .card-info .description {
-  color: #ffffff;
-  background: #000000;
+  color: #000000;
+  background: transparent;
 }
 
 /* Initial (hidden) state */
