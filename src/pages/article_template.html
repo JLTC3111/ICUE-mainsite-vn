@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">Loading...</title>
+  <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Serif&family=Roboto&family=Rubik&display=swap" rel="stylesheet">
+  <script src="/src/article.js"></script>
+</head>
+<body>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+  }
+
+  nav {
+  position: relative;
+  background-color: #333333;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 4.5vw, 3.5rem);
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
+  z-index: 1;
+}
+
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
+nav a {
+  font-size: clamp(0.5rem, 2.5vw, 1.25rem);
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: 0.3s;
+  color: #007acc;
+  transform: scale(1.1);
+}
+
+  .article-container {
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 20px;
+    color: #333;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+  }
+
+  .article-title {
+    font-size: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .meta {
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+    color: #888;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-image figcaption {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+  }
+
+  .article-body {
+    letter-spacing: 0.25px;
+    line-height: 1.7;
+    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+  }
+
+  .article-body h2 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .article-body p {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  blockquote {
+    text-align: center;
+    margin: 0 auto;
+    padding: 1rem;
+    background: #ffffff;
+    border-left: 4px solid #ccc;
+    font-style: italic;
+    color: #555;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 0.85rem;
+  }
+
+.download-btn {
+  position: relative;
+  left: 35%;
+  bottom: 10%;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #f89393, #553aff);
+  border: none;
+  margin: 1rem auto;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.15);
+  background: linear-gradient(to right, #460000, #388E3C);
+}
+
+.language-switcher {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.flag-link {
+    margin-left: -1rem;
+    font-size: clamp (0.65rem, 2.75vw, 1.25rem);
+ }
+
+@media (max-width: 768px) {
+
+  nav {
+    margin-right: -1.5rem;
+    gap: 1.5rem;
+  }
+  
+  .download-btn {
+    margin-left: -2.5rem;
+  }
+}
+</style>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/#/ourWork">Work</a>
+      <a href="/#/pastProjects">Project History</a>
+      <a href="/#/News">News</a>
+      <a href="/#/aboutUs">About</a>
+      <a href="/#/Contact">Contact</a>
+      <div class="language-switcher">
+        <a href="#" class="flag-link">
+          <span class="flag-icon flag-icon-vn"></span>    
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content" class="article-container">
+    <article>
+      <h1 id="article-title" class="article-title"></h1>
+      <p id="article-lead" class="lead"></p>
+      <div class="meta">
+        <span id="article-author"></span>
+        <time id="article-date" datetime=""></time>
+      </div>
+      <figure class="featured-image" id="article-image-container">
+        <img id="article-image" src="" alt="Featured image">
+        <figcaption id="article-caption"></figcaption>
+      </figure>
+      <section id="article-body" class="article-body">
+        <p></p>
+      </section>
+    </article>
+
+    <a id="article-download" href="#" download class="download-btn" style="display: none;">
+      Download - PDF ⇲
+    </a>
+  </main>
+
+  <footer>
+    <p>© 2025 ICUE. All rights reserved.</p>
+  </footer>
+  
+</body>
+</html>

@@ -23,13 +23,13 @@ body {
 
 .news-slider-wrapper {
   position: relative;
+  margin: 3.5% auto;
   display: grid;
   place-items: center;
   z-index: 7;
 }
 
 .news-slider {
-  margin: 9.5% 0.25% auto;
   background-color: transparent;
   width: 50vw;
   justify-content: center;
@@ -55,18 +55,7 @@ body {
   width: var(--width); 
   height: var(--height);
   left: 60%; 
-  /*animation: scrollLogos 60s linear infinite;
-  animation-delay: calc( (10s / var(--quantity)) * (var(--position) -1) ) !important;*/
 }
-
-/*
-@keyframes scrollLogos {
-  from {
-    left: 65%;
-  } to {
-    left: calc(var(--width) * -15);
-  }
-}*/
 
 .news-slider .logo-list .item a {
   display: inline-block;
@@ -119,7 +108,6 @@ body {
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
-/* Show arrows on hover */
 .news-slider-wrapper:hover .slider-arrow svg{
   visibility: visible;
   opacity: 1;
@@ -164,7 +152,6 @@ body {
   text-decoration: none;
 }
 
-/* Responsive stacking layout for small screens */
 @media (max-width: 1440px) {
   .grid {
     display: flex; /* override grid */
@@ -175,11 +162,17 @@ body {
   }
   .card.image-card {
     width: 100%;
-    max-width: 400px;
+    height: clamp(325px, 65vh, 675px);
+    max-width: 550px;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
+  .image-card img {
+    filter: grayscale(0%) !important;
+    height: 350px !important;
+  }
   .news-slider-wrapper {
-    margin: 5% auto;
+    padding: 1rem;
+    margin-top: 17.5%;
   }
   .news-carousel {
       position: relative;
@@ -192,7 +185,7 @@ body {
       height: 65px;
     }
   .slider-arrow {
-    margin-top: -35px;
+    margin-top: -65px;
   }
   .slider-arrow svg {
     width: 30px;
@@ -203,14 +196,14 @@ body {
   background: #c4c4c4;
   border-radius: 8px;
   overflow: hidden;
-  padding: 1.5px;
+  padding: 1.5rem;
   text-align: center;
   transition: all 0.75s ease-in-out;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
 }
 
 .card:hover {
-  background-color: #3310ff;
+  background-color: #1a202c;
   transform: scale(1.025);
   will-change: transform; 
   transform: translateY(-5px)
@@ -225,6 +218,10 @@ body {
 }
 
 .card:hover .year {
+  color: #ffffff;
+}
+
+.card:hover .date {
   color: #ffffff;
 }
 
@@ -379,38 +376,41 @@ body {
   </div>
 
   <main class="grid">
-    <a href="/src/pages/articles/article_hoian.html" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/article_template.html?id=1" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-        <img src="public/news/articles/sumPhoto1.png" loading="lazy">
+        <img src="public/news/articles/Card_1.png" loading="lazy">
       </div>
       <div class="card-info">
-        <h3>📰 Hoi An Ceremony</h3>
+        <h3>IKI-GIZ-ICUE Completion Ceremony</h3>
         <p class="description">On May 16, ICUE and Hoi An celebrate the successful CBF project, supporting climate action and biodiversity with GIZ and IKI’s vital collaboration.</p>
-        <p class="location">16 May</p>
+        <p class="location">Hoi An, Vietnam</p>
+        <p class="date">May 16, 2025</p>
       </div>
     </a>
-
-    <a href="/src/pages/articles/article_yagi_storm.html" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/articles/article_preservation.html" class="card image-card aos-animate" data-aos="flip-down">
       <div class="image-wrapper">
-        <img src="public/news/articles/sumPhoto2.png" loading="lazy">
-      </div>
-      <div class="card-info">
-        <h3>📰 Aiding People & Areas Affected by Typhoone Yagi</h3>
-        <p class="description">In response to the call from the Central Committee, ICUE issued a notice calling on all of its staff, partners, and benefactors to join hands in contributing and supporting people affected by Typhoon Yagi.</p>
-        <p class="location">26 Sep</p>
-      </div>
-    </a>
-
-    <a href="/src/pages/articles/article_preservation.html" class="card image-card aos-animate" data-aos="flip-down">
-      <div class="image-wrapper">
-        <img src="public/news/articles/sumPhoto3.png" loading="lazy">
+        <img src="public/news/articles/Card_3.png" loading="lazy">
       </div>
       <div class="card-info">
         <h3>📰 8th Asia Regional Conservation Forum Opens in Thailand</h3>
         <p class="description">On September 3, the 8th Asia Regional Conservation Forum (RCF) of the International Union for Conservation of Nature (IUCN) officially opened in Bangkok, Thailand.</p>
-        <p class="location">03 Sep</p>
+        <p class="location">Bangkok, Thailand</p>
+        <p class="date">03 Sept, 2024</p>
       </div>
     </a>
+    <a href="src/pages/articles/article_yagi_storm.html" class="card image-card aos-animate" data-aos="flip-down">
+      <div class="image-wrapper">
+        <img src="public/news/articles/Card_2.png" loading="lazy">
+      </div>
+      <div class="card-info">
+        <h3>📰 Aiding People & Areas Affected by Typhoone Yagi</h3>
+        <p class="description">In response to the call from the Central Committee, ICUE issued a notice calling on all of its staff, partners, and benefactors to join hands in contributing and supporting people affected by Typhoon Yagi.</p>
+        <p class="location">Bao Yen District, Vietnam</p>
+        <p class="date">26 Sept, 2024</p>
+      </div>
+    </a>
+
+    
   </main>
 </body>
 
