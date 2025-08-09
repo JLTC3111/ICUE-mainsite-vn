@@ -79,13 +79,13 @@ nav a {
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
-  transition: color 0.3s;
+  will-change: transform, color, background;
 }
 
 nav a:hover {
   font-weight: bold;
   text-decoration: underline;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   color: #007acc;
   transform: scale(1.1);
 }
@@ -206,8 +206,13 @@ nav a:hover {
 }
 
 .flag-link {
-    margin-left: -1rem;
-    font-size: clamp (0.65rem, 2.75vw, 1.25rem);
+  margin-left: -1rem;
+  font-size: clamp (0.65rem, 2.75vw, 1.25rem);
+  transition: all 0.3s ease-in-out;
+}
+
+.flag-link:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.75);
  }
 
  .news-nav {
@@ -277,8 +282,8 @@ nav a:hover {
       <a href="/#/aboutUs">Chúng Tôi</a>
       <a href="/#/Contact">Liên Hệ</a>
       <div class="language-switcher">
-        <a href="#" class="flag-link">
-          <span class="flag-icon flag-icon-vn"></span>    
+        <a href="https://en.icue.vn/#News" class="flag-link">
+          <span class="flag-icon flag-icon-gb"></span>    
         </a>
       </div>
     </nav>
@@ -307,13 +312,10 @@ nav a:hover {
       <a id="article-download" href="#" download class="download-btn" style="display: none;"></a>
     </div>
     </article>
-
-    
-
   </main>
 
   <footer>
-    <p>© 2025 ICUE. Chúng Tôi Bảo Lưu Quyền</p>
+    <p>© 2025 ICUE. Chúng Tôi Bảo Lưu Các Quyền</p>
   </footer>
   
 </body>
