@@ -5,7 +5,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <style> 
-
 * {
   margin: 0;
   padding: 0;
@@ -144,27 +143,22 @@ body {
   margin-top: 5%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+  gap: 15px;
   padding: 20px;
+  place-items: center;
 }
 
 .grid a{
   text-decoration: none;
 }
 
-@media (max-width: 1440px) {
-  .grid {
-    display: flex; /* override grid */
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    touch-action: pan-y;
-  }
+@media (min-width: 551px) and (max-width: 1024px) {
   .card.image-card {
     width: 100%;
     height: clamp(325px, 65vh, 675px);
-    max-width: 550px;
+    max-width: 75%;
     transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform;
   }
   .image-card img {
     filter: grayscale(0%) !important;
@@ -192,6 +186,17 @@ body {
     height: 30px;
   }
 }
+
+@media (max-width: 550px) {
+  .grid {
+    margin-top: 15%;
+    grid-template-columns: 1fr;
+  }
+  .card.image-card {
+    max-width: 380px;
+  }
+}
+
 .card {
   background: #c4c4c4;
   border-radius: 8px;
@@ -260,7 +265,7 @@ body {
 
 .card-info h3 {
   color: #000000;
-  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+  font-size: clamp(0.75rem, 2.5vw, 1rem);
   margin-bottom: 5px;
 }
 
@@ -277,7 +282,7 @@ body {
 .card-info .description,
 .card-info .location,
 .card-info .year {
-  font-size: clamp(0.65rem, 2.5vw, 1rem);
+  font-size: clamp(0.65rem, 2vw, 0.9rem);
   color: #000000;
   margin-bottom: 4px;
   font-weight: 400;
@@ -376,9 +381,9 @@ body {
   </div>
 
   <main class="grid">
-    <a href="src/pages/article_template.html?id=1" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/article_template.html?id=1" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
-        <img src="public/news/articles/Card_1.png" loading="lazy">
+        <img src="public/news/articles/Card_1.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>📰 Lễ Khánh Thành Công Viên Âu Cơ - Hội An</h3>
@@ -386,10 +391,10 @@ body {
         <p class="location">Hội An, Việt Nam</p>
         <p class="date">16 Tháng 5, 2025</p>
       </div>
-    </a>
-    <a href="src/pages/articles/article_preservation.html" class="card image-card aos-animate" data-aos="flip-down">
+    </a> 
+    <a href="src/pages/articles/article_preservation.html" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
-        <img src="public/news/articles/Card_3.png" loading="lazy">
+        <img src="public/news/articles/Card_2.png" loading="lazy">
       </div>
       <div class="card-info">
         <h3>📰 Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan</h3>
@@ -398,9 +403,9 @@ body {
         <p class="date">03 Tháng 9, 2024</p>
       </div>
     </a>
-    <a href="src/pages/articles/article_yagi_storm.html" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/articles/article_yagi_storm.html" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
-        <img src="public/news/articles/Card_2.png" loading="lazy">
+        <img src="public/news/articles/Card_3.jpg" loading="lazy">
       </div>
       <div class="card-info">
         <h3>📰 Ủng hộ, giúp đỡ đồng bào bị ảnh hưởng do bão YAGI</h3>
@@ -409,8 +414,6 @@ body {
         <p class="date">26 Tháng 9, 2024</p>
       </div>
     </a>
-
-    
   </main>
 </body>
 

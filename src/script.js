@@ -1310,57 +1310,70 @@ window.initLogoSlider = () => {
 // News Slider (Mobile Only)
 // ===================
 window.initMobileNewsSlider = () => {
-    const cards = document.querySelectorAll(".card.image-card");
-    const gridContainer = document.querySelector("main.grid");
+  const cards = document.querySelectorAll(".card.image-card");
+  const gridContainer = document.querySelector("main.grid");
 
-    if (!cards.length || !gridContainer) return;
+  if (!cards.length || !gridContainer) return;
 
-    let currentIndex = 0;
+  // Detect touch device
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    // Swipe detection variables
-    let startX = 0;
-    let endX = 0;
+  let currentIndex = 0;
+  let startX = 0;
+  let endX = 0;
 
-    function updateSlider() {
-      if (window.innerWidth <= 1440) {
-        cards.forEach((card, i) => {
-          card.style.display = i === currentIndex ? "block" : "none";
-        });
-      } else {
-        cards.forEach(card => {
-          card.style.display = "block";
-        });
-      }
+  function updateSlider() {
+    if (window.innerWidth <= 1440 && isTouchDevice) {
+      // Apply slider styles for touch devices
+      Object.assign(gridContainer.style, {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        overflow: "hidden",
+        touchAction: "pan-y"
+      });
+
+      // Show only one card at a time
+      cards.forEach((card, i) => {
+        card.style.display = i === currentIndex ? "block" : "none";
+      });
+
+    } else {
+      // Use CSS grid for non-touch devices
+      gridContainer.style.display = "grid";
+
+      // Show all cards
+      cards.forEach(card => {
+        card.style.display = "block";
+      });
     }
+  }
 
-    function handleSwipe() {
-      if (endX < startX - 50) {
-        // Swiped left
-        currentIndex = (currentIndex + 1) % cards.length;
-        updateSlider();
-      } else if (endX > startX + 50) {
-        // Swiped right
-        currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-        updateSlider();
-      }
+  function handleSwipe() {
+    if (endX < startX - 50) {
+      currentIndex = (currentIndex + 1) % cards.length;
+      updateSlider();
+    } else if (endX > startX + 50) {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      updateSlider();
     }
+  }
 
-    // Attach touch listeners to the grid container
-    gridContainer.addEventListener("touchstart", (e) => {
+  // Only add swipe events for touch devices
+  if (isTouchDevice) {
+    gridContainer.addEventListener("touchstart", e => {
       startX = e.touches[0].clientX;
     });
 
-    gridContainer.addEventListener("touchend", (e) => {
+    gridContainer.addEventListener("touchend", e => {
       endX = e.changedTouches[0].clientX;
       handleSwipe();
     });
+  }
 
-    // Run it on load
-    updateSlider();
-
-    // Re-check on resize
-    window.addEventListener("resize", updateSlider);
-  };
+  updateSlider();
+  window.addEventListener("resize", updateSlider);
+};
 
   document.addEventListener("DOMContentLoaded", () => {
     window.initMobileNewsSlider();
