@@ -59,7 +59,7 @@ const articles = [
       },
       bodyHTML: `
         <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
-        <h2>Xin Chân Thành Cám Ơn!</h2>
+        <h2></h2>
         <blockquote>"Mong bà con sớm ổn định cuộc sống, vượt qua khó khăn, chung tay xây dựng và phát triển vững mạnh"</blockquote>
       `,
       pdf: "/public/files/photos.zip",
