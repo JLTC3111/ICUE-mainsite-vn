@@ -69,31 +69,60 @@ const articles = [
 
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+  let currentID = params.get("id");
 
-  const article = articles.find(a => a.id === id);
+  function renderCard(id) {
+    const article = articles.find(a => a.id === id);
 
-  if (!article) {
-    document.getElementById("content").innerHTML = `<h2 style="text-align:center;">🚫 Article not found.</h2>`;
-    return;
+    if (!article) {
+      document.getElementById("content").innerHTML =
+        `<h2 style="text-align:center;">🚫 Article not found.</h2>`;
+      return;
+    }
+
+    // Populate HTML
+    document.title = article.title;
+    document.getElementById("article-title").textContent = article.title;
+    document.getElementById("article-lead").textContent = article.lead;
+    document.getElementById("article-author").textContent = `By ${article.author}`;
+    document.getElementById("article-date").textContent = new Date(article.date).toDateString();
+    document.getElementById("article-date").setAttribute("datetime", article.date);
+    document.getElementById("article-image").src = article.image.src;
+    document.getElementById("article-caption").textContent = article.image.caption;
+    document.getElementById("article-body").innerHTML = article.bodyHTML;
+
+    if (article.pdf) {
+      const dlBtn = document.getElementById("article-download");
+      dlBtn.href = article.pdf;
+      dlBtn.textContent = article.pdfButtonText || "Download PDF ⇲";
+      dlBtn.style.display = "inline-block";
+    } else {
+      document.getElementById("article-download").style.display = "none";
+    }
   }
 
-  // Populate HTML
-  document.title = article.title;
-  document.getElementById("article-title").textContent = article.title;
-  document.getElementById("article-lead").textContent = article.lead;
-  document.getElementById("article-author").textContent = `By ${article.author}`;
-  document.getElementById("article-date").textContent = new Date(article.date).toDateString();
-  document.getElementById("article-date").setAttribute("datetime", article.date);
-  document.getElementById("article-image").src = article.image.src;
-  document.getElementById("article-caption").textContent = article.image.caption;
-  document.getElementById("article-body").innerHTML = article.bodyHTML;
+  // Initial render
+  renderCard(currentID);
 
-  if (article.pdf) {
-  const dlBtn = document.getElementById("article-download");
-  dlBtn.href = article.pdf;
-  dlBtn.textContent = article.pdfButtonText || "Sorry, not working!"; 
-  dlBtn.style.display = "inline-block";
-}});
+  // Prev button
+  document.getElementById('prev-card').onclick = () => {
+    const idx = articles.findIndex(c => c.id === currentID);
+    if (idx > 0) {
+      currentID = articles[idx - 1].id;
+      window.history.replaceState({}, '', `?id=${currentID}`);
+      renderCard(currentID);
+    }
+  };
+
+  // Next button
+  document.getElementById('next-card').onclick = () => {
+    const idx = articles.findIndex(c => c.id === currentID);
+    if (idx < articles.length - 1) {
+      currentID = articles[idx + 1].id;
+      window.history.replaceState({}, '', `?id=${currentID}`);
+      renderCard(currentID);
+    }
+  };
+});
 
 
