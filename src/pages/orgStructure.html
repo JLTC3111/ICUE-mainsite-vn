@@ -121,7 +121,7 @@ body {
     text-align: center;
     margin-bottom: 50px;
     color: #e1e6ed;
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 4vw, 1.8rem);
     font-weight: 700;
     letter-spacing: -0.5px;
 }
@@ -432,13 +432,13 @@ body {
 
         <div class="content-wrapper">
             <div class="tabs">
-                <button class="tab active" onclick="showTab('org-chart')">Sơ Đồ Tổ Chức</button>
+                <button class="tab active" onclick="showTab('org-chart')">Cơ Cấu</button>
                 <button class="tab" onclick="showTab('departments')">Phòng Ban</button>
                 <button class="tab" onclick="showTab('documents')">Tài Liệu Pháp Lý</button>
             </div>
 
             <div id="org-chart" class="tab-content active">
-                <h2 style="text-align: center; margin-bottom: 40px; color: #333;">Sơ Đồ Tổ Chức</h2>
+                <h2 style="text-align: center; margin-bottom: 40px; color: #333;">Sơ Đồ</h2>
                 <div class="org-chart">
                     <!-- CEO Level -->
                     <div class="level">
@@ -650,7 +650,7 @@ body {
             </div>
 
             <div id="documents" class="tab-content">
-                <h2 style="text-align: center; margin-bottom: 40px; color: #333;">Chứng Chỉ Pháp Lý & Cơ Chế Làm Việc</h2>
+                <h2 style="text-align: center; margin-bottom: 40px; color: #333;">Tuân Thủ, Pháp Lý & Cơ Chế, Phúc Lợi</h2>
                 <input type="text" class="search-bar" placeholder="Tìm Kiếm Văn Bản..." onkeyup="searchDocuments(this.value)">
                 
                 <div class="documents-section">
