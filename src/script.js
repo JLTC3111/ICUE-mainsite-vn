@@ -567,6 +567,9 @@ window.loadPage = (page) => {
                   handleAOSByScreenSize();
                   calendarModal();
                   break;
+                case 'orgStructure':
+                  calendarModal();
+                  break;
               }
             });
            
@@ -1382,6 +1385,58 @@ window.initMobileNewsSlider = () => {
 // Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
+window.OrgStructure = {
+    showTab: function(tabName) {
+        const tabContents = document.querySelectorAll('.tab-content');
+          tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Remove active class from all tabs
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach(tab => tab.classList.remove('active'));
+                
+                // Show selected tab content
+                document.getElementById(tabName).classList.add('active');
+                
+                // Add active class to clicked tab
+                event.target.classList.add('active');
+            },
+
+            showPersonDetails: function(name, title) {
+                alert(`${name}\n${title}\n\nClick to view full profile and responsibilities.`);
+            },
+
+            downloadDocument: function(docName) {
+                alert(`Downloading ${docName}...\n\nIn a real implementation, this would trigger a file download.`);
+            },
+
+            searchDocuments: function(searchTerm) {
+                const categories = document.querySelectorAll('.document-category');
+                const searchLower = searchTerm.toLowerCase();
+                
+                categories.forEach(category => {
+                    const items = category.querySelectorAll('.document-list li');
+                    let hasVisibleItems = false;
+                    
+                    items.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(searchLower)) {
+                            item.style.display = 'block';
+                            hasVisibleItems = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    category.style.display = hasVisibleItems || searchTerm === '' ? 'block' : 'none';
+                });
+            }
+        };
+
+      window.showTab = window.OrgStructure.showTab;
+      window.showPersonDetails = window.OrgStructure.showPersonDetails;
+      window.downloadDocument = window.OrgStructure.downloadDocument;
+      window.searchDocuments = window.OrgStructure.searchDocuments;
+
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
@@ -1698,6 +1753,9 @@ function initAudioVisualizer(
         color = '#a1c900ff';
         break;
       case 'News':
+        color = '#000000';
+        break;
+      case 'orgStructure':
         color = '#000000';
         break;
     }
