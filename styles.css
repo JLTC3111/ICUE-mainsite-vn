@@ -725,7 +725,7 @@ footer p {
   display: flex;
   width: 44px;
   height: 44px;
-  background-color: #ffffff; 
+  background-color: transparent; 
   justify-content: center;
   align-items: center;
   border-radius: 25px;
