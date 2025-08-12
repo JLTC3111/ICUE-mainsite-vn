@@ -1756,7 +1756,7 @@ function initAudioVisualizer(
         color = '#000000';
         break;
       case 'orgStructure':
-        color = '#000000';
+        color = '#780000';
         break;
     }
   

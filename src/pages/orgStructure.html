@@ -283,13 +283,13 @@ body {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     border-radius: 20px;
     padding: 35px 30px;
-    border-left: 8.5px solid #6d7288;
+    border-bottom: 1.5px solid #6d7288;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
 }
 
 .document-category:hover {
-    border-left: 15px solid #6d7288;
+    border-left: 2.5px solid #6d7288;
     transform: translateY(-5px);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
 }
@@ -731,7 +731,7 @@ body {
                         <h3>Hỗ Trợ CSKH</h3>
                         <p>Xây dựng mối quan hệ với khách hàng và thúc đẩy tăng trưởng doanh thu.</p>
                         <br>
-                        <strong>Trưởng Phòng:</strong>Nguyễn Thị Ly<br>
+                        <strong>Trưởng Phòng:</strong> Nguyễn Thị Ly<br>
                         <strong>Liên Hệ:</strong> support@icue.vn
                     </div>
                     
@@ -740,7 +740,7 @@ body {
                         <h3>Tài Chính</h3>
                         <p>Quản lý lập kế hoạch tài chính, phân tích và tuân thủ.</p>
                         <br>
-                        <strong>Trưởng Phòng:</strong>Phan Thị Hiến<br>
+                        <strong>Trưởng Phòng:</strong> Phan Thị Hiến<br>
                         <strong>Liên Hệ:</strong> billing@icue.vn
                     </div>
                     
@@ -949,19 +949,7 @@ body {
                         </ul>
                     </div>
                     <div class="document-category">
-                        <h3><svg width="15px" height="15px" fill="#currentColor" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                            viewBox="0 0 32 32" xml:space="preserve">
-                        <path id="get--ahead--of--risk--and--compliance_1_" d="M25,31.36H7v-0.72h5.657c0.157-1.615,1.367-2.825,2.983-2.982V12.333
-                            c-1.131-0.174-2-1.154-2-2.333s0.869-2.159,2-2.333V4.334L6.876,6.838c2.012,0.595,3.484,2.46,3.484,4.662
-                            c0,2.68-2.18,4.86-4.86,4.86s-4.86-2.18-4.86-4.86c0-2.479,1.866-4.531,4.267-4.824L4.901,6.654l20.999-6
-                            c0.149-0.042,0.321,0.021,0.406,0.155l5,8c0.069,0.111,0.072,0.251,0.009,0.365C31.251,9.289,31.131,9.36,31,9.36H21
-                            c-0.131,0-0.251-0.071-0.314-0.186c-0.063-0.114-0.061-0.254,0.009-0.365l4.504-7.206L16.36,4.129v3.539
-                            c1.131,0.174,2,1.154,2,2.333s-0.869,2.159-2,2.333v15.325c1.616,0.157,2.826,1.367,2.983,2.982H25V31.36z M13.382,30.64h5.236
-                            c-0.166-1.323-1.235-2.28-2.618-2.28C14.618,28.36,13.547,29.317,13.382,30.64z M5.5,7.36c-2.283,0-4.14,1.857-4.14,4.14
-                            s1.857,4.14,4.14,4.14s4.14-1.857,4.14-4.14S7.783,7.36,5.5,7.36z M16,8.36c-0.904,0-1.64,0.736-1.64,1.64s0.736,1.64,1.64,1.64
-                            c0.904,0,1.64-0.736,1.64-1.64S16.904,8.36,16,8.36z M21.649,8.64h8.701L26,1.679L21.649,8.64z"/>
-                        <rect id="_Transparent_Rectangle" style="fill:none;" width="32" height="32"/>
-                        </svg> Tuân Thủ</h3>
+                        <h3>Tuân Thủ</h3>
                         <ul class="document-list" data-category="compliance">
                             <li onclick="downloadDocument('safety-manual')"><svg width="20px" height="20px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><style>.a{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="a" d="M38.8744,26.2368,35,24l3.8743-2.2368a5.5,5.5,0,0,0-5.5-9.5264L29.5,14.4736V10a5.5,5.5,0,0,0-11,0v4.4736l-3.8744-2.2368a5.5,5.5,0,0,0-5.5,9.5264L13,24,9.1256,26.2368a5.5,5.5,0,0,0,5.5,9.5264L18.5,33.5262V38a5.5,5.5,0,0,0,11,0V33.5262l3.8744,2.237a5.5,5.5,0,0,0,5.5-9.5264Z"/><line class="a" x1="18.5" y1="14.4736" x2="35.0001" y2="24"/><line class="a" x1="18.5" y1="33.5262" x2="35.0001" y2="24"/></svg>
                             Sổ Tay An Toàn (PDF, 3MB)</li>
@@ -1104,6 +1092,18 @@ body {
     </footer>
 
     <script>
+        function documentDownload(fileUrl, fileName) {
+        // Create an invisible link element
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName || ''; // fallback: browser uses original filename
+        link.style.display = 'none';
+
+        // Append, click, and remove
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        }
         function showTab(tabName) {
             // Hide all tab contents
             const tabContents = document.querySelectorAll('.tab-content');
@@ -1125,7 +1125,7 @@ body {
         }
 
         function downloadDocument(docName) {
-            alert(`Downloading ${docName}...\n\nIn a real implementation, this would trigger a file download.`);
+            alert(`Downloading ${docName}...\n\nfeature will be ready in a few days....`);
         }
 
         function searchDocuments(searchTerm) {
