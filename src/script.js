@@ -1406,7 +1406,46 @@ window.OrgStructure = {
             },
 
             downloadDocument: function(docName) {
-                alert(`Downloading ${docName}...\n\nIn a real implementation, this would trigger a file download.`);
+                // Handle direct file paths (like 'public/files/...')
+                if (docName.includes('/') || docName.includes('.')) {
+                    const link = document.createElement('a');
+                    link.href = docName;
+                    link.download = docName.split('/').pop(); // Get filename from path
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    return;
+                }
+                
+                // Handle document IDs - map to actual file paths
+                const documentMap = {
+                    'remote-work-policy': 'public/files/company_policies/remote_work_policy.pdf',
+                    'pto-policy': 'public/files/company_policies/pto_policy.pdf',
+                    'articles-incorporation': 'public/files/legal/articles_of_incorporation.pdf',
+                    'privacy-policy': 'public/files/legal/privacy_policy.pdf',
+                    'terms-service': 'public/files/legal/terms_of_service.pdf',
+                    'data-protection': 'public/files/legal/data_protection_policy.pdf',
+                    'benefits-guide': 'public/files/hr/benefits_guide.pdf',
+                    '401k-plan': 'public/files/hr/401k_plan.pdf',
+                    'health-insurance': 'public/files/hr/health_insurance.pdf',
+                    'stock-options': 'public/files/hr/stock_options.pdf',
+                    'safety-manual': 'public/files/safety/safety_manual.pdf',
+                    'quality-standards': 'public/files/quality/quality_standards.pdf',
+                    'audit-report': 'public/files/audit/audit_report.pdf',
+                    'compliance-checklist': 'public/files/compliance/compliance_checklist.pdf'
+                };
+                
+                const filePath = documentMap[docName];
+                if (filePath) {
+                    const link = document.createElement('a');
+                    link.href = filePath;
+                    link.download = filePath.split('/').pop();
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    alert(`Document "${docName}" not found. Please check if the file exists.`);
+                }
             },
 
             searchDocuments: function(searchTerm) {
