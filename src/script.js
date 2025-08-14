@@ -1401,10 +1401,6 @@ window.OrgStructure = {
                 event.target.classList.add('active');
             },
 
-            showPersonDetails: function(name, title) {
-                alert(`${name}\n${title}\n\nClick to view full profile and responsibilities.`);
-            },
-
             downloadDocument: function(docName) {
                 // Handle direct file paths (like 'public/files/...')
                 if (docName.includes('/') || docName.includes('.')) {
@@ -1452,9 +1448,7 @@ window.OrgStructure = {
                 });
             }
         };
-
       window.showTab = window.OrgStructure.showTab;
-      window.showPersonDetails = window.OrgStructure.showPersonDetails;
       window.downloadDocument = window.OrgStructure.downloadDocument;
       window.searchDocuments = window.OrgStructure.searchDocuments;
 
@@ -1777,7 +1771,7 @@ function initAudioVisualizer(
         color = '#000000';
         break;
       case 'orgStructure':
-        color = '#780000';
+        color = '#000000';
         break;
     }
   

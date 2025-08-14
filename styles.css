@@ -181,18 +181,6 @@ nav a {
   animation: intro 1.5s ease-in-out forwards;
 }
 
-footer {
-  display: none;
-  background: #ece5e5;
-  padding: 1rem;
-  text-align: center;
-  margin-top: 4.5rem;
-}
-
-footer p {
-  margin: 0;
-}
-
 .contact-sidebar {
     position: fixed; 
     right: 1.5%; 
@@ -1155,7 +1143,6 @@ footer p {
 
 body.loading nav,
 body.loading main,
-body.loading footer,
 body.loading .slider,
 body.loading .dot,
 body.loading .language-switcher,
@@ -1864,10 +1851,6 @@ body.loaded #app {
     justify-content: center;
     line-height: 2;
     letter-spacing: normal;
-  }
-
-  footer {
-    display: none;
   }
 
   .svg-blinking-cursor {
