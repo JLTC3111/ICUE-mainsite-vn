@@ -13,7 +13,7 @@ const AOSManager = (() => {
 
 function restoreAOSAttributes() {
   console.log('[AOS] Restoring AOS attributes');
-  aosElements.forEach((value, el) => {
+  originalAOS.forEach((value, el) => {
     el.setAttribute('data-aos', value || 'flip-down');
     el.classList.add('aos-init'); // Add AOS classes back
     el.classList.remove('aos-animate'); 
