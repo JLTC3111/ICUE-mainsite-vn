@@ -36,7 +36,7 @@
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1rem, 3.5vw, 2.5rem);
             font-weight: 600;
             color: #333;
             margin-bottom: 8px;
@@ -44,7 +44,7 @@
 
         .header .subtitle {
             color: #666;
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
         }
 
         .main-content {
@@ -60,7 +60,7 @@
 
         .section-title {
             color: #8BC34A;
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -68,7 +68,7 @@
         }
 
         .section-heading {
-            font-size: 2rem;
+            font-size: clamp(1rem, 2.5vw, 2rem);
             font-weight: 600;
             color: #333;
             margin-bottom: 15px;
@@ -76,7 +76,7 @@
 
         .section-description {
             color: #666;
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             line-height: 1.6;
             max-width: 600px;
         }
@@ -100,6 +100,7 @@
             align-items: center;
             gap: 20px;
             position: relative;
+            transition: all 0.3s ease-in-out;
         }
 
         .faq-card:hover {
@@ -109,17 +110,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .faq-card.primary {
-            background: transparent;
-            color: #000000;
-            border-color: #8BC34A;
-        }
-
-        .faq-card.primary:hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
         .faq-icon {
             width: 50px;
             height: 50px;
@@ -127,36 +117,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: clamp(0.75rem, 2vw, 1.1rem);
             flex-shrink: 0;
         }
 
-        .faq-card:not(.primary) .faq-icon {
-            background: #ffffff;
-            border: 1px solid #e9ecef;
-        }
-
         .faq-content h3 {
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             font-weight: 600;
             margin-bottom: 2px;
             color: inherit;
         }
 
         .faq-content p {
-            font-size: 0.9rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             opacity: 0.8;
             margin: 0;
         }
 
         .faq-card .arrow {
             display: inline-block;
-            transition: transform 0.3s ease;
             transform: rotate(90deg);
             margin-left: 1rem;
+            transform: all 0.15s ease-in-out;
         }
         .faq-card.active .arrow {
             transform: rotate(180deg) translateY(2.5px);
+            will-change: transform, color, background;
         }
 
         .faq-answer-section {
@@ -214,6 +200,7 @@
 
         @media (max-width: 768px) {
             .container {
+                margin-top: 20%;
                 padding: 15px;
             }
 
@@ -222,7 +209,7 @@
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: clamp(1.25rem, 3.5vw, 2.25rem);
             }
 
             .main-content {
@@ -230,7 +217,7 @@
             }
 
             .section-heading {
-                font-size: 1.6rem;
+                font-size: clamp(1rem, 2vw, 1.6rem);
             }
 
             .faq-grid {
@@ -330,10 +317,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
           </svg></span>
         </div>
-
-    <!-- FAQ Answers (hidden by default) -->
-    <div id="faq-answers" class="faq-answer-section"></div>
-  
       </div>
     </div>
 </body>
