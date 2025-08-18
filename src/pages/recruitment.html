@@ -374,6 +374,17 @@
         </div>
     </section>
 
+    <!-- Job Positions Section -->
+    <section class="jobs-section" id="open-positions">
+        <div class="container">
+            <h2 class="section-title">Vị Trí Tuyển Dụng</h2>
+            <div class="section-subtitle">Tham gia đội ngũ của chúng tôi và tạo ra sự khác biệt trong lĩnh vực năng lượng</div>
+            <div id="jobs-container" class="jobs-grid">
+                <!-- Jobs will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
     <!-- Benefits Section -->
     <section class="benefits-section">
         <div class="container">
@@ -463,6 +474,11 @@
         // Function to render job positions
         function renderJobs(jobs) {
             const jobsContainer = document.getElementById('jobs-container');
+            if (!jobsContainer) {
+                console.error('Jobs container not found');
+                return;
+            }
+            
             jobsContainer.innerHTML = '';
 
             jobs.forEach(job => {
@@ -540,12 +556,23 @@
             alert(`Ứng tuyển vị trí: ${job.title}\n\nPhòng ban: ${job.department}\nĐịa điểm: ${job.location}\n\nTrong triển khai thực tế, điều này sẽ mở trang chi tiết công việc hoặc form ứng tuyển.`);
         }
 
-        // Smooth scroll for CTA button
-        document.querySelector('.cta-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('open-positions').scrollIntoView({
-                behavior: 'smooth'
-            });
+        // Initialize jobs on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderJobs(jobPositions);
+            
+            // Smooth scroll for CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const openPositions = document.getElementById('open-positions');
+                    if (openPositions) {
+                        openPositions.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
         });
     </script>
 </body>

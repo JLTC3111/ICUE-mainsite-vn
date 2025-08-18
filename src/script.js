@@ -528,86 +528,71 @@ window.loadPage = (page) => {
               updateCalendarSvgTime();
               initAudioVisualizer();
               updateMusicBarColor(page);
+              calendarModal();
 
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
                   ICUEFooter.autoInject();
-                  calendarModal();
+              
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'Home':
                   makeItRainText();
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
-                  calendarModal();
                   break;
                 case 'News':
                   initLogoSlider();
-                  calendarModal();
                   initMobileNewsSlider();
                   triggerFanfare();
                   break;
                 case 'aboutUs':
                   createBalloons();
-                  calendarModal();
                   break;
                 case 'Contact':
                   initPostMethod();
-                  calendarModal();
                   break;
                 case 'ourWork':
                   initializeCarousel();
-                  calendarModal();
                   break;
                 case 'pastProjects':
                   handleAOSByScreenSize();
-                  calendarModal();
                   break;
                 case 'orgStructure':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'FAQs':
                   ICUEFooter.autoInject();
-                  calendarModal();
+                  initFrequentlyAskedQuestions();
                   break;
                 case 'recruitment':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'donations':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'notableAwards':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'communityActivities':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'privacy':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'terms':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'gdpr':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
                 case 'cookies':
                   ICUEFooter.autoInject();
-                  calendarModal();
                   break;
               }
               
@@ -1476,6 +1461,109 @@ window.OrgStructure = {
       window.downloadDocument = window.OrgStructure.downloadDocument;
       window.searchDocuments = window.OrgStructure.searchDocuments;
 
+      window.initFrequentlyAskedQuestions = function() {
+        let currentOpenCategory = null; // Track currently open category
+        
+        const faqData = {
+            services: [
+                { q: "Bạn cung cấp những loại dịch vụ tư vấn nào?", a: "Chúng tôi cung cấp tư vấn quy hoạch, thiết kế, quản lý dự án, giám sát và hỗ trợ thủ tục pháp lý." },
+                { q: "Có nhận dự án dân dụng nhỏ lẻ không?", a: "Có, chúng tôi nhận từ dự án nhà ở dân dụng đến công trình thương mại và công nghiệp." }
+            ],
+            process: [
+                { q: "Quy trình hợp tác diễn ra như thế nào?", a: "Quy trình gồm: tư vấn ban đầu → khảo sát hiện trạng → thiết kế sơ bộ → hoàn thiện bản vẽ → hỗ trợ thi công." },
+                { q: "Tôi có thể điều chỉnh thiết kế trong quá trình không?", a: "Có, khách hàng được quyền yêu cầu chỉnh sửa trong các giai đoạn trước khi chốt bản vẽ." }
+            ],
+            costs: [
+                { q: "Phí dịch vụ được tính như thế nào?", a: "Phí có thể tính trọn gói, theo % tổng mức đầu tư, hoặc theo giờ tùy loại dự án." },
+                { q: "Có hỗ trợ trả theo tiến độ không?", a: "Có, chúng tôi chấp nhận thanh toán linh hoạt theo các giai đoạn dự án." }
+            ],
+            legal: [
+                { q: "Bạn có hỗ trợ xin giấy phép xây dựng không?", a: "Có, chúng tôi hỗ trợ trọn gói từ chuẩn bị hồ sơ đến nộp cơ quan chức năng." },
+                { q: "Khách hàng cần cung cấp hồ sơ gì?", a: "Thông thường cần: giấy tờ sở hữu đất, bản vẽ hiện trạng, và giấy tờ pháp lý liên quan." }
+            ],
+            timeline: [
+                { q: "Thời gian hoàn thành dự án là bao lâu?", a: "Tùy quy mô dự án, thường từ 2-6 tháng cho thiết kế và 6-18 tháng cho thi công." },
+                { q: "Nếu có chậm tiến độ thì sao?", a: "Chúng tôi sẽ báo cáo ngay lập tức, đề xuất phương án xử lý và cam kết bù tiến độ khi có thể." }
+            ],
+            technology: [
+                { q: "Có áp dụng công nghệ BIM không?", a: "Có, chúng tôi sử dụng BIM và mô phỏng 3D để giúp khách hàng hình dung rõ thiết kế." },
+                { q: "Bạn có giải pháp thiết kế xanh không?", a: "Có, chúng tôi ưu tiên vật liệu bền vững và giải pháp tiết kiệm năng lượng." }
+            ],
+            clients: [
+                { q: "Đối tượng khách hàng chính của bạn là ai?", a: "Chúng tôi phục vụ cả cá nhân, doanh nghiệp, và cơ quan nhà nước." },
+                { q: "Sau khi bàn giao, có hỗ trợ bảo trì không?", a: "Có, chúng tôi có dịch vụ hậu mãi và bảo trì theo yêu cầu." }
+            ],
+            general: [
+                { q: "Tôi có thể xem dự án bạn đã thực hiện không?", a: "Có, vui lòng liên hệ để nhận hồ sơ năng lực và danh mục dự án." },
+                { q: "Làm sao để liên hệ nhanh nhất?", a: "Bạn có thể gọi trực tiếp hotline hoặc gửi email, chúng tôi phản hồi trong vòng 24h." }
+            ]
+        };
+    
+        function openCategory(category) {
+            // Clear any existing answers
+            const existingAnswers = document.querySelectorAll('.faq-answer-section');
+            existingAnswers.forEach(section => section.remove());
+            
+            // Remove active state from all cards
+            const allCards = document.querySelectorAll('.faq-card');
+            allCards.forEach(card => card.classList.remove('active'));
+            
+            // If clicking the same category that's already open, just close it
+            if (currentOpenCategory === category) {
+                currentOpenCategory = null;
+                return;
+            }
+            
+            // Set new current category
+            currentOpenCategory = category;
+            
+            if (faqData[category]) {
+                // Find the clicked card and add active state
+                const clickedCard = event.target.closest('.faq-card');
+                if (clickedCard) {
+                    clickedCard.classList.add('active');
+                }
+                
+                // Create the FAQ section
+                const section = document.createElement("div");
+                section.classList.add("faq-answer-section");
+                
+                faqData[category].forEach(item => {
+                    const div = document.createElement("div");
+                    div.classList.add("faq-answer");
+                    div.innerHTML = `
+                        <h4 class="faq-question" onclick="toggleAnswer(this)">${item.q}</h4>
+                        <p class="faq-answer-text" style="display: none;">${item.a}</p>
+                    `;
+                    section.appendChild(div);
+                });
+                
+                // Insert the section after the clicked card
+                if (clickedCard) {
+                    clickedCard.insertAdjacentElement('afterend', section);
+                }
+            }
+        }
+    
+        function toggleAnswer(el) {
+            const p = el.nextElementSibling;
+            if (p && p.classList.contains('faq-answer-text')) {
+                p.style.display = p.style.display === "block" ? "none" : "block";
+                
+                // Optional: Add visual indicator to the question
+                el.classList.toggle('expanded');
+            }
+        }
+    
+        // Make functions globally available
+        window.openCategory = openCategory;
+        window.toggleAnswer = toggleAnswer;
+    
+        return {
+            openCategory,
+            toggleAnswer
+        };
+    };
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
