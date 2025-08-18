@@ -532,5 +532,144 @@
             </form>
         </div>
     </main>
+
+    <script>
+        let selectedAmount = 100;
+        let selectedFrequency = 'one-time';
+
+        // Function to select donation amount
+        function selectAmount(button, amount) {
+            // Remove active class from all amount buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            button.classList.add('active');
+            
+            // Update selected amount
+            selectedAmount = amount;
+            
+            // Update donate button text
+            document.getElementById('donateAmount').textContent = amount;
+            
+            // Clear custom amount input
+            document.getElementById('customAmount').value = '';
+        }
+
+        // Function to update custom amount
+        function updateCustomAmount(input) {
+            const amount = parseInt(input.value);
+            if (amount && amount > 0) {
+                // Remove active class from preset amount buttons
+                document.querySelectorAll('.amount-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Update selected amount
+                selectedAmount = amount;
+                
+                // Update donate button text
+                document.getElementById('donateAmount').textContent = amount;
+            }
+        }
+
+        // Function to select donation frequency
+        function selectFrequency(option, frequency) {
+            // Remove active class from all frequency options
+            document.querySelectorAll('.donation-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            
+            // Add active class to clicked option
+            option.classList.add('active');
+            
+            // Update selected frequency
+            selectedFrequency = frequency;
+        }
+
+        // Function to process donation form
+        function processDonation(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const firstName = formData.get('firstName');
+            const lastName = formData.get('lastName');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const company = formData.get('company');
+            
+            // Validate required fields
+            if (!firstName || !lastName || !email) {
+                alert('Vui lòng điền đầy đủ thông tin bắt buộc (Tên, Họ, Email)');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Vui lòng nhập địa chỉ email hợp lệ');
+                return;
+            }
+            
+            // Create donation summary
+            const frequencyText = {
+                'one-time': 'một lần',
+                'monthly': 'hàng tháng', 
+                'annual': 'hàng năm'
+            };
+            
+            const summary = `
+Thông tin quyên góp:
+- Số tiền: $${selectedAmount}
+- Tần suất: ${frequencyText[selectedFrequency]}
+- Người quyên góp: ${firstName} ${lastName}
+- Email: ${email}
+${phone ? `- Điện thoại: ${phone}` : ''}
+${company ? `- Công ty: ${company}` : ''}
+
+Cảm ơn bạn đã ủng hộ! Trong triển khai thực tế, đây sẽ là nơi xử lý thanh toán.
+            `;
+            
+            alert(summary);
+            
+            // In a real implementation, you would:
+            // 1. Send data to payment processor
+            // 2. Create donation record in database
+            // 3. Send confirmation email
+            // 4. Redirect to thank you page
+        }
+
+        // Initialize form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default values
+            document.getElementById('donateAmount').textContent = selectedAmount;
+            
+            // Add form validation on input
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (this.value && !emailRegex.test(this.value)) {
+                        this.style.borderColor = '#ef4444';
+                    } else {
+                        this.style.borderColor = '#e2e8f0';
+                    }
+                });
+            }
+            
+            // Add number formatting to custom amount
+            const customAmountInput = document.getElementById('customAmount');
+            if (customAmountInput) {
+                customAmountInput.addEventListener('input', function() {
+                    // Remove non-numeric characters
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            }
+            
+            console.log('Donation form initialized successfully');
+        });
+    </script>
 </body>
 </html>
