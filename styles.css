@@ -851,7 +851,7 @@ nav a {
 }
 
 .submenu.open {
-  transform: translateX(15px) translateY(0); 
+  transform: translateX(0) translateY(0); 
   opacity: 1;
   pointer-events: auto;
 }

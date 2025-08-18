@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Quyên Góp</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 60px 0;
+        }
+
+        .impact-section {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .impact-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1e293b;
+        }
+
+        .impact-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .impact-story {
+            background: #eff6ff;
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            margin-bottom: 2rem;
+        }
+
+        .impact-story h3 {
+            color: #1e40af;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .impact-story p {
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .donation-form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 20px;
+        }
+
+        .donation-form h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .amount-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .amount-btn {
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .amount-btn:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .amount-btn.active {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+        }
+
+        .custom-amount {
+            margin-bottom: 24px;
+        }
+
+        .custom-amount label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-amount input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .donation-type {
+            margin-bottom: 24px;
+        }
+
+        .donation-type label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .donation-options {
+            display: flex;
+            gap: 12px;
+        }
+
+        .donation-option {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .donation-option.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .donor-info {
+            margin-bottom: 24px;
+        }
+
+        .donor-info h3 {
+            margin-bottom: 16px;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .donate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .security-note {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .projects-section {
+            background: white;
+            padding: 60px 0;
+        }
+
+        .projects-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(45deg, #e2e8f0, #cbd5e1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .project-content {
+            padding: 24px;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .project-description {
+            color: #64748b;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-progress {
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 0;
+            }
+
+            .donation-form {
+                position: static;
+            }
+
+            .amount-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Xây Dựng Cộng Đồng Vững Mạnh</h1>
+            <p>Quyên góp của bạn giúp chúng tôi cung cấp các dịch vụ hạ tầng và quy hoạch thiết yếu cho những cộng đồng thiếu thốn, tạo ra tác động tích cực lâu dài cho các thế hệ tương lai.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="main-content">
+            <div class="impact-section">
+                <h2>Tác Động Của Bạn</h2>
+                
+                <div class="impact-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">127</span>
+                        <div class="stat-label">Dự án hoàn thành</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">45K</span>
+                        <div class="stat-label">Người được giúp</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">23</span>
+                        <div class="stat-label">Cộng đồng được phục vụ</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">$2.3M</span>
+                        <div class="stat-label">Dịch vụ hiện vật</div>
+                    </div>
+                </div>
+
+                <div class="impact-story">
+                    <h3>Thành Công Gần Đây: Trung Tâm Cộng Đồng Riverside</h3>
+                    <p>Nhờ sự hỗ trợ của các nhà tài trợ, chúng tôi đã hoàn thành lập kế hoạch và giám sát xây dựng cho một trung tâm cộng đồng mới phục vụ hơn 800 gia đình. Cơ sở này hiện tổ chức các chương trình giáo dục, dịch vụ y tế và khả năng làm nơi trú ẩn khẩn cấp.</p>
+                </div>
+
+                <div class="impact-story">
+                    <h3>Ứng Phó Khẩn Cấp: Hồi Phục Sau Lũ Lụt</h3>
+                    <p>Đội phản ứng nhanh của chúng tôi đã cung cấp đánh giá kết cấu và kế hoạch xây dựng miễn phí cho 34 ngôi nhà bị ảnh hưởng bởi trận lũ gần đây, giúp các gia đình trở lại nơi ở an toàn nhanh hơn trung bình 60%.</p>
+                </div>
+            </div>
+
+            <form class="donation-form" onsubmit="processDonation(event)">
+                <h2>Quyên Góp</h2>
+                
+                <div class="amount-buttons">
+                    <button type="button" class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this, 50)">$50</button>
+                    <button type="button" class="amount-btn active" onclick="selectAmount(this, 100)">$100</button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
+                    <button type="button" class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
+                </div>
+
+                <div class="custom-amount">
+                    <label for="customAmount">Số Tiền Tùy Chọn</label>
+                    <input type="number" id="customAmount" name="customAmount" placeholder="Nhập số tiền" min="1" onchange="updateCustomAmount(this)">
+                </div>
+
+                <div class="donation-type">
+                    <label>Tần Suất Quyên Góp</label>
+                    <div class="donation-options">
+                        <div class="donation-option active" onclick="selectFrequency(this, 'one-time')">Một lần</div>
+                        <div class="donation-option" onclick="selectFrequency(this, 'monthly')">Hàng tháng</div>
+                        <div class="donation-option" onclick="selectFrequency(this, 'annual')">Hàng năm</div>
+                    </div>
+                </div>
+
+                <div class="donor-info">
+                    <h3>Thông Tin Nhà Tài Trợ</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Tên</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Họ</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số Điện Thoại (Tùy chọn)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Công Ty/Tổ Chức (Tùy chọn)</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                </div>
+
+                <button type="submit" class="donate-btn">
+                    Quyên Góp $<span id="donateAmount">100</span>
+                </button>
+
+                <div class="security-note">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                    </svg>
+                    Quyên góp an toàn với mã hóa SSL 256-bit
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <section class="projects-section">
+        <div class="container">
+            <h2>Các Dự Án Hiện Tại Cần Sự Hỗ Trợ Của Bạn</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">Mở Rộng Trung Tâm Cộng Đồng</div>
+                    <div class="project-content">
+                        <h3 class="project-title">Trung Tâm Cộng Đồng Eastside</h3>
+                        <p class="project-description">Mở rộng cơ sở để bao gồm phòng máy t
+
+</html>
