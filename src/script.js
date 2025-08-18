@@ -585,6 +585,10 @@ window.loadPage = (page) => {
                   ICUEFooter.autoInject();
                   calendarModal();
                   break;
+                case 'notableAwards':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
               }
             });
            

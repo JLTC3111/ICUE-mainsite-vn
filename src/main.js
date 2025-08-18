@@ -261,7 +261,6 @@ footer {
     padding: 8px 20px;
     border-radius: 50px;
     text-decoration: none;
-    font-weight: 500;
     font-size: 14px;
     transition: all 0.4s ease;
     overflow: hidden;
@@ -332,9 +331,8 @@ footer {
                 Công Ty
             </button>
             <div class="collapsible">
-                <a href="#">Giải Thưởng Nổi Bật</a>
-                <a href="#">Hoạt Động Cộng Đồng</a>
-                <a href="#">Bản Tin</a>
+                <a href="#/notableAwards">Giải Thưởng Nổi Bật</a>
+                <a href="#/communityActivities">Hoạt Động Cộng Đồng</a>
             </div>
         </div>
         <div class="footer-section">
