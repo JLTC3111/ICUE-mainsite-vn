@@ -48,17 +48,6 @@ h3:hover {
   transform: scale(1.02);
 }
 
-p {
-  font-size: 24px;
-  font-weight: 400;
-  color: rgb(0, 0, 0);
-  letter-spacing: 7.5px;
-  line-height: 2;
-  margin-top: 5rem;
-  margin-left: 5rem;
-  margin-right: 15rem;
-}
-
 nav {
   display: flex;
   justify-content: space-between; 

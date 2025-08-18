@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Cộng Đồng ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .community-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 60px 20px 40px;
+            margin-top: 7.5%;
+        }
+
+        .community-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(45deg, #ffffff, #c8ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 10;
+            position: relative;
+        }
+
+        .community-subtitle {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .community-subtitle a {
+            color: #c8ff00;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .community-subtitle a:hover {
+            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        .community-description {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0.8;
+            max-width: 600px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .community-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .photo-collage {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            transform: rotateX(5deg) rotateY(-2deg);
+            transition: transform 0.6s ease;
+        }
+
+        .photo-collage:hover {
+            transform: rotateX(0deg) rotateY(0deg) scale(1.02);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 2px;
+        }
+
+        .photo-item {
+            background: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+            opacity: 1;
+            z-index: 5;
+            box-shadow: 0 10px 30px rgba(200, 255, 0, 0.3);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Specific grid placements for variety */
+        .photo-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .photo-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(4) { grid-column: span 2; grid-row: span 1; }
+        .photo-item:nth-child(5) { grid-column: span 1; grid-row: span 2; }
+        .photo-item:nth-child(6) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(7) { grid-column: span 2; grid-row: span 1; }
+        .photo-item:nth-child(8) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(9) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(10) { grid-column: span 3; grid-row: span 2; }
+        .photo-item:nth-child(11) { grid-column: span 1; grid-row: span 1; }
+        .photo-item:nth-child(12) { grid-column: span 2; grid-row: span 1; }
+
+        .community-actions {
+            margin-top: 4rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            z-index: 10;
+            position: relative;
+        }
+
+        .community-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-btn.primary {
+            background: linear-gradient(45deg, #c8ff00, #a0d000);
+            color: #000;
+        }
+
+        .community-btn.secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #c8ff00;
+        }
+
+        .community-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(200, 255, 0, 0.3);
+        }
+
+        .community-btn.primary:hover {
+            background: linear-gradient(45deg, #ffffff, #c8ff00);
+        }
+
+        .community-btn.secondary:hover {
+            background: #c8ff00;
+            color: #000;
+        }
+
+        .photo-credit {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        .photo-credit a {
+            color: #c8ff00;
+            text-decoration: none;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #c8ff00;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-dot:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-dot:nth-child(2) { top: 60%; left: 85%; animation-delay: 2s; }
+        .floating-dot:nth-child(3) { top: 80%; left: 20%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .community-hero {
+                padding: 40px 15px 30px;
+                margin-top: 15%;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+                gap: 1px;
+            }
+
+            .photo-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+            .photo-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(4) { grid-column: span 2; grid-row: span 1; }
+            .photo-item:nth-child(5) { grid-column: span 1; grid-row: span 2; }
+            .photo-item:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+            .photo-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(8) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(9) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(10) { grid-column: span 3; grid-row: span 2; }
+            .photo-item:nth-child(11) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(12) { grid-column: span 2; grid-row: span 1; }
+
+            .photo-collage {
+                height: 60vh;
+                min-height: 400px;
+                transform: none;
+            }
+
+            .photo-collage:hover {
+                transform: scale(1.01);
+            }
+
+            .community-actions {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                margin-top: 3rem;
+            }
+
+            .community-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+                width: 280px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+            }
+
+            .photo-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+            .photo-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(4) { grid-column: span 2; grid-row: span 1; }
+            .photo-item:nth-child(5) { grid-column: span 1; grid-row: span 2; }
+            .photo-item:nth-child(6) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(8) { grid-column: span 2; grid-row: span 1; }
+            .photo-item:nth-child(9) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(10) { grid-column: span 1; grid-row: span 1; }
+            .photo-item:nth-child(11) { grid-column: span 2; grid-row: span 2; }
+            .photo-item:nth-child(12) { grid-column: span 2; grid-row: span 1; }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <main class="community-hero">
+        <div class="floating-elements">
+            <div class="floating-dot"></div>
+            <div class="floating-dot"></div>
+            <div class="floating-dot"></div>
+        </div>
+
+        <div class="community-title">Tham gia cộng đồng thân thiện của chúng tôi</div>
+
+        <div class="community-subtitle">
+            Tổ chức của chúng tôi, <a href="https://sveltesociety.dev" target="_blank">ICUE Network</a>, tổ chức các sự kiện trên toàn cầu.
+        </div>
+
+        <div class="community-description">
+            Tìm chapter của bạn và tham gia cùng chúng tôi trong <a href="#" target="_blank" style="color: #c8ff00; text-decoration: none;">máy chủ Discord của chúng tôi</a>.
+        </div>
+
+        <div class="community-gallery">
+            <div class="photo-collage">
+                <div class="photo-grid">
+                    <!-- Photo items with placeholder images and fallback gradients -->
+                    <div class="photo-item" style="background: linear-gradient(45deg, #059669, #10b981);">
+                        <img src="public/community/1.jpg" alt="Hội thảo chuyên gia" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #dc2626, #ef4444);">
+                        <img src="public/community/2.jpg" alt="Gặp gỡ thành viên" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #7c3aed, #8b5cf6);">
+                        <img src="public/community/3.jpg" alt="Thuyết trình công nghệ" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #ea580c, #f97316);">
+                        <img src="public/community/4.jpg" alt="Networking session" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #0891b2, #06b6d4);">
+                        <img src="public/community/5.jpg" alt="Workshop tương tác" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #be185d, #ec4899);">
+                        <img src="public/community/6.jpg" alt="Chia sẻ kinh nghiệm" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #1e293b, #475569);">
+                        <img src="public/community/7.jpg" alt="Cộng đồng global" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
+                        <img src="public/community/8.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                    <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
+                        <img src="public/community/9.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                    </div>
+                </div>
+                
+                <div class="photo-credit">
+                    Ảnh bởi <a href="#" target="_blank">ICUE Team</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="community-actions">
+            <a href="#" class="community-btn primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.369c-1.161-.488-2.405-.849-3.707-1.061.006.027-.005.064-.018.1-.207.37-.437.854-.599 1.235-1.381-.206-2.751-.206-4.132 0-.162-.381-.392-.865-.599-1.235-.013-.036-.024-.073-.018-.1-1.302.212-2.546.573-3.707 1.061C.782 9.125-.469 13.794.145 18.394c1.551 1.148 3.054 1.845 4.532 2.305.365-.494.687-1.015.964-1.56-.529-.199-1.032-.433-1.507-.704.126-.093.248-.19.366-.287 2.908 1.346 6.064 1.346 8.973 0 .118.097.24.194.366.287-.475.271-.978.505-1.507.704.277.545.599 1.066.964 1.56 1.478-.46 2.981-1.157 4.532-2.305.614-4.6-.513-9.269-2.179-13.025zM8.02 15.331c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5zm7.96 0c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5z"/>
+                </svg>
+                Tham Gia Discord
+            </a>
+            <a href="#" class="community-btn secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                Tìm Chapter Địa Phương
+            </a>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Add scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Animate photo items
+            const photoItems = document.querySelectorAll('.photo-item');
+            photoItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(item);
+            });
+
+            // Create parallax effect for floating elements
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                const floatingElements = document.querySelector('.floating-elements');
+                if (floatingElements) {
+                    floatingElements.style.transform = `translateY(${rate}px)`;
+                }
+            });
+
+            // Add click handlers for demo purposes
+            document.querySelectorAll('.community-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    if (btn.textContent.includes('Discord')) {
+                        // Simulate Discord join
+                        btn.innerHTML = `
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            Đã Tham Gia!
+                        `;
+                        setTimeout(() => {
+                            btn.innerHTML = `
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.369c-1.161-.488-2.405-.849-3.707-1.061.006.027-.005.064-.018.1-.207.37-.437.854-.599 1.235-1.381-.206-2.751-.206-4.132 0-.162-.381-.392-.865-.599-1.235-.013-.036-.024-.073-.018-.1-1.302.212-2.546.573-3.707 1.061C.782 9.125-.469 13.794.145 18.394c1.551 1.148 3.054 1.845 4.532 2.305.365-.494.687-1.015.964-1.56-.529-.199-1.032-.433-1.507-.704.126-.093.248-.19.366-.287 2.908 1.346 6.064 1.346 8.973 0 .118.097.24.194.366.287-.475.271-.978.505-1.507.704.277.545.599 1.066.964 1.56 1.478-.46 2.981-1.157 4.532-2.305.614-4.6-.513-9.269-2.179-13.025zM8.02 15.331c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5zm7.96 0c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5z"/>
+                                </svg>
+                                Tham Gia Discord
+                            `;
+                        }, 2000);
+                    } else {
+                        // Simulate chapter finder
+                        btn.innerHTML = `
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            Đang Tìm Kiếm...
+                        `;
+                        setTimeout(() => {
+                            btn.innerHTML = `
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                                </svg>
+                                Tìm Chapter Địa Phương
+                            `;
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

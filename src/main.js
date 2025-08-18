@@ -13,7 +13,7 @@ const AOSManager = (() => {
 
 function restoreAOSAttributes() {
   console.log('[AOS] Restoring AOS attributes');
-  originalAOS.forEach((value, el) => {
+  aosElements.forEach((value, el) => {
     el.setAttribute('data-aos', value || 'flip-down');
     el.classList.add('aos-init'); // Add AOS classes back
     el.classList.remove('aos-animate'); 
@@ -375,14 +375,15 @@ footer {
             </div>
     </div>
     <div class="footer-bottom">
+            <div class="footer-bottom">
         <div class="footer-bottom-left">
-            <a href="#">Quyền Riêng Tư</a>
+            <a href="#/privacy">Quyền Riêng Tư</a>
             <span>|</span>
-            <a href="#">Điều Khoản</a>
+            <a href="#/terms">Điều Khoản</a>
             <span>|</span>
-            <a href="#">GDPR</a>
+            <a href="#/gdpr">GDPR</a>
             <span>|</span>
-            <a href="#">Cookies</a>
+            <a href="#/cookies">Cookies</a>
         </div>
         <div class="footer-bottom-right">
             <a href="#" class="company-deck">

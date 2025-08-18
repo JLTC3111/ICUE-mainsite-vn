@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Chính Sách Bảo Mật - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            margin-top: 7.5%;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header div {
+            font-size: 1.2rem;
+            color: white;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content div {
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #f1f5f9;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-info div {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            color: #c8ff00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .gdpr-section {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+        }
+
+        .gdpr-section .section-title {
+            color: white;
+        }
+
+        .gdpr-section .section-content div,
+        .gdpr-section .section-content li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 15px 40px;
+                margin-top: 15%;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <div class="header">
+        <h1>Chính Sách Bảo Mật</h1>
+        <div>Cam kết bảo vệ thông tin cá nhân và quyền riêng tư của bạn</div>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 7C13.4 7 14.8 8.6 14.8 10.2V11H16V16H8V11H9.2V10.2C9.2 8.6 10.6 7 12 7M12 8.2C11.2 8.2 10.4 8.7 10.4 10.2V11H13.6V10.2C13.6 8.7 12.8 8.2 12 8.2Z"/>
+                </svg>
+                Tổng Quan
+            </h2>
+            <div class="section-content">
+                <div>Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng (ICUE) cam kết bảo vệ quyền riêng tư và thông tin cá nhân của bạn. Chính sách này giải thích cách chúng tôi thu thập, sử dụng, lưu trữ và bảo vệ thông tin của bạn.</div>
+                
+                <div class="highlight-box">
+                    <div>🔒 Chúng tôi tuân thủ nghiêm ngặt các quy định về bảo vệ dữ liệu cá nhân của Việt Nam và GDPR của EU.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                </svg>
+                Thông Tin Chúng Tôi Thu Thập
+            </h2>
+            <div class="section-content">
+                <div>Chúng tôi có thể thu thập các loại thông tin sau:</div>
+                <ul>
+                    <li><strong>Thông tin cá nhân:</strong> Họ tên, email, số điện thoại, địa chỉ</li>
+                    <li><strong>Thông tin chuyên môn:</strong> Kinh nghiệm làm việc, học vấn, kỹ năng</li>
+                    <li><strong>Thông tin kỹ thuật:</strong> Địa chỉ IP, loại trình duyệt, thiết bị sử dụng</li>
+                    <li><strong>Thông tin tương tác:</strong> Cách bạn sử dụng website, trang đã xem, thời gian truy cập</li>
+                    <li><strong>Cookies và dữ liệu theo dõi:</strong> Để cải thiện trải nghiệm người dùng</li>
+                </ul>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Loại Dữ Liệu</th>
+                            <th>Mục Đích Sử Dụng</th>
+                            <th>Thời Gian Lưu Trữ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Thông tin liên hệ</td>
+                            <td>Phản hồi yêu cầu, gửi thông tin dự án</td>
+                            <td>3 năm hoặc cho đến khi yêu cầu xóa</td>
+                        </tr>
+                        <tr>
+                            <td>CV và hồ sơ ứng tuyển</td>
+                            <td>Đánh giá ứng viên, lưu trữ hồ sơ</td>
+                            <td>2 năm sau khi ứng tuyển</td>
+                        </tr>
+                        <tr>
+                            <td>Dữ liệu website</td>
+                            <td>Phân tích, cải thiện website</td>
+                            <td>12 tháng</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+                </svg>
+                Cách Chúng Tôi Sử Dụng Thông Tin
+            </h2>
+            <div class="section-content">
+                <div>Thông tin của bạn được sử dụng cho các mục đích sau:</div>
+                <ul>
+                    <li>Cung cấp dịch vụ tư vấn và hỗ trợ khách hàng</li>
+                    <li>Xử lý đơn ứng tuyển và quản lý nhân sự</li>
+                    <li>Gửi thông tin về dự án, sự kiện và cơ hội hợp tác</li>
+                    <li>Cải thiện chất lượng website và dịch vụ</li>
+                    <li>Phân tích xu hướng và thống kê sử dụng</li>
+                    <li>Tuân thủ các yêu cầu pháp lý và quy định</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17,9H7V7A5,5 0 0,1 12,2A5,5 0 0,1 17,7V9M6,20V10H18V20H6Z"/>
+                </svg>
+                Bảo Mật Thông Tin
+            </h2>
+            <div class="section-content">
+                <div>Chúng tôi áp dụng các biện pháp bảo mật nghiêm ngặt:</div>
+                <ul>
+                    <li>Mã hóa SSL/TLS cho tất cả dữ liệu truyền tải</li>
+                    <li>Hệ thống firewall và phần mềm chống virus cập nhật</li>
+                    <li>Kiểm soát truy cập nghiêm ngặt với xác thực đa yếu tố</li>
+                    <li>Sao lưu dữ liệu định kỳ và kế hoạch khôi phục</li>
+                    <li>Đào tạo nhân viên về bảo mật thông tin</li>
+                    <li>Kiểm tra bảo mật định kỳ bởi bên thứ ba</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
+                </svg>
+                Chia Sẻ Thông Tin
+            </h2>
+            <div class="section-content">
+                <div>Chúng tôi có thể chia sẻ thông tin của bạn trong các trường hợp sau:</div>
+                <ul>
+                    <li><strong>Với đối tác:</strong> Khi cần thiết để thực hiện dự án hoặc dịch vụ</li>
+                    <li><strong>Với cơ quan pháp luật:</strong> Khi có yêu cầu hợp pháp từ cơ quan có thẩm quyền</li>
+                    <li><strong>Với nhà cung cấp dịch vụ:</strong> Các bên thứ ba hỗ trợ vận hành website và dịch vụ</li>
+                    <li><strong>Trong trường hợp M&A:</strong> Nếu ICUE được sáp nhập hoặc mua bán</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <div>⚠️ Chúng tôi KHÔNG bán hoặc cho thuê thông tin cá nhân của bạn cho bên thứ ba vì mục đích thương mại.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section gdpr-section" id="gdpr">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,1L3,5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M10,7L9,8V12H10V9H11V12H12V8L11,7H10Z"/>
+                </svg>
+                Quyền GDPR Của Bạn
+            </h2>
+            <div class="section-content">
+                <div>Theo GDPR, bạn có các quyền sau đối với dữ liệu cá nhân:</div>
+                <ul>
+                    <li><strong>Quyền truy cập:</strong> Yêu cầu bản sao dữ liệu cá nhân mà chúng tôi lưu trữ</li>
+                    <li><strong>Quyền chỉnh sửa:</strong> Cập nhật hoặc sửa đổi thông tin không chính xác</li>
+                    <li><strong>Quyền xóa:</strong> Yêu cầu xóa dữ liệu cá nhân (trong điều kiện nhất định)</li>
+                    <li><strong>Quyền hạn chế xử lý:</strong> Tạm dừng xử lý dữ liệu trong một số trường hợp</li>
+                    <li><strong>Quyền di chuyển dữ liệu:</strong> Nhận dữ liệu ở định dạng có thể đọc được</li>
+                    <li><strong>Quyền phản đối:</strong> Từ chối việc xử lý dữ liệu cho mục đích marketing</li>
+                </ul>
+                
+                <div>Để thực hiện các quyền này, vui lòng liên hệ với chúng tôi qua thông tin bên dưới.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,12.5A1.5,1.5 0 0,1 10.5,11A1.5,1.5 0 0,1 12,9.5A1.5,1.5 0 0,1 13.5,11A1.5,1.5 0 0,1 12,12.5M12,7.2C9.9,7.2 8.2,8.9 8.2,11C8.2,14 12,17.5 12,17.5C12,17.5 15.8,14 15.8,11C15.8,8.9 14.1,7.2 12,7.2Z"/>
+                </svg>
+                Cookies và Theo Dõi
+            </h2>
+            <div class="section-content">
+                <div>Website của chúng tôi sử dụng cookies và công nghệ theo dõi tương tự để:</div>
+                <ul>
+                    <li>Ghi nhớ tùy chọn và cài đặt của bạn</li>
+                    <li>Phân tích lưu lượng truy cập và hành vi người dùng</li>
+                    <li>Cải thiện hiệu suất và trải nghiệm website</li>
+                    <li>Cung cấp nội dung và quảng cáo phù hợp</li>
+                </ul>
+                
+                <div>Bạn có thể quản lý cookies thông qua cài đặt trình duyệt hoặc <a href="#/cookies" style="color: #1e40af; text-decoration: underline;">xem chính sách cookies chi tiết</a>.</div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>Liên Hệ Về Bảo Mật</h3>
+            <div>Nếu bạn có câu hỏi về chính sách bảo mật này hoặc muốn thực hiện các quyền của mình:</div>
+            <div><strong>Email:</strong> <a href="mailto:privacy@icue.vn">privacy@icue.vn</a></div>
+            <div><strong>Điện thoại:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
+            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng</div>
+            <div>Chúng tôi sẽ phản hồi yêu cầu của bạn trong vòng 30 ngày.</div>
+        </div>
+
+        <div class="last-updated">
+            <div>Chính sách này được cập nhật lần cuối: <strong>18 tháng 8, 2025</strong></div>
+            <div>Chúng tôi có thể cập nhật chính sách này theo thời gian. Mọi thay đổi sẽ được thông báo trên website.</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -589,6 +589,26 @@ window.loadPage = (page) => {
                   ICUEFooter.autoInject();
                   calendarModal();
                   break;
+                case 'communityActivities':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'privacy':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'terms':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'gdpr':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'cookies':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
               }
             });
            
