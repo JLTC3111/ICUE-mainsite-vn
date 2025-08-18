@@ -610,6 +610,9 @@ window.loadPage = (page) => {
                   calendarModal();
                   break;
               }
+              
+              // Update hamburger icon based on current page
+              updateHamburgerIcon(page);
             });
            
           // Hide contact sidebar on News page
@@ -748,7 +751,7 @@ if (langSwitcher) {
     });
 }
 
-// 🔁 MENU ICON
+// 🍔 MENU ICON
 const menuToggle = document.getElementById('menuIcon');
   if (menuToggle) {
     const newToggle = menuToggle.cloneNode(true);
@@ -1001,17 +1004,12 @@ function router() {
   window.loadPage(page);
 }
 
-// Ensure menuIcon is indeed your SVG element in HTML:
-// <svg id="menuIcon" ...>...</svg>
-
 window.toggleDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
-  const menuIcon = document.getElementById('menuIcon'); // This now correctly references your <svg> element
+  const menuIcon = document.getElementById('menuIcon'); 
   const isOpen = drawerMenu.classList.contains('open');
 
-  // Toggle the 'is-open' class on the SVG icon.
-  // Your CSS will handle the transformation based on this class.
-  if (menuIcon) { // Good practice: check if element exists before manipulating
+  if (menuIcon) {
       menuIcon.classList.toggle('is-open');
   }
 
@@ -1024,34 +1022,21 @@ window.toggleDrawerMenu = () => {
   }
 };
 
-// Simplified window.closeDrawerMenu to work with SVG transformations
 window.closeDrawerMenu = () => {
   const drawerMenu = document.getElementById('drawerMenu');
-  const menuIcon = document.getElementById('menuIcon'); // This is your SVG element
+  const menuIcon = document.getElementById('menuIcon'); 
 
-  // Ensure menu and listeners are closed
   drawerMenu.classList.remove('open');
   removeOverlayListener();
 
-  // Simply remove the 'is-open' class from the SVG icon.
-  // Your CSS transitions will automatically animate it back to its original (hamburger) form.
   if (menuIcon) {
       menuIcon.classList.remove('is-open');
   }
-  // The image swap logic (src changes, fade-in/fade-out classes, setTimeout)
-  // is removed as it's not needed for SVG transformations.
 };
 
-
-// These functions remain correct as they are
 window.handleOutsideClick = (e) => {
   const drawer = document.getElementById('drawerMenu');
-  const toggle = document.querySelector('.menu-toggle'); // Assuming this refers to your menuIcon or its wrapper
-
-  // IMPORTANT: Make sure `toggle` refers to `menuIcon` or its clickable parent
-  // If your menu-icon <svg> is directly clickable, you might use:
-  // const toggle = document.getElementById('menuIcon');
-
+  const toggle = document.querySelector('.menu-toggle'); 
   if (!drawer.contains(e.target) && !toggle.contains(e.target)) {
     closeDrawerMenu();
   }
@@ -1815,6 +1800,26 @@ function initAudioVisualizer(
       path.setAttribute('stroke', color);
       path.setAttribute('fill', color); 
     });
+  }
+
+  // Function to change hamburger menu icon color based on page background
+  function updateHamburgerIcon(page) {
+    const hamburgerIcon = document.getElementById('menuIcon');
+    const contactLink = document.getElementById('contactLink');
+    if (!hamburgerIcon) return;
+    
+    // Pages with dark backgrounds that need white icons
+    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+    
+    if (darkBackgroundPages.includes(page)) {
+      hamburgerIcon.style.stroke = 'white';
+      hamburgerIcon.style.strokeWidth = '0.5px';
+      hamburgerIcon.style.fill = 'none';
+      contactLink.style.color = 'white';
+    } else {
+      hamburgerIcon.style.stroke = 'none';
+      hamburgerIcon.style.fill = 'none';
+    }
   }
 
   function enableCursorGradientTrail(color = 'yellow') {
