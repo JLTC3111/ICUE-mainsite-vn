@@ -1806,6 +1806,9 @@ function initAudioVisualizer(
       case 'pastProjects':
         color = '#a1c900ff';
         break;
+      case 'communityActivities':
+        color = '#ffffff';
+        break;
     }
   
     paths.forEach(path => {
