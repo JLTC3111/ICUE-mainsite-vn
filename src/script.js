@@ -531,12 +531,14 @@ window.loadPage = (page) => {
 
               switch (page) {
                 case 'meetOurExperts':
-                  calendarModal();
                   attachProfileEvents_moe();
+                  ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'coreTeam':
-                  calendarModal();
                   attachProfileEvents_coreTeam();
+                  ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'Home':
                   makeItRainText();
@@ -568,6 +570,19 @@ window.loadPage = (page) => {
                   calendarModal();
                   break;
                 case 'orgStructure':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'FAQs':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'recruitment':
+                  ICUEFooter.autoInject();
+                  calendarModal();
+                  break;
+                case 'donations':
+                  ICUEFooter.autoInject();
                   calendarModal();
                   break;
               }
@@ -1752,7 +1767,7 @@ function initAudioVisualizer(
   function updateMusicBarColor(page) {
     const paths = document.querySelectorAll('.music-bars svg path');
   
-    let color = '#ffffff'; // default
+    let color = '#000000'; // default
   
     switch (page) {
       case 'ourWork':
@@ -1761,17 +1776,11 @@ function initAudioVisualizer(
       case 'Contact':
         color = '#210000ff';
         break;
-      case 'coreTeam':
-        color = '#000000';
+      case 'Home':
+        color = '#ffffff';
         break;
       case 'pastProjects':
         color = '#a1c900ff';
-        break;
-      case 'News':
-        color = '#000000';
-        break;
-      case 'orgStructure':
-        color = '#000000';
         break;
     }
   

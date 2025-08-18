@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awards & Recognition - Excellence in Construction & Planning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #ffffff;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,800 1000,1000"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 3rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .hero-stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .award-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .award-card.excellence::before {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .award-card.innovation::before {
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+        }
+
+        .award-card.safety::before {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .award-card.sustainability::before {
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+        }
+
+        .award-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        .award-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .award-card.excellence .award-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .award-card.innovation .award-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .award-card.safety .award-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .award-card.sustainability .award-icon {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .award-year {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .award-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .award-organization {
+            font-size: 1rem;
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .award-description {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .award-project {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .award-project-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .award-project-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .certifications-section {
+            background: #f8fafc;
+        }
+
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .cert-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-4px);
+        }
+
+        .cert-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .cert-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .cert-organization {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .cert-status.expiring {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .timeline-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(59,130,246,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(6,182,212,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(59,130,246,0.1)"/></svg>');
+            background-size: 200px 200px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 50%, #10b981 100%);
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 80px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-item.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-item:nth-child(odd).animate {
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even).animate {
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            transform: translateX(50px);
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+            margin: 0 40px;
+            border: 2px solid transparent;
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -30px;
+            border-left-color: white;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -30px;
+            border-right-color: white;
+            transform: translateY(-50%);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            text-align: right;
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border: 6px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            z-index: 3;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .timeline-year:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+        }
+
+        .timeline-item:nth-child(2) .timeline-year {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline-item:nth-child(3) .timeline-year {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+        }
+
+        .timeline-item:nth-child(4) .timeline-year {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        .timeline-item:nth-child(5) .timeline-year {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-title {
+            justify-content: flex-end;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .timeline-item:nth-child(2) .timeline-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .timeline-item:nth-child(3) .timeline-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .timeline-item:nth-child(4) .timeline-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .timeline-item:nth-child(5) .timeline-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .timeline-award {
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .timeline-description {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .timeline-highlights {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-highlights {
+            justify-content: flex-end;
+        }
+
+        .highlight-item {
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            background: #e2e8f0;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .timeline-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .timeline-stat {
+            text-align: center;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-stat {
+            text-align: center;
+        }
+
+        .timeline-stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 4px;
+        }
+
+        .timeline-stat-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-stats {
+                gap: 40px;
+            }
+            
+            .awards-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .awards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .certs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item,
+            .timeline-item:nth-child(odd) {
+                flex-direction: row;
+            }
+            
+            .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content {
+                margin-left: 80px;
+                margin-right: 0;
+                text-align: left;
+            }
+            
+            .timeline-year {
+                left: 30px;
+                width: 60px;
+                height: 60px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Awards & Recognition</h1>
+            <p>Celebrating excellence in construction, planning, and community development through industry recognition and professional certifications.</p>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number">47</span>
+                    <span class="hero-stat-label">Industry Awards</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">23</span>
+                    <span class="hero-stat-label">Certifications</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">15</span>
+                    <span class="hero-stat-label">Years Excellence</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recent Awards & Achievements</h2>
+                <p class="section-subtitle">Our commitment to excellence has been recognized by leading industry organizations and government agencies.</p>
+            </div>
+
+            <div class="awards-grid">
+                <div class="award-card excellence">
+                    <div class="award-year">2024</div>
+                    <div class="award-icon">🏆</div>
+                    <h3 class="award-title">Project Excellence Award</h3>
+                    <div class="award-organization">National Association of Construction Professionals</div>
+                    <p class="award-description">Recognized for outstanding project management and delivery of the Riverside Community Center, completed on time and 8% under budget while exceeding sustainability targets.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Winning Project</div>
+                        <div class="award-project-name">Riverside Community Center Expansion</div>
+                    </div>
+                </div>
+
+                <div class="award-card innovation">
+                    <div class="award-year">2024</div>
+                    <div class="award-icon">💡</div>
+                    <h3 class="award-title">Innovation in Planning Award</h3>
+                    <div class="award-organization">American Planning Association</div>
+                    <p class="award-description">Honored for pioneering use of community engagement technology and data-driven planning processes that increased public participation by 340%.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Innovation Focus</div>
+                        <div class="award-project-name">Digital Community Engagement Platform</div>
+                    </div>
+                </div>
+
+                <div class="award-card sustainability">
+                    <div class="award-year">2023</div>
+                    <div class="award-icon">🌱</div>
+                    <h3 class="award-title">Sustainable Development Leadership</h3>
+                    <div class="award-organization">Green Building Council</div>
+                    <p class="award-description">Award for leadership in sustainable construction practices, achieving LEED Platinum certification on 3 consecutive projects and reducing carbon footprint by 45%.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Achievement</div>
+                        <div class="award-project-name">Triple LEED Platinum Portfolio</div>
+                    </div>
+                </div>
+
+                <div class="award-card safety">
+                    <div class="award-year">2023</div>
+                    <div class="award-icon">🛡️</div>
+                    <h3 class="award-title">Zero Incident Safety Recognition</h3>
+                    <div class="award-organization">Occupational Safety & Health Administration</div>
+                    <p class="award-description">Achieved 1,000+ days without recordable incidents across all active project sites, demonstrating exceptional commitment to worker safety and training.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Safety Record</div>
+                        <div class="award-project-name">1,247 Days Zero Incidents</div>
+                    </div>
+                </div>
+
+                <div class="award-card excellence">
+                    <div class="award-year">2023</div>
+                    <div class="award-icon">🏅</div>
+                    <h3 class="award-title">Community Impact Excellence</h3>
+                    <div class="award-organization">International City/County Management Association</div>
+                    <p class="award-description">Recognition for exceptional public-private partnerships resulting in $4.2M in community infrastructure improvements and 200+ jobs created.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Impact Area</div>
+                        <div class="award-project-name">Downtown Revitalization Initiative</div>
+                    </div>
+                </div>
+
+                <div class="award-card innovation">
+                    <div class="award-year">2022</div>
+                    <div class="award-icon">🚀</div>
+                    <h3 class="award-title">Technology Integration Award</h3>
+                    <div class="award-organization">Construction Technology Association</div>
+                    <p class="award-description">Leading adoption of BIM, drone surveying, and AI-powered project monitoring, reducing project timelines by 25% and improving accuracy by 40%.</p>
+                    <div class="award-project">
+                        <div class="award-project-label">Technology Focus</div>
+                        <div class="award-project-name">Smart Construction Platform</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section certifications-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Professional Certifications</h2>
+                <p class="section-subtitle">Our team maintains the highest professional standards through ongoing education and certification.</p>
+            </div>
+
+            <div class="certs-grid">
+                <div class="cert-card">
+                    <div class="cert-logo">LEED</div>
+                    <h3 class="cert-name">LEED Accredited Professional</h3>
+                    <p class="cert-organization">U.S. Green Building Council</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">PMP</div>
+                    <h3 class="cert-name">Project Management Professional</h3>
+                    <p class="cert-organization">Project Management Institute</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">PE</div>
+                    <h3 class="cert-name">Professional Engineer</h3>
+                    <p class="cert-organization">State Engineering Board</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">AICP</div>
+                    <h3 class="cert-name">Certified Planner</h3>
+                    <p class="cert-organization">American Institute of Certified Planners</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">OSHA</div>
+                    <h3 class="cert-name">OSHA 30-Hour Construction</h3>
+                    <p class="cert-organization">Occupational Safety & Health Administration</p>
+                    <div class="cert-status expiring">
+                        <span>⚠</span> Renewing
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">ICC</div>
+                    <h3 class="cert-name">Building Inspector Certification</h3>
+                    <p class="cert-organization">International Code Council</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">GIS</div>
+                    <h3 class="cert-name">GIS Professional</h3>
+                    <p class="cert-organization">GIS Certification Institute</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">WELL</div>
+                    <h3 class="cert-name">WELL Accredited Professional</h3>
+                    <p class="cert-organization">International WELL Building Institute</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                    <div class="cert-logo">MBE</div>
+                    <h3 class="cert-name">Minority Business Enterprise</h3>
+                    <p class="cert-organization">State Certification Agency</p>
+                    <div class="cert-status">
+                        <span>✓</span> Active
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recognition Timeline</h2>
+                <p class="section-subtitle">A journey of continuous excellence and growing recognition in our field.</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">
+                            <div class="timeline-icon">🏆</div>
+                            Peak Recognition Year
+                        </h3>
+                        <div class="timeline-award">Project Excellence & Innovation Awards</div>
+                        <p class="timeline-description">Our most awarded year with recognition from NACP and APA for groundbreaking community engagement and project delivery excellence. Implemented cutting-edge digital platforms that revolutionized public participation.</p>
+                        
+                        <div class="timeline-highlights">
+                            <div class="highlight-item">NACP Excellence</div>
+                            <div class="highlight-item">APA Innovation</div>
+                            <div class="highlight-item">Digital Leadership</div>
+                        </div>
+
+                        <div class="timeline-stats">
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">4</span>
+                                <span class="timeline-stat-label">Major Awards</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">340%</span>
+                                <span class="timeline-stat-label">↑ Participation</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">$2.1M</span>
+                                <span class="timeline-stat-label">Projects Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">
+                            <div class="timeline-icon">🌱</div>
+                            Sustainability Leadership
+                        </h3>
+                        <div class="timeline-award">Green Building & Safety Recognition</div>
+                        <p class="timeline-description">Achieved triple LEED Platinum certification and 1,000+ day safety record, establishing us as industry leaders in sustainable practices. Revolutionary approach to carbon-neutral construction.</p>
+                        
+                        <div class="timeline-highlights">
+                            <div class="highlight-item">LEED Platinum x3</div>
+                            <div class="highlight-item">Zero Incidents</div>
+                            <div class="highlight-item">Carbon Neutral</div>
+                        </div>
+
+                        <div class="timeline-stats">
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">3</span>
+                                <span class="timeline-stat-label">LEED Platinum</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">1,247</span>
+                                <span class="timeline-stat-label">Safe Days</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">45%</span>
+                                <span class="timeline-stat-label">↓ Carbon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">
+                            <div class="timeline-icon">🚀</div>
+                            Technology Pioneer
+                        </h3>
+                        <div class="timeline-award">Construction Technology Integration</div>
+                        <p class="timeline-description">First in region to fully integrate AI-powered project monitoring and drone surveying, reducing timelines by 25%. Pioneered smart construction methodologies that became industry standard.</p>
+                        
+                        <div class="timeline-highlights">
+                            <div class="highlight-item">AI Monitoring</div>
+                            <div class="highlight-item">Drone Survey</div>
+                            <div class="highlight-item">Smart BIM</div>
+                        </div>
+
+                        <div class="timeline-stats">
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">25%</span>
+                                <span class="timeline-stat-label">↓ Timeline</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">40%</span>
+                                <span class="timeline-stat-label">↑ Accuracy</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">12</span>
+                                <span class="timeline-stat-label">Tech Awards</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">
+                            <div class="timeline-icon">🤝</div>
+                            Community Champion
+                        </h3>
+                        <div class="timeline-award">Public Service Excellence Award</div>
+                        <p class="timeline-description">Recognized for exceptional public-private partnerships during pandemic response, delivering critical infrastructure on accelerated timeline. Led emergency response construction efforts across 5 counties.</p>
+                        
+                        <div class="timeline-highlights">
+                            <div class="highlight-item">Pandemic Response</div>
+                            <div class="highlight-item">Emergency Build</div>
+                            <div class="highlight-item">5 Counties</div>
+                        </div>
+
+                        <div class="timeline-stats">
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">23</span>
+                                <span class="timeline-stat-label">Emergency Projects</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">60%</span>
+                                <span class="timeline-stat-label">↓ Build Time</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">15K</span>
+                                <span class="timeline-stat-label">People Helped</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2019</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">
+                            <div class="timeline-icon">📈</div>
+                            Growth & Excellence
+                        </h3>
+                        <div class="timeline-award">Emerging Business Leader Award</div>
+                        <p class="timeline-description">Honored as fastest-growing construction firm while maintaining 98% client satisfaction and zero safety incidents. Expanded operations to serve 8 additional municipalities.</p>
+                        
+                        <div class="timeline-highlights">
+                            <div class="highlight-item">Fastest Growth</div>
+                            <div class="highlight-item">98% Satisfaction</div>
+                            <div class="highlight-item">Regional Expansion</div>
+                        </div>
+
+                        <div class="timeline-stats">
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">98%</span>
+                                <span class="timeline-stat-label">Satisfaction</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">8</span>
+                                <span class="timeline-stat-label">New Markets</span>
+                            </div>
+                            <div class="timeline-stat">
+                                <span class="timeline-stat-number">250%</span>
+                                <span class="timeline-stat-label">↑ Growth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe award cards
+            const cards = document.querySelectorAll('.award-card, .cert-card, .timeline-item');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            console.log('Awards page loaded successfully');
+        });
+    </script>
+</body>
+</html>

@@ -22,29 +22,32 @@
 
         .header {
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
             padding: 60px 20px;
             text-align: center;
+            margin-top: 7.5%;
         }
 
         .header h1 {
             font-size: 3rem;
             font-weight: 700;
+            color: white !important;
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
 
         .header p {
             font-size: 1.2rem;
+            color: white !important;
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
+            letter-spacing: -0.02em;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
         .main-content {
@@ -97,7 +100,7 @@
 
         .impact-story {
             background: #eff6ff;
-            padding: 24px;
+            padding: 12.5px;
             border-radius: 12px;
             border-left: 4px solid #3b82f6;
             margin-bottom: 2rem;
@@ -109,9 +112,9 @@
             font-size: 1.2rem;
         }
 
-        .impact-story p {
+        .impact-story .story-content {
+            font-size: clamp(0.75rem, 2.5rem, 1.05rem);
             color: #475569;
-            line-height: 1.7;
         }
 
         .donation-form {
@@ -381,6 +384,10 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                margin-top: 15%;
+            }
+
             .header h1 {
                 font-size: 2rem;
             }
@@ -413,7 +420,7 @@
         }
     </style>
 </head>
-<body>
+<body data-footer="true" class="with-footer">
     <header class="header">
         <div class="container">
             <h1>Xây Dựng Cộng Đồng Vững Mạnh</h1>
@@ -447,12 +454,16 @@
 
                 <div class="impact-story">
                     <h3>Thành Công Gần Đây: Trung Tâm Cộng Đồng Riverside</h3>
-                    <p>Nhờ sự hỗ trợ của các nhà tài trợ, chúng tôi đã hoàn thành lập kế hoạch và giám sát xây dựng cho một trung tâm cộng đồng mới phục vụ hơn 800 gia đình. Cơ sở này hiện tổ chức các chương trình giáo dục, dịch vụ y tế và khả năng làm nơi trú ẩn khẩn cấp.</p>
+                    <div class="story-content">
+                        Nhờ sự hỗ trợ của các nhà tài trợ, chúng tôi đã hoàn thành lập kế hoạch và giám sát xây dựng cho một trung tâm cộng đồng mới phục vụ hơn 800 gia đình. Cơ sở này hiện tổ chức các chương trình giáo dục, dịch vụ y tế và khả năng làm nơi trú ẩn khẩn cấp.
+                    </div>
                 </div>
 
                 <div class="impact-story">
                     <h3>Ứng Phó Khẩn Cấp: Hồi Phục Sau Lũ Lụt</h3>
-                    <p>Đội phản ứng nhanh của chúng tôi đã cung cấp đánh giá kết cấu và kế hoạch xây dựng miễn phí cho 34 ngôi nhà bị ảnh hưởng bởi trận lũ gần đây, giúp các gia đình trở lại nơi ở an toàn nhanh hơn trung bình 60%.</p>
+                    <div class="story-content">
+                        Đội phản ứng nhanh của chúng tôi đã cung cấp đánh giá kết cấu và kế hoạch xây dựng miễn phí cho 34 ngôi nhà bị ảnh hưởng bởi trận lũ gần đây, giúp các gia đình trở lại nơi ở an toàn nhanh hơn trung bình 60%.
+                    </div>
                 </div>
             </div>
 
@@ -521,15 +532,5 @@
             </form>
         </div>
     </main>
-
-    <section class="projects-section">
-        <div class="container">
-            <h2>Các Dự Án Hiện Tại Cần Sự Hỗ Trợ Của Bạn</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">Mở Rộng Trung Tâm Cộng Đồng</div>
-                    <div class="project-content">
-                        <h3 class="project-title">Trung Tâm Cộng Đồng Eastside</h3>
-                        <p class="project-description">Mở rộng cơ sở để bao gồm phòng máy t
-
+</body>
 </html>

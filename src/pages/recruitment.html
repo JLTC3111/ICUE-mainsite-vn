@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Tuyển Dụng - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 5% auto;
+            padding: 0 20px;
+        }
+
+        .cta-button {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 15px 35px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 60px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .search-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+
+        }
+
+        .search-subtitle {
+            font-size: clamp(0.75rem, 2.5vw, 1rem);
+            color: #666;
+             margin-bottom: 7.5px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 250px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            min-width: 120px;
+        }
+
+        .search-button:hover {
+            background: #5a6fd8;
+        }
+
+        /* Workplace Gallery */
+        .gallery-section {
+            padding: 25px;
+            background: #f8f9fa;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #e9ecef;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            min-height: 350px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Job Positions Section */
+        .jobs-section {
+            background: white;
+            padding: 10px;
+            border: 1px solid red;
+        }
+
+        .section-title {
+            font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: clamp(0.8rem, 2.25vw, 1.1rem);
+            color: #666;
+            text-align: center;
+            margin: auto;
+            max-width: 600px;
+            letter-spacing: 1.5px;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .job-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .job-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .job-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .job-department {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .job-location {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .job-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .job-tag {
+            background: #f8f9fa;
+            color: #666;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .benefits-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .benefit-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .benefit-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .benefit-description {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0 50px 0;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-input,
+            .search-button {
+                min-width: auto;
+            }
+
+            .gallery-item.large {
+                grid-column: span 1;
+            }
+
+            .jobs-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-section,
+            .jobs-section,
+            .benefits-section {
+                padding: 50px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .job-card,
+            .benefit-card {
+                padding: 25px 20px;
+            }
+        }
+</style>
+</head>
+<body data-footer="true" class="with-footer">
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <h2 class="search-title">Cơ hội nghề nghiệp</h2>
+                <div class="search-subtitle">Khám phá các vị trí phù hợp với kỹ năng và đam mê của bạn</div>
+                <form class="search-form" onsubmit="searchJobs(event)">
+                    <input type="text" class="search-input" placeholder="" id="job-search">
+                    <button type="submit" class="search-button">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workplace Gallery -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <span>🏗️ Dự án thực địa</span>
+                    <img src="public/recruitment/survey.jpg">
+                </div>
+                <div class="gallery-item">
+                    <span>🏢 Văn Phòng</span>
+                    <img src="public/recruitment/office.jpg">
+                </div>
+                <div class="gallery-item">
+                    <div>🎯 Hội nghị toàn công ty</div>
+                    <img src="public/recruitment/event.jpg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">Quyền lợi nhân viên</h2>
+            <div class="section-subtitle">Chúng tôi quan tâm đến sự phát triển và hạnh phúc của mọi thành viên</div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3 class="benefit-title">Lương thưởng cạnh tranh</h3>
+                    <div class="benefit-description">Mức lương hấp dẫn cùng các khoản thưởng hiệu suất và cổ phần</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏥</div>
+                    <h3 class="benefit-title">Bảo hiểm sức khỏe</h3>
+                    <div class="benefit-description">Gói bảo hiểm toàn diện cho bạn và gia đình</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📚</div>
+                    <h3 class="benefit-title">Phát triển chuyên môn</h3>
+                    <div class="benefit-description">Cơ hội đào tạo, học hỏi và phát triển kỹ năng liên tục</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏖️</div>
+                    <h3 class="benefit-title">Work-Life Balance</h3>
+                    <div class="benefit-description">Thời gian làm việc linh hoạt và nghỉ phép hấp dẫn</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <h3 class="benefit-title">Dự án thú vị</h3>
+                    <div class="benefit-description">Tham gia các dự án tiên phong trong lĩnh vực năng lượng</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌍</div>
+                    <h3 class="benefit-title">Tác động tích cực</h3>
+                    <div class="benefit-description">Đóng góp vào tương lai bền vững cho thế giới</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const jobPositions = [
+            {
+                title: "Kỹ sư Phần mềm Senior",
+                department: "Công nghệ",
+                location: "Hà Nội, Việt Nam",
+                description: "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js, và cloud computing.",
+                tags: ["JavaScript", "React", "Node.js", "AWS", "Full-time"]
+            },
+            {
+                title: "Chuyên viên Phân tích Dữ liệu",
+                department: "Dữ liệu & Analytics",
+                location: "TP.HCM, Việt Nam",
+                description: "Phân tích dữ liệu năng lượng để tối ưu hóa hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ machine learning.",
+                tags: ["Python", "SQL", "Machine Learning", "Analytics", "Full-time"]
+            },
+            {
+                title: "Kỹ sư Điện",
+                department: "Kỹ thuật",
+                location: "Đà Nẵng, Việt Nam",
+                description: "Thiết kế và triển khai các hệ thống điện năng lượng tái tạo. Kinh nghiệm về solar, wind power và grid integration.",
+                tags: ["Electrical Engineering", "Solar", "Grid Systems", "AutoCAD", "Full-time"]
+            },
+            {
+                title: "Quản lý Dự án",
+                department: "Quản lý",
+                location: "Remote/Hybrid",
+                description: "Quản lý các dự án năng lượng từ khởi đầu đến hoàn thành. Phối hợp với các bộ phận khác nhau và đảm bảo tiến độ dự án.",
+                tags: ["Project Management", "Agile", "Leadership", "PMP", "Full-time"]
+            },
+            {
+                title: "Chuyên viên Marketing Kỹ thuật số",
+                department: "Marketing",
+                location: "Hà Nội, Việt Nam",
+                description: "Phát triển và thực hiện chiến lược marketing online cho các sản phẩm năng lượng. Quản lý content, SEO và digital campaigns.",
+                tags: ["Digital Marketing", "SEO", "Content", "Social Media", "Full-time"]
+            },
+            {
+                title: "Thực tập sinh Nghiên cứu",
+                department: "R&D",
+                location: "Hà Nội, Việt Nam",
+                description: "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc với các chuyên gia hàng đầu.",
+                tags: ["Research", "Innovation", "Energy Tech", "Internship", "Part-time"]
+            }
+        ];
+
+        // Function to render job positions
+        function renderJobs(jobs) {
+            const jobsContainer = document.getElementById('jobs-container');
+            jobsContainer.innerHTML = '';
+
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.onclick = () => openJobDetail(job);
+                
+                jobCard.innerHTML = `
+                    <h3 class="job-title">${job.title}</h3>
+                    <div class="job-department">${job.department}</div>
+                    <div class="job-location">📍 ${job.location}</div>
+                    <p class="job-description">${job.description}</p>
+                    <div class="job-tags">
+                        ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+                
+                jobsContainer.appendChild(jobCard);
+            });
+        }
+
+        // Function to search jobs
+        function searchJobs(event) {
+            event.preventDefault();
+            const searchTerm = document.getElementById('job-search').value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderJobs(jobPositions);
+                return;
+            }
+
+            const filteredJobs = jobPositions.filter(job => 
+                job.title.toLowerCase().includes(searchTerm) ||
+                job.department.toLowerCase().includes(searchTerm) ||
+                job.description.toLowerCase().includes(searchTerm) ||
+                job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+
+            renderJobs(filteredJobs);
+            
+            // Show search results message
+            const resultMessage = filteredJobs.length === 0 
+                ? `Không tìm thấy vị trí nào phù hợp với "${searchTerm}"`
+                : `Tìm thấy ${filteredJobs.length} vị trí phù hợp với "${searchTerm}"`;
+                
+            showSearchMessage(resultMessage);
+        }
+
+        // Function to show search message
+        function showSearchMessage(message) {
+            const existingMessage = document.querySelector('.search-result-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'search-result-message';
+            messageDiv.style.cssText = `
+                text-align: center;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                margin: 20px 0;
+                color: #666;
+                font-weight: 500;
+            `;
+            messageDiv.textContent = message;
+
+            const jobsContainer = document.getElementById('jobs-container');
+            jobsContainer.parentNode.insertBefore(messageDiv, jobsContainer);
+        }
+
+        // Function to open job detail (placeholder)
+        function openJobDetail(job) {
+            alert(`Ứng tuyển vị trí: ${job.title}\n\nPhòng ban: ${job.department}\nĐịa điểm: ${job.location}\n\nTrong triển khai thực tế, điều này sẽ mở trang chi tiết công việc hoặc form ứng tuyển.`);
+        }
+
+        // Smooth scroll for CTA button
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('open-positions').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
