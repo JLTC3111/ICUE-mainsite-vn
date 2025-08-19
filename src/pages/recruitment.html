@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Tuyển Dụng - ICUE</title>
+    <title>Jobs - ICUE</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
 <style>
@@ -153,6 +153,20 @@
             min-height: 350px;
         }
 
+        .gallery-item span {
+            position: absolute;   
+            bottom: 10px;         
+            left: 10px;           
+            background: rgba(0,0,0,0.6); 
+            color: #fff;          
+            padding: 6px 12px;    
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .gallery-item img {
             width: 100%;
             height: 100%;
@@ -163,7 +177,6 @@
         .jobs-section {
             background: white;
             padding: 10px;
-            border: 1px solid red;
         }
 
         .section-title {
@@ -213,12 +226,16 @@
         }
 
         .job-department {
-            color: #667eea;
+            color: rgb(0, 23, 125);
             font-weight: 500;
+            font-style: italic;
             margin-bottom: 8px;
         }
 
         .job-location {
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
             color: #666;
             font-size: 0.95rem;
             margin-bottom: 15px;
@@ -344,8 +361,8 @@
     <section class="search-section">
         <div class="container">
             <div class="search-container">
-                <h2 class="search-title">Cơ hội nghề nghiệp</h2>
-                <div class="search-subtitle">Khám phá các vị trí phù hợp với kỹ năng và đam mê của bạn</div>
+                <h2 class="search-title">Cơ Hội Nghề Nghiệp</h2>
+                <div class="search-subtitle">Tìm kiếm các vị trí phù hợp với kỹ năng và sở thích của bạn</div>
                 <form class="search-form" onsubmit="searchJobs(event)">
                     <input type="text" class="search-input" placeholder="" id="job-search">
                     <button type="submit" class="search-button">Tìm kiếm</button>
@@ -359,15 +376,15 @@
         <div class="container">
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <span>🏗️ Dự án thực địa</span>
+                    <span><svg width="16px" height="16px" viewBox="0 0 1024 1024" fill="#ffffff" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M580.531582 959.931224c-0.489075-0.489075-0.978149-1.100418-1.467224-1.589493-7.458388-1.467224-12.960478-7.580657-13.816358-15.283582-25.309612-30.200358-42.427224-64.802388-51.719642-101.116179h-59.911642c-9.903761 0-17.606687 7.825194-17.606686 17.606687v81.553194c0 9.903761-7.825194 17.606687-17.606687 17.606686h-61.134328c-9.903761 0-17.606687-7.825194-17.606687-17.606686V147.700537c0-9.903761 7.825194-17.606687 17.606687-17.606686h288.55403c9.781493 0 17.606687 7.825194 17.606686 17.606686v305.671642l-0.244537 86.566209c22.864239-9.536955 47.195701-15.772657 72.138507-18.340298 2.934448-2.078567 6.480239-3.423522 10.515105-3.423523h175.088716V574.662687c8.314269 6.480239 16.384 13.327284 23.964657 20.90794 16.628537 16.628537 30.444896 35.213373 41.815881 55.143164V469.878448c0-9.903761-7.825194-17.606687-17.606687-17.606687H744.860657c-9.903761 0-17.606687-7.825194-17.606687-17.606686V81.92c0-9.903761-7.825194-17.606687-17.606686-17.606687H551.064836c-9.903761 0-17.606687-7.825194-17.606687-17.606686V17.606687c0-9.903761-7.825194-17.606687-17.606686-17.606687h-28.977672c-9.903761 0-17.606687 7.825194-18.095761 17.606687v29.589014c0 9.903761-7.825194 17.606687-17.606687 17.606687H292.466627c-9.903761 0-17.606687 7.825194-17.606687 17.606687v223.87391c0 9.903761-7.825194 17.606687-17.606686 17.606687H33.990687c-9.781493-0.122269-17.606687 7.702925-17.606687 17.484418V1006.271045c0 9.903761 7.825194 17.606687 17.606687 17.606686h652.54782c-39.615045-12.104597-75.928836-33.868418-106.006925-63.946507z m-306.649791-18.829373c0 9.903761-7.825194 17.606687-17.606687 17.606686h-28.977671c-9.903761 0-17.606687-7.825194-17.606687-17.606686V859.548657c0-9.903761-7.825194-17.606687-17.606686-17.606687H163.106388c-9.903761 0-17.606687 7.825194-17.606687 17.606687v81.553194c0 9.903761-7.825194 17.606687-17.606686 17.606686H98.793075c-9.903761 0-17.606687-7.825194-17.606687-17.606686V406.176478c0-9.903761 7.825194-17.606687 17.606687-17.606687h176.189134l-1.100418 552.53206zM163.473194 776.650507h28.977672c9.903761 0 17.606687-7.825194 17.606686-17.606686V729.943881c0-9.903761-7.825194-17.606687-17.606686-17.606687h-46.584359v46.584358c0 9.903761 7.825194 17.728955 17.606687 17.728955zM163.473194 517.563224h28.977672c9.903761 0 17.606687-7.825194 17.606686-17.606687v-28.977671c0-9.781493-7.825194-17.606687-17.606686-17.606687h-46.584359v46.584358c0 9.903761 7.825194 17.606687 17.606687 17.606687zM163.473194 647.045731h28.977672c9.903761 0 17.606687-7.825194 17.606686-17.606686v-28.977672c0-9.903761-7.825194-17.606687-17.606686-17.606686h-46.584359v46.584358c0 9.903761 7.825194 17.606687 17.606687 17.606686zM454.717134 258.47594h93.78006c9.903761 0 17.606687-7.825194 17.606687-17.606686v-28.977672c0-9.903761-7.825194-17.606687-17.606687-17.606686h-111.875821l0.489075 46.584358c0 9.903761 7.702925 17.606687 17.606686 17.606686zM437.110448 499.956537c0 9.903761 7.825194 17.606687 17.606686 17.606687h93.78006c9.903761 0 17.606687-7.825194 17.606687-17.606687v-28.977671c0-9.781493-7.825194-17.606687-17.606687-17.606687h-111.875821l0.489075 46.584358zM548.497194 582.854687h-111.875821l0.489075 46.584358c0 9.903761 7.825194 17.606687 17.606686 17.606686h86.199403c7.336119-12.349134 15.650388-24.331463 25.187344-35.580179v-11.004179c0-9.781493-7.825194-17.606687-17.606687-17.606686zM437.110448 370.47403c0 9.903761 7.825194 17.606687 17.606686 17.606686h93.78006c9.903761 0 17.606687-7.825194 17.606687-17.606686v-28.977672c0-9.903761-7.825194-17.606687-17.606687-17.606686h-111.875821l0.489075 46.584358zM436.499104 712.337194l0.489075 46.584358c0 9.903761 7.825194 17.606687 17.606687 17.606687h50.496955c0.122269-21.641552 3.056716-43.160836 8.558806-64.191045h-77.151523zM996.856358 959.931224l-80.452776-80.452776c19.929791-29.955821 30.689433-65.046925 30.689433-101.849791 0-49.274269-19.196179-95.491821-54.042746-130.338388-34.846567-34.846567-81.064119-54.042746-130.338388-54.042747s-95.491821 19.196179-130.338388 54.042747c-71.89397 71.89397-71.89397 188.782806 0 260.676776a183.036179 183.036179 0 0 0 130.338388 54.042746c36.802866 0 71.89397-10.759642 101.849791-30.689433l80.330507 80.330508c7.213851 7.213851 16.506269 10.759642 25.920955 10.759641s18.829373-3.545791 25.920956-10.759641a36.423833 36.423833 0 0 0 0.122268-51.719642z m-312.640955-103.683821c-43.283104-43.283104-43.283104-113.709851 0-156.992955a110.335236 110.335236 0 0 1 78.496478-32.523463c29.589015 0 57.466269 11.493254 78.496477 32.523463 20.90794 20.90794 32.523463 48.785194 32.523463 78.496477s-11.493254 57.466269-32.523463 78.496478a110.335236 110.335236 0 0 1-78.496477 32.523463 111.264478 111.264478 0 0 1-78.496478-32.523463z"></path></g></svg> Field Works</span>
                     <img src="public/recruitment/survey.jpg">
                 </div>
                 <div class="gallery-item">
-                    <span>🏢 Văn Phòng</span>
+                    <span><svg width="16px" height="16px" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;stroke:#ffffff;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><path class="cls-1" d="M9.14,4.39H20.59A1.91,1.91,0,0,1,22.5,6.3V17.75a1.91,1.91,0,0,1-1.91,1.91H9.14a0,0,0,0,1,0,0V4.39A0,0,0,0,1,9.14,4.39Z"></path><rect class="cls-1" x="1.5" y="2.48" width="7.64" height="20.05" rx="1.96"></rect><line class="cls-1" x1="12" y1="12.02" x2="13.91" y2="12.02"></line><line class="cls-1" x1="14.86" y1="12.02" x2="16.77" y2="12.02"></line><line class="cls-1" x1="17.73" y1="12.02" x2="19.64" y2="12.02"></line><line class="cls-1" x1="12" y1="15.84" x2="13.91" y2="15.84"></line><line class="cls-1" x1="14.86" y1="15.84" x2="16.77" y2="15.84"></line><line class="cls-1" x1="17.73" y1="15.84" x2="19.64" y2="15.84"></line><line class="cls-1" x1="12" y1="8.2" x2="19.64" y2="8.2"></line></g></svg>Office</span>
                     <img src="public/recruitment/office.jpg">
                 </div>
                 <div class="gallery-item">
-                    <div>🎯 Hội nghị toàn công ty</div>
+                    <span><svg width="18px" height="18px" viewBox="0 0 60.601004 60.601004" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs></defs> <metadata> <rdf:rdf> <cc:work rdf:about=""> <dc:format>image/svg+xml</dc:format> <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type> <dc:title>ミーティングポイント; Meeting point</dc:title> <dc:source>http://www.ecomo.or.jp/barrierfree/pictogram/data/zukigo_panfu_jis110.pdf</dc:source> </cc:work> </rdf:rdf> </metadata> <path d="m 7.7861259,56.03113 c -1.7762501,0 -3.2175003,-1.44 -3.2175003,-3.21625 l 0,-45.0300039 c 0,-1.7762501 1.4412502,-3.2150002 3.2175003,-3.2150002 l 45.0300041,0 c 1.77625,0 3.21625,1.4387501 3.21625,3.2150002 l 0,45.0300039 c 0,1.77625 -1.44,3.21625 -3.21625,3.21625 l -45.0300041,0 z" style="fill:#ffffff;stroke:#000000;stroke-width:0.60625005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"></path> <path d="m 45.463627,30.904879 -0.23,-1.305 c 0.35375,-0.12125 0.72,-0.21875 1.1,-0.28625 0.38,-0.06625 0.7575,-0.10125 1.13125,-0.10625 l 0.23,1.30375 -2.23125,0.39375 z m -2.69375,0.475 -1.52625,-8.656251 c 1.6025,1.74375 2.85625,3.812501 3.66375,6.091251 -0.215,0.07625 -0.42625,0.16 -0.63,0.25375 l 0.35,1.985 -1.8575,0.32625 z m 9.862501,4.29875 -0.88625,-5.0175 c -0.08,-0.46375 -0.521251,-0.7725 -0.983751,-0.69 l -2.23,0.3925 -0.35,-1.9825 c -0.3025,-0.02375 -0.6075,-0.03125 -0.915,-0.01875 -0.87625,-4.508751 -3.36125,-8.442501 -6.83375,-11.181251 -0.11,-0.08625 -0.24625,-0.1375 -0.3975,-0.1375 -0.0175,0 -0.03625,0.0013 -0.055,0.0013 -1.617501,0.135 -3.050001,0.9175 -4.041251,2.085 l -7.72375,9.205001 -7.723751,-9.205001 c -0.9825,-1.16 -2.40125,-1.9375 -4.0025,-2.08125 -0.01,-0.0013 -0.02,-0.0013 -0.03,-0.0013 -0.15875,0 -0.29,0.11625 -0.31625,0.26625 l -5.737501,32.540003 3.06625,0 4.000001,-12.308751 4.72375,12.308751 3.0725,0 -5.12125,-20.540002 1.285,-3.9525 5.795001,5.40375 0.98875,-0.57 0.99,0.57 5.795,-5.40375 1.28375,3.9525 -5.12125,20.540002 3.0725,0 4.72375,-12.308751 4.000001,12.308751 3.0675,0 -2.0775,-11.781251 7.993751,-1.408751 c 0.46125,-0.08125 0.77,-0.5225 0.68875,-0.985" style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"></path> <path d="m 36.456127,17.089878 c 1.51125,0 2.73625,-1.225 2.73625,-2.73625 0,-1.51 -1.225,-2.73375 -2.73625,-2.73375 -1.51,0 -2.735,1.22375 -2.735,2.73375 0,1.51125 1.225,2.73625 2.735,2.73625" style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"></path> <path d="m 19.981126,17.096128 c 1.51,0 2.73375,-1.2225 2.73375,-2.7325 0,-1.51 -1.22375,-2.735 -2.73375,-2.735 -1.51,0 -2.73375,1.225 -2.73375,2.735 0,1.51 1.22375,2.7325 2.73375,2.7325" style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"></path> </g></svg> Company-wide Conferences</span>
                     <img src="public/recruitment/event.jpg">
                 </div>
             </div>
@@ -377,203 +394,53 @@
     <!-- Job Positions Section -->
     <section class="jobs-section" id="open-positions">
         <div class="container">
-            <h2 class="section-title">Vị Trí Tuyển Dụng</h2>
-            <div class="section-subtitle">Tham gia đội ngũ của chúng tôi và tạo ra sự khác biệt trong lĩnh vực năng lượng</div>
+            <h2 class="section-title">Các Vị Trí</h2>
+            <div class="section-subtitle">Tham gia đội ngũ và tạo ra sự khác biệt trong ngành năng lượng</div>
             <div id="jobs-container" class="jobs-grid">
                 <!-- Jobs will be populated by JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
     <section class="benefits-section">
         <div class="container">
-            <h2 class="section-title">Quyền lợi nhân viên</h2>
-            <div class="section-subtitle">Chúng tôi quan tâm đến sự phát triển và hạnh phúc của mọi thành viên</div>
+            <h2 class="section-title">Lợi Ích</h2>
+            <div class="section-subtitle">Chúng tôi quan tâm đến sự phát triển và hạnh phúc của từng thành viên trong đội ngũ</div>
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <div class="benefit-icon">💰</div>
-                    <h3 class="benefit-title">Lương thưởng cạnh tranh</h3>
-                    <div class="benefit-description">Mức lương hấp dẫn cùng các khoản thưởng hiệu suất và cổ phần</div>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Mức Lương Cạnh Tranh</h3>
+                    <div class="benefit-description">Thu nhập hấp dẫn kèm thưởng hiệu suất và quyền chọn cổ phiếu</div>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🏥</div>
-                    <h3 class="benefit-title">Bảo hiểm sức khỏe</h3>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Bảo Hiểm Sức Khỏe</h3>
                     <div class="benefit-description">Gói bảo hiểm toàn diện cho bạn và gia đình</div>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">📚</div>
-                    <h3 class="benefit-title">Phát triển chuyên môn</h3>
-                    <div class="benefit-description">Cơ hội đào tạo, học hỏi và phát triển kỹ năng liên tục</div>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Phát Triển Nghề Nghiệp</h3>
+                    <div class="benefit-description">Cơ hội học hỏi và nâng cao kỹ năng liên tục</div>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🏖️</div>
-                    <h3 class="benefit-title">Work-Life Balance</h3>
-                    <div class="benefit-description">Thời gian làm việc linh hoạt và nghỉ phép hấp dẫn</div>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Cân Bằng Công Việc & Cuộc Sống</h3>
+                    <div class="benefit-description">Giờ làm việc linh hoạt và chế độ nghỉ phép hào phóng</div>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🚀</div>
-                    <h3 class="benefit-title">Dự án thú vị</h3>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Dự Án Thú Vị</h3>
                     <div class="benefit-description">Tham gia các dự án tiên phong trong lĩnh vực năng lượng</div>
                 </div>
                 <div class="benefit-card">
-                    <div class="benefit-icon">🌍</div>
-                    <h3 class="benefit-title">Tác động tích cực</h3>
-                    <div class="benefit-description">Đóng góp vào tương lai bền vững cho thế giới</div>
+                    <div class="benefit-icon">...</div>
+                    <h3 class="benefit-title">Môi Trường Đổi Mới</h3>
+                    <div class="benefit-description">Không gian làm việc sáng tạo và đầy cảm hứng</div>
                 </div>
             </div>
         </div>
     </section>
-
-    <script>
-        const jobPositions = [
-            {
-                title: "Kỹ sư Phần mềm Senior",
-                department: "Công nghệ",
-                location: "Hà Nội, Việt Nam",
-                description: "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js, và cloud computing.",
-                tags: ["JavaScript", "React", "Node.js", "AWS", "Full-time"]
-            },
-            {
-                title: "Chuyên viên Phân tích Dữ liệu",
-                department: "Dữ liệu & Analytics",
-                location: "TP.HCM, Việt Nam",
-                description: "Phân tích dữ liệu năng lượng để tối ưu hóa hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ machine learning.",
-                tags: ["Python", "SQL", "Machine Learning", "Analytics", "Full-time"]
-            },
-            {
-                title: "Kỹ sư Điện",
-                department: "Kỹ thuật",
-                location: "Đà Nẵng, Việt Nam",
-                description: "Thiết kế và triển khai các hệ thống điện năng lượng tái tạo. Kinh nghiệm về solar, wind power và grid integration.",
-                tags: ["Electrical Engineering", "Solar", "Grid Systems", "AutoCAD", "Full-time"]
-            },
-            {
-                title: "Quản lý Dự án",
-                department: "Quản lý",
-                location: "Remote/Hybrid",
-                description: "Quản lý các dự án năng lượng từ khởi đầu đến hoàn thành. Phối hợp với các bộ phận khác nhau và đảm bảo tiến độ dự án.",
-                tags: ["Project Management", "Agile", "Leadership", "PMP", "Full-time"]
-            },
-            {
-                title: "Chuyên viên Marketing Kỹ thuật số",
-                department: "Marketing",
-                location: "Hà Nội, Việt Nam",
-                description: "Phát triển và thực hiện chiến lược marketing online cho các sản phẩm năng lượng. Quản lý content, SEO và digital campaigns.",
-                tags: ["Digital Marketing", "SEO", "Content", "Social Media", "Full-time"]
-            },
-            {
-                title: "Thực tập sinh Nghiên cứu",
-                department: "R&D",
-                location: "Hà Nội, Việt Nam",
-                description: "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc với các chuyên gia hàng đầu.",
-                tags: ["Research", "Innovation", "Energy Tech", "Internship", "Part-time"]
-            }
-        ];
-
-        // Function to render job positions
-        function renderJobs(jobs) {
-            const jobsContainer = document.getElementById('jobs-container');
-            if (!jobsContainer) {
-                console.error('Jobs container not found');
-                return;
-            }
-            
-            jobsContainer.innerHTML = '';
-
-            jobs.forEach(job => {
-                const jobCard = document.createElement('div');
-                jobCard.className = 'job-card';
-                jobCard.onclick = () => openJobDetail(job);
-                
-                jobCard.innerHTML = `
-                    <h3 class="job-title">${job.title}</h3>
-                    <div class="job-department">${job.department}</div>
-                    <div class="job-location">📍 ${job.location}</div>
-                    <p class="job-description">${job.description}</p>
-                    <div class="job-tags">
-                        ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
-                    </div>
-                `;
-                
-                jobsContainer.appendChild(jobCard);
-            });
-        }
-
-        // Function to search jobs
-        function searchJobs(event) {
-            event.preventDefault();
-            const searchTerm = document.getElementById('job-search').value.toLowerCase();
-            
-            if (!searchTerm) {
-                renderJobs(jobPositions);
-                return;
-            }
-
-            const filteredJobs = jobPositions.filter(job => 
-                job.title.toLowerCase().includes(searchTerm) ||
-                job.department.toLowerCase().includes(searchTerm) ||
-                job.description.toLowerCase().includes(searchTerm) ||
-                job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-            );
-
-            renderJobs(filteredJobs);
-            
-            // Show search results message
-            const resultMessage = filteredJobs.length === 0 
-                ? `Không tìm thấy vị trí nào phù hợp với "${searchTerm}"`
-                : `Tìm thấy ${filteredJobs.length} vị trí phù hợp với "${searchTerm}"`;
-                
-            showSearchMessage(resultMessage);
-        }
-
-        // Function to show search message
-        function showSearchMessage(message) {
-            const existingMessage = document.querySelector('.search-result-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'search-result-message';
-            messageDiv.style.cssText = `
-                text-align: center;
-                padding: 20px;
-                background: #f8f9fa;
-                border-radius: 8px;
-                margin: 20px 0;
-                color: #666;
-                font-weight: 500;
-            `;
-            messageDiv.textContent = message;
-
-            const jobsContainer = document.getElementById('jobs-container');
-            jobsContainer.parentNode.insertBefore(messageDiv, jobsContainer);
-        }
-
-        // Function to open job detail (placeholder)
-        function openJobDetail(job) {
-            alert(`Ứng tuyển vị trí: ${job.title}\n\nPhòng ban: ${job.department}\nĐịa điểm: ${job.location}\n\nTrong triển khai thực tế, điều này sẽ mở trang chi tiết công việc hoặc form ứng tuyển.`);
-        }
-
-        // Initialize jobs on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            renderJobs(jobPositions);
-            
-            // Smooth scroll for CTA button
-            const ctaButton = document.querySelector('.cta-button');
-            if (ctaButton) {
-                ctaButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const openPositions = document.getElementById('open-positions');
-                    if (openPositions) {
-                        openPositions.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
-        });
-    </script>
+    
 </body>
+
 </html>

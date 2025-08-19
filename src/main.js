@@ -266,7 +266,6 @@ footer {
     overflow: hidden;
     z-index: 1;
 }
-
 .company-deck::before {
     content: '';
     position: absolute;
@@ -293,11 +292,10 @@ footer {
 .footer-toggle {
     color: #ffffff;
     background: none;
-    border: none;
     font-size: clamp(14px, 2.5vw, 18px);
     font-weight: 500;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     cursor: pointer;
     width: 100%;
     padding: 10px 0;
@@ -306,17 +304,38 @@ footer {
 .footer-toggle:hover {
     transform: scale(1.025);
 }
-.footer-toggle .arrow {
-    display: none;
-    margin-left: 8px;
-    transition: transform 0.3s ease;
-}
 .collapsible {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
+.underline-hover {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+}
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%; 
+  width: 50%; 
+  height: 1px;
+  background-color: #ffffff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.underline-hover:hover::after {
+  transform: scaleX(1);
+}
+
 @media (max-width: 768px) {
     footer { padding: 60px 30px 40px; }
+    .footer-toggle {
+        text-decoration: underline;
+    }
     .footer-container { grid-template-columns: 1fr; gap: 30px; padding: 20px; }
     .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
     .footer-bottom-left { justify-content: center; }
@@ -327,7 +346,7 @@ footer {
 <footer>
     <div class="footer-container">
         <div class="footer-section">
-            <button class="footer-toggle" aria-expanded="false">
+            <button class="footer-toggle underline-hover" aria-expanded="false">
                 Công Ty
             </button>
             <div class="collapsible">
@@ -336,7 +355,7 @@ footer {
             </div>
         </div>
         <div class="footer-section">
-            <button class="footer-toggle" aria-expanded="false">
+            <button class="footer-toggle underline-hover" aria-expanded="false">
                 Các Trang Khác
             </button>
             <div class="collapsible">
@@ -375,7 +394,6 @@ footer {
             </div>
     </div>
     <div class="footer-bottom">
-            <div class="footer-bottom">
         <div class="footer-bottom-left">
             <a href="#/privacy">Quyền Riêng Tư</a>
             <span>|</span>

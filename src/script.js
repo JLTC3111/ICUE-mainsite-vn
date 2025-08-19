@@ -507,7 +507,7 @@ window.loadPage = (page) => {
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
-    clearInterval(fakeProgress); // ensure we clear progress interval
+    clearInterval(fakeProgress); 
 
     // Finalize progress bar to 100%
     let finalize = setInterval(() => {
@@ -1661,6 +1661,155 @@ window.initFrequentlyAskedQuestions = function() {
             toggleAnswer
         };
     };
+    window.JobBoard = (function() {
+      'use strict';
+      
+      const jobPositions = [
+        {
+          title: "Kỹ sư Phần mềm",
+          department: "Công nghệ",
+          location: "Hà Nội, Việt Nam",
+          description:
+            "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js và điện toán đám mây.",
+          tags: ["Ngôn ngữ JavaScript", "Khung React", "Node.js", "Điện toán đám mây (AWS)", "Toàn thời gian"],
+        },
+        {
+          title: "Chuyên viên Phân tích Dữ liệu",
+          department: "Dữ liệu & Phân tích",
+          location: "TP. Hồ Chí Minh, Việt Nam",
+          description:
+            "Phân tích dữ liệu năng lượng để tối ưu hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ học máy.",
+          tags: ["Ngôn ngữ Python", "SQL", "Huấn Luyện AI", "Phân tích dữ liệu", "Toàn thời gian"],
+        },
+        {
+          title: "Thực tập sinh Nghiên cứu",
+          department: "Hành chính",
+          location: "Hà Nội, Việt Nam",
+          description:
+            "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc cùng các chuyên gia hàng đầu.",
+          tags: ["Nghiên cứu", "Đổi mới sáng tạo", "Công nghệ năng lượng", "Thực tập", "Bán thời gian"],
+        },
+      ];
+
+  // Function to render job positions
+  function renderJobs(jobs) {
+    const jobsContainer = document.getElementById('jobs-container');
+    if (!jobsContainer) {
+        console.error('Jobs container not found');
+        return;
+    }
+    
+    jobsContainer.innerHTML = '';
+
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.className = 'job-card';
+        jobCard.onclick = () => openJobDetail(job);
+        
+        jobCard.innerHTML = `
+            <h3 class="job-title">${job.title}</h3>
+            <div class="job-department">${job.department}</div>
+            <div class="job-location"><svg width="16px" height="16px" viewBox="-3 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pin_sharp_circle [#624]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-223.000000, -5439.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M176,5286.219 C176,5287.324 175.105,5288.219 174,5288.219 C172.895,5288.219 172,5287.324 172,5286.219 C172,5285.114 172.895,5284.219 174,5284.219 C175.105,5284.219 176,5285.114 176,5286.219 M174,5296 C174,5296 169,5289 169,5286 C169,5283.243 171.243,5281 174,5281 C176.757,5281 179,5283.243 179,5286 C179,5289 174,5296 174,5296 M174,5279 C170.134,5279 167,5282.134 167,5286 C167,5289.866 174,5299 174,5299 C174,5299 181,5289.866 181,5286 C181,5282.134 177.866,5279 174,5279" id="pin_sharp_circle-[#624]"> </path> </g> </g> </g> </g></svg>${job.location}</div>
+            <div class="job-description">${job.description}</div>
+            <div class="job-tags">
+                ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+            </div>
+        `;
+        
+        jobsContainer.appendChild(jobCard);
+    });
+}
+
+// Function to search jobs
+function searchJobs(event) {
+    event.preventDefault();
+    const searchTerm = document.getElementById('job-search').value.toLowerCase();
+    
+    if (!searchTerm) {
+        renderJobs(jobPositions);
+        return;
+    }
+
+    const filteredJobs = jobPositions.filter(job => 
+        job.title.toLowerCase().includes(searchTerm) ||
+        job.department.toLowerCase().includes(searchTerm) ||
+        job.description.toLowerCase().includes(searchTerm) ||
+        job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    );
+
+    renderJobs(filteredJobs);
+    
+    // Show search results message
+    const resultMessage = filteredJobs.length === 0 
+        ? `No positions found for "${searchTerm}"`
+        : `Found ${filteredJobs.length} position(s) matching "${searchTerm}"`;
+        
+    showSearchMessage(resultMessage);
+}
+
+// Function to show search message
+function showSearchMessage(message) {
+    const existingMessage = document.querySelector('.search-result-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'search-result-message';
+    messageDiv.style.cssText = `
+        text-align: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin: 20px 0;
+        color: #666;
+        font-weight: 500;
+    `;
+    messageDiv.textContent = message;
+
+    const jobsContainer = document.getElementById('jobs-container');
+    jobsContainer.parentNode.insertBefore(messageDiv, jobsContainer);
+}
+
+// Initialize jobs on page load
+function initialize() {
+    renderJobs(jobPositions);
+    
+    // Smooth scroll for CTA button
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const openPositions = document.getElementById('open-positions');
+            if (openPositions) {
+                openPositions.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+}
+    
+      // Public API - expose these functions globally
+      return {
+          init: initialize,
+          renderJobs: renderJobs,
+          searchJobs: searchJobs,
+          getJobPositions: () => [...jobPositions], // Return a copy to prevent mutation
+          addJob: (job) => {
+              jobPositions.push(job);
+              renderJobs(jobPositions);
+          },
+          removeJob: (title) => {
+              const index = jobPositions.findIndex(job => job.title === title);
+              if (index > -1) {
+                  jobPositions.splice(index, 1);
+                  renderJobs(jobPositions);
+              }
+          }
+      };
+    })();
+
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
@@ -1997,10 +2146,10 @@ function initAudioVisualizer(
     const darkBackgroundPages = ['communityActivities', 'aboutUs'];
     
     if (darkBackgroundPages.includes(page)) {
-      hamburgerIcon.style.stroke = 'white';
+      hamburgerIcon.style.stroke = '#ffffff';
       hamburgerIcon.style.strokeWidth = '0.5px';
       hamburgerIcon.style.fill = 'none';
-      contactLink.style.color = 'white';
+      contactLink.style.color = '#ffffff';
     } else {
       hamburgerIcon.style.stroke = 'none';
       hamburgerIcon.style.fill = 'none';
