@@ -507,16 +507,14 @@ window.loadPage = (page) => {
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
-    clearInterval(fakeProgress); // ensure we clear progress interval
+    clearInterval(fakeProgress); 
 
-    // Finalize progress bar to 100%
     let finalize = setInterval(() => {
       progress += 2;
       setProgress(progress);
       if (progress >= 100) {
         clearInterval(finalize);
 
-        // Hide loading overlay
         landing.style.opacity = 0;
         landing.style.pointerEvents = 'none';
 
@@ -528,6 +526,7 @@ window.loadPage = (page) => {
               updateCalendarSvgTime();
               initAudioVisualizer();
               updateMusicBarColor(page);
+              updateHamburgerIcon(page);
 
               switch (page) {
                 case 'meetOurExperts':
@@ -613,20 +612,7 @@ window.loadPage = (page) => {
                   calendarModal();
                   break;
               }
-              
-              // Update hamburger icon based on current page
-              updateHamburgerIcon(page);
             });
-           
-          // Hide contact sidebar on News page
-          const contactSidebar = document.querySelector('.contact-sidebar');
-          if (contactSidebar) {
-            if (page === 'News' && isTouchDevice) {
-              contactSidebar.style.display = '';
-            } else {
-              contactSidebar.style.display = '';
-            }
-           }     
           }, 10);
         }
       }, 0);
@@ -1685,11 +1671,18 @@ window.JobBoard = (function() {
   
   const jobPositions = [
     {
-        title: "Kỹ sư phần mềm",
+        title: "Trợ lý Trưởng phòng Công nghệ",
         department: "Công nghệ",
         location: "Hà Nội, Việt Nam",
-        description: "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js và điện toán đám mây.",
-        tags: ["JavaScript", "React", "Node.js", "AWS", "Toàn thời gian"]
+        description: "Chúng tôi đang tìm một chuyên gia am hiểu công nghệ, tổ chức tốt để hỗ trợ CTO và đội ngũ lãnh đạo công nghệ. Giúp quản lý dự án, tối ưu quy trình làm việc và đảm bảo các nhóm kỹ thuật vận hành trơn tru.",
+        tags: ["JavaScript", "Giao tiếp và tổ chức tốt", "Chủ động, tư duy giải quyết vấn đề", "Toàn thời gian"]
+    },
+    {
+        title: "Thực tập sinh nghiên cứu",
+        department: "Hành chính",
+        location: "Hà Nội, Việt Nam",
+        description: "Tham gia cùng chúng tôi để khám phá công nghệ mới, hỗ trợ các dự án sáng tạo và học hỏi từ các chuyên gia hàng đầu trong lĩnh vực.",
+        tags: ["Tò mò và đam mê nghiên cứu", "Kỹ năng phân tích và giải quyết vấn đề tốt", "Sẵn sàng học hỏi và đóng góp"]
     },
     {
         title: "Chuyên viên phân tích dữ liệu",
@@ -1697,13 +1690,6 @@ window.JobBoard = (function() {
         location: "TP. Hồ Chí Minh, Việt Nam",
         description: "Phân tích dữ liệu năng lượng để tối ưu hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ học máy.",
         tags: ["Python", "SQL", "Machine Learning", "Phân tích", "Toàn thời gian"]
-    },
-    {
-        title: "Thực tập sinh nghiên cứu",
-        department: "Hành chính",
-        location: "Hà Nội, Việt Nam",
-        description: "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc cùng các chuyên gia hàng đầu.",
-        tags: ["Nghiên cứu", "Đổi mới", "Công nghệ năng lượng", "Thực tập", "Bán thời gian"]
     }
   ];
 
@@ -2333,25 +2319,24 @@ function initAudioVisualizer(
     });
   }
 
-  // Function to change hamburger menu icon color based on page background
   function updateHamburgerIcon(page) {
-    const hamburgerIcon = document.getElementById('menuIcon');
-    const contactLink = document.getElementById('contactLink');
-    if (!hamburgerIcon) return;
-    
-    // Pages with dark backgrounds that need white icons
-    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
-    
-    if (darkBackgroundPages.includes(page)) {
-      hamburgerIcon.style.stroke = 'white';
-      hamburgerIcon.style.strokeWidth = '0.5px';
-      hamburgerIcon.style.fill = 'none';
-      contactLink.style.color = 'white';
-    } else {
-      hamburgerIcon.style.stroke = 'none';
-      hamburgerIcon.style.fill = 'none';
+      const hamburgerIcon = document.getElementById('menuIcon');
+      const contactLink = document.getElementById('contactLink');
+      if (!hamburgerIcon) return;
+      
+      // Pages with dark backgrounds that need white icons
+      const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+      
+      if (darkBackgroundPages.includes(page)) {
+        hamburgerIcon.style.stroke = 'white';
+        hamburgerIcon.style.strokeWidth = '0.5px';
+        hamburgerIcon.style.fill = 'none';
+        contactLink.style.color = 'white';
+      } else {
+        hamburgerIcon.style.stroke = 'none';
+        hamburgerIcon.style.fill = 'none';
+      }
     }
-  }
 
   function enableCursorGradientTrail(color = 'yellow') {
     document.addEventListener('mousemove', (e) => {
