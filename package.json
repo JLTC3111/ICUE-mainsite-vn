@@ -1,17 +1,30 @@
 {
+  "name": "icue-main-site-vietnamese",
+  "version": "1.0.0",
+  "description": "ICUE Website with Stripe Integration",
+  "main": "server.js",
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
+    "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
     "gsap": "^3.12.7",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "swiper": "^11.2.10",
+    "express": "^4.18.2",
+    "stripe": "^12.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
     "cpy": "^11.1.0",
-    "vite": "^6.3.2"
+    "vite": "^6.3.2",
+    "nodemon": "^2.0.22"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server.js",
+    "server-dev": "nodemon server.js"
   }
 }

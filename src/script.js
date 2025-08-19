@@ -507,7 +507,7 @@ window.loadPage = (page) => {
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
-    clearInterval(fakeProgress); 
+    clearInterval(fakeProgress); // ensure we clear progress interval
 
     // Finalize progress bar to 100%
     let finalize = setInterval(() => {
@@ -528,71 +528,88 @@ window.loadPage = (page) => {
               updateCalendarSvgTime();
               initAudioVisualizer();
               updateMusicBarColor(page);
-              calendarModal();
 
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'Home':
                   makeItRainText();
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
+                  calendarModal();
                   break;
                 case 'News':
                   initLogoSlider();
+                  calendarModal();
                   initMobileNewsSlider();
                   triggerFanfare();
                   break;
                 case 'aboutUs':
                   createBalloons();
+                  calendarModal();
                   break;
                 case 'Contact':
                   initPostMethod();
+                  calendarModal();
                   break;
                 case 'ourWork':
                   initializeCarousel();
+                  calendarModal();
                   break;
                 case 'pastProjects':
                   handleAOSByScreenSize();
+                  calendarModal();
                   break;
                 case 'orgStructure':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'FAQs':
                   ICUEFooter.autoInject();
-                  initFrequentlyAskedQuestions();
+                  calendarModal();
                   break;
                 case 'recruitment':
                   JobBoard.init();
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'donations':
+                  DonationForm.init();
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'notableAwards':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'communityActivities':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'privacy':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'terms':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'gdpr':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
                 case 'cookies':
                   ICUEFooter.autoInject();
+                  calendarModal();
                   break;
               }
               
@@ -1457,359 +1474,163 @@ window.OrgStructure = {
                 });
             }
         };
-      window.showTab = window.OrgStructure.showTab;
-      window.downloadDocument = window.OrgStructure.downloadDocument;
-      window.searchDocuments = window.OrgStructure.searchDocuments;
-
-window.initFrequentlyAskedQuestions = function() {
-    let currentOpenCategory = null; // Track currently open category
-        
-      const faqData = {
-            services: [
-                { q: "Câu Hỏi - Bạn cung cấp những loại dịch vụ tư vấn nào?", a: "Trả Lời: Chúng tôi cung cấp tư vấn quy hoạch, thiết kế, quản lý dự án, giám sát và hỗ trợ thủ tục pháp lý." },
-                { q: "Câu Hỏi - Có nhận dự án dân dụng nhỏ lẻ không?", a: "Trả Lời: Có, chúng tôi nhận từ dự án nhà ở dân dụng đến công trình thương mại và công nghiệp." }
-            ],
-            process: [
-                { q: "Câu Hỏi - Quy trình hợp tác diễn ra như thế nào?", a: "Trả Lời: Quy trình gồm: tư vấn ban đầu → khảo sát hiện trạng → thiết kế sơ bộ → hoàn thiện bản vẽ → hỗ trợ thi công." },
-                { q: "Câu Hỏi - Tôi có thể điều chỉnh thiết kế trong quá trình không?", a: "Trả Lời: Có, khách hàng được quyền yêu cầu chỉnh sửa trong các giai đoạn trước khi chốt bản vẽ." }
-            ],
-            costs: [
-                { q: "Câu Hỏi - Phí dịch vụ được tính như thế nào?", a: "Trả Lời: Phí có thể tính trọn gói, theo % tổng mức đầu tư, hoặc theo giờ tùy loại dự án." },
-                { q: "Câu Hỏi - Có hỗ trợ trả theo tiến độ không?", a: "Trả Lời: Có, chúng tôi chấp nhận thanh toán linh hoạt theo các giai đoạn dự án." }
-            ],
-            legal: [
-                { q: "Câu Hỏi - Bạn có hỗ trợ xin giấy phép xây dựng không?", a: "Trả Lời: Có, chúng tôi hỗ trợ trọn gói từ chuẩn bị hồ sơ đến nộp cơ quan chức năng." },
-                { q: "Câu Hỏi - Khách hàng cần cung cấp hồ sơ gì?", a: "Trả Lời: Thông thường cần: giấy tờ sở hữu đất, bản vẽ hiện trạng, và giấy tờ pháp lý liên quan." }
-            ],
-            timeline: [
-                { q: "Câu Hỏi - Thời gian hoàn thành dự án là bao lâu?", a: "Trả Lời: Tùy quy mô dự án, thường từ 2-6 tháng cho thiết kế và 6-18 tháng cho thi công." },
-                { q: "Câu Hỏi - Nếu có chậm tiến độ thì sao?", a: "Trả Lời: Chúng tôi sẽ báo cáo ngay lập tức, đề xuất phương án xử lý và cam kết bù tiến độ khi có thể." }
-            ],
-            technology: [
-                { q: "Câu Hỏi - Có áp dụng công nghệ BIM không?", a: "Trả Lời: Có, chúng tôi sử dụng BIM và mô phỏng 3D để giúp khách hàng hình dung rõ thiết kế." },
-                { q: "Câu Hỏi - Bạn có giải pháp thiết kế xanh không?", a: "Trả Lời: Có, chúng tôi ưu tiên vật liệu bền vững và giải pháp tiết kiệm năng lượng." }
-            ],
-            clients: [
-                { q: "Câu Hỏi - Đối tượng khách hàng chính của bạn là ai?", a: "Trả Lời: Chúng tôi phục vụ cả cá nhân, doanh nghiệp, và cơ quan nhà nước." },
-                { q: "Câu Hỏi - Sau khi bàn giao, có hỗ trợ bảo trì không?", a: "Trả Lời: Có, chúng tôi có dịch vụ hậu mãi và bảo trì theo yêu cầu." }
-            ],
-            general: [
-                { q: "Câu Hỏi - Tôi có thể xem dự án bạn đã thực hiện không?", a: "Trả Lời: Có, vui lòng liên hệ để nhận hồ sơ năng lực và danh mục dự án." },
-                { q: "Câu Hỏi - Làm sao để liên hệ nhanh nhất?", a: "Trả Lời: Bạn có thể gọi trực tiếp hotline hoặc gửi email, chúng tôi phản hồi trong vòng 24h." }
-            ]
-        };
-    
-        function openCategory(category) {
-          // Find the clicked card first
-          const clickedCard = event.target.closest('.faq-card');
-          
-          // Clear any existing answers with animation
-          const existingAnswers = document.querySelectorAll('.faq-answer-section');
-          if (existingAnswers.length > 0) {
-              gsap.to(existingAnswers, {
-                  duration: 0.3,
-                  height: 0,
-                  opacity: 0,
-                  ease: "power2.inOut",
-                  onComplete: () => {
-                      existingAnswers.forEach(section => section.remove());
-                  }
-              });
-          }
-          
-          // Remove active state from all cards with animation
-          const allCards = document.querySelectorAll('.faq-card');
-          gsap.to(allCards, {
-              duration: 0.2,
-              scale: 1,
-              ease: "power2.out",
-              onComplete: () => {
-                  allCards.forEach(card => card.classList.remove('active'));
-              }
-          });
-          
-          // If clicking the same category that's already open, just close it
-          if (currentOpenCategory === category) {
-              currentOpenCategory = null;
-              return;
-          }
-          
-          // Set new current category
-          currentOpenCategory = category;
-          
-          if (faqData[category] && clickedCard) {
-              // Animate clicked card
-              gsap.to(clickedCard, {
-                  duration: 0.3,
-                  scale: 1.02,
-                  ease: "back.out(1.7)",
-                  onComplete: () => {
-                      clickedCard.classList.add('active');
-                  }
-              });
-              
-              // Create the FAQ section
-              const section = document.createElement("div");
-              section.classList.add("faq-answer-section");
-              
-              // Set initial state for animation
-              gsap.set(section, {
-                  height: 0,
-                  opacity: 0,
-                  overflow: "hidden"
-              });
-              
-              faqData[category].forEach((item, index) => {
-                  const div = document.createElement("div");
-                  div.classList.add("faq-answer");
-                  div.innerHTML = `
-                      <h4 class="faq-question" onclick="toggleAnswer(this)">${item.q}</h4>
-                      <div class="faq-answer-text" style="display: none;">${item.a}</div>
-                  `;
-                  
-                  // Set initial animation state for each FAQ item
-                  gsap.set(div, {
-                      y: 20,
-                      opacity: 0
-                  });
-                  
-                  section.appendChild(div);
-              });
-              
-              // Insert the section after the clicked card
-              clickedCard.insertAdjacentElement('afterend', section);
-              
-              // Animate section appearance
-              gsap.to(section, {
-                  duration: 0.5,
-                  height: "auto",
-                  opacity: 1,
-                  ease: "power2.out",
-                  delay: 0.1
-              });
-              
-              // Stagger animate FAQ items
-              const faqItems = section.querySelectorAll('.faq-answer');
-              gsap.to(faqItems, {
-                  duration: 0.4,
-                  y: 0,
-                  opacity: 1,
-                  ease: "power2.out",
-                  stagger: 0.1,
-                  delay: 0.3
-              });
-          }
-      }
-  
-      function toggleAnswer(el) {
-          const p = el.nextElementSibling;
-          if (p && p.classList.contains('faq-answer-text')) {
-              const isOpen = p.style.display === "block";
-              
-              if (isOpen) {
-                  // Closing animation
-                  gsap.to(p, {
-                      duration: 0.3,
-                      height: 0,
-                      opacity: 0,
-                      ease: "power2.inOut",
-                      onComplete: () => {
-                          p.style.display = "none";
-                          p.style.height = "auto"; // Reset height for next opening
-                      }
-                  });
-                  
-                  // Animate question
-                  gsap.to(el, {
-                      duration: 0.2,
-                      scale: 1,
-                      backgroundColor: "#fff",
-                      ease: "power2.out"
-                  });
-              } else {
-                  // Opening animation
-                  p.style.display = "block";
-                  gsap.set(p, { height: 0, opacity: 0 });
-                  
-                  gsap.to(p, {
-                      duration: 0.4,
-                      height: "auto",
-                      opacity: 1,
-                      ease: "power2.out"
-                  });
-                  
-                  // Animate question
-                  gsap.to(el, {
-                      duration: 0.2,
-                      scale: 1.01,
-                      backgroundColor: "#bbdefb",
-                      ease: "back.out(1.7)"
-                  });
-              }
-              
-              // Toggle expanded class
-              el.classList.toggle('expanded');
-          }
-      }
-    
-        // Make functions globally available
-        window.openCategory = openCategory;
-        window.toggleAnswer = toggleAnswer;
-    
-        return {
-            openCategory,
-            toggleAnswer
-        };
-    };
+    window.showTab = window.OrgStructure.showTab;
+    window.downloadDocument = window.OrgStructure.downloadDocument;
+    window.searchDocuments = window.OrgStructure.searchDocuments;
 
 window.JobBoard = (function() {
-      'use strict';
-      
-      const jobPositions = [
-        {
-          title: "Kỹ sư Phần mềm",
-          department: "Công nghệ",
-          location: "Hà Nội, Việt Nam",
-          description:
-            "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js và điện toán đám mây.",
-          tags: ["Ngôn ngữ JavaScript", "Khung React", "Node.js", "Điện toán đám mây (AWS)", "Toàn thời gian"],
-        },
-        {
-          title: "Chuyên viên Phân tích Dữ liệu",
-          department: "Dữ liệu & Phân tích",
-          location: "TP. Hồ Chí Minh, Việt Nam",
-          description:
-            "Phân tích dữ liệu năng lượng để tối ưu hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ học máy.",
-          tags: ["Ngôn ngữ Python", "SQL", "Huấn Luyện AI", "Phân tích dữ liệu", "Toàn thời gian"],
-        },
-        {
-          title: "Thực tập sinh Nghiên cứu",
-          department: "Hành chính",
-          location: "Hà Nội, Việt Nam",
-          description:
-            "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc cùng các chuyên gia hàng đầu.",
-          tags: ["Nghiên cứu", "Đổi mới sáng tạo", "Công nghệ năng lượng", "Thực tập", "Bán thời gian"],
-        },
-      ];
+  'use strict';
+  
+  const jobPositions = [
+    {
+        title: "Kỹ sư phần mềm",
+        department: "Công nghệ",
+        location: "Hà Nội, Việt Nam",
+        description: "Phát triển và duy trì hệ thống quản lý năng lượng thông minh. Làm việc với các công nghệ hiện đại như React, Node.js và điện toán đám mây.",
+        tags: ["JavaScript", "React", "Node.js", "AWS", "Toàn thời gian"]
+    },
+    {
+        title: "Chuyên viên phân tích dữ liệu",
+        department: "Dữ liệu & Phân tích",
+        location: "TP. Hồ Chí Minh, Việt Nam",
+        description: "Phân tích dữ liệu năng lượng để tối ưu hiệu suất và dự đoán xu hướng. Sử dụng Python, SQL và các công cụ học máy.",
+        tags: ["Python", "SQL", "Machine Learning", "Phân tích", "Toàn thời gian"]
+    },
+    {
+        title: "Thực tập sinh nghiên cứu",
+        department: "Hành chính",
+        location: "Hà Nội, Việt Nam",
+        description: "Hỗ trợ nghiên cứu các công nghệ năng lượng mới. Cơ hội học hỏi và làm việc cùng các chuyên gia hàng đầu.",
+        tags: ["Nghiên cứu", "Đổi mới", "Công nghệ năng lượng", "Thực tập", "Bán thời gian"]
+    }
+  ];
+
 
   // Function to render job positions
   function renderJobs(jobs) {
-    const jobsContainer = document.getElementById('jobs-container');
-    if (!jobsContainer) {
-        console.error('Jobs container not found');
-        return;
-    }
-    
-    jobsContainer.innerHTML = '';
+      const jobsContainer = document.getElementById('jobs-container');
+      if (!jobsContainer) {
+          console.error('Jobs container not found');
+          return;
+      }
+      
+      jobsContainer.innerHTML = '';
 
-    jobs.forEach(job => {
-        const jobCard = document.createElement('div');
-        jobCard.className = 'job-card';
-        jobCard.onclick = () => openJobDetail(job);
-        
-        jobCard.innerHTML = `
-            <h3 class="job-title">${job.title}</h3>
-            <div class="job-department">${job.department}</div>
-            <div class="job-location"><svg width="16px" height="16px" viewBox="-3 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pin_sharp_circle [#624]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-223.000000, -5439.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M176,5286.219 C176,5287.324 175.105,5288.219 174,5288.219 C172.895,5288.219 172,5287.324 172,5286.219 C172,5285.114 172.895,5284.219 174,5284.219 C175.105,5284.219 176,5285.114 176,5286.219 M174,5296 C174,5296 169,5289 169,5286 C169,5283.243 171.243,5281 174,5281 C176.757,5281 179,5283.243 179,5286 C179,5289 174,5296 174,5296 M174,5279 C170.134,5279 167,5282.134 167,5286 C167,5289.866 174,5299 174,5299 C174,5299 181,5289.866 181,5286 C181,5282.134 177.866,5279 174,5279" id="pin_sharp_circle-[#624]"> </path> </g> </g> </g> </g></svg>${job.location}</div>
-            <div class="job-description">${job.description}</div>
-            <div class="job-tags">
-                ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
-            </div>
-        `;
-        
-        jobsContainer.appendChild(jobCard);
-    });
-}
+      jobs.forEach(job => {
+          const jobCard = document.createElement('div');
+          jobCard.className = 'job-card';
+          jobCard.onclick = () => openJobDetail(job);
+          
+          jobCard.innerHTML = `
+              <h3 class="job-title">${job.title}</h3>
+              <div class="job-department">${job.department}</div>
+              <div class="job-location"><svg width="16px" height="16px" viewBox="-3 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pin_sharp_circle [#624]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-223.000000, -5439.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M176,5286.219 C176,5287.324 175.105,5288.219 174,5288.219 C172.895,5288.219 172,5287.324 172,5286.219 C172,5285.114 172.895,5284.219 174,5284.219 C175.105,5284.219 176,5285.114 176,5286.219 M174,5296 C174,5296 169,5289 169,5286 C169,5283.243 171.243,5281 174,5281 C176.757,5281 179,5283.243 179,5286 C179,5289 174,5296 174,5296 M174,5279 C170.134,5279 167,5282.134 167,5286 C167,5289.866 174,5299 174,5299 C174,5299 181,5289.866 181,5286 C181,5282.134 177.866,5279 174,5279" id="pin_sharp_circle-[#624]"> </path> </g> </g> </g> </g></svg>${job.location}</div>
+              <div class="job-description">${job.description}</div>
+              <div class="job-tags">
+                  ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+              </div>
+          `;
+          
+          jobsContainer.appendChild(jobCard);
+      });
+  }
 
-// Function to search jobs
-function searchJobs(event) {
-    event.preventDefault();
-    const searchTerm = document.getElementById('job-search').value.toLowerCase();
-    
-    if (!searchTerm) {
-        renderJobs(jobPositions);
-        return;
-    }
+  // Function to search jobs
+  function searchJobs(event) {
+      event.preventDefault();
+      const searchTerm = document.getElementById('job-search').value.toLowerCase();
+      
+      if (!searchTerm) {
+          renderJobs(jobPositions);
+          return;
+      }
 
-    const filteredJobs = jobPositions.filter(job => 
-        job.title.toLowerCase().includes(searchTerm) ||
-        job.department.toLowerCase().includes(searchTerm) ||
-        job.description.toLowerCase().includes(searchTerm) ||
-        job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-    );
+      const filteredJobs = jobPositions.filter(job => 
+          job.title.toLowerCase().includes(searchTerm) ||
+          job.department.toLowerCase().includes(searchTerm) ||
+          job.description.toLowerCase().includes(searchTerm) ||
+          job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+      );
 
-    renderJobs(filteredJobs);
-    
-    // Show search results message
-    const resultMessage = filteredJobs.length === 0 
-        ? `No positions found for "${searchTerm}"`
-        : `Found ${filteredJobs.length} position(s) matching "${searchTerm}"`;
-        
-    showSearchMessage(resultMessage);
-}
+      renderJobs(filteredJobs);
+      
+      // Show search results message
+      const resultMessage = filteredJobs.length === 0 
+          ? `No positions found for "${searchTerm}"`
+          : `Found ${filteredJobs.length} position(s) matching "${searchTerm}"`;
+          
+      showSearchMessage(resultMessage);
+  }
 
-// Function to show search message
-function showSearchMessage(message) {
-    const existingMessage = document.querySelector('.search-result-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
+  // Function to show search message
+  function showSearchMessage(message) {
+      const existingMessage = document.querySelector('.search-result-message');
+      if (existingMessage) {
+          existingMessage.remove();
+      }
 
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'search-result-message';
-    messageDiv.style.cssText = `
-        text-align: center;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        margin: 20px 0;
-        color: #666;
-        font-weight: 500;
-    `;
-    messageDiv.textContent = message;
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'search-result-message';
+      messageDiv.style.cssText = `
+          text-align: center;
+          padding: 20px;
+          background: #f8f9fa;
+          border-radius: 8px;
+          margin: 20px 0;
+          color: #666;
+          font-weight: 500;
+      `;
+      messageDiv.textContent = message;
 
-    const jobsContainer = document.getElementById('jobs-container');
-    jobsContainer.parentNode.insertBefore(messageDiv, jobsContainer);
-}
+      const jobsContainer = document.getElementById('jobs-container');
+      jobsContainer.parentNode.insertBefore(messageDiv, jobsContainer);
+  }
 
-// Initialize jobs on page load
-function initialize() {
-    renderJobs(jobPositions);
-    
-    // Smooth scroll for CTA button
-    const ctaButton = document.querySelector('.cta-button');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const openPositions = document.getElementById('open-positions');
-            if (openPositions) {
-                openPositions.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-}
-    
-      // Public API - expose these functions globally
-      return {
-          init: initialize,
-          renderJobs: renderJobs,
-          searchJobs: searchJobs,
-          getJobPositions: () => [...jobPositions], // Return a copy to prevent mutation
-          addJob: (job) => {
-              jobPositions.push(job);
-              renderJobs(jobPositions);
-          },
-          removeJob: (title) => {
-              const index = jobPositions.findIndex(job => job.title === title);
-              if (index > -1) {
-                  jobPositions.splice(index, 1);
-                  renderJobs(jobPositions);
+  // Initialize jobs on page load
+  function initialize() {
+      renderJobs(jobPositions);
+      
+      // Smooth scroll for CTA button
+      const ctaButton = document.querySelector('.cta-button');
+      if (ctaButton) {
+          ctaButton.addEventListener('click', function(e) {
+              e.preventDefault();
+              const openPositions = document.getElementById('open-positions');
+              if (openPositions) {
+                  openPositions.scrollIntoView({
+                      behavior: 'smooth'
+                  });
               }
+          });
+      }
+  }
+
+  // Public API - expose these functions globally
+  return {
+      init: initialize,
+      renderJobs: renderJobs,
+      searchJobs: searchJobs,
+      getJobPositions: () => [...jobPositions], // Return a copy to prevent mutation
+      addJob: (job) => {
+          jobPositions.push(job);
+          renderJobs(jobPositions);
+      },
+      removeJob: (title) => {
+          const index = jobPositions.findIndex(job => job.title === title);
+          if (index > -1) {
+              jobPositions.splice(index, 1);
+              renderJobs(jobPositions);
           }
-      };
-    })();
+      }
+  };
+})();
+
+// Auto-initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.JobBoard) {
+      window.JobBoard.init();
+  }
+});
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
@@ -1841,6 +1662,179 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+window.DonationForm = (function () {
+  let selectedAmount = 0;
+  let selectedFrequency = "monthly";
+
+  // Function to select donation amount
+  function selectAmount(button, amount) {
+    // Remove active class from all amount buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Add active class to clicked button
+    button.classList.add('active');
+
+    // Update selected amount
+    selectedAmount = amount;
+    const donateAmountElement = document.getElementById('donateAmount');
+    if (donateAmountElement) {
+      donateAmountElement.textContent = amount;
+    }
+
+    // Clear custom amount input if it exists
+    const customAmountInput = document.getElementById('customAmount');
+    if (customAmountInput) {
+      customAmountInput.value = '';
+    }
+  }
+
+  // Function to update custom amount
+  function updateCustomAmount(input) {
+    const customAmount = parseInt(input.value);
+    if (customAmount && customAmount > 0) {
+      // Remove active class from preset buttons
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Update selected amount
+      selectedAmount = customAmount;
+      const donateAmountElement = document.getElementById('donateAmount');
+      if (donateAmountElement) {
+        donateAmountElement.textContent = customAmount;
+      }
+    }
+  }
+
+  // Function to select donation frequency
+  function selectFrequency(option, frequency) {
+    // Remove active class from all frequency options
+    document.querySelectorAll('.donation-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
+
+    // Add active class to clicked option
+    option.classList.add('active');
+
+    // Update selected frequency
+    selectedFrequency = frequency;
+  }
+
+  // Function to process donation
+  function processDonation(event) {
+    event.preventDefault();
+
+    // Get form data
+    const formData = new FormData(event.target);
+    const donationData = {
+      amount: selectedAmount,
+      frequency: selectedFrequency,
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      company: formData.get('company')
+    };
+
+    // Validate required fields
+    if (!donationData.firstName || !donationData.lastName || !donationData.email) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Validate amount
+    if (!selectedAmount || selectedAmount <= 0) {
+      alert('Please select a valid donation amount.');
+      return;
+    }
+
+    // Stripe Integration - Create checkout session and redirect
+    fetch('/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(donationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(session => {
+      // Redirect to Stripe Checkout
+      window.location.href = session.url;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Quyên Góp Chưa Sẵn Sàng, Vui Lòng Thử Lại Sau.');
+    });
+
+    console.log('Donation data:', donationData);
+  }
+
+  // Initialize page
+  function init() {
+    // Check if donateAmount element exists before trying to set its content
+    const donateAmountElement = document.getElementById('donateAmount');
+    if (donateAmountElement) {
+      donateAmountElement.textContent = selectedAmount;
+    }
+
+    // Add hover effects to cards
+    const cards = document.querySelectorAll('.award-card, .project-card');
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-5px)';
+      });
+      card.addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  // Run init after DOM is ready
+  document.addEventListener('DOMContentLoaded', init);
+
+  // Public API (accessible globally as window.DonationForm)
+  return {
+    selectAmount,
+    updateCustomAmount,
+    selectFrequency,
+    processDonation,
+    init
+  };
+})();
+
+// Make selectAmount globally accessible for onclick handlers
+window.selectAmount = function(button, amount) {
+  if (window.DonationForm && window.DonationForm.selectAmount) {
+    window.DonationForm.selectAmount(button, amount);
+  }
+};
+
+// Make other donation functions globally accessible for onclick handlers
+window.updateCustomAmount = function(input) {
+  if (window.DonationForm && window.DonationForm.updateCustomAmount) {
+    window.DonationForm.updateCustomAmount(input);
+  }
+};
+
+window.selectFrequency = function(option, frequency) {
+  if (window.DonationForm && window.DonationForm.selectFrequency) {
+    window.DonationForm.selectFrequency(option, frequency);
+  }
+};
+
+window.processDonation = function(event) {
+  if (window.DonationForm && window.DonationForm.processDonation) {
+    window.DonationForm.processDonation(event);
+  }
+};
 
 window.initPostMethod = () => {
 const form = document.getElementById("contactForm");
@@ -2147,10 +2141,10 @@ function initAudioVisualizer(
     const darkBackgroundPages = ['communityActivities', 'aboutUs'];
     
     if (darkBackgroundPages.includes(page)) {
-      hamburgerIcon.style.stroke = '#ffffff';
+      hamburgerIcon.style.stroke = 'white';
       hamburgerIcon.style.strokeWidth = '0.5px';
       hamburgerIcon.style.fill = 'none';
-      contactLink.style.color = '#ffffff';
+      contactLink.style.color = 'white';
     } else {
       hamburgerIcon.style.stroke = 'none';
       hamburgerIcon.style.fill = 'none';
