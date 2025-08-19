@@ -588,6 +588,7 @@ window.loadPage = (page) => {
                   calendarModal();
                   break;
                 case 'notableAwards':
+                  AwardsPage.init();
                   ICUEFooter.autoInject();
                   calendarModal();
                   break;
@@ -1699,7 +1700,10 @@ window.JobBoard = (function() {
   function renderJobs(jobs) {
       const jobsContainer = document.getElementById('jobs-container');
       if (!jobsContainer) {
-          console.error('Jobs container not found');
+          // Only log error if we're on a careers/jobs page
+          if (window.location.hash && window.location.hash.toLowerCase().includes('career')) {
+              console.error('Jobs container not found');
+          }
           return;
       }
       
@@ -1819,37 +1823,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.JobBoard) {
       window.JobBoard.init();
   }
-});
-
-window.createBalloons = () => {
-    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
-    const container = document.body;
-    
-    // Create 15 balloons
-    for (let i = 0; i < 15; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
-        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
-        
-        container.appendChild(balloon);
-        
-        // Remove balloon after animation completes
-        balloon.addEventListener('animationend', () => {
-            balloon.remove();
-        });
-    }
-}
-
-// Initialize balloon button when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    const balloonButton = document.getElementById('balloonButton');
-    if (balloonButton) {
-        balloonButton.addEventListener('click', function() {
-            createBalloons();
-        });
-    }
 });
 
 window.DonationForm = (function () {
@@ -2025,7 +1998,55 @@ window.processDonation = function(event) {
   }
 };
 
-window.CommunityPage = {
+window.AwardsPage = (function () {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    let observer;
+
+    function init() {
+      // Create observer if not already created
+      if (!observer) {
+        observer = new IntersectionObserver(handleIntersect, observerOptions);
+      }
+
+      // Observe award cards
+      const cards = document.querySelectorAll('.award-card, .cert-card, .timeline-item');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        observer.observe(card);
+      });
+
+      console.log('Awards page loaded successfully');
+    }
+
+    function handleIntersect(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }
+
+    // Expose public API
+    return {
+      init
+    };
+  })();
+
+  // Auto-init on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.AwardsPage && typeof window.AwardsPage.init === 'function') {
+      window.AwardsPage.init();
+    }
+  });
+
+ window.CommunityPage = {
     init: function () {
       const observerOptions = {
         threshold: 0.1,
@@ -2095,6 +2116,43 @@ window.CommunityPage = {
       });
     }
   };
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.CommunityPage && typeof window.CommunityPage.init === 'function') {
+      window.CommunityPage.init();
+    }
+  });
+
+window.createBalloons = () => {
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
+    const container = document.body;
+    
+    // Create 15 balloons
+    for (let i = 0; i < 15; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        balloon.style.left = `${Math.random() * 80 + 10}%`; // Random position between 10% and 90%
+        balloon.style.animationDelay = `${i * 0.2}s`; // Stagger the animations
+        
+        container.appendChild(balloon);
+        
+        // Remove balloon after animation completes
+        balloon.addEventListener('animationend', () => {
+            balloon.remove();
+        });
+    }
+}
+
+// Initialize balloon button when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const balloonButton = document.getElementById('balloonButton');
+    if (balloonButton) {
+        balloonButton.addEventListener('click', function() {
+            createBalloons();
+        });
+    }
+});
 
 window.initPostMethod = () => {
 const form = document.getElementById("contactForm");
