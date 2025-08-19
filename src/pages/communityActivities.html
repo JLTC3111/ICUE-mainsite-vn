@@ -328,15 +328,7 @@
             <div class="floating-dot"></div>
         </div>
 
-        <div class="community-title">Tham gia cộng đồng thân thiện của chúng tôi</div>
-
-        <div class="community-subtitle">
-            Tổ chức của chúng tôi, <a href="" target="_blank">ICUE Network</a>, tổ chức các sự kiện trên toàn cầu.
-        </div>
-
-        <div class="community-description">
-            Tìm chapter của bạn và tham gia cùng chúng tôi trong <a href="#" target="_blank" style="color: #c8ff00; text-decoration: none;">máy chủ Discord của chúng tôi</a>.
-        </div>
+        <div class="community-title">Tham Gia Cộng Đồng Chúng Tôi</div>
 
         <div class="community-gallery">
             <div class="photo-collage">
@@ -379,91 +371,10 @@
 
         <div class="community-actions">
             <a href="#" class="community-btn secondary">
-                <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 59.312 59.312" xml:space="preserve" fill="#currentColor" stroke="#currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffffff;" d="M41.507,0c-9.225,0-16.729,7.504-16.729,16.728c0,2.829,0.711,5.492,1.956,7.831L2.525,48.979 c-1.944,1.962-1.93,5.127,0.031,7.071c0.975,0.967,2.248,1.449,3.52,1.449c1.287,0,2.573-0.494,3.551-1.479l2.831-2.855 l6.148,6.147l3.662-3.662l-2.951-3.027l2.148-2.094l2.924,3l2.702-2.701l-6.185-6.186l12.945-13.059 c2.297,1.188,4.896,1.872,7.656,1.872c9.224,0,16.728-7.504,16.728-16.728S50.73,0,41.507,0z M41.507,27.456 c-5.917,0-10.729-4.812-10.729-10.728S35.59,6,41.507,6c5.915,0,10.728,4.812,10.728,10.728S47.422,27.456,41.507,27.456z"></path> </g> </g></svg>
+                <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 59.312 59.312" xml:space="preserve" fill="#000" stroke="#000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffffff;" d="M41.507,0c-9.225,0-16.729,7.504-16.729,16.728c0,2.829,0.711,5.492,1.956,7.831L2.525,48.979 c-1.944,1.962-1.93,5.127,0.031,7.071c0.975,0.967,2.248,1.449,3.52,1.449c1.287,0,2.573-0.494,3.551-1.479l2.831-2.855 l6.148,6.147l3.662-3.662l-2.951-3.027l2.148-2.094l2.924,3l2.702-2.701l-6.185-6.186l12.945-13.059 c2.297,1.188,4.896,1.872,7.656,1.872c9.224,0,16.728-7.504,16.728-16.728S50.73,0,41.507,0z M41.507,27.456 c-5.917,0-10.729-4.812-10.729-10.728S35.59,6,41.507,6c5.915,0,10.728,4.812,10.728,10.728S47.422,27.456,41.507,27.456z"></path> </g> </g></svg>
                 Tìm Chapter Địa Phương
             </a>
         </div>
     </main>
-
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script>
-        // Add scroll animations
-        document.addEventListener('DOMContentLoaded', function() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            // Animate photo items
-            const photoItems = document.querySelectorAll('.photo-item');
-            photoItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-                observer.observe(item);
-            });
-
-            // Create parallax effect for floating elements
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const rate = scrolled * -0.5;
-                const floatingElements = document.querySelector('.floating-elements');
-                if (floatingElements) {
-                    floatingElements.style.transform = `translateY(${rate}px)`;
-                }
-            });
-
-            // Add click handlers for demo purposes
-            document.querySelectorAll('.community-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    if (btn.textContent.includes('Discord')) {
-                        // Simulate Discord join
-                        btn.innerHTML = `
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                            </svg>
-                            Đã Tham Gia!
-                        `;
-                        setTimeout(() => {
-                            btn.innerHTML = `
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20.317 4.369c-1.161-.488-2.405-.849-3.707-1.061.006.027-.005.064-.018.1-.207.37-.437.854-.599 1.235-1.381-.206-2.751-.206-4.132 0-.162-.381-.392-.865-.599-1.235-.013-.036-.024-.073-.018-.1-1.302.212-2.546.573-3.707 1.061C.782 9.125-.469 13.794.145 18.394c1.551 1.148 3.054 1.845 4.532 2.305.365-.494.687-1.015.964-1.56-.529-.199-1.032-.433-1.507-.704.126-.093.248-.19.366-.287 2.908 1.346 6.064 1.346 8.973 0 .118.097.24.194.366.287-.475.271-.978.505-1.507.704.277.545.599 1.066.964 1.56 1.478-.46 2.981-1.157 4.532-2.305.614-4.6-.513-9.269-2.179-13.025zM8.02 15.331c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5zm7.96 0c-.727 0-1.322-.673-1.322-1.5s.595-1.5 1.322-1.5c.727 0 1.322.673 1.322 1.5s-.595 1.5-1.322 1.5z"/>
-                                </svg>
-                                Tham Gia Discord
-                            `;
-                        }, 2000);
-                    } else {
-                        // Simulate chapter finder
-                        btn.innerHTML = `
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
-                            Đang Tìm Kiếm...
-                        `;
-                        setTimeout(() => {
-                            btn.innerHTML = `
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                                </svg>
-                                Tìm Chapter Địa Phương
-                            `;
-                        }, 2000);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
