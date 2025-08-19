@@ -534,7 +534,6 @@ window.loadPage = (page) => {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
                   ICUEFooter.autoInject();
-              
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();
@@ -571,6 +570,7 @@ window.loadPage = (page) => {
                   initFrequentlyAskedQuestions();
                   break;
                 case 'recruitment':
+                  JobBoard.init();
                   ICUEFooter.autoInject();
                   break;
                 case 'donations':
@@ -1661,7 +1661,8 @@ window.initFrequentlyAskedQuestions = function() {
             toggleAnswer
         };
     };
-    window.JobBoard = (function() {
+
+window.JobBoard = (function() {
       'use strict';
       
       const jobPositions = [
