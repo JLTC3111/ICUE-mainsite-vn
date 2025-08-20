@@ -450,18 +450,35 @@ footer {
         }
     }
 
-    function autoInjectFooter() {
+     function autoInjectFooter() {
+        
         const injectIfMissing = () => {
+            const allowedPages = ['#/orgStructure', '#/meetOurExperts', '#/coreTeam', '#/Contact', 'cookies','privacy', 'gdpr', 'terms', 'FAQs', 'recruitment', 'donations' ];
+            const currentPage = window.location.hash.trim();
+            console.log("Current page:", currentPage);
+            const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();
+
+            if (!allowedPages.map(p => p.toLowerCase()).includes(normalizedPage)) {
+                const footer = document.querySelector('footer'); 
+                if (footer) {
+                footer.remove();
+            }
+                return;
+            }
+
             if (!document.querySelector('footer')) {
                 injectFooter();
+            } else {
+                console.log("Footer already exists.");
             }
         };
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', injectIfMissing);
-        } else {
-            injectIfMissing();
-        }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectIfMissing);
+            } else {
+                console.log("Footer already exists, skipping injection.");
+                injectIfMissing();
+            }
     }
 
     // Expose globally
