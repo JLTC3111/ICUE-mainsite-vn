@@ -2405,6 +2405,7 @@ function initAudioVisualizer(
         hamburgerIcon.style.fill = 'none';
         contactLink.style.color = 'white';
       } else {
+        contactLink.style.color = 'black';
         hamburgerIcon.style.stroke = 'none';
         hamburgerIcon.style.fill = 'none';
       }
