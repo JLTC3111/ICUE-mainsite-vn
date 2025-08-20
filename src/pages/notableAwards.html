@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #ffffff;
+            background-color: #fffefe;
             color: #1e293b;
             line-height: 1.6;
         }
@@ -116,31 +116,75 @@
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 30px;
             margin-bottom: 60px;
+            cursor: pointer;
         }
 
         .award-card {
-            background: white;
-            border-radius: 20px;
+            background: #fff;
             padding: 40px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
-            transition: all 0.4s ease;
             position: relative;
-            overflow: hidden;
+            transition: all 0.15s ease;
+            z-index: 1;
+            isolation: isolate;
+            background-clip: padding-box;
         }
 
-        .award-card::before {
+        @property --angle {
+            syntax: "<angle>";
+            initial-value: 0deg;
+            inherits: false;
+        }
+        .cert-card::after, .cert-card::before,
+        .award-card::after, .award-card::before{
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            height: 100%;
             width: 100%;
-            height: 4px;
+            border-radius: 20px;
+            background-image: conic-gradient(from var(--angle), #ff4545, #00ff99, #006aff, #ff0095, #ff4545);
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            z-index: -1;
+            padding: 3px;
+            border-radius: 10px;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease;
+        }
+        .cert-card::before, .award-card::before{
+            z-index: -2;
+        }
+        .cert-card::after, .award-card::after {
+            z-index: -1;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            padding: 3px;
         }
 
-        .award-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+        /* Show and animate pseudo-elements only on hover */
+        .cert-card:hover::before,
+        .cert-card:hover::after,
+        .award-card:hover::before,
+        .award-card:hover::after {
+            opacity: 0; 
+            animation: 2.5s spin linear infinite;
+        }
+        .cert-card:hover::after,
+        .award-card:hover::after {
+            opacity: 1; 
+        }
+
+        
+        @keyframes spin{
+            from{
+                --angle: 0deg;
+            }
+            to{
+                --angle: 360deg;
+            }
         }
 
         .award-icon {
@@ -189,7 +233,7 @@
             background: #f8fafc;
             padding: 16px;
             border-radius: 12px;
-            border-left: 4px solid #3b82f6;
+            border-left: 4px solid #033586;
         }
 
         .award-project-label {
@@ -219,7 +263,6 @@
         .cert-card {
             background: white;
             padding: 32px;
-            border-radius: 16px;
             text-align: center;
             align-items: center !important;
             justify-content: center !important;
@@ -227,11 +270,6 @@
             border: 2px solid transparent;
             transition: all 0.1s ease-in-out;
             cursor: pointer;
-        }
-
-        .cert-card:hover {
-            border-color: #3b82f6;
-            will-change: border-color;
         }
 
         .cert-logo {
@@ -356,7 +394,7 @@
 
         .timeline-content {
             flex: 1;
-            background: white;
+            background: #fff;
             padding: 35px;
             border-radius: 20px;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
@@ -390,8 +428,8 @@
 
         .timeline-content:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
-            border-color: #3b82f6;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+            border-color: #003994;
         }
 
         .timeline-item:nth-child(odd) .timeline-content {
@@ -404,42 +442,48 @@
             transform: translateX(-50%);
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
-            border: 6px solid white;
+            background: #fff;
+            border: 6px solid rgb(255, 255, 255);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
             font-weight: 700;
-            color: white;
+            color: #000;
             z-index: 3;
             box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-            transition: all 0.4s ease;
+            transition: all 0.25s ease;
         }
 
-        .timeline-year:hover {
-            transform: translateX(-50%) scale(1.1);
+        .timeline-item:nth-child(1):hover .timeline-year,
+        .timeline-item:nth-child(2):hover .timeline-year,
+        .timeline-item:nth-child(3):hover .timeline-year,
+        .timeline-item:nth-child(4):hover .timeline-year,
+        .timeline-item:nth-child(5):hover .timeline-year {
+            transform: translateX(-50%) scale(1.25);
+            background: transparent;
             box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+            will-change: auto;
         }
 
         .timeline-item:nth-child(2) .timeline-year {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: #fff;
             box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
         }
 
         .timeline-item:nth-child(3) .timeline-year {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: #fff;
             box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
         }
 
         .timeline-item:nth-child(4) .timeline-year {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: #fff;
             box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
         }
 
         .timeline-item:nth-child(5) .timeline-year {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #fff;
             box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
         }
 
@@ -465,29 +509,13 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            background: transparent;
             color: white;
             flex-shrink: 0;
         }
 
-        .timeline-item:nth-child(2) .timeline-icon {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .timeline-item:nth-child(3) .timeline-icon {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        }
-
-        .timeline-item:nth-child(4) .timeline-icon {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .timeline-item:nth-child(5) .timeline-icon {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
-
         .timeline-award {
-            color: #3b82f6;
+            color: #003d9f;
             font-weight: 600;
             margin-bottom: 16px;
             font-size: 1.1rem;
@@ -548,7 +576,7 @@
             display: block;
             font-size: 1.8rem;
             font-weight: 700;
-            color: #3b82f6;
+            color: #003384;
             margin-bottom: 4px;
         }
 
@@ -794,7 +822,7 @@
                     <div class="timeline-year">2024</div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">
-                            <div class="timeline-icon">🏆</div>
+                            <div class="timeline-icon"><svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path fill="#231F20" d="M60,6h-7V4c0-2.212-1.789-4-4-4H15c-2.211,0-4,1.788-4,4v2H4c-2.211,0-4,1.788-4,4v8 c0,6.074,4.925,11,11,11h0.096C12.01,38.659,19.477,46.395,29,47.761V56h-7c-2.211,0-4,1.788-4,4v3c0,0.552,0.447,1,1,1h26 c0.553,0,1-0.448,1-1v-3c0-2.212-1.789-4-4-4h-7v-8.239c9.523-1.366,16.985-9.1,17.899-18.761H53c6.075,0,11-4.926,11-11v-8 C64,7.788,62.211,6,60,6z M11,23c-2.762,0-5-2.239-5-5v-6h5V23z M2,18v-8c0-1.105,0.896-2,2-2h7v2H5c-0.553,0-1,0.446-1,1v7 c0,3.865,3.134,7,7,7v2C6.029,27,2,22.97,2,18z M42,58c1.104,0,2,0.895,2,2v2H20v-2c0-1.105,0.896-2,2-2H42z M31,56v-8.052 C31.334,47.964,31.662,48,32,48s0.666-0.036,1-0.052V56H31z M51,27c0,10.492-8.507,19-19,19s-19-8.508-19-19V4c0-1.105,0.896-2,2-2 h34c1.104,0,2,0.895,2,2V27z M53,12h5v6c0,2.761-2.238,5-5,5V12z M62,18c0,4.97-4.029,9-9,9v-2c3.866,0,7-3.135,7-7v-7 c0-0.554-0.447-1-1-1h-6V8h7c1.104,0,2,0.895,2,2V18z"></path> <path fill="#231F20" d="M39.147,19.36l-4.309-0.658l-1.936-4.123c-0.165-0.352-0.518-0.575-0.905-0.575s-0.74,0.224-0.905,0.575 l-1.936,4.123l-4.309,0.658c-0.37,0.058-0.678,0.315-0.797,0.671s-0.029,0.747,0.232,1.016l3.146,3.227l-0.745,4.564 c-0.062,0.378,0.099,0.758,0.411,0.979s0.725,0.243,1.061,0.059l3.841-2.123l3.841,2.123C35.99,29.959,36.157,30,36.323,30 c0.202,0,0.404-0.062,0.576-0.184c0.312-0.221,0.473-0.601,0.411-0.979l-0.745-4.564l3.146-3.227 c0.262-0.269,0.352-0.66,0.232-1.016S39.518,19.418,39.147,19.36z M34.781,23.238c-0.222,0.228-0.322,0.546-0.271,0.859 l0.495,3.029l-2.522-1.395c-0.151-0.083-0.317-0.125-0.484-0.125s-0.333,0.042-0.484,0.125l-2.522,1.395l0.495-3.029 c0.051-0.313-0.05-0.632-0.271-0.859l-2.141-2.193l2.913-0.446c0.329-0.05,0.612-0.261,0.754-0.563l1.257-2.678l1.257,2.678 c0.142,0.303,0.425,0.514,0.754,0.563l2.913,0.446L34.781,23.238z"></path> </g> </g></svg></div>
                             Năm Công Nhận Cao Nhất
                         </h3>
                         <div class="timeline-award">Giải Thưởng Dự Án Xuất Sắc & Đổi Mới</div>
@@ -827,7 +855,11 @@
                     <div class="timeline-year">2023</div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">
-                            <div class="timeline-icon">🌱</div>
+                            <div class="timeline-icon"><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                            <g id="SVGRepo_iconCarrier"> <path d="M4.44893 17.009C-0.246384 7.83762 7.34051 0.686125 19.5546 3.61245C20.416 3.81881 21.0081 4.60984 20.965 5.49452C20.5862 13.288 17.0341 17.7048 6.13252 17.9857C5.43022 18.0038 4.76908 17.6344 4.44893 17.009Z" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.99999 21C5.50005 15.5 6 12.5 12 9.99997" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
+                            </svg></div>
                             Lãnh Đạo Phát Triển Bền Vững
                         </h3>
                         <div class="timeline-award">Công Nhận Xây Dựng Xanh & An Toàn</div>
@@ -860,7 +892,11 @@
                     <div class="timeline-year">2022</div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">
-                            <div class="timeline-icon">🚀</div>
+                            <div class="timeline-icon"><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                            <g id="SVGRepo_iconCarrier"> <path d="M10 18H14M7.20003 3H16.8C17.9201 3 18.4802 3 18.908 3.21799C19.2843 3.40973 19.5903 3.71569 19.782 4.09202C20 4.51984 20 5.0799 20 6.2V11.8C20 12.9201 20 13.4802 19.782 13.908C19.5903 14.2843 19.2843 14.5903 18.908 14.782C18.4802 15 17.9201 15 16.8 15H7.20003C6.07992 15 5.51987 15 5.09205 14.782C4.71572 14.5903 4.40976 14.2843 4.21801 13.908C4.00003 13.4802 4.00003 12.9201 4.00003 11.8V6.2C4.00003 5.0799 4.00003 4.51984 4.21801 4.09202C4.40976 3.71569 4.71572 3.40973 5.09205 3.21799C5.51987 3 6.07992 3 7.20003 3ZM4.58888 21H19.4112C20.2684 21 20.697 21 20.9551 20.8195C21.1805 20.6618 21.3311 20.4183 21.3713 20.1462C21.4173 19.8345 21.2256 19.4512 20.8423 18.6845L20.3267 17.6534C19.8451 16.6902 19.6043 16.2086 19.2451 15.8567C18.9274 15.5456 18.5445 15.309 18.1241 15.164C17.6488 15 17.1103 15 16.0335 15H7.96659C6.88972 15 6.35128 15 5.87592 15.164C5.45554 15.309 5.07266 15.5456 4.75497 15.8567C4.39573 16.2086 4.15493 16.6902 3.67334 17.6534L3.1578 18.6845C2.77444 19.4512 2.58276 19.8345 2.6288 20.1462C2.669 20.4183 2.81952 20.6618 3.04492 20.8195C3.30306 21 3.73166 21 4.58888 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
+                            </svg></div>
                             Người Tiên Phong Công Nghệ
                         </h3>
                         <div class="timeline-award">Tích Hợp Công Nghệ Xây Dựng</div>
@@ -893,7 +929,21 @@
                     <div class="timeline-year">2021</div>
                     <div class="timeline-content">
                         <h3 class="timeline-title">
-                            <div class="timeline-icon">🤝</div>
+                            <div class="timeline-icon"><svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                width="32px" height="32px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                            <g>
+                                <path fill="#231F20" d="M48,6c-4.418,0-8.418,1.791-11.313,4.687l-3.979,3.961c-0.391,0.391-1.023,0.391-1.414,0
+                                    c0,0-3.971-3.97-3.979-3.961C24.418,7.791,20.418,6,16,6C7.163,6,0,13.163,0,22c0,3.338,1.024,6.436,2.773,9
+                                    c0,0,0.734,1.164,1.602,2.031s24.797,24.797,24.797,24.797C29.953,58.609,30.977,59,32,59s2.047-0.391,2.828-1.172
+                                    c0,0,23.93-23.93,24.797-24.797S61.227,31,61.227,31C62.976,28.436,64,25.338,64,22C64,13.163,56.837,6,48,6z M58.714,30.977
+                                    c0,0-0.612,0.75-1.823,1.961S33.414,56.414,33.414,56.414C33.023,56.805,32.512,57,32,57s-1.023-0.195-1.414-0.586
+                                    c0,0-22.266-22.266-23.477-23.477s-1.823-1.961-1.823-1.961C3.245,28.545,2,25.424,2,22C2,14.268,8.268,8,16,8
+                                    c3.866,0,7.366,1.566,9.899,4.101l0.009-0.009l4.678,4.677c0.781,0.781,2.047,0.781,2.828,0l4.678-4.677l0.009,0.009
+                                    C40.634,9.566,44.134,8,48,8c7.732,0,14,6.268,14,14C62,25.424,60.755,28.545,58.714,30.977z"/>
+                                <path fill="#231F20" d="M48,12c-0.553,0-1,0.447-1,1s0.447,1,1,1c4.418,0,8,3.582,8,8c0,0.553,0.447,1,1,1s1-0.447,1-1
+                                    C58,16.478,53.522,12,48,12z"/>
+                            </g>
+                            </svg></div>
                             Nhà Vô Địch Cộng Đồng
                         </h3>
                         <div class="timeline-award">Giải Thưởng Xuất Sắc Dịch Vụ Công</div>

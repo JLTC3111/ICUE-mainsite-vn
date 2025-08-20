@@ -1940,14 +1940,12 @@ window.DonationForm = (function () {
   };
 })();
 
-// Make selectAmount globally accessible for onclick handlers
 window.selectAmount = function(button, amount) {
   if (window.DonationForm && window.DonationForm.selectAmount) {
     window.DonationForm.selectAmount(button, amount);
   }
 };
 
-// Make other donation functions globally accessible for onclick handlers
 window.updateCustomAmount = function(input) {
   if (window.DonationForm && window.DonationForm.updateCustomAmount) {
     window.DonationForm.updateCustomAmount(input);
