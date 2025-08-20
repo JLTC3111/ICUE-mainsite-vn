@@ -405,7 +405,7 @@ footer {
                 </div>
                 <div class="footer-bottom-right">
                     <a href="#" class="company-deck">
-                        Let's Work Together!
+                        Hợp Tác Cùng Chúng Tôi
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>
                         </svg>

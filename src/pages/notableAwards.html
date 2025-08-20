@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Awards & Recognition - Excellence in Construction & Planning</title>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -47,16 +47,10 @@
         }
 
         .hero-section h1 {
-            font-size: 3.5rem;
+            font-size: clamp(1.75rem, 4.5vw, 3.5rem);
             font-weight: 700;
             margin-bottom: 1.5rem;
             letter-spacing: -0.02em;
-        }
-
-        .hero-section p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            margin-bottom: 2rem;
         }
 
         .hero-stats {
@@ -71,14 +65,14 @@
         }
 
         .hero-stat-number {
-            font-size: 2.5rem;
+            font-size: clamp(1.25rem, 3.5vw, 2.5rem);
             font-weight: 700;
             display: block;
             margin-bottom: 8px;
         }
 
         .hero-stat-label {
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 2.5vw, 1rem);
             opacity: 0.9;
         }
 
@@ -98,14 +92,14 @@
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.25rem, 4.5vw, 2.5rem);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 1rem;
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(0.8rem, 3vw, 1.2rem);
             color: #64748b;
             max-width: 600px;
             margin: 0 auto;
@@ -203,13 +197,13 @@
             background: rgba(0, 0, 0, 0.05);
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
             font-weight: 600;
             color: #64748b;
         }
 
         .award-title {
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 12px;
@@ -217,13 +211,14 @@
         }
 
         .award-organization {
-            font-size: 1rem;
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
             color: #3b82f6;
             font-weight: 600;
             margin-bottom: 16px;
         }
 
         .award-description {
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
             color: #64748b;
             line-height: 1.7;
             margin-bottom: 20px;
@@ -237,7 +232,7 @@
         }
 
         .award-project-label {
-            font-size: 0.85rem;
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
             font-weight: 600;
             color: #64748b;
             text-transform: uppercase;
@@ -246,6 +241,7 @@
         }
 
         .award-project-name {
+            font-size: clamp(0.875rem, 2.5vw, 1.1rem);
             font-weight: 600;
             color: #1e293b;
         }
@@ -291,7 +287,7 @@
         }
 
         .cert-name {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 8px;
@@ -299,7 +295,7 @@
 
         .cert-organization {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: clamp(0.875rem, 2.5vw, 0.95rem);
             margin-bottom: 12px;
         }
 
@@ -311,7 +307,7 @@
             background: #dcfce7;
             color: #166534;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
             font-weight: 600;
         }
 
@@ -448,7 +444,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             font-weight: 700;
             color: #000;
             z-index: 3;
@@ -488,7 +484,7 @@
         }
 
         .timeline-title {
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 12px;
@@ -502,23 +498,26 @@
         }
 
         .timeline-icon {
-            width: 40px;
-            height: 40px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.25rem);
             background: transparent;
             color: white;
             flex-shrink: 0;
+        }
+
+        .timeline-icon svg {
+            width: 32px !important;
+            height: 32px !important;
         }
 
         .timeline-award {
             color: #003d9f;
             font-weight: 600;
             margin-bottom: 16px;
-            font-size: 1.1rem;
+            font-size: clamp(0.875rem, 2.5vw, 1.1rem);
         }
 
         .timeline-description {
@@ -542,7 +541,7 @@
             background: #f1f5f9;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: clamp(0.675rem, 2.5vw, 0.85rem);
             font-weight: 600;
             color: #475569;
             border: 2px solid transparent;
@@ -565,6 +564,7 @@
         }
 
         .timeline-stat {
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
             text-align: center;
         }
 
@@ -574,7 +574,7 @@
 
         .timeline-stat-number {
             display: block;
-            font-size: 1.8rem;
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
             font-weight: 700;
             color: #003384;
             margin-bottom: 4px;
@@ -598,7 +598,7 @@
 
         @media (max-width: 768px) {
             .hero-section h1 {
-                font-size: 2.5rem;
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
             }
             
             .hero-stats {
@@ -606,14 +606,29 @@
                 gap: 30px;
             }
             
+            .highlight-item {
+                display: inline-block;
+                align-items: center;
+            }
+
             .awards-grid {
                 grid-template-columns: 1fr;
             }
-            
+
+            .award-icon svg {
+                width: 32px !important;
+                height: 32px !important;
+            }
+
             .certs-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
-            
+
+            .timeline-icon svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+
             .timeline::before {
                 left: 30px;
             }
@@ -634,7 +649,7 @@
                 left: 30px;
                 width: 60px;
                 height: 60px;
-                font-size: 0.9rem;
+                font-size: clamp(0.75rem, 2vw, 0.9rem);
             }
         }
     </style>
