@@ -28,7 +28,7 @@
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 700;
             color: white;
             margin-bottom: 1rem;
@@ -36,7 +36,7 @@
         }
 
         .header div {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             color: white;
             opacity: 0.9;
             max-width: 600px;
@@ -59,7 +59,7 @@
         }
 
         .section-title {
-            font-size: 1.8rem;
+            font-size: clamp(1.25rem, 2.75vw, 1.7rem);
             font-weight: 600;
             color: #059669;
             margin-bottom: 20px;
@@ -74,12 +74,14 @@
         }
 
         .section-content div {
+            font-size: clamp(0.8rem, 2vw, 1.05rem);
             margin-bottom: 16px;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 2vw, 1rem);
             color: #475569;
         }
 
         .section-content ul {
+            font-size: clamp(0.7rem, 2vw, 0.95rem);
             margin-left: 20px;
             margin-bottom: 16px;
         }
@@ -126,13 +128,13 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: clamp(12px, 2.5vw, 14px);
         }
 
         .right-card h3 {
             color: #059669;
             margin-bottom: 15px;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
         }
 
         .right-card div {
@@ -150,25 +152,24 @@
         }
 
         .contact-info {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            color: white;
+            letter-spacing: 0.75px;
             padding: 30px;
             border-radius: 12px;
             text-align: center;
         }
 
         .contact-info h3 {
-            font-size: 1.5rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
             margin-bottom: 15px;
         }
 
         .contact-info div {
+            font-size: clamp(0.75rem, 2vw, 0.95rem);;
             margin-bottom: 10px;
             opacity: 0.9;
         }
 
         .contact-info a {
-            color: #c8ff00;
             text-decoration: none;
             font-weight: 500;
         }
@@ -180,7 +181,7 @@
         .last-updated {
             text-align: center;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #e2e8f0;
@@ -197,7 +198,7 @@
         .request-form h3 {
             color: #059669;
             margin-bottom: 20px;
-            font-size: 1.4rem;
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
         }
 
         .form-group {
@@ -218,7 +219,7 @@
             padding: 12px;
             border: 1px solid #d1d5db;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
         }
 
         .form-group textarea {
@@ -232,7 +233,7 @@
             border: none;
             padding: 14px 28px;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             font-weight: 500;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -295,7 +296,7 @@
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: clamp(1.25rem, 3.5vw, 2rem);
             }
 
             .container {
@@ -307,7 +308,7 @@
             }
 
             .section-title {
-                font-size: 1.5rem;
+                font-size: clamp(1.15rem, 3vw, 1.5rem);
             }
 
             .request-form {
@@ -451,7 +452,7 @@
                         <div class="timeline-number">2</div>
                         <div class="timeline-content">
                             <h4>Gửi Yêu cầu</h4>
-                            <div>Sử dụng mẫu bên dưới hoặc gửi email đến privacy@icue.vn kèm chi tiết.</div>
+                            <div>Sử dụng mẫu bên dưới hoặc gửi email đến info@icue.vn kèm chi tiết.</div>
                         </div>
                     </div>
                     <div class="timeline-item">
@@ -530,7 +531,7 @@
                 </div>
 
                 <div class="highlight-box">
-                    <div>📧 Bạn cũng có thể gửi yêu cầu trực tiếp qua email tới <strong>privacy@icue.vn</strong> với tiêu đề “[GDPR Request] - [Loại Yêu cầu]”</div>
+                    <div>📧 Bạn cũng có thể gửi yêu cầu trực tiếp qua email tới <strong>info@icue.vn</strong> với tiêu đề “[GDPR Request] - [Loại Yêu cầu]”</div>
                 </div>
             </div>
         </div>
@@ -590,10 +591,9 @@
         <div class="contact-info">
             <h3>Liên hệ Nhân viên Bảo vệ Dữ liệu (DPO)</h3>
             <div>Để được hỗ trợ về vấn đề GDPR:</div>
-            <div><strong>Email:</strong> <a href="mailto:dpo@icue.vn">dpo@icue.vn</a></div>
-            <div><strong>Email chung:</strong> <a href="mailto:privacy@icue.vn">privacy@icue.vn</a></div>
+            <div><strong>Email:</strong> <a href="mailto:info@icue.vn">info@icue.vn</a></div>
             <div><strong>Điện thoại:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
-            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng</div>
+            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng, 124 Hoàng Ngân, Cầu Giấy, HN</div>
             <div>Chúng tôi cam kết xử lý yêu cầu của bạn một cách nhanh chóng và minh bạch.</div>
         </div>
 

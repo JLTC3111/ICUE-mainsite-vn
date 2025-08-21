@@ -395,7 +395,7 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="#/privacy">Chính Sách</a>
+                    <a href="#/privacy">Bảo Mật</a>
                     <span>|</span>
                     <a href="#/terms">Điều Khoản</a>
                     <span>|</span>
