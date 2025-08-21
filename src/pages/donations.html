@@ -29,14 +29,14 @@
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(1.25rem, 4vw, 3rem);
             font-weight: 700;
             margin-bottom: 1rem;
             letter-spacing: -0.02em;
         }
 
         .header-p {
-            font-size: 1.2rem;
+            font-size: clamp(0.85rem, 2vw, 1.2rem);
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
@@ -63,7 +63,7 @@
         }
 
         .impact-section h2 {
-            font-size: 2rem;
+            font-size: clamp(1.15rem, 4vw, 1.7rem);
             font-weight: 700;
             margin-bottom: 2rem;
             color: #1e293b;
@@ -84,7 +84,7 @@
         }
 
         .stat-number {
-            font-size: 2.5rem;
+            font-size: clamp(1rem, 3.5vw, 1.9rem);
             font-weight: 700;
             color: #052f71;
             display: block;
@@ -92,7 +92,7 @@
 
         .stat-label {
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 2vw, 1rem);
             margin-top: 8px;
         }
 
@@ -106,7 +106,7 @@
         .impact-story h3 {
             color: #031960;
             margin-bottom: 12px;
-            font-size: 1.2rem;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
         }
 
         .impact-story p {
@@ -124,7 +124,7 @@
         }
 
         .donation-form h2 {
-            font-size: 1.8rem;
+            font-size: clamp(1.05rem, 3vw, 1.5rem);
             font-weight: 700;
             margin-bottom: 2rem;
             color: #1e293b;
@@ -144,7 +144,7 @@
             color: #000000;
             background: #ffffff;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -181,7 +181,7 @@
             padding: 16px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             transition: border-color 0.15s ease;
         }
 
@@ -205,10 +205,12 @@
         .donation-options {
             display: flex;
             gap: 12px;
+            font-size: clamp(0.75rem, 2vw, 1rem);
         }
 
         .donation-option {
             flex: 1;
+        
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
             background: white;
@@ -232,6 +234,7 @@
         .donor-info h3 {
             margin-bottom: 16px;
             color: #374151;
+            font-size: clamp(0.95rem, 2vw, 1.25rem);
             font-weight: 600;
         }
 
@@ -240,6 +243,7 @@
         }
 
         .form-group label {
+            font-size: clamp(0.75rem, 2vw, 0.95rem);;
             display: block;
             margin-bottom: 6px;
             font-weight: 500;
@@ -252,7 +256,7 @@
             padding: 12px 16px;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
             transition: border-color 0.15s ease;
         }
 
@@ -277,7 +281,7 @@
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 1.2rem;
+            font-size: clamp(0.85rem, 3vw, 1.25rem);
             font-weight: 700;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -309,11 +313,16 @@
         .security-note {
             text-align: center;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 3px;
+        }
+
+        .security-note svg {
+            width: 9px !important;
+            height: 9px !important;
         }
 
         .projects-section {
@@ -323,9 +332,9 @@
 
         .projects-section h2 {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: clamp(1rem, 2.5vw, 2rem);
             font-weight: 700;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
             color: #1e293b;
         }
 
@@ -363,7 +372,7 @@
         }
 
         .project-title {
-            font-size: 1.3rem;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
             font-weight: 700;
             margin-bottom: 12px;
             color: #1e293b;
@@ -398,13 +407,17 @@
         .progress-text {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: clamp(0.75rem, 2vw, 1rem);
             color: #64748b;
+        }
+
+        .impact-description {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
         }
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2rem;
+                font-size: clamp(1rem, 3vw, 1.5rem);
             }
 
             .main-content {

@@ -395,9 +395,9 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="#/privacy">Privacy</a>
+                    <a href="#/privacy">Chính Sách</a>
                     <span>|</span>
-                    <a href="#/terms">T&C</a>
+                    <a href="#/terms">Điều Khoản</a>
                     <span>|</span>
                     <a href="#/gdpr">GDPR</a>
                     <span>|</span>
