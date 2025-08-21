@@ -50,6 +50,7 @@
         }
 
         .content-section {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             background: white;
             border-radius: 12px;
             padding: 40px;
@@ -59,7 +60,7 @@
         }
 
         .section-title {
-            font-size: clmamp(1.25rem, 3vw, 1.8rem);
+            font-size: clmamp(0.8rem, 2.25vw, 0.9rem);
             font-weight: 600;
             color: #1e40af;
             margin-bottom: 20px;
@@ -75,7 +76,7 @@
 
         .section-content div {
             margin-bottom: 16px;
-            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            font-size: clamp(0.7rem, 2vw, 0.85rem);
             color: #475569;
         }
 
@@ -159,15 +160,20 @@
 
         .data-table th,
         .data-table td {
+            font-size: clamp(0.65rem, 2vw, 1rem);
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
         }
 
         .data-table th {
-            background-color: #f8fafc;
+            background-color: #fef3c7;
             font-weight: 600;
             color: #1e293b;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #fefcf3;
         }
 
         @media (max-width: 768px) {
@@ -177,7 +183,44 @@
             }
 
             .header h1 {
-                font-size: clamp(1.25rem, 3vw, 2rem);
+                font-size: clamp(1.25rem, 5vw, 2.5rem);
+            }
+
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+
+                /* important to enforce column widths */
+                table-layout: fixed;
+            }
+
+            .data-table th,
+            .data-table td {
+                font-size: clamp(0.65rem, 2vw, 1rem);
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #e2e8f0;
+
+                /* prevent text from overflowing */
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            /* Example: control each column */
+            .data-table th:nth-child(1),
+            .data-table td:nth-child(1) {
+                max-width: 120px;
+            }
+
+            .data-table th:nth-child(2),
+            .data-table td:nth-child(2) {
+                max-width: 150px;
+            }
+
+            .data-table th:nth-child(3),
+            .data-table td:nth-child(3) {
+                max-width: 100px;
             }
 
             .container {
@@ -189,7 +232,7 @@
             }
 
             .section-title {
-                font-size: clamp(1.1rem, 2.75vw, 1.5rem);
+                font-size: clamp(1.1rem, 3.75vw, 1.5rem);
             }
         }
     </style>
