@@ -50,6 +50,7 @@
         }
 
         .content-section {
+            font-size: clamp(0.9rem, 2.75vw, 1.1rem);
             background: white;
             border-radius: 12px;
             padding: 40px;
@@ -59,7 +60,7 @@
         }
 
         .section-title {
-            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
             font-weight: 600;
             color: #7c3aed;
             margin-bottom: 20px;
@@ -74,8 +75,9 @@
         }
 
         .section-content div {
-            margin-bottom: 16px;
             font-size: clamp(0.8rem, 2vw, 1rem);
+            margin-bottom: 16px;
+            font-size: clamp(0.75rem, 2vw, 1rem);
             color: #475569;
         }
 
@@ -109,10 +111,10 @@
         }
 
         .warning-box {
-            background: #fef2f2;
             border-left: 4px solid #ef4444;
             padding: 20px;
             margin: 20px 0;
+            color: #000 !important;
             border-radius: 0 8px 8px 0;
         }
 
@@ -130,7 +132,7 @@
         }
 
         .contact-info h3 {
-            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-size: clamp(0.95rem, 2.5vw, 1.5rem);
             margin-bottom: 15px;
         }
 
@@ -159,21 +161,40 @@
 
         .terms-table {
             width: 100%;
+            max-width: 370px;
             border-collapse: collapse;
             margin: 20px 0;
+
+            /* important to enforce column widths */
+            table-layout: fixed;
         }
 
         .terms-table th,
         .terms-table td {
+            font-size: clamp(0.65rem, 2vw, 1rem);
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+
+            /* prevent text from overflowing */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .terms-table th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: #1e293b;
+        /* Example: control each column */
+            .terms-table th:nth-child(1),
+            .terms-table td:nth-child(1) {
+            max-width: 120px;
+            }
+
+            .terms-table th:nth-child(2),
+            .terms-table td:nth-child(2) {
+            max-width: 150px;
+        }
+
+            .terms-table th:nth-child(3),
+            .terms-table td:nth-child(3) {
+            max-width: 100px;
         }
 
         .liability-section {
@@ -197,7 +218,7 @@
             }
 
             .header h1 {
-                font-size: clamp(1.25rem, 2.75vw, 2rem);
+                font-size: clamp(1rem, 2.75vw, 2rem);
             }
 
             .container {
@@ -209,7 +230,7 @@
             }
 
             .section-title {
-                font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+                font-size: clamp(0.8rem, 2.5vw, 1.4rem);
             }
         }
     </style>

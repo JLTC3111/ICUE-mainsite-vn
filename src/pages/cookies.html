@@ -28,7 +28,7 @@
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 700;
             color: white;
             margin-bottom: clamp(0.8rem, 2.5vw, 1rem);
@@ -50,6 +50,7 @@
         }
 
         .content-section {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             background: white;
             border-radius: 12px;
             padding: 40px;
@@ -59,7 +60,7 @@
         }
 
         .section-title {
-            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            font-size: clamp(0.8rem, 2.25vw, 1rem);
             font-weight: 600;
             color: #f59e0b;
             margin-bottom: 20px;
@@ -184,25 +185,40 @@
 
         .cookies-table {
             width: 100%;
+            max-width: 370px;
             border-collapse: collapse;
             margin: 20px 0;
+
+            /* important to enforce column widths */
+            table-layout: fixed;
         }
 
         .cookies-table th,
         .cookies-table td {
+            font-size: clamp(0.65rem, 2vw, 1rem);
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+
+            /* prevent text from overflowing */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .cookies-table th {
-            background-color: #fef3c7;
-            font-weight: 600;
-            color: #1e293b;
+        /* Example: control each column */
+        .cookies-table th:nth-child(1),
+        .cookies-table td:nth-child(1) {
+            max-width: 120px;
         }
 
-        .cookies-table tr:nth-child(even) {
-            background-color: #fefcf3;
+        .cookies-table th:nth-child(2),
+        .cookies-table td:nth-child(2) {
+            max-width: 150px;
+        }
+
+        .cookies-table th:nth-child(3),
+        .cookies-table td:nth-child(3) {
+            max-width: 100px;
         }
 
         .consent-section {
