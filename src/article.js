@@ -5,10 +5,68 @@ const articles = [
       lead: "Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng",
       author: "Bởi ICUE-IKI-Giz & Thành Phố Hội An",
       date: "16 Tháng 5, 2025",
-      image: {
-        src: "/public/news/articles/article_1/all_together.jpg",
-        caption: "Các Bên Tham Gia"
-      },
+      images: [
+        {
+          src: "/public/news/articles/article_1/all_together.jpg",
+          caption: "Các Bên Tham Gia",
+          type: "image"
+        },
+         {
+          src: "/public/news/articles/article_1/11.mp4",
+          caption: "Video lễ khánh thành",
+          type: "video"
+        },
+        {
+          src: "/public/news/articles/article_1/1.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/2.jpg",
+          caption: "Đội ngũ thực hiện dự án",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/3.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/4.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/5.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/6.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/7.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/8.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/9.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_1/10.jpg",
+          caption: "Lễ khánh thành",
+          type: "image"
+        },
+      ],
       bodyHTML: `
         <p>Vào ngày 16 tháng 5 năm 2025, Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An, tổ chức một sự kiện đặc biệt là Khánh thành và bàn giao Không gian xanh và công viện ven biển (đã được đặt tên là Công viên Âu Cơ), nhằm đánh dấu sự kết thúc thành công của dự án mang tên “Preventing erosion on Cua Dai beach through green corridors and park” nhằmTăng Cường Năng Lực và Hành Động Khí Hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương (CBF). 
 
@@ -17,7 +75,7 @@ const articles = [
         Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến biến đổi khí hậu. ICUE và chính quyền địa phương thành phố Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. 
         Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ IKI và sự hỗ trợ nhiệt tình của GIZ trong việc triển khai thực hiện dự án, cũng như việc tạo điều kiện thuận lợi của UBND tỉnh Quảng Nam, sự phối hợp nhịp nhàng UBND thành phố Hội An, UBND phường Cửa Đại và sự cộng tác của cộng đồng dân cư cũng như các tổ chức xã hội ở đây. 
         Niềm tin và nguồn tài trợ của họ (IKI và GIZ) đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương. Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện khánh thành và bàn giao này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.</p>
-        <h2>Xin Chân Thành Cám Ơn!</h2>
+        <h2></h2>
         <blockquote>"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe - An Vui - Hạnh Phúc - và Thành Công. - T.S. Nguyễn Hồng Hạnh"</blockquote>
       `,
       pdf: "/public/files/speech.pdf",
@@ -29,10 +87,23 @@ const articles = [
       lead: "Ngày 3/9, Diễn đàn Bảo tồn Khu vực Châu Á (RCF) lần thứ 8 của Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.",
       author: "Bởi ICUE",
       date: "03 Tháng 9, 2024",
-      image: {
-        src: "/public/news/articles/article_2/conference.png",
-        caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024"
-      },
+      images: [
+        {
+          src: "/public/news/articles/article_2/conference.png",
+          caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_2/presentation.mp4",
+          caption: "Video báo cáo tại hội nghị",
+          type: "video"
+        },
+        {
+          src: "/public/news/articles/article_2/delegation.jpg",
+          caption: "Đại diện ICUE tại hội nghị",
+          type: "image"
+        }
+      ],
       bodyHTML: `
         <p>Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của IUCN Việt Nam, trong đó đại diện Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) - Viện trưởng TS.Nguyễn Hồng Hạnh tham dự diễn đàn. ICUE là 1 trong các thành viên đã tham dự và có các trình bày về bảo tồn biển, phát triển bền vững nông thôn. ICUE đã có báo cáo tóm tắt một phần trong dự án "Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển". 
         Diễn đàn Bảo tồn Khu vực Châu Á (RCF) diễn ra trong ba ngày với chủ đề 'Tái hiện Bảo tồn tại Châu Á: Tương lai tích cực cho Thiên nhiên', hướng tới đánh giá tiến độ bảo tồn, xem xét lại các mục tiêu ưu tiên và đề xuất các định hướng chiến lược để giải quyết hiệu quả các thách thức về môi trường và đa dạng sinh học trong 20 năm tới.
@@ -53,10 +124,20 @@ const articles = [
       lead: "Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.",
       author: "Bởi ICUE",
       date: "26 Tháng 9, 2024",
-      image: {
-        src: "/public/news/articles/article_3/area_affected.png",
-        caption: "Nhóm Tình Nguyện (ICUE)"
-      },
+      images: [
+        {
+          src: "/public/news/articles/article_3/area_affected.png",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/relief_team.jpg",
+          caption: "Đoàn cứu trợ tại hiện trường"
+        },
+        {
+          src: "/public/news/articles/article_3/donation.jpg",
+          caption: "Trao quà cho bà con vùng lũ"
+        }
+      ],
       bodyHTML: `
         <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
         <h2></h2>
@@ -71,10 +152,16 @@ const articles = [
       lead: "Sáng Kiến Đô Thị Thông Minh của Việt Nam: Thành Tựu và Lộ Trình 2025-2030",
       author: "Bởi ICUE",
       date: "13 Tháng 8, 2025",
-      image: {
-        src: "/public/news/articles/article_4/conference.jpg",
-        caption: "Các Thành Viên Buổi Họp"
-      },
+      images: [
+        {
+          src: "/public/news/articles/article_4/conference.jpg",
+          caption: "Các Thành Viên Buổi Họp"
+        },
+        {
+          src: "/public/news/articles/article_4/presentation.jpg",
+          caption: "Báo cáo tại hội nghị"
+        }
+      ],
       bodyHTML: `
         <p>
         Chặng đường phát triển đô thị thông minh của Việt Nam đã đạt được những bước tiến đáng kể kể từ khi triển khai Đề án “Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025” vào năm 2018. Mục tiêu của đề án là tận dụng công nghệ để cải thiện công tác quản lý, nâng cao chất lượng sống của người dân và thúc đẩy sự phát triển bền vững. Chính phủ cam kết chuyển đổi cảnh quan đô thị bằng các công nghệ dựa trên dữ liệu và tiếp cận lấy người dân làm trung tâm, hướng tới việc hoàn thành vào năm 2030.
@@ -115,6 +202,690 @@ const articles = [
     },
 ];
 
+// Modal and Image Swipe Functionality
+let currentModalImages = [];
+let currentModalIndex = 0;
+let startX = 0;
+let endX = 0;
+
+// Article Swipe Functionality
+let currentArticle = null;
+let currentArticleIndex = 0;
+let articleStartX = 0;
+let articleEndX = 0;
+
+function setupArticleSwipe(article) {
+  currentArticle = article;
+  currentArticleIndex = 0;
+  
+  const imageContainer = document.getElementById("article-image").parentElement;
+  
+  // Add navigation arrows
+  if (!imageContainer.querySelector('.article-nav-btn')) {
+    // Left arrow
+    const leftArrow = document.createElement('button');
+    leftArrow.className = 'article-nav-btn article-prev-btn';
+    leftArrow.innerHTML = '<svg fill="#fff" width="25px" height="25px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M30 14.5c-.004.276-.224.504-.5.5h-26c-.66 0-.664-1 0-1h26c.282-.004.504.218.5.5zm-15 14c0 .45-.554.663-.854.354l-14-14c-.195-.196-.195-.512 0-.708l14-14c.426-.442 1.167.248.708.708L1.207 14.5l13.647 13.646c.097.095.146.22.146.354z"/></svg>';
+    leftArrow.style.cssText = `
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    `;
+    leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
+    leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.7';
+    leftArrow.onclick = () => navigateArticleMedia(-1);
+    
+    // Right arrow
+    const rightArrow = document.createElement('button');
+    rightArrow.className = 'article-nav-btn article-next-btn';
+    rightArrow.innerHTML = '<svg fill="#fff" width="25px" height="25px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15.5c.004.276.224.504.5.5h26c.66 0 .664-1 0-1H.5c-.282-.004-.504.218-.5.5zm15 14c0 .45.554.663.854.354l14-14c.195-.195.195-.51 0-.707l-14-14c-.426-.443-1.167.248-.707.707L28.793 15.5 15.147 29.148c-.098.095-.147.218-.147.353z"/></svg>';
+    rightArrow.style.cssText = `
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.6);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    `;
+    rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
+    rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
+    rightArrow.onclick = () => navigateArticleMedia(1);
+    
+    imageContainer.appendChild(leftArrow);
+    imageContainer.appendChild(rightArrow);
+    
+    // Ensure container is positioned
+    imageContainer.style.position = 'relative';
+  }
+  
+  // Add touch events for swipe
+  imageContainer.addEventListener('touchstart', handleArticleTouchStart, { passive: false });
+  imageContainer.addEventListener('touchmove', handleArticleTouchMove, { passive: false });
+  imageContainer.addEventListener('touchend', handleArticleTouchEnd, { passive: false });
+  
+  // Add keyboard navigation
+  document.addEventListener('keydown', handleArticleKeyboard);
+  
+  // Add media indicator dots
+  addMediaIndicatorDots(article);
+}
+
+function navigateArticleMedia(direction) {
+  if (!currentArticle || !currentArticle.images) return;
+  
+  currentArticleIndex += direction;
+  
+  if (currentArticleIndex < 0) {
+    currentArticleIndex = currentArticle.images.length - 1;
+  } else if (currentArticleIndex >= currentArticle.images.length) {
+    currentArticleIndex = 0;
+  }
+  
+  updateArticleMedia();
+  updateMediaIndicatorDots();
+}
+
+function updateArticleMedia() {
+  if (!currentArticle || !currentArticle.images) return;
+  
+  const media = currentArticle.images[currentArticleIndex];
+  const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') ||
+                  media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
+                  media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
+  
+  const articleImageElement = document.getElementById("article-image");
+  const articleCaptionElement = document.getElementById("article-caption");
+  const imageContainer = articleImageElement.parentElement;
+  
+  // Remove any existing video containers
+  const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+  if (existingVideoContainer) {
+    existingVideoContainer.remove();
+  }
+  
+  if (isVideo) {
+    // Hide image and create video container
+    articleImageElement.style.display = 'none';
+    
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'article-video-container';
+    videoContainer.style.cssText = `
+      position: relative;
+      width: 100%;
+      height: auto;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      overflow: hidden;
+    `;
+    
+    const video = document.createElement('video');
+    video.src = media.src;
+    video.controls = true;
+    video.preload = 'metadata';
+    video.style.cssText = `
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    `;
+    
+    const videoIndicator = document.createElement('div');
+    videoIndicator.innerHTML = '🎥 VIDEO';
+    videoIndicator.style.cssText = `
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 10;
+      pointer-events: none;
+    `;
+    
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.innerHTML = '';
+    fullscreenBtn.title = 'Open in modal';
+    fullscreenBtn.style.cssText = `
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+    `;
+    fullscreenBtn.onmouseenter = () => fullscreenBtn.style.background = 'rgba(0,0,0,1)';
+    fullscreenBtn.onmouseleave = () => fullscreenBtn.style.background = 'rgba(0,0,0,0.8)';
+    fullscreenBtn.onclick = (e) => {
+      e.stopPropagation();
+      openImageModal(currentArticle.images, currentArticleIndex);
+    };
+    
+    videoContainer.appendChild(video);
+    videoContainer.appendChild(videoIndicator);
+    videoContainer.appendChild(fullscreenBtn);
+    
+    imageContainer.insertBefore(videoContainer, articleImageElement);
+  } else {
+    // Show image
+    articleImageElement.style.display = 'block';
+    articleImageElement.style.width = '100%';
+    articleImageElement.style.height = '550px';
+    articleImageElement.style.objectFit = 'cover';
+    articleImageElement.style.borderRadius = '8px';
+    articleImageElement.src = media.src;
+    articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
+  }
+  
+  articleCaptionElement.textContent = media.caption;
+  
+  // Update counter indicator
+  const indicator = imageContainer.querySelector('.image-count-indicator');
+  if (indicator) {
+    indicator.textContent = `${currentArticleIndex + 1}/${currentArticle.images.length}`;
+  }
+}
+
+function addMediaIndicatorDots(article) {
+  const imageContainer = document.getElementById("article-image").parentElement;
+  
+  // Remove existing dots
+  const existingDots = imageContainer.querySelector('.media-dots-container');
+  if (existingDots) {
+    existingDots.remove();
+  }
+  
+  if (article.images.length <= 1) return;
+  
+  const dotsContainer = document.createElement('div');
+  dotsContainer.className = 'media-dots-container';
+  dotsContainer.style.cssText = `
+    position: absolute;
+    bottom: 92.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+  `;
+  
+  article.images.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.className = `media-dot ${index === 0 ? 'active' : ''}`;
+    dot.style.cssText = `
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1px solid black;
+      background: ${index === 0 ? '#22c55e' : 'rgba(255,255,255,0.75)'};
+      cursor: pointer;
+      transition: all 0.3s ease;
+    `;
+    dot.onmouseenter = () => {
+      if (index !== currentArticleIndex) {
+        dot.style.background = 'rgba(0,0,0,0.45)';
+        dot.style.transform = 'scale(1.15)';
+      }
+    };
+    dot.onmouseleave = () => {
+      if (index !== currentArticleIndex) {
+        dot.style.background = 'rgba(255,255,255,0.75)';
+        dot.style.transform = 'scale(1)';
+      }
+    };
+    dot.onclick = () => {
+      currentArticleIndex = index;
+      updateArticleMedia();
+      updateMediaIndicatorDots();
+    };
+    dotsContainer.appendChild(dot);
+  });
+  
+  imageContainer.appendChild(dotsContainer);
+}
+
+function updateMediaIndicatorDots() {
+  const dots = document.querySelectorAll('.media-dot');
+  dots.forEach((dot, index) => {
+    const isActive = index === currentArticleIndex;
+    dot.style.background = isActive ? 'green' : 'rgba(255,255,255,0.3)';
+    dot.style.border = isActive ? '1px solid #000' : '1px solid rgba(0,0,0,0.8)';
+    dot.style.width = isActive ? '15px' : '15px';
+    dot.style.height = isActive ? '15px' : '15px';
+    dot.style.transform = isActive ? 'scale(1.2)' : 'scale(1)';
+    dot.className = `media-dot ${isActive ? 'active' : ''}`;
+  });
+}
+
+// Touch event handlers for article swipe
+function handleArticleTouchStart(e) {
+  articleStartX = e.touches[0].clientX;
+}
+
+function handleArticleTouchMove(e) {
+  if (!articleStartX) return;
+  e.preventDefault();
+}
+
+function handleArticleTouchEnd(e) {
+  if (!articleStartX) return;
+  
+  articleEndX = e.changedTouches[0].clientX;
+  const diffX = articleStartX - articleEndX;
+  const threshold = 50;
+  
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      navigateArticleMedia(1); // Swipe left = next
+    } else {
+      navigateArticleMedia(-1); // Swipe right = previous
+    }
+  }
+  
+  articleStartX = 0;
+  articleEndX = 0;
+}
+
+// Keyboard navigation for article
+function handleArticleKeyboard(e) {
+  // Only handle if not in modal
+  if (document.getElementById('image-modal').style.display !== 'flex') {
+    switch(e.key) {
+      case 'ArrowLeft':
+        navigateArticleMedia(-1);
+        e.preventDefault();
+        break;
+      case 'ArrowRight':
+        navigateArticleMedia(1);
+        e.preventDefault();
+        break;
+    }
+  }
+}
+
+function createImageModal() {
+  const modalHTML = `
+    <div id="image-modal" style="
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    ">
+      <div class="modal-content" style="
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        object-fit:cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      ">
+        <button id="modal-close" style="
+          position: absolute;
+          top: -40px;
+          right: 0;
+          background: none;
+          border: none;
+          color: white;
+          font-size: 30px;
+          cursor: pointer;
+          z-index: 10000;
+        ">&times;</button>
+        
+        <div class="image-container" style="
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 80vh;
+        ">
+          <button id="modal-prev" style="
+            position: absolute;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10000;
+          ">‹</button>
+          
+          <img id="modal-image" style="
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+            display: none;
+          ">
+          
+          <video id="modal-video" controls style="
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+            border-radius: 8px;
+          ">
+            Your browser does not support the video tag.
+          </video>
+          
+          <button id="modal-next" style="
+            position: absolute;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            z-index: 10000;
+          ">›</button>
+        </div>
+        
+        <div style="
+          margin-top: 20px;
+          text-align: center;
+          color: white;
+          max-width: 600px;
+        ">
+          <div id="modal-caption" style="
+            font-size: 16px;
+            margin-bottom: 10px;
+          "></div>
+          <div id="modal-counter" style="
+            font-size: 14px;
+            opacity: 0.7;
+          "></div>
+        </div>
+        
+        <div id="modal-thumbnails" style="
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
+          max-width: 100%;
+          overflow-x: auto;
+          padding: 10px 0;
+        "></div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  
+  // Add event listeners
+  document.getElementById('modal-close').onclick = closeImageModal;
+  document.getElementById('modal-prev').onclick = () => navigateModal(-1);
+  document.getElementById('modal-next').onclick = () => navigateModal(1);
+  
+  // Click outside to close
+  document.getElementById('image-modal').onclick = (e) => {
+    if (e.target.id === 'image-modal') closeImageModal();
+  };
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', handleModalKeyboard);
+  
+  // Touch events for mobile swipe - apply to both image and video
+  const modalImage = document.getElementById('modal-image');
+  const modalVideo = document.getElementById('modal-video');
+  const imageContainer = document.querySelector('.image-container');
+  
+  // Apply touch events to the container so it works for both image and video
+  imageContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+  imageContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+  imageContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
+}
+
+function openImageModal(images, startIndex = 0) {
+  currentModalImages = images;
+  currentModalIndex = startIndex;
+  
+  if (!document.getElementById('image-modal')) {
+    createImageModal();
+  }
+  
+  updateModalImage();
+  document.getElementById('image-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeImageModal() {
+  // Pause any playing video before closing
+  const modalVideo = document.getElementById('modal-video');
+  if (modalVideo && !modalVideo.paused) {
+    modalVideo.pause();
+  }
+  
+  document.getElementById('image-modal').style.display = 'none';
+  document.body.style.overflow = ''; // Restore scrolling
+}
+
+function navigateModal(direction) {
+  // Pause current video if playing before switching
+  const modalVideo = document.getElementById('modal-video');
+  if (modalVideo && !modalVideo.paused) {
+    modalVideo.pause();
+  }
+  
+  currentModalIndex += direction;
+  
+  if (currentModalIndex < 0) {
+    currentModalIndex = currentModalImages.length - 1;
+  } else if (currentModalIndex >= currentModalImages.length) {
+    currentModalIndex = 0;
+  }
+  
+  updateModalImage();
+}
+
+function updateModalImage() {
+  const media = currentModalImages[currentModalIndex];
+  const modalImage = document.getElementById('modal-image');
+  const modalVideo = document.getElementById('modal-video');
+  const modalCaption = document.getElementById('modal-caption');
+  const modalCounter = document.getElementById('modal-counter');
+  const thumbnailContainer = document.getElementById('modal-thumbnails');
+  
+  // Determine if current media is video or image
+  const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
+                  media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
+                  media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
+  
+  // Hide both elements first
+  modalImage.style.display = 'none';
+  modalVideo.style.display = 'none';
+  
+  // Show and update the appropriate element
+  if (isVideo) {
+    modalVideo.src = media.src;
+    modalVideo.style.display = 'block';
+    // Pause video when switching (optional)
+    modalVideo.currentTime = 0;
+  } else {
+    modalImage.src = media.src;
+    modalImage.style.display = 'block';
+  }
+  
+  modalCaption.textContent = media.caption;
+  modalCounter.textContent = `${currentModalIndex + 1} / ${currentModalImages.length}`;
+  
+  // Update thumbnails
+  thumbnailContainer.innerHTML = '';
+  currentModalImages.forEach((item, index) => {
+    const itemIsVideo = item.type === 'video' || item.src.toLowerCase().includes('.mp4') || 
+                        item.src.toLowerCase().includes('.mov') || item.src.toLowerCase().includes('.webm') ||
+                        item.src.toLowerCase().includes('.avi') || item.src.toLowerCase().includes('.mkv');
+    
+    if (itemIsVideo) {
+      // Create video thumbnail
+      const thumbContainer = document.createElement('div');
+      thumbContainer.style.cssText = `
+        width: 60px;
+        height: 60px;
+        position: relative;
+        cursor: pointer;
+        border: 2px solid ${index === currentModalIndex ? '#fff' : 'transparent'};
+        border-radius: 4px;
+        opacity: ${index === currentModalIndex ? '1' : '0.7'};
+        transition: all 0.3s ease;
+        background: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      `;
+      
+      // Try to create video thumbnail
+      const video = document.createElement('video');
+      video.src = item.src;
+      video.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      `;
+      video.muted = true;
+      video.currentTime = 1; // Try to get a frame from 1 second in
+      
+      // Add play icon overlay
+      const playIcon = document.createElement('div');
+      playIcon.innerHTML = '▶';
+      playIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 16px;
+        text-shadow: 0 0 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+      `;
+      
+      thumbContainer.appendChild(video);
+      thumbContainer.appendChild(playIcon);
+      
+      thumbContainer.onclick = () => {
+        currentModalIndex = index;
+        updateModalImage();
+      };
+      
+      thumbnailContainer.appendChild(thumbContainer);
+    } else {
+      // Create image thumbnail
+      const thumb = document.createElement('img');
+      thumb.src = item.src;
+      thumb.style.cssText = `
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid ${index === currentModalIndex ? '#fff' : 'transparent'};
+        border-radius: 4px;
+        opacity: ${index === currentModalIndex ? '1' : '0.7'};
+        transition: all 0.3s ease;
+      `;
+      thumb.onclick = () => {
+        currentModalIndex = index;
+        updateModalImage();
+      };
+      thumbnailContainer.appendChild(thumb);
+    }
+  });
+  
+  // Show/hide navigation buttons
+  const prevBtn = document.getElementById('modal-prev');
+  const nextBtn = document.getElementById('modal-next');
+  
+  if (currentModalImages.length <= 1) {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  } else {
+    prevBtn.style.display = 'block';
+    nextBtn.style.display = 'block';
+  }
+}
+
+// Touch event handlers for mobile swipe
+function handleTouchStart(e) {
+  startX = e.touches[0].clientX;
+}
+
+function handleTouchMove(e) {
+  if (!startX) return;
+  e.preventDefault(); // Prevent scrolling
+}
+
+function handleTouchEnd(e) {
+  if (!startX) return;
+  
+  endX = e.changedTouches[0].clientX;
+  const diffX = startX - endX;
+  const threshold = 50; // Minimum swipe distance
+  
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      navigateModal(1); // Swipe left = next image
+    } else {
+      navigateModal(-1); // Swipe right = previous image
+    }
+  }
+  
+  startX = 0;
+  endX = 0;
+}
+
+// Keyboard navigation
+function handleModalKeyboard(e) {
+  if (document.getElementById('image-modal').style.display === 'flex') {
+    switch(e.key) {
+      case 'Escape':
+        closeImageModal();
+        break;
+      case 'ArrowLeft':
+        navigateModal(-1);
+        break;
+      case 'ArrowRight':
+        navigateModal(1);
+        break;
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   let currentID = params.get("id");
@@ -135,8 +906,138 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("article-author").textContent = `${article.author}`;
     document.getElementById("article-date").textContent = article.date;
     document.getElementById("article-date").setAttribute("datetime", article.date);
-    document.getElementById("article-image").src = article.image.src;
-    document.getElementById("article-caption").textContent = article.image.caption;
+    
+    // Handle multiple images/videos
+    if (article.images && article.images.length > 0) {
+      const firstMedia = article.images[0];
+      const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
+                          firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
+                          firstMedia.src.toLowerCase().includes('.avi') || firstMedia.src.toLowerCase().includes('.mkv');
+      
+      const articleImageElement = document.getElementById("article-image");
+      const articleCaptionElement = document.getElementById("article-caption");
+      
+      if (isFirstVideo) {
+        // If first media is video, create a video thumbnail with play overlay
+        const imageContainer = articleImageElement.parentElement;
+        
+        // Create video element to extract thumbnail
+        const video = document.createElement('video');
+        video.src = firstMedia.src;
+        video.style.cssText = `
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        `;
+        video.muted = true;
+        video.currentTime = 1; // Try to get a frame from 1 second in
+        
+        // Hide original image and show video thumbnail
+        articleImageElement.style.display = 'none';
+        
+        // Create video thumbnail container
+        const videoContainer = document.createElement('div');
+        videoContainer.style.cssText = `
+          position: relative;
+          width: 100%;
+          height: 550px !important;
+          background: #333;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 8px;
+          object-fit: cover;
+        `;
+        
+        // Add play icon overlay
+        const playIcon = document.createElement('div');
+        playIcon.innerHTML = '▶';
+        playIcon.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 48px;
+          text-shadow: 0 0 10px rgba(0,0,0,0.8);
+          pointer-events: none;
+          z-index: 10;
+        `;
+        
+        // Add video type indicator
+        const videoIndicator = document.createElement('div');
+        videoIndicator.innerHTML = '🎥 VIDEO';
+        videoIndicator.style.cssText = `
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10;
+        `;
+        
+        videoContainer.appendChild(video);
+        videoContainer.appendChild(playIcon);
+        videoContainer.appendChild(videoIndicator);
+        
+        // Insert video container after the original image
+        imageContainer.insertBefore(videoContainer, articleImageElement.nextSibling);
+        
+        // Set up click handler for video
+        videoContainer.onclick = () => openImageModal(article.images, 0);
+        
+        articleCaptionElement.textContent = firstMedia.caption;
+      } else {
+        // If first media is image, use normal behavior
+        articleImageElement.src = firstMedia.src;
+        articleImageElement.style.display = 'block';
+        articleImageElement.style.width = '100%';
+        articleImageElement.style.height = '550px';
+        articleImageElement.style.objectFit = 'cover';
+        articleImageElement.style.borderRadius = '8px';
+        articleCaptionElement.textContent = firstMedia.caption;
+        
+        // Add click handler for modal
+        if (article.images.length > 1) {
+          articleImageElement.style.cursor = "pointer";
+          articleImageElement.onclick = () => openImageModal(article.images, 0);
+        }
+      }
+      
+      // Add indicator for multiple media items
+      if (article.images.length > 1) {
+        const imageContainer = articleImageElement.parentElement;
+        if (!imageContainer.querySelector('.image-count-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'image-count-indicator';
+          indicator.textContent = `1/${article.images.length}`;
+          indicator.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            pointer-events: none;
+          `;
+          imageContainer.style.position = 'relative';
+          imageContainer.appendChild(indicator);
+        }
+      }
+    }
+    
+    // Add swipe functionality for main article media
+    if (article.images && article.images.length > 1) {
+      setupArticleSwipe(article);
+    }
+    
     document.getElementById("article-body").innerHTML = article.bodyHTML;
 
     if (article.pdf) {
