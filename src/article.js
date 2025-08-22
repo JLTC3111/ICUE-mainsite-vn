@@ -64,6 +64,54 @@ const articles = [
       `,
       pdf: "/public/files/photos.zip",
       pdfButtonText: "Tải Về - Ảnh Tư Liệu ⇲"
+    },
+    {
+      id: "4",
+      title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 vag định hướng 2030",
+      lead: "Sáng Kiến Đô Thị Thông Minh của Việt Nam: Thành Tựu và Lộ Trình 2025-2030",
+      author: "Bởi ICUE",
+      date: "13 Tháng 8, 2025",
+      image: {
+        src: "/public/news/articles/article_4/conference.jpg",
+        caption: "Nhóm Tình Nguyện (ICUE)"
+      },
+      bodyHTML: `
+        <p>
+        Chặng đường phát triển đô thị thông minh của Việt Nam đã đạt được những bước tiến đáng kể kể từ khi triển khai Đề án “Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025” vào năm 2018. Mục tiêu của đề án là tận dụng công nghệ để cải thiện công tác quản lý, nâng cao chất lượng sống của người dân và thúc đẩy sự phát triển bền vững. Chính phủ cam kết chuyển đổi cảnh quan đô thị bằng các công nghệ dựa trên dữ liệu và tiếp cận lấy người dân làm trung tâm, hướng tới việc hoàn thành vào năm 2030.
+        Sau 7 năm triển khai, đất nước đã đạt được những bước tiến lớn trong hướng đi này, với nhiều thành phố đã bắt đầu triển khai các công nghệ đô thị thông minh một cách thành công.
+        Những Thành Tựu Chính:
+        1. Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế
+        Một ví dụ điển hình cho triết lý "người dân là trung tâm" là thành phố Huế, nơi đã triển khai nền tảng Hue-S, cho phép công dân báo cáo trực tiếp các vấn đề như sửa chữa đường xá, vệ sinh, và cơ sở hạ tầng. Ứng dụng này đã tạo ra một kênh giao tiếp hai chiều giữa người dân và chính quyền, đảm bảo tính minh bạch và trách nhiệm trong công tác quản lý đô thị. Hue-S đã trở thành một phần quan trọng trong hệ thống đô thị thông minh của Huế, giúp cải thiện các dịch vụ như y tế, giáo dục và quản lý giao thông. Thành phố cũng đang triển khai các dịch vụ thông minh tiên tiến hơn như kiểm soát giao thông bằng AI và chiếu sáng thông minh.
+        2. Quản Lý Đô Thị Dựa Trên Dữ Liệu: Đà Nẵng
+        Đà Nẵng là một ví dụ điển hình khác, nơi thành phố đã tích hợp hạ tầng thông minh và dịch vụ số. Trung tâm Điều hành Thông minh (IOC) là trung tâm tập hợp và quản lý dữ liệu từ các lĩnh vực như giao thông, quản lý rác thải, dịch vụ công cộng và y tế. Đà Nẵng đã hợp tác với các công ty công nghệ địa phương để triển khai GIS và BIM (Mô hình Thông tin Xây dựng) nhằm tối ưu hóa công tác quy hoạch đô thị. Thông qua các nền tảng này, thành phố có thể dự đoán và quản lý nhu cầu đô thị hiệu quả, đặc biệt là trong các mùa du lịch cao điểm.
+        3. Hệ Thống Giao Thông Thông Minh: TP.HCM
+        Tại TP.HCM, quản lý giao thông đã được cải thiện đáng kể thông qua hệ thống AI giám sát giao thông, camera giám sát, và thu phí tự động. Thành phố cũng đã triển khai các giải pháp đỗ xe thông minh và nghiên cứu xe tự lái, giúp thành phố trở thành một trong những nơi tiên phong trong vận hành đô thị thông minh. Các sáng kiến của TP.HCM phù hợp với mục tiêu lớn hơn của thành phố trong việc nâng cao phát triển bền vững bằng cách giảm tắc nghẽn giao thông và giảm thiểu phát thải carbon.
+        4. Dịch Vụ Công Tích Hợp: Hà Nội
+        Hà Nội đang tích hợp các trung tâm dữ liệu đám mây để mang đến một trải nghiệm mượt mà cho cư dân khi tiếp cận các dịch vụ chính quyền. Thành phố đã xây dựng nền tảng thống nhất cho các ứng dụng dịch vụ công, cho phép công dân nộp đơn khiếu nại, thanh toán thuế và tiếp cận thông tin chính quyền qua một cổng duy nhất. Bằng cách kết nối các sở, ngành thông qua hệ thống cơ sở dữ liệu chia sẻ, Hà Nội đang tối ưu hóa việc cung cấp dịch vụ và tăng cường hiệu quả trong cơ cấu hành chính.
+        5. Đô Thị Xanh và Thông Minh: Bình Định
+        Tại Bình Định, thành phố tập trung vào quá trình đô thị hóa xanh kết hợp với công nghệ thông minh. Tỉnh đã triển khai nhiều sáng kiến bền vững môi trường, như hệ thống quản lý rác thải thông minh và giải pháp năng lượng tái tạo cho các tòa nhà đô thị. Thành phố cũng đã áp dụng chiếu sáng thông minh bằng năng lượng mặt trời để giảm tiêu thụ năng lượng và giảm sự phụ thuộc vào nhiên liệu hóa thạch, đồng thời phù hợp với mục tiêu của chính phủ về phát triển bền vững trong các đô thị.
+        Những Thách Thức và Rào Cản:
+        Mặc dù đạt được nhiều thành tựu, quá trình phát triển đô thị thông minh ở Việt Nam vẫn gặp phải không ít khó khăn:
+        Thiếu khung pháp lý và cơ chế chính sách đồng bộ: Mặc dù đã có một số hướng dẫn được ban hành, các quy định vẫn chưa được thống nhất giữa các địa phương.
+        Vấn đề bảo mật dữ liệu và quyền riêng tư: Các thành phố như Hà Nội và TP.HCM đang thu thập lượng lớn dữ liệu để cải thiện dịch vụ, nhưng bảo mật và quyền riêng tư vẫn là mối quan tâm lớn.
+        Thiếu nguồn lực tài chính: Nhiều thành phố nhỏ gặp khó khăn trong việc huy động vốn đầu tư cho các dự án hạ tầng số lớn. Do đó, một số thành phố đã chọn triển khai các dự án thử nghiệm hoặc dự án một phần với các dịch vụ cơ bản.
+        Định Hướng Giai Đoạn 2025-2030:
+        Khi bước sang giai đoạn tiếp theo của phát triển đô thị thông minh, Chính phủ Việt Nam đã đặt ra 7 ưu tiên chiến lược cho giai đoạn 2025-2030:
+        Cải thiện hệ thống pháp lý và mô hình kiến trúc dữ liệu và hạ tầng công nghệ.
+        Xây dựng cơ sở dữ liệu đô thị dùng chung, liên thông giữa các bộ, ngành.
+        Lấy người dân làm trung tâm, cung cấp dịch vụ thiết yếu và khuyến khích tham gia giám sát.
+        Phát triển nguồn nhân lực chất lượng cao, phổ cập kỹ năng số.
+        Đổi mới mô hình quản trị, ứng dụng công nghệ vào điều hành và xây dựng chính quyền số.
+        Tăng cường hợp tác quốc tế, thúc đẩy ứng dụng công nghệ mới.
+        Huy động nguồn lực xã hội hóa thông qua hợp tác công-tư.
+        Nhìn Về Tương Lai:
+        Năm năm tới sẽ rất quan trọng đối với nỗ lực xây dựng đô thị thông minh tại Việt Nam. Đến năm 2030, Chính phủ dự kiến sẽ tạo ra một mạng lưới đô thị thông minh toàn quốc, hoạt động liên kết và đồng bộ giữa các thành phố. Các thành phố như Huế, Đà Nẵng, và TP.HCM sẽ là những hình mẫu để các thành phố khác học hỏi, chứng minh rằng với các đầu tư hợp lý và kế hoạch chi tiết, đô thị thông minh có thể trở thành động lực quan trọng cho tăng trưởng kinh tế, sự bền vững và quản lý đô thị hiệu quả.
+        Mục tiêu phát triển đô thị thông minh bền vững sẽ không chỉ là mục tiêu phát triển, mà là yêu cầu tất yếu để Việt Nam thích ứng với thời đại số, nâng cao chất lượng sống và tăng năng lực cạnh tranh quốc gia trong những thập niên tới.</p>
+        <h2></h2>
+        <blockquote>"Mong bà con sớm ổn định cuộc sống, vượt qua khó khăn, chung tay xây dựng và phát triển vững mạnh"</blockquote>
+      `,
+      pdf: "/public/files/photos.zip",
+      pdfButtonText: "Tải Về - Ảnh Tư Liệu ⇲"
     }
 ];
 
