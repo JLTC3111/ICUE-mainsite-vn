@@ -93,16 +93,6 @@ const articles = [
           caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024",
           type: "image"
         },
-        {
-          src: "/public/news/articles/article_2/presentation.mp4",
-          caption: "Video báo cáo tại hội nghị",
-          type: "video"
-        },
-        {
-          src: "/public/news/articles/article_2/delegation.jpg",
-          caption: "Đại diện ICUE tại hội nghị",
-          type: "image"
-        }
       ],
       bodyHTML: `
         <p>Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của IUCN Việt Nam, trong đó đại diện Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) - Viện trưởng TS.Nguyễn Hồng Hạnh tham dự diễn đàn. ICUE là 1 trong các thành viên đã tham dự và có các trình bày về bảo tồn biển, phát triển bền vững nông thôn. ICUE đã có báo cáo tóm tắt một phần trong dự án "Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển". 
@@ -129,14 +119,6 @@ const articles = [
           src: "/public/news/articles/article_3/area_affected.png",
           caption: "Nhóm Tình Nguyện (ICUE)"
         },
-        {
-          src: "/public/news/articles/article_3/relief_team.jpg",
-          caption: "Đoàn cứu trợ tại hiện trường"
-        },
-        {
-          src: "/public/news/articles/article_3/donation.jpg",
-          caption: "Trao quà cho bà con vùng lũ"
-        }
       ],
       bodyHTML: `
         <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
@@ -157,10 +139,6 @@ const articles = [
           src: "/public/news/articles/article_4/conference.jpg",
           caption: "Các Thành Viên Buổi Họp"
         },
-        {
-          src: "/public/news/articles/article_4/presentation.jpg",
-          caption: "Báo cáo tại hội nghị"
-        }
       ],
       bodyHTML: `
         <p>
