@@ -28,7 +28,7 @@ const articles = [
       title: "Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan",
       lead: "Ngày 3/9, Diễn đàn Bảo tồn Khu vực Châu Á (RCF) lần thứ 8 của Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.",
       author: "Bởi ICUE",
-      date: "03 Tháng 9, 2024",
+      date: "2024-09-03",
       image: {
         src: "/public/news/articles/article_2/conference.png",
         caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024"
@@ -52,7 +52,7 @@ const articles = [
       title: "Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi",
       lead: "Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.",
       author: "Bởi ICUE",
-      date: "26 Tháng 9, 2024",
+      date: "2024-09-26",
       image: {
         src: "/public/news/articles/article_3/area_affected.png",
         caption: "Nhóm Tình Nguyện (ICUE)"
@@ -70,10 +70,10 @@ const articles = [
       title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 vag định hướng 2030",
       lead: "Sáng Kiến Đô Thị Thông Minh của Việt Nam: Thành Tựu và Lộ Trình 2025-2030",
       author: "Bởi ICUE",
-      date: "13 Tháng 8, 2025",
+      date: "2025-08-13",
       image: {
         src: "/public/news/articles/article_4/conference.jpg",
-        caption: "Nhóm Tình Nguyện (ICUE)"
+        caption: "Các Thành Viên Buổi Họp"
       },
       bodyHTML: `
         <p>
