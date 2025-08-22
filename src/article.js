@@ -206,19 +206,19 @@ const articles = [
       images: [
         {
           src: "/public/news/articles/article_4/conference.jpg",
-          caption: "Các Thành Viên Buổi Họp"
+          caption: "TS. Nguyễn Hồng Hạnh Tại Buổi Họp."
         },
         {
           src: "/public/news/articles/article_4/1.jpg",
-          caption: "Các Thành Viên Buổi Họp"
+          caption: "Bộ Trưởng Trần Hồng Minh Phát Biểu Tại Hội Nghị."
         },
         {
           src: "/public/news/articles/article_4/2.jpg",
-          caption: "Các Thành Viên Buổi Họp"
+          caption: "Ông Trần Quốc Thái, Cục trưởng Cục Phát triển đô thị trình bày báo cáo tổng kết thực hiện Đề án 950"
         },
         {
           src: "/public/news/articles/article_4/3.jpg",
-          caption: "Các Thành Viên Buổi Họp"
+          caption: "Thứ trưởng Bộ Xây dựng Nguyễn Tường Văn khẳng định, việc phát triển đô thị thông minh không phải là chạy đua theo công nghệ mà phải lấy con người làm trung tâm."
         },
       ],
       bodyHTML: `
