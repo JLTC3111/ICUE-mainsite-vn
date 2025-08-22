@@ -93,6 +93,26 @@ const articles = [
           caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024",
           type: "image"
         },
+        {
+          src: "/public/news/articles/article_2/1.jpg",
+          caption: "Cho một tương lai loài hổ được bảo tồn — các đại biểu thảo luận chiến lược táo bạo tại Diễn đàn RCF châu Á.",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_2/2.jpg",
+          caption: "Phiên khai mạc của Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 — các nhà lãnh đạo cùng hội tụ dưới chủ đề Tái tưởng tượng công tác bảo tồn tại châu Á.",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_2/3.jpg",
+          caption: "Các nhà lãnh đạo trẻ bước lên sân khấu — khẳng định rằng thế hệ kế tiếp không phải là ‘tương lai’, mà chính là hiện tại trong công tác bảo tồn.",
+          type: "image"
+        },
+        {
+          src: "/public/news/articles/article_2/4.jpg",
+          caption: "Hợp tác trong hành động — các đại biểu từ khắp châu Á kết nối, chia sẻ và cùng nhau xây dựng giải pháp tích cực cho thiên nhiên.",
+          type: "image"
+        },
       ],
       bodyHTML: `
         <p>Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của IUCN Việt Nam, trong đó đại diện Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) - Viện trưởng TS.Nguyễn Hồng Hạnh tham dự diễn đàn. ICUE là 1 trong các thành viên đã tham dự và có các trình bày về bảo tồn biển, phát triển bền vững nông thôn. ICUE đã có báo cáo tóm tắt một phần trong dự án "Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển". 
@@ -117,8 +137,57 @@ const articles = [
       images: [
         {
           src: "/public/news/articles/article_3/area_affected.png",
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi",
+        },
+        {
+          src: "/public/news/articles/article_3/1.jpg",
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+        },
+        {
+          src: "/public/news/articles/article_3/2.jpg",
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+        },
+        {
+          src: "/public/news/articles/article_3/3.jpg",
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+        },
+        {
+          src: "/public/news/articles/article_3/4.jpg",
           caption: "Nhóm Tình Nguyện (ICUE)"
         },
+        {
+          src: "/public/news/articles/article_3/5.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/6.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/7.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/8.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/9.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/10.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_3/11.jpg",
+          caption: "Nhóm Tình Nguyện (ICUE)"
+        },
+         {
+          src: "/public/news/articles/article_3/a_thank_you_letter.png",
+          caption: "Thư Cám Ơn"
+        }
+
       ],
       bodyHTML: `
         <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
@@ -130,13 +199,25 @@ const articles = [
     },
     {
       id: "4",
-      title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 vag định hướng 2030",
+      title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 và định hướng 2030",
       lead: "Sáng Kiến Đô Thị Thông Minh của Việt Nam: Thành Tựu và Lộ Trình 2025-2030",
       author: "Bởi ICUE",
       date: "13 Tháng 8, 2025",
       images: [
         {
           src: "/public/news/articles/article_4/conference.jpg",
+          caption: "Các Thành Viên Buổi Họp"
+        },
+        {
+          src: "/public/news/articles/article_4/1.jpg",
+          caption: "Các Thành Viên Buổi Họp"
+        },
+        {
+          src: "/public/news/articles/article_4/2.jpg",
+          caption: "Các Thành Viên Buổi Họp"
+        },
+        {
+          src: "/public/news/articles/article_4/3.jpg",
           caption: "Các Thành Viên Buổi Họp"
         },
       ],
