@@ -89,7 +89,7 @@ const articles = [
       date: "03 Tháng 9, 2024",
       images: [
         {
-          src: "/public/news/articles/article_2/conference.png",
+          src: "/public/news/articles/article_2/conference.jpg",
           caption: "Phái đoàn Việt Nam tham gia hoạt động trong khuôn khổ RCF 2024",
           type: "image"
         },
