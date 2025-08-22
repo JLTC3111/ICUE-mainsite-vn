@@ -29,11 +29,11 @@
             align-items: center;
             position: relative;
             padding: 60px 20px 40px;
-            margin-top: 7.5%;
+            margin-top: 1.5%;
         }
 
         .community-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 300;
             text-align: center;
             margin-bottom: 3rem;
@@ -89,7 +89,7 @@
         .photo-collage {
             position: relative;
             width: 100%;
-            height: 70vh;
+            height: 90vh;
             min-height: 500px;
             border-radius: 20px;
             overflow: hidden;
@@ -115,7 +115,6 @@
         .photo-item {
             background: #2a2a2a;
             border-radius: 8px;
-            
             position: relative;
             transition: all 0.4s ease;
             cursor: pointer;
@@ -248,11 +247,140 @@
             50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
         }
 
+        /* Community Modal Styles */
+        .community-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .community-modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .community-modal-image {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .community-modal-caption {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            max-width: 600px;
+        }
+
+        .community-modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            padding: 15px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .community-modal-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .community-modal-prev {
+            left: -80px;
+        }
+
+        .community-modal-next {
+            right: -80px;
+        }
+
+        .community-modal-close {
+            position: absolute;
+            top: -60px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            padding: 15px 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .community-modal-close:hover {
+            background: rgba(255, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .community-modal-counter {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .community-hero {
                 padding: 40px 15px 30px;
                 margin-top: 15%;
+            }
+
+            .community-modal-nav {
+                font-size: 20px;
+                padding: 12px 15px;
+            }
+
+            .community-modal-prev {
+                left: 10px;
+            }
+
+            .community-modal-next {
+                right: 10px;
+            }
+
+            .community-modal-close {
+                top: 20px;
+                right: 20px;
+                font-size: 20px;
+                padding: 12px 15px;
+            }
+
+            .community-modal-counter {
+                top: 20px;
+                left: 20px;
+                font-size: 12px;
+                padding: 8px 12px;
             }
 
             .photo-grid {
@@ -297,6 +425,17 @@
                 width: 280px;
                 justify-content: center;
             }
+            .community-dots-container {
+                bottom: 22.5px !important;
+            }
+            .community-dot {
+                width: 7.5px !important;
+                height: 7.5px !important;
+            }
+            svg {
+                width: 17.5px !important;
+                height: 17.5px !important;
+            }
         }
 
         @media (max-width: 480px) {
@@ -335,43 +474,43 @@
                 <div class="photo-grid">
                     <!-- Photo items with placeholder images and fallback gradients -->
                     <div class="photo-item" style="background: linear-gradient(45deg, #059669, #10b981);">
-                        <img src="public/community/1.jpg" alt="Hội thảo chuyên gia" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/1.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #dc2626, #ef4444);">
-                        <img src="public/community/2.jpg" alt="Gặp gỡ thành viên" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/2.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #7c3aed, #8b5cf6);">
-                        <img src="public/community/3.jpg" alt="Thuyết trình công nghệ" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/3.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #ea580c, #f97316);">
-                        <img src="public/community/4.jpg" alt="Networking session" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/4.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #0891b2, #06b6d4);">
-                        <img src="public/community/5.jpg" alt="Workshop tương tác" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/5.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #be185d, #ec4899);">
-                        <img src="public/community/6.jpg" alt="Chia sẻ kinh nghiệm" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/6.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #1e293b, #475569);">
-                        <img src="public/community/7.jpg" alt="Cộng đồng global" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/7.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/8.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/8.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/9.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/9.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/10.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/10.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/11.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/11.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/12.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/12.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                     <div class="photo-item" style="background: linear-gradient(45deg, #facc15, #eab308);">
-                        <img src="public/community/13.jpg" alt="Meetup địa phương" loading="lazy" onerror="this.style.display='none';">
+                        <img src="public/community/13.jpg" alt="" loading="lazy" onerror="this.style.display='none';">
                     </div>
                 </div>
                 
@@ -388,266 +527,5 @@
             </a>
         </div>
     </main>
-
-    <script>
-        // Community Gallery Functionality
-        const photoItems = [
-            { src: "public/community/1.jpg", alt: "Hội thảo chuyên gia", caption: "Hội thảo chuyên gia" },
-            { src: "public/community/2.jpg", alt: "Gặp gỡ thành viên", caption: "Gặp gỡ thành viên" },
-            { src: "public/community/3.jpg", alt: "Thuyết trình công nghệ", caption: "Thuyết trình công nghệ" },
-            { src: "public/community/4.jpg", alt: "Networking session", caption: "Networking session" },
-            { src: "public/community/5.jpg", alt: "Workshop tương tác", caption: "Workshop tương tác" },
-            { src: "public/community/6.jpg", alt: "Chia sẻ kinh nghiệm", caption: "Chia sẻ kinh nghiệm" },
-            { src: "public/community/7.jpg", alt: "Cộng đồng global", caption: "Cộng đồng global" },
-            { src: "public/community/8.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" },
-            { src: "public/community/9.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" },
-            { src: "public/community/10.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" },
-            { src: "public/community/11.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" },
-            { src: "public/community/12.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" },
-            { src: "public/community/13.jpg", alt: "Meetup địa phương", caption: "Meetup địa phương" }
-        ];
-
-        let currentPhotoIndex = 0;
-        let startX = 0;
-        let endX = 0;
-
-        function initializeCommunityGallery() {
-            const photoCollage = document.querySelector('.photo-collage');
-            const photoGrid = document.querySelector('.photo-grid');
-            
-            // Add total media counter
-            const totalCounter = document.createElement('div');
-            totalCounter.className = 'community-media-counter';
-            totalCounter.textContent = `${photoItems.length} ảnh`;
-            totalCounter.style.cssText = `
-                position: absolute;
-                top: 15px;
-                left: 15px;
-                background: rgba(0,0,0,0.8);
-                color: #ffffff;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: 600;
-                letter-spacing: 0.5px;
-                pointer-events: none;
-                z-index: 10;
-                backdrop-filter: blur(10px);
-            `;
-            photoCollage.appendChild(totalCounter);
-
-            // Add current photo indicator
-            const currentIndicator = document.createElement('div');
-            currentIndicator.className = 'community-current-indicator';
-            currentIndicator.textContent = `1/${photoItems.length}`;
-            currentIndicator.style.cssText = `
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: rgba(0,0,0,0.8);
-                color: #ffffff;
-                padding: 8px 15px;
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: 600;
-                letter-spacing: 0.5px;
-                pointer-events: none;
-                z-index: 10;
-                backdrop-filter: blur(10px);
-            `;
-            photoCollage.appendChild(currentIndicator);
-
-            // Add navigation arrows
-            const leftArrow = document.createElement('button');
-            leftArrow.innerHTML = '‹';
-            leftArrow.style.cssText = `
-                position: absolute;
-                left: 15px;
-                bottom: 15px;
-                background: rgba(0,0,0,0.8);
-                border: none;
-                color: #ffffff;
-                font-size: 24px;
-                padding: 10px 15px;
-                border-radius: 50%;
-                cursor: pointer;
-                z-index: 10;
-                transition: all 0.3s ease;
-                opacity: 0.8;
-            `;
-            leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
-            leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.8';
-            leftArrow.onclick = () => navigateCommunityPhoto(-1);
-
-            const rightArrow = document.createElement('button');
-            rightArrow.innerHTML = '›';
-            rightArrow.style.cssText = `
-                position: absolute;
-                right: 15px;
-                bottom: 15px;
-                background: rgba(0,0,0,0.8);
-                border: none;
-                color: #ffffff;
-                font-size: 24px;
-                padding: 10px 15px;
-                border-radius: 50%;
-                cursor: pointer;
-                z-index: 10;
-                transition: all 0.3s ease;
-                opacity: 0.8;
-            `;
-            rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
-            rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.8';
-            rightArrow.onclick = () => navigateCommunityPhoto(1);
-
-            photoCollage.appendChild(leftArrow);
-            photoCollage.appendChild(rightArrow);
-
-            // Add touch events for swipe
-            photoCollage.addEventListener('touchstart', handleTouchStart, { passive: false });
-            photoCollage.addEventListener('touchmove', handleTouchMove, { passive: false });
-            photoCollage.addEventListener('touchend', handleTouchEnd, { passive: false });
-
-            // Add keyboard navigation
-            document.addEventListener('keydown', handleKeyboard);
-
-            // Add dots indicator
-            addCommunityDots();
-
-            // Highlight first photo
-            highlightCurrentPhoto();
-        }
-
-        function navigateCommunityPhoto(direction) {
-            currentPhotoIndex += direction;
-            
-            if (currentPhotoIndex < 0) {
-                currentPhotoIndex = photoItems.length - 1;
-            } else if (currentPhotoIndex >= photoItems.length) {
-                currentPhotoIndex = 0;
-            }
-            
-            updateCommunityIndicators();
-            highlightCurrentPhoto();
-        }
-
-        function updateCommunityIndicators() {
-            const currentIndicator = document.querySelector('.community-current-indicator');
-            if (currentIndicator) {
-                currentIndicator.textContent = `${currentPhotoIndex + 1}/${photoItems.length}`;
-            }
-
-            // Update dots
-            const dots = document.querySelectorAll('.community-dot');
-            dots.forEach((dot, index) => {
-                const isActive = index === currentPhotoIndex;
-                dot.style.background = isActive ? '#22c55e' : 'rgba(255,255,255,0.4)';
-                dot.style.transform = isActive ? 'scale(1.2)' : 'scale(1)';
-            });
-        }
-
-        function highlightCurrentPhoto() {
-            const photoItems = document.querySelectorAll('.photo-item');
-            photoItems.forEach((item, index) => {
-                if (index === currentPhotoIndex) {
-                    item.style.transform = 'scale(1.1)';
-                    item.style.boxShadow = '0 10px 30px rgba(200, 255, 0, 0.6)';
-                    item.style.zIndex = '15';
-                } else {
-                    item.style.transform = '';
-                    item.style.boxShadow = '';
-                    item.style.zIndex = '';
-                }
-            });
-        }
-
-        function addCommunityDots() {
-            const photoCollage = document.querySelector('.photo-collage');
-            
-            const dotsContainer = document.createElement('div');
-            dotsContainer.className = 'community-dots-container';
-            dotsContainer.style.cssText = `
-                position: absolute;
-                bottom: 60px;
-                left: 50%;
-                transform: translateX(-50%);
-                display: flex;
-                gap: 8px;
-                z-index: 10;
-                backdrop-filter: blur(4px);
-                background: rgba(0,0,0,0.2);
-                padding: 8px 12px;
-                border-radius: 20px;
-            `;
-            
-            photoItems.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = 'community-dot';
-                dot.style.cssText = `
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
-                    border: 1px solid rgba(255,255,255,0.6);
-                    background: ${index === 0 ? '#22c55e' : 'rgba(255,255,255,0.4)'};
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                `;
-                dot.onclick = () => {
-                    currentPhotoIndex = index;
-                    updateCommunityIndicators();
-                    highlightCurrentPhoto();
-                };
-                dotsContainer.appendChild(dot);
-            });
-            
-            photoCollage.appendChild(dotsContainer);
-        }
-
-        // Touch event handlers
-        function handleTouchStart(e) {
-            startX = e.touches[0].clientX;
-        }
-
-        function handleTouchMove(e) {
-            if (!startX) return;
-            e.preventDefault();
-        }
-
-        function handleTouchEnd(e) {
-            if (!startX) return;
-            
-            endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX;
-            const threshold = 50;
-            
-            if (Math.abs(diffX) > threshold) {
-                if (diffX > 0) {
-                    navigateCommunityPhoto(1); // Swipe left = next
-                } else {
-                    navigateCommunityPhoto(-1); // Swipe right = previous
-                }
-            }
-            
-            startX = 0;
-            endX = 0;
-        }
-
-        // Keyboard navigation
-        function handleKeyboard(e) {
-            switch(e.key) {
-                case 'ArrowLeft':
-                    navigateCommunityPhoto(-1);
-                    e.preventDefault();
-                    break;
-                case 'ArrowRight':
-                    navigateCommunityPhoto(1);
-                    e.preventDefault();
-                    break;
-            }
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initializeCommunityGallery);
-    </script>
 </body>
 </html>

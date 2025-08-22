@@ -529,6 +529,7 @@ window.loadPage = (page) => {
               updateHamburgerIcon(page);
               ICUEFooter.autoInject();
               calendarModal();
+              CommunityGallery.init();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -2083,6 +2084,536 @@ window.AwardsPage = (function () {
     }
   };
   
+
+window.CommunityGallery = (function () {
+    // --- Private state ---
+    const photoItems = [
+      { src: "public/community/1.jpg", alt: "Hội thảo chuyên gia", caption: "" },
+      { src: "public/community/2.jpg", alt: "Gặp gỡ thành viên", caption: "" },
+      { src: "public/community/3.jpg", alt: "Thuyết trình công nghệ", caption: "" },
+      { src: "public/community/4.jpg", alt: "Networking session", caption: "" },
+      { src: "public/community/5.jpg", alt: "Workshop tương tác", caption: "" },
+      { src: "public/community/6.jpg", alt: "Chia sẻ kinh nghiệm", caption: "" },
+      { src: "public/community/7.jpg", alt: "Cộng đồng global", caption: "" },
+      { src: "public/community/8.jpg", alt: "Meetup địa phương", caption: "" },
+      { src: "public/community/9.jpg", alt: "Meetup địa phương", caption: "" },
+      { src: "public/community/10.jpg", alt: "Meetup địa phương", caption: "" },
+      { src: "public/community/11.jpg", alt: "Meetup địa phương", caption: "" },
+      { src: "public/community/12.jpg", alt: "Meetup địa phương", caption: "" },
+      { src: "public/community/13.jpg", alt: "Meetup địa phương", caption: "" }
+    ];
+
+    let currentPhotoIndex = 0;
+    let modalCurrentIndex = 0;
+    let startX = 0;
+    let endX = 0;
+
+    // --- Modal Functions ---
+    function createModal() {
+      // Remove existing modal if it exists
+      const existingModal = document.getElementById('community-modal');
+      if (existingModal) {
+        existingModal.remove();
+      }
+
+      const modal = document.createElement('div');
+      modal.id = 'community-modal';
+      modal.className = 'community-modal';
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease-out;
+      `;
+
+      const content = document.createElement('div');
+      content.className = 'community-modal-content';
+      content.style.cssText = `
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      `;
+
+      const counter = document.createElement('div');
+      counter.className = 'community-modal-counter';
+      counter.style.cssText = `
+        position: absolute;
+        top: -60px;
+        left: 0;
+        background: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+      `;
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '<svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#ffffff"></path> </g></svg>';
+      closeBtn.className = 'community-modal-close';
+      closeBtn.style.cssText = `
+        position: absolute;
+        top: -60px;
+        right: 0;
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-size: 24px;
+        padding: 15px 18px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      `;
+      closeBtn.onmouseenter = () => closeBtn.style.background = 'rgba(255, 0, 0, 0.8)';
+      closeBtn.onmouseleave = () => closeBtn.style.background = 'rgba(0, 0, 0, 0.8)';
+      closeBtn.onclick = closeModal;
+
+      const prevBtn = document.createElement('button');
+      prevBtn.innerHTML = '<svg fill="#fff" width="64px" height="64px" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>left</title> <path d="M7.094 15.938l7.688 7.688-3.719 3.563-11.063-11.063 11.313-11.344 3.531 3.5z"></path> </g></svg>';
+      prevBtn.className = 'community-modal-nav community-modal-prev';
+      prevBtn.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: -80px;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        border: none;
+        color: #ffffff;
+        font-size: 24px;
+        padding: 15px 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+      `;
+      prevBtn.onmouseenter = () => {
+        prevBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+        prevBtn.style.transform = 'translateY(-50%) scale(1.1)';
+      };
+      prevBtn.onmouseleave = () => {
+        prevBtn.style.background = 'rgba(0, 0, 0, 0.8)';
+        prevBtn.style.transform = 'translateY(-50%) scale(1)';
+      };
+      prevBtn.onclick = () => navigateModal(-1);
+
+      const nextBtn = document.createElement('button');
+      nextBtn.innerHTML = '<svg fill="#fff" width="64px" height="64px" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>right</title> <path d="M7.75 16.063l-7.688-7.688 3.719-3.594 11.063 11.094-11.344 11.313-3.5-3.469z"></path> </g></svg>';
+      nextBtn.className = 'community-modal-nav community-modal-next';
+      nextBtn.style.cssText = `
+        position: absolute;
+        top: 50%;
+        right: -80px;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        border: none;
+        color: #ffffff;
+        font-size: 24px;
+        padding: 15px 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+      `;
+      nextBtn.onmouseenter = () => {
+        nextBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+        nextBtn.style.transform = 'translateY(-50%) scale(1.1)';
+      };
+      nextBtn.onmouseleave = () => {
+        nextBtn.style.background = 'rgba(0, 0, 0, 0.8)';
+        nextBtn.style.transform = 'translateY(-50%) scale(1)';
+      };
+      nextBtn.onclick = () => navigateModal(1);
+
+      const image = document.createElement('img');
+      image.id = 'community-modal-image';
+      image.className = 'community-modal-image';
+      image.style.cssText = `
+        max-width: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      `;
+
+      const caption = document.createElement('div');
+      caption.className = 'community-modal-caption';
+      caption.style.cssText = `
+        color: #ffffff;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        max-width: 600px;
+      `;
+
+      // Mobile responsive styles
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @media (max-width: 768px) {
+          .community-modal-nav {
+            font-size: 20px !important;
+            padding: 12px 15px !important;
+          }
+          .community-modal-prev {
+            left: 10px !important;
+          }
+          .community-modal-next {
+            right: 10px !important;
+          }
+          .community-modal-close {
+            display: none !important;
+          }
+          .community-modal-counter {
+            top: -20px !important;
+            left: 20px !important;
+            font-size: 12px !important;
+            padding: 8px 12px !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+
+      content.appendChild(counter);
+      content.appendChild(closeBtn);
+      content.appendChild(prevBtn);
+      content.appendChild(nextBtn);
+      content.appendChild(image);
+      content.appendChild(caption);
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+
+      // Close modal when clicking outside
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Keyboard navigation for modal
+      document.addEventListener('keydown', handleModalKeyboard);
+
+      return modal;
+    }
+
+    function openModal(index = 0) {
+      modalCurrentIndex = index;
+      const modal = document.getElementById('community-modal') || createModal();
+      updateModalContent();
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('community-modal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    function navigateModal(direction) {
+      modalCurrentIndex += direction;
+      if (modalCurrentIndex < 0) modalCurrentIndex = photoItems.length - 1;
+      if (modalCurrentIndex >= photoItems.length) modalCurrentIndex = 0;
+      updateModalContent();
+    }
+
+    function updateModalContent() {
+      const image = document.getElementById('community-modal-image');
+      const caption = document.querySelector('.community-modal-caption');
+      const counter = document.querySelector('.community-modal-counter');
+
+      if (image && caption && counter) {
+        const currentPhoto = photoItems[modalCurrentIndex];
+        image.src = currentPhoto.src;
+        image.alt = currentPhoto.alt;
+        caption.textContent = currentPhoto.caption;
+        counter.textContent = `${modalCurrentIndex + 1}/${photoItems.length}`;
+      }
+    }
+
+    function handleModalKeyboard(e) {
+      const modal = document.getElementById('community-modal');
+      if (modal && modal.style.display === 'flex') {
+        switch (e.key) {
+          case 'ArrowLeft':
+            navigateModal(-1);
+            e.preventDefault();
+            break;
+          case 'ArrowRight':
+            navigateModal(1);
+            e.preventDefault();
+            break;
+          case 'Escape':
+            closeModal();
+            e.preventDefault();
+            break;
+        }
+      }
+    }
+
+    // --- Functions ---
+    function initialize() {
+      const photoCollage = document.querySelector('.photo-collage');
+      if (!photoCollage) return; // Guard: don't run if container doesn't exist
+
+      const photoGrid = document.querySelector('.photo-grid');
+
+      // Add click events to photo items to open modal
+      const photoItems = document.querySelectorAll('.photo-item');
+      photoItems.forEach((item, index) => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', () => openModal(index));
+      });
+
+      // Add total media counter
+      const totalCounter = document.createElement('div');
+      totalCounter.className = 'community-media-counter';
+      totalCounter.textContent = `${photoItems.length} ảnh`;
+      totalCounter.style.cssText = `
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(0,0,0,0.8);
+        color: #ffffff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      `;
+      photoCollage.appendChild(totalCounter);
+
+      // Add current photo indicator
+      const currentIndicator = document.createElement('div');
+      currentIndicator.className = 'community-current-indicator';
+      currentIndicator.textContent = `1/${photoItems.length}`;
+      currentIndicator.style.cssText = `
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0,0,0,0.8);
+        color: #ffffff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      `;
+      photoCollage.appendChild(currentIndicator);
+
+      // Add navigation arrows
+      const leftArrow = document.createElement('button');
+      leftArrow.innerHTML = '<svg fill="#fff" width="30px" height="30px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M30 14.5c-.004.276-.224.504-.5.5h-26c-.66 0-.664-1 0-1h26c.282-.004.504.218.5.5zm-15 14c0 .45-.554.663-.854.354l-14-14c-.195-.196-.195-.512 0-.708l14-14c.426-.442 1.167.248.708.708L1.207 14.5l13.647 13.646c.097.095.146.22.146.354z"/></svg>';
+      leftArrow.style.cssText = `
+        position: absolute;
+        left: 15px;
+        bottom: 15px;
+        background: rgba(0,0,0,0.8);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      `;
+      leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
+      leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.8';
+      leftArrow.onclick = () => navigate(-1);
+
+      const rightArrow = document.createElement('button');
+      rightArrow.innerHTML = '<svg fill="#fff" width="30px" height="30px" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15.5c.004.276.224.504.5.5h26c.66 0 .664-1 0-1H.5c-.282-.004-.504.218-.5.5zm15 14c0 .45.554.663.854.354l14-14c.195-.195.195-.51 0-.707l-14-14c-.426-.443-1.167.248-.707.707L28.793 15.5 15.147 29.148c-.098.095-.147.218-.147.353z"/></svg>';
+      rightArrow.style.cssText = `
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+        background: rgba(0,0,0,0.8);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      `;
+      rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
+      rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.8';
+      rightArrow.onclick = () => navigate(1);
+
+      photoCollage.appendChild(leftArrow);
+      photoCollage.appendChild(rightArrow);
+
+      // Touch events
+      photoCollage.addEventListener('touchstart', handleTouchStart, { passive: false });
+      photoCollage.addEventListener('touchmove', handleTouchMove, { passive: false });
+      photoCollage.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', handleKeyboard);
+
+      // Add dots indicator
+      addDots();
+
+      // Highlight first photo
+      highlightCurrentPhoto();
+    }
+
+    function navigate(direction) {
+      currentPhotoIndex += direction;
+      if (currentPhotoIndex < 0) currentPhotoIndex = photoItems.length - 1;
+      if (currentPhotoIndex >= photoItems.length) currentPhotoIndex = 0;
+
+      updateIndicators();
+      highlightCurrentPhoto();
+    }
+
+    function updateIndicators() {
+      const currentIndicator = document.querySelector('.community-current-indicator');
+      if (currentIndicator) {
+        currentIndicator.textContent = `${currentPhotoIndex + 1}/${photoItems.length}`;
+      }
+
+      // Update dots
+      const dots = document.querySelectorAll('.community-dot');
+      dots.forEach((dot, index) => {
+        const isActive = index === currentPhotoIndex;
+        dot.style.background = isActive ? '#22c55e' : 'rgba(255,255,255,0.4)';
+        dot.style.transform = isActive ? 'scale(1.2)' : 'scale(1)';
+      });
+    }
+
+    function highlightCurrentPhoto() {
+      const items = document.querySelectorAll('.photo-item');
+      items.forEach((item, index) => {
+        if (index === currentPhotoIndex) {
+          item.style.transform = 'scale(1.1)';
+          item.style.boxShadow = '0 10px 30px rgba(200, 255, 0, 0.6)';
+          item.style.zIndex = '15';
+        } else {
+          item.style.transform = '';
+          item.style.boxShadow = '';
+          item.style.zIndex = '';
+        }
+      });
+    }
+
+    function addDots() {
+      const photoCollage = document.querySelector('.photo-collage');
+      const dotsContainer = document.createElement('div');
+      dotsContainer.className = 'community-dots-container';
+      dotsContainer.style.cssText = `
+        position: absolute;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+        backdrop-filter: blur(4px);
+        background: rgba(0,0,0,0.2);
+        padding: 8px 12px;
+        border-radius: 20px;
+      `;
+
+      photoItems.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = 'community-dot';
+        dot.style.cssText = `
+          all: unset;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,0.6);
+          background: ${index === 0 ? '#22c55e' : 'rgba(255,255,255,0.4)'};
+          cursor: pointer;
+          transition: all 0.3s ease;
+        `;
+        dot.onclick = () => {
+          currentPhotoIndex = index;
+          updateIndicators();
+          highlightCurrentPhoto();
+        };
+        dotsContainer.appendChild(dot);
+      });
+
+      photoCollage.appendChild(dotsContainer);
+    }
+
+    // --- Touch handlers ---
+    function handleTouchStart(e) {
+      startX = e.touches[0].clientX;
+    }
+    function handleTouchMove(e) {
+      if (!startX) return;
+      e.preventDefault();
+    }
+    function handleTouchEnd(e) {
+      if (!startX) return;
+      endX = e.changedTouches[0].clientX;
+      const diffX = startX - endX;
+      const threshold = 50;
+      if (Math.abs(diffX) > threshold) {
+        navigate(diffX > 0 ? 1 : -1);
+      }
+      startX = 0;
+      endX = 0;
+    }
+
+    // --- Keyboard navigation ---
+    function handleKeyboard(e) {
+      switch (e.key) {
+        case 'ArrowLeft':
+          navigate(-1);
+          e.preventDefault();
+          break;
+        case 'ArrowRight':
+          navigate(1);
+          e.preventDefault();
+          break;
+      }
+    }
+
+    // Expose public API
+    return {
+      init: initialize,
+      next: () => navigate(1),
+      prev: () => navigate(-1),
+      goTo: (index) => {
+        currentPhotoIndex = Math.max(0, Math.min(photoItems.length - 1, index));
+        updateIndicators();
+        highlightCurrentPhoto();
+      },
+      openModal: (index = 0) => openModal(index),
+      closeModal: closeModal
+    };
+  })();
+
+  // Auto init when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.photo-collage')) {
+      window.CommunityGallery.init();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
     if (window.CommunityPage && typeof window.CommunityPage.init === 'function') {
       window.CommunityPage.init();

@@ -187,7 +187,6 @@ const articles = [
           src: "/public/news/articles/article_3/a_thank_you_letter.png",
           caption: "Thư Cám Ơn"
         }
-
       ],
       bodyHTML: `
         <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
@@ -967,6 +966,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Clean up previous article elements first
+    const articleImageElement = document.getElementById("article-image");
+    const imageContainer = articleImageElement.parentElement;
+    
+    // Remove existing indicators, navigation buttons, and dots
+    const existingIndicator = imageContainer.querySelector('.image-count-indicator');
+    if (existingIndicator) existingIndicator.remove();
+    
+    const existingNavBtns = imageContainer.querySelectorAll('.article-nav-btn');
+    existingNavBtns.forEach(btn => btn.remove());
+    
+    const existingDots = imageContainer.querySelector('.media-dots-container');
+    if (existingDots) existingDots.remove();
+    
+    const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+    if (existingVideoContainer) existingVideoContainer.remove();
+
+    // Reset article state
+    currentArticle = null;
+    currentArticleIndex = 0;
+
     // Populate HTML
     document.title = article.title;
     document.getElementById("article-title").textContent = article.title;
@@ -1080,27 +1100,40 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add indicator for multiple media items
       if (article.images.length > 1) {
         const imageContainer = articleImageElement.parentElement;
-        if (!imageContainer.querySelector('.image-count-indicator')) {
-          const indicator = document.createElement('div');
-          indicator.className = 'image-count-indicator';
-          indicator.textContent = `1/${article.images.length}`;
-          indicator.style.cssText = `
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            color: #ffffff;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            pointer-events: none;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-          `;
-          imageContainer.style.position = 'relative';
-          imageContainer.appendChild(indicator);
+        
+        // Remove existing indicator if it exists
+        const existingIndicator = imageContainer.querySelector('.image-count-indicator');
+        if (existingIndicator) {
+          existingIndicator.remove();
+        }
+        
+        // Create new indicator
+        const indicator = document.createElement('div');
+        indicator.className = 'image-count-indicator';
+        indicator.textContent = `1/${article.images.length}`;
+        indicator.style.cssText = `
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(0,0,0,0.8);
+          color: #ffffff;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          pointer-events: none;
+          z-index: 10;
+          backdrop-filter: blur(10px);
+        `;
+        imageContainer.style.position = 'relative';
+        imageContainer.appendChild(indicator);
+      } else {
+        // Remove indicator if article has only one image
+        const imageContainer = articleImageElement.parentElement;
+        const existingIndicator = imageContainer.querySelector('.image-count-indicator');
+        if (existingIndicator) {
+          existingIndicator.remove();
         }
       }
     }
