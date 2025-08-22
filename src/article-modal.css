@@ -47,6 +47,16 @@
   backdrop-filter: blur(10px);
   font-weight: 600;
   letter-spacing: 0.5px;
+  color: #ffffff !important;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 12px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Video thumbnail styles */

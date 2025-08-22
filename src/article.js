@@ -409,6 +409,7 @@ function updateArticleMedia() {
   const indicator = imageContainer.querySelector('.image-count-indicator');
   if (indicator) {
     indicator.textContent = `${currentArticleIndex + 1}/${currentArticle.images.length}`;
+    indicator.style.color = '#ffffff';
   }
 }
 
@@ -631,6 +632,8 @@ function createImageModal() {
           <div id="modal-counter" style="
             font-size: 14px;
             opacity: 0.7;
+            color: #fff;
+            background: #000;
           "></div>
         </div>
         
@@ -1020,12 +1023,16 @@ document.addEventListener("DOMContentLoaded", () => {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
+            background: rgba(0,0,0,0.8);
+            color: #ffffff;
             padding: 5px 10px;
             border-radius: 15px;
             font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(10px);
           `;
           imageContainer.style.position = 'relative';
           imageContainer.appendChild(indicator);
