@@ -18,52 +18,52 @@ const articles = [
         },
         {
           src: "/public/news/articles/article_1/1.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Các Thành Viên - ICUE",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/2.jpg",
-          caption: "Đội ngũ thực hiện dự án",
+          caption: "Biểu Diễn Múa Hát",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/3.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Các Cháu Tham Gia",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/4.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Đồng Chí Dũng",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/5.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Kiểm Tra Thiết Bị",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/6.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Cắt Băng Khánh Thành",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/7.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Thẻ Đơn Vị Tổ Chức",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/8.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Người Dân TP Hội An Tập Thể Dục",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/9.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Kí Bàn Giao",
           type: "image"
         },
         {
           src: "/public/news/articles/article_1/10.jpg",
-          caption: "Lễ khánh thành",
+          caption: "Kí Bàn Giao",
           type: "image"
         },
       ],
@@ -348,7 +348,7 @@ function updateArticleMedia() {
     `;
     
     const videoIndicator = document.createElement('div');
-    videoIndicator.innerHTML = '🎥 VIDEO';
+    videoIndicator.innerHTML = 'VIDEO';
     videoIndicator.style.cssText = `
       position: absolute;
       top: 15px;
@@ -546,6 +546,9 @@ function createImageModal() {
     ">
       <div class="modal-content" style="
         position: relative;
+        width: 55%;
+        height: auto;
+        overflow: hidden;
         max-width: 90%;
         max-height: 90%;
         object-fit:cover;
@@ -584,8 +587,11 @@ function createImageModal() {
             cursor: pointer;
             border-radius: 50%;
             z-index: 10000;
-          ">‹</button>
-          
+          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 12H2" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 19L2.84 14C2.57 13.74 2.35 13.43 2.20 13.09C2.05 12.75 1.98 12.37 1.98 12C1.98 11.62 2.05 11.25 2.20 10.91C2.35 10.57 2.57 10.26 2.84 10L8 5" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          </button>
           <img id="modal-image" style="
             max-width: 100%;
             max-height: 100%;
@@ -616,7 +622,7 @@ function createImageModal() {
             cursor: pointer;
             border-radius: 50%;
             z-index: 10000;
-          ">›</button>
+          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
         </div>
         
         <div style="
