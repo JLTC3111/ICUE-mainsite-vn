@@ -1,3 +1,392 @@
+// Function to render markdown to HTML
+function renderMarkdown(markdownText) {
+  if (!markdownText) return '';
+  return parseMarkdown(markdownText);
+}
+
+// Comprehensive Markdown-to-HTML converter
+function parseMarkdown(markdownText) {
+  let html = markdownText
+    // Normalize line endings
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    
+    // Convert ***bold and italic*** to <strong><em>
+    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    
+    // Convert **bold** to <strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.*?)__/g, '<strong>$1</strong>')
+    
+    // Convert *italic* to <em>
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    
+    // Convert ~~strikethrough~~ to <del>
+    .replace(/~~(.*?)~~/g, '<del>$1</del>')
+    
+    // Convert `inline code` to <code>
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    
+    // Convert [link text](url) to <a>
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+    
+    // Convert [link text](url "title") to <a> with title
+    .replace(/\[([^\]]+)\]\(([^)]+)\s+"([^"]+)"\)/g, '<a href="$2" title="$3" target="_blank">$1</a>')
+    
+    // Convert ![alt text](image.jpg) to <img>
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
+    
+    // Convert ![alt text](image.jpg "title") to <img> with title
+    .replace(/!\[([^\]]*)\]\(([^)]+)\s+"([^"]+)"\)/g, '<img src="$2" alt="$1" title="$3" />')
+    
+    // Convert headers (must be done in order from largest to smallest)
+    .replace(/^###### (.*$)/gm, '<h6>$1</h6>')
+    .replace(/^##### (.*$)/gm, '<h5>$1</h5>')
+    .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
+    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+    
+    // Convert horizontal rules
+    .replace(/^---$/gm, '<hr>')
+    .replace(/^\*\*\*$/gm, '<hr>')
+    .replace(/^___$/gm, '<hr>')
+    
+    // Convert > blockquotes to <blockquote>
+    .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+    
+    // Handle code blocks (must be before lists)
+    .replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
+      const className = lang ? ` class="language-${lang}"` : '';
+      return `<pre><code${className}>${code.trim()}</code></pre>`;
+    })
+    
+    // Handle indented code blocks (4 spaces)
+    .replace(/^    (.*)$/gm, '<pre><code>$1</code></pre>');
+
+  // Handle lists (complex processing)
+  html = processLists(html);
+  
+  // Handle tables
+  html = processTables(html);
+  
+  // Convert line breaks to paragraphs (must be last)
+  html = processParagraphs(html);
+  
+  return html.trim();
+}
+
+// Process unordered and ordered lists
+function processLists(html) {
+  const lines = html.split('\n');
+  const result = [];
+  let inList = false;
+  let listType = '';
+  let listLevel = 0;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmedLine = line.trim();
+    
+    // Check for unordered list items
+    const unorderedMatch = line.match(/^(\s*)([-*+])\s(.+)$/);
+    // Check for ordered list items
+    const orderedMatch = line.match(/^(\s*)(\d+\.)\s(.+)$/);
+    // Check for task list items
+    const taskMatch = line.match(/^(\s*)([-*+])\s(\[[ x]\])\s(.+)$/);
+    
+    if (taskMatch) {
+      const indent = taskMatch[1].length;
+      const checked = taskMatch[3] === '[x]' ? ' checked' : '';
+      const content = taskMatch[4];
+      
+      if (!inList || listType !== 'task' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ul class="task-list">');
+        inList = true;
+        listType = 'ul';
+        listLevel = indent;
+      }
+      
+      result.push(`<li><input type="checkbox"${checked} disabled> ${content}</li>`);
+      
+    } else if (unorderedMatch) {
+      const indent = unorderedMatch[1].length;
+      const content = unorderedMatch[3];
+      
+      if (!inList || listType !== 'ul' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ul>');
+        inList = true;
+        listType = 'ul';
+        listLevel = indent;
+      }
+      
+      result.push(`<li>${content}</li>`);
+      
+    } else if (orderedMatch) {
+      const indent = orderedMatch[1].length;
+      const content = orderedMatch[3];
+      
+      if (!inList || listType !== 'ol' || indent !== listLevel) {
+        if (inList) result.push(`</${listType}>`);
+        result.push('<ol>');
+        inList = true;
+        listType = 'ol';
+        listLevel = indent;
+      }
+      
+      result.push(`<li>${content}</li>`);
+      
+    } else {
+      // Not a list item
+      if (inList && trimmedLine === '') {
+        // Empty line in list - continue list
+        result.push(line);
+      } else if (inList && trimmedLine !== '') {
+        // Non-empty, non-list line - end list
+        result.push(`</${listType}>`);
+        inList = false;
+        listType = '';
+        listLevel = 0;
+        result.push(line);
+      } else {
+        // Normal line
+        result.push(line);
+      }
+    }
+  }
+  
+  // Close any remaining list
+  if (inList) {
+    result.push(`</${listType}>`);
+  }
+  
+  return result.join('\n');
+}
+
+// Process tables
+function processTables(html) {
+  const lines = html.split('\n');
+  const result = [];
+  let inTable = false;
+  let tableLines = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    // Check if line looks like a table row
+    if (line.includes('|') && line.split('|').length >= 3) {
+      if (!inTable) {
+        inTable = true;
+        tableLines = [];
+      }
+      tableLines.push(line);
+    } else {
+      // Not a table line
+      if (inTable) {
+        // Process accumulated table lines
+        if (tableLines.length >= 2) {
+          result.push(processTable(tableLines));
+        } else {
+          // Not enough lines for a table, add as regular lines
+          result.push(...tableLines);
+        }
+        inTable = false;
+        tableLines = [];
+      }
+      result.push(lines[i]);
+    }
+  }
+  
+  // Handle table at end of content
+  if (inTable && tableLines.length >= 2) {
+    result.push(processTable(tableLines));
+  } else if (inTable) {
+    result.push(...tableLines);
+  }
+  
+  return result.join('\n');
+}
+
+// Process a single table
+function processTable(tableLines) {
+  if (tableLines.length < 2) return tableLines.join('\n');
+  
+  const headerLine = tableLines[0];
+  const separatorLine = tableLines[1];
+  const dataLines = tableLines.slice(2);
+  
+  // Check if second line is a separator
+  if (!separatorLine.match(/^[\|\s\-:]+$/)) {
+    return tableLines.join('\n');
+  }
+  
+  let table = '<table>\n';
+  
+  // Process header
+  const headerCells = headerLine.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+  table += '<thead>\n<tr>\n';
+  headerCells.forEach(cell => {
+    table += `<th>${cell}</th>\n`;
+  });
+  table += '</tr>\n</thead>\n';
+  
+  // Process data rows
+  if (dataLines.length > 0) {
+    table += '<tbody>\n';
+    dataLines.forEach(line => {
+      const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+      table += '<tr>\n';
+      cells.forEach(cell => {
+        table += `<td>${cell}</td>\n`;
+      });
+      table += '</tr>\n';
+    });
+    table += '</tbody>\n';
+  }
+  
+  table += '</table>';
+  return table;
+}
+
+// Process paragraphs (must be done last)
+function processParagraphs(html) {
+  return html
+    // Split by double newlines for paragraphs
+    .split('\n\n')
+    .map(paragraph => {
+      paragraph = paragraph.trim();
+      if (paragraph === '') return '';
+      
+      // Don't wrap certain elements in <p> tags
+      if (paragraph.match(/^<(h[1-6]|ul|ol|table|blockquote|pre|hr|div)/)) {
+        return paragraph;
+      }
+      
+      // Handle single line breaks within paragraphs (two spaces + newline)
+      paragraph = paragraph.replace(/  \n/g, '<br>\n');
+      
+      return `<p>${paragraph.replace(/\n/g, '<br>')}</p>`;
+    })
+    .join('\n\n');
+}
+
+// Additional utility functions for special features
+
+// Process definition lists (if needed)
+function processDefinitionLists(html) {
+  return html.replace(/^([^\n:]+)\n:\s+(.+)$/gm, '<dl><dt>$1</dt><dd>$2</dd></dl>');
+}
+
+// Process footnotes (basic implementation)
+function processFootnotes(html) {
+  const footnotes = {};
+  let footnoteCounter = 1;
+  
+  // Extract footnote definitions
+  html = html.replace(/^\[\^([^\]]+)\]:\s*(.+)$/gm, (match, id, content) => {
+    footnotes[id] = { number: footnoteCounter++, content };
+    return '';
+  });
+  
+  // Replace footnote references
+  html = html.replace(/\[\^([^\]]+)\]/g, (match, id) => {
+    if (footnotes[id]) {
+      return `<sup><a href="#fn${footnotes[id].number}" id="fnref${footnotes[id].number}">${footnotes[id].number}</a></sup>`;
+    }
+    return match;
+  });
+  
+  // Add footnotes section if any footnotes exist
+  if (Object.keys(footnotes).length > 0) {
+    html += '\n\n<div class="footnotes">\n<ol>\n';
+    Object.entries(footnotes).forEach(([id, footnote]) => {
+      html += `<li id="fn${footnote.number}">${footnote.content} <a href="#fnref${footnote.number}">↩</a></li>\n`;
+    });
+    html += '</ol>\n</div>';
+  }
+  
+  return html;
+}
+
+// Escape HTML in code blocks and inline code
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Enhanced parser with all features
+function parseMarkdownAdvanced(markdownText, options = {}) {
+  const {
+    footnotes = false,
+    definitionLists = false,
+    taskLists = true,
+    tables = true
+  } = options;
+  
+  let html = parseMarkdown(markdownText);
+  
+  if (footnotes) {
+    html = processFootnotes(html);
+  }
+  
+  if (definitionLists) {
+    html = processDefinitionLists(html);
+  }
+  
+  return html;
+}
+
+// Example usage:
+/*
+const markdownText = `
+# Header 1
+
+This is a **bold** and *italic* text with \`inline code\`.
+
+## Header 2
+
+- List item 1
+- List item 2
+- List item 3
+
+### Header 3
+
+> This is a blockquote
+
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+
+[Link text](https://example.com)
+
+![Alt text](image.jpg)
+`;
+
+const html = parseMarkdown(markdownText);
+console.log(html);
+*/
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { 
+    parseMarkdown, 
+    parseMarkdownAdvanced,
+    processLists,
+    processTables,
+    processFootnotes,
+    processDefinitionLists
+  };
+}
+
 const articles = [
     {
       id: "1",
@@ -67,16 +456,46 @@ const articles = [
           type: "image"
         },
       ],
-      bodyHTML: `
-        <p>Vào ngày 16 tháng 5 năm 2025, Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An, tổ chức một sự kiện đặc biệt là Khánh thành và bàn giao Không gian xanh và công viện ven biển (đã được đặt tên là Công viên Âu Cơ), nhằm đánh dấu sự kết thúc thành công của dự án mang tên “Preventing erosion on Cua Dai beach through green corridors and park” nhằmTăng Cường Năng Lực và Hành Động Khí Hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương (CBF). 
+      bodyMarkdown: `
+<div style="margin-left:3.5rem">
+## Khánh Thành & Bàn Giao Công Viên Âu Cơ, Hội An
+Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (**ICUE**), phối hợp cùng **UBND thành phố Hội An**, tổ chức một sự kiện đặc biệt: **Khánh thành và bàn giao Không gian xanh và công viên ven biển** (đặt tên là **Công viên Âu Cơ**)</div>  
 
-        Sáng kiến này được triển khai theo thỏa thuận tài trợ của Sáng kiến Khí hậu Quốc tế (IKI), ICUE là đơn vị nhận tài trợ và triển khai thực hiện dự án, Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH là đơn vị quản lý dự án. Dự án này đóng vai trò then chốt trong việc hỗ trợ các nỗ lực hành động vì khí hậu và bảo vệ đa dạng sinh học tại Việt Nam. 
-        Sự kiện này vừa là dịp để tổng kết và đóng dự án, vừa là cơ hội để nhìn lại những tiến bộ đạt được nhờ cam kết chung của các đối tác. Sự có mặt của các bên liên quan, các chuyên gia và những người đóng góp cho dự án sẽ càng làm nổi bật tính hợp tác trong sáng kiến này, cũng như tác động tích cực của nó đối với phát triển đô thị bền vững tại khu vực Cửa Đại, thành phố Hội An. 
-        Trong những tháng vừa qua, dự án không chỉ củng cố năng lực kỹ thuật và thể chế mà còn thúc đẩy sự hợp tác sâu sắc hơn giữa chính quyền trung ương và địa phương trong các vấn đề liên quan đến biến đổi khí hậu. ICUE và chính quyền địa phương thành phố Hội An rất vinh dự khi được đóng góp vào nỗ lực đầy ý nghĩa này, phản ánh một tầm nhìn chung về một tương lai thích ứng tốt hơn với biến đổi khí hậu và có trách nhiệm hơn với môi trường. 
-        Tất cả những điều này sẽ không thể thực hiện được nếu không có sự hỗ trợ hào phóng từ IKI và sự hỗ trợ nhiệt tình của GIZ trong việc triển khai thực hiện dự án, cũng như việc tạo điều kiện thuận lợi của UBND tỉnh Quảng Nam, sự phối hợp nhịp nhàng UBND thành phố Hội An, UBND phường Cửa Đại và sự cộng tác của cộng đồng dân cư cũng như các tổ chức xã hội ở đây. 
-        Niềm tin và nguồn tài trợ của họ (IKI và GIZ) đã giúp dự án trở thành hiện thực và mang lại những lợi ích thiết thực cho cộng đồng địa phương. Chúng tôi xin gửi lời cảm ơn chân thành đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện khánh thành và bàn giao này không phải là kết thúc, mà là một sự khởi đầu mới cho các hợp tác trong tương lai, hướng đến việc xây dựng những đô thị xanh hơn, bền vững hơn tại Việt Nam và xa hơn nữa.</p>
-        <h2></h2>
-        <blockquote>"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe - An Vui - Hạnh Phúc - và Thành Công. - T.S. Nguyễn Hồng Hạnh"</blockquote>
+<div style="margin-left:3.5rem"> 
+# Sự kiện này đánh dấu sự kết thúc thành công của dự án:  
+
+*“Preventing erosion on Cua Dai beach through green corridors and park”*
+
+*Tăng cường năng lực và hành động khí hậu, đa dạng sinh học ở cấp quốc gia và cấp địa phương - CBF*
+
+### Thông tin về sáng kiến  
+- Dự án được triển khai theo thỏa thuận tài trợ của **Sáng kiến Khí hậu Quốc tế (IKI)**.  
+- **ICUE** là đơn vị nhận tài trợ và trực tiếp triển khai.  
+- **Tổ chức Hợp tác Phát triển Đức (GIZ) GmbH** là đơn vị quản lý dự án.  
+Dự án này đóng vai trò **then chốt** trong việc:  
+
+- Hỗ trợ các nỗ lực hành động vì khí hậu.  
+- Bảo vệ đa dạng sinh học tại Việt Nam.  
+- Tăng cường khả năng thích ứng với biến đổi khí hậu cho cộng đồng địa phương.  
+### Ý nghĩa của sự kiện  
+Sự kiện không chỉ là dịp **tổng kết và đóng dự án**, mà còn là cơ hội để nhìn lại:  
+- Những tiến bộ đạt được từ sự cam kết chung của các đối tác.  
+- Tính **hợp tác sâu sắc** giữa chính quyền trung ương và địa phương.  
+- **Tác động tích cực** của dự án đối với phát triển đô thị bền vững tại khu vực Cửa Đại, Hội An.  
+Trong những tháng vừa qua, dự án đã:  
+- Củng cố **năng lực kỹ thuật và thể chế**.  
+- Thúc đẩy **sự hợp tác bền chặt hơn** giữa các cấp chính quyền trong vấn đề biến đổi khí hậu.  
+---
+### Lời cảm ơn  
+Tất cả những kết quả này có được nhờ:  
+- Sự hỗ trợ hào phóng từ **IKI**.  
+- Sự đồng hành nhiệt tình của **GIZ** trong triển khai.  
+- Sự tạo điều kiện thuận lợi của **UBND tỉnh Quảng Nam**, **UBND thành phố Hội An**, **UBND phường Cửa Đại**, cùng sự cộng tác của **cộng đồng dân cư và các tổ chức xã hội** tại địa phương.  
+Niềm tin và tài trợ từ **IKI và GIZ** đã biến dự án thành hiện thực, mang lại **lợi ích thiết thực cho cộng đồng**.  
+Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện khánh thành và bàn giao này **không phải là kết thúc**, mà là một **khởi đầu mới** cho các hợp tác trong tương lai, hướng đến những **đô thị xanh hơn, bền vững hơn** tại Việt Nam và xa hơn nữa.
+> *"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe – An Vui – Hạnh Phúc – và Thành Công."* </div>  
+> — **T.S. Nguyễn Hồng Hạnh**  
+
       `,
       pdf: "/public/files/speech.pdf",
       pdfButtonText: "Tải Về - Bài Phát Biểu ⇲"
@@ -958,6 +1377,25 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentID = params.get("id");
 
   function renderCard(id) {
+    const imageContainer = document.getElementById("article-image").parentElement;
+    
+    const existingNavBtns = imageContainer.querySelectorAll('.article-nav-btn');
+    existingNavBtns.forEach(btn => btn.remove());
+    
+    const existingDots = imageContainer.querySelector('.media-dots-container');
+    if (existingDots) {
+      existingDots.remove();
+    }
+
+    const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+    if (existingVideoContainer) {
+      existingVideoContainer.remove();
+    }
+    
+    const existingIndicator = imageContainer.querySelector('.image-count-indicator');
+    if (existingIndicator) {
+      existingIndicator.remove();
+    }
     const article = articles.find(a => a.id === id);
 
     if (!article) {
@@ -966,28 +1404,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Clean up previous article elements first
-    const articleImageElement = document.getElementById("article-image");
-    const imageContainer = articleImageElement.parentElement;
-    
-    // Remove existing indicators, navigation buttons, and dots
-    const existingIndicator = imageContainer.querySelector('.image-count-indicator');
-    if (existingIndicator) existingIndicator.remove();
-    
-    const existingNavBtns = imageContainer.querySelectorAll('.article-nav-btn');
-    existingNavBtns.forEach(btn => btn.remove());
-    
-    const existingDots = imageContainer.querySelector('.media-dots-container');
-    if (existingDots) existingDots.remove();
-    
-    const existingVideoContainer = imageContainer.querySelector('.article-video-container');
-    if (existingVideoContainer) existingVideoContainer.remove();
-
-    // Reset article state
-    currentArticle = null;
-    currentArticleIndex = 0;
-
-    // Populate HTML
     document.title = article.title;
     document.getElementById("article-title").textContent = article.title;
     document.getElementById("article-lead").textContent = article.lead;
@@ -1100,40 +1516,27 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add indicator for multiple media items
       if (article.images.length > 1) {
         const imageContainer = articleImageElement.parentElement;
-        
-        // Remove existing indicator if it exists
-        const existingIndicator = imageContainer.querySelector('.image-count-indicator');
-        if (existingIndicator) {
-          existingIndicator.remove();
-        }
-        
-        // Create new indicator
-        const indicator = document.createElement('div');
-        indicator.className = 'image-count-indicator';
-        indicator.textContent = `1/${article.images.length}`;
-        indicator.style.cssText = `
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: rgba(0,0,0,0.8);
-          color: #ffffff;
-          padding: 5px 10px;
-          border-radius: 15px;
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          pointer-events: none;
-          z-index: 10;
-          backdrop-filter: blur(10px);
-        `;
-        imageContainer.style.position = 'relative';
-        imageContainer.appendChild(indicator);
-      } else {
-        // Remove indicator if article has only one image
-        const imageContainer = articleImageElement.parentElement;
-        const existingIndicator = imageContainer.querySelector('.image-count-indicator');
-        if (existingIndicator) {
-          existingIndicator.remove();
+        if (!imageContainer.querySelector('.image-count-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'image-count-indicator';
+          indicator.textContent = `1/${article.images.length}`;
+          indicator.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+          `;
+          imageContainer.style.position = 'relative';
+          imageContainer.appendChild(indicator);
         }
       }
     }
@@ -1143,7 +1546,11 @@ document.addEventListener("DOMContentLoaded", () => {
       setupArticleSwipe(article);
     }
     
-    document.getElementById("article-body").innerHTML = article.bodyHTML;
+    // Use markdown rendering if bodyMarkdown exists, otherwise use bodyHTML
+    const articleBodyContent = article.bodyMarkdown 
+      ? renderMarkdown(article.bodyMarkdown) 
+      : article.bodyHTML;
+    document.getElementById("article-body").innerHTML = articleBodyContent;
 
     if (article.pdf) {
       const dlBtn = document.getElementById("article-download");
