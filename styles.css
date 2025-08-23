@@ -1716,8 +1716,6 @@ body.loaded #app {
     top:45%;
     width: 50px;
     height: 50px;
-    display: none;
-    pointer-events: none;
   }
 
   .left-arrow {
@@ -1747,8 +1745,8 @@ body.loaded #app {
   .text-container-coreTeam {
     top:25vh;
     left:-.5rem;
-    min-width: 300px;      /* Always has room for decent content */
-    max-width: 40vw;       /* Responsive limit based on screen width */
+    min-width: 300px;    
+    max-width: 40vw;     
     width: 100%;   
   }
 
@@ -1765,13 +1763,9 @@ body.loaded #app {
     top: 47.5%;
     left: 50%;
     transform: translateY(5vh);
-    display: none;
-    pointer-events: none;
   }
 
   .arrow-symbol {
-    display: none;
-    pointer-events: none;
     width: 50px;
     height: 50px;
   }
@@ -1792,7 +1786,6 @@ body.loaded #app {
 }
 
 @media (max-width: 1024px) {
-  /* Adjust main layout padding */
   main {
     padding: 0;
   }
@@ -1997,8 +1990,6 @@ body.loaded #app {
     height:36px;
     background: transparent;
     box-shadow: 2px 4px 8px;
-    display: none;
-    pointer-events: none;
   }  
 
   .arrow-button svg {
@@ -2155,29 +2146,25 @@ body.loaded #app {
       top: 30%;
       left: 50%;
       transform: translate(-1.5rem, -2rem);
-      display: none;
-      pointer-events: none;
     }
 
     .arrow-symbol {
-      display: none;
-      pointer-events: none;
       width: 43px;
       height: 43px;
     }
 
     .arrow-symbol svg {
-      width: 95%; /* shrink SVG to fit nicely */
+      width: 95%; 
       height: 95%;
       transform: none !important;
     }
 
     .left-arrow-symbol {
-      transform: translateX(-35vw); /* or smaller */
+      transform: translateX(-35vw); 
     }
   
     .right-arrow-symbol {
-      transform: translateX(30vw); /* or smaller */
+      transform: translateX(30vw);
     } 
 }
 

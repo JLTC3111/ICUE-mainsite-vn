@@ -1,150 +1,430 @@
 console.log('[script.js] Loaded ✅');
+// Enhanced touch device detection that excludes laptops with trackpads
 
-// Touch device detection
-const isTouchDevice = (
-  'ontouchstart' in window ||
-  navigator.maxTouchPoints > 0 ||
-  navigator.msMaxTouchPoints > 0
-);
+function isTruelyTouchDevice() {
+   
+    const isProbablyMac = (() => {
+        // Check User Agent for macOS indicators
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (/mac os x|macos|macintosh/.test(userAgent)) return true;
+        
+        // Check userAgentData if available (modern browsers)
+        if (navigator.userAgentData?.platform) {
+            return navigator.userAgentData.platform.toLowerCase() === 'macos';
+        }
+        
+        // Fallback: Check for Mac-specific features
+        try {
+            // Mac-specific CSS media query
+            return window.matchMedia('(-webkit-device-pixel-ratio: 1)').matches && 
+                   /safari/i.test(navigator.userAgent) && 
+                   !/chrome/i.test(navigator.userAgent);
+        } catch (e) {
+            return false;
+        }
+    })();
+    
+    // Basic touch capability check
+    const hasBasicTouch = (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0
+    );
+    
+    if (!hasBasicTouch) return false;
+    
+    const screenWidth = screen.width;
+    const screenHeight = screen.height;
+    const maxDimension = Math.max(screenWidth, screenHeight);
+    const minDimension = Math.min(screenWidth, screenHeight);
+    
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    if (isProbablyMac) {
+        const isMacOS = /mac os x/.test(userAgent);
+        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        
+        if (isMacOS && !hasCoarsePointer) return false;
+        
+        if (minDimension >= 800 && maxDimension >= 1200) return false;
+    }
+    
+    if (/windows/.test(userAgent)) {
+        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+        
+        if (hasFinePointer && !hasCoarsePointer) return false;
+        
+        if (minDimension >= 768 && maxDimension >= 1024) {
+            if (navigator.maxTouchPoints <= 5) return false;
+        }
+    }
+    
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    if (canHover) return false;
+    
+    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (!hasCoarsePointer) return false;
+    
+    const supportsOrientation = 'orientation' in window;
+    
+    const isLikelyMobileSize = (
+        (minDimension <= 768 && maxDimension <= 1024) || 
+        (minDimension <= 414 && maxDimension <= 896) ||  
+        (window.innerWidth <= 768) 
+    );
+    
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    const hasHighDPR = devicePixelRatio > 1.5;
+    
+    return hasBasicTouch && 
+           hasCoarsePointer && 
+           !canHover && 
+           (isLikelyMobileSize || supportsOrientation || hasHighDPR);
+}
+
+function isTouchPrimaryDevice() {
+    const hasTouchCapability = (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0
+    );
+    
+    if (!hasTouchCapability) return false;
+    
+    const primaryPointerCoarse = window.matchMedia('(pointer: coarse)').matches;
+    
+    const cannotHover = window.matchMedia('(hover: none)').matches;
+    
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUA = /mobile|android|iphone|ipad|tablet/.test(userAgent);
+    
+    const isLaptopUA = /macintosh|windows.*touch/.test(userAgent);
+    
+    return hasTouchCapability && 
+           primaryPointerCoarse && 
+           cannotHover && 
+           !isLaptopUA;
+}
+
+function isMobileDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    const mobilePatterns = [
+        /android.*mobile/,
+        /iphone/,
+        /ipod/,
+        /blackberry/,
+        /windows phone/,
+        /mobile/
+    ];
+    
+    const tabletPatterns = [
+        /ipad/,
+        /android(?!.*mobile)/,
+        /tablet/
+    ];
+    
+    const isMobile = mobilePatterns.some(pattern => pattern.test(userAgent));
+    const isTablet = tabletPatterns.some(pattern => pattern.test(userAgent));
+    
+    const hasTouch = (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0
+    );
+
+    const screenWidth = screen.width;
+    const screenHeight = screen.height;
+    const isSmallScreen = Math.min(screenWidth, screenHeight) <= 768;
+    
+    return hasTouch && (isMobile || (isTablet && isSmallScreen));
+}
+
+console.log('Truly touch device:', isTruelyTouchDevice());
+console.log('Touch primary device:', isTouchPrimaryDevice());
+console.log('Mobile device:', isMobileDevice());
+
+const deviceDetection = {
+    hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+    
+    isProbablyMac: (() => {
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (/mac os x|macos|macintosh/.test(userAgent)) return true;
+        
+        if (navigator.userAgentData?.platform) {
+            return navigator.userAgentData.platform.toLowerCase() === 'macos';
+        }
+        
+        return false;
+    })(),
+    
+    canHover: window.matchMedia('(hover: hover)').matches,
+    hasCoarsePointer: window.matchMedia('(pointer: coarse)').matches,
+    hasFinePointer: window.matchMedia('(pointer: fine)').matches,
+    screenSize: { width: screen.width, height: screen.height },
+    userAgent: navigator.userAgent.toLowerCase(),
+    
+    isTouchDevice: function() {
+        return isTruelyTouchDevice();
+    },
+    
+    getDeviceType: function() {
+        if (this.isTouchDevice()) {
+            const minDimension = Math.min(this.screenSize.width, this.screenSize.height);
+            return minDimension <= 480 ? 'phone' : 'tablet';
+        }
+        return this.hasTouch ? 'laptop-with-touch' : 'desktop';
+    }
+};
+
+// Export the functions for use
+// export { isTruelyTouchDevice, isTouchPrimaryDevice, isMobileDevice, deviceDetection };
 
 let isAnimating = false;
 
-function typeHTMLString(targetElement, htmlString, speed = 1, onComplete = null, typingSessionObj = null) {
+function typeHTMLString(
+  targetElement, 
+  htmlString, 
+  baseSpeed = 50, // average speed (ms per char)
+  onComplete = null, 
+  typingSessionObj = null
+) {
   targetElement.innerHTML = "";
 
   const tempContainer = document.createElement("div");
   tempContainer.innerHTML = htmlString;
-
   const nodes = Array.from(tempContainer.childNodes);
   let nodeIndex = 0;
 
-  // Create and append cursor initially
+  // Cursor setup
   const cursor = document.createElement("span");
   cursor.className = "svg-blinking-cursor";
   targetElement.appendChild(cursor);
-  // Create your custom SVG
+
   const svgCursor = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgCursor.setAttribute("width", "24");
   svgCursor.setAttribute("height", "24");
   svgCursor.setAttribute("viewBox", "0 0 24 24");
-  svgCursor.setAttribute("class", "svg-blinking-cursor"); 
-
+  svgCursor.setAttribute("class", "svg-blinking-cursor");
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("fill", "black"); 
-  path.setAttribute("d", `M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z`);
-
+  path.setAttribute("fill", "black");
+  path.setAttribute("d", "M12,13 L10.5,13 C10.2238576,13 10,12.7761424 10,12.5 C10,12.2238576 10.2238576,12 10.5,12 L12,12 L12,5.5 C12,4.67157288 11.3284271,4 10.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 C9,3.22385763 9.22385763,3 9.5,3 L10.5,3 C11.3177995,3 12.0438856,3.39267155 12.5,3.99975627 C12.9561144,3.39267155 13.6822005,3 14.5,3 L15.5,3 C15.7761424,3 16,3.22385763 16,3.5 C16,3.77614237 15.7761424,4 15.5,4 L14.5,4 C13.6715729,4 13,4.67157288 13,5.5 L13,12 L14.5,12 C14.7761424,12 15,12.2238576 15,12.5 C15,12.7761424 14.7761424,13 14.5,13 L13,13 L13,19.5 C13,20.3284271 13.6715729,21 14.5,21 L15.5,21 C15.7761424,21 16,21.2238576 16,21.5 C16,21.7761424 15.7761424,22 15.5,22 L14.5,22 C13.6822005,22 12.9561144,21.6073285 12.5,21.0002437 C12.0438856,21.6073285 11.3177995,22 10.5,22 L9.5,22 C9.22385763,22 9,21.7761424 9,21.5 C9,21.2238576 9.22385763,21 9.5,21 L10.5,21 C11.3284271,21 12,20.3284271 12,19.5 L12,13 Z");
   svgCursor.appendChild(path);
   targetElement.appendChild(svgCursor);
 
-  function typeNextNode() {
-    if ((typingSessionObj && typingSessionObj.skip) || nodeIndex >= nodes.length) {
-      // Instantly show all remaining nodes
-      for (; nodeIndex < nodes.length; nodeIndex++) {
-        const node = nodes[nodeIndex];
-        if (node.nodeType === Node.TEXT_NODE) {
-          const span = document.createElement("span");
-          span.textContent = node.textContent;
-          targetElement.insertBefore(span, cursor);
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-          const wrapper = node.cloneNode(false);
-          targetElement.insertBefore(wrapper, cursor);
-          wrapper.innerHTML = node.innerHTML;
-        } else {
-          const clone = node.cloneNode(true);
-          targetElement.insertBefore(clone, cursor);
-        }
+  let burstMode = false;
+  let burstCounter = 0;
+
+  function randomSpeed(baseSpeed, lastChar = "") {
+      // Punctuation pause: <span class="highlight">5-8x slower</span>
+      if (/[.,!?]/.test(lastChar)) {
+          return baseSpeed * (5 + Math.random() * 3);
       }
-    if (typeof onComplete === "function") onComplete();
-    return;
+      
+      // Burst mode: <span class="highlight">0.4-0.8x base speed (FAST!)</span>
+      if (burstMode) {
+          if (--burstCounter <= 0) burstMode = false;
+          return baseSpeed * (0.4 + Math.random() * 0.4);
+      }
+      
+      // 10% chance to enter burst mode
+      if (Math.random() < 0.1) {
+          burstMode = true;
+          burstCounter = Math.floor(Math.random() * 5) + 3;
+      }
+      
+      // Default typing: <span class="highlight">2.5-5x slower than base</span>
+      return baseSpeed * (1.5 + Math.random() * 1.5);
   }
 
-  const node = nodes[nodeIndex];
-  nodeIndex++;
+  // NEW: Speed calculation and analysis function
+  function calculateSpeeds(baseSpeed = null) {
+      // Get base speed from input or use provided value
+      const speed = baseSpeed || parseInt(document.getElementById('baseSpeed')?.value) || 100;
+      
+      // Calculate average WPM for different scenarios
+      const normalSpeed = speed * 3.75; // Average of 2.5-5x
+      const burstSpeed = speed * 0.6; // Average of 0.4-0.8x
+      const punctuationSpeed = speed * 6.5; // Average of 5-8x
+      
+      // WPM calculation (assuming average word length of 5 characters + 1 space)
+      const charsPerMinute = 60000 / speed; // 60000ms = 1 minute
+      const normalWPM = Math.round((60000 / normalSpeed) / 6);
+      const burstWPM = Math.round((60000 / burstSpeed) / 6);
+      const overallWPM = Math.round(charsPerMinute / 6);
+      const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
+      
+      // Calculate realistic average WPM
+      const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
+      
+      // Create results object for programmatic use
+      const speedData = {
+          baseSpeed: speed,
+          overallWPM: overallWPM,
+          normalWPM: normalWPM,
+          burstWPM: burstWPM,
+          punctuationWPM: punctuationWPM,
+          realisticAverage: realisticAverage
+      };
+      
+      // If there's a results element, update the display
+      const resultsElement = document.getElementById('speedResults');
+      if (resultsElement) {
+          const results = `
+              <div class="result">
+                  <h4>🎯 Your Typing Speeds:</h4>
+                  <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
+                  <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
+                  <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
+                  <p><strong>Burst Mode:</strong> <span class="highlight">${burstWPM} WPM</span> (10% of time - FAST!)</p>
+                  <p><strong>After Punctuation:</strong> ${punctuationWPM} WPM (10% of time - thinking pauses)</p>
+                  
+                  <div style="margin-top: 15px; padding: 10px; background: #0f2419; border-radius: 4px;">
+                      <strong>Realistic Average: ${realisticAverage} WPM</strong>
+                  </div>
+              </div>
+          `;
+          resultsElement.innerHTML = results;
+      }
+      
+      // Return the data for programmatic use
+      return speedData;
+  }
+  function getTypingSpeed(baseSpeed, lastChar = "", showAnalysis = false) {
+      // Get the random delay using your existing logic
+      const delay = randomSpeed(baseSpeed, lastChar);
+      
+      if (showAnalysis) {
+          const analysis = calculateSpeeds(baseSpeed);
+          console.log('Current typing analysis:', analysis);
+      }
+      
+      return delay;
+  }
 
-  if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent;
-    const span = document.createElement("span");
-    targetElement.insertBefore(span, cursor); // always before cursor
+  function getCurrentTypingStats(baseSpeed) {
+      return calculateSpeeds(baseSpeed);
+  }
 
-    let charIndex = 0;
-    function typeChar() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+  function typeCharacter(char, previousChar = "") {
+      const baseSpeed = 100; 
+      const delay = randomSpeed(baseSpeed, previousChar);
+      
+      setTimeout(() => {
+          console.log(`Typing: ${char} (delay: ${delay}ms)`);
+      }, delay);
+      
+      return delay;
+  }
+
+  function analyzeMyTypingSpeed(baseSpeed = 100) {
+      console.log(`Analyzing typing speed for ${baseSpeed}ms base speed:`);
+      const stats = calculateSpeeds(baseSpeed);
+      console.log(stats);
+      return stats;
+  }
+
+  function enhancedRandomSpeed(baseSpeed, lastChar = "", logStats = false) {
+      const delay = randomSpeed(baseSpeed, lastChar);
+      
+      if (logStats) {
+          const stats = calculateSpeeds(baseSpeed);
+          console.log(`Speed stats for ${baseSpeed}ms base:`, stats);
+      }
+      
+      return delay;
+  }
+
+  function typeNextNode() {
+    if ((typingSessionObj && typingSessionObj.skip) || nodeIndex >= nodes.length) {
+      // dump remaining instantly
+      for (; nodeIndex < nodes.length; nodeIndex++) {
+        const node = nodes[nodeIndex];
+        targetElement.insertBefore(node.cloneNode(true), cursor);
+      }
+      if (typeof onComplete === "function") onComplete();
+      return;
+    }
+
+    const node = nodes[nodeIndex++];
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent;
+      const span = document.createElement("span");
+      targetElement.insertBefore(span, cursor);
+
+      let charIndex = 0;
+      function typeChar() {
+        if (typingSessionObj?.skip) {
           span.textContent = text;
           typeNextNode();
           return;
         }
-      if (charIndex < text.length) {
-        span.textContent += text.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeChar, speed);
-      } else {
-        typeNextNode();
+        if (charIndex < text.length) {
+          span.textContent += text.charAt(charIndex++);
+          const lastChar = span.textContent.slice(-2, -1); // Get previous character
+          setTimeout(typeChar, randomSpeed(baseSpeed, lastChar));
+        } else {
+          typeNextNode();
+        }
       }
-    }
-    typeChar();
+      typeChar();
 
-  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
       const wrapper = node.cloneNode(false);
-    targetElement.insertBefore(wrapper, cursor);
+      targetElement.insertBefore(wrapper, cursor);
 
-    const childNodes = Array.from(node.childNodes);
-    let childIndex = 0;
+      const childNodes = Array.from(node.childNodes);
+      let childIndex = 0;
 
-    function typeChildNode() {
-        if ((typingSessionObj && typingSessionObj.skip)) {
+      function typeChildNode() {
+        if (typingSessionObj?.skip) {
           wrapper.innerHTML = node.innerHTML;
           typeNextNode();
           return;
         }
-      if (childIndex >= childNodes.length) {
-        typeNextNode();
-        return;
-      }
+        if (childIndex >= childNodes.length) {
+          typeNextNode();
+          return;
+        }
 
-      const child = childNodes[childIndex];
-      childIndex++;
+        const child = childNodes[childIndex++];
+        if (child.nodeType === Node.TEXT_NODE) {
+          const text = child.textContent;
+          const span = document.createElement("span");
+          wrapper.appendChild(span);
 
-      if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent;
-        const span = document.createElement("span");
-        wrapper.appendChild(span);
-
-        let charIndex = 0;
-        function typeChar() {
-            if ((typingSessionObj && typingSessionObj.skip)) {
+          let charIndex = 0;
+          function typeChar() {
+            if (typingSessionObj?.skip) {
               span.textContent = text;
               typeChildNode();
               return;
             }
-          if (charIndex < text.length) {
-            span.textContent += text.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeChar, speed);
-          } else {
-            typeChildNode();
+            if (charIndex < text.length) {
+              span.textContent += text.charAt(charIndex++);
+              const lastChar = span.textContent.slice(-2, -1); // Get previous character
+              setTimeout(typeChar, randomSpeed(baseSpeed, lastChar));
+            } else {
+              typeChildNode();
+            }
           }
+          typeChar();
+
+        } else {
+          wrapper.appendChild(child.cloneNode(true));
+          typeChildNode();
         }
-        typeChar();
-
-      } else {
-        // If it's an element inside another (nested), just append it and continue
-        wrapper.appendChild(child.cloneNode(true));
-        typeChildNode();
       }
+      typeChildNode();
+
+    } else {
+      targetElement.insertBefore(node.cloneNode(true), cursor);
+      typeNextNode();
     }
-
-    typeChildNode();
-
-  } else {
-    // Fallback: just clone and insert if it's a comment or unsupported node
-    const clone = node.cloneNode(true);
-    targetElement.insertBefore(clone, cursor);
-    typeNextNode();
-  }
   }
 
-typeNextNode();
+  typeNextNode();
 }
+
 
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
@@ -351,7 +631,7 @@ window.attachProfileEvents_moe = () => {
       typingSessionObj = { skip: false };
       isTyping = true;
       skipOnNextClick = false;
-      typeHTMLString(containerDiv, message, 25, () => {
+      typeHTMLString(containerDiv, message, 50, () => {
         gsap.fromTo(containerDiv, 
           { opacity: 0, y: 10, scale: 0.98 }, 
           { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
@@ -398,9 +678,14 @@ window.attachProfileEvents_moe = () => {
       textBox.addEventListener('click', handleClick);
     }
 
-  if (textBox && isTouchDevice) {
+  if (textBox && isTruelyTouchDevice()) {
   const swipeElements = [container, textBox];
   let swipeLocked = false;
+  
+  const prevBtn = document.getElementById('moe-prev-btn');
+  const nextBtn = document.getElementById('moe-next-btn');
+  if (prevBtn) prevBtn.style.display = 'none';
+  if (nextBtn) nextBtn.style.display = 'none';
 
   swipeElements.forEach(el => {
     el.addEventListener('touchstart', (e) => {
@@ -530,6 +815,7 @@ window.loadPage = (page) => {
               ICUEFooter.autoInject();
               calendarModal();
               CommunityGallery.init();
+              isTruelyTouchDevice();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -823,9 +1109,14 @@ window.initHomeTextSlider = () => {
         ease: "power2.out",
         onComplete: () => {
           typeHTMLString(textElement, message, typingSpeed, () => {
-          isTyping = false;
-          gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
-        });
+            isTyping = false;
+            
+            // Optional: Analyze typing performance
+            const speedStats = calculateSpeeds(typingSpeed);
+            console.log('✨ Home slider typing session completed. Speed stats:', speedStats);
+            
+            gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+          });
         }
       }
     );
@@ -866,7 +1157,6 @@ window.initHomeTextSlider = () => {
     }
   }
   
-
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
@@ -1217,11 +1507,16 @@ window.attachProfileEvents_coreTeam = () => {
       textBox.addEventListener('click', handleClick);
     }
 
-    if (textBox && isTouchDevice) {
-      const swipeTarget = container || textBox; // fallback if container is null
+    if (textBox && isTruelyTouchDevice()) {
+      const prevBtn = document.getElementById('core-prev-btn');
+      const nextBtn = document.getElementById('core-next-btn');
+      if (prevBtn) prevBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'none';
+      
+      const swipeTarget = container || textBox; 
       let swipeLocked = false;
       const MIN_SWIPE_DISTANCE = 25;
-
+      
       let touchStartX = 0;
       let touchStartY = 0;
 
@@ -1306,15 +1601,15 @@ window.initMobileNewsSlider = () => {
   if (!cards.length || !gridContainer) return;
 
   // Detect touch device
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTruelyTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   let currentIndex = 0;
   let startX = 0;
   let endX = 0;
 
   function updateSlider() {
-    if (window.innerWidth <= 1440 && isTouchDevice) {
-      // Apply slider styles for touch devices
+    if (window.innerWidth <= 1440 && isTruelyTouchDevice) {
+      
       Object.assign(gridContainer.style, {
         display: "flex",
         flexDirection: "column",
@@ -1323,16 +1618,14 @@ window.initMobileNewsSlider = () => {
         touchAction: "pan-y"
       });
 
-      // Show only one card at a time
       cards.forEach((card, i) => {
         card.style.display = i === currentIndex ? "block" : "none";
       });
 
     } else {
-      // Use CSS grid for non-touch devices
+      
       gridContainer.style.display = "grid";
 
-      // Show all cards
       cards.forEach(card => {
         card.style.display = "block";
       });
@@ -1349,8 +1642,7 @@ window.initMobileNewsSlider = () => {
     }
   }
 
-  // Only add swipe events for touch devices
-  if (isTouchDevice) {
+  if (isTruelyTouchDevice) {
     gridContainer.addEventListener("touchstart", e => {
       startX = e.touches[0].clientX;
     });
@@ -1369,7 +1661,6 @@ window.initMobileNewsSlider = () => {
     window.initMobileNewsSlider();
   });
 
-// Call when DOM is ready
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
 window.OrgStructure = {
