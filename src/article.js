@@ -533,17 +533,36 @@ Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì s�
           type: "image"
         },
       ],
-      bodyHTML: `
-        <p>Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của IUCN Việt Nam, trong đó đại diện Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) - Viện trưởng TS.Nguyễn Hồng Hạnh tham dự diễn đàn. ICUE là 1 trong các thành viên đã tham dự và có các trình bày về bảo tồn biển, phát triển bền vững nông thôn. ICUE đã có báo cáo tóm tắt một phần trong dự án "Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển". 
-        Diễn đàn Bảo tồn Khu vực Châu Á (RCF) diễn ra trong ba ngày với chủ đề 'Tái hiện Bảo tồn tại Châu Á: Tương lai tích cực cho Thiên nhiên', hướng tới đánh giá tiến độ bảo tồn, xem xét lại các mục tiêu ưu tiên và đề xuất các định hướng chiến lược để giải quyết hiệu quả các thách thức về môi trường và đa dạng sinh học trong 20 năm tới.
-        Trong khuôn khổ RCF 2024, Diễn đàn Lãnh đạo Thanh niên đầu tiên, do thanh niên từ 23 quốc gia tổ chức, hướng tới nhấn mạnh vai trò của chuyên gia trẻ cũng như đóng góp ngày càng tăng của họ cho công tác bảo tồn thiên nhiên.
-        Bên cạnh các cuộc thảo luận cấp cao về những thách thức trong khu vực của nhiều bên liên quan, IUCN Châu Á RCF lần thứ 8 sẽ có tám phiên họp chuyên đề về các ưu tiên chương trình mới và hiện có, cũng như 17 sự kiện bên lề do các Thành viên, Ủy ban và đối tác của IUCN tổ chức. Địa điểm này cũng cung cấp các gian hàng triển lãm để giới thiệu công tác bảo tồn.
-        TS.Nguyễn Hồng Hạnh cùng chuyên gia Pornphrom Vikitsreth là nhà phân tích chính sách tại đảng Dân chủ Thái Lan và là người ủng hộ mạnh mẽ các chương trình nghị sự về biến đổi khí hậu của đảng, sử dụng cả các phương pháp giảm thiểu và thích ứng. Ông cũng đã nâng cao nhận thức về các vấn đề biến đổi khí hậu trong các mạng lưới thanh niên và cộng đồng địa phương trên khắp đất nước và có bằng Thạc sĩ về các vấn đề toàn cầu của Đại học New York.
-        Ngoài ra còn kết nối với Viện Môi trường Thái Lan (Thailand Environment Instutite) Trở thành tổ chức hàng đầu về môi trường theo tiêu chuẩn quốc tế, tuân thủ nguyên tắc phi đảng phái , góp phần thúc đẩy phát triển bền vững. 
-        CBCGDF là một quỹ gây quỹ công cộng quốc gia tại Trung Quốc. Trong những năm qua, quỹ đã đóng vai trò quan trọng trong lĩnh vực bảo tồn đa dạng sinh học và phát triển xanh. Để thích ứng với sự phát triển của thời đại, quỹ đã được đổi tên thành “Quỹ bảo tồn đa dạng sinh học và phát triển xanh Trung Quốc”. Việc đổi tên đã kết hợp hữu cơ bảo tồn đa dạng sinh học với phát triển xanh, mở rộng hàm ý và biểu thị của bảo tồn đa dạng sinh học, thể hiện bản chất của đa dạng sinh học “phát triển trong bảo tồn và được bảo tồn trong phát triển”, và đóng vai trò tích cực trong việc thúc đẩy tái cấu trúc kinh tế tại Trung Quốc.    
-        Trong sự kiện kéo dài ba ngày, một sự kiện học tập chuyên dụng sẽ được tổ chức, bao gồm các buổi chia sẻ kiến ​​thức và đào tạo ngắn hạn do Học viện IUCN tổ chức. Những người tham gia cũng sẽ có cơ hội dự triển lãm, tham khảo nhiều nỗ lực hợp tác khác nhau để bảo tồn thiên nhiên và đa dạng sinh học.</p>
-        <h2></h2>
-        <blockquote></blockquote>
+      bodyMarkdown: `
+Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có các thành viên của **IUCN Việt Nam**, trong đó đại diện **Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE)** - Viện trưởng **TS. Nguyễn Hồng Hạnh** tham dự diễn đàn. ICUE là một trong các thành viên đã tham dự và có các trình bày về **bảo tồn biển, phát triển bền vững nông thôn**. ICUE đã có báo cáo tóm tắt một phần trong dự án *"Hỗ trợ phòng chống xói lở bờ biển Cửa Đại thông qua hành lang xanh và công viên sinh thái ven biển"*.  
+
+Diễn đàn **Bảo tồn Khu vực Châu Á (RCF)** diễn ra trong ba ngày với chủ đề *“Tái hiện Bảo tồn tại Châu Á: Tương lai tích cực cho Thiên nhiên”*, hướng tới:  
+
+<div style="margin-left:3.5rem">
+- Đánh giá tiến độ bảo tồn  
+- Xem xét lại các mục tiêu ưu tiên  
+- Đề xuất định hướng chiến lược để giải quyết thách thức môi trường và đa dạng sinh học trong 20 năm tới.  
+Trong khuôn khổ **RCF 2024**, Diễn đàn **Lãnh đạo Thanh niên** đầu tiên, do thanh niên từ **23 quốc gia** tổ chức, nhấn mạnh vai trò của chuyên gia trẻ cũng như đóng góp ngày càng tăng của họ cho công tác bảo tồn thiên nhiên.  
+
+Bên cạnh các cuộc thảo luận cấp cao về những thách thức trong khu vực của nhiều bên liên quan, **IUCN Châu Á RCF lần thứ 8** sẽ có:  
+
+- **8 phiên họp chuyên đề** về các ưu tiên chương trình mới và hiện có  
+- **17 sự kiện bên lề** do các Thành viên, Ủy ban và đối tác của IUCN tổ chức  
+- Các gian hàng triển lãm để giới thiệu công tác bảo tồn  
+
+**TS. Nguyễn Hồng Hạnh** cùng chuyên gia **Pornphrom Vikitsreth** (nhà phân tích chính sách tại đảng Dân chủ Thái Lan, ủng hộ mạnh mẽ chương trình nghị sự về biến đổi khí hậu, có bằng Thạc sĩ về các vấn đề toàn cầu của Đại học New York) cũng tham dự và đóng góp ý kiến. Ông đã nâng cao nhận thức về biến đổi khí hậu trong các mạng lưới thanh niên và cộng đồng địa phương trên khắp Thái Lan.  
+
+Ngoài ra, sự kiện còn kết nối với:  
+
+- **Viện Môi trường Thái Lan (Thailand Environment Institute)** – trở thành tổ chức hàng đầu về môi trường theo tiêu chuẩn quốc tế, góp phần thúc đẩy phát triển bền vững  
+- **CBCGDF** – Quỹ công cộng quốc gia tại Trung Quốc, đổi tên thành *“Quỹ bảo tồn đa dạng sinh học và phát triển xanh Trung Quốc”*, đóng vai trò quan trọng trong lĩnh vực đa dạng sinh học và phát triển xanh  
+
+Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập chuyên dụng** bao gồm:  
+
+- Các buổi chia sẻ kiến thức  
+- Đào tạo ngắn hạn do **Học viện IUCN** tổ chức  
+- Triển lãm và nhiều nỗ lực hợp tác khác nhau để bảo tồn thiên nhiên và đa dạng sinh học </div>
+
       `,
       pdf: ""
     },
@@ -607,10 +626,49 @@ Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì s�
           caption: "Thư Cám Ơn"
         }
       ],
-      bodyHTML: `
-        <p>Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề. Đặc biệt trong 03 ngày: Từ 08-10/9/2024 mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có 71 người chết, 29 người bị thương và chưa xác định được 11 người; hệ thống giao thông hư hỏng nghiêm trọng; nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có 4.825 nhà bị ảnh hưởng, thiệt hại khoảng 820 tỷ đồng). Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên. Ngày 25/9/2024, Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện  Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao 100 phần quà tới tay bà con. Mỗi phần quà bao gồm: 10kg gạo đài thơm, dầu ăn, lạc rang sẵn, thịt chưng mắm tép, bột canh Hải Châu… cùng với quần áo, chăn màn. Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người gồm có gia đình: Bà Hoàng Thị Bốn, Ông Hoàng Văn Bản, Ông Nguyễn Bá Quán – được trao số quà gấp 4 lần các hộ khác.</p>
-        <h2></h2>
-        <blockquote>"Mong bà con sớm ổn định cuộc sống, vượt qua khó khăn, chung tay xây dựng và phát triển vững mạnh"</blockquote>
+      bodyMarkdown: `
+<div style="text-align:center">
+## Ảnh hưởng bão số 3 (bão Yagi) tại huyện Bảo Yên </div>
+
+Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề.  
+**Đặc biệt trong 03 ngày (08–10/9/2024):**  
+Mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có:  
+
+  <ul style="margin-left:3.5rem">
+  <li>71 người chết</li>
+  <li>29 người bị thương</li>
+  <li>11 người chưa xác định được</li>
+  <li>Hệ thống giao thông hư hỏng nghiêm trọng</li>
+  <li>Nhà cửa, tài sản, hoa màu bị thiệt hại nặng nề, nhiều nhà bị mất trắng (đã có **4.825 nhà** bị ảnh hưởng, thiệt hại khoảng **820 tỷ đồng**)</li>
+  </ul>
+
+Đây là đợt lũ lụt lớn chưa từng thấy trên địa bàn huyện Bảo Yên.  
+**Ngày 25/9/2024:**  
+
+Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao **100 phần quà** tới tay bà con. 
+
+<div style="margin-left:3rem;margin-top:1rem">
+**Mỗi phần quà bao gồm:**  
+<ul>
+  <li>10kg gạo đài thơm</li>
+  <li>Dầu ăn</li>
+  <li>Lạc rang sẵn</li>
+  <li>Thịt chưng mắm tép</li>
+  <li>Bột canh Hải Châu</li>
+  <li>Quần áo, chăn màn</li>
+</ul></div>
+
+Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người, gồm: 
+
+<div style="margin-left:3.5rem">
+<ul>
+  <li>Bà Hoàng Thị Bốn</li>
+  <li>Ông Hoàng Văn Bản</li>
+  <li>Ông Nguyễn Bá Quán</li>
+</ul>
+Các hộ này được trao số quà **gấp 4 lần** các hộ khác. </div>
+
+> "Mong bà con sớm ổn định cuộc sống, vượt qua khó khăn, chung tay xây dựng và phát triển vững mạnh"
       `,
       pdf: "/public/files/photos.zip",
       pdfButtonText: "Tải Về - Ảnh Tư Liệu ⇲"
@@ -639,40 +697,50 @@ Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì s�
           caption: "Thứ trưởng Bộ Xây dựng Nguyễn Tường Văn khẳng định, việc phát triển đô thị thông minh không phải là chạy đua theo công nghệ mà phải lấy con người làm trung tâm."
         },
       ],
-      bodyHTML: `
-        <p>
-        Chặng đường phát triển đô thị thông minh của Việt Nam đã đạt được những bước tiến đáng kể kể từ khi triển khai Đề án “Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025” vào năm 2018. Mục tiêu của đề án là tận dụng công nghệ để cải thiện công tác quản lý, nâng cao chất lượng sống của người dân và thúc đẩy sự phát triển bền vững. Chính phủ cam kết chuyển đổi cảnh quan đô thị bằng các công nghệ dựa trên dữ liệu và tiếp cận lấy người dân làm trung tâm, hướng tới việc hoàn thành vào năm 2030.
-        Sau 7 năm triển khai, đất nước đã đạt được những bước tiến lớn trong hướng đi này, với nhiều thành phố đã bắt đầu triển khai các công nghệ đô thị thông minh một cách thành công.
-        Những Thành Tựu Chính:
-        1. Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế
-        Một ví dụ điển hình cho triết lý "người dân là trung tâm" là thành phố Huế, nơi đã triển khai nền tảng Hue-S, cho phép công dân báo cáo trực tiếp các vấn đề như sửa chữa đường xá, vệ sinh, và cơ sở hạ tầng. Ứng dụng này đã tạo ra một kênh giao tiếp hai chiều giữa người dân và chính quyền, đảm bảo tính minh bạch và trách nhiệm trong công tác quản lý đô thị. Hue-S đã trở thành một phần quan trọng trong hệ thống đô thị thông minh của Huế, giúp cải thiện các dịch vụ như y tế, giáo dục và quản lý giao thông. Thành phố cũng đang triển khai các dịch vụ thông minh tiên tiến hơn như kiểm soát giao thông bằng AI và chiếu sáng thông minh.
-        2. Quản Lý Đô Thị Dựa Trên Dữ Liệu: Đà Nẵng
-        Đà Nẵng là một ví dụ điển hình khác, nơi thành phố đã tích hợp hạ tầng thông minh và dịch vụ số. Trung tâm Điều hành Thông minh (IOC) là trung tâm tập hợp và quản lý dữ liệu từ các lĩnh vực như giao thông, quản lý rác thải, dịch vụ công cộng và y tế. Đà Nẵng đã hợp tác với các công ty công nghệ địa phương để triển khai GIS và BIM (Mô hình Thông tin Xây dựng) nhằm tối ưu hóa công tác quy hoạch đô thị. Thông qua các nền tảng này, thành phố có thể dự đoán và quản lý nhu cầu đô thị hiệu quả, đặc biệt là trong các mùa du lịch cao điểm.
-        3. Hệ Thống Giao Thông Thông Minh: TP.HCM
-        Tại TP.HCM, quản lý giao thông đã được cải thiện đáng kể thông qua hệ thống AI giám sát giao thông, camera giám sát, và thu phí tự động. Thành phố cũng đã triển khai các giải pháp đỗ xe thông minh và nghiên cứu xe tự lái, giúp thành phố trở thành một trong những nơi tiên phong trong vận hành đô thị thông minh. Các sáng kiến của TP.HCM phù hợp với mục tiêu lớn hơn của thành phố trong việc nâng cao phát triển bền vững bằng cách giảm tắc nghẽn giao thông và giảm thiểu phát thải carbon.
-        4. Dịch Vụ Công Tích Hợp: Hà Nội
-        Hà Nội đang tích hợp các trung tâm dữ liệu đám mây để mang đến một trải nghiệm mượt mà cho cư dân khi tiếp cận các dịch vụ chính quyền. Thành phố đã xây dựng nền tảng thống nhất cho các ứng dụng dịch vụ công, cho phép công dân nộp đơn khiếu nại, thanh toán thuế và tiếp cận thông tin chính quyền qua một cổng duy nhất. Bằng cách kết nối các sở, ngành thông qua hệ thống cơ sở dữ liệu chia sẻ, Hà Nội đang tối ưu hóa việc cung cấp dịch vụ và tăng cường hiệu quả trong cơ cấu hành chính.
-        5. Đô Thị Xanh và Thông Minh: Bình Định
-        Tại Bình Định, thành phố tập trung vào quá trình đô thị hóa xanh kết hợp với công nghệ thông minh. Tỉnh đã triển khai nhiều sáng kiến bền vững môi trường, như hệ thống quản lý rác thải thông minh và giải pháp năng lượng tái tạo cho các tòa nhà đô thị. Thành phố cũng đã áp dụng chiếu sáng thông minh bằng năng lượng mặt trời để giảm tiêu thụ năng lượng và giảm sự phụ thuộc vào nhiên liệu hóa thạch, đồng thời phù hợp với mục tiêu của chính phủ về phát triển bền vững trong các đô thị.
-        Những Thách Thức và Rào Cản:
-        Mặc dù đạt được nhiều thành tựu, quá trình phát triển đô thị thông minh ở Việt Nam vẫn gặp phải không ít khó khăn:
-        Thiếu khung pháp lý và cơ chế chính sách đồng bộ: Mặc dù đã có một số hướng dẫn được ban hành, các quy định vẫn chưa được thống nhất giữa các địa phương.
-        Vấn đề bảo mật dữ liệu và quyền riêng tư: Các thành phố như Hà Nội và TP.HCM đang thu thập lượng lớn dữ liệu để cải thiện dịch vụ, nhưng bảo mật và quyền riêng tư vẫn là mối quan tâm lớn.
-        Thiếu nguồn lực tài chính: Nhiều thành phố nhỏ gặp khó khăn trong việc huy động vốn đầu tư cho các dự án hạ tầng số lớn. Do đó, một số thành phố đã chọn triển khai các dự án thử nghiệm hoặc dự án một phần với các dịch vụ cơ bản.
-        Định Hướng Giai Đoạn 2025-2030:
-        Khi bước sang giai đoạn tiếp theo của phát triển đô thị thông minh, Chính phủ Việt Nam đã đặt ra 7 ưu tiên chiến lược cho giai đoạn 2025-2030:
-        Cải thiện hệ thống pháp lý và mô hình kiến trúc dữ liệu và hạ tầng công nghệ.
-        Xây dựng cơ sở dữ liệu đô thị dùng chung, liên thông giữa các bộ, ngành.
-        Lấy người dân làm trung tâm, cung cấp dịch vụ thiết yếu và khuyến khích tham gia giám sát.
-        Phát triển nguồn nhân lực chất lượng cao, phổ cập kỹ năng số.
-        Đổi mới mô hình quản trị, ứng dụng công nghệ vào điều hành và xây dựng chính quyền số.
-        Tăng cường hợp tác quốc tế, thúc đẩy ứng dụng công nghệ mới.
-        Huy động nguồn lực xã hội hóa thông qua hợp tác công-tư.
-        Nhìn Về Tương Lai:
-        Năm năm tới sẽ rất quan trọng đối với nỗ lực xây dựng đô thị thông minh tại Việt Nam. Đến năm 2030, Chính phủ dự kiến sẽ tạo ra một mạng lưới đô thị thông minh toàn quốc, hoạt động liên kết và đồng bộ giữa các thành phố. Các thành phố như Huế, Đà Nẵng, và TP.HCM sẽ là những hình mẫu để các thành phố khác học hỏi, chứng minh rằng với các đầu tư hợp lý và kế hoạch chi tiết, đô thị thông minh có thể trở thành động lực quan trọng cho tăng trưởng kinh tế, sự bền vững và quản lý đô thị hiệu quả.
-        Mục tiêu phát triển đô thị thông minh bền vững sẽ không chỉ là mục tiêu phát triển, mà là yêu cầu tất yếu để Việt Nam thích ứng với thời đại số, nâng cao chất lượng sống và tăng năng lực cạnh tranh quốc gia trong những thập niên tới.</p>
-        <h2></h2>
-        <blockquote>""</blockquote>
+      bodyMarkdown: `
+Chặng đường phát triển đô thị thông minh của Việt Nam đã đạt được những bước tiến đáng kể kể từ khi triển khai Đề án **“Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025”** vào năm 2018.  
+Mục tiêu của đề án là tận dụng công nghệ để cải thiện công tác quản lý, nâng cao chất lượng sống của người dân và thúc đẩy sự phát triển bền vững. Chính phủ cam kết chuyển đổi cảnh quan đô thị bằng các công nghệ dựa trên dữ liệu và tiếp cận lấy người dân làm trung tâm, hướng tới việc hoàn thành vào năm 2030.  
+Sau 7 năm triển khai, đất nước đã đạt được những bước tiến lớn trong hướng đi này, với nhiều thành phố đã bắt đầu triển khai các công nghệ đô thị thông minh một cách thành công.  
+---
+
+<div style="margin:0 3.5rem">
+## Những Thành Tựu Chính:
+
+1. **Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế**  
+   Một ví dụ điển hình cho triết lý "người dân là trung tâm" là thành phố Huế, nơi đã triển khai nền tảng Hue-S, cho phép công dân báo cáo trực tiếp các vấn đề như sửa chữa đường xá, vệ sinh, và cơ sở hạ tầng. Ứng dụng này đã tạo ra một kênh giao tiếp hai chiều giữa người dân và chính quyền, đảm bảo tính minh bạch và trách nhiệm trong công tác quản lý đô thị. Hue-S đã trở thành một phần quan trọng trong hệ thống đô thị thông minh của Huế, giúp cải thiện các dịch vụ như y tế, giáo dục và quản lý giao thông. Thành phố cũng đang triển khai các dịch vụ thông minh tiên tiến hơn như kiểm soát giao thông bằng AI và chiếu sáng thông minh.  
+
+2. **Quản Lý Đô Thị Dựa Trên Dữ Liệu: Đà Nẵng**  
+   Đà Nẵng là một ví dụ điển hình khác, nơi thành phố đã tích hợp hạ tầng thông minh và dịch vụ số. Trung tâm Điều hành Thông minh (IOC) là trung tâm tập hợp và quản lý dữ liệu từ các lĩnh vực như giao thông, quản lý rác thải, dịch vụ công cộng và y tế. Đà Nẵng đã hợp tác với các công ty công nghệ địa phương để triển khai GIS và BIM (Mô hình Thông tin Xây dựng) nhằm tối ưu hóa công tác quy hoạch đô thị. Thông qua các nền tảng này, thành phố có thể dự đoán và quản lý nhu cầu đô thị hiệu quả, đặc biệt là trong các mùa du lịch cao điểm.  
+
+3. **Hệ Thống Giao Thông Thông Minh: TP.HCM**  
+   Tại TP.HCM, quản lý giao thông đã được cải thiện đáng kể thông qua hệ thống AI giám sát giao thông, camera giám sát, và thu phí tự động. Thành phố cũng đã triển khai các giải pháp đỗ xe thông minh và nghiên cứu xe tự lái, giúp thành phố trở thành một trong những nơi tiên phong trong vận hành đô thị thông minh. Các sáng kiến của TP.HCM phù hợp với mục tiêu lớn hơn của thành phố trong việc nâng cao phát triển bền vững bằng cách giảm tắc nghẽn giao thông và giảm thiểu phát thải carbon.  
+
+4. **Dịch Vụ Công Tích Hợp: Hà Nội**  
+   Hà Nội đang tích hợp các trung tâm dữ liệu đám mây để mang đến một trải nghiệm mượt mà cho cư dân khi tiếp cận các dịch vụ chính quyền. Thành phố đã xây dựng nền tảng thống nhất cho các ứng dụng dịch vụ công, cho phép công dân nộp đơn khiếu nại, thanh toán thuế và tiếp cận thông tin chính quyền qua một cổng duy nhất. Bằng cách kết nối các sở, ngành thông qua hệ thống cơ sở dữ liệu chia sẻ, Hà Nội đang tối ưu hóa việc cung cấp dịch vụ và tăng cường hiệu quả trong cơ cấu hành chính.  
+
+5. **Đô Thị Xanh và Thông Minh: Bình Định**  
+   Tại Bình Định, thành phố tập trung vào quá trình đô thị hóa xanh kết hợp với công nghệ thông minh. Tỉnh đã triển khai nhiều sáng kiến bền vững môi trường, như hệ thống quản lý rác thải thông minh và giải pháp năng lượng tái tạo cho các tòa nhà đô thị. Thành phố cũng đã áp dụng chiếu sáng thông minh bằng năng lượng mặt trời để giảm tiêu thụ năng lượng và giảm sự phụ thuộc vào nhiên liệu hóa thạch, đồng thời phù hợp với mục tiêu của chính phủ về phát triển bền vững trong các đô thị.  
+---
+### Những Thách Thức và Rào Cản:
+
+- **Thiếu khung pháp lý và cơ chế chính sách đồng bộ:** Mặc dù đã có một số hướng dẫn được ban hành, các quy định vẫn chưa được thống nhất giữa các địa phương.  
+- **Vấn đề bảo mật dữ liệu và quyền riêng tư:** Các thành phố như Hà Nội và TP.HCM đang thu thập lượng lớn dữ liệu để cải thiện dịch vụ, nhưng bảo mật và quyền riêng tư vẫn là mối quan tâm lớn.  
+- **Thiếu nguồn lực tài chính:** Nhiều thành phố nhỏ gặp khó khăn trong việc huy động vốn đầu tư cho các dự án hạ tầng số lớn. Do đó, một số thành phố đã chọn triển khai các dự án thử nghiệm hoặc dự án một phần với các dịch vụ cơ bản.  
+---
+### Định Hướng Giai Đoạn 2025-2030:
+
+1. Cải thiện hệ thống pháp lý và mô hình kiến trúc dữ liệu và hạ tầng công nghệ.  
+2. Xây dựng cơ sở dữ liệu đô thị dùng chung, liên thông giữa các bộ, ngành.  
+3. Lấy người dân làm trung tâm, cung cấp dịch vụ thiết yếu và khuyến khích tham gia giám sát.  
+4. Phát triển nguồn nhân lực chất lượng cao, phổ cập kỹ năng số.  
+5. Đổi mới mô hình quản trị, ứng dụng công nghệ vào điều hành và xây dựng chính quyền số.  
+6. Tăng cường hợp tác quốc tế, thúc đẩy ứng dụng công nghệ mới.  
+7. Huy động nguồn lực xã hội hóa thông qua hợp tác công-tư.  
+---
+### Nhìn Về Tương Lai:
+
+Năm năm tới sẽ rất quan trọng đối với nỗ lực xây dựng đô thị thông minh tại Việt Nam. Đến năm 2030, Chính phủ dự kiến sẽ tạo ra một mạng lưới đô thị thông minh toàn quốc, hoạt động liên kết và đồng bộ giữa các thành phố. Các thành phố như Huế, Đà Nẵng, và TP.HCM sẽ là những hình mẫu để các thành phố khác học hỏi, chứng minh rằng với các đầu tư hợp lý và kế hoạch chi tiết, đô thị thông minh có thể trở thành động lực quan trọng cho tăng trưởng kinh tế, sự bền vững và quản lý đô thị hiệu quả. 
+Mục tiêu phát triển đô thị thông minh bền vững sẽ không chỉ là mục tiêu phát triển, mà là yêu cầu tất yếu để Việt Nam thích ứng với thời đại số, nâng cao chất lượng sống và tăng năng lực cạnh tranh quốc gia trong những thập niên tới. </div>
       `,
       pdf: "",
       pdfButtonText: ""
