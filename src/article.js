@@ -392,8 +392,8 @@ const articles = [
       id: "1",
       title: "Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ",
       lead: "Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng",
-      author: "Bởi ICUE-IKI-Giz & Thành Phố Hội An",
-      date: "16 Tháng 5, 2025",
+      author: "Bởi **ICUE-IKI-Giz** & Thành Phố Hội An",
+      date: "<div style=\"text-align: center;\">*16 Tháng 5, 2025*</div>",
       images: [
         {
           src: "/public/news/articles/article_1/all_together.jpg",
@@ -503,9 +503,9 @@ Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì s�
     {
       id: "2",
       title: "Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan",
-      lead: "Ngày 3/9, Diễn đàn Bảo tồn Khu vực Châu Á (RCF) lần thứ 8 của Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.",
-      author: "Bởi ICUE",
-      date: "03 Tháng 9, 2024",
+      lead: "<div style=\"line-height: 1.5;\">*Ngày 3/9, **Diễn đàn Bảo tồn Khu vực Châu Á (RCF)** lần thứ 8 của **Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN)** đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần **600** nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.*</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 03 Tháng 9, 2024*</div>",
       images: [
         {
           src: "/public/news/articles/article_2/conference.jpg",
@@ -569,9 +569,9 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
     {
       id: "3",
       title: "Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi",
-      lead: "Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.",
-      author: "Bởi ICUE",
-      date: "26 Tháng 9, 2024",
+      lead: "<div style=\"line-height: 1.5;\">*Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, **Viện NCKTXD&ĐT** đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi **bão Yagi**.*</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 26 Tháng 9, 2024*</div>",
       images: [
         {
           src: "/public/news/articles/article_3/area_affected.png",
@@ -676,9 +676,9 @@ Các hộ này được trao số quà **gấp 4 lần** các hộ khác. </div>
     {
       id: "4",
       title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 và định hướng 2030",
-      lead: "Sáng Kiến Đô Thị Thông Minh của Việt Nam: Thành Tựu và Lộ Trình 2025-2030",
-      author: "Bởi ICUE",
-      date: "13 Tháng 8, 2025",
+      lead: "<div style=\"line-height: 1.5;\"><em>Sáng Kiến <strong>Đô Thị Thông Minh</strong> của Việt Nam: Thành Tựu và Lộ Trình <strong>2025-2030</strong></em></div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 13 Tháng 8, 2025*</div>",
       images: [
         {
           src: "/public/news/articles/article_4/conference.jpg",
@@ -1473,11 +1473,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.title = article.title;
-    document.getElementById("article-title").textContent = article.title;
-    document.getElementById("article-lead").textContent = article.lead;
-    document.getElementById("article-author").textContent = `${article.author}`;
-    document.getElementById("article-date").textContent = article.date;
-    document.getElementById("article-date").setAttribute("datetime", article.date);
+
+    // CHANGE TO:
+    document.getElementById("article-title").innerHTML = renderMarkdown(article.title);
+    document.getElementById("article-lead").innerHTML = renderMarkdown(article.lead);
+    document.getElementById("article-author").innerHTML = renderMarkdown(article.author);
+    document.getElementById("article-date").innerHTML = renderMarkdown(article.date);
     
     // Handle multiple images/videos
     if (article.images && article.images.length > 0) {
