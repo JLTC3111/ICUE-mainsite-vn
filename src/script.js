@@ -1601,14 +1601,14 @@ window.initMobileNewsSlider = () => {
   if (!cards.length || !gridContainer) return;
 
   // Detect touch device
-  const isTruelyTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   let currentIndex = 0;
   let startX = 0;
   let endX = 0;
 
   function updateSlider() {
-    if (window.innerWidth <= 1440 && isTruelyTouchDevice) {
+    if (window.innerWidth <= 1440 && isTouchDevice) {
       
       Object.assign(gridContainer.style, {
         display: "flex",
