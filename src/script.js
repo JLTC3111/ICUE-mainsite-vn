@@ -2221,7 +2221,6 @@ window.clearJobSearch = function() {
   }
 };
 
-// Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
   if (window.JobBoard) {
       window.JobBoard.init();
