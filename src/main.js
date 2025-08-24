@@ -404,7 +404,7 @@ footer {
                     <a href="#/cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
-                    <a href="#" class="company-deck">
+                    <a class="company-deck" onclick="openChatbot();">
                         Hợp Tác Cùng Chúng Tôi
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>

@@ -464,7 +464,6 @@ window.realSlamnorSlam = function () {
   const dust = document.querySelector('#textSlam .slam-dust');
 
   if (!text || !dust) {
-    console.warn("Missing .slam-text or .slam-dust");
     return;
   }
 
@@ -816,6 +815,7 @@ window.loadPage = (page) => {
               calendarModal();
               CommunityGallery.init();
               isTruelyTouchDevice();
+              initializeChatbot();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -2910,6 +2910,203 @@ window.CommunityGallery = (function () {
       window.CommunityPage.init();
     }
   });
+
+// Global Chatbot Function
+window.initializeChatbot = function(targetSelector = 'body', css = '') {
+    if (document.getElementById('ai-chatbot')) {
+        return false;
+    }
+
+    const chatbotHTML = `
+        <div id="ai-chatbot" class="chatbot-container">
+            <div class="chatbot-toggle" id="chatbot-toggle">
+                <svg width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-bubble-message-dot-2" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>1049</title> <defs> </defs> <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z" fill="#34efeb" class="si-glyph-fill"> </path> </g> </g></svg>
+                <span class="chatbot-badge">AI</span>
+            </div>
+            
+            <div class="chatbot-window" id="chatbot-window">
+                <div class="chatbot-header">
+                    <div class="chatbot-title">
+                        <span>Trợ Lý AI-ICUE</span>
+                    </div>
+                    <button class="chatbot-close" id="chatbot-close">
+                        <svg width="22px" height="22px" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_8_53)"> <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path> <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path> <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path> </g> <path d="M4.99951 16.55V19.9C4.99922 20.3102 5.11905 20.7114 5.34418 21.0542C5.56931 21.397 5.88994 21.6665 6.26642 21.8292C6.6429 21.9919 7.05875 22.0408 7.46271 21.9698C7.86666 21.8989 8.24103 21.7113 8.53955 21.4301L11.1495 18.9701H12.0195C17.5395 18.9701 22.0195 15.1701 22.0195 10.4701C22.0195 5.77009 17.5395 1.97009 12.0195 1.97009C6.49953 1.97009 2.01953 5.78009 2.01953 10.4701C2.042 11.6389 2.32261 12.7882 2.84125 13.8358C3.35989 14.8835 4.10373 15.8035 5.01953 16.53L4.99951 16.55Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <defs> <clipPath id="clip0_8_53"> <rect width="10" height="2" fill="white" transform="translate(7 10)"></rect> </clipPath> </defs> </g></svg>
+                        </div>
+                        <div class="message-content">
+                            Xin chào! Tôi là trợ lý AI của ICUE. Tôi có thể giúp bạn tìm hiểu về các dự án, dịch vụ và thông tin của chúng tôi. Bạn cần hỗ trợ gì?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chatbot-input-area">
+                    <div class="chatbot-input-container">
+                        <input type="text" id="chatbot-input" placeholder="Nhập câu hỏi của bạn..." />
+                        <button class="chatbot-send" id="chatbot-send">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chatbot-suggestions">
+                        <button class="suggestion-btn">Dịch vụ của ICUE</button>
+                        <button class="suggestion-btn">Dự án gần đây</button>
+                        <button class="suggestion-btn">Liên hệ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Inject CSS if provided
+    if (css && !document.querySelector('#icue-chatbot-style')) {
+        const styleElement = document.createElement('style');
+        styleElement.id = 'icue-chatbot-style';
+        styleElement.textContent = css;
+        document.head.appendChild(styleElement);
+    }
+
+    // Inject HTML
+    const targetElement = document.querySelector(targetSelector);
+    if (!targetElement) {
+        console.error('Chatbot: Target element not found');
+        return false;
+    }
+
+    targetElement.insertAdjacentHTML('beforeend', chatbotHTML);
+
+    // Initialize chatbot functionality
+    setupChatbotEvents();
+    
+    return true;
+
+    // Function to set up chatbot events
+    function setupChatbotEvents() {
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+        
+        if (!chatbotToggle || !chatbotWindow) return;
+        
+        let isOpen = false;
+        
+        // Toggle chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            isOpen = !isOpen;
+            if (isOpen) {
+                chatbotWindow.classList.add('open');
+            } else {
+                chatbotWindow.classList.remove('open');
+            }
+        });
+        
+        // Close chatbot
+        chatbotClose?.addEventListener('click', () => {
+            isOpen = false;
+            chatbotWindow.classList.remove('open');
+        });
+        
+        // Send message function
+        const sendMessage = (message) => {
+            if (!message.trim()) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.innerHTML = `
+                <div class="message-avatar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+                <div class="message-content">${message}</div>
+            `;
+            chatbotMessages.appendChild(userMessage);
+            
+            // Clear input
+            chatbotInput.value = '';
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            
+            // Simulate bot response (placeholder)
+            setTimeout(() => {
+                const botResponse = generateBotResponse(message);
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot-message';
+                botMessage.innerHTML = `
+                    <div class="message-avatar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.4L1 22l5.6-2.05C8.96 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">${botResponse}</div>
+                `;
+                chatbotMessages.appendChild(botMessage);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }, 1000);
+        };
+        
+        // Send button click
+        chatbotSend?.addEventListener('click', () => {
+            sendMessage(chatbotInput.value);
+        });
+        
+        // Enter key to send
+        chatbotInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage(chatbotInput.value);
+            }
+        });
+        
+        // Suggestion buttons
+        suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sendMessage(btn.textContent);
+            });
+        });
+        
+        // Company deck link to open chatbot
+        const openChatbotLink = document.getElementById('open-chatbot-link');
+        if (openChatbotLink) {
+            openChatbotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                isOpen = true;
+                chatbotWindow.classList.add('open');
+            });
+        }
+    }
+    
+    // Bot response generator
+    function generateBotResponse(userMessage) {
+        const message = userMessage.toLowerCase();
+        
+        // Simple response logic (placeholder for future AI integration)
+        if (message.includes('dịch vụ') || message.includes('service')) {
+            return 'ICUE cung cấp các dịch vụ nghiên cứu kinh tế xây dựng và đô thị, tư vấn phát triển bền vững, và quản lý dự án môi trường. Bạn muốn tìm hiểu chi tiết về dịch vụ nào?';
+        } else if (message.includes('dự án') || message.includes('project')) {
+            return 'Chúng tôi đã thực hiện nhiều dự án quan trọng như Công viên Âu Cơ tại Hội An, các dự án bảo tồn biển, và phát triển đô thị thông minh. Bạn có muốn xem thêm thông tin về dự án cụ thể nào không?';
+        } else if (message.includes('liên hệ') || message.includes('contact')) {
+            return 'Bạn có thể liên hệ với ICUE qua email hoặc điện thoại. Vui lòng truy cập trang Liên Hệ để biết thông tin chi tiết. Tôi có thể hỗ trợ bạn điều gì khác?';
+        } else if (message.includes('xin chào') || message.includes('hello')) {
+            return 'Xin chào! Rất vui được hỗ trợ bạn. Tôi có thể giúp bạn tìm hiểu về các dịch vụ, dự án, hoặc thông tin liên hệ của ICUE. Bạn cần hỗ trợ gì?';
+        } else {
+            return 'Cảm ơn bạn đã liên hệ! Hiện tại tôi đang trong giai đoạn phát triển. Để được hỗ trợ tốt nhất, vui lòng liên hệ trực tiếp với đội ngũ ICUE qua trang Liên Hệ. Tôi sẽ được cải thiện để phục vụ bạn tốt hơn trong tương lai!';
+        }
+    }
+};
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
