@@ -1519,7 +1519,7 @@ body.loaded #app {
     color: #f1683a;
     margin: 8px auto;
 }
-/* Container for the buttons (Grid setup) */
+
 .work-carousel .work-list .work-item .work-buttons {
     display: grid;
     grid-template-columns: repeat(2, 120px);
@@ -1527,54 +1527,43 @@ body.loaded #app {
     gap: 5px;
     margin-top: 20px;
 }
-/* Styles for the individual buttons */
+
 .work-carousel .work-list .work-item .work-buttons button {
     border: none;
     letter-spacing: 3px;
     font-size: 12px;
     font-family: Poppins;
     font-weight: 500;
-    color: white; /* Assuming your default text color is white for contrast with the general button gradient */
-    cursor: pointer; /* Ensure pointer cursor */
+    color: white; 
+    cursor: pointer;
     padding: 1.5px;
-
-    /* --- Essential for the hover wipe animation on EACH BUTTON --- */
-    position: relative; /* Make sure pseudo-element positions relative to the button */
-    overflow: hidden; /* Hides the ::before element until it slides in */
-    z-index: 1; /* Ensures text is above the pseudo-element background */
-
-    /* Default button background (from your global button style, but you might want to specify here for clarity) */
-    /* Example if it needs to be specific: background: linear-gradient(to bottom, #5d82c6, #0a1a3a); */
-
-    /* Smooth transition for the button's own properties */
+    position: relative; 
+    overflow: hidden;
+    z-index: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
-/* Pseudo-element for the sliding background animation */
-.work-carousel .work-list .work-item .work-buttons button::before { /* Target the button's ::before */
+.work-carousel .work-list .work-item .work-buttons button::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* This is the vibrant multi-color gradient that will slide in on hover */
   background: linear-gradient(to right, #1d9ae7, #0077c2, #004b8d, #0a1a3a);
-  z-index: -1; /* Puts this layer behind the button's text */
-  transform: translateX(-100%); /* Starts off-screen to the left */
-  transition: transform 0.4s ease-out; /* Smooth animation for the slide-in */
+  z-index: -1; 
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
 }
 
-/* Hover state for the button's pseudo-element (to trigger the wipe) */
-.work-carousel .work-list .work-item .work-buttons button:hover::before { /* Corrected selector */
-  transform: translateX(0%); /* Slides the pseudo-element to cover the button */
+.work-carousel .work-list .work-item .work-buttons button:hover::before {
+  transform: translateX(0%); 
 }
 
-/* Hover effects for the button itself (scale, shadow, text color) */
-.work-carousel .work-list .work-item .work-buttons button:hover { /* Target the individual button on hover */
-    transform: scale(1.1); /* Scales the individual button */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Changes shadow on the individual button */
-    color: #fff; /* Changes text color to black on hover for contrast with new background */
+.work-carousel .work-list .work-item .work-buttons button:hover { 
+    transform: scale(1.1); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); 
+    color: #fff;
 }
 .work-carousel .work-list .work-item .work-buttons button:nth-child(2){
     background-color: transparent;
@@ -2700,14 +2689,20 @@ textarea {
 
 /* Button Styles */
 button {
-  padding: 10px; /* Padding inside button */
+  padding: 10px; 
   background: linear-gradient(to bottom, #5d82c6, #0a1a3a);
-  color: rgb(255, 255, 255); /* White text */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
-  transition: background-color 0.3s; /* Smooth background transition */
+  color: rgb(255, 255, 255); 
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+  transition: transform 0.75s, background 0.3s; 
+}
+
+button:hover {
+  background: linear-gradient(to top, #1d9ae7, #0a1a3a);
+  will-change: background, transform;
+  transform: rotate(-2deg);
 }
 
 /* Contact Info Styles */

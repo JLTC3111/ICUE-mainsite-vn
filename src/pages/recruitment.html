@@ -77,10 +77,30 @@
 
         .search-form {
             display: flex;
-            gap: 15px;
+            gap: 1.5px;
             max-width: 600px;
             margin: 0 auto;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+         .clear-button {
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .clear-button:hover {
+            background-color: #d32f2f !important;
+        }
+        
+        .clear-button:active {
+            transform: translateY(1px);
         }
 
         .search-input {
@@ -100,20 +120,23 @@
         }
 
         .search-button {
-            background: #667eea;
+            background-color: #f44336;
             color: white;
-            padding: 15px 30px;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s ease;
-            min-width: 120px;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .search-button:hover {
+            background-color: #d32f2f;
         }
 
-        .search-button:hover {
-            background: #5a6fd8;
+        .search-button:active {
+            transform: translateY(1px);
         }
 
         /* Workplace Gallery */
@@ -318,10 +341,6 @@
                 padding: 60px 0 50px 0;
             }
 
-            .search-form {
-                flex-direction: column;
-            }
-
             .search-input,
             .search-button {
                 min-width: auto;
@@ -340,6 +359,11 @@
             .jobs-section,
             .benefits-section {
                 padding: 50px 0;
+            }
+
+            .clear-button {
+                margin-left: 0;
+                margin-top: 10px;
             }
         }
 
@@ -366,7 +390,7 @@
                 <form class="search-form job-search-form" onsubmit="searchJobs(event)">
                     <input type="text" class="search-input" placeholder="Tìm kiếm theo vị trí, phòng ban, kỹ năng..." id="job-search">
                     <button type="submit" id="search-button" class="search-button">Tìm kiếm</button>
-                    <button type="button" class="clear-button" onclick="clearJobSearch()" style="margin-left: 10px;">Xóa</button>
+                    <button type="button" class="clear-button" onclick="clearJobSearch()" style="margin-left: 5px;">Xóa</button>
                 </form>
             </div>
         </div>
@@ -442,46 +466,6 @@
             </div>
         </div>
     </section>
-
-    <style>
-        .clear-button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-left: 10px;
-        }
-        
-        .clear-button:hover {
-            background-color: #d32f2f;
-        }
-        
-        .clear-button:active {
-            transform: translateY(1px);
-        }
-        
-        .search-form {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .search-form {
-                flex-direction: column;
-            }
-            
-            .clear-button {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-        }
-    </style>
 </body>
 
 </html>

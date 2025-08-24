@@ -61,7 +61,6 @@ body {
 
 .content-wrapper {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 24px;
     box-shadow: 
         0 20px 25px -5px rgba(0, 0, 0, 0.1),
         0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -72,7 +71,7 @@ body {
 
 .tabs {
     display: flex;
-    background: linear-gradient(135deg, #4d5053 0%, #2a3b4c 100%);
+    background: linear-gradient(135deg, #4d5053 0%, #368adf 100%);
     border-bottom: 1px solid rgba(226, 232, 240, 0.8);
     position: relative;
 }
@@ -97,15 +96,14 @@ body {
     transform: translateY(-1px);
     box-shadow: 1px 2px 5px rgba(255, 255, 255, 0.1);
     text-decoration: underline;
+    will-change: transform;
 }
 
 .tab.active {
-    background: linear-gradient(135deg, #282828 0%, #221e6e 100%);
+    background: linear-gradient(135deg, #888888 0%, #2821a8 100%);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
-    border-radius: 12px 12px 0 0;
-    margin: 0 4px;
 }
 
 .tab-content {
