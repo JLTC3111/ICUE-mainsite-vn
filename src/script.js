@@ -2507,7 +2507,7 @@ window.AwardsPage = (function () {
                 <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 59.312 59.312" xml:space="preserve" fill="#000" stroke="#000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffffff;" d="M41.507,0c-9.225,0-16.729,7.504-16.729,16.728c0,2.829,0.711,5.492,1.956,7.831L2.525,48.979 c-1.944,1.962-1.93,5.127,0.031,7.071c0.975,0.967,2.248,1.449,3.52,1.449c1.287,0,2.573-0.494,3.551-1.479l2.831-2.855 l6.148,6.147l3.662-3.662l-2.951-3.027l2.148-2.094l2.924,3l2.702-2.701l-6.185-6.186l12.945-13.059 c2.297,1.188,4.896,1.872,7.656,1.872c9.224,0,16.728-7.504,16.728-16.728S50.73,0,41.507,0z M41.507,27.456 c-5.917,0-10.729-4.812-10.729-10.728S35.59,6,41.507,6c5.915,0,10.728,4.812,10.728,10.728S47.422,27.456,41.507,27.456z"></path> </g> </g></svg>
                 Find Local Chapter
               `;
-            }, 2000);
+            }, 200);
           }
         });
       });
