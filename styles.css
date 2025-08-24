@@ -125,7 +125,7 @@ nav a {
     left: 0;
     width: 350px;
     height: 500px;
-    background: white;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
     border-radius: 16px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     display: none;
@@ -174,11 +174,13 @@ nav a {
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
-    transition: background 0.2s ease;
+    transition: background, transform 0.2s ease;
 }
 
 .chatbot-close:hover {
+    transform: scale(1.25);
     background: rgba(255, 255, 255, 0.2);
+    will-change: background, transform;
 }
 
 .chatbot-messages {
@@ -264,7 +266,14 @@ nav a {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
+}
+.chatbot-send svg {
+    transition: transform 0.75s ease-in-out;
+}
+.chatbot-send:hover svg {
+    transform: rotate(-360deg) !important;
+    will-change: transform;
 }
 
 .chatbot-send:hover {
@@ -299,7 +308,7 @@ nav a {
 
 @media (max-width: 768px) {
     .chatbot-window {
-        width: 320px;
+        width: 300px;
         height: 450px;
     }
     
@@ -2562,8 +2571,8 @@ body.loaded #app {
   width: 100%;
   height: 100%;
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeead, #d4a5a5, #9b5de5);
-  z-index: -1; /* Puts the pseudo-element behind the button's text */
-  transform: translateX(-100%); /* Starts completely off to the left, outside the button */
+  z-index: -1; 
+  transform: translateX(-100%);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 .balloon-button:hover::before {

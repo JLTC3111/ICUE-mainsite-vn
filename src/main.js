@@ -255,7 +255,7 @@ footer {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
     background: #c8ff00;
     color: #000;
     padding: 8px 20px;
@@ -265,6 +265,7 @@ footer {
     transition: all 0.4s ease;
     overflow: hidden;
     z-index: 1;
+    margin-right: 1rem;
 }
 .company-deck::before {
     content: '';
@@ -286,9 +287,13 @@ footer {
     color: #000000;
 }
 .company-deck svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
+    transition: transform 1.3s ease;
 }
+.company-deck:hover svg {
+    transform: rotate(360deg);
+}    
 .footer-toggle {
     color: #ffffff;
     background: none;
@@ -310,25 +315,25 @@ footer {
     gap: 15px;
 }
 .underline-hover {
-  position: relative;
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
 }
 .underline-hover::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 25%; 
-  width: 50%; 
-  height: 1px;
-  background-color: #ffffff;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.3s ease;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%; 
+    width: 50%; 
+    height: 1px;
+    background-color: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
 }
 .underline-hover:hover::after {
-  transform: scaleX(1);
+    transform: scaleX(1);
 }
 
 @media (max-width: 768px) {
@@ -404,7 +409,7 @@ footer {
                     <a href="#/cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
-                    <a class="company-deck" onclick="openChatbot();">
+                    <a href="#/Contact" class="company-deck">
                         Hợp Tác Cùng Chúng Tôi
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>

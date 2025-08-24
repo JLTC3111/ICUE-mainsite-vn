@@ -1958,12 +1958,28 @@ window.JobBoard = (function() {
     }
   ];
 
+  // Function to highlight search terms in text
+  function highlightSearchTerms(text, searchTerm) {
+      if (!searchTerm) return text;
+      
+      const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+  }
 
-  // Function to render job positions
-  function renderJobs(jobs) {
+  // Function to remove highlights
+  function removeHighlights() {
+      const highlights = document.querySelectorAll('.search-highlight');
+      highlights.forEach(highlight => {
+          const parent = highlight.parentNode;
+          parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+          parent.normalize();
+      });
+  }
+
+  // Function to render job positions with optional highlighting
+  function renderJobs(jobs, searchTerm = '') {
       const jobsContainer = document.getElementById('jobs-container');
       if (!jobsContainer) {
-          // Only log error if we're on a careers/jobs page
           if (window.location.hash && window.location.hash.toLowerCase().includes('career')) {
               console.error('Jobs container not found');
           }
@@ -1977,13 +1993,19 @@ window.JobBoard = (function() {
           jobCard.className = 'job-card';
           jobCard.onclick = () => openJobDetail(job);
           
+          // Apply highlighting if search term exists
+          const highlightedTitle = highlightSearchTerms(job.title, searchTerm);
+          const highlightedDepartment = highlightSearchTerms(job.department, searchTerm);
+          const highlightedDescription = highlightSearchTerms(job.description, searchTerm);
+          const highlightedTags = job.tags.map(tag => highlightSearchTerms(tag, searchTerm));
+          
           jobCard.innerHTML = `
-              <h3 class="job-title">${job.title}</h3>
-              <div class="job-department">${job.department}</div>
+              <h3 class="job-title">${highlightedTitle}</h3>
+              <div class="job-department">${highlightedDepartment}</div>
               <div class="job-location"><svg width="16px" height="16px" viewBox="-3 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>pin_sharp_circle [#624]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-223.000000, -5439.000000)" fill="#000000"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M176,5286.219 C176,5287.324 175.105,5288.219 174,5288.219 C172.895,5288.219 172,5287.324 172,5286.219 C172,5285.114 172.895,5284.219 174,5284.219 C175.105,5284.219 176,5285.114 176,5286.219 M174,5296 C174,5296 169,5289 169,5286 C169,5283.243 171.243,5281 174,5281 C176.757,5281 179,5283.243 179,5286 C179,5289 174,5296 174,5296 M174,5279 C170.134,5279 167,5282.134 167,5286 C167,5289.866 174,5299 174,5299 C174,5299 181,5289.866 181,5286 C181,5282.134 177.866,5279 174,5279" id="pin_sharp_circle-[#624]"> </path> </g> </g> </g> </g></svg>${job.location}</div>
-              <div class="job-description">${job.description}</div>
+              <div class="job-description">${highlightedDescription}</div>
               <div class="job-tags">
-                  ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                  ${highlightedTags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
               </div>
           `;
           
@@ -1991,16 +2013,26 @@ window.JobBoard = (function() {
       });
   }
 
-  // Function to search jobs
+  // Function to search jobs with highlighting and auto-scroll
   function searchJobs(event) {
       event.preventDefault();
-      const searchTerm = document.getElementById('job-search').value.toLowerCase();
+      const searchInput = document.getElementById('job-search');
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      
+      // Clear search message
+      const existingMessage = document.querySelector('.search-result-message');
+      if (existingMessage) {
+          existingMessage.remove();
+      }
       
       if (!searchTerm) {
+          // If search is cleared, remove highlights and show all jobs
+          removeHighlights();
           renderJobs(jobPositions);
           return;
       }
 
+      // Filter jobs based on search term
       const filteredJobs = jobPositions.filter(job => 
           job.title.toLowerCase().includes(searchTerm) ||
           job.department.toLowerCase().includes(searchTerm) ||
@@ -2008,14 +2040,49 @@ window.JobBoard = (function() {
           job.tags.some(tag => tag.toLowerCase().includes(searchTerm))
       );
 
-      renderJobs(filteredJobs);
+      // Render jobs with highlighting
+      renderJobs(filteredJobs, searchTerm);
+      
+      // Scroll to jobs section if matches found
+      if (filteredJobs.length > 0) {
+          const jobsSection = document.getElementById('open-positions') || 
+                             document.getElementById('jobs-container') || 
+                             document.querySelector('.jobs-section');
+          
+          if (jobsSection) {
+              setTimeout(() => {
+                  jobsSection.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                  });
+              }, 100); // Small delay to ensure rendering is complete
+          }
+      }
       
       // Show search results message
       const resultMessage = filteredJobs.length === 0 
-          ? `No positions found for "${searchTerm}"`
-          : `Found ${filteredJobs.length} position(s) matching "${searchTerm}"`;
+          ? `Không tìm thấy vị trí nào cho "${searchInput.value}"`
+          : `Tìm thấy ${filteredJobs.length} vị trí phù hợp với "${searchInput.value}"`;
           
       showSearchMessage(resultMessage);
+  }
+
+  // Function to clear search and remove highlights
+  function clearSearch() {
+      const searchInput = document.getElementById('job-search');
+      if (searchInput) {
+          searchInput.value = '';
+      }
+      
+      // Remove highlights and show all jobs
+      removeHighlights();
+      renderJobs(jobPositions);
+      
+      // Clear search message
+      const existingMessage = document.querySelector('.search-result-message');
+      if (existingMessage) {
+          existingMessage.remove();
+      }
   }
 
   // Function to show search message
@@ -2046,7 +2113,33 @@ window.JobBoard = (function() {
   function initialize() {
       renderJobs(jobPositions);
       
-      // Smooth scroll for CTA button
+      // Set up search functionality
+      const searchInput = document.getElementById('job-search');
+      const searchForm = document.querySelector('.job-search-form') || document.querySelector('form');
+      
+      if (searchInput) {
+          // Handle search on form submit
+          if (searchForm) {
+              searchForm.addEventListener('submit', searchJobs);
+          }
+          
+          // Handle search on input change (real-time search)
+          searchInput.addEventListener('input', function(e) {
+              // Add slight delay for better performance
+              clearTimeout(this.searchTimeout);
+              this.searchTimeout = setTimeout(() => {
+                  searchJobs(e);
+              }, 300);
+          });
+          
+          // Clear search when input is emptied
+          searchInput.addEventListener('keyup', function(e) {
+              if (e.target.value === '') {
+                  clearSearch();
+              }
+          });
+      }
+      
       const ctaButton = document.querySelector('.cta-button');
       if (ctaButton) {
           ctaButton.addEventListener('click', function(e) {
@@ -2059,6 +2152,37 @@ window.JobBoard = (function() {
               }
           });
       }
+      
+      // Add CSS for search highlighting if not already present
+      if (!document.getElementById('job-search-highlight-styles')) {
+          const style = document.createElement('style');
+          style.id = 'job-search-highlight-styles';
+          style.textContent = `
+              .search-highlight {
+                  background-color: #ffeb3b;
+                  color: #000;
+                  padding: 2px 4px;
+                  border-radius: 3px;
+                  font-weight: bold;
+              }
+              
+              .search-result-message {
+                  animation: slideIn 0.3s ease-out;
+              }
+              
+              @keyframes slideIn {
+                  from {
+                      opacity: 0;
+                      transform: translateY(-10px);
+                  }
+                  to {
+                      opacity: 1;
+                      transform: translateY(0);
+                  }
+              }
+          `;
+          document.head.appendChild(style);
+      }
   }
 
   // Public API - expose these functions globally
@@ -2066,6 +2190,9 @@ window.JobBoard = (function() {
       init: initialize,
       renderJobs: renderJobs,
       searchJobs: searchJobs,
+      clearSearch: clearSearch,
+      highlightSearchTerms: highlightSearchTerms,
+      removeHighlights: removeHighlights,
       getJobPositions: () => [...jobPositions], // Return a copy to prevent mutation
       addJob: (job) => {
           jobPositions.push(job);
@@ -2080,6 +2207,19 @@ window.JobBoard = (function() {
       }
   };
 })();
+
+// Make JobBoard functions globally accessible for HTML event handlers
+window.searchJobs = function(event) {
+  if (window.JobBoard && window.JobBoard.searchJobs) {
+      return window.JobBoard.searchJobs(event);
+  }
+};
+
+window.clearJobSearch = function() {
+  if (window.JobBoard && window.JobBoard.clearSearch) {
+      return window.JobBoard.clearSearch();
+  }
+};
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {

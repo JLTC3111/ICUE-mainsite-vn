@@ -363,9 +363,10 @@
             <div class="search-container">
                 <h2 class="search-title">Cơ Hội Nghề Nghiệp</h2>
                 <div class="search-subtitle">Tìm kiếm các vị trí phù hợp với kỹ năng và đam mê của bạn</div>
-                <form class="search-form" onsubmit="searchJobs(event)">
-                    <input type="text" class="search-input" placeholder="" id="job-search" onkeyup="searchDocuments(this.value)">
-                    <button type="submit" class="search-button">Tìm kiếm</button>
+                <form class="search-form job-search-form" onsubmit="searchJobs(event)">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm theo vị trí, phòng ban, kỹ năng..." id="job-search">
+                    <button type="submit" id="search-button" class="search-button">Tìm kiếm</button>
+                    <button type="button" class="clear-button" onclick="clearJobSearch()" style="margin-left: 10px;">Xóa</button>
                 </form>
             </div>
         </div>
@@ -441,6 +442,46 @@
             </div>
         </div>
     </section>
+
+    <style>
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .clear-button:hover {
+            background-color: #d32f2f;
+        }
+        
+        .clear-button:active {
+            transform: translateY(1px);
+        }
+        
+        .search-form {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .clear-button {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
 </body>
 
 </html>
