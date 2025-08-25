@@ -1191,7 +1191,7 @@ function createImageModal() {
         ">
           <div id="modal-caption" style="
             font-size: 16px;
-            margin-bottom: 5px;
+            margin: 15px;
           "></div>
           <div id="modal-counter" style="
             font-size: 14px;
