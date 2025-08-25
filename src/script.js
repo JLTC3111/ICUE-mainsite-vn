@@ -3402,7 +3402,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             <div class="chatbot-window" id="chatbot-window">
                 <div class="chatbot-header">
                     <div class="chatbot-title">
-                        <span>Trợ Lý AI-ICUE</span>
+                        <span>ICUE-AI Chatbot</span>
                     </div>
                     <button class="chatbot-close" id="chatbot-close">
                         <svg width="22px" height="22px" viewBox="0 0 24 24" fill="currentColor">
@@ -3417,14 +3417,14 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
                             <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_8_53)"> <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path> <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path> <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path> </g> <path d="M4.99951 16.55V19.9C4.99922 20.3102 5.11905 20.7114 5.34418 21.0542C5.56931 21.397 5.88994 21.6665 6.26642 21.8292C6.6429 21.9919 7.05875 22.0408 7.46271 21.9698C7.86666 21.8989 8.24103 21.7113 8.53955 21.4301L11.1495 18.9701H12.0195C17.5395 18.9701 22.0195 15.1701 22.0195 10.4701C22.0195 5.77009 17.5395 1.97009 12.0195 1.97009C6.49953 1.97009 2.01953 5.78009 2.01953 10.4701C2.042 11.6389 2.32261 12.7882 2.84125 13.8358C3.35989 14.8835 4.10373 15.8035 5.01953 16.53L4.99951 16.55Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <defs> <clipPath id="clip0_8_53"> <rect width="10" height="2" fill="white" transform="translate(7 10)"></rect> </clipPath> </defs> </g></svg>
                         </div>
                         <div class="message-content">
-                            Xin chào! Tôi là trợ lý AI của ICUE. Tôi có thể giúp bạn tìm hiểu về các dự án, dịch vụ và thông tin của chúng tôi. Bạn cần hỗ trợ gì?
+                            Hello! I am ICUE's AI assistant. I can help you learn about our projects, services, and information. What do you need assistance with?
                         </div>
                     </div>
                 </div>
                 
                 <div class="chatbot-input-area">
                     <div class="chatbot-input-container">
-                        <input type="text" id="chatbot-input" placeholder="Nhập câu hỏi của bạn..." />
+                        <input type="text" id="chatbot-input" placeholder="Ask Anything..." />
                         <button class="chatbot-send" id="chatbot-send">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -3432,9 +3432,9 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
                         </button>
                     </div>
                     <div class="chatbot-suggestions">
-                        <button class="suggestion-btn">Dịch vụ của ICUE</button>
-                        <button class="suggestion-btn">Dự án gần đây</button>
-                        <button class="suggestion-btn">Liên hệ</button>
+                        <button class="suggestion-btn">Services</button>
+                        <button class="suggestion-btn">Recent Projects</button>
+                        <button class="suggestion-btn">Contact</button>
                     </div>
                 </div>
             </div>
@@ -3475,6 +3475,113 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         
         if (!chatbotToggle || !chatbotWindow) return;
         
+        // Local storage chat history
+        const CHAT_HISTORY_KEY = 'icueChatbotHistory';
+        
+        function saveChatHistory(history) {
+            try {
+                localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.warn('Could not save chat history to localStorage:', e);
+            }
+        }
+        
+        function loadChatHistory() {
+            try {
+                const raw = localStorage.getItem(CHAT_HISTORY_KEY);
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                console.warn('Could not load chat history from localStorage:', e);
+                return [];
+            }
+        }
+        
+        let chatHistory = loadChatHistory();
+        
+        function addMessageToHistory(messageObj) {
+            chatHistory.push({
+                ...messageObj,
+                timestamp: new Date().toISOString()
+            });
+            // Keep only last 50 messages to prevent localStorage bloat
+            if (chatHistory.length > 50) {
+                chatHistory = chatHistory.slice(-50);
+            }
+            saveChatHistory(chatHistory);
+        }
+        
+        function renderChatHistory() {
+            // Clear existing messages except the initial bot message
+            const initialMessage = chatbotMessages.querySelector('.bot-message');
+            chatbotMessages.innerHTML = '';
+            
+            // Re-add initial message if no history exists
+            if (chatHistory.length === 0 && initialMessage) {
+                chatbotMessages.appendChild(initialMessage);
+                return;
+            }
+            
+            // Render history
+            chatHistory.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.role === 'user' ? 'user-message' : 'bot-message'}`;
+                
+                if (msg.role === 'user') {
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="message-content">${msg.content}</div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">
+                            <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path>
+                                <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path>
+                                <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path>
+                            </svg>
+                        </div>
+                        <div class="message-content">${msg.content}</div>
+                    `;
+                }
+                
+                chatbotMessages.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Auto-close chatbot functionality
+        function closeChatbot() {
+            chatbotWindow.classList.remove('open');
+            isOpen = false;
+        }
+        
+        // Auto-close on page load and navigation
+        window.addEventListener('DOMContentLoaded', closeChatbot);
+        window.addEventListener('hashchange', closeChatbot);
+        
+        // Auto-close when drawer menu opens/closes
+        const originalToggleDrawerMenu = window.toggleDrawerMenu;
+        if (originalToggleDrawerMenu) {
+            window.toggleDrawerMenu = function() {
+                closeChatbot(); // Close chatbot when drawer menu is toggled
+                return originalToggleDrawerMenu.apply(this, arguments);
+            };
+        }
+        
+        const originalCloseDrawerMenu = window.closeDrawerMenu;
+        if (originalCloseDrawerMenu) {
+            window.closeDrawerMenu = function() {
+                closeChatbot(); // Close chatbot when drawer menu is closed
+                return originalCloseDrawerMenu.apply(this, arguments);
+            };
+        }
+        
         let isOpen = false;
         
         // Toggle chatbot window
@@ -3482,6 +3589,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             isOpen = !isOpen;
             if (isOpen) {
                 chatbotWindow.classList.add('open');
+                // Render chat history when opening
+                renderChatHistory();
             } else {
                 chatbotWindow.classList.remove('open');
             }
@@ -3497,7 +3606,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const sendMessage = (message) => {
             if (!message.trim()) return;
             
-            // Add user message
+            // Add to chat history
+            addMessageToHistory({
+                role: 'user',
+                content: message.trim()
+            });
+            
+            // Add user message to UI
             const userMessage = document.createElement('div');
             userMessage.className = 'message user-message';
             userMessage.innerHTML = `
@@ -3519,6 +3634,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             // Simulate bot response (placeholder)
             setTimeout(() => {
                 const botResponse = generateBotResponse(message);
+                
+                // Add to chat history
+                addMessageToHistory({
+                    role: 'bot',
+                    content: botResponse
+                });
+                
                 const botMessage = document.createElement('div');
                 botMessage.className = 'message bot-message';
                 botMessage.innerHTML = `
@@ -3567,18 +3689,17 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     // Bot response generator
     function generateBotResponse(userMessage) {
         const message = userMessage.toLowerCase();
-        
-        // Simple response logic (placeholder for future AI integration)
+       
         if (message.includes('dịch vụ') || message.includes('service')) {
-            return 'ICUE cung cấp các dịch vụ nghiên cứu kinh tế xây dựng và đô thị, tư vấn phát triển bền vững, và quản lý dự án môi trường. Bạn muốn tìm hiểu chi tiết về dịch vụ nào?';
+            return 'ICUE provides research services in construction economics and urban development, sustainable development consulting, and environmental project management. Which service do you want to know more about?';
         } else if (message.includes('dự án') || message.includes('project')) {
-            return 'Chúng tôi đã thực hiện nhiều dự án quan trọng như Công viên Âu Cơ tại Hội An, các dự án bảo tồn biển, và phát triển đô thị thông minh. Bạn có muốn xem thêm thông tin về dự án cụ thể nào không?';
+            return 'We’ve carried out important projects like Âu Cơ Park in Hội An, marine conservation projects, and smart urban development projects. Want more details on a specific project?';
         } else if (message.includes('liên hệ') || message.includes('contact')) {
-            return 'Bạn có thể liên hệ với ICUE qua email hoặc điện thoại. Vui lòng truy cập trang Liên Hệ để biết thông tin chi tiết. Tôi có thể hỗ trợ bạn điều gì khác?';
+            return 'You can contact ICUE via email or phone. Please check the Contact page for details. How else can I help?';  
         } else if (message.includes('xin chào') || message.includes('hello')) {
-            return 'Xin chào! Rất vui được hỗ trợ bạn. Tôi có thể giúp bạn tìm hiểu về các dịch vụ, dự án, hoặc thông tin liên hệ của ICUE. Bạn cần hỗ trợ gì?';
+            return 'Hello! Happy to help. I can tell you about services, projects, or contact info for ICUE. What do you need?';
         } else {
-            return 'Cảm ơn bạn đã liên hệ! Hiện tại tôi đang trong giai đoạn phát triển. Để được hỗ trợ tốt nhất, vui lòng liên hệ trực tiếp với đội ngũ ICUE qua trang Liên Hệ. Tôi sẽ được cải thiện để phục vụ bạn tốt hơn trong tương lai!';
+            return 'Thanks for reaching out! I’m still under development, see our FAQs page for more info. For best support, please contact ICUE directly via the Contact page. I’ll be improved to serve you better soon!';
         }
     }
 };
