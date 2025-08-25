@@ -90,7 +90,7 @@ nav a {
     position: fixed;
     bottom: 55px;
     left: 25px;
-    z-index: 10000;
+    z-index: 1;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -2708,7 +2708,6 @@ button {
 button:hover {
   background: linear-gradient(to top, #1d9ae7, #0a1a3a);
   will-change: background, transform;
-  transform: rotate(-2deg);
 }
 
 /* Contact Info Styles */
