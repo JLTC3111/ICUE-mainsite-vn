@@ -1103,24 +1103,25 @@ function createImageModal() {
     ">
       <div class="modal-content" style="
         position: relative;
-        width: 55%;
+        width: 85%;
         height: auto;
         overflow: hidden;
-        max-width: 90%;
-        max-height: 90%;
+        max-width: 92.5%;
+        max-height: 92.5%;
         object-fit:cover;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-left: -2.5rem;
       ">
-        <button id="modal-close" style="
+        <button id="modal-close" class="modal-close" style="
           position: absolute;
-          top: -40px;
-          right: 0;
+          top: 0;
+          right: 50px;
           background: none;
           border: none;
           color: white;
-          font-size: 30px;
+          font-size: 50px;
           cursor: pointer;
           z-index: 10000;
         ">&times;</button>
@@ -1131,11 +1132,11 @@ function createImageModal() {
           align-items: center;
           justify-content: center;
           width: 100%;
-          height: 80vh;
+          height: 70vh;
         ">
           <button id="modal-prev" class="modal-arrow" style="
             position: absolute;
-            left: 10px;
+            left: 50px;
             background: transparent;
             border: none;
             color: white;
@@ -1170,7 +1171,7 @@ function createImageModal() {
           
           <button id="modal-next" class="modal-arrow" style="
             position: absolute;
-            right: 10px;
+            right: 50px;
             background: transparent;
             border: none;
             color: white;
@@ -1182,15 +1183,15 @@ function createImageModal() {
           "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
         </div>
         
-        <div style="
-          margin-top: 20px;
+        <div class="modal-description" style="
+          margin-top: 0px;
           text-align: center;
           color: white;
           max-width: 600px;
         ">
           <div id="modal-caption" style="
             font-size: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
           "></div>
           <div id="modal-counter" style="
             font-size: 14px;
@@ -1200,7 +1201,7 @@ function createImageModal() {
           "></div>
         </div>
         
-        <div id="modal-thumbnails" style="
+        <div id="modal-thumbnails" class="media-thumbnails" style="
           display: flex;
           gap: 10px;
           margin-top: 20px;
@@ -1217,6 +1218,20 @@ function createImageModal() {
     @media (max-width: 768px) {
       .modal-arrow {
         display: none !important;
+      }
+      .image-container {
+        margin-top: -75px !important;
+      }
+      .modal-close {
+        top: 0 !important;
+        right: 0 !important;
+        font-size: 30px !important;
+      }
+      .modal-description {
+        margin-top: -110px !important;
+      }
+      .media-thumbnails {
+        margin-top: -2.5px !important;
       }
     }
   `;
