@@ -3758,13 +3758,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Get current page from hash or determine from context
     function getCurrentPage() {
+      console.log('[Language Switcher] Detecting current page...');
+      console.log('[Language Switcher] Current hash:', currentHash);
+      console.log('[Language Switcher] Current path:', currentPath);
+      
       // Check hash-based routing first
       if (currentHash && currentHash.startsWith('#/')) {
-        return currentHash.substring(2); // Remove '#/'
+        const hashPage = currentHash.substring(2); // Remove '#/'
+        console.log('[Language Switcher] Detected hash page:', hashPage);
+        return hashPage;
       }
       
       // Check if there's a global currentPage variable
       if (typeof window.currentPage !== 'undefined' && window.currentPage) {
+        console.log('[Language Switcher] Found global currentPage:', window.currentPage);
         return window.currentPage;
       }
       
@@ -3772,7 +3779,9 @@ document.addEventListener("DOMContentLoaded", function() {
       if (currentPath && currentPath !== '/') {
         const pathSegments = currentPath.split('/').filter(segment => segment);
         if (pathSegments.length > 0) {
-          return pathSegments[pathSegments.length - 1];
+          const pathPage = pathSegments[pathSegments.length - 1];
+          console.log('[Language Switcher] Detected path page:', pathPage);
+          return pathPage;
         }
       }
       
@@ -3780,44 +3789,53 @@ document.addEventListener("DOMContentLoaded", function() {
       const titleElement = document.querySelector('title');
       if (titleElement) {
         const title = titleElement.textContent.toLowerCase();
-        if (title.includes('about') || title.includes('giới thiệu')) return 'About';
+        console.log('[Language Switcher] Checking title:', title);
+        if (title.includes('about') || title.includes('giới thiệu')) return 'aboutUs';
         if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
-        if (title.includes('project') || title.includes('dự án')) return 'Projects';
+        if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
         if (title.includes('news') || title.includes('tin tức')) return 'News';
         if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
-        if (title.includes('career') || title.includes('nghề nghiệp')) return 'Career';
+        if (title.includes('nhân lực') || title.includes('people')) return 'ourPeople';
+        if (title.includes('công việc') || title.includes('work')) return 'ourWork';
+        if (title.includes('cơ cấu') || title.includes('structure')) return 'orgStructure';
+        if (title.includes('chuyên gia') || title.includes('expert')) return 'meetOurExperts';
+        if (title.includes('cán bộ') || title.includes('core')) return 'coreTeam';
       }
       
       // Try to detect from current content or active elements
       const activeNavLink = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
       if (activeNavLink) {
         const linkText = activeNavLink.textContent.toLowerCase().trim();
-        if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'About';
+        console.log('[Language Switcher] Found active nav link:', linkText);
+        if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'aboutUs';
         if (linkText.includes('service') || linkText.includes('dịch vụ')) return 'Services';
-        if (linkText.includes('project') || linkText.includes('dự án')) return 'Projects';
+        if (linkText.includes('project') || linkText.includes('dự án')) return 'pastProjects';
         if (linkText.includes('news') || linkText.includes('tin tức')) return 'News';
         if (linkText.includes('contact') || linkText.includes('liên hệ')) return 'Contact';
-        if (linkText.includes('career') || linkText.includes('nghề nghiệp')) return 'Career';
+        if (linkText.includes('nhân lực') || linkText.includes('people')) return 'ourPeople';
+        if (linkText.includes('công việc') || linkText.includes('work')) return 'ourWork';
+        if (linkText.includes('cơ cấu') || linkText.includes('structure')) return 'orgStructure';
+        if (linkText.includes('chuyên gia') || linkText.includes('expert')) return 'meetOurExperts';
+        if (linkText.includes('cán bộ') || linkText.includes('core')) return 'coreTeam';
       }
       
       // Default fallback
+      console.log('[Language Switcher] Defaulting to Home page');
       return 'Home';
     }
 
-    // Page mapping between languages
+    // Page mapping between languages (using actual page names from navigation)
     const pageMapping = {
       'Home': 'Home',
-      'About': 'About', 
-      'Services': 'Services',
-      'Projects': 'Projects',
+      'aboutUs': 'aboutUs', 
+      'orgStructure': 'orgStructure',
+      'ourWork': 'ourWork',
+      'pastProjects': 'pastProjects',
       'News': 'News',
+      'ourPeople': 'ourPeople',
+      'meetOurExperts': 'meetOurExperts',
+      'coreTeam': 'coreTeam',
       'Contact': 'Contact',
-      'Career': 'Career',
-      'Work': 'Work',
-      'OurPeople': 'OurPeople',
-      'Awards': 'Awards',
-      'Community': 'Community',
-      'Donation': 'Donation',
       // Add any other page mappings as needed
     };
 
@@ -3825,11 +3843,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentPageName = getCurrentPage();
     const targetPageName = pageMapping[currentPageName] || 'Home';
     
+    console.log('[Language Switcher] Current page detected:', currentPageName);
+    console.log('[Language Switcher] Target page mapped:', targetPageName);
+    
     // Build target hash
     const targetHash = targetPageName === 'Home' ? '' : `#/${targetPageName}`;
     
-    // Build target URL with mapped page
-    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetHash}${currentSearch}`;
+    // Build target URL with mapped page (no extra slash before hash)
+    const targetUrl = `${currentProtocol}//${targetSite.domain}${targetHash}${currentSearch}`;
+    
+    console.log('[Language Switcher] Target URL:', targetUrl);
     
     // Update the language switcher elements
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
