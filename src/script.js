@@ -3756,8 +3756,80 @@ document.addEventListener("DOMContentLoaded", function() {
       targetSite = siteConfig.english;
     }
 
-    // Build target URL
-    const targetUrl = `${currentProtocol}//${targetSite.domain}${currentPath}${currentSearch}${currentHash}`;
+    // Get current page from hash or determine from context
+    function getCurrentPage() {
+      // Check hash-based routing first
+      if (currentHash && currentHash.startsWith('#/')) {
+        return currentHash.substring(2); // Remove '#/'
+      }
+      
+      // Check if there's a global currentPage variable
+      if (typeof window.currentPage !== 'undefined' && window.currentPage) {
+        return window.currentPage;
+      }
+      
+      // Try to detect from URL path
+      if (currentPath && currentPath !== '/') {
+        const pathSegments = currentPath.split('/').filter(segment => segment);
+        if (pathSegments.length > 0) {
+          return pathSegments[pathSegments.length - 1];
+        }
+      }
+      
+      // Try to detect from page title or meta tags
+      const titleElement = document.querySelector('title');
+      if (titleElement) {
+        const title = titleElement.textContent.toLowerCase();
+        if (title.includes('about') || title.includes('giới thiệu')) return 'About';
+        if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
+        if (title.includes('project') || title.includes('dự án')) return 'Projects';
+        if (title.includes('news') || title.includes('tin tức')) return 'News';
+        if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
+        if (title.includes('career') || title.includes('nghề nghiệp')) return 'Career';
+      }
+      
+      // Try to detect from current content or active elements
+      const activeNavLink = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
+      if (activeNavLink) {
+        const linkText = activeNavLink.textContent.toLowerCase().trim();
+        if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'About';
+        if (linkText.includes('service') || linkText.includes('dịch vụ')) return 'Services';
+        if (linkText.includes('project') || linkText.includes('dự án')) return 'Projects';
+        if (linkText.includes('news') || linkText.includes('tin tức')) return 'News';
+        if (linkText.includes('contact') || linkText.includes('liên hệ')) return 'Contact';
+        if (linkText.includes('career') || linkText.includes('nghề nghiệp')) return 'Career';
+      }
+      
+      // Default fallback
+      return 'Home';
+    }
+
+    // Page mapping between languages
+    const pageMapping = {
+      'Home': 'Home',
+      'About': 'About', 
+      'Services': 'Services',
+      'Projects': 'Projects',
+      'News': 'News',
+      'Contact': 'Contact',
+      'Career': 'Career',
+      'Work': 'Work',
+      'OurPeople': 'OurPeople',
+      'Awards': 'Awards',
+      'Community': 'Community',
+      'Donation': 'Donation',
+      // Add any other page mappings as needed
+    };
+
+    // Get current page and map to target page
+    const currentPageName = getCurrentPage();
+    const targetPageName = pageMapping[currentPageName] || 'Home';
+    
+    // Build target hash
+    const targetHash = targetPageName === 'Home' ? '' : `#/${targetPageName}`;
+    
+    // Build target URL with mapped page
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetHash}${currentSearch}`;
     
     // Update the language switcher elements
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
@@ -3778,6 +3850,8 @@ document.addEventListener("DOMContentLoaded", function() {
         gtag('event', 'language_switch', {
           'from_language': currentSite.language,
           'to_language': targetSite.language,
+          'current_page': currentPageName,
+          'target_page': targetPageName,
           'target_url': targetUrl
         });
       }
@@ -3785,6 +3859,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // Optional: Store language preference in localStorage
       try {
         localStorage.setItem('preferredLanguage', targetSite.language);
+        localStorage.setItem('lastVisitedPage', targetPageName);
       } catch (error) {
         console.warn('Could not save language preference:', error);
       }
@@ -3793,7 +3868,8 @@ document.addEventListener("DOMContentLoaded", function() {
       return true;
     });
 
-    console.log(`Language switcher configured: ${currentSite.language} → ${targetSite.language}`);
+    console.log(`Language switcher configured: ${currentSite.language} (${currentPageName}) → ${targetSite.language} (${targetPageName})`);
+    console.log(`Target URL: ${targetUrl}`);
   }
 
   // Call the function once the DOM is fully loaded
