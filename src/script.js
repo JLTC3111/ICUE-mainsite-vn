@@ -3711,35 +3711,89 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (!pageSwitch || !langIcon) return;
 
+    // Get current URL components
     let currentHost = window.location.host;
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
     const currentSearch = window.location.search;
+    const currentProtocol = window.location.protocol;
 
-    // ⚡️ Use 'let' for reassigning a variable
-    // Override host if running on localhost for local testing
-    if (currentHost.startsWith("localhost")) {
-      currentHost = "icue.vn"; // e.g., Pretend to be on the English site
+    // Configuration for language switching
+    const siteConfig = {
+      vietnamese: {
+        domain: "icue.vn",
+        flagClass: "flag-icon-vn",
+        language: "vi"
+      },
+      english: {
+        domain: "en.icue.vn", 
+        flagClass: "flag-icon-gb",
+        language: "en"
+      }
+    };
+
+    // Handle localhost/development environment
+    if (currentHost.includes("localhost") || currentHost.includes("127.0.0.1")) {
+      // For local development, determine language from current site structure
+      // You can also check for specific identifiers in the current page
+      const isEnglishSite = currentHost.includes("en") || 
+                           document.documentElement.lang === "en" ||
+                           document.querySelector('meta[name="language"]')?.content === "en";
+      
+      currentHost = isEnglishSite ? siteConfig.english.domain : siteConfig.vietnamese.domain;
     }
 
-    // Determine target domain and update flag
-    let targetDomain;
-    let newFlagClass;
-    if (currentHost.startsWith("en.")) {
-      // Switch from English to Vietnamese
-      targetDomain = currentHost.replace("en.", "");
-      newFlagClass = "flag-icon-vn";
+    // Determine current site and target site
+    let currentSite, targetSite;
+    
+    if (currentHost.startsWith("en.") || currentHost === siteConfig.english.domain) {
+      // Currently on English site, switch to Vietnamese
+      currentSite = siteConfig.english;
+      targetSite = siteConfig.vietnamese;
     } else {
-      // Switch from Vietnamese to English
-      targetDomain = `en.${currentHost}`;
-      newFlagClass = "flag-icon-gb"; // Or 'flag-icon-us', etc.
+      // Currently on Vietnamese site, switch to English  
+      currentSite = siteConfig.vietnamese;
+      targetSite = siteConfig.english;
     }
 
-    // Apply the new flag icon class
-    langIcon.className = `flag-icon ${newFlagClass}`;
+    // Build target URL
+    const targetUrl = `${currentProtocol}//${targetSite.domain}${currentPath}${currentSearch}${currentHash}`;
+    
+    // Update the language switcher elements
+    langIcon.className = `flag-icon ${targetSite.flagClass}`;
+    pageSwitch.href = targetUrl;
+    
+    // Optional: Add aria-label for accessibility
+    pageSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
+    
+    // Optional: Add data attributes for easier debugging/testing
+    pageSwitch.setAttribute('data-current-lang', currentSite.language);
+    pageSwitch.setAttribute('data-target-lang', targetSite.language);
+    pageSwitch.setAttribute('data-target-domain', targetSite.domain);
 
-    // Build the new URL and set the href
-    pageSwitch.href = `${window.location.protocol}//${targetDomain}${currentPath}${currentSearch}${currentHash}`;
+    // Add click event for analytics or additional handling
+    pageSwitch.addEventListener('click', function(e) {
+      // Optional: Add analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'language_switch', {
+          'from_language': currentSite.language,
+          'to_language': targetSite.language,
+          'target_url': targetUrl
+        });
+      }
+      
+      // Optional: Store language preference in localStorage
+      try {
+        localStorage.setItem('preferredLanguage', targetSite.language);
+      } catch (error) {
+        console.warn('Could not save language preference:', error);
+      }
+      
+      // Allow normal navigation to proceed
+      return true;
+    });
+
+    console.log(`Language switcher configured: ${currentSite.language} → ${targetSite.language}`);
   }
 
   // Call the function once the DOM is fully loaded
