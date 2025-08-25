@@ -3704,6 +3704,48 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     }
 };
 
+document.addEventListener("DOMContentLoaded", function() {
+  function setupLanguageSwitcher() {
+    const pageSwitch = document.getElementById("page-switch");
+    const langIcon = document.getElementById("langSwitcher");
+
+    if (!pageSwitch || !langIcon) return;
+
+    let currentHost = window.location.host;
+    const currentPath = window.location.pathname;
+    const currentHash = window.location.hash;
+    const currentSearch = window.location.search;
+
+    // ⚡️ Use 'let' for reassigning a variable
+    // Override host if running on localhost for local testing
+    if (currentHost.startsWith("localhost")) {
+      currentHost = "en.icue.vn"; // e.g., Pretend to be on the English site
+    }
+
+    // Determine target domain and update flag
+    let targetDomain;
+    let newFlagClass;
+    if (currentHost.startsWith("en.")) {
+      // Switch from English to Vietnamese
+      targetDomain = currentHost.replace("en.", "");
+      newFlagClass = "flag-icon-vn";
+    } else {
+      // Switch from Vietnamese to English
+      targetDomain = `en.${currentHost}`;
+      newFlagClass = "flag-icon-gb"; // Or 'flag-icon-us', etc.
+    }
+
+    // Apply the new flag icon class
+    langIcon.className = `flag-icon ${newFlagClass}`;
+
+    // Build the new URL and set the href
+    pageSwitch.href = `${window.location.protocol}//${targetDomain}${currentPath}${currentSearch}${currentHash}`;
+  }
+
+  // Call the function once the DOM is fully loaded
+  setupLanguageSwitcher();
+});
+
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
     const container = document.body;
