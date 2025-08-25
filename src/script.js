@@ -3735,7 +3735,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Handle localhost/development environment
     if (currentHost.includes("localhost") || currentHost.includes("127.0.0.1")) {
       // For local development, determine language from current site structure
-      // You can also check for specific identifiers in the current page
       const isEnglishSite = currentHost.includes("en") || 
                            document.documentElement.lang === "en" ||
                            document.querySelector('meta[name="language"]')?.content === "en";
@@ -3761,8 +3760,9 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log('[Language Switcher] Detecting current page...');
       console.log('[Language Switcher] Current hash:', currentHash);
       console.log('[Language Switcher] Current path:', currentPath);
+      console.log('[Language Switcher] Current URL:', window.location.href);
       
-      // Check hash-based routing first
+      // Check hash-based routing first (most reliable for SPA)
       if (currentHash && currentHash.startsWith('#/')) {
         const hashPage = currentHash.substring(2); // Remove '#/'
         console.log('[Language Switcher] Detected hash page:', hashPage);
@@ -3773,6 +3773,24 @@ document.addEventListener("DOMContentLoaded", function() {
       if (typeof window.currentPage !== 'undefined' && window.currentPage) {
         console.log('[Language Switcher] Found global currentPage:', window.currentPage);
         return window.currentPage;
+      }
+      
+      // Try to detect from active navigation elements (data-page attribute)
+      const activeNavLink = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active, [data-page].active');
+      if (activeNavLink) {
+        const dataPage = activeNavLink.getAttribute('data-page');
+        if (dataPage) {
+          console.log('[Language Switcher] Found active nav with data-page:', dataPage);
+          return dataPage;
+        }
+      }
+      
+      // Check for data-page attribute on any currently highlighted/selected elements
+      const currentPageElement = document.querySelector('[data-page].current, [data-page].selected');
+      if (currentPageElement) {
+        const dataPage = currentPageElement.getAttribute('data-page');
+        console.log('[Language Switcher] Found current page element:', dataPage);
+        return dataPage;
       }
       
       // Try to detect from URL path
@@ -3803,9 +3821,9 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       
       // Try to detect from current content or active elements
-      const activeNavLink = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
-      if (activeNavLink) {
-        const linkText = activeNavLink.textContent.toLowerCase().trim();
+      const activeNavLinkText = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active');
+      if (activeNavLinkText) {
+        const linkText = activeNavLinkText.textContent.toLowerCase().trim();
         console.log('[Language Switcher] Found active nav link:', linkText);
         if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'aboutUs';
         if (linkText.includes('service') || linkText.includes('dịch vụ')) return 'Services';
@@ -3817,6 +3835,21 @@ document.addEventListener("DOMContentLoaded", function() {
         if (linkText.includes('cơ cấu') || linkText.includes('structure')) return 'orgStructure';
         if (linkText.includes('chuyên gia') || linkText.includes('expert')) return 'meetOurExperts';
         if (linkText.includes('cán bộ') || linkText.includes('core')) return 'coreTeam';
+      }
+      
+      // Check for specific content identifiers on the page
+      const contentArea = document.querySelector('#content, main, .content, .page-content');
+      if (contentArea) {
+        const contentText = contentArea.textContent.toLowerCase();
+        console.log('[Language Switcher] Checking content for page indicators...');
+        if (contentText.includes('about') || contentText.includes('giới thiệu')) return 'aboutUs';
+        if (contentText.includes('organization') || contentText.includes('cơ cấu')) return 'orgStructure';
+        if (contentText.includes('our work') || contentText.includes('công việc')) return 'ourWork';
+        if (contentText.includes('projects') || contentText.includes('dự án')) return 'pastProjects';
+        if (contentText.includes('news') || contentText.includes('tin tức')) return 'News';
+        if (contentText.includes('contact') || contentText.includes('liên hệ')) return 'Contact';
+        if (contentText.includes('experts') || contentText.includes('chuyên gia')) return 'meetOurExperts';
+        if (contentText.includes('core team') || contentText.includes('cán bộ')) return 'coreTeam';
       }
       
       // Default fallback
