@@ -1794,6 +1794,10 @@ document.addEventListener("DOMContentLoaded", () => {
   window.initMobileNewsSlider();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  window.initMobileNewsSlider();
+});
+
 document.addEventListener("DOMContentLoaded", initMobileNewsSlider);
 
 window.OrgStructure = {

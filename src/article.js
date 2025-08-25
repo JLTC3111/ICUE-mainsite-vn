@@ -387,6 +387,14 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 }
 
+function setResponsiveIndent() {
+  const indent = window.innerWidth >= 770 ? '3.5rem' : '0.25rem';
+  document.documentElement.style.setProperty('--article-indent', indent);
+}
+
+window.addEventListener('resize', setResponsiveIndent);
+setResponsiveIndent(); // Call initially
+
 const articles = [
     {
       id: "1",
@@ -457,11 +465,9 @@ const articles = [
         },
       ],
       bodyMarkdown: `
-<div style="margin-left:3.5rem">
-## Khánh Thành & Bàn Giao Công Viên Âu Cơ, Hội An
-Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (**ICUE**), phối hợp cùng **UBND thành phố Hội An**, tổ chức một sự kiện đặc biệt: **Khánh thành và bàn giao Không gian xanh và công viên ven biển** (đặt tên là **Công viên Âu Cơ**)</div>  
+Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (**ICUE**), phối hợp cùng **UBND thành phố Hội An**, tổ chức một sự kiện đặc biệt: **Khánh thành và bàn giao Không gian xanh và công viên ven biển** (đặt tên là **Công viên Âu Cơ**) 
 
-<div style="margin-left:3.5rem"> 
+<div style="margin-left: var(--article-indent, 1rem);"> 
 # Sự kiện này đánh dấu sự kết thúc thành công của dự án:  
 
 *“Preventing erosion on Cua Dai beach through green corridors and park”*
@@ -493,7 +499,7 @@ Tất cả những kết quả này có được nhờ:
 - Sự tạo điều kiện thuận lợi của **UBND tỉnh Quảng Nam**, **UBND thành phố Hội An**, **UBND phường Cửa Đại**, cùng sự cộng tác của **cộng đồng dân cư và các tổ chức xã hội** tại địa phương.  
 Niềm tin và tài trợ từ **IKI và GIZ** đã biến dự án thành hiện thực, mang lại **lợi ích thiết thực cho cộng đồng**.  
 Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì sự hỗ trợ liên tục và niềm tin mà họ dành cho chúng tôi. Sự kiện khánh thành và bàn giao này **không phải là kết thúc**, mà là một **khởi đầu mới** cho các hợp tác trong tương lai, hướng đến những **đô thị xanh hơn, bền vững hơn** tại Việt Nam và xa hơn nữa.
-> *"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe – An Vui – Hạnh Phúc – và Thành Công."* </div>  
+> *"Xin kính chúc quý vị đại biểu có nhiều Sức Khỏe – An Vui – Hạnh Phúc – và Thành Công."* </div>
 > — **T.S. Nguyễn Hồng Hạnh**  
 
       `,
@@ -538,7 +544,7 @@ Về phía Việt Nam, đại diện phái đoàn tham dự Diễn đàn có cá
 
 Diễn đàn **Bảo tồn Khu vực Châu Á (RCF)** diễn ra trong ba ngày với chủ đề *“Tái hiện Bảo tồn tại Châu Á: Tương lai tích cực cho Thiên nhiên”*, hướng tới:  
 
-<div style="margin-left:3.5rem">
+<div style="margin-left: var(--article-indent, 1rem);">
 - Đánh giá tiến độ bảo tồn  
 - Xem xét lại các mục tiêu ưu tiên  
 - Đề xuất định hướng chiến lược để giải quyết thách thức môi trường và đa dạng sinh học trong 20 năm tới.  
@@ -627,14 +633,11 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
         }
       ],
       bodyMarkdown: `
-<div style="text-align:center">
-## Ảnh hưởng bão số 3 (bão Yagi) tại huyện Bảo Yên </div>
-
 Trong những ngày qua, do ảnh hưởng của cơn bão số 3 (bão Yagi), trên địa bản huyện Bảo Yên liên tục hứng chịu mưa lớn, lũ chồng lũ khiến nhiều xã trong huyện bị thiệt hại nặng nề.  
 **Đặc biệt trong 03 ngày (08–10/9/2024):**  
 Mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạt lở đất đá nhiều nơi. Mưa lũ, sạt lở đất đá đến thời điểm hiện tại đã có:  
 
-  <ul style="margin-left:3.5rem">
+  <ul style="margin-left: var(--article-indent, 1rem);">
   <li>71 người chết</li>
   <li>29 người bị thương</li>
   <li>11 người chưa xác định được</li>
@@ -647,7 +650,7 @@ Mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạ
 
 Đoàn cứu trợ Viện ICUE cùng các nhà hảo tâm đã thực hiện chuyến đi nghĩa tình hướng về bà con huyện Bảo Yên. Theo sự điều phối, hướng dẫn của ban tiếp nhận UBND, UBMTTQ VN huyện Bảo Yên do đồng chí Đoàn Xuân Hưng chỉ đạo đã hướng dẫn Đoàn tới bản Chom – xã Yên Sơn để trao **100 phần quà** tới tay bà con. 
 
-<div style="margin-left:3rem;margin-top:1rem">
+<div style="margin-left: var(--article-indent, 1rem); margin-top: 1rem;">
 **Mỗi phần quà bao gồm:**  
 <ul>
   <li>10kg gạo đài thơm</li>
@@ -660,7 +663,7 @@ Mưa lớn kéo dài cùng nước nước lũ dâng cao, gây ngập úng, sạ
 
 Tại bản Chom thiệt hại nhiều về tài sản, hoa màu, gia súc, gia cầm,… trong đó có 03 hộ gia đình bị sập đổ hoàn toàn nhưng may mắn không có thiệt hại về người, gồm: 
 
-<div style="margin-left:3.5rem">
+<div style="margin-left: var(--article-indent, 1rem)">
 <ul>
   <li>Bà Hoàng Thị Bốn</li>
   <li>Ông Hoàng Văn Bản</li>
@@ -703,8 +706,8 @@ Mục tiêu của đề án là tận dụng công nghệ để cải thiện c�
 Sau 7 năm triển khai, đất nước đã đạt được những bước tiến lớn trong hướng đi này, với nhiều thành phố đã bắt đầu triển khai các công nghệ đô thị thông minh một cách thành công.  
 ---
 
-<div style="margin:0 3.5rem">
-## Những Thành Tựu Chính:
+<div style="margin-left: var(--article-indent, 1rem)">
+### Những Thành Tựu Chính:
 
 1. **Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế**  
    Một ví dụ điển hình cho triết lý "người dân là trung tâm" là thành phố Huế, nơi đã triển khai nền tảng Hue-S, cho phép công dân báo cáo trực tiếp các vấn đề như sửa chữa đường xá, vệ sinh, và cơ sở hạ tầng. Ứng dụng này đã tạo ra một kênh giao tiếp hai chiều giữa người dân và chính quyền, đảm bảo tính minh bạch và trách nhiệm trong công tác quản lý đô thị. Hue-S đã trở thành một phần quan trọng trong hệ thống đô thị thông minh của Huế, giúp cải thiện các dịch vụ như y tế, giáo dục và quản lý giao thông. Thành phố cũng đang triển khai các dịch vụ thông minh tiên tiến hơn như kiểm soát giao thông bằng AI và chiếu sáng thông minh.  
