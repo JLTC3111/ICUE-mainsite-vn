@@ -816,6 +816,12 @@ window.loadPage = (page) => {
               CommunityGallery.init();
               isTruelyTouchDevice();
               initializeChatbot();
+              
+              // Update language switcher after page content is loaded
+              if (typeof setupLanguageSwitcher === 'function') {
+                setupLanguageSwitcher();
+                console.log('[LoadPage] Language switcher updated for page:', page);
+              }
 
               switch (page) {
                 case 'meetOurExperts':
@@ -3930,6 +3936,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Call the function once the DOM is fully loaded
   setupLanguageSwitcher();
+  
+  // Update language switcher when hash changes (page navigation)
+  window.addEventListener('hashchange', function() {
+    console.log('[Language Switcher] Hash changed, updating language switcher...');
+    setupLanguageSwitcher();
+  });
+  
+  // Also update when popstate occurs (back/forward navigation)
+  window.addEventListener('popstate', function() {
+    console.log('[Language Switcher] Popstate event, updating language switcher...');
+    setTimeout(() => setupLanguageSwitcher(), 100); // Small delay to ensure page content is updated
+  });
 });
 
 window.createBalloons = () => {
