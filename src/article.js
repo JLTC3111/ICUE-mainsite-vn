@@ -1132,7 +1132,7 @@ function createImageModal() {
           width: 100%;
           height: 80vh;
         ">
-          <button id="modal-prev" style="
+          <button id="modal-prev" class="modal-arrow" style="
             position: absolute;
             left: 10px;
             background: transparent;
@@ -1167,7 +1167,7 @@ function createImageModal() {
             Your browser does not support the video tag.
           </video>
           
-          <button id="modal-next" style="
+          <button id="modal-next" class="modal-arrow" style="
             position: absolute;
             right: 10px;
             background: transparent;
@@ -1211,15 +1211,15 @@ function createImageModal() {
     </div>
   `;
 
-  const navStyle = document.createElement('style');
-  navStyle.textContent = `
+  const style = document.createElement('style');
+  style.textContent = `
     @media (max-width: 768px) {
       .modal-arrow {
         display: none !important;
       }
     }
   `;
-  document.head.appendChild(navStyle);
+  document.head.appendChild(style);
 
   document.body.insertAdjacentHTML('beforeend', modalHTML);
   
