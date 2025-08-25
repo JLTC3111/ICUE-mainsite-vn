@@ -446,7 +446,7 @@ footer {
       <a href="/#/aboutUs">Chúng Tôi</a>
       <a href="/#/Contact">Liên Hệ</a>
       <div class="language-switcher">
-        <a id="lang-switch" href="" class="flag-link">
+        <a id="lang-switch" href="https://en.icue/vn" class="flag-link">
           <span class="flag-icon flag-icon-gb"></span>    
         </a>
       </div>
@@ -557,12 +557,108 @@ footer {
   </div>
 </footer>
 <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const articleId = urlParams.get("id");  
-  const langSwitch = document.getElementById("lang-switch");
-  langSwitch.href = `https://en.icue.vn/src/pages/article_template.html?id=${articleId}`;
+  // Enhanced language switcher for article template
+  function setupArticleLanguageSwitcher() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get("id");  
+    const langSwitch = document.getElementById("lang-switch");
+    
+    if (!langSwitch || !articleId) return;
 
+    // Get current URL components
+    let currentHost = window.location.host;
+    const currentProtocol = window.location.protocol;
+    const currentSearch = window.location.search;
+
+    // Configuration for language switching
+    const siteConfig = {
+      vietnamese: {
+        domain: "icue.vn",
+        flagClass: "flag-icon-vn",
+        language: "vi"
+      },
+      english: {
+        domain: "en.icue.vn", 
+        flagClass: "flag-icon-gb",
+        language: "en"
+      }
+    };
+
+    // Handle localhost/development environment
+    if (currentHost.includes("localhost") || currentHost.includes("127.0.0.1")) {
+      const isEnglishSite = currentHost.includes("en") || 
+                           document.documentElement.lang === "en" ||
+                           document.querySelector('meta[name="language"]')?.content === "en";
+      
+      currentHost = isEnglishSite ? siteConfig.english.domain : siteConfig.vietnamese.domain;
+    }
+
+    // Determine current site and target site
+    let currentSite, targetSite;
+    
+    if (currentHost.startsWith("en.") || currentHost === siteConfig.english.domain) {
+      // Currently on English site, switch to Vietnamese
+      currentSite = siteConfig.english;
+      targetSite = siteConfig.vietnamese;
+    } else {
+      // Currently on Vietnamese site, switch to English  
+      currentSite = siteConfig.vietnamese;
+      targetSite = siteConfig.english;
+    }
+
+    // Build target URL for article template with preserved article ID
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/src/pages/article_template.html?id=${articleId}`;
+    
+    console.log('[Article Language Switcher] Current site:', currentSite.language);
+    console.log('[Article Language Switcher] Target site:', targetSite.language);
+    console.log('[Article Language Switcher] Article ID:', articleId);
+    console.log('[Article Language Switcher] Target URL:', targetUrl);
+
+    // Update the language switcher elements
+    const flagIcon = langSwitch.querySelector('.flag-icon');
+    if (flagIcon) {
+      flagIcon.className = `flag-icon ${targetSite.flagClass}`;
+    }
+    langSwitch.href = targetUrl;
+    
+    // Add aria-label for accessibility
+    langSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
+    
+    // Add data attributes for debugging
+    langSwitch.setAttribute('data-current-lang', currentSite.language);
+    langSwitch.setAttribute('data-target-lang', targetSite.language);
+    langSwitch.setAttribute('data-article-id', articleId);
+
+    // Add click event for analytics
+    langSwitch.addEventListener('click', function(e) {
+      // Optional: Add analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'language_switch_article', {
+          'from_language': currentSite.language,
+          'to_language': targetSite.language,
+          'article_id': articleId,
+          'target_url': targetUrl
+        });
+      }
+      
+      // Optional: Store language preference
+      try {
+        localStorage.setItem('preferredLanguage', targetSite.language);
+        localStorage.setItem('lastArticleId', articleId);
+      } catch (error) {
+        console.warn('Could not save language preference:', error);
+      }
+      
+      // Allow normal navigation to proceed
+      return true;
+    });
+  }
+
+  // Initialize when DOM is loaded
   document.addEventListener("DOMContentLoaded", () => {
+    setupArticleLanguageSwitcher();
+    
+    // Footer toggle functionality
     const toggles = document.querySelectorAll(".footer-toggle");
 
     toggles.forEach(toggle => {
