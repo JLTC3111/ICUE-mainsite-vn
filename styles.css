@@ -324,8 +324,14 @@ nav a {
     
     .chatbot-container {
         bottom: 15px;
-        right: 15px;
+        left: 15px;
     }
+
+    .chatbot-toggle svg{
+      width: 36px !important;
+      height: 36px !important;
+    }
+
 }
 
 .highlight-text-phrase {
