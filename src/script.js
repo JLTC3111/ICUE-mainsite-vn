@@ -816,6 +816,7 @@ window.loadPage = (page) => {
               CommunityGallery.init();
               isTruelyTouchDevice();
               initializeChatbot();
+              changeLanguagePerPage();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -3705,7 +3706,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-  function setupLanguageSwitcher() {
+  function changeLanguagePerPage() {
     const pageSwitch = document.getElementById("page-switch");
     const langIcon = document.getElementById("langSwitcher");
 
@@ -3722,11 +3723,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (currentHost.startsWith("")) {
       // Switch from English to Vietnamese
       targetDomain = currentHost.replace("", "en.");
-      newFlagClass = "flag-icon-vn";
+      newFlagClass = "flag-icon-gb";
     } else {
       // Switch from Vietnamese to English
       targetDomain = `en.${currentHost}`;
-      newFlagClass = "flag-icon-gb"; // Or 'flag-icon-us', etc.
+      newFlagClass = "flag-icon-vn"; 
     }
 
     // Apply the new flag icon class
@@ -3737,7 +3738,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // Call the function once the DOM is fully loaded
-  setupLanguageSwitcher();
+  changeLanguagePerPage();
 });
 
 window.createBalloons = () => {
