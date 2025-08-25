@@ -1509,7 +1509,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    document.title = article.title;
+    const articleTitleEl = document.getElementById("article-title");
+        if (articleTitleEl) {
+              articleTitleEl.innerHTML = renderMarkdown(article.title);
+              document.title = articleTitleEl.textContent.trim();}
 
     // CHANGE TO:
     document.getElementById("article-title").innerHTML = renderMarkdown(article.title);
