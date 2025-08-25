@@ -3882,8 +3882,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Build target hash
     const targetHash = targetPageName === 'Home' ? '' : `#/${targetPageName}`;
     
-    // Build target URL with mapped page (no extra slash before hash)
-    const targetUrl = `${currentProtocol}//${targetSite.domain}${targetHash}${currentSearch}`;
+    // Build target URL with mapped page (ensure proper slash after domain)
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetHash}${currentSearch}`;
     
     console.log('[Language Switcher] Target URL:', targetUrl);
     
