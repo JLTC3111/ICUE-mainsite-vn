@@ -393,12 +393,20 @@ function setResponsiveIndent() {
 }
 
 window.addEventListener('resize', setResponsiveIndent);
-setResponsiveIndent(); // Call initially
+setResponsiveIndent(); 
+
+function setResponsiveFontSize() {
+  const fontSize = window.innerWidth >= 770 ? '1.75rem' : '1.25rem';
+  document.documentElement.style.setProperty('--article-font-size', fontSize);
+}
+
+window.addEventListener('resize', setResponsiveFontSize);
+setResponsiveFontSize(); 
 
 const articles = [
     {
       id: "1",
-      title: "Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ",
+      title: "<div style=\"font-size: var(--article-font-size, 1.25rem);\">Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ</div>",
       lead: "Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng",
       author: "Bởi **ICUE-IKI-Giz** & Thành Phố Hội An",
       date: "<div style=\"text-align: center;\">*16 Tháng 5, 2025*</div>",
@@ -508,7 +516,7 @@ Chúng tôi xin gửi lời **cảm ơn chân thành** đến GIZ và IKI vì s�
     },
     {
       id: "2",
-      title: "Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan",
+      title: "<div style=\"font-size: var(--article-font-size, 1.25rem);\">Khai mạc Diễn đàn Bảo tồn Khu vực Châu Á lần thứ 8 tại Thái Lan</div>",
       lead: "<div style=\"line-height: 1.5;\">*Ngày 3/9, **Diễn đàn Bảo tồn Khu vực Châu Á (RCF)** lần thứ 8 của **Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN)** đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần **600** nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.*</div>",
       author: "ICUE-VN",
       date: "<div style=\"text-align: center;\">*Ngày: 03 Tháng 9, 2024*</div>",
@@ -574,7 +582,7 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
     },
     {
       id: "3",
-      title: "Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi",
+      title: "<div style=\"font-size: var(--article-font-size, 1.25rem);\">Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi</div>",
       lead: "<div style=\"line-height: 1.5;\">*Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, **Viện NCKTXD&ĐT** đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi **bão Yagi**.*</div>",
       author: "ICUE-VN",
       date: "<div style=\"text-align: center;\">*Ngày: 26 Tháng 9, 2024*</div>",
@@ -678,7 +686,7 @@ Các hộ này được trao số quà **gấp 4 lần** các hộ khác. </div>
     },
     {
       id: "4",
-      title: "Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 và định hướng 2030",
+      title: "<div style=\"font-size: var(--article-font-size, 1.25rem);\">Hội nghị tổng kết đề án phát triển đô thị thông minh và bền vững VN giai đoạn 2018-2025 và định hướng 2030</div>",
       lead: "<div style=\"line-height: 1.5;\"><em>Sáng Kiến <strong>Đô Thị Thông Minh</strong> của Việt Nam: Thành Tựu và Lộ Trình <strong>2025-2030</strong></em></div>",
       author: "ICUE-VN",
       date: "<div style=\"text-align: center;\">*Ngày: 13 Tháng 8, 2025*</div>",
