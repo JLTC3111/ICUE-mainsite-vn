@@ -857,104 +857,71 @@ function navigateArticleMedia(direction) {
   updateMediaIndicatorDots();
 }
 
-async function updateArticleMedia() {
+function updateArticleMedia() {
   if (!currentArticle || !currentArticle.images) return;
-
-  const imageContainer = document.querySelector('.featured-image') || document.getElementById("article-image")?.parentElement;
-  if (!imageContainer) return;
-
-  // Load Swiper dynamically
-  const Swiper = await loadSwiper();
-
-  // Clear existing content
-  imageContainer.innerHTML = '';
-
-  // Create Swiper container
-  const swiperContainer = document.createElement('div');
-  swiperContainer.className = 'swiper article-media-swiper';
-  swiperContainer.style.cssText = `
-    width: 100%;
-    height: 550px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  `;
-
-  // Create Swiper wrapper
-  const swiperWrapper = document.createElement('div');
-  swiperWrapper.className = 'swiper-wrapper';
-
-  // Create slides for each media item
-  currentArticle.images.forEach((media, index) => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.style.cssText = `
+  
+  const media = currentArticle.images[currentArticleIndex];
+  const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') ||
+                  media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
+                  media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
+  
+  const articleImageElement = document.getElementById("article-image");
+  const articleCaptionElement = document.getElementById("article-caption");
+  const imageContainer = articleImageElement.parentElement;
+  
+  // Remove any existing video containers
+  const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+  if (existingVideoContainer) {
+    existingVideoContainer.remove();
+  }
+  
+  if (isVideo) {
+    // Hide image and create video container
+    articleImageElement.style.display = 'none';
+    
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'article-video-container';
+    videoContainer.style.cssText = `
+      position: relative;
+      width: 100%;
+      height: auto;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      background: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
     `;
-
-    const isVideo = media.type === 'video' || 
-                   media.src.toLowerCase().includes('.mp4') ||
-                   media.src.toLowerCase().includes('.mov') || 
-                   media.src.toLowerCase().includes('.webm') ||
-                   media.src.toLowerCase().includes('.avi') || 
-                   media.src.toLowerCase().includes('.mkv');
-
-    if (isVideo) {
-      // Create video element
-      const video = document.createElement('video');
-      video.src = media.src;
-      video.controls = true;
-      video.preload = 'metadata';
-      video.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      `;
-
-      // Video indicator
-      const videoIndicator = document.createElement('div');
-      videoIndicator.innerHTML = 'VIDEO';
-      videoIndicator.style.cssText = `
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: rgba(0,0,0,0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 12px;
-        font-weight: bold;
-        z-index: 10;
-        pointer-events: none;
-      `;
-
-      slide.appendChild(video);
-      slide.appendChild(videoIndicator);
-    } else {
-      // Create image element
-      const img = document.createElement('img');
-      img.src = media.src;
-      img.alt = media.caption || `Image ${index + 1}`;
-      img.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        cursor: pointer;
-      `;
-      
-      // Click to open modal
-      img.onclick = () => openImageModal(currentArticle.images, index);
-
-      slide.appendChild(img);
-    }
-
-    // Add fullscreen button for all media
+    
+    const video = document.createElement('video');
+    video.src = media.src;
+    video.controls = true;
+    video.preload = 'metadata';
+    video.style.cssText = `
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    `;
+    
+    const videoIndicator = document.createElement('div');
+    videoIndicator.innerHTML = 'VIDEO';
+    videoIndicator.style.cssText = `
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 10;
+      pointer-events: none;
+    `;
+    
     const fullscreenBtn = document.createElement('button');
-    fullscreenBtn.innerHTML = '⛶';
+    fullscreenBtn.innerHTML = '';
     fullscreenBtn.title = 'Open in modal';
     fullscreenBtn.style.cssText = `
       position: absolute;
@@ -970,109 +937,37 @@ async function updateArticleMedia() {
       z-index: 10;
       transition: all 0.3s ease;
     `;
-    
     fullscreenBtn.onmouseenter = () => fullscreenBtn.style.background = 'rgba(0,0,0,1)';
     fullscreenBtn.onmouseleave = () => fullscreenBtn.style.background = 'rgba(0,0,0,0.8)';
     fullscreenBtn.onclick = (e) => {
       e.stopPropagation();
-      openImageModal(currentArticle.images, index);
+      openImageModal(currentArticle.images, currentArticleIndex);
     };
-
-    slide.appendChild(fullscreenBtn);
-    swiperWrapper.appendChild(slide);
-  });
-
-  // Assemble Swiper (no navigation or pagination)
-  swiperContainer.appendChild(swiperWrapper);
-
-  // Create caption container
-  const captionContainer = document.createElement('figcaption');
-  captionContainer.id = 'article-caption';
-  captionContainer.style.cssText = `
-    font-size: 0.85rem;
-    color: #666;
-    text-align: center;
-    margin-top: 0.5rem;
-    padding: 0 1rem;
-  `;
-
-  // Add to DOM
-  imageContainer.appendChild(swiperContainer);
-  imageContainer.appendChild(captionContainer);
-
-  // Initialize Swiper (minimal config)
-  const swiper = new Swiper('.article-media-swiper', {
-    // Enable loop if more than 1 slide
-    loop: currentArticle.images.length > 1,
     
-    // Slides per view
-    slidesPerView: 1,
-    spaceBetween: 0,
+    videoContainer.appendChild(video);
+    videoContainer.appendChild(videoIndicator);
+    videoContainer.appendChild(fullscreenBtn);
     
-    // Touch/swipe enabled
-    touchRatio: 1,
-    touchAngle: 45,
-    
-    // Keyboard navigation
-    keyboard: {
-      enabled: true,
-    },
-    
-    // Mouse wheel
-    mousewheel: {
-      forceToAxis: true,
-    },
-    
-    // Update caption on slide change
-    on: {
-      slideChange: function() {
-        const activeIndex = this.realIndex || this.activeIndex;
-        const caption = currentArticle.images[activeIndex]?.caption || '';
-        captionContainer.textContent = caption;
-        
-        // Update global currentArticleIndex if needed
-        currentArticleIndex = activeIndex;
-      },
-      
-      init: function() {
-        // Set initial caption
-        const caption = currentArticle.images[currentArticleIndex]?.caption || '';
-        captionContainer.textContent = caption;
-        
-        // Go to current slide
-        if (currentArticleIndex > 0) {
-          this.slideTo(currentArticleIndex, 0);
-        }
-      }
-    }
-  });
-
-  // Store swiper instance for external access if needed
-  window.articleMediaSwiper = swiper;
-}
-
-// Dynamic Swiper loader
-async function loadSwiper() {
-  // Return existing Swiper if already loaded
-  if (window.Swiper) {
-    return window.Swiper;
+    imageContainer.insertBefore(videoContainer, articleImageElement);
+  } else {
+    // Show image
+    articleImageElement.style.display = 'block';
+    articleImageElement.style.width = '100%';
+    articleImageElement.style.height = '550px';
+    articleImageElement.style.objectFit = 'cover';
+    articleImageElement.style.borderRadius = '8px';
+    articleImageElement.src = media.src;
+    articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
   }
-
-  // Load CSS
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-  document.head.appendChild(link);
   
-  // Load JS
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+  articleCaptionElement.textContent = media.caption;
   
-  return new Promise((resolve, reject) => {
-    script.onload = () => resolve(window.Swiper);
-    script.onerror = () => reject(new Error('Failed to load Swiper'));
-    document.head.appendChild(script);
-  });
+  // Update counter indicator
+  const indicator = imageContainer.querySelector('.image-count-indicator');
+  if (indicator) {
+    indicator.textContent = `${currentArticleIndex + 1}/${currentArticle.images.length}`;
+    indicator.style.color = '#ffffff';
+  }
 }
 
 function addMediaIndicatorDots(article) {
