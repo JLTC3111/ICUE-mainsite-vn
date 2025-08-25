@@ -658,6 +658,37 @@ footer {
   document.addEventListener("DOMContentLoaded", () => {
     setupArticleLanguageSwitcher();
     
+    // Set up observer for URL parameter changes (for article navigation)
+    let currentArticleId = new URLSearchParams(window.location.search).get("id");
+    
+    // Function to check for article ID changes
+    function checkForArticleChange() {
+      const newArticleId = new URLSearchParams(window.location.search).get("id");
+      if (newArticleId && newArticleId !== currentArticleId) {
+        console.log('[Article Language Switcher] Article ID changed from', currentArticleId, 'to', newArticleId);
+        currentArticleId = newArticleId;
+        setupArticleLanguageSwitcher();
+      }
+    }
+    
+    // Check for URL changes every 500ms (for article navigation via buttons)
+    setInterval(checkForArticleChange, 500);
+    
+    // Also check when the window gains focus (in case of external URL changes)
+    window.addEventListener('focus', () => {
+      setTimeout(checkForArticleChange, 100);
+    });
+    
+    // Override the native history.replaceState to trigger our update
+    const originalReplaceState = history.replaceState;
+    history.replaceState = function() {
+      originalReplaceState.apply(history, arguments);
+      setTimeout(() => {
+        console.log('[Article Language Switcher] History replaceState detected');
+        setupArticleLanguageSwitcher();
+      }, 50);
+    };
+    
     // Footer toggle functionality
     const toggles = document.querySelectorAll(".footer-toggle");
 
