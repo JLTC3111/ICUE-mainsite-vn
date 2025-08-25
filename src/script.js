@@ -3719,7 +3719,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // ⚡️ Use 'let' for reassigning a variable
     // Override host if running on localhost for local testing
     if (currentHost.startsWith("localhost")) {
-      currentHost = "en.icue.vn"; // e.g., Pretend to be on the English site
+      currentHost = "icue.vn"; // e.g., Pretend to be on the English site
     }
 
     // Determine target domain and update flag
