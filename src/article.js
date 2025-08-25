@@ -1134,8 +1134,8 @@ function createImageModal() {
         ">
           <button id="modal-prev" style="
             position: absolute;
-            left: 20px;
-            background: rgba(255,255,255,0.2);
+            left: 10px;
+            background: transparent;
             border: none;
             color: white;
             font-size: 24px;
@@ -1144,8 +1144,8 @@ function createImageModal() {
             border-radius: 50%;
             z-index: 10000;
           "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 12H2" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 19L2.84 14C2.57 13.74 2.35 13.43 2.20 13.09C2.05 12.75 1.98 12.37 1.98 12C1.98 11.62 2.05 11.25 2.20 10.91C2.35 10.57 2.57 10.26 2.84 10L8 5" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 12H2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 19L2.84 14C2.57 13.74 2.35 13.43 2.20 13.09C2.05 12.75 1.98 12.37 1.98 12C1.98 11.62 2.05 11.25 2.20 10.91C2.35 10.57 2.57 10.26 2.84 10L8 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           </button>
           <img id="modal-image" style="
@@ -1169,8 +1169,8 @@ function createImageModal() {
           
           <button id="modal-next" style="
             position: absolute;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
+            right: 10px;
+            background: transparent;
             border: none;
             color: white;
             font-size: 24px;
@@ -1178,7 +1178,7 @@ function createImageModal() {
             cursor: pointer;
             border-radius: 50%;
             z-index: 10000;
-          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fbff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+          "><svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12.0701H22" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5L21.16 10C21.4324 10.2571 21.6494 10.567 21.7977 10.9109C21.946 11.2548 22.0226 11.6255 22.0226 12C22.0226 12.3745 21.946 12.7452 21.7977 13.0891C21.6494 13.433 21.4324 13.7429 21.16 14L16 19" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
         </div>
         
         <div style="
@@ -1210,7 +1210,17 @@ function createImageModal() {
       </div>
     </div>
   `;
-  
+
+  const navStyle = document.createElement('style');
+  navStyle.textContent = `
+    @media (max-width: 768px) {
+      .modal-arrow {
+        display: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(navStyle);
+
   document.body.insertAdjacentHTML('beforeend', modalHTML);
   
   // Add event listeners
