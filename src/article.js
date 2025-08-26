@@ -417,8 +417,8 @@ const articles = [
           type: "image"
         },
          {
-          src: "/public/news/articles/article_1/11.mp4",
-          caption: "Video lễ khánh thành",
+          src: "/public/news/articles/article_1/video_1.mp4",
+          caption: "Công Viên Âu Cơ",
           type: "video"
         },
         {
@@ -717,19 +717,19 @@ Sau 7 năm triển khai, đất nước đã đạt được những bước ti�
 <div style="margin-left: var(--article-indent, 1rem)">
 ### Những Thành Tựu Chính:
 
-1. **Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế**  
+### 1. **Giải Pháp Lấy Người Dân Làm Trung Tâm: Huế**  
    Một ví dụ điển hình cho triết lý "người dân là trung tâm" là thành phố Huế, nơi đã triển khai nền tảng Hue-S, cho phép công dân báo cáo trực tiếp các vấn đề như sửa chữa đường xá, vệ sinh, và cơ sở hạ tầng. Ứng dụng này đã tạo ra một kênh giao tiếp hai chiều giữa người dân và chính quyền, đảm bảo tính minh bạch và trách nhiệm trong công tác quản lý đô thị. Hue-S đã trở thành một phần quan trọng trong hệ thống đô thị thông minh của Huế, giúp cải thiện các dịch vụ như y tế, giáo dục và quản lý giao thông. Thành phố cũng đang triển khai các dịch vụ thông minh tiên tiến hơn như kiểm soát giao thông bằng AI và chiếu sáng thông minh.  
 
-2. **Quản Lý Đô Thị Dựa Trên Dữ Liệu: Đà Nẵng**  
+### 2. **Quản Lý Đô Thị Dựa Trên Dữ Liệu: Đà Nẵng**  
    Đà Nẵng là một ví dụ điển hình khác, nơi thành phố đã tích hợp hạ tầng thông minh và dịch vụ số. Trung tâm Điều hành Thông minh (IOC) là trung tâm tập hợp và quản lý dữ liệu từ các lĩnh vực như giao thông, quản lý rác thải, dịch vụ công cộng và y tế. Đà Nẵng đã hợp tác với các công ty công nghệ địa phương để triển khai GIS và BIM (Mô hình Thông tin Xây dựng) nhằm tối ưu hóa công tác quy hoạch đô thị. Thông qua các nền tảng này, thành phố có thể dự đoán và quản lý nhu cầu đô thị hiệu quả, đặc biệt là trong các mùa du lịch cao điểm.  
 
-3. **Hệ Thống Giao Thông Thông Minh: TP.HCM**  
+### 3. **Hệ Thống Giao Thông Thông Minh: TP.HCM**  
    Tại TP.HCM, quản lý giao thông đã được cải thiện đáng kể thông qua hệ thống AI giám sát giao thông, camera giám sát, và thu phí tự động. Thành phố cũng đã triển khai các giải pháp đỗ xe thông minh và nghiên cứu xe tự lái, giúp thành phố trở thành một trong những nơi tiên phong trong vận hành đô thị thông minh. Các sáng kiến của TP.HCM phù hợp với mục tiêu lớn hơn của thành phố trong việc nâng cao phát triển bền vững bằng cách giảm tắc nghẽn giao thông và giảm thiểu phát thải carbon.  
 
-4. **Dịch Vụ Công Tích Hợp: Hà Nội**  
+### 4. **Dịch Vụ Công Tích Hợp: Hà Nội**  
    Hà Nội đang tích hợp các trung tâm dữ liệu đám mây để mang đến một trải nghiệm mượt mà cho cư dân khi tiếp cận các dịch vụ chính quyền. Thành phố đã xây dựng nền tảng thống nhất cho các ứng dụng dịch vụ công, cho phép công dân nộp đơn khiếu nại, thanh toán thuế và tiếp cận thông tin chính quyền qua một cổng duy nhất. Bằng cách kết nối các sở, ngành thông qua hệ thống cơ sở dữ liệu chia sẻ, Hà Nội đang tối ưu hóa việc cung cấp dịch vụ và tăng cường hiệu quả trong cơ cấu hành chính.  
 
-5. **Đô Thị Xanh và Thông Minh: Bình Định**  
+### 5. **Đô Thị Xanh và Thông Minh: Bình Định**  
    Tại Bình Định, thành phố tập trung vào quá trình đô thị hóa xanh kết hợp với công nghệ thông minh. Tỉnh đã triển khai nhiều sáng kiến bền vững môi trường, như hệ thống quản lý rác thải thông minh và giải pháp năng lượng tái tạo cho các tòa nhà đô thị. Thành phố cũng đã áp dụng chiếu sáng thông minh bằng năng lượng mặt trời để giảm tiêu thụ năng lượng và giảm sự phụ thuộc vào nhiên liệu hóa thạch, đồng thời phù hợp với mục tiêu của chính phủ về phát triển bền vững trong các đô thị.  
 ---
 ### Những Thách Thức và Rào Cản:
@@ -753,6 +753,309 @@ Sau 7 năm triển khai, đất nước đã đạt được những bước ti�
 Năm năm tới sẽ rất quan trọng đối với nỗ lực xây dựng đô thị thông minh tại Việt Nam. Đến năm 2030, Chính phủ dự kiến sẽ tạo ra một mạng lưới đô thị thông minh toàn quốc, hoạt động liên kết và đồng bộ giữa các thành phố. Các thành phố như Huế, Đà Nẵng, và TP.HCM sẽ là những hình mẫu để các thành phố khác học hỏi, chứng minh rằng với các đầu tư hợp lý và kế hoạch chi tiết, đô thị thông minh có thể trở thành động lực quan trọng cho tăng trưởng kinh tế, sự bền vững và quản lý đô thị hiệu quả. 
 Mục tiêu phát triển đô thị thông minh bền vững sẽ không chỉ là mục tiêu phát triển, mà là yêu cầu tất yếu để Việt Nam thích ứng với thời đại số, nâng cao chất lượng sống và tăng năng lực cạnh tranh quốc gia trong những thập niên tới. </div>
       `,
+      pdf: "",
+      pdfButtonText: ""
+    },
+    {
+      id: "5",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Xây Dựng Và Phát Triển Huế - Đô Thị Di Sản Văn Hoá Đặc Sắc Khu Vực Đông Nam Á</div>",
+      lead: "<div style=\"line-height: 1.5;\">Một hội thảo khoa học tại *Hà Nội* đã quy tụ các <em>chuyên gia và nhà hoạch định chính sách</em> để thảo luận về một con đường phát triển độc đáo cho <strong>Thừa Thiên Huế</strong>. Điểm chung là: tương lai của thành phố nên ưu tiên di sản văn hóa phong phú và bản sắc sinh thái thay vì mô hình công nghiệp truyền thống, đảm bảo Huế vẫn là một trung tâm văn hóa đặc sắc ở Đông Nam Á.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 22 Tháng 5, 2014*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_5/1.jpg",
+          caption: "Các lãnh đạo, chuyên gia tại Hội thảo"
+        },
+        {
+          src: "/public/news/articles/article_5/2.jpg",
+          caption: "Chủ tịch UBND tỉnh Thừa Thiên Huế - ông Nguyễn Văn Cao phát biểu khai mạc Hội thảo"
+        },
+        {
+          src: "/public/news/articles/article_5/3.jpg",
+          caption: "Toàn cảnh Hội thảo"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:5px">Hội thảo Khoa học về Tương lai của Thừa Thiên Huế</div>
+Một hội thảo khoa học gần đây đã được tổ chức tại **Hà Nội** với một nhiệm vụ quan trọng: xác định tương lai của **Thừa Thiên Huế** khi chuẩn bị trở thành **thành phố trực thuộc Trung ương**.  
+Sự kiện này do **UBND tỉnh Thừa Thiên Huế** phối hợp với **Bộ Nội vụ** và **Tổng hội Xây dựng Việt Nam** tổ chức, tập trung vào chủ đề cốt lõi:  
+
+> **“Xây dựng và phát triển Huế trở thành một Đô thị Di sản Văn hóa Đặc sắc ở Đông Nam Á.”**
+
+---
+
+# Định hướng phát triển 
+
+Những người tham gia, bao gồm: 
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li> Các **nhà khoa học hàng đầu** </li>
+<li> Các **nhà quy hoạch đô thị** </li>
+<li> **Quan chức chính phủ** đều đồng ý rằng sự phát triển của Huế phải đi theo một **con đường khác biệt** so với các thành phố lớn khác như **Hà Nội** hay **TP. Hồ Chí Minh**. </li> 
+</ul>
+
+Thay vì chạy theo tốc độ đô thị hóa và công nghiệp hóa nhanh chóng, Huế cần phát triển dựa trên các giá trị cốt lõi:  
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+  <li>**Đô thị di sản**</li>
+  <li>**Văn hóa**</li>
+  <li>**Sinh thái**</li>
+  <li>**Thân thiện với môi trường**</li>
+</ul>
+---
+### Bảo tồn bản sắc
+
+Một điểm nhấn quan trọng từ hội thảo là **nhu cầu bảo tồn bản sắc độc đáo của Huế**.  
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li>Các chuyên gia cảnh báo về **nguy cơ thương mại hóa** và **cao ốc hóa** có thể làm mất đi vẻ đẹp thanh bình, thơ mộng của thành phố.</li>
+<li>Họ nhấn mạnh sự phát triển phải **hài hòa**, với sự **can thiệp tối thiểu** vào kiến trúc và cảnh quan tự nhiên hiện có.</li>
+</ul>
+---
+### Động lực kinh tế
+
+Hội thảo kết luận rằng **động lực kinh tế của Huế** nên được thúc đẩy bởi những tài sản quý giá nhất của nó:  
+
+<ul style="margin-left: var(--article-indent, 0.5rem);">
+<li> **Du lịch**</li>
+<li> **Dịch vụ**</li>
+<li> **Văn hóa**</li>
+<li> **Giáo dục**</li>
+<li> **Chăm sóc sức khỏe**</li>
+</ul>
+
+Bằng cách tập trung vào các lĩnh vực này, Huế có thể đạt được **sự tăng trưởng bền vững**, đồng thời **bảo vệ di sản văn hóa và lịch sử vô giá** cho các thế hệ tương lai.  
+
+---
+
+### Kết luận
+
+Hội thảo đã đánh dấu một bước tiến quan trọng trong việc: 
+
+<ul style="margin-left: var(--article-margin-left, 0.5rem);">
+  <li> **Định hình tương lai của Huế**</li>
+  <li> **Tôn trọng quá khứ**</li>
+  <li> Xây dựng **một mô hình phát triển đô thị độc đáo**, có thể trở thành **hình mẫu cho các thành phố di sản khác trong khu vực**.</li>
+</ul> 
+</div>
+`,
+      pdf: "",
+      pdfButtonText: ""
+    },
+{
+      id: "6",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Kinh Tế Đô Thị Trong Quy Hoạch, Phát Triển Bền Vững Đô Thị Việt Nam - Cơ Hội & Thách Thức</div>",
+      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên cứu Kinh tế Xây dựng và Đô thị với sự bảo trợ của Ban Kinh tế Trung ương và Bộ Xây dựng đã tổ chức Hội thảo “Kinh tế đô thị trong quy hoạch, xây dựng và phát triển bền vững đô thị Việt Nam - cơ hội và thách thức”. Đây là một sự kiện trong chuỗi các sự kiện của ngày Đô thị VN 08/11/2022 tổ chức tại Bộ Xây dựng. </div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 08 Tháng 11, 2022*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_6/1.jpg",
+          caption: "Thứ trưởng Bùi Hồng Minh phát biểu tại hội thảo"
+        },
+        {
+          src: "/public/news/articles/article_6/4.jpg",
+          caption: "Viện trưởng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị Nguyễn Hồng Hạnh chia sẻ tại Hội thảo."
+        },
+        {
+          src: "/public/news/articles/article_6/5.jpg",
+          caption: "Chuyên gia kinh tế Phạm Chi Lan phát biểu tại Hội thảo."
+        },
+         {
+          src: "/public/news/articles/article_6/3.jpg",
+          caption: "Toàn Cảnh Hội Thảo"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+**Viện Nghiên cứu Kinh tế Xây dựng và Đô thị**, dưới sự bảo trợ của **Ban Kinh tế Trung ương** và **Bộ Xây dựng**, đã tổ chức hội thảo:  
+
+- Kinh tế đô thị trong quy hoạch, xây dựng và phát triển bền vững đô thị Việt Nam - cơ hội và thách thức
+- Sự kiện là một trong chuỗi hoạt động kỷ niệm **Ngày Đô thị Việt Nam 08/11/2022** tổ chức tại Bộ Xây dựng.  
+---
+
+### Mục tiêu hội thảo
+
+- Trao đổi, thảo luận các **giải pháp phát triển kinh tế đô thị**.  
+- Hướng đến **phát triển bền vững đô thị Việt Nam**.  
+- Góp phần thực hiện hiệu quả **Nghị quyết số 06-NQ/TW ngày 24/01/2022** của Bộ Chính trị về quy hoạch, xây dựng, quản lý và phát triển đô thị bền vững đến năm 2030, tầm nhìn 2045.  
+---
+### Phát biểu chính
+
+### Ông Bùi Hồng Minh – Thứ trưởng Bộ Xây dựng
+
+<ul>
+<li> Khẳng định vai trò quan trọng của **kinh tế đô thị**. </li>
+<li> Nhấn mạnh các nhiệm vụ trọng tâm của **Nghị quyết 06-NQ/TW** </li>  
+<li> Triển khai **chương trình tái thiết đô thị** để nâng cao hiệu quả sử dụng đất </li>  
+<li> Phát triển **kinh tế dịch vụ**, **công nghiệp chế tạo tiên tiến**, **kinh tế số**, **kinh tế tuần hoàn**, **kinh tế du lịch** </li> 
+<li> Hoàn thiện **chính sách thuế, phí bất động sản** để khuyến khích sử dụng hiệu quả nhà, đất </li>  
+<li> Tạo cơ chế **huy động vốn đầu tư** cho vùng Thủ đô Hà Nội và vùng TP. Hồ Chí Minh </li>  
+<li> Xây dựng cơ chế **tạo nguồn thu mới** cho đô thị </li> 
+</ul>
+
+### TS. Nguyễn Hồng Hạnh – Viện trưởng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị:
+
+<ul>
+<li> Khẳng định **đô thị là trung tâm hạt nhân** cho phát triển kinh tế, văn hóa, xã hội. </li>  
+<li> Đô thị hóa là **tất yếu khách quan** và động lực cho phát triển nhanh và bền vững. </li> 
+<li> Tham luận về **tái phát triển đô thị** nhằm nâng cao hiệu quả sử dụng đất, lấy ví dụ từ **kinh nghiệm Nhật Bản** </li>  
+<li> **Luật Tái phát triển Đô thị** ban hành từ 1969. </li>  
+<li> Cơ chế: tăng hệ số sử dụng đất, nới lỏng hạn chế chiều cao công trình, chia sẻ lợi ích phát triển cho chủ đất. </li>  
+<li> Sau gần 40 năm, Nhật Bản đã có **~1.000 quận hoàn thành tái phát triển đô thị**. </li>  
+</ul>
+
+### TS. Nguyễn Ngọc Hiếu – Đại học Việt Đức:
+
+<ul>
+<li> Nêu thách thức trong **tái cấu trúc ngành kinh tế đô thị**. </li> 
+<li> Cho rằng thành công của việc **dịch vụ hóa công nghiệp** và tái cơ cấu ngành sẽ là chìa khóa cho phát triển bền vững. </li> 
+</ul>
+
+### TS. Huỳnh Thế Du – Trường Chính sách công và Quản lý Fulbright:
+
+<ul>
+<li> Phân tích cạnh tranh toàn cầu trong bối cảnh hội nhập </li>
+<li> Thu hút **doanh nghiệp**, **người giỏi** và **người giàu** là then chốt </li>
+<li> Điều này chủ yếu xảy ra ở **các đô thị trung tâm** </li>  
+<li> Nhấn mạnh cần giúp các đô thị **tăng khả năng cạnh tranh quốc tế** </li>
+<li> Đô thị nhỏ thường phụ thuộc vào một vài cơ sở sản xuất/kinh doanh, dễ bị tổn thương </li>  
+</ul>
+
+### TS. Đặng Huy Đông – Nguyên Thứ trưởng Bộ Kế hoạch và Đầu tư:
+
+<ul>
+<li> Phân tích sự **phân hóa kinh tế đô thị - nông thôn** trong quá trình phát triển. </li>  
+<li> Giới thiệu mô hình **TOD (Transit-Oriented Development)** </li>  
+<li> Gắn kết **giao thông công cộng** với **sử dụng đất đô thị** </li>  
+<li> Vai trò TOD trong quản lý, quy hoạch và phát triển kinh tế đô thị </li>  
+</ul>
+---
+## Nội dung tham luận
+
+- Hội thảo nhận được **16 bài tham luận** từ các chuyên gia trong và ngoài nước.  
+- **12 bài tham luận** được trình bày trực tiếp, tập trung vào các chủ đề:  
+- **Chuyển đổi cơ cấu kinh tế ngành** – động lực cho tăng trưởng đô thị.  
+- **Kinh tế tuần hoàn** trong xu thế phát triển bền vững.  
+- **Phát triển kinh tế dịch vụ**.  
+- **Thực trạng kinh tế đô thị tại Việt Nam**, đặc biệt ở các thành phố trực thuộc Trung ương.  
+- **Kinh tế đô thị và chính sách công** trong phát triển bền vững.  
+---
+## Kết luận
+<div style="text-align: justify; margin-top:-1rem;"> Hội thảo đã mang lại góc nhìn toàn diện về: </div>
+<ul>
+<li> **Vị trí và vai trò của đô thị** trong phát triển kinh tế xã hội </li>
+<li> Các **giải pháp phát triển kinh tế đô thị bền vững**, từ chính sách, tái cấu trúc ngành đến mô hình TOD </li> 
+<li> Tầm quan trọng của việc **kết hợp quy hoạch, quản lý, tái phát triển đô thị** với bảo đảm chất lượng sống cho cư dân </li>
+</ul>
+`,
+      pdf: "",
+      pdfButtonText: ""
+    },
+{
+      id: "7",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\"> Toạ Đàm Tổng Quan Và Thực Trạng Đô Thị Biển Việt Nam – Một Số Quan Điểm Về Kiểm Soát Phát Triển</div>",
+      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên cứu Kinh tế Xây dựng và Đô thị – Tổng hội Xây dựng Việt Nam đã tổ chức hội thảo khoa học</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 30 Tháng 9, 2020*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_7/1.jpg",
+          caption: "Toàn cảnh buổi Tọa đàm"
+        },
+        {
+          src: "/public/news/articles/article_7/2.jpg",
+          caption: "TS. Nguyễn Hồng Hạnh – Viện trưởng Viện nghiên cứu KTXD & Đô thị (ICUE)"
+        },
+        {
+          src: "/public/news/articles/article_7/3.jpg",
+          caption: "Ảnh chụp lưu niệm buổi Tọa đàm"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">Hội thảo Khoa học: Tổng quan Hiện trạng Đô thị Biển Việt Nam và Kiểm soát Phát triển</div>
+
+Ngày **30/9/2020**, **Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE)** – Tổng hội Xây dựng Việt Nam đã tổ chức hội thảo khoa học:  
+
+> **“Tổng quan hiện trạng đô thị biển Việt Nam và một số quan điểm về kiểm soát phát triển”**
+
+Hội thảo diễn ra trong bối cảnh **Nghị quyết 36/NQ-TW (22/10/2018)** của Ban Chấp hành Trung ương Đảng (khóa XII) về *Chiến lược phát triển bền vững kinh tế biển Việt Nam đến năm 2030, tầm nhìn 2045*, nhấn mạnh vai trò của **khu kinh tế ven biển** như trung tâm kinh tế mạnh, đảm bảo phát triển vùng và liên vùng.
+---
+### Thành phần tham dự
+
+- Ông **Trần Ngọc Hùng** – Chủ tịch Tổng hội Xây dựng Việt Nam  
+- TS. **Nguyễn Hồng Hạnh** – Viện trưởng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị  
+- KTS. **Phạm Thị Nhâm** – Phó Viện trưởng Viện Quy hoạch Đô thị và Nông thôn Quốc gia (Bộ Xây dựng)  
+- PGS-TS. **Phạm Trung Lương** – Nguyên Phó Viện trưởng Viện Nghiên cứu Phát triển Du lịch  
+- ThS. KTS. **Trịnh Minh Hiếu** – Vụ Quản lý Quy hoạch (Bộ Kế hoạch và Đầu tư)  
+- Ông **Trần Trung Chính** – Phó Viện trưởng Viện Nghiên cứu Đô thị và Phát triển Hạ tầng  
+- Cùng nhiều chuyên gia từ các viện, trung tâm nghiên cứu, tổ chức xã hội nghề nghiệp khác.  
+
+---
+
+### Phát biểu của TS. Nguyễn Hồng Hạnh
+
+- Nhấn mạnh **biển đảo Việt Nam** là phần lãnh thổ thiêng liêng, được cha ông khai phá và bảo vệ qua hàng ngàn năm.  
+- Bảo vệ **chủ quyền biển đảo** là **trách nhiệm thiêng liêng của mỗi công dân**.  
+- Trích dẫn Nghị quyết Đại hội XII của Đảng:  
+
+> “Kiên quyết, kiên trì đấu tranh bảo vệ vững chắc độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ của Tổ quốc; giữ vững môi trường hoà bình để phát triển đất nước…”
+
+- Đô thị ven biển không chỉ có vai trò phát triển kinh tế mà còn gắn liền với **quốc phòng – an ninh**.  
+
+---
+
+### Bài học kinh nghiệm quốc tế: Trường hợp Pháp
+
+- Quan niệm: **Bờ biển là không gian chính trị nổi bật, không thể trở thành sở hữu tư nhân.**  
+- Luật Tài sản công (Điều 2122-1) quy định:  
+  - Không gian bảo vệ: **100m từ phạm vi hàng hải công cộng**.  
+  - Người dân có **quyền tiếp cận tự do**: 80% với bờ biển tự nhiên, 50% với bờ biển nhân tạo.  
+  - Các công trình ven biển chỉ có **quyền sử dụng tạm thời**, luôn có thể bị thu hồi.  
+  - Công trình ven biển phải có **kết cấu nhẹ**, hoàn trả không gian tự nhiên sau khi hết hạn nhượng quyền (≤ 6 tháng).  
+- Quy hoạch theo **chiều sâu**: công trình dịch vụ, công cộng được đặt xa bờ, không chen chúc ngay sát bờ biển.  
+- Sau 40 năm áp dụng, Pháp đã:  
+  - Bảo vệ **170.000 ha hệ sinh thái đới bờ**  
+  - Xây dựng **4.600 km đường ven biển**  
+---
+### Quan điểm và Kiến nghị của ICUE
+
+Để phát huy lợi thế và kiểm soát phát triển **đô thị ven biển và đô thị hải đảo**, ICUE – Tổng hội Xây dựng Việt Nam kiến nghị Bộ Xây dựng:
+
+<div = style="margin-left: var(--article-indent, 1rem); margin-right: 1rem;">
+#### 1. **Phối hợp liên ngành**: 
+Phối hợp chặt chẽ với Bộ Tài nguyên & Môi trường trong xây dựng văn bản chi tiết của **Luật Tài nguyên – Môi trường biển và hải đảo (Luật số 82/2015-QH3)**.  
+
+#### 2. **Bổ sung định hướng phát triển đô thị biển đảo**: 
+Đưa phát triển hệ thống đô thị biển đảo thành **nội dung lớn** trong *Điều chỉnh Định hướng phát triển tổng thể hệ thống đô thị Việt Nam đến 2025, tầm nhìn 2050* và **Chương trình phát triển đô thị quốc gia 2021–2045**.  
+
+#### 3. **Xây dựng chương trình phát triển đô thị biển**: 
+Sau khi Điều chỉnh tổng thể được phê duyệt, xây dựng **Chương trình phát triển đô thị biển** gắn với *Chiến lược phát triển bền vững kinh tế biển Việt Nam 2030–2045*.  
+
+#### 4. **Định hình động lực phát triển:**  
+
+<ul style="margin-left: -2rem;">
+   - Trong quy hoạch đô thị biển, xác định các **trung tâm kinh tế, tài chính, giáo dục, y tế** làm động lực phát triển.  
+   - Phát triển **ngành du lịch, dịch vụ kết hợp với **hạ tầng kỹ thuật, xã hội và khu dân cư.**
+</ul>
+
+### 5. **Hoàn thiện pháp lý**: 
+Bổ sung các quy định pháp luật làm cơ sở cho lập quy hoạch và xây dựng đô thị ven biển, đô thị hải đảo. </div>
+
+---
+
+### Kết luận
+
+<div style="text-align:center; margin-top: -15px;">Hội thảo đã: </div>
+
+- Khẳng định **vai trò chiến lược của đô thị ven biển** trong phát triển kinh tế, xã hội và bảo vệ an ninh quốc gia.  
+- Đề xuất nhiều **giải pháp kiểm soát phát triển đô thị biển**, học hỏi từ kinh nghiệm quốc tế.  
+- Gửi kiến nghị cụ thể tới Bộ Xây dựng nhằm **hoàn thiện chính sách và quy hoạch phát triển đô thị biển Việt Nam** trong giai đoạn mới. 
+</div>
+`,
       pdf: "",
       pdfButtonText: ""
     },
