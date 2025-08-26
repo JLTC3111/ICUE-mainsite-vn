@@ -1279,7 +1279,7 @@ function updateArticleMedia() {
     
     // Volume button
     const volumeBtn = document.createElement('button');
-    volumeBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 6C20.5 7.5 21 10 21 12C21 14 20.5 16.5 19 18M16 8.99998C16.5 9.49998 17 10.5 17 12C17 13.5 16.5 14.5 16 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
+    volumeBtn.innerHTML = '<svg style="transform:translateX(2.5px);" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 6C20.5 7.5 21 10 21 12C21 14 20.5 16.5 19 18M16 8.99998C16.5 9.49998 17 10.5 17 12C17 13.5 16.5 14.5 16 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
     volumeBtn.title = 'Volume';
     volumeBtn.style.cssText = `
       background: transparent;
@@ -1299,7 +1299,7 @@ function updateArticleMedia() {
     
     // Fullscreen button
     const fullscreenBtn = document.createElement('button');
-    fullscreenBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#ffffff" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline points="7.49 26 7.49 7.5 25.99 7.5"></polyline><polyline points="56.51 26 56.51 7.5 38.01 7.5"></polyline><polyline points="7.53 38 7.53 56.5 26.02 56.5"></polyline><polyline points="56.51 38 56.51 56.5 38.01 56.5"></polyline></g></svg>';
+    fullscreenBtn.innerHTML = '<svg style="transform:translateX(-5px);" width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#ffffff" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline points="7.49 26 7.49 7.5 25.99 7.5"></polyline><polyline points="56.51 26 56.51 7.5 38.01 7.5"></polyline><polyline points="7.53 38 7.53 56.5 26.02 56.5"></polyline><polyline points="56.51 38 56.51 56.5 38.01 56.5"></polyline></g></svg>';
     fullscreenBtn.title = 'Open in modal';
     fullscreenBtn.style.cssText = `
       background: transparent;
@@ -1341,6 +1341,7 @@ function updateArticleMedia() {
     volumeBtn.onmouseleave = () => volumeBtn.style.transform = "scale(1)";
     fullscreenBtn.onmouseenter = () => fullscreenBtn.style.transform = "rotateZ(-360deg) scale(1.25)";
     fullscreenBtn.onmouseleave = () => fullscreenBtn.style.transform = "rotateZ(360deg) scale(1)";
+
     // Event handlers
     playPauseBtn.onclick = () => {
       if (video.paused) {
