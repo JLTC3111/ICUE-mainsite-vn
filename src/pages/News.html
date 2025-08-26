@@ -33,7 +33,8 @@ body {
   justify-content: center;
   height: calc(var(--height) + 10px);
   z-index: 1;
-  mask-image: linear-gradient( to right,transparent, #000 10% 90%,transparent)
+  padding: 5px;
+  mask-image: linear-gradient( to right,transparent, #000 10% 90%,transparent);
 }
 
 .news-slider .logo-list {
@@ -43,6 +44,7 @@ body {
   scroll-behavior: smooth;
   white-space: nowrap;
   min-width: calc(var(--width) * var(--quantity));
+  padding: 5px;
 }
 
 .news-slider .logo-list .item {
@@ -53,6 +55,7 @@ body {
   width: var(--width); 
   height: var(--height);
   left: 60%; 
+  padding: 5px;
 }
 
 .news-slider .logo-list .item a {
@@ -65,7 +68,9 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: grayscale(1);
+  filter: grayscale(0);
+  transition: all 0.3s ease;
+  will-change: transform;
 }
 
 .news-slider .logo-list .item:nth-child(1) img {
@@ -83,15 +88,13 @@ body {
 }
 
 .news-slider .logo-list .item img:hover {
-  filter: grayscale(0);
-  transform: scale(1.05);
-  transition: 0.3s ease;
+  transform: scale(1.25);
 }
 
 .slider-arrow {
   display: flex;
   position: absolute;
-  top:70%;
+  top:50%;
   background-color: transparent;
   border-radius: 50px;
   cursor: pointer;
@@ -127,11 +130,11 @@ body {
 }
 
 .left-slider-arrow {
-  left: 2.5vw;
+  left: 5vw;
 }
 
 .right-slider-arrow {
-  right: 2.5vw;
+  right: 5vw;
 }
 
 .fill-colour {
