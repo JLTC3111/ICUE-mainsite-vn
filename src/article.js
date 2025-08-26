@@ -1190,6 +1190,7 @@ function updateArticleMedia() {
       height: auto;
       background: #fff;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       border-radius: 8px;
@@ -1198,13 +1199,122 @@ function updateArticleMedia() {
     
     const video = document.createElement('video');
     video.src = media.src;
-    video.controls = true;
+    video.controls = false; // Disable default controls to use custom ones
     video.preload = 'metadata';
     video.style.cssText = `
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    `;
+    
+    // Custom control bar container
+    const controlBar = document.createElement('div');
+    controlBar.className = 'video-control-bar';
+    controlBar.style.cssText = `
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+    `;
+    
+    // Play/Pause button
+    const playPauseBtn = document.createElement('button');
+    playPauseBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 12L3 18.9671C3 21.2763 5.53435 22.736 7.59662 21.6145L10.7996 19.8727M3 8L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L14.0026 18.131" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>';
+    playPauseBtn.title = 'Play/Pause';
+    playPauseBtn.style.cssText = `
+      background: transparent;
+      color: white;
+      border: none;
+      padding: 12px 16px;
       border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    // Progress bar container
+    const progressContainer = document.createElement('div');
+    progressContainer.style.cssText = `
+      flex: 1;
+      height: 8px;
+      background: rgba(255,255,255);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    `;
+    
+    const progressBar = document.createElement('div');
+    progressBar.style.cssText = `
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(to right, #0ff, #e8e5ff);
+      border-radius: 4px;
+      transition: width 0.1s ease;
+    `;
+    
+    // Time display
+    const timeDisplay = document.createElement('span');
+    timeDisplay.textContent = '0:00 / 0:00';
+    timeDisplay.style.cssText = `
+      color: white;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      min-width: 30px;
+      text-align: center;
+      transform: translateX(2.5px);
+    `;
+    
+    // Volume button
+    const volumeBtn = document.createElement('button');
+    volumeBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 6C20.5 7.5 21 10 21 12C21 14 20.5 16.5 19 18M16 8.99998C16.5 9.49998 17 10.5 17 12C17 13.5 16.5 14.5 16 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
+    volumeBtn.title = 'Volume';
+    volumeBtn.style.cssText = `
+      background: transparent;
+      color: white;
+      border: none;
+      padding: 0;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    // Fullscreen button
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#ffffff" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><polyline points="7.49 26 7.49 7.5 25.99 7.5"></polyline><polyline points="56.51 26 56.51 7.5 38.01 7.5"></polyline><polyline points="7.53 38 7.53 56.5 26.02 56.5"></polyline><polyline points="56.51 38 56.51 56.5 38.01 56.5"></polyline></g></svg>';
+    fullscreenBtn.title = 'Open in modal';
+    fullscreenBtn.style.cssText = `
+      background: transparent;
+      color: white;
+      border: none;
+      padding: 0;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     `;
     
     const videoIndicator = document.createElement('div');
@@ -1223,33 +1333,80 @@ function updateArticleMedia() {
       pointer-events: none;
     `;
     
-    const fullscreenBtn = document.createElement('button');
-    fullscreenBtn.innerHTML = '';
-    fullscreenBtn.title = 'Open in modal';
-    fullscreenBtn.style.cssText = `
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(0,0,0,0.8);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 50%;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.3s ease;
-    `;
-    fullscreenBtn.onmouseenter = () => fullscreenBtn.style.background = 'rgba(0,0,0,1)';
-    fullscreenBtn.onmouseleave = () => fullscreenBtn.style.background = 'rgba(0,0,0,0.8)';
+    // Add hover effects
+    playPauseBtn.onmouseenter = () => playPauseBtn.style.transform = "rotateZ(-360deg) scale(1.25)";
+    playPauseBtn.onmouseleave = () => playPauseBtn.style.transform = "rotateZ(360deg) scale(1)";
+
+    volumeBtn.onmouseenter = () => volumeBtn.style.transform = "scale(1.25)";
+    volumeBtn.onmouseleave = () => volumeBtn.style.transform = "scale(1)";
+    fullscreenBtn.onmouseenter = () => fullscreenBtn.style.transform = "rotateZ(-360deg) scale(1.25)";
+    fullscreenBtn.onmouseleave = () => fullscreenBtn.style.transform = "rotateZ(360deg) scale(1)";
+    // Event handlers
+    playPauseBtn.onclick = () => {
+      if (video.paused) {
+        video.play();
+        playPauseBtn.innerHTML = `<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.948 1.25H6.052C6.95048 1.24997 7.6997 1.24995 8.29448 1.32991C8.92228 1.41432 9.48908 1.59999 9.94455 2.05546C10.4 2.51093 10.5857 3.07773 10.6701 3.70552C10.7501 4.30031 10.75 5.04953 10.75 5.94801V18.052C10.75 18.9505 10.7501 19.6997 10.6701 20.2945C10.5857 20.9223 10.4 21.4891 9.94455 21.9445C9.48908 22.4 8.92228 22.5857 8.29448 22.6701C7.6997 22.7501 6.95048 22.75 6.052 22.75H5.94801C5.04953 22.75 4.30031 22.7501 3.70552 22.6701C3.07773 22.5857 2.51093 22.4 2.05546 21.9445C1.59999 21.4891 1.41432 20.9223 1.32991 20.2945C1.24995 19.6997 1.24997 18.9505 1.25 18.052V5.948C1.24997 5.04952 1.24995 4.3003 1.32991 3.70552C1.41432 3.07773 1.59999 2.51093 2.05546 2.05546C2.51093 1.59999 3.07773 1.41432 3.70552 1.32991C4.3003 1.24995 5.04952 1.24997 5.948 1.25ZM3.90539 2.81654C3.44393 2.87858 3.24644 2.9858 3.11612 3.11612C2.9858 3.24644 2.87858 3.44393 2.81654 3.90539C2.7516 4.38843 2.75 5.03599 2.75 6V18C2.75 18.964 2.7516 19.6116 2.81654 20.0946C2.87858 20.5561 2.9858 20.7536 3.11612 20.8839C3.24644 21.0142 3.44393 21.1214 3.90539 21.1835C4.38843 21.2484 5.03599 21.25 6 21.25C6.96401 21.25 7.61157 21.2484 8.09461 21.1835C8.55607 21.1214 8.75357 21.0142 8.88389 20.8839C9.0142 20.7536 9.12143 20.5561 9.18347 20.0946C9.24841 19.6116 9.25 18.964 9.25 18V6C9.25 5.03599 9.24841 4.38843 9.18347 3.90539C9.12143 3.44393 9.0142 3.24644 8.88389 3.11612C8.75357 2.9858 8.55607 2.87858 8.09461 2.81654C7.61157 2.7516 6.96401 2.75 6 2.75C5.03599 2.75 4.38843 2.7516 3.90539 2.81654ZM17.948 1.25H18.052C18.9505 1.24997 19.6997 1.24995 20.2945 1.32991C20.9223 1.41432 21.4891 1.59999 21.9445 2.05546C22.4 2.51093 22.5857 3.07773 22.6701 3.70552C22.7501 4.30031 22.75 5.04953 22.75 5.94801V18.052C22.75 18.9505 22.7501 19.6997 22.6701 20.2945C22.5857 20.9223 22.4 21.4891 21.9445 21.9445C21.4891 22.4 20.9223 22.5857 20.2945 22.6701C19.6997 22.7501 18.9505 22.75 18.052 22.75H17.948C17.0495 22.75 16.3003 22.7501 15.7055 22.6701C15.0777 22.5857 14.5109 22.4 14.0555 21.9445C13.6 21.4891 13.4143 20.9223 13.3299 20.2945C13.2499 19.6997 13.25 18.9505 13.25 18.052V5.94801C13.25 5.04953 13.2499 4.30031 13.3299 3.70552C13.4143 3.07773 13.6 2.51093 14.0555 2.05546C14.5109 1.59999 15.0777 1.41432 15.7055 1.32991C16.3003 1.24995 17.0495 1.24997 17.948 1.25ZM15.9054 2.81654C15.4439 2.87858 15.2464 2.9858 15.1161 3.11612C14.9858 3.24644 14.8786 3.44393 14.8165 3.90539C14.7516 4.38843 14.75 5.03599 14.75 6V18C14.75 18.964 14.7516 19.6116 14.8165 20.0946C14.8786 20.5561 14.9858 20.7536 15.1161 20.8839C15.2464 21.0142 15.4439 21.1214 15.9054 21.1835C16.3884 21.2484 17.036 21.25 18 21.25C18.964 21.25 19.6116 21.2484 20.0946 21.1835C20.5561 21.1214 20.7536 21.0142 20.8839 20.8839C21.0142 20.7536 21.1214 20.5561 21.1835 20.0946C21.2484 19.6116 21.25 18.964 21.25 18V6C21.25 5.03599 21.2484 4.38843 21.1835 3.90539C21.1214 3.44393 21.0142 3.24644 20.8839 3.11612C20.7536 2.9858 20.5561 2.87858 20.0946 2.81654C19.6116 2.7516 18.964 2.75 18 2.75C17.036 2.75 16.3884 2.7516 15.9054 2.81654Z" fill="#ffffff"></path> </g></svg>`;
+      } else {
+        video.pause();
+        playPauseBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 12L3 18.9671C3 21.2763 5.53435 22.736 7.59662 21.6145L10.7996 19.8727M3 8L3 5.0329C3 2.72368 5.53435 1.26402 7.59661 2.38548L20.4086 9.35258C22.5305 10.5065 22.5305 13.4935 20.4086 14.6474L14.0026 18.131" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>';
+      }
+    };
+    
+    // Progress bar click
+    progressContainer.onclick = (e) => {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const percentage = clickX / width;
+      video.currentTime = percentage * video.duration;
+    };
+    
+    // Update progress and time
+    video.ontimeupdate = () => {
+      if (video.duration) {
+        const percentage = (video.currentTime / video.duration) * 100;
+        progressBar.style.width = percentage + '%';
+        
+        const current = formatTime(video.currentTime);
+        const total = formatTime(video.duration);
+        timeDisplay.textContent = `${current} / ${total}`;
+      }
+    };
+    
+    // Volume control
+    volumeBtn.onclick = () => {
+      if (video.muted) {
+        video.muted = false;
+        volumeBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 6C20.5 7.5 21 10 21 12C21 14 20.5 16.5 19 18M16 8.99998C16.5 9.49998 17 10.5 17 12C17 13.5 16.5 14.5 16 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
+      } else {
+        video.muted = true;
+        volumeBtn.innerHTML = '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M22 9L16 15M16 9L22 15M3 10.5V13.5C3 14.6046 3.5 15.5 5.5 16C7.5 16.5 9 21 12 21C14 21 14 3 12 3C9 3 7.5 7.5 5.5 8C3.5 8.5 3 9.39543 3 10.5Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>';
+      }
+    };
+    
     fullscreenBtn.onclick = (e) => {
       e.stopPropagation();
       openImageModal(currentArticle.images, currentArticleIndex);
     };
     
+    // Helper function to format time
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    // Assemble the video player
+    progressContainer.appendChild(progressBar);
+    controlBar.appendChild(playPauseBtn);
+    controlBar.appendChild(progressContainer);
+    controlBar.appendChild(timeDisplay);
+    controlBar.appendChild(volumeBtn);
+    controlBar.appendChild(fullscreenBtn);
+    
     videoContainer.appendChild(video);
     videoContainer.appendChild(videoIndicator);
-    videoContainer.appendChild(fullscreenBtn);
+    videoContainer.appendChild(controlBar);
     
     imageContainer.insertBefore(videoContainer, articleImageElement);
   } else {
@@ -1264,6 +1421,7 @@ function updateArticleMedia() {
   }
   
   articleCaptionElement.textContent = media.caption;
+  articleCaptionElement.style.marginTop = '10px';
   
   // Update counter indicator
   const indicator = imageContainer.querySelector('.image-count-indicator');
@@ -1304,7 +1462,7 @@ function addMediaIndicatorDots(article) {
       height: 15px;
       border-radius: 50%;
       border: 1px solid black;
-      background: ${index === 0 ? '#22c55e' : 'rgba(255,255,255,0.75)'};
+      background: ${index === 0 ? '#3ad9d9' : 'rgba(255,255,255,0.75)'};
       cursor: pointer;
       transition: all 0.3s ease;
     `;
@@ -1335,7 +1493,7 @@ function updateMediaIndicatorDots() {
   const dots = document.querySelectorAll('.media-dot');
   dots.forEach((dot, index) => {
     const isActive = index === currentArticleIndex;
-    dot.style.background = isActive ? 'green' : 'rgba(255,255,255,0.3)';
+    dot.style.background = isActive ? '#3ad9d9' : 'rgba(255,255,255,0.3)';
     dot.style.border = isActive ? '1px solid #000' : '1px solid rgba(0,0,0,0.8)';
     dot.style.width = isActive ? '15px' : '15px';
     dot.style.height = isActive ? '15px' : '15px';
