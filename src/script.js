@@ -3695,17 +3695,16 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     // Bot response generator
     function generateBotResponse(userMessage) {
         const message = userMessage.toLowerCase();
-       
-        if (message.includes('dịch vụ') || message.includes('service')) {
-            return 'ICUE provides research services in construction economics and urban development, sustainable development consulting, and environmental project management. Which service do you want to know more about?';
+        if (message.includes('dịch vụ') || message.includes('service') || message.includes('cost') || message.includes('giá')) {
+            return 'ICUE cung cấp các dịch vụ nghiên cứu kinh tế xây dựng và phát triển đô thị, tư vấn phát triển bền vững và quản lý dự án môi trường. Chi phí tư vấn của chúng tôi khác nhau tùy thuộc vào từng dự án. Vui lòng liên hệ với chúng tôi để biết thêm chi tiết.';
         } else if (message.includes('dự án') || message.includes('project')) {
-            return 'We’ve carried out important projects like Âu Cơ Park in Hội An, marine conservation projects, and smart urban development projects. Want more details on a specific project?';
+            return 'Chúng tôi đã thực hiện các dự án quan trọng như Công viên Âu Cơ ở Hội An, các dự án bảo tồn biển, và dự án phát triển đô thị thông minh. Bạn có muốn biết thêm chi tiết về một dự án cụ thể không?';
         } else if (message.includes('liên hệ') || message.includes('contact')) {
-            return 'You can contact ICUE via email or phone. Please check the Contact page for details. How else can I help?';  
-        } else if (message.includes('xin chào') || message.includes('hello')) {
-            return 'Hello! Happy to help. I can tell you about services, projects, or contact info for ICUE. What do you need?';
+            return 'Bạn có thể liên hệ với ICUE qua email hoặc điện thoại. Vui lòng kiểm tra trang Liên hệ để biết thêm chi tiết. Tôi có thể giúp gì thêm cho bạn không?';  
+        } else if (message.includes('ơi') || message.includes('hello') || message.includes('hi') || message.includes('chào')) {
+            return 'Xin chào! Rất vui được giúp bạn. Tôi có thể cung cấp thông tin về các dịch vụ, dự án hoặc thông tin liên hệ của ICUE. Bạn cần hỗ trợ gì?';
         } else {
-            return 'Thanks for reaching out! I’m still under development, see our FAQs page for more info. For best support, please contact ICUE directly via the Contact page. I’ll be improved to serve you better soon!';
+            return 'Cảm ơn bạn đã liên hệ! Tôi vẫn đang trong quá trình phát triển, vui lòng xem trang Câu hỏi thường gặp để biết thêm thông tin. Để được hỗ trợ tốt nhất, vui lòng liên hệ trực tiếp với ICUE qua trang Liên hệ. Tôi sẽ sớm được cải thiện để phục vụ bạn tốt hơn!';
         }
     }
 };
