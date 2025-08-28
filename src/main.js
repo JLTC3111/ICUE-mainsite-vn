@@ -351,18 +351,18 @@ footer {
         <footer>
             <div class="footer-container">
                 <div class="footer-section">
-                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                    <div class="footer-toggle underline-hover" aria-expanded="false">
                         Công Ty
-                    </button>
+                    </div>
                     <div class="collapsible">
                         <a href="#/notableAwards">Giải Thưởng Nổi Bật</a>
                         <a href="#/communityActivities">Hoạt Động Cộng Đồng</a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <button class="footer-toggle underline-hover" aria-expanded="false">
+                    <div class="footer-toggle underline-hover" aria-expanded="false">
                         Các Trang Khác
-                    </button>
+                    </div>
                     <div class="collapsible">
                         <a href="#/FAQs">Câu Hỏi Thường Gặp</a>
                         <a href="#/recruitment">Tuyển Dụng</a>
