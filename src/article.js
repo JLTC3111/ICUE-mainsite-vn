@@ -782,7 +782,7 @@ Mục tiêu phát triển đô thị thông minh bền vững sẽ không chỉ 
       ],
       bodyMarkdown: `
 <div style="margin-left: var(--article-indent, 0.5rem);">
-<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:5px">Hội thảo Khoa học về Tương lai của Thừa Thiên Huế</div>
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:5px">Hội Thảo Khoa Học Về Tương Lai Của Thừa Thiên Huế</div>
 Một hội thảo khoa học gần đây đã được tổ chức tại **Hà Nội** với một nhiệm vụ quan trọng: xác định tương lai của **Thừa Thiên Huế** khi chuẩn bị trở thành **thành phố trực thuộc Trung ương**.  
 Sự kiện này do **UBND tỉnh Thừa Thiên Huế** phối hợp với **Bộ Nội vụ** và **Tổng hội Xây dựng Việt Nam** tổ chức, tập trung vào chủ đề cốt lõi:  
 
@@ -851,7 +851,7 @@ Hội thảo đã đánh dấu một bước tiến quan trọng trong việc:
 {
       id: "6",
       title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Kinh Tế Đô Thị Trong Quy Hoạch, Phát Triển Bền Vững Đô Thị Việt Nam - Cơ Hội & Thách Thức</div>",
-      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên cứu Kinh tế Xây dựng và Đô thị với sự bảo trợ của Ban Kinh tế Trung ương và Bộ Xây dựng đã tổ chức Hội thảo “Kinh tế đô thị trong quy hoạch, xây dựng và phát triển bền vững đô thị Việt Nam - cơ hội và thách thức”. Đây là một sự kiện trong chuỗi các sự kiện của ngày Đô thị VN 08/11/2022 tổ chức tại Bộ Xây dựng. </div>",
+      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên Cứu Kinh tế Xây Dựng và Đô Thị với sự bảo trợ của Ban Kinh Tế Trung ương và Bộ Xây Dựng đã tổ chức hội thảo “Kinh tế đô thị trong quy hoạch, xây dựng và phát triển bền vững đô thị Việt Nam - cơ hội và thách thức”. Đây là một sự kiện trong chuỗi các sự kiện của ngày Đô thị VN 08/11/2022 tổ chức tại Bộ Xây Dựng. </div>",
       author: "ICUE-VN",
       date: "<div style=\"text-align: center;\">*Ngày: 08 Tháng 11, 2022*</div>",
       images: [
@@ -874,7 +874,7 @@ Hội thảo đã đánh dấu một bước tiến quan trọng trong việc:
       ],
       bodyMarkdown: `
 <div style="margin-left: var(--article-indent, 0.5rem);">
-**Viện Nghiên cứu Kinh tế Xây dựng và Đô thị**, dưới sự bảo trợ của **Ban Kinh tế Trung ương** và **Bộ Xây dựng**, đã tổ chức hội thảo:  
+**Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị**, dưới sự bảo trợ của **Ban Kinh Tế Trung Ương** và **Bộ Xây Dựng**, đã tổ chức hội thảo:  
 
 - Kinh tế đô thị trong quy hoạch, xây dựng và phát triển bền vững đô thị Việt Nam - cơ hội và thách thức
 - Sự kiện là một trong chuỗi hoạt động kỷ niệm **Ngày Đô thị Việt Nam 08/11/2022** tổ chức tại Bộ Xây dựng.  
@@ -961,7 +961,7 @@ Hội thảo đã đánh dấu một bước tiến quan trọng trong việc:
 {
       id: "7",
       title: "<div style=\"font-size: var(--article-font-size, 1rem);\"> Toạ Đàm Tổng Quan Và Thực Trạng Đô Thị Biển Việt Nam – Một Số Quan Điểm Về Kiểm Soát Phát Triển</div>",
-      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên cứu Kinh tế Xây dựng và Đô thị – Tổng hội Xây dựng Việt Nam đã tổ chức hội thảo khoa học</div>",
+      lead: "<div style=\"line-height: 1.5;\">Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị – Tổng Hội Xây Dựng Việt Nam đã tổ chức hội thảo khoa học</div>",
       author: "ICUE-VN",
       date: "<div style=\"text-align: center;\">*Ngày: 30 Tháng 9, 2020*</div>",
       images: [
@@ -980,9 +980,9 @@ Hội thảo đã đánh dấu một bước tiến quan trọng trong việc:
       ],
       bodyMarkdown: `
 <div style="margin-left: var(--article-indent, 0.5rem);">
-<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">Hội thảo Khoa học: Tổng quan Hiện trạng Đô thị Biển Việt Nam và Kiểm soát Phát triển</div>
+<div style ="font-size: 1.25rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">Hội thảo khoa học: Tổng quan hiện trạng đô thị biển Việt Nam và kiểm soát phát triển</div>
 
-Ngày **30/9/2020**, **Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE)** – Tổng hội Xây dựng Việt Nam đã tổ chức hội thảo khoa học:  
+Ngày **30/9/2020**
 
 > **“Tổng quan hiện trạng đô thị biển Việt Nam và một số quan điểm về kiểm soát phát triển”**
 
