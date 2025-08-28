@@ -707,6 +707,10 @@ Các hộ này được trao số quà **gấp 4 lần** các hộ khác. </div>
           src: "/public/news/articles/article_4/3.jpg",
           caption: "Thứ trưởng Bộ Xây dựng Nguyễn Tường Văn khẳng định, việc phát triển đô thị thông minh không phải là chạy đua theo công nghệ mà phải lấy con người làm trung tâm."
         },
+        {
+          src: "/public/news/articles/article_4/4.jpg",
+          caption: "TS. Nguyễn Hồng Hạnh Tại Buổi Họp."
+        },
       ],
       bodyMarkdown: `
 Chặng đường phát triển đô thị thông minh của Việt Nam đã đạt được những bước tiến đáng kể kể từ khi triển khai Đề án **“Phát triển đô thị thông minh bền vững Việt Nam giai đoạn 2018 - 2025”** vào năm 2018.  
@@ -1059,6 +1063,224 @@ Bổ sung các quy định pháp luật làm cơ sở cho lập quy hoạch và 
       pdf: "",
       pdfButtonText: ""
     },
+{
+      id: "8",
+      title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Áo Ấm Đến Trường: Hành Trình Yêu Thương Đến Cao Nguyên Quản Bạ – Hà Giang</div>",
+      lead: "<div style=\"line-height: 1.5;\">Giữa tiết trời se lạnh của núi rừng Hà Giang, những chiếc áo ấm cùng nụ cười hồn nhiên đã viết nên câu chuyện chan chứa tình thương và gắn kết cộng đồng.</div>",
+      author: "ICUE-VN",
+      date: "<div style=\"text-align: center;\">*Ngày: 15/01/2024*</div>",
+      images: [
+        {
+          src: "/public/news/articles/article_8/1.jpg",
+          caption: "TS. Nguyễn Hồng Hạnh – Viện trưởng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị"
+        },
+        {
+          src: "/public/news/articles/article_8/2.jpg",
+          caption: "Các em nhỏ thị trấn Tam Sơn, Hà Giang"
+        },
+        {
+          src: "/public/news/articles/article_8/3.jpg",
+          caption: "Các em nhỏ địa phương nhận quà"
+        },
+        {
+          src: "/public/news/articles/article_8/4.jpg",
+          caption: "Các em nhỏ địa phương nhận quà"
+        },
+        {
+          src: "/public/news/articles/article_8/5.jpg",
+          caption: "Viện trao tặng trang thiết bị cho nhà trường"
+        },
+        {
+          src: "/public/news/articles/article_8/6.jpg",
+          caption: "Các em nhỏ thị trấn Tam Sơn, Hà Giang"
+        },
+        {
+          src: "/public/news/articles/article_8/7.jpg",
+          caption: "Thư Cám Ơn"
+        },
+      ],
+      bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+<div style ="font-size: 1rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">HOẠT ĐỘNG THIỆN NGUYỆN CỦA VIỆN NGHIÊN CỨU KINH TẾ XÂY DỰNG VÀ ĐÔ THỊ</div> 
+---
+
+<div style ="text-align: center;">
+### 🌱 Lan Tỏa Yêu Thương – *"Áo Ấm Cho Con Đến Trường"*
+</div>
+
+<div style="margin-left: var(--article-indent, 1rem)">Vào ngày **15/01/2024**, đại diện:  
+
+- Viện Nghiên cứu Kinh tế Xây dựng và Đô thị  
+- Sở Xây dựng tỉnh Hà Giang  
+- UBND thị trấn Tam Sơn  
+
+đã cùng nhau trao những món quà đầy ý nghĩa đến các em nhỏ tại **điểm trường thôn Thượng Sơn, thị trấn Tam Sơn – Quản Bạ – Hà Giang**.  
+Dù những phần quà giản dị, nhưng chứa đựng nhiều tình thương và sự sẻ chia. Đồng thời, chương trình cũng hỗ trợ một phần khó khăn cho các hộ nghèo nhất tại địa phương. </div>
+
+---
+
+<div style ="text-align: center;">
+### 📸 Khoảnh Khắc Ấm Áp
+</div>
+
+**TS. Nguyễn Hồng Hạnh**, Viện trưởng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị, cùng đại diện Sở Xây dựng và cán bộ địa phương, trực tiếp trao quà cho các em nhỏ tại điểm trường Mầm non thôn Thượng Sơn.  
+
+---
+
+<div style ="text-align: center; margin-bottom: -1.5rem">
+### 🗣️ Lời Chia Sẻ Từ Viện Trưởng
+</div>
+
+> “Nhìn thấy các em nhỏ thôn Thượng Sơn với nụ cười lấp lánh trong chiếc áo lông ấm áp, cùng nhiều món quà khác như chiếc Tivi, dàn loa phục vụ việc học tập, ca hát mỗi ngày — đó chính là niềm hạnh phúc lớn nhất của tôi lúc này.  
+>   
+> Tôi xin chúc các cô giáo vùng cao Quản Bạ luôn mạnh khỏe, trẻ trung và tràn đầy nhiệt huyết để dìu dắt các em nhỏ trên con đường đến tương lai hạnh phúc, ấm no.  
+>   
+> Xin cảm ơn lãnh đạo Sở Xây dựng Hà Giang và tập thể lãnh đạo thị trấn Tam Sơn đã đồng hành cùng Viện Nghiên cứu Kinh tế Xây dựng và Đô thị trong hành trình kết nối yêu thương với các em nhỏ vùng núi cao Quản Bạ.”  
+
+---
+
+<div style ="text-align: center;">
+### Tiếp Nối Hành Trình Yêu Thương
+</div>
+
+Hoạt động thiện nguyện lần này không chỉ mang đến sự hỗ trợ thiết thực mà còn thể hiện **tinh thần sẻ chia và gắn kết cộng đồng**.  
+
+Viện khẳng định sẽ tiếp tục duy trì và mở rộng các chương trình thiện nguyện, lan tỏa yêu thương đến nhiều điểm trường thuộc những vùng còn nhiều khó khăn.  
+
+---
+
+*Một chiếc áo ấm, một nụ cười hồn nhiên — đôi khi chính là niềm hạnh phúc trọn vẹn nhất.*
+</div>
+`
+},
+{
+  id: "9",
+  title: "<div style=\"font-size: var(--article-font-size, 1rem);\">Hội An Xanh: Quy Hoạch Hành Lang Ven Biển Cửa Đại</div>",
+  lead: "<div style=\"line-height: 1.5;\">Trước nguy cơ xói lở nghiêm trọng ở bãi biển Cửa Đại, các chuyên gia và nhà quản lý đã cùng nhau thảo luận để kiến tạo một hành lang xanh – vừa bảo vệ bờ biển, vừa nuôi dưỡng hệ sinh thái và cộng đồng địa phương.</div>",
+  author: "ICUE-VN",
+  date: "<div style=\"text-align: center;\">*Ngày: 05/12/2024*</div>",
+  images: [
+    {
+      src: "/public/news/articles/article_9/1.jpg",
+      caption: "KTS. Nguyễn Thanh Tâm, Viện Nghiên cứu kinh tế xây dựng và Đô thị, trình bày dự án nghiên cứu."
+    },
+    {
+      src: "/public/news/articles/article_9/2.jpg",
+      caption: "Phân khu chức năng Hành lang xanh ven biển Cửa Đại. Chú thích: HLX: Hành lang xanh, CVST: Công viên sinh thái, BVC: Bảo vệ chim hoang dã."
+    },
+    {
+      src: "/public/news/articles/article_9/3.jpg",
+      caption: "Phân bố các khu vực trồng cây."
+    },
+    {
+      src: "/public/news/articles/article_9/4.jpg",
+      caption: "TS. Nguyễn Hồng Hạnh, Viện Nghiên cứu kinh tế xây dựng và Đô thị, phát biểu tại hội thảo."
+    },
+    {
+      src: "/public/news/articles/article_9/5.jpg",
+      caption: "Ý tưởng sơ bộ thiết kế công viên cộng đồng."
+    },
+    {
+      src: "/public/news/articles/article_9/6.jpg",
+      caption: "Thiết kế sơ bộ tổng mặt bằng công viên sinh thái cộng đồng."
+    },
+    {
+      src: "/public/news/articles/article_9/7.jpg",
+      caption: "Các đại biểu, khách mời chụp ảnh lưu niệm tại hội thảo ngày 5.12."
+    },
+    {
+      src: "/public/news/articles/article_9/8.jpg",
+      caption: "Các đại biểu, khách mời chụp ảnh lưu niệm tại hội thảo ngày 6.12."
+    },
+    {
+      src: "/public/news/articles/article_9/9.jpg",
+      caption: "Đại diện ICUE, GIZ và các bên liên quan tại hội thảo"
+    },
+    {
+      src: "/public/news/articles/article_9/10.jpg",
+      caption: "Đại diện ICUE, GIZ và các bên liên quan tại hội thảo"
+    },
+    {
+      src: "/public/news/articles/article_9/11.jpg",
+      caption: "Đại diện ICUE, GIZ và các bên liên quan tại hội thảo"
+    },
+    {
+      src: "/public/news/articles/article_9/12.jpg",
+      caption: "Đại diện ICUE, GIZ và các bên liên quan tại hội thảo"
+    },
+  ],
+  bodyMarkdown: `
+<div style="margin-left: var(--article-indent, 0.5rem);">
+
+<div style ="font-size: 1rem; text-align: center; font-weight: 600; margin-bottom:15px; line-height:1.25;">HỘI THẢO QUY HOẠCH HÀNH LANG XANH VEN BIỂN CỬA ĐẠI – HỘI AN</div> 
+---
+
+<div style ="text-align: center;">
+### 🌊 Xanh Hóa Bờ Biển – *"Giải Pháp Cho Cửa Đại"*
+</div>
+
+Trong hai ngày **05–06/12/2024**, Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (ICUE) phối hợp cùng tổ chức GIZ (Đức) đã tổ chức hội thảo tại Hà Nội, tập trung vào việc **giải quyết xói lở bãi biển Cửa Đại** thông qua giải pháp **quy hoạch hành lang xanh**.  
+
+Hành lang dài **3,2 km**, rộng từ **8m đến 100m**, với **10.000m² công viên cộng đồng**, được xem như “lá chắn sinh thái” trước sóng biển và là không gian sinh hoạt chung cho cộng đồng.
+
+---
+
+<div style ="text-align: center;">
+### Cấu Trúc Hành Lang Xanh
+</div>
+
+Theo KTS. **Nguyễn Thanh Tâm**, hành lang gồm 5 phân khu chính:  
+
+<div style="margin-left: var(--article-indent, 0.5rem);">
+- Khu bãi biển cộng đồng  
+- Vườn thảo mộc  
+- Công viên trung tâm  
+- Vùng đệm sinh thái  
+- Đầm lầy và sân chim </div>
+
+Lớp cây trồng nhiều tầng (dừa, bụi, thông non) kết hợp phủ lá mục, cành khô giúp giữ đất, phục hồi hệ sinh thái và gia tăng đa dạng sinh học.
+
+---
+
+<div style ="text-align: center;">
+### 🗣️ Ý Kiến Chuyên Gia
+</div>
+
+- **PGS-TS. Vũ Thị Vinh**: Đánh giá cao tính thực tiễn, lựa chọn cây bản địa phù hợp.  
+- **PGS-TS.KTS. Đỗ Tú Lan**: Gợi ý lồng ghép yếu tố du lịch – thu hút đầu tư tư nhân để bảo đảm bền vững.  
+- **TS. Nguyễn Hồng Hạnh**: Chỉ ra sự thiếu vắng tiếng nói từ doanh nghiệp – cần sự đồng hành của cộng đồng kinh doanh.  
+- **TS. Trần Thị Lâm Hà**: Đề nghị làm rõ các chỉ số hiệu quả – hành lang xanh chống xói lở bao nhiêu phần trăm?  
+- **KTS. Chu Kim Đức**: Nhấn mạnh giá trị giáo dục môi trường – 74 loài thực vật, 99 loài chim, nhiều loài quý hiếm cần được giới thiệu cho cộng đồng.  
+- **KTS. Trần Xuân Hiếu**: Đề xuất phát triển thành mô hình mẫu có thể nhân rộng, kết hợp biển báo song ngữ, bản sắc văn hóa địa phương. 
+
+---
+
+<div style ="text-align: center;">
+### Góc Nhìn Từ Hội Thảo
+</div>
+
+Hội thảo quy tụ đại diện từ Hiệp hội Quy hoạch và Phát triển Đô thị Việt Nam, ICUE, GIZ cùng các chuyên gia thiết kế, quản lý đô thị.  
+
+Các ý kiến thống nhất rằng hành lang xanh không chỉ là giải pháp ứng phó biến đổi khí hậu mà còn là **mô hình hạ tầng xanh**, mở đường cho phát triển bền vững, gắn kết cộng đồng và du lịch sinh thái.
+
+---
+
+<div style ="text-align: center;">
+### Kết Luận
+
+<div style ="margin: -0.5rem auto;">
+Hành lang xanh Cửa Đại được kỳ vọng trở thành </div></div>
+
+- **Lá chắn tự nhiên** chống xói lở và biến đổi khí hậu  
+- **Không gian sống xanh** cho cộng đồng và du khách  
+- **Mô hình mẫu** có thể nhân rộng ra nhiều vùng ven biển khác của Việt Nam  
+
+---
+
+*Một bờ biển xanh – một tương lai bền vững. Đó là thông điệp Cửa Đại gửi gắm hôm nay.*
+</div>
+`
+}
 ];
 
 // Modal and Image Swipe Functionality
