@@ -1166,7 +1166,7 @@ Viện khẳng định sẽ tiếp tục duy trì và mở rộng các chương 
     },
     {
       src: "/public/news/articles/article_9/2.jpg",
-      caption: "Phân khu chức năng Hành lang xanh ven biển Cửa Đại. Chú thích: HLX: Hành lang xanh, CVST: Công viên sinh thái, BVC: Bảo vệ chim hoang dã."
+      caption: "Phân khu chức năng Hành lang xanh ven biển Cửa Đại. Bảo vệ chim hoang dã."
     },
     {
       src: "/public/news/articles/article_9/3.jpg",
@@ -1280,7 +1280,7 @@ Hành lang xanh Cửa Đại được kỳ vọng trở thành </div></div>
 *Một bờ biển xanh – một tương lai bền vững. Đó là thông điệp Cửa Đại gửi gắm hôm nay.*
 </div>
 `
-}
+},
 ];
 
 // Modal and Image Swipe Functionality
