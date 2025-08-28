@@ -16,7 +16,7 @@
   body {
     margin: 0;
     font-family: 'Helvetica Neue', sans-serif;
-    background-color: #f7f7f7;
+    background: linear-gradient(to bottom right, #e0e0e0, #b9b9b9);
     overflow-x: hidden;
   }
 
@@ -94,88 +94,81 @@ nav a:active {
   border-radius: 4px;
 }
 
-  .article-container {
+.article-container {
     max-width: 900px;
     margin: 10px auto;
     padding: 20px;
     color: #333;
-    background: #fff;
+    background: linear-gradient(to bottom right, #fffff5, #b3b4a8);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 10px;
-  }
+}
 
-  .article-title {
+.article-title {
     font-size: clamp(1rem, 3vw, 1.5rem);
     text-align: center;
     margin-bottom: 0.5rem;
     color: #1a202c;
-  }
+}
 
-  .dlbtn-container {
+.dlbtn-container {
     display:flex;
     justify-content: center;
-  }
+}
 
-  .lead {
+.lead {
     text-align: center;
     font-size: clamp(0.75rem, 2.5vw, 1rem);
     color: #555;
     margin-bottom: 1rem;
-  }
+}
 
-  .meta {
+.meta {
     font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     color: #888;
     margin-bottom: 1.5rem;
-  }
+}
 
-  .featured-image img {
+.featured-image img {
     width: 100%;
     height: auto;
     border-radius: 6px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     margin-bottom: 0.5rem;
-  }
+}
 
-  .featured-image figcaption {
+.featured-image figcaption {
     font-size: 0.85rem;
     color: #666;
     text-align: center;
-  }
+}
 
-  .article-body {
+.article-body {
     letter-spacing: 0.25px;
     line-height: 1.7;
     font-size: clamp(0.85rem, 2.5vw, 1.05rem);
-  }
+}
 
-  .article-body h2 {
+.article-body h2 {
     text-align: center;
     margin-top: 2rem;
     font-size: 1.75rem;
-  }
+}
 
-  .article-body p {
+.article-body p {
     max-width: 90%;
     margin: 0 auto;
-  }
+}
 
-  blockquote {
+blockquote {
     text-align: center;
     margin: 0 auto;
     padding: 1rem;
-    background: #ffffff;
-    border-left: 4px solid #ccc;
+    background: transparent !important;
+    border-left: 2px solid #ccc;
     font-style: italic;
     color: #555;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    color: #888;
-    font-size: 0.85rem;
-  }
+}
 
 .download-btn {
   position: relative;
@@ -276,7 +269,8 @@ nav a:active {
     gap: 1.5rem;
   }
 }
-footer {
+
+.footer {
   background-color: #1a202c;
   display: flex;
   justify-content: center;
@@ -379,7 +373,7 @@ footer {
 .underline-hover:hover::after {
   transform: scaleX(1);
 }
-/* 📱 Mobile responsiveness */
+/* 📱 Footer Mobile */
 @media (max-width: 768px) {
   .footer-grid {
     display: flex;
