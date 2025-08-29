@@ -607,7 +607,7 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
           src: "/public/news/articles/article_3/2.jpg",
           caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
         },
-         {
+        {
           src: "/public/news/articles/article_3/video_3.mp4",
           caption: "Nguồn: ABC NEWS",
         },
@@ -1306,6 +1306,202 @@ let currentArticle = null;
 let currentArticleIndex = 0;
 let articleStartX = 0;
 let articleEndX = 0;
+
+// Create Swiper gallery for multiple images/videos
+function createSwiperGallery(article) {
+  const articleImageElement = document.getElementById("article-image");
+  const articleCaptionElement = document.getElementById("article-caption");
+  const imageContainer = articleImageElement.parentElement;
+  
+  // Hide the original image
+  articleImageElement.style.display = 'none';
+  
+  // Create Swiper container
+  const swiperContainer = document.createElement('div');
+  swiperContainer.className = 'swiper article-swiper';
+  swiperContainer.style.cssText = `
+    width: 100%;
+    height: 550px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  `;
+  
+  // Create Swiper wrapper
+  const swiperWrapper = document.createElement('div');
+  swiperWrapper.className = 'swiper-wrapper';
+  
+  // Create slides for each media item
+  article.images.forEach((media, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'swiper-slide';
+    slide.style.cssText = `
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    `;
+    
+    const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
+                    media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
+                    media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
+    
+    if (isVideo) {
+      // Create video preview
+      const video = document.createElement('video');
+      video.src = media.src;
+      video.preload = 'metadata';
+      video.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      `;
+      
+      const playIcon = document.createElement('div');
+      playIcon.innerHTML = '▶';
+      playIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.7);
+        color: white;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        pointer-events: none;
+        z-index: 10;
+      `;
+      
+      const videoIndicator = document.createElement('div');
+      videoIndicator.innerHTML = 'VIDEO';
+      videoIndicator.style.cssText = `
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 10;
+      `;
+      
+      slide.appendChild(video);
+      slide.appendChild(playIcon);
+      slide.appendChild(videoIndicator);
+    } else {
+      // Create image
+      const img = document.createElement('img');
+      img.src = media.src;
+      img.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      `;
+      slide.appendChild(img);
+    }
+    
+    // Add click handler to open modal
+    slide.onclick = () => openImageModal(article.images, index);
+    slide.style.cursor = 'pointer';
+    
+    swiperWrapper.appendChild(slide);
+  });
+  
+  // Create navigation buttons
+  const prevButton = document.createElement('div');
+  prevButton.className = 'swiper-button-prev';
+  prevButton.style.cssText = `
+    color: white;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  `;
+  
+  const nextButton = document.createElement('div');
+  nextButton.className = 'swiper-button-next';
+  nextButton.style.cssText = `
+    color: white;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  `;
+  
+  // Create pagination
+  const pagination = document.createElement('div');
+  pagination.className = 'swiper-pagination';
+  pagination.style.cssText = `
+    --swiper-pagination-color: white;
+    --swiper-pagination-bullet-inactive-color: rgba(255,255,255,0.5);
+  `;
+  
+  // Assemble the swiper
+  swiperContainer.appendChild(swiperWrapper);
+  swiperContainer.appendChild(prevButton);
+  swiperContainer.appendChild(nextButton);
+  swiperContainer.appendChild(pagination);
+  
+  // Insert swiper into the page
+  imageContainer.insertBefore(swiperContainer, articleImageElement);
+  
+  // Initialize Swiper
+  try {
+    const swiper = new Swiper('.article-swiper', {
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        type: 'bullets',
+      },
+      loop: true,
+      keyboard: {
+        enabled: true,
+      },
+      touchEventsTarget: 'container',
+      grabCursor: true,
+      effect: 'slide',
+      speed: 300,
+      on: {
+        slideChange: function () {
+          // Update caption when slide changes
+          const activeIndex = this.realIndex;
+          const activeMedia = article.images[activeIndex];
+          articleCaptionElement.textContent = activeMedia.caption;
+          articleCaptionElement.style.marginTop = '10px';
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error initializing Swiper:', error);
+    // Fallback: still set the initial caption
+    if (article.images.length > 0) {
+      articleCaptionElement.textContent = article.images[0].caption;
+      articleCaptionElement.style.marginTop = '10px';
+    }
+  }
+  
+  // Set initial caption
+  if (article.images.length > 0) {
+    articleCaptionElement.textContent = article.images[0].caption;
+    articleCaptionElement.style.marginTop = '10px';
+  }
+}
 
 function setupArticleSwipe(article) {
   currentArticle = article;
@@ -2235,137 +2431,108 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Handle multiple images/videos
     if (article.images && article.images.length > 0) {
-      const firstMedia = article.images[0];
-      const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
-                          firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
-                          firstMedia.src.toLowerCase().includes('.avi') || firstMedia.src.toLowerCase().includes('.mkv');
-      
-      const articleImageElement = document.getElementById("article-image");
-      const articleCaptionElement = document.getElementById("article-caption");
-      
-      if (isFirstVideo) {
-        // If first media is video, create a video thumbnail with play overlay
-        const imageContainer = articleImageElement.parentElement;
-        
-        // Create video element to extract thumbnail
-        const video = document.createElement('video');
-        video.src = firstMedia.src;
-        video.style.cssText = `
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        `;
-        video.muted = true;
-        video.currentTime = 1; // Try to get a frame from 1 second in
-        
-        // Hide original image and show video thumbnail
-        articleImageElement.style.display = 'none';
-        
-        // Create video thumbnail container
-        const videoContainer = document.createElement('div');
-        videoContainer.style.cssText = `
-          position: relative;
-          width: 100%;
-          height: 550px !important;
-          background: #333;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          border-radius: 8px;
-          object-fit: cover;
-        `;
-        
-        // Add play icon overlay
-        const playIcon = document.createElement('div');
-        playIcon.innerHTML = '▶';
-        playIcon.style.cssText = `
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          color: white;
-          font-size: 48px;
-          text-shadow: 0 0 10px rgba(0,0,0,0.8);
-          pointer-events: none;
-          z-index: 10;
-        `;
-        
-        // Add video type indicator
-        const videoIndicator = document.createElement('div');
-        videoIndicator.innerHTML = '🎥 VIDEO';
-        videoIndicator.style.cssText = `
-          position: absolute;
-          top: 15px;
-          left: 15px;
-          background: rgba(0,0,0,0.8);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 15px;
-          font-size: 12px;
-          font-weight: bold;
-          z-index: 10;
-        `;
-        
-        videoContainer.appendChild(video);
-        videoContainer.appendChild(playIcon);
-        videoContainer.appendChild(videoIndicator);
-        
-        // Insert video container after the original image
-        imageContainer.insertBefore(videoContainer, articleImageElement.nextSibling);
-        
-        // Set up click handler for video
-        videoContainer.onclick = () => openImageModal(article.images, 0);
-        
-        articleCaptionElement.textContent = firstMedia.caption;
+      // Create Swiper gallery for multiple images/videos
+      if (article.images.length > 1) {
+        createSwiperGallery(article);
       } else {
-        // If first media is image, use normal behavior
-        articleImageElement.src = firstMedia.src;
-        articleImageElement.style.display = 'block';
-        articleImageElement.style.width = '100%';
-        articleImageElement.style.height = '550px';
-        articleImageElement.style.objectFit = 'cover';
-        articleImageElement.style.borderRadius = '8px';
-        articleCaptionElement.textContent = firstMedia.caption;
+        // Single image/video - use existing logic
+        const firstMedia = article.images[0];
+        const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
+                            firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
+                            firstMedia.src.toLowerCase().includes('.avi') || firstMedia.src.toLowerCase().includes('.mkv');
         
-        // Add click handler for modal
-        if (article.images.length > 1) {
+        const articleImageElement = document.getElementById("article-image");
+        const articleCaptionElement = document.getElementById("article-caption");
+        
+        if (isFirstVideo) {
+          // Single video handling
+          const imageContainer = articleImageElement.parentElement;
+          articleImageElement.style.display = 'none';
+          
+          const videoContainer = document.createElement('div');
+          videoContainer.className = 'article-video-preview';
+          videoContainer.style.cssText = `
+            position: relative;
+            width: 100%;
+            height: 550px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+          `;
+          
+          const video = document.createElement('video');
+          video.src = firstMedia.src;
+          video.preload = 'metadata';
+          video.style.cssText = `
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+          `;
+          
+          const playIcon = document.createElement('div');
+          playIcon.innerHTML = '▶';
+          playIcon.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 10;
+          `;
+          
+          const videoIndicator = document.createElement('div');
+          videoIndicator.innerHTML = 'VIDEO';
+          videoIndicator.style.cssText = `
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
+          `;
+          
+          videoContainer.appendChild(video);
+          videoContainer.appendChild(playIcon);
+          videoContainer.appendChild(videoIndicator);
+          imageContainer.insertBefore(videoContainer, articleImageElement.nextSibling);
+          videoContainer.onclick = () => openImageModal(article.images, 0);
+          
+          articleCaptionElement.textContent = firstMedia.caption;
+          articleCaptionElement.style.marginTop = '10px';
+        } else {
+          // Single image handling
+          articleImageElement.src = firstMedia.src;
+          articleImageElement.style.display = 'block';
+          articleImageElement.style.width = '100%';
+          articleImageElement.style.height = '550px';
+          articleImageElement.style.objectFit = 'cover';
+          articleImageElement.style.borderRadius = '8px';
+          articleCaptionElement.textContent = firstMedia.caption;
+          articleCaptionElement.style.marginTop = '10px';
+          
           articleImageElement.style.cursor = "pointer";
           articleImageElement.onclick = () => openImageModal(article.images, 0);
         }
       }
-      
-      // Add indicator for multiple media items
-      if (article.images.length > 1) {
-        const imageContainer = articleImageElement.parentElement;
-        if (!imageContainer.querySelector('.image-count-indicator')) {
-          const indicator = document.createElement('div');
-          indicator.className = 'image-count-indicator';
-          indicator.textContent = `1/${article.images.length}`;
-          indicator.style.cssText = `
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            color: #ffffff;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            pointer-events: none;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-          `;
-          imageContainer.style.position = 'relative';
-          imageContainer.appendChild(indicator);
-        }
-      }
-    }
-    
-    // Add swipe functionality for main article media
-    if (article.images && article.images.length > 1) {
-      setupArticleSwipe(article);
     }
     
     // Use markdown rendering if bodyMarkdown exists, otherwise use bodyHTML
