@@ -2082,8 +2082,13 @@ function updateModalImage() {
         left: 50%;
         transform: translate(-50%, -50%);
         font-size: 24px;
-        opacity: 0.7;
+        opacity: 1;
         z-index: 1;
+        color: white;
+        background: rgba(0,0,0,0.6);
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.3);
       `;
       
       // Try to create video thumbnail
@@ -2097,6 +2102,8 @@ function updateModalImage() {
         top: 0;
         left: 0;
         z-index: 2;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       `;
       video.muted = true;
       video.preload = 'metadata';
@@ -2118,14 +2125,12 @@ function updateModalImage() {
       
       // iOS-compatible thumbnail generation
       const loadThumbnail = () => {
-        if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+        if (video.readyState >= 2) { 
           try {
-            // For iOS, try to seek to a specific time after metadata is loaded
             video.currentTime = Math.min(5, video.duration * 0.1); // 10% into video or 5 seconds, whichever is smaller
-            videoIcon.style.display = 'none'; // Hide fallback icon if video loads
+            console.log('Video seeking to:', video.currentTime);
           } catch (e) {
-            console.log('Video seeking not supported, using fallback');
-            // Keep the video icon visible as fallback
+            console.log('Video seeking not supported, keeping fallback visible');
           }
         }
       };
@@ -2134,15 +2139,33 @@ function updateModalImage() {
       video.addEventListener('loadedmetadata', loadThumbnail);
       video.addEventListener('loadeddata', loadThumbnail);
       video.addEventListener('canplay', () => {
-        videoIcon.style.display = 'none'; // Hide fallback when video is ready
+        console.log('Video can play - showing thumbnail');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
+      });
+      
+      video.addEventListener('seeked', () => {
+        console.log('Video seeked successfully');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
       });
       
       // Error handling - show fallback if video fails to load
       video.addEventListener('error', () => {
-        video.style.display = 'none';
-        videoIcon.style.display = 'block';
-        videoIcon.innerHTML = '🎬'; // Different icon to indicate error
+        console.log('Video failed to load');
+        video.style.opacity = '0';
+        videoIcon.style.opacity = '1';
+        videoIcon.innerHTML = '🎬';
+        videoIcon.style.background = 'rgba(255,0,0,0.4)';
       });
+      
+      // Timeout to ensure emoji stays visible if video doesn't load
+      setTimeout(() => {
+        if (video.style.opacity === '0') {
+          console.log('Video thumbnail timeout - keeping emoji visible');
+          videoIcon.style.opacity = '1';
+        }
+      }, 3000);
       
       thumbContainer.appendChild(videoIcon); // Fallback background
       thumbContainer.appendChild(video);
