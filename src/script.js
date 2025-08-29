@@ -1,8 +1,7 @@
 console.log('[script.js] Loaded ✅');
 // Enhanced touch device detection that excludes laptops with trackpads
 
-// Make isTruelyTouchDevice available globally
-window.isTruelyTouchDevice = function isTruelyTouchDevice() {
+function isTruelyTouchDevice() {
    
     const isProbablyMac = (() => {
         // Check User Agent for macOS indicators

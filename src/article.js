@@ -438,7 +438,7 @@ const articles = [
         },
         {
           src: "/public/news/articles/article_1/4.jpg",
-          caption: "Đồng Chí Dũng Phát Biểu",
+          caption: "Đồng Chí Dũng",
           type: "image"
         },
         {
@@ -1306,367 +1306,6 @@ let currentArticle = null;
 let currentArticleIndex = 0;
 let articleStartX = 0;
 let articleEndX = 0;
-
-// Clean up existing media elements
-function cleanupExistingMedia() {
-  // Remove any existing Swiper containers
-  const existingSwipers = document.querySelectorAll('.swiper');
-  existingSwipers.forEach(swiper => {
-    // Destroy Swiper instance if it exists
-    if (swiper.swiper) {
-      swiper.swiper.destroy(true, true);
-    }
-    swiper.remove();
-  });
-  
-  // Remove any existing video containers
-  const existingVideoContainers = document.querySelectorAll('.custom-video-container');
-  existingVideoContainers.forEach(container => container.remove());
-  
-  // Reset the article image element
-  const articleImageElement = document.getElementById("article-image");
-  if (articleImageElement) {
-    articleImageElement.style.display = 'block';
-    articleImageElement.onclick = null;
-    articleImageElement.style.cursor = 'default';
-  }
-}
-
-// Create Swiper gallery for multiple images/videos
-function createSwiperGallery(article) {
-  // Import touch device detection from script.js
-  const isTruelyTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
-  
-  // Fallback simple mobile detection
-  const isSimpleMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                        (window.innerWidth <= 768) ||
-                        ('ontouchstart' in window && navigator.maxTouchPoints > 0);
-  
-  const isTouchDevice = isTruelyTouchDevice || isSimpleMobile;
-  
-  console.log('🔍 VN - Touch device detection:', isTruelyTouchDevice);
-  console.log('🔍 VN - Simple mobile detection:', isSimpleMobile);
-  console.log('🔍 VN - Final touch device result:', isTouchDevice);
-  console.log('🔍 VN - User Agent:', navigator.userAgent);
-  console.log('🔍 VN - Touch support:', 'ontouchstart' in window);
-  console.log('🔍 VN - Max touch points:', navigator.maxTouchPoints);
-  console.log('🔍 VN - Window width:', window.innerWidth);
-  
-  const articleImageElement = document.getElementById("article-image");
-  const articleCaptionElement = document.getElementById("article-caption");
-  const imageContainer = articleImageElement.parentElement;
-  
-  cleanupExistingMedia();
-  articleImageElement.style.display = 'none';
-  
-  // Create Swiper container
-  const swiperContainer = document.createElement('div');
-  swiperContainer.className = 'swiper article-swiper';
-  swiperContainer.style.cssText = `
-    width: 100%;
-    max-width: 100%;
-    height: 550px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    box-sizing: border-box;
-  `;
-  
-  // Create Swiper wrapper
-  const swiperWrapper = document.createElement('div');
-  swiperWrapper.className = 'swiper-wrapper';
-  
-  // Create slides for each media item
-  article.images.forEach((media, index) => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.style.cssText = `
-      width: 100%;
-      height: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-    `;
-    
-    const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
-                    media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
-                    media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
-    
-    if (isVideo) {
-      // Create video preview
-      const video = document.createElement('video');
-      video.src = media.src;
-      video.preload = 'metadata';
-      
-      // Add poster attribute for mobile devices to show thumbnail
-      if (isTouchDevice) {
-        console.log('📱 VN - Mobile device detected - generating video thumbnail');
-        
-        // Set video attributes for better mobile support
-        video.setAttribute('controls', 'false');
-        video.setAttribute('playsinline', 'true');
-        video.setAttribute('webkit-playsinline', 'true');
-        video.muted = true; // Required for autoplay on mobile
-        
-        // Try multiple methods to generate thumbnail
-        let thumbnailGenerated = false;
-        
-        // Method 1: Use loadeddata event (more reliable on mobile)
-        video.addEventListener('loadeddata', () => {
-          if (!thumbnailGenerated && video.readyState >= 2) {
-            generateThumbnail();
-          }
-        });
-        
-        // Method 2: Use canplay event as backup
-        video.addEventListener('canplay', () => {
-          if (!thumbnailGenerated) {
-            generateThumbnail();
-          }
-        });
-        
-        // Method 3: Direct thumbnail generation after metadata
-        video.addEventListener('loadedmetadata', () => {
-          console.log('📹 VN - Video metadata loaded, attempting thumbnail generation');
-          setTimeout(() => {
-            if (!thumbnailGenerated) {
-              generateThumbnail();
-            }
-          }, 100);
-        });
-        
-        function generateThumbnail() {
-          try {
-            if (thumbnailGenerated) return;
-            
-            console.log('🎬 VN - Attempting to generate thumbnail...');
-            
-            // Create canvas to capture thumbnail
-            const canvas = document.createElement('canvas');
-            const targetWidth = 640;
-            const targetHeight = 360;
-            
-            // Use video dimensions if available, otherwise use defaults
-            if (video.videoWidth && video.videoHeight) {
-              const aspectRatio = video.videoWidth / video.videoHeight;
-              if (aspectRatio > (targetWidth / targetHeight)) {
-                canvas.width = targetWidth;
-                canvas.height = targetWidth / aspectRatio;
-              } else {
-                canvas.height = targetHeight;
-                canvas.width = targetHeight * aspectRatio;
-              }
-            } else {
-              canvas.width = targetWidth;
-              canvas.height = targetHeight;
-            }
-            
-            const ctx = canvas.getContext('2d');
-            
-            // Draw the video frame to canvas
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Convert to data URL and set as poster
-            const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
-            video.poster = posterUrl;
-            
-            thumbnailGenerated = true;
-            console.log('✅ VN - Video thumbnail generated successfully');
-            
-          } catch (error) {
-            console.log('❌ VN - Failed to generate video thumbnail:', error);
-            // Fallback: try to set current time to get first frame
-            try {
-              video.currentTime = 0.1;
-            } catch (e) {
-              console.log('❌ VN - Fallback also failed:', e);
-            }
-          }
-        }
-        
-        // Fallback: Try after a delay
-        setTimeout(() => {
-          if (!thumbnailGenerated && video.readyState >= 2) {
-            generateThumbnail();
-          }
-        }, 500);
-        
-      } else {
-        console.log('🖥️ VN - Desktop device - no thumbnail generation needed');
-      }
-      
-      video.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      `;
-      
-      const playIcon = document.createElement('div');
-      playIcon.innerHTML = '▶';
-      playIcon.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0,0,0,0.7);
-        color: white;
-        border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        pointer-events: none;
-        z-index: 10;
-      `;
-      
-      const videoIndicator = document.createElement('div');
-      videoIndicator.innerHTML = 'VIDEO';
-      videoIndicator.style.cssText = `
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: rgba(0,0,0,0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 12px;
-        font-weight: bold;
-        z-index: 10;
-      `;
-      
-      slide.appendChild(video);
-      slide.appendChild(playIcon);
-      slide.appendChild(videoIndicator);
-    } else {
-      // Create image
-      const img = document.createElement('img');
-      img.src = media.src;
-      img.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      `;
-      slide.appendChild(img);
-    }
-    
-    // Add click handler to open modal
-    slide.onclick = () => openImageModal(article.images, index);
-    slide.style.cursor = 'pointer';
-    
-    swiperWrapper.appendChild(slide);
-  });
-  
-  // Create navigation buttons only for non-touch devices
-  let prevButton, nextButton;
-  console.log('🔍 VN - Creating navigation buttons - isTouchDevice:', isTouchDevice);
-  if (!isTouchDevice) {
-    console.log('✅ VN - Creating navigation buttons for non-touch device');
-    prevButton = document.createElement('div');
-    prevButton.className = 'swiper-button-prev';
-    prevButton.style.cssText = `
-      color: white;
-      background: rgba(0,0,0,0.5);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      margin-top: -20px;
-    `;
-    
-    nextButton = document.createElement('div');
-    nextButton.className = 'swiper-button-next';
-    nextButton.style.cssText = `
-      color: white;
-      background: rgba(0,0,0,0.5);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      margin-top: -20px;
-    `;
-  } else {
-    console.log('🚫 VN - Skipping navigation buttons for touch device');
-  }
-  
-  // Create pagination
-  const pagination = document.createElement('div');
-  pagination.className = 'swiper-pagination';
-  pagination.style.cssText = `
-    --swiper-pagination-color: white;
-    --swiper-pagination-bullet-inactive-color: rgba(255,255,255,0.5);
-  `;
-  
-  // Assemble the swiper
-  swiperContainer.appendChild(swiperWrapper);
-  if (!isTouchDevice && prevButton && nextButton) {
-    console.log('✅ VN - Adding navigation buttons to DOM');
-    swiperContainer.appendChild(prevButton);
-    swiperContainer.appendChild(nextButton);
-  } else {
-    console.log('🚫 VN - NOT adding navigation buttons to DOM - isTouchDevice:', isTouchDevice, 'buttons exist:', !!prevButton, !!nextButton);
-  }
-  swiperContainer.appendChild(pagination);
-  
-  // Insert swiper into the page
-  imageContainer.insertBefore(swiperContainer, articleImageElement);
-  
-  // Initialize Swiper
-  try {
-    const swiperConfig = {
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        type: 'bullets',
-      },
-      loop: true,
-      keyboard: {
-        enabled: true,
-      },
-      touchEventsTarget: 'container',
-      grabCursor: true,
-      effect: 'slide',
-      speed: 300,
-      on: {
-        slideChange: function () {
-          // Update caption when slide changes
-          const activeIndex = this.realIndex;
-          const activeMedia = article.images[activeIndex];
-          articleCaptionElement.textContent = activeMedia.caption;
-          articleCaptionElement.style.marginTop = '10px';
-        }
-      }
-    };
-    
-    // Only add navigation if not a touch device
-    if (!isTouchDevice) {
-      console.log('✅ VN - Adding navigation to Swiper config');
-      swiperConfig.navigation = {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      };
-    } else {
-      console.log('🚫 VN - NOT adding navigation to Swiper config for touch device');
-    }
-    
-    console.log('🔍 VN - Final Swiper config:', swiperConfig);
-    const swiper = new Swiper('.article-swiper', swiperConfig);
-  } catch (error) {
-    console.error('Error initializing Swiper:', error);
-    // Fallback: still set the initial caption
-    if (article.images.length > 0) {
-      articleCaptionElement.textContent = article.images[0].caption;
-      articleCaptionElement.style.marginTop = '10px';
-    }
-  }
-  
-  // Set initial caption
-  if (article.images.length > 0) {
-    articleCaptionElement.textContent = article.images[0].caption;
-    articleCaptionElement.style.marginTop = '10px';
-  }
-}
 
 function setupArticleSwipe(article) {
   currentArticle = article;
@@ -2596,219 +2235,137 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Handle multiple images/videos
     if (article.images && article.images.length > 0) {
-      // Create Swiper gallery for multiple images/videos
-      if (article.images.length > 1) {
-        createSwiperGallery(article);
+      const firstMedia = article.images[0];
+      const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
+                          firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
+                          firstMedia.src.toLowerCase().includes('.avi') || firstMedia.src.toLowerCase().includes('.mkv');
+      
+      const articleImageElement = document.getElementById("article-image");
+      const articleCaptionElement = document.getElementById("article-caption");
+      
+      if (isFirstVideo) {
+        // If first media is video, create a video thumbnail with play overlay
+        const imageContainer = articleImageElement.parentElement;
+        
+        // Create video element to extract thumbnail
+        const video = document.createElement('video');
+        video.src = firstMedia.src;
+        video.style.cssText = `
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        `;
+        video.muted = true;
+        video.currentTime = 1; // Try to get a frame from 1 second in
+        
+        // Hide original image and show video thumbnail
+        articleImageElement.style.display = 'none';
+        
+        // Create video thumbnail container
+        const videoContainer = document.createElement('div');
+        videoContainer.style.cssText = `
+          position: relative;
+          width: 100%;
+          height: 550px !important;
+          background: #333;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 8px;
+          object-fit: cover;
+        `;
+        
+        // Add play icon overlay
+        const playIcon = document.createElement('div');
+        playIcon.innerHTML = '▶';
+        playIcon.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 48px;
+          text-shadow: 0 0 10px rgba(0,0,0,0.8);
+          pointer-events: none;
+          z-index: 10;
+        `;
+        
+        // Add video type indicator
+        const videoIndicator = document.createElement('div');
+        videoIndicator.innerHTML = '🎥 VIDEO';
+        videoIndicator.style.cssText = `
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10;
+        `;
+        
+        videoContainer.appendChild(video);
+        videoContainer.appendChild(playIcon);
+        videoContainer.appendChild(videoIndicator);
+        
+        // Insert video container after the original image
+        imageContainer.insertBefore(videoContainer, articleImageElement.nextSibling);
+        
+        // Set up click handler for video
+        videoContainer.onclick = () => openImageModal(article.images, 0);
+        
+        articleCaptionElement.textContent = firstMedia.caption;
       } else {
-        // Single image/video - use existing logic
-        cleanupExistingMedia();
-        const firstMedia = article.images[0];
-        const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
-                            firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
-                            firstMedia.src.toLowerCase().includes('.avi') || firstMedia.src.toLowerCase().includes('.mkv');
+        // If first media is image, use normal behavior
+        articleImageElement.src = firstMedia.src;
+        articleImageElement.style.display = 'block';
+        articleImageElement.style.width = '100%';
+        articleImageElement.style.height = '550px';
+        articleImageElement.style.objectFit = 'cover';
+        articleImageElement.style.borderRadius = '8px';
+        articleCaptionElement.textContent = firstMedia.caption;
         
-        const articleImageElement = document.getElementById("article-image");
-        const articleCaptionElement = document.getElementById("article-caption");
-        
-        if (isFirstVideo) {
-          // Single video handling
-          const isTruelyTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
-          
-          // Fallback simple mobile detection
-          const isSimpleMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                                (window.innerWidth <= 768) ||
-                                ('ontouchstart' in window && navigator.maxTouchPoints > 0);
-          
-          const isTouchDevice = isTruelyTouchDevice || isSimpleMobile;
-          console.log('🔍 VN - Single video - Touch device detection:', isTouchDevice);
-          
-          const imageContainer = articleImageElement.parentElement;
-          articleImageElement.style.display = 'none';
-          
-          const videoContainer = document.createElement('div');
-          videoContainer.className = 'article-video-preview';
-          videoContainer.style.cssText = `
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            height: 550px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            box-sizing: border-box;
-          `;
-          
-          const video = document.createElement('video');
-          video.src = firstMedia.src;
-          video.preload = 'metadata';
-          
-          // Add poster attribute for mobile devices to show thumbnail
-          if (isTouchDevice) {
-            console.log('📱 VN - Mobile device detected - generating single video thumbnail');
-            
-            // Set video attributes for better mobile support
-            video.setAttribute('controls', 'false');
-            video.setAttribute('playsinline', 'true');
-            video.setAttribute('webkit-playsinline', 'true');
-            video.muted = true; // Required for autoplay on mobile
-            
-            // Try multiple methods to generate thumbnail
-            let thumbnailGenerated = false;
-            
-            // Method 1: Use loadeddata event (more reliable on mobile)
-            video.addEventListener('loadeddata', () => {
-              if (!thumbnailGenerated && video.readyState >= 2) {
-                generateThumbnail();
-              }
-            });
-            
-            // Method 2: Use canplay event as backup
-            video.addEventListener('canplay', () => {
-              if (!thumbnailGenerated) {
-                generateThumbnail();
-              }
-            });
-            
-            // Method 3: Direct thumbnail generation after metadata
-            video.addEventListener('loadedmetadata', () => {
-              console.log('📹 VN - Single video metadata loaded, attempting thumbnail generation');
-              setTimeout(() => {
-                if (!thumbnailGenerated) {
-                  generateThumbnail();
-                }
-              }, 100);
-            });
-            
-            function generateThumbnail() {
-              try {
-                if (thumbnailGenerated) return;
-                
-                console.log('🎬 VN - Attempting to generate single video thumbnail...');
-                
-                // Create canvas to capture thumbnail
-                const canvas = document.createElement('canvas');
-                const targetWidth = 640;
-                const targetHeight = 360;
-                
-                // Use video dimensions if available, otherwise use defaults
-                if (video.videoWidth && video.videoHeight) {
-                  const aspectRatio = video.videoWidth / video.videoHeight;
-                  if (aspectRatio > (targetWidth / targetHeight)) {
-                    canvas.width = targetWidth;
-                    canvas.height = targetWidth / aspectRatio;
-                  } else {
-                    canvas.height = targetHeight;
-                    canvas.width = targetHeight * aspectRatio;
-                  }
-                } else {
-                  canvas.width = targetWidth;
-                  canvas.height = targetHeight;
-                }
-                
-                const ctx = canvas.getContext('2d');
-                
-                // Draw the video frame to canvas
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // Convert to data URL and set as poster
-                const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
-                video.poster = posterUrl;
-                
-                thumbnailGenerated = true;
-                console.log('✅ VN - Single video thumbnail generated successfully');
-                
-              } catch (error) {
-                console.log('❌ VN - Failed to generate single video thumbnail:', error);
-                // Fallback: try to set current time to get first frame
-                try {
-                  video.currentTime = 0.1;
-                } catch (e) {
-                  console.log('❌ VN - Single video fallback also failed:', e);
-                }
-              }
-            }
-            
-            // Fallback: Try after a delay
-            setTimeout(() => {
-              if (!thumbnailGenerated && video.readyState >= 2) {
-                generateThumbnail();
-              }
-            }, 500);
-            
-          } else {
-            console.log('🖥️ VN - Desktop device - no single video thumbnail generation needed');
-          }
-          
-          video.style.cssText = `
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-          `;
-          
-          const playIcon = document.createElement('div');
-          playIcon.innerHTML = '▶';
-          playIcon.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.7);
-            color: white;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            pointer-events: none;
-            z-index: 10;
-          `;
-          
-          const videoIndicator = document.createElement('div');
-          videoIndicator.innerHTML = 'VIDEO';
-          videoIndicator.style.cssText = `
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            pointer-events: none;
-            z-index: 10;
-          `;
-          
-          videoContainer.appendChild(video);
-          videoContainer.appendChild(playIcon);
-          videoContainer.appendChild(videoIndicator);
-          imageContainer.insertBefore(videoContainer, articleImageElement.nextSibling);
-          videoContainer.onclick = () => openImageModal(article.images, 0);
-          
-          articleCaptionElement.textContent = firstMedia.caption;
-          articleCaptionElement.style.marginTop = '10px';
-        } else {
-          // Single image handling
-          articleImageElement.src = firstMedia.src;
-          articleImageElement.style.display = 'block';
-          articleImageElement.style.width = '100%';
-          articleImageElement.style.height = '550px';
-          articleImageElement.style.objectFit = 'cover';
-          articleImageElement.style.borderRadius = '8px';
-          articleCaptionElement.textContent = firstMedia.caption;
-          articleCaptionElement.style.marginTop = '10px';
-          
+        // Add click handler for modal
+        if (article.images.length > 1) {
           articleImageElement.style.cursor = "pointer";
           articleImageElement.onclick = () => openImageModal(article.images, 0);
         }
       }
+      
+      // Add indicator for multiple media items
+      if (article.images.length > 1) {
+        const imageContainer = articleImageElement.parentElement;
+        if (!imageContainer.querySelector('.image-count-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'image-count-indicator';
+          indicator.textContent = `1/${article.images.length}`;
+          indicator.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+          `;
+          imageContainer.style.position = 'relative';
+          imageContainer.appendChild(indicator);
+        }
+      }
+    }
+    
+    // Add swipe functionality for main article media
+    if (article.images && article.images.length > 1) {
+      setupArticleSwipe(article);
     }
     
     // Use markdown rendering if bodyMarkdown exists, otherwise use bodyHTML
