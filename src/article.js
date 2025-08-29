@@ -585,7 +585,7 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
       title: "<div style=\"font-size: var(--article-font-size, 1.25rem);\">Chung tay đóng góp, ủng hộ, giúp đỡ đồng bào ảnh hưởng do bão Yagi</div>",
       lead: "<div style=\"line-height: 1.5;\">*Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, **Viện NCKTXD&ĐT** đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi **bão Yagi**.*</div>",
       author: "ICUE-VN",
-      date: "<div style=\"text-align: center;\">*Ngày: 26 Tháng 9, 2024*</div>",
+      date: "<div style=\"text-align: center; margin-bottom: 5px;\">*Ngày: 26 Tháng 9, 2024*</div>",
       images: [
         {
           src: "/public/news/articles/article_3/area_affected.png",
@@ -1624,14 +1624,12 @@ function updateArticleMedia() {
       openImageModal(currentArticle.images, currentArticleIndex);
     };
     
-    // Helper function to format time
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = Math.floor(seconds % 60);
       return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
     
-    // Assemble the video player
     progressContainer.appendChild(progressBar);
     controlBar.appendChild(playPauseBtn);
     controlBar.appendChild(progressContainer);
@@ -1674,11 +1672,13 @@ function addMediaIndicatorDots(article) {
   if (existingDots) {
     existingDots.remove();
   }
-  
   if (article.images.length <= 1) return;
-  
-  const dotsContainer = document.createElement('div');
-  dotsContainer.className = 'media-dots-container';
+
+const dotsContainer = document.createElement('div');
+dotsContainer.className = 'media-dots-container';
+
+if (window.innerWidth >= 769) {
+  // Desktop
   dotsContainer.style.cssText = `
     position: absolute;
     bottom: 92.5%;
@@ -1688,14 +1688,30 @@ function addMediaIndicatorDots(article) {
     gap: 8px;
     z-index: 100;
   `;
+} else {
+  // Mobile
+  dotsContainer.style.cssText = `
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+  `;
+}
+
+document.body.appendChild(dotsContainer); 
   
   article.images.forEach((_, index) => {
     const dot = document.createElement('button');
+    const size = window.innerWidth >= 769 ? 15 : 10;
+    const borderRadius = window.innerWidth >= 769 ? '50%' : '24px';
     dot.className = `media-dot ${index === 0 ? 'active' : ''}`;
     dot.style.cssText = `
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: ${borderRadius};
       border: 1px solid black;
       background: ${index === 0 ? '#3ad9d9' : 'rgba(255,255,255,0.75)'};
       cursor: pointer;
@@ -1728,10 +1744,11 @@ function updateMediaIndicatorDots() {
   const dots = document.querySelectorAll('.media-dot');
   dots.forEach((dot, index) => {
     const isActive = index === currentArticleIndex;
+    const isMobile = window.innerWidth < 769;
     dot.style.background = isActive ? '#3ad9d9' : 'rgba(255,255,255,0.3)';
     dot.style.border = isActive ? '1px solid #000' : '1px solid rgba(0,0,0,0.8)';
-    dot.style.width = isActive ? '15px' : '15px';
-    dot.style.height = isActive ? '15px' : '15px';
+    dot.style.width = isActive ? `${isMobile ? 10 : 15}px` : `${isMobile ? 10 : 15}px`;
+    dot.style.height = isActive ? `${isMobile ? 10 : 15}px` : `${isMobile ? 10 : 15}px`;
     dot.style.transform = isActive ? 'scale(1.2)' : 'scale(1)';
     dot.className = `media-dot ${isActive ? 'active' : ''}`;
   });
