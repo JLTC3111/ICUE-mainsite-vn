@@ -438,7 +438,7 @@ const articles = [
         },
         {
           src: "/public/news/articles/article_1/4.jpg",
-          caption: "Đồng Chí Dũng",
+          caption: "Đồng Chí Dũng Phát Biểu",
           type: "image"
         },
         {
@@ -1334,11 +1334,14 @@ function cleanupExistingMedia() {
 
 // Create Swiper gallery for multiple images/videos
 function createSwiperGallery(article) {
+  // Import touch device detection from script.js
+  const isTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+  
   const articleImageElement = document.getElementById("article-image");
   const articleCaptionElement = document.getElementById("article-caption");
   const imageContainer = articleImageElement.parentElement;
   
-  // Hide the original image
+  cleanupExistingMedia();
   articleImageElement.style.display = 'none';
   
   // Create Swiper container
@@ -1379,6 +1382,27 @@ function createSwiperGallery(article) {
       const video = document.createElement('video');
       video.src = media.src;
       video.preload = 'metadata';
+      
+      // Add poster attribute for mobile devices to show thumbnail
+      if (isTouchDevice) {
+        // Generate a poster frame by setting currentTime and capturing frame
+        video.addEventListener('loadedmetadata', () => {
+          video.currentTime = Math.min(1, video.duration * 0.1); // 10% into video or 1 second
+        });
+        video.addEventListener('seeked', () => {
+          // Create canvas to capture thumbnail
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0);
+          
+          // Convert to data URL and set as poster
+          const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
+          video.poster = posterUrl;
+        });
+      }
+      
       video.style.cssText = `
         width: 100%;
         height: 100%;
@@ -1442,7 +1466,7 @@ function createSwiperGallery(article) {
     swiperWrapper.appendChild(slide);
   });
   
-  // Create navigation buttons
+  // Create navigation buttons (hidden on touch devices)
   const prevButton = document.createElement('div');
   prevButton.className = 'swiper-button-prev';
   prevButton.style.cssText = `
@@ -1452,6 +1476,7 @@ function createSwiperGallery(article) {
     width: 40px;
     height: 40px;
     margin-top: -20px;
+    ${isTouchDevice ? 'display: none;' : ''}
   `;
   
   const nextButton = document.createElement('div');
@@ -1463,6 +1488,7 @@ function createSwiperGallery(article) {
     width: 40px;
     height: 40px;
     margin-top: -20px;
+    ${isTouchDevice ? 'display: none;' : ''}
   `;
   
   // Create pagination
@@ -1484,11 +1510,7 @@ function createSwiperGallery(article) {
   
   // Initialize Swiper
   try {
-    const swiper = new Swiper('.article-swiper', {
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+    const swiperConfig = {
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -1511,7 +1533,17 @@ function createSwiperGallery(article) {
           articleCaptionElement.style.marginTop = '10px';
         }
       }
-    });
+    };
+    
+    // Only add navigation if not a touch device
+    if (!isTouchDevice) {
+      swiperConfig.navigation = {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      };
+    }
+    
+    const swiper = new Swiper('.article-swiper', swiperConfig);
   } catch (error) {
     console.error('Error initializing Swiper:', error);
     // Fallback: still set the initial caption
@@ -2472,6 +2504,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (isFirstVideo) {
           // Single video handling
+          const isTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+          
           const imageContainer = articleImageElement.parentElement;
           articleImageElement.style.display = 'none';
           
@@ -2493,6 +2527,27 @@ document.addEventListener("DOMContentLoaded", () => {
           const video = document.createElement('video');
           video.src = firstMedia.src;
           video.preload = 'metadata';
+          
+          // Add poster attribute for mobile devices to show thumbnail
+          if (isTouchDevice) {
+            // Generate a poster frame by setting currentTime and capturing frame
+            video.addEventListener('loadedmetadata', () => {
+              video.currentTime = Math.min(1, video.duration * 0.1); // 10% into video or 1 second
+            });
+            video.addEventListener('seeked', () => {
+              // Create canvas to capture thumbnail
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0);
+              
+              // Convert to data URL and set as poster
+              const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
+              video.poster = posterUrl;
+            });
+          }
+          
           video.style.cssText = `
             width: 100%;
             height: 100%;
