@@ -1387,20 +1387,47 @@ function createSwiperGallery(article) {
       if (isTouchDevice) {
         // Generate a poster frame by setting currentTime and capturing frame
         video.addEventListener('loadedmetadata', () => {
-          video.currentTime = Math.min(1, video.duration * 0.1); // 10% into video or 1 second
+          // Set currentTime to capture a frame
+          video.currentTime = Math.min(2, video.duration * 0.1); // 10% into video or 2 seconds
         });
+        
         video.addEventListener('seeked', () => {
-          // Create canvas to capture thumbnail
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(video, 0, 0);
-          
-          // Convert to data URL and set as poster
-          const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
-          video.poster = posterUrl;
+          try {
+            // Create canvas to capture thumbnail
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 360;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw the video frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to data URL and set as poster
+            const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
+            video.poster = posterUrl;
+            
+            console.log('Video thumbnail generated successfully');
+          } catch (error) {
+            console.log('Failed to generate video thumbnail:', error);
+          }
         });
+        
+        // Fallback: if seeked doesn't fire, try after a delay
+        setTimeout(() => {
+          if (!video.poster && video.readyState >= 2) {
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth || 640;
+              canvas.height = video.videoHeight || 360;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              video.poster = canvas.toDataURL('image/jpeg', 0.8);
+              console.log('Video thumbnail generated via fallback');
+            } catch (error) {
+              console.log('Fallback thumbnail generation failed:', error);
+            }
+          }
+        }, 1000);
       }
       
       video.style.cssText = `
@@ -1466,30 +1493,31 @@ function createSwiperGallery(article) {
     swiperWrapper.appendChild(slide);
   });
   
-  // Create navigation buttons (hidden on touch devices)
-  const prevButton = document.createElement('div');
-  prevButton.className = 'swiper-button-prev';
-  prevButton.style.cssText = `
-    color: white;
-    background: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
-    ${isTouchDevice ? 'display: none;' : ''}
-  `;
-  
-  const nextButton = document.createElement('div');
-  nextButton.className = 'swiper-button-next';
-  nextButton.style.cssText = `
-    color: white;
-    background: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
-    ${isTouchDevice ? 'display: none;' : ''}
-  `;
+  // Create navigation buttons only for non-touch devices
+  let prevButton, nextButton;
+  if (!isTouchDevice) {
+    prevButton = document.createElement('div');
+    prevButton.className = 'swiper-button-prev';
+    prevButton.style.cssText = `
+      color: white;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+    `;
+    
+    nextButton = document.createElement('div');
+    nextButton.className = 'swiper-button-next';
+    nextButton.style.cssText = `
+      color: white;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+    `;
+  }
   
   // Create pagination
   const pagination = document.createElement('div');
@@ -1501,8 +1529,10 @@ function createSwiperGallery(article) {
   
   // Assemble the swiper
   swiperContainer.appendChild(swiperWrapper);
-  swiperContainer.appendChild(prevButton);
-  swiperContainer.appendChild(nextButton);
+  if (!isTouchDevice && prevButton && nextButton) {
+    swiperContainer.appendChild(prevButton);
+    swiperContainer.appendChild(nextButton);
+  }
   swiperContainer.appendChild(pagination);
   
   // Insert swiper into the page
@@ -2532,20 +2562,47 @@ document.addEventListener("DOMContentLoaded", () => {
           if (isTouchDevice) {
             // Generate a poster frame by setting currentTime and capturing frame
             video.addEventListener('loadedmetadata', () => {
-              video.currentTime = Math.min(1, video.duration * 0.1); // 10% into video or 1 second
+              // Set currentTime to capture a frame
+              video.currentTime = Math.min(2, video.duration * 0.1); // 10% into video or 2 seconds
             });
+            
             video.addEventListener('seeked', () => {
-              // Create canvas to capture thumbnail
-              const canvas = document.createElement('canvas');
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(video, 0, 0);
-              
-              // Convert to data URL and set as poster
-              const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
-              video.poster = posterUrl;
+              try {
+                // Create canvas to capture thumbnail
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 360;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw the video frame to canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Convert to data URL and set as poster
+                const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
+                video.poster = posterUrl;
+                
+                console.log('Single video thumbnail generated successfully');
+              } catch (error) {
+                console.log('Failed to generate single video thumbnail:', error);
+              }
             });
+            
+            // Fallback: if seeked doesn't fire, try after a delay
+            setTimeout(() => {
+              if (!video.poster && video.readyState >= 2) {
+                try {
+                  const canvas = document.createElement('canvas');
+                  canvas.width = video.videoWidth || 640;
+                  canvas.height = video.videoHeight || 360;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                  video.poster = canvas.toDataURL('image/jpeg', 0.8);
+                  console.log('Single video thumbnail generated via fallback');
+                } catch (error) {
+                  console.log('Single video fallback thumbnail generation failed:', error);
+                }
+              }
+            }, 1000);
           }
           
           video.style.cssText = `
