@@ -1307,6 +1307,31 @@ let currentArticleIndex = 0;
 let articleStartX = 0;
 let articleEndX = 0;
 
+// Clean up existing media elements
+function cleanupExistingMedia() {
+  // Remove any existing Swiper containers
+  const existingSwipers = document.querySelectorAll('.swiper');
+  existingSwipers.forEach(swiper => {
+    // Destroy Swiper instance if it exists
+    if (swiper.swiper) {
+      swiper.swiper.destroy(true, true);
+    }
+    swiper.remove();
+  });
+  
+  // Remove any existing video containers
+  const existingVideoContainers = document.querySelectorAll('.custom-video-container');
+  existingVideoContainers.forEach(container => container.remove());
+  
+  // Reset the article image element
+  const articleImageElement = document.getElementById("article-image");
+  if (articleImageElement) {
+    articleImageElement.style.display = 'block';
+    articleImageElement.onclick = null;
+    articleImageElement.style.cursor = 'default';
+  }
+}
+
 // Create Swiper gallery for multiple images/videos
 function createSwiperGallery(article) {
   const articleImageElement = document.getElementById("article-image");
@@ -2436,6 +2461,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createSwiperGallery(article);
       } else {
         // Single image/video - use existing logic
+        cleanupExistingMedia();
         const firstMedia = article.images[0];
         const isFirstVideo = firstMedia.type === 'video' || firstMedia.src.toLowerCase().includes('.mp4') ||
                             firstMedia.src.toLowerCase().includes('.mov') || firstMedia.src.toLowerCase().includes('.webm') ||
