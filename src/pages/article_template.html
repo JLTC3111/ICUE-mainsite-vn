@@ -19,6 +19,12 @@
     font-family: 'Helvetica Neue', sans-serif;
     background: linear-gradient(to bottom right, #e0e0e0, #b9b9b9);
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   nav {
@@ -103,6 +109,8 @@ nav a:active {
     background: linear-gradient(to bottom right, #fffff5, #b3b4a8);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 10px;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .article-title {
@@ -148,6 +156,43 @@ nav a:active {
     letter-spacing: 0.25px;
     line-height: 1.7;
     font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+}
+
+/* Prevent Swiper overflow */
+.swiper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+}
+
+.swiper-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.swiper-slide {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Ensure featured image container doesn't overflow */
+.featured-image {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Ensure video containers don't overflow */
+.article-video-preview {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+}
+
+.custom-video-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
 }
 
 .article-body h2 {

@@ -1335,7 +1335,22 @@ function cleanupExistingMedia() {
 // Create Swiper gallery for multiple images/videos
 function createSwiperGallery(article) {
   // Import touch device detection from script.js
-  const isTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+  const isTruelyTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+  
+  // Fallback simple mobile detection
+  const isSimpleMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                        (window.innerWidth <= 768) ||
+                        ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+  
+  const isTouchDevice = isTruelyTouchDevice || isSimpleMobile;
+  
+  console.log('🔍 VN - Touch device detection:', isTruelyTouchDevice);
+  console.log('🔍 VN - Simple mobile detection:', isSimpleMobile);
+  console.log('🔍 VN - Final touch device result:', isTouchDevice);
+  console.log('🔍 VN - User Agent:', navigator.userAgent);
+  console.log('🔍 VN - Touch support:', 'ontouchstart' in window);
+  console.log('🔍 VN - Max touch points:', navigator.maxTouchPoints);
+  console.log('🔍 VN - Window width:', window.innerWidth);
   
   const articleImageElement = document.getElementById("article-image");
   const articleCaptionElement = document.getElementById("article-caption");
@@ -1349,10 +1364,12 @@ function createSwiperGallery(article) {
   swiperContainer.className = 'swiper article-swiper';
   swiperContainer.style.cssText = `
     width: 100%;
+    max-width: 100%;
     height: 550px;
     border-radius: 8px;
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
   `;
   
   // Create Swiper wrapper
@@ -1495,7 +1512,9 @@ function createSwiperGallery(article) {
   
   // Create navigation buttons only for non-touch devices
   let prevButton, nextButton;
+  console.log('🔍 VN - Creating navigation buttons - isTouchDevice:', isTouchDevice);
   if (!isTouchDevice) {
+    console.log('✅ VN - Creating navigation buttons for non-touch device');
     prevButton = document.createElement('div');
     prevButton.className = 'swiper-button-prev';
     prevButton.style.cssText = `
@@ -1517,6 +1536,8 @@ function createSwiperGallery(article) {
       height: 40px;
       margin-top: -20px;
     `;
+  } else {
+    console.log('🚫 VN - Skipping navigation buttons for touch device');
   }
   
   // Create pagination
@@ -1530,8 +1551,11 @@ function createSwiperGallery(article) {
   // Assemble the swiper
   swiperContainer.appendChild(swiperWrapper);
   if (!isTouchDevice && prevButton && nextButton) {
+    console.log('✅ VN - Adding navigation buttons to DOM');
     swiperContainer.appendChild(prevButton);
     swiperContainer.appendChild(nextButton);
+  } else {
+    console.log('🚫 VN - NOT adding navigation buttons to DOM - isTouchDevice:', isTouchDevice, 'buttons exist:', !!prevButton, !!nextButton);
   }
   swiperContainer.appendChild(pagination);
   
@@ -1567,12 +1591,16 @@ function createSwiperGallery(article) {
     
     // Only add navigation if not a touch device
     if (!isTouchDevice) {
+      console.log('✅ VN - Adding navigation to Swiper config');
       swiperConfig.navigation = {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       };
+    } else {
+      console.log('🚫 VN - NOT adding navigation to Swiper config for touch device');
     }
     
+    console.log('🔍 VN - Final Swiper config:', swiperConfig);
     const swiper = new Swiper('.article-swiper', swiperConfig);
   } catch (error) {
     console.error('Error initializing Swiper:', error);
@@ -2534,7 +2562,15 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (isFirstVideo) {
           // Single video handling
-          const isTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+          const isTruelyTouchDevice = typeof window.isTruelyTouchDevice === 'function' ? window.isTruelyTouchDevice() : false;
+          
+          // Fallback simple mobile detection
+          const isSimpleMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                                (window.innerWidth <= 768) ||
+                                ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+          
+          const isTouchDevice = isTruelyTouchDevice || isSimpleMobile;
+          console.log('🔍 VN - Single video - Touch device detection:', isTouchDevice);
           
           const imageContainer = articleImageElement.parentElement;
           articleImageElement.style.display = 'none';
@@ -2544,6 +2580,7 @@ document.addEventListener("DOMContentLoaded", () => {
           videoContainer.style.cssText = `
             position: relative;
             width: 100%;
+            max-width: 100%;
             height: 550px;
             background: #000;
             display: flex;
@@ -2552,6 +2589,7 @@ document.addEventListener("DOMContentLoaded", () => {
             border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
+            box-sizing: border-box;
           `;
           
           const video = document.createElement('video');
