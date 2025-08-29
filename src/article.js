@@ -1402,18 +1402,67 @@ function createSwiperGallery(article) {
       
       // Add poster attribute for mobile devices to show thumbnail
       if (isTouchDevice) {
-        // Generate a poster frame by setting currentTime and capturing frame
-        video.addEventListener('loadedmetadata', () => {
-          // Set currentTime to capture a frame
-          video.currentTime = Math.min(2, video.duration * 0.1); // 10% into video or 2 seconds
+        console.log('📱 VN - Mobile device detected - generating video thumbnail');
+        
+        // Set video attributes for better mobile support
+        video.setAttribute('controls', 'false');
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('webkit-playsinline', 'true');
+        video.muted = true; // Required for autoplay on mobile
+        
+        // Try multiple methods to generate thumbnail
+        let thumbnailGenerated = false;
+        
+        // Method 1: Use loadeddata event (more reliable on mobile)
+        video.addEventListener('loadeddata', () => {
+          if (!thumbnailGenerated && video.readyState >= 2) {
+            generateThumbnail();
+          }
         });
         
-        video.addEventListener('seeked', () => {
+        // Method 2: Use canplay event as backup
+        video.addEventListener('canplay', () => {
+          if (!thumbnailGenerated) {
+            generateThumbnail();
+          }
+        });
+        
+        // Method 3: Direct thumbnail generation after metadata
+        video.addEventListener('loadedmetadata', () => {
+          console.log('📹 VN - Video metadata loaded, attempting thumbnail generation');
+          setTimeout(() => {
+            if (!thumbnailGenerated) {
+              generateThumbnail();
+            }
+          }, 100);
+        });
+        
+        function generateThumbnail() {
           try {
+            if (thumbnailGenerated) return;
+            
+            console.log('🎬 VN - Attempting to generate thumbnail...');
+            
             // Create canvas to capture thumbnail
             const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 360;
+            const targetWidth = 640;
+            const targetHeight = 360;
+            
+            // Use video dimensions if available, otherwise use defaults
+            if (video.videoWidth && video.videoHeight) {
+              const aspectRatio = video.videoWidth / video.videoHeight;
+              if (aspectRatio > (targetWidth / targetHeight)) {
+                canvas.width = targetWidth;
+                canvas.height = targetWidth / aspectRatio;
+              } else {
+                canvas.height = targetHeight;
+                canvas.width = targetHeight * aspectRatio;
+              }
+            } else {
+              canvas.width = targetWidth;
+              canvas.height = targetHeight;
+            }
+            
             const ctx = canvas.getContext('2d');
             
             // Draw the video frame to canvas
@@ -1423,28 +1472,29 @@ function createSwiperGallery(article) {
             const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
             video.poster = posterUrl;
             
-            console.log('Video thumbnail generated successfully');
+            thumbnailGenerated = true;
+            console.log('✅ VN - Video thumbnail generated successfully');
+            
           } catch (error) {
-            console.log('Failed to generate video thumbnail:', error);
-          }
-        });
-        
-        // Fallback: if seeked doesn't fire, try after a delay
-        setTimeout(() => {
-          if (!video.poster && video.readyState >= 2) {
+            console.log('❌ VN - Failed to generate video thumbnail:', error);
+            // Fallback: try to set current time to get first frame
             try {
-              const canvas = document.createElement('canvas');
-              canvas.width = video.videoWidth || 640;
-              canvas.height = video.videoHeight || 360;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-              video.poster = canvas.toDataURL('image/jpeg', 0.8);
-              console.log('Video thumbnail generated via fallback');
-            } catch (error) {
-              console.log('Fallback thumbnail generation failed:', error);
+              video.currentTime = 0.1;
+            } catch (e) {
+              console.log('❌ VN - Fallback also failed:', e);
             }
           }
-        }, 1000);
+        }
+        
+        // Fallback: Try after a delay
+        setTimeout(() => {
+          if (!thumbnailGenerated && video.readyState >= 2) {
+            generateThumbnail();
+          }
+        }, 500);
+        
+      } else {
+        console.log('🖥️ VN - Desktop device - no thumbnail generation needed');
       }
       
       video.style.cssText = `
@@ -2598,18 +2648,67 @@ document.addEventListener("DOMContentLoaded", () => {
           
           // Add poster attribute for mobile devices to show thumbnail
           if (isTouchDevice) {
-            // Generate a poster frame by setting currentTime and capturing frame
-            video.addEventListener('loadedmetadata', () => {
-              // Set currentTime to capture a frame
-              video.currentTime = Math.min(2, video.duration * 0.1); // 10% into video or 2 seconds
+            console.log('📱 VN - Mobile device detected - generating single video thumbnail');
+            
+            // Set video attributes for better mobile support
+            video.setAttribute('controls', 'false');
+            video.setAttribute('playsinline', 'true');
+            video.setAttribute('webkit-playsinline', 'true');
+            video.muted = true; // Required for autoplay on mobile
+            
+            // Try multiple methods to generate thumbnail
+            let thumbnailGenerated = false;
+            
+            // Method 1: Use loadeddata event (more reliable on mobile)
+            video.addEventListener('loadeddata', () => {
+              if (!thumbnailGenerated && video.readyState >= 2) {
+                generateThumbnail();
+              }
             });
             
-            video.addEventListener('seeked', () => {
+            // Method 2: Use canplay event as backup
+            video.addEventListener('canplay', () => {
+              if (!thumbnailGenerated) {
+                generateThumbnail();
+              }
+            });
+            
+            // Method 3: Direct thumbnail generation after metadata
+            video.addEventListener('loadedmetadata', () => {
+              console.log('📹 VN - Single video metadata loaded, attempting thumbnail generation');
+              setTimeout(() => {
+                if (!thumbnailGenerated) {
+                  generateThumbnail();
+                }
+              }, 100);
+            });
+            
+            function generateThumbnail() {
               try {
+                if (thumbnailGenerated) return;
+                
+                console.log('🎬 VN - Attempting to generate single video thumbnail...');
+                
                 // Create canvas to capture thumbnail
                 const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth || 640;
-                canvas.height = video.videoHeight || 360;
+                const targetWidth = 640;
+                const targetHeight = 360;
+                
+                // Use video dimensions if available, otherwise use defaults
+                if (video.videoWidth && video.videoHeight) {
+                  const aspectRatio = video.videoWidth / video.videoHeight;
+                  if (aspectRatio > (targetWidth / targetHeight)) {
+                    canvas.width = targetWidth;
+                    canvas.height = targetWidth / aspectRatio;
+                  } else {
+                    canvas.height = targetHeight;
+                    canvas.width = targetHeight * aspectRatio;
+                  }
+                } else {
+                  canvas.width = targetWidth;
+                  canvas.height = targetHeight;
+                }
+                
                 const ctx = canvas.getContext('2d');
                 
                 // Draw the video frame to canvas
@@ -2619,28 +2718,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 const posterUrl = canvas.toDataURL('image/jpeg', 0.8);
                 video.poster = posterUrl;
                 
-                console.log('Single video thumbnail generated successfully');
+                thumbnailGenerated = true;
+                console.log('✅ VN - Single video thumbnail generated successfully');
+                
               } catch (error) {
-                console.log('Failed to generate single video thumbnail:', error);
-              }
-            });
-            
-            // Fallback: if seeked doesn't fire, try after a delay
-            setTimeout(() => {
-              if (!video.poster && video.readyState >= 2) {
+                console.log('❌ VN - Failed to generate single video thumbnail:', error);
+                // Fallback: try to set current time to get first frame
                 try {
-                  const canvas = document.createElement('canvas');
-                  canvas.width = video.videoWidth || 640;
-                  canvas.height = video.videoHeight || 360;
-                  const ctx = canvas.getContext('2d');
-                  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                  video.poster = canvas.toDataURL('image/jpeg', 0.8);
-                  console.log('Single video thumbnail generated via fallback');
-                } catch (error) {
-                  console.log('Single video fallback thumbnail generation failed:', error);
+                  video.currentTime = 0.1;
+                } catch (e) {
+                  console.log('❌ VN - Single video fallback also failed:', e);
                 }
               }
-            }, 1000);
+            }
+            
+            // Fallback: Try after a delay
+            setTimeout(() => {
+              if (!thumbnailGenerated && video.readyState >= 2) {
+                generateThumbnail();
+              }
+            }, 500);
+            
+          } else {
+            console.log('🖥️ VN - Desktop device - no single video thumbnail generation needed');
           }
           
           video.style.cssText = `
