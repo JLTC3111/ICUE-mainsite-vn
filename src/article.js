@@ -2026,12 +2026,10 @@ function updateModalImage() {
   const modalCounter = document.getElementById('modal-counter');
   const thumbnailContainer = document.getElementById('modal-thumbnails');
   
-  // Determine if current media is video or image
   const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
                   media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
                   media.src.toLowerCase().includes('.avi') || media.src.toLowerCase().includes('.mkv');
   
-  // Hide both elements first
   modalImage.style.display = 'none';
   modalVideo.style.display = 'none';
   
@@ -2075,6 +2073,19 @@ function updateModalImage() {
         overflow: hidden;
       `;
       
+      // Create a fallback background with video icon
+      const videoIcon = document.createElement('div');
+      videoIcon.innerHTML = '📹';
+      videoIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        opacity: 0.7;
+        z-index: 1;
+      `;
+      
       // Try to create video thumbnail
       const video = document.createElement('video');
       video.src = item.src;
@@ -2082,9 +2093,13 @@ function updateModalImage() {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
       `;
       video.muted = true;
-      video.currentTime = 1; // Try to get a frame from 1 second in
+      video.preload = 'metadata';
       
       // Add play icon overlay
       const playIcon = document.createElement('div');
@@ -2098,8 +2113,38 @@ function updateModalImage() {
         font-size: 16px;
         text-shadow: 0 0 4px rgba(0,0,0,0.8);
         pointer-events: none;
+        z-index: 3;
       `;
       
+      // iOS-compatible thumbnail generation
+      const loadThumbnail = () => {
+        if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+          try {
+            // For iOS, try to seek to a specific time after metadata is loaded
+            video.currentTime = Math.min(5, video.duration * 0.1); // 10% into video or 5 seconds, whichever is smaller
+            videoIcon.style.display = 'none'; // Hide fallback icon if video loads
+          } catch (e) {
+            console.log('Video seeking not supported, using fallback');
+            // Keep the video icon visible as fallback
+          }
+        }
+      };
+      
+      // Event listeners for better iOS compatibility
+      video.addEventListener('loadedmetadata', loadThumbnail);
+      video.addEventListener('loadeddata', loadThumbnail);
+      video.addEventListener('canplay', () => {
+        videoIcon.style.display = 'none'; // Hide fallback when video is ready
+      });
+      
+      // Error handling - show fallback if video fails to load
+      video.addEventListener('error', () => {
+        video.style.display = 'none';
+        videoIcon.style.display = 'block';
+        videoIcon.innerHTML = '🎬'; // Different icon to indicate error
+      });
+      
+      thumbContainer.appendChild(videoIcon); // Fallback background
       thumbContainer.appendChild(video);
       thumbContainer.appendChild(playIcon);
       
