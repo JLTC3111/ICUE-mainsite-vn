@@ -600,20 +600,20 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
           caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
         },
         {
-          src: "/public/news/articles/article_3/2.jpg",
-          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
-        },
-        {
           src: "/public/news/articles/article_3/video_2.mp4",
           caption: "Nguồn: VTV1- BBC NEWS",
         },
         {
-          src: "/public/news/articles/article_3/3.jpg",
+          src: "/public/news/articles/article_3/2.jpg",
           caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
         },
-        {
+         {
           src: "/public/news/articles/article_3/video_3.mp4",
           caption: "Nguồn: ABC NEWS",
+        },
+        {
+          src: "/public/news/articles/article_3/3.jpg",
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
         },
         {
           src: "/public/news/articles/article_3/4.jpg",
