@@ -1689,6 +1689,9 @@ window.initMobileNewsSlider = () => {
         if (sliderTrack) {
           sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
         }
+        
+        // Attach touch events after slider is created and visible
+        attachTouchEvents();
       }
       
       // Hide original cards
@@ -1701,6 +1704,9 @@ window.initMobileNewsSlider = () => {
       gridContainer.style.display = "grid";
       gridContainer.style.overflow = "visible";
       gridContainer.style.touchAction = "auto";
+      
+      // Remove touch events when switching to desktop
+      removeTouchEvents();
       
       // Hide slider wrapper and show original cards
       if (sliderWrapper) {
@@ -1858,11 +1864,9 @@ window.initMobileNewsSlider = () => {
   function handleResize() {
     removeTouchEvents();
     updateSlider();
-    attachTouchEvents();
   }
 
   updateSlider();
-  attachTouchEvents();
   window.addEventListener("resize", handleResize);
 };
 
