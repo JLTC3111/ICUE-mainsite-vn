@@ -1669,7 +1669,7 @@ window.initMobileNewsSlider = () => {
       const sliderTrack = sliderWrapper.querySelector('.slider-track');
       if (sliderTrack) {
         // Correctly set the initial transform based on the loaded index
-        sliderTrack.style.transform = `translateX(-${currentIndex * (50 / cards.length)}%)`;
+        sliderTrack.style.transform = `translateX(-${currentIndex * (100 / cards.length)}%)`;
       }
       
     } else {
@@ -1723,50 +1723,31 @@ window.initMobileNewsSlider = () => {
   if (!sliderTrack) return;
   
   // Re-enable transition for the snap effect
-  sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.45, 0.94)';
+  sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-  // Get the width of a single card
+  // Calculate the width of a single card
   const cardWidth = sliderTrack.offsetWidth / cards.length;
   // Get the current translateX value
   const currentTransform = parseFloat(getComputedStyle(sliderTrack).transform.split(',')[4]) || 0;
   
-  // Calculate the new index based on the final position
-  let newIndex = Math.round(Math.abs(currentTransform) / cardWidth);
-
-  // Apply snapping logic based on a swipe threshold
-  const swipeThreshold = 50;
-  if (Math.abs(deltaX) > swipeThreshold) {
+  // Determine the new index based on the full swipe distance, not just a threshold
+  const cardsSwiped = Math.round(Math.abs(deltaX) / cardWidth);
+  let newIndex = currentIndex;
+  
+  if (Math.abs(deltaX) > 50) { // A new threshold to determine if a swipe occurred
     if (deltaX < 0) { // Swiped left
-      newIndex = currentIndex + 1;
+      newIndex = currentIndex + cardsSwiped;
     } else { // Swiped right
-      newIndex = currentIndex - 1;
+      newIndex = currentIndex - cardsSwiped;
     }
   }
 
   // Ensure newIndex is within bounds
   newIndex = Math.max(0, Math.min(newIndex, cards.length - 1));
 
-  // Get the card that is closest to being centered
-  const targetCard = cards[newIndex];
-  const cardRect = targetCard.getBoundingClientRect();
-  const containerRect = sliderWrapper.getBoundingClientRect();
+  // Update currentIndex
+  currentIndex = newIndex;
   
-  // Calculate visibility percentage
-  const visibleWidth = Math.min(cardRect.right, containerRect.right) - Math.max(cardRect.left, containerRect.left);
-  const percentVisible = (visibleWidth / cardWidth) * 100;
-  
-  // Define the snap-in threshold (e.g., 80%)
-  const snapThreshold = 80;
-
-  if (percentVisible >= snapThreshold) {
-      currentIndex = newIndex;
-  }
-  // If the visibility is less than the threshold, snap back to the previous card
-  else {
-      // Logic to snap back to the previous card (currentIndex) is implicitly handled
-      // by the final transform calculation below. No change to currentIndex needed.
-  }
-
   // Set the final position and save the state
   const finalTransform = -currentIndex * (100 / cards.length);
   sliderTrack.style.transform = `translateX(${finalTransform}%)`;
