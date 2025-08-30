@@ -438,7 +438,7 @@ const articles = [
         },
         {
           src: "/public/news/articles/article_1/4.jpg",
-          caption: "Đồng Chí Dũng",
+          caption: "Đồng Chí Dũng Phát Biểu",
           type: "image"
         },
         {
@@ -2124,6 +2124,7 @@ function updateModalImage() {
         transform: translate(-50%, -50%);
         color: white;
         font-size: 16px;
+        padding: 15px;
         text-shadow: 0 0 4px rgba(0,0,0,0.8);
         pointer-events: none;
         z-index: 3;
