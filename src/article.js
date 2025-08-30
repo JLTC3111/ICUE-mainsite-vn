@@ -1945,7 +1945,7 @@ function createImageModal() {
         margin-top: -110px !important;
       }
       .media-thumbnails {
-        margin-top: -2.5px !important;
+        margin-top: 5px !important;
       }
     }
   `;
