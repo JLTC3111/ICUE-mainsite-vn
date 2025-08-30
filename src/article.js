@@ -2106,7 +2106,7 @@ function updateModalImage() {
         top: 0;
         left: 0;
         z-index: 2;
-        opacity: 0;
+        opacity: 1;
         transition: opacity 0.3s ease;
       `;
       video.muted = true;
