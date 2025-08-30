@@ -1730,8 +1730,11 @@ window.initMobileNewsSlider = () => {
     // Get the current translateX value
     const currentTransform = parseFloat(getComputedStyle(sliderTrack).transform.split(',')[4]) || 0;
     
-    // Calculate the new index based on the final position
-    let newIndex = Math.round(Math.abs(currentTransform) / cardWidth);
+    if (newIndex >= cards.length) {
+      newIndex = 0; // Loop to first card
+    } else if (newIndex < 0) {
+      newIndex = cards.length - 1; // Loop to last card
+    }
 
     // Apply snapping logic based on a swipe threshold
     const swipeThreshold = 50;

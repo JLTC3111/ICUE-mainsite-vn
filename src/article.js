@@ -1313,6 +1313,23 @@ function setupArticleSwipe(article) {
   
   const imageContainer = document.getElementById("article-image").parentElement;
   
+  // Add initial entrance animation for the first media (with GSAP check)
+  const articleImageElement = document.getElementById("article-image");
+  if (typeof gsap !== 'undefined') {
+    gsap.set(articleImageElement, { opacity: 0, scale: 0.9, y: 30 });
+    gsap.to(articleImageElement, {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power2.out",
+      delay: 0.2
+    });
+  } else {
+    // Fallback without GSAP
+    articleImageElement.style.opacity = '1';
+  }
+  
   // Add navigation arrows
   if (!imageContainer.querySelector('.article-nav-btn')) {
     // Left arrow
@@ -1334,9 +1351,30 @@ function setupArticleSwipe(article) {
       transition: all 0.3s ease;
       opacity: 0.7;
     `;
-    leftArrow.onmouseenter = () => leftArrow.style.opacity = '1';
-    leftArrow.onmouseleave = () => leftArrow.style.opacity = '0.7';
-    leftArrow.onclick = () => navigateArticleMedia(-1);
+    leftArrow.onmouseenter = () => {
+      leftArrow.style.opacity = '1';
+      if (typeof gsap !== 'undefined') {
+        gsap.to(leftArrow, { scale: 1.1, duration: 0.2, ease: "power2.out" });
+      } else {
+        leftArrow.style.transform = 'translateY(-50%) scale(1.1)';
+      }
+    };
+    leftArrow.onmouseleave = () => {
+      leftArrow.style.opacity = '0.7';
+      if (typeof gsap !== 'undefined') {
+        gsap.to(leftArrow, { scale: 1, duration: 0.2, ease: "power2.out" });
+      } else {
+        leftArrow.style.transform = 'translateY(-50%) scale(1)';
+      }
+    };
+    leftArrow.onclick = () => {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(leftArrow, { scale: 0.9, duration: 0.1, ease: "power2.out", 
+          onComplete: () => gsap.to(leftArrow, { scale: 1, duration: 0.1 })
+        });
+      }
+      navigateArticleMedia(-1);
+    };
     
     // Right arrow
     const rightArrow = document.createElement('button');
@@ -1356,9 +1394,30 @@ function setupArticleSwipe(article) {
       transition: all 0.3s ease;
       opacity: 0.7;
     `;
-    rightArrow.onmouseenter = () => rightArrow.style.opacity = '1';
-    rightArrow.onmouseleave = () => rightArrow.style.opacity = '0.7';
-    rightArrow.onclick = () => navigateArticleMedia(1);
+    rightArrow.onmouseenter = () => {
+      rightArrow.style.opacity = '1';
+      if (typeof gsap !== 'undefined') {
+        gsap.to(rightArrow, { scale: 1.1, duration: 0.2, ease: "power2.out" });
+      } else {
+        rightArrow.style.transform = 'translateY(-50%) scale(1.1)';
+      }
+    };
+    rightArrow.onmouseleave = () => {
+      rightArrow.style.opacity = '0.7';
+      if (typeof gsap !== 'undefined') {
+        gsap.to(rightArrow, { scale: 1, duration: 0.2, ease: "power2.out" });
+      } else {
+        rightArrow.style.transform = 'translateY(-50%) scale(1)';
+      }
+    };
+    rightArrow.onclick = () => {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(rightArrow, { scale: 0.9, duration: 0.1, ease: "power2.out", 
+          onComplete: () => gsap.to(rightArrow, { scale: 1, duration: 0.1 })
+        });
+      }
+      navigateArticleMedia(1);
+    };
     
     imageContainer.appendChild(leftArrow);
     imageContainer.appendChild(rightArrow);
@@ -1406,15 +1465,80 @@ function updateArticleMedia() {
   const articleCaptionElement = document.getElementById("article-caption");
   const imageContainer = articleImageElement.parentElement;
   
-  // Remove any existing video containers
-  const existingVideoContainer = imageContainer.querySelector('.article-video-container');
-  if (existingVideoContainer) {
-    existingVideoContainer.remove();
+  // Enhanced GSAP animations for media transitions (with fallback)
+  const currentMedia = imageContainer.querySelector('.article-video-container') || articleImageElement;
+  
+  if (typeof gsap !== 'undefined') {
+    // Animate out current media with multiple effect options
+    const exitAnimations = [
+      // Fade + Scale out
+      () => gsap.to(currentMedia, { 
+        opacity: 0, 
+        scale: 0.8, 
+        rotationY: 15,
+        duration: 0.4, 
+        ease: "power2.in"
+      }),
+      // Slide + Rotate out
+      () => gsap.to(currentMedia, { 
+        x: -100, 
+        opacity: 0, 
+        rotation: -5,
+        scale: 0.9,
+        duration: 0.4, 
+        ease: "back.in(1.7)"
+      }),
+      // Zoom + Blur out
+      () => gsap.to(currentMedia, { 
+        scale: 1.2, 
+        opacity: 0,
+        filter: "blur(10px)",
+        duration: 0.4, 
+        ease: "power3.in"
+      }),
+      // Flip out
+      () => gsap.to(currentMedia, { 
+        rotationX: 90, 
+        opacity: 0,
+        scale: 0.7,
+        duration: 0.5, 
+        ease: "power2.in"
+      })
+    ];
+    
+    // Choose random exit animation
+    const randomExitAnim = exitAnimations[Math.floor(Math.random() * exitAnimations.length)];
+    
+    // Remove any existing video containers
+    const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+    if (existingVideoContainer) {
+      randomExitAnim().then(() => {
+        existingVideoContainer.remove();
+        createNewMediaElement();
+      });
+    } else {
+      randomExitAnim().then(() => {
+        createNewMediaElement();
+      });
+    }
+  } else {
+    // Fallback without GSAP - simple fade
+    currentMedia.style.transition = 'opacity 0.3s ease';
+    currentMedia.style.opacity = '0';
+    setTimeout(() => {
+      const existingVideoContainer = imageContainer.querySelector('.article-video-container');
+      if (existingVideoContainer) {
+        existingVideoContainer.remove();
+      }
+      createNewMediaElement();
+    }, 300);
   }
   
-  if (isVideo) {
-    // Hide image and create video container
-    articleImageElement.style.display = 'none';
+  function createNewMediaElement() {
+  
+    if (isVideo) {
+      // Hide image and create video container
+      articleImageElement.style.display = 'none';
     
     const videoContainer = document.createElement('div');
     videoContainer.className = 'article-video-container';
@@ -1641,26 +1765,233 @@ function updateArticleMedia() {
     videoContainer.appendChild(videoIndicator);
     videoContainer.appendChild(controlBar);
     
-    imageContainer.insertBefore(videoContainer, articleImageElement);
-  } else {
-    // Show image
-    articleImageElement.style.display = 'block';
-    articleImageElement.style.width = '100%';
-    articleImageElement.style.height = '550px';
-    articleImageElement.style.objectFit = 'cover';
-    articleImageElement.style.borderRadius = '8px';
-    articleImageElement.src = media.src;
-    articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
-  }
-  
-  articleCaptionElement.textContent = media.caption;
-  articleCaptionElement.style.marginTop = '10px';
-  
-  // Update counter indicator
-  const indicator = imageContainer.querySelector('.image-count-indicator');
-  if (indicator) {
-    indicator.textContent = `${currentArticleIndex + 1}/${currentArticle.images.length}`;
-    indicator.style.color = '#ffffff';
+    // Add hover effects for video container
+    videoContainer.addEventListener('mouseenter', () => {
+      gsap.to(videoContainer, {
+        scale: 1.01,
+        filter: "brightness(1.05)",
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    });
+    
+    videoContainer.addEventListener('mouseleave', () => {
+      gsap.to(videoContainer, {
+        scale: 1,
+        filter: "brightness(1)",
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    });
+    
+      imageContainer.insertBefore(videoContainer, articleImageElement);
+      
+      // Enhanced entrance animations for video (with fallback)
+      if (typeof gsap !== 'undefined') {
+        const entranceAnimations = [
+          // Fade + Scale in
+          () => {
+            gsap.set(videoContainer, { opacity: 0, scale: 0.8, rotationY: -15 });
+            gsap.to(videoContainer, { 
+              opacity: 1, 
+              scale: 1, 
+              rotationY: 0,
+              duration: 0.6, 
+              ease: "back.out(1.7)"
+            });
+          },
+          // Slide + Rotate in
+          () => {
+            gsap.set(videoContainer, { x: 100, opacity: 0, rotation: 5, scale: 0.9 });
+            gsap.to(videoContainer, { 
+              x: 0, 
+              opacity: 1, 
+              rotation: 0,
+              scale: 1,
+              duration: 0.6, 
+              ease: "elastic.out(1, 0.8)"
+            });
+          },
+          // Zoom + Unblur in
+          () => {
+            gsap.set(videoContainer, { scale: 1.2, opacity: 0, filter: "blur(10px)" });
+            gsap.to(videoContainer, { 
+              scale: 1, 
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.6, 
+              ease: "power3.out"
+            });
+          },
+          // Flip in
+          () => {
+            gsap.set(videoContainer, { rotationX: -90, opacity: 0, scale: 0.7 });
+            gsap.to(videoContainer, { 
+              rotationX: 0, 
+              opacity: 1,
+              scale: 1,
+              duration: 0.7, 
+              ease: "back.out(2)"
+            });
+          }
+        ];
+        
+        const randomEntranceAnim = entranceAnimations[Math.floor(Math.random() * entranceAnimations.length)];
+        randomEntranceAnim();
+      } else {
+        // Fallback without GSAP
+        videoContainer.style.opacity = '0';
+        videoContainer.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+          videoContainer.style.opacity = '1';
+        }, 100);
+      }
+      
+    } else {
+      // Show image
+      articleImageElement.style.display = 'block';
+      articleImageElement.style.width = '100%';
+      articleImageElement.style.height = '550px';
+      articleImageElement.style.objectFit = 'cover';
+      articleImageElement.style.borderRadius = '8px';
+      articleImageElement.src = media.src;
+      articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
+      
+      // Add hover effects for images
+      articleImageElement.addEventListener('mouseenter', () => {
+        gsap.to(articleImageElement, {
+          scale: 1.02,
+          filter: "brightness(1.1) contrast(1.05)",
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+      
+      articleImageElement.addEventListener('mouseleave', () => {
+        gsap.to(articleImageElement, {
+          scale: 1,
+          filter: "brightness(1) contrast(1)",
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+      
+      // Enhanced entrance animations for images (with fallback)
+      if (typeof gsap !== 'undefined') {
+        const imageEntranceAnimations = [
+          // Fade + Scale in
+          () => {
+            gsap.set(articleImageElement, { opacity: 0, scale: 0.8, rotationY: -15 });
+            gsap.to(articleImageElement, { 
+              opacity: 1, 
+              scale: 1, 
+              rotationY: 0,
+              duration: 0.6, 
+              ease: "back.out(1.7)"
+            });
+          },
+          // Slide + Rotate in
+          () => {
+            gsap.set(articleImageElement, { x: 100, opacity: 0, rotation: 5, scale: 0.9 });
+            gsap.to(articleImageElement, { 
+              x: 0, 
+              opacity: 1, 
+              rotation: 0,
+              scale: 1,
+              duration: 0.6, 
+              ease: "elastic.out(1, 0.8)"
+            });
+          },
+          // Zoom + Unblur in
+          () => {
+            gsap.set(articleImageElement, { scale: 1.2, opacity: 0, filter: "blur(10px)" });
+            gsap.to(articleImageElement, { 
+              scale: 1, 
+              opacity: 1,
+              filter: "blur(0px)",
+              duration: 0.6, 
+              ease: "power3.out"
+            });
+          },
+          // Flip in
+          () => {
+            gsap.set(articleImageElement, { rotationX: -90, opacity: 0, scale: 0.7 });
+            gsap.to(articleImageElement, { 
+              rotationX: 0, 
+              opacity: 1,
+              scale: 1,
+              duration: 0.7, 
+              ease: "back.out(2)"
+            });
+          },
+          // Morphing effect
+          () => {
+            gsap.set(articleImageElement, { 
+              opacity: 0, 
+              scale: 0.5, 
+              borderRadius: "50%",
+              rotation: 180
+            });
+            gsap.to(articleImageElement, { 
+              opacity: 1, 
+              scale: 1,
+              borderRadius: "8px",
+              rotation: 0,
+              duration: 0.8, 
+              ease: "elastic.out(1, 0.6)"
+            });
+          }
+        ];
+        
+        const randomImageEntranceAnim = imageEntranceAnimations[Math.floor(Math.random() * imageEntranceAnimations.length)];
+        randomImageEntranceAnim();
+      } else {
+        // Fallback without GSAP
+        articleImageElement.style.opacity = '0';
+        articleImageElement.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+          articleImageElement.style.opacity = '1';
+        }, 100);
+      }
+    }
+    
+    // Animate caption with subtle effect (with fallback)
+    if (typeof gsap !== 'undefined') {
+      gsap.set(articleCaptionElement, { opacity: 0, y: 20 });
+      gsap.to(articleCaptionElement, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        delay: 0.3,
+        ease: "power2.out"
+      });
+    } else {
+      // Fallback without GSAP
+      articleCaptionElement.style.opacity = '0';
+      articleCaptionElement.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        articleCaptionElement.style.opacity = '1';
+      }, 300);
+    }
+    
+    articleCaptionElement.textContent = media.caption;
+    articleCaptionElement.style.marginTop = '10px';
+    
+    // Update counter indicator with animation (with fallback)
+    const indicator = imageContainer.querySelector('.image-count-indicator');
+    if (indicator) {
+      if (typeof gsap !== 'undefined') {
+        gsap.set(indicator, { scale: 0.8, opacity: 0.5 });
+        gsap.to(indicator, {
+          scale: 1,
+          opacity: 1,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      }
+      indicator.textContent = `${currentArticleIndex + 1}/${currentArticle.images.length}`;
+      indicator.style.color = '#ffffff';
+    }
   }
 }
 
@@ -1704,36 +2035,80 @@ if (window.innerWidth >= 769) {
 document.body.appendChild(dotsContainer); 
   
   article.images.forEach((_, index) => {
-    const dot = document.createElement('button');
-    const size = window.innerWidth >= 769 ? 15 : 10;
-    const borderRadius = window.innerWidth >= 769 ? '50%' : '24px';
-    dot.className = `media-dot ${index === 0 ? 'active' : ''}`;
+    const dot = document.createElement('div');
+    dot.className = 'media-dot';
     dot.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: ${borderRadius};
-      border: 1px solid black;
-      background: ${index === 0 ? '#3ad9d9' : 'rgba(255,255,255,0.75)'};
+      width: ${window.innerWidth >= 769 ? '12px' : '8px'};
+      height: ${window.innerWidth >= 769 ? '12px' : '8px'};
+      border-radius: 50%;
+      background: ${index === currentArticleIndex ? '#3ad9d9' : 'rgba(255,255,255,0.5)'};
       cursor: pointer;
       transition: all 0.3s ease;
+      border: ${index === currentArticleIndex ? '1px solid rgb(255, 255, 255)' : '1px solid rgba(255,255,255,0.3)'};
     `;
-    dot.onmouseenter = () => {
-      if (index !== currentArticleIndex) {
-        dot.style.background = 'rgba(0,0,0,0.45)';
-        dot.style.transform = 'scale(1.15)';
-      }
-    };
-    dot.onmouseleave = () => {
-      if (index !== currentArticleIndex) {
-        dot.style.background = 'rgba(255,255,255,0.75)';
-        dot.style.transform = 'scale(1)';
-      }
-    };
+    
+    // Enhanced dot animations (with fallback)
+    if (typeof gsap !== 'undefined') {
+      gsap.set(dot, { scale: 0, opacity: 0 });
+      gsap.to(dot, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.3,
+        delay: index * 0.1,
+        ease: "back.out(1.7)"
+      });
+    }
+    
     dot.onclick = () => {
+      // Animate dot click (with fallback)
+      if (typeof gsap !== 'undefined') {
+        gsap.to(dot, {
+          scale: 0.8,
+          duration: 0.1,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.to(dot, { scale: 1, duration: 0.1 });
+          }
+        });
+      }
+      
       currentArticleIndex = index;
       updateArticleMedia();
       updateMediaIndicatorDots();
     };
+    
+    dot.onmouseenter = () => {
+      if (index !== currentArticleIndex) {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(dot, {
+            scale: 1.2,
+            backgroundColor: 'rgba(255,255,255,0.8)',
+            duration: 0.2,
+            ease: "power2.out"
+          });
+        } else {
+          dot.style.transform = 'scale(1.2)';
+          dot.style.backgroundColor = 'rgba(255,255,255,0.8)';
+        }
+      }
+    };
+    
+    dot.onmouseleave = () => {
+      if (index !== currentArticleIndex) {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(dot, {
+            scale: 1,
+            backgroundColor: 'rgba(255,255,255,0.5)',
+            duration: 0.2,
+            ease: "power2.out"
+          });
+        } else {
+          dot.style.transform = 'scale(1)';
+          dot.style.backgroundColor = 'rgba(255,255,255,0.5)';
+        }
+      }
+    };
+    
     dotsContainer.appendChild(dot);
   });
   
@@ -1743,14 +2118,39 @@ document.body.appendChild(dotsContainer);
 function updateMediaIndicatorDots() {
   const dots = document.querySelectorAll('.media-dot');
   dots.forEach((dot, index) => {
-    const isActive = index === currentArticleIndex;
-    const isMobile = window.innerWidth < 769;
-    dot.style.background = isActive ? '#3ad9d9' : 'rgba(255,255,255,0.3)';
-    dot.style.border = isActive ? '1px solid #000' : '1px solid rgba(0,0,0,0.8)';
-    dot.style.width = isActive ? `${isMobile ? 10 : 15}px` : `${isMobile ? 10 : 15}px`;
-    dot.style.height = isActive ? `${isMobile ? 10 : 15}px` : `${isMobile ? 10 : 15}px`;
-    dot.style.transform = isActive ? 'scale(1.2)' : 'scale(1)';
-    dot.className = `media-dot ${isActive ? 'active' : ''}`;
+    if (index === currentArticleIndex) {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(dot, {
+          backgroundColor: '#3ad9d9',
+          borderColor: '#fff',
+          borderWidth: '1px',
+          scale: 1.2,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      } else {
+        dot.style.backgroundColor = '#3ad9d9';
+        dot.style.borderColor = '#fff';
+        dot.style.borderWidth = '1px';
+        dot.style.transform = 'scale(1.2)';
+      }
+    } else {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(dot, {
+          backgroundColor: 'rgba(255,255,255,0.5)',
+          borderColor: 'rgba(255,255,255,0.3)',
+          borderWidth: '1px',
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      } else {
+        dot.style.backgroundColor = 'rgba(255,255,255,0.5)';
+        dot.style.borderColor = 'rgba(255,255,255,0.3)';
+        dot.style.borderWidth = '1px';
+        dot.style.transform = 'scale(1)';
+      }
+    }
   });
 }
 
