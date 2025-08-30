@@ -1312,15 +1312,15 @@ function setupArticleSwipe(article) {
   currentArticleIndex = 0;
   
   const imageContainer = document.getElementById("article-image").parentElement;
-  
+
   // Add initial entrance animation for the first media (with GSAP check)
   const articleImageElement = document.getElementById("article-image");
   if (typeof gsap !== 'undefined') {
-    gsap.set(articleImageElement, { opacity: 0, scale: 0.9, y: 30 });
+    gsap.set(articleImageElement, { opacity: 0, scale: 0.9, x: -100 });
     gsap.to(articleImageElement, {
       opacity: 1,
       scale: 1,
-      y: 0,
+      x: 0,
       duration: 0.8,
       ease: "power2.out",
       delay: 0.2

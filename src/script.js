@@ -1726,7 +1726,7 @@ window.initMobileNewsSlider = () => {
     sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
     // Apply swipe logic with boundary checks
-    const swipeThreshold = 50;
+    const swipeThreshold = 30;
     let newIndex = currentIndex;
     
     if (Math.abs(deltaX) > swipeThreshold) {
@@ -1956,7 +1956,7 @@ window.OrgStructure = {
         sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     
         // Apply swipe logic with boundary checks
-        const swipeThreshold = 50;
+        const swipeThreshold = 30;
         let newIndex = currentIndex;
         
         if (Math.abs(deltaX) > swipeThreshold) {
