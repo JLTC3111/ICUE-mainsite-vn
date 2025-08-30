@@ -1610,8 +1610,12 @@ window.initMobileNewsSlider = () => {
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   let currentIndex = 0;
   let startX = 0;
+  let startY = 0;
   let endX = 0;
+  let endY = 0;
   let isAnimating = false;
+  let isDragging = false;
+  let isHorizontalSwipe = false;
 
   // Create slider wrapper
   let sliderWrapper = null;
@@ -1626,7 +1630,8 @@ window.initMobileNewsSlider = () => {
         position: 'relative',
         width: '100%',
         height: 'auto',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        touchAction: 'pan-y' // Allow vertical scrolling but capture horizontal
       });
 
       // Create slider track
@@ -1636,7 +1641,8 @@ window.initMobileNewsSlider = () => {
         display: 'flex',
         width: `${cards.length * 100}%`,
         transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        transform: `translateX(-${currentIndex * (100 / cards.length)}%)`
+        transform: `translateX(-${currentIndex * (100 / cards.length)}%)`,
+        touchAction: 'pan-y'
       });
 
       // Move all cards into the slider track
@@ -1647,7 +1653,8 @@ window.initMobileNewsSlider = () => {
           width: `${100 / cards.length}%`,
           flexShrink: '0',
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          alignItems: 'center'
         });
         
         // Clone the card to avoid moving the original
@@ -1667,11 +1674,9 @@ window.initMobileNewsSlider = () => {
     if (window.innerWidth <= 1440 && isTouchDevice) {
       // Mobile/touch mode - show slider
       Object.assign(gridContainer.style, {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        overflow: "hidden",
-        touchAction: "pan-y"
+        display: "block", // Changed from flex to block to maintain container structure
+        overflow: "visible", // Changed from hidden to visible
+        touchAction: "manipulation" // Improved touch handling
       });
 
       // Create slider if it doesn't exist
@@ -1694,6 +1699,8 @@ window.initMobileNewsSlider = () => {
     } else {
       // Desktop mode - show grid
       gridContainer.style.display = "grid";
+      gridContainer.style.overflow = "visible";
+      gridContainer.style.touchAction = "auto";
       
       // Hide slider wrapper and show original cards
       if (sliderWrapper) {
@@ -1729,13 +1736,25 @@ window.initMobileNewsSlider = () => {
     }
   }
 
+  function isValidHorizontalSwipe(deltaX, deltaY) {
+    const swipeThreshold = 30; // Minimum distance for swipe
+    const angleThreshold = 0.5; // Maximum ratio of vertical to horizontal movement
+    
+    // Check if horizontal movement is significant
+    if (Math.abs(deltaX) < swipeThreshold) return false;
+    
+    // Check if movement is primarily horizontal
+    const ratio = Math.abs(deltaY) / Math.abs(deltaX);
+    return ratio <= angleThreshold;
+  }
+
   function handleSwipe() {
-    if (isAnimating) return;
+    if (isAnimating || !isHorizontalSwipe) return;
     
-    const swipeThreshold = 50;
     const deltaX = endX - startX;
+    const deltaY = endY - startY;
     
-    if (Math.abs(deltaX) > swipeThreshold) {
+    if (isValidHorizontalSwipe(deltaX, deltaY)) {
       if (deltaX < 0) {
         // Swipe left - next card
         const nextIndex = (currentIndex + 1) % cards.length;
@@ -1748,35 +1767,63 @@ window.initMobileNewsSlider = () => {
     }
   }
 
-  // Touch event handlers
+  // Touch event handlers - only attach to slider wrapper to prevent container movement
   function handleTouchStart(e) {
     startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = false;
+    isHorizontalSwipe = false;
   }
 
   function handleTouchMove(e) {
     if (isAnimating) return;
     
     const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
     const deltaX = currentX - startX;
-    const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+    const deltaY = currentY - startY;
     
-    if (sliderTrack && Math.abs(deltaX) > 10) {
-      // Disable transition during drag
-      sliderTrack.style.transition = 'none';
+    // Determine if this is a horizontal swipe
+    if (!isDragging && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
+      isDragging = true;
+      isHorizontalSwipe = isValidHorizontalSwipe(deltaX, deltaY);
       
-      // Calculate drag offset
-      const dragOffset = (deltaX / window.innerWidth) * 100;
-      const baseTransform = -currentIndex * (100 / cards.length);
+      // If it's a horizontal swipe, prevent default and handle it
+      if (isHorizontalSwipe) {
+        e.preventDefault();
+        
+        const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+        if (sliderTrack) {
+          // Disable transition during drag
+          sliderTrack.style.transition = 'none';
+          
+          // Calculate drag offset
+          const dragOffset = (deltaX / window.innerWidth) * 100;
+          const baseTransform = -currentIndex * (100 / cards.length);
+          
+          sliderTrack.style.transform = `translateX(${baseTransform + dragOffset}%)`;
+        }
+      }
+    } else if (isDragging && isHorizontalSwipe) {
+      // Continue horizontal drag
+      e.preventDefault();
       
-      sliderTrack.style.transform = `translateX(${baseTransform + dragOffset}%)`;
+      const sliderTrack = sliderWrapper?.querySelector('.slider-track');
+      if (sliderTrack) {
+        const dragOffset = (deltaX / window.innerWidth) * 100;
+        const baseTransform = -currentIndex * (100 / cards.length);
+        
+        sliderTrack.style.transform = `translateX(${baseTransform + dragOffset}%)`;
+      }
     }
   }
 
   function handleTouchEnd(e) {
     endX = e.changedTouches[0].clientX;
+    endY = e.changedTouches[0].clientY;
     
     const sliderTrack = sliderWrapper?.querySelector('.slider-track');
-    if (sliderTrack) {
+    if (sliderTrack && isHorizontalSwipe) {
       // Re-enable transition
       sliderTrack.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       
@@ -1785,16 +1832,38 @@ window.initMobileNewsSlider = () => {
     }
     
     handleSwipe();
+    
+    // Reset flags
+    isDragging = false;
+    isHorizontalSwipe = false;
   }
 
-  if (isTouchDevice) {
-    gridContainer.addEventListener("touchstart", handleTouchStart);
-    gridContainer.addEventListener("touchmove", handleTouchMove);
-    gridContainer.addEventListener("touchend", handleTouchEnd);
+  // Add touch events only to slider wrapper when it exists
+  function attachTouchEvents() {
+    if (isTouchDevice && sliderWrapper) {
+      sliderWrapper.addEventListener("touchstart", handleTouchStart, { passive: true });
+      sliderWrapper.addEventListener("touchmove", handleTouchMove, { passive: false });
+      sliderWrapper.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
+  }
+
+  function removeTouchEvents() {
+    if (sliderWrapper) {
+      sliderWrapper.removeEventListener("touchstart", handleTouchStart);
+      sliderWrapper.removeEventListener("touchmove", handleTouchMove);
+      sliderWrapper.removeEventListener("touchend", handleTouchEnd);
+    }
+  }
+
+  function handleResize() {
+    removeTouchEvents();
+    updateSlider();
+    attachTouchEvents();
   }
 
   updateSlider();
-  window.addEventListener("resize", updateSlider);
+  attachTouchEvents();
+  window.addEventListener("resize", handleResize);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
