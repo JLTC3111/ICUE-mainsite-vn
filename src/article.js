@@ -2101,6 +2101,8 @@ function updateModalImage() {
       video.style.cssText = `
         width: 100%;
         height: 100%;
+        min-width: 60px;
+        min-height: 60px;
         object-fit: cover;
         position: absolute;
         top: 0;
