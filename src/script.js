@@ -1639,7 +1639,7 @@ window.initMobileNewsSlider = () => {
         Object.assign(sliderTrack.style, {
           display: 'flex',
           width: `${cards.length * 100}%`,
-          transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
           transform: `translateX(0%)`
         });
 
