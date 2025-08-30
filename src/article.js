@@ -1433,7 +1433,7 @@ function updateArticleMedia() {
     
     const video = document.createElement('video');
     video.src = media.src;
-    video.controls = false;
+    video.controls = false; 
     video.preload = 'metadata';
     video.style.cssText = `
       width: 100%;
@@ -2066,7 +2066,7 @@ function updateModalImage() {
         border-radius: 4px;
         opacity: ${index === currentModalIndex ? '1' : '0.7'};
         transition: all 0.3s ease;
-        background: #333;
+        background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2107,6 +2107,65 @@ function updateModalImage() {
       `;
       video.muted = true;
       video.preload = 'metadata';
+      
+      // Add play icon overlay
+      const playIcon = document.createElement('div');
+      playIcon.innerHTML = '▶';
+      playIcon.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 16px;
+        text-shadow: 0 0 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+        z-index: 3;
+      `;
+      
+      // iOS-compatible thumbnail generation
+      const loadThumbnail = () => {
+        if (video.readyState >= 2) { 
+          try {
+            video.currentTime = Math.min(5, video.duration * 0.1); // 10% into video or 5 seconds, whichever is smaller
+            console.log('Video seeking to:', video.currentTime);
+          } catch (e) {
+            console.log('Video seeking not supported, keeping fallback visible');
+          }
+        }
+      };
+      
+      // Event listeners for better iOS compatibility
+      video.addEventListener('loadedmetadata', loadThumbnail);
+      video.addEventListener('loadeddata', loadThumbnail);
+      video.addEventListener('canplay', () => {
+        console.log('Video can play - showing thumbnail');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
+      });
+      
+      video.addEventListener('seeked', () => {
+        console.log('Video seeked successfully');
+        video.style.opacity = '1';
+        videoIcon.style.opacity = '0.3';
+      });
+      
+      // Error handling - show fallback if video fails to load
+      video.addEventListener('error', () => {
+        console.log('Video failed to load');
+        video.style.opacity = '0';
+        videoIcon.style.opacity = '1';
+        videoIcon.innerHTML = '🎬';
+        videoIcon.style.background = 'rgba(255,0,0,0.4)';
+      });
+      
+      // Timeout to ensure emoji stays visible if video doesn't load
+      setTimeout(() => {
+        if (video.style.opacity === '0') {
+          console.log('Video thumbnail timeout - keeping emoji visible');
+          videoIcon.style.opacity = '1';
+        }
+      }, 3000);
       
       thumbContainer.appendChild(videoIcon); // Fallback background
       thumbContainer.appendChild(video);
@@ -2276,12 +2335,44 @@ document.addEventListener("DOMContentLoaded", () => {
           position: relative;
           width: 100%;
           height: 550px !important;
+          background: #333;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           border-radius: 8px;
           object-fit: cover;
+        `;
+        
+        // Add play icon overlay
+        const playIcon = document.createElement('div');
+        playIcon.innerHTML = '▶';
+        playIcon.style.cssText = `
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 48px;
+          text-shadow: 0 0 10px rgba(0,0,0,0.8);
+          pointer-events: none;
+          z-index: 10;
+        `;
+        
+        // Add video type indicator
+        const videoIndicator = document.createElement('div');
+        videoIndicator.innerHTML = '🎥 VIDEO';
+        videoIndicator.style.cssText = `
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          background: rgba(0,0,0,0.8);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+          font-weight: bold;
+          z-index: 10;
         `;
         
         videoContainer.appendChild(video);
