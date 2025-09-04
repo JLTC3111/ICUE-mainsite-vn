@@ -774,36 +774,16 @@ window.loadPage = (page) => {
           landing.style.display = 'none';
 
             requestAnimationFrame(() => {
-              if (typeof retriggerMenuAnimations === 'function') {
-                retriggerMenuAnimations();
-              }
-              if (typeof updateCalendarSvgTime === 'function') {
-                updateCalendarSvgTime();
-              }
-              if (typeof initAudioVisualizer === 'function') {
-                initAudioVisualizer();
-              }
-              if (typeof updateMusicBarColor === 'function') {
-                updateMusicBarColor(page);
-              }
-              if (typeof updateHamburgerIcon === 'function') {
-                updateHamburgerIcon(page);
-              }
-              if (typeof ICUEFooter !== 'undefined' && ICUEFooter && ICUEFooter.autoInject) {
-                ICUEFooter.autoInject();
-              }
-              if (typeof calendarModal === 'function') {
-                calendarModal();
-              }
-              if (typeof CommunityGallery !== 'undefined' && CommunityGallery && CommunityGallery.init) {
-                CommunityGallery.init();
-              }
-              if (typeof isTruelyTouchDevice === 'function') {
-                isTruelyTouchDevice();
-              }
-              if (typeof initializeChatbot === 'function') {
-                initializeChatbot();
-              }
+              retriggerMenuAnimations();
+              updateCalendarSvgTime();
+              initAudioVisualizer();
+              updateMusicBarColor(page);
+              updateHamburgerIcon(page);
+              ICUEFooter.autoInject();
+              calendarModal();
+              CommunityGallery.init();
+              isTruelyTouchDevice();
+              initializeChatbot();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -3645,62 +3625,14 @@ function initializePageFunctions() {
   
   // Core functions that should be available on all pages
   requestAnimationFrame(() => {
-    // Initialize core functions with safety checks
-    if (typeof retriggerMenuAnimations === 'function') {
-      retriggerMenuAnimations();
-      console.log('✅ [DEBUG] retriggerMenuAnimations called');
-    } else {
-      console.warn('⚠️ [DEBUG] retriggerMenuAnimations not available');
-    }
-    
-    if (typeof updateCalendarSvgTime === 'function') {
-      updateCalendarSvgTime();
-      console.log('✅ [DEBUG] updateCalendarSvgTime called');
-    } else {
-      console.warn('⚠️ [DEBUG] updateCalendarSvgTime not available');
-    }
-    
-    if (typeof initAudioVisualizer === 'function') {
-      initAudioVisualizer();
-      console.log('✅ [DEBUG] initAudioVisualizer called');
-    } else {
-      console.warn('⚠️ [DEBUG] initAudioVisualizer not available');
-    }
-    
-    if (typeof calendarModal === 'function') {
-      calendarModal();
-      console.log('✅ [DEBUG] calendarModal called');
-    } else {
-      console.warn('⚠️ [DEBUG] calendarModal not available');
-    }
-    
-    if (typeof updateHamburgerIcon === 'function') {
-      updateHamburgerIcon();
-      console.log('✅ [DEBUG] updateHamburgerIcon called');
-    } else {
-      console.warn('⚠️ [DEBUG] updateHamburgerIcon not available');
-    }
-    
-    if (typeof ICUEFooter !== 'undefined' && ICUEFooter && ICUEFooter.autoInject) {
-      ICUEFooter.autoInject();
-      console.log('✅ [DEBUG] ICUEFooter.autoInject called');
-    } else {
-      console.warn('⚠️ [DEBUG] ICUEFooter not available or no autoInject method');
-    }
-    
-    if (typeof CommunityGallery !== 'undefined' && CommunityGallery && CommunityGallery.init) {
-      CommunityGallery.init();
-      console.log('✅ [DEBUG] CommunityGallery.init called');
-    } else {
-      console.warn('⚠️ [DEBUG] CommunityGallery not available or no init method');
-    }
-    
-    if (typeof initializeChatbot === 'function') {
-      initializeChatbot();
-      console.log('✅ [DEBUG] initializeChatbot called');
-    } else {
-      console.warn('⚠️ [DEBUG] initializeChatbot not available');
-    }
+    retriggerMenuAnimations();
+    updateCalendarSvgTime();
+    initAudioVisualizer();
+    calendarModal();
+    updateHamburgerIcon();
+    ICUEFooter.autoInject();
+    CommunityGallery.init();
+    initializeChatbot();
     
     // Initialize core page functions that should be available everywhere
     if (typeof initFrequentlyAskedQuestions === 'function') {
