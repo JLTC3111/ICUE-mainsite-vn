@@ -784,12 +784,6 @@ window.loadPage = (page) => {
               CommunityGallery.init();
               isTruelyTouchDevice();
               initializeChatbot();
-              
-              // Update language switcher after page content is loaded
-              if (typeof setupLanguageSwitcher === 'function') {
-                setupLanguageSwitcher();
-                console.log('[LoadPage] Language switcher updated for page:', page);
-              }
 
               switch (page) {
                 case 'meetOurExperts':
@@ -3666,12 +3660,6 @@ function initializePageFunctions() {
       console.log('[Init] CommunityPage initialized globally');
     }
     
-    // Setup language switcher (ensure it's available)
-    if (typeof setupLanguageSwitcher === 'function') {
-      setupLanguageSwitcher();
-      console.log('[Init] Language switcher initialized');
-    }
-    
     // Page-specific initializations based on current path or hash
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
@@ -4079,18 +4067,6 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log(`Language switcher configured: ${currentSite.language} (${currentPageName}) → ${targetSite.language} (${targetPageName})`);
     console.log(`Target URL: ${targetUrl}`);
   }
-
-  // Call the function once the DOM is fully loaded
-  setupLanguageSwitcher();
-  
-  // Initialize page functions for static pages and language switching
-  initializePageFunctions();
-  
-  // Update language switcher when hash changes (page navigation)
-  window.addEventListener('hashchange', function() {
-    console.log('[Language Switcher] Hash changed, updating language switcher...');
-    setupLanguageSwitcher();
-  });
   
   // Also update when popstate occurs (back/forward navigation)
   window.addEventListener('popstate', function() {
@@ -4465,13 +4441,6 @@ function initAudioVisualizer(
 window.addEventListener('DOMContentLoaded', () => {
   console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages and setup');
   window.preloadProfileImages();
-  
-  // Setup language switcher
-  setupLanguageSwitcher();
-  
-  // Initialize functions for static pages
-  console.log('🚀 [DEBUG] Calling initializePageFunctions from main DOMContentLoaded');
-  initializePageFunctions();
 });
 
 // Also listen for page visibility changes (when switching back to tab)
