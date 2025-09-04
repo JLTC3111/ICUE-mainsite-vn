@@ -179,6 +179,60 @@ const deviceDetection = {
 // Export the functions for use
 // export { isTruelyTouchDevice, isTouchPrimaryDevice, isMobileDevice, deviceDetection };
 
+// NEW: Speed calculation and analysis function
+function calculateSpeeds(baseSpeed = null) {
+    // Get base speed from input or use provided value
+    const speed = baseSpeed || parseInt(document.getElementById('baseSpeed')?.value) || 100;
+    
+    // Calculate average WPM for different scenarios
+    const normalSpeed = speed * 3.75; // Average of 2.5-5x
+    const burstSpeed = speed * 0.6; // Average of 0.4-0.8x
+    const punctuationSpeed = speed * 6.5; // Average of 5-8x
+    
+    // WPM calculation (assuming average word length of 5 characters + 1 space)
+    const charsPerMinute = 60000 / speed; // 60000ms = 1 minute
+    const normalWPM = Math.round((60000 / normalSpeed) / 6);
+    const burstWPM = Math.round((60000 / burstSpeed) / 6);
+    const overallWPM = Math.round(charsPerMinute / 6);
+    const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
+    
+    // Calculate realistic average WPM
+    const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
+    
+    // Create results object for programmatic use
+    const speedData = {
+        baseSpeed: speed,
+        overallWPM: overallWPM,
+        normalWPM: normalWPM,
+        burstWPM: burstWPM,
+        punctuationWPM: punctuationWPM,
+        realisticAverage: realisticAverage
+    };
+    
+    // If there's a results element, update the display
+    const resultsElement = document.getElementById('speedResults');
+    if (resultsElement) {
+        const results = `
+            <div class="result">
+                <h4>🎯 Your Typing Speeds:</h4>
+                <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
+                <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
+                <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
+                <p><strong>Burst Mode:</strong> <span class="highlight">${burstWPM} WPM</span> (10% of time - FAST!)</p>
+                <p><strong>After Punctuation:</strong> ${punctuationWPM} WPM (10% of time - thinking pauses)</p>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #0f2419; border-radius: 4px;">
+                    <strong>Realistic Average: ${realisticAverage} WPM</strong>
+                </div>
+            </div>
+        `;
+        resultsElement.innerHTML = results;
+    }
+    
+    // Return the data for programmatic use
+    return speedData;
+}
+
 let isAnimating = false;
 
 function typeHTMLString(
@@ -236,59 +290,6 @@ function typeHTMLString(
       return baseSpeed * (1.5 + Math.random() * 1.5);
   }
 
-  // NEW: Speed calculation and analysis function
-  function calculateSpeeds(baseSpeed = null) {
-      // Get base speed from input or use provided value
-      const speed = baseSpeed || parseInt(document.getElementById('baseSpeed')?.value) || 100;
-      
-      // Calculate average WPM for different scenarios
-      const normalSpeed = speed * 3.75; // Average of 2.5-5x
-      const burstSpeed = speed * 0.6; // Average of 0.4-0.8x
-      const punctuationSpeed = speed * 6.5; // Average of 5-8x
-      
-      // WPM calculation (assuming average word length of 5 characters + 1 space)
-      const charsPerMinute = 60000 / speed; // 60000ms = 1 minute
-      const normalWPM = Math.round((60000 / normalSpeed) / 6);
-      const burstWPM = Math.round((60000 / burstSpeed) / 6);
-      const overallWPM = Math.round(charsPerMinute / 6);
-      const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
-      
-      // Calculate realistic average WPM
-      const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
-      
-      // Create results object for programmatic use
-      const speedData = {
-          baseSpeed: speed,
-          overallWPM: overallWPM,
-          normalWPM: normalWPM,
-          burstWPM: burstWPM,
-          punctuationWPM: punctuationWPM,
-          realisticAverage: realisticAverage
-      };
-      
-      // If there's a results element, update the display
-      const resultsElement = document.getElementById('speedResults');
-      if (resultsElement) {
-          const results = `
-              <div class="result">
-                  <h4>🎯 Your Typing Speeds:</h4>
-                  <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
-                  <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
-                  <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
-                  <p><strong>Burst Mode:</strong> <span class="highlight">${burstWPM} WPM</span> (10% of time - FAST!)</p>
-                  <p><strong>After Punctuation:</strong> ${punctuationWPM} WPM (10% of time - thinking pauses)</p>
-                  
-                  <div style="margin-top: 15px; padding: 10px; background: #0f2419; border-radius: 4px;">
-                      <strong>Realistic Average: ${realisticAverage} WPM</strong>
-                  </div>
-              </div>
-          `;
-          resultsElement.innerHTML = results;
-      }
-      
-      // Return the data for programmatic use
-      return speedData;
-  }
   function getTypingSpeed(baseSpeed, lastChar = "", showAnalysis = false) {
       // Get the random delay using your existing logic
       const delay = randomSpeed(baseSpeed, lastChar);
@@ -296,39 +297,6 @@ function typeHTMLString(
       if (showAnalysis) {
           const analysis = calculateSpeeds(baseSpeed);
           console.log('Current typing analysis:', analysis);
-      }
-      
-      return delay;
-  }
-
-  function getCurrentTypingStats(baseSpeed) {
-      return calculateSpeeds(baseSpeed);
-  }
-
-  function typeCharacter(char, previousChar = "") {
-      const baseSpeed = 100; 
-      const delay = randomSpeed(baseSpeed, previousChar);
-      
-      setTimeout(() => {
-          console.log(`Typing: ${char} (delay: ${delay}ms)`);
-      }, delay);
-      
-      return delay;
-  }
-
-  function analyzeMyTypingSpeed(baseSpeed = 100) {
-      console.log(`Analyzing typing speed for ${baseSpeed}ms base speed:`);
-      const stats = calculateSpeeds(baseSpeed);
-      console.log(stats);
-      return stats;
-  }
-
-  function enhancedRandomSpeed(baseSpeed, lastChar = "", logStats = false) {
-      const delay = randomSpeed(baseSpeed, lastChar);
-      
-      if (logStats) {
-          const stats = calculateSpeeds(baseSpeed);
-          console.log(`Speed stats for ${baseSpeed}ms base:`, stats);
       }
       
       return delay;
@@ -3857,7 +3825,7 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('[Language Switcher] Target page mapped:', targetPageName);
     
     // Static pages that use direct file paths instead of hash routing
-    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'];
+    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     
     // Build target path
     let targetPath = '';
