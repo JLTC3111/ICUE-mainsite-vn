@@ -3750,23 +3750,25 @@ document.addEventListener("DOMContentLoaded", function() {
       if (titleElement) {
         const title = titleElement.textContent.toLowerCase();
         console.log('[Language Switcher] Checking title:', title);
-        if (title.includes('about') || title.includes('giới thiệu')) return 'aboutUs';
+        if (title.includes('about') || title.includes('chúng tôi')) return 'aboutUs';
         if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
         if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
         if (title.includes('news') || title.includes('tin tức')) return 'News';
         if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
-        if (title.includes('nhân lực') || title.includes('people')) return 'ourPeople';
-        if (title.includes('công việc') || title.includes('work')) return 'ourWork';
-        if (title.includes('cơ cấu') || title.includes('structure')) return 'orgStructure';
-        if (title.includes('chuyên gia') || title.includes('expert')) return 'meetOurExperts';
-        if (title.includes('cán bộ') || title.includes('core')) return 'coreTeam';
-        // Static pages
+        if (title.includes('people') || title.includes('nhân lực')) return 'ourPeople';
+        if (title.includes('work') || title.includes('công việc')) return 'ourWork';
+        if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
+        if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
+        if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
         if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
         if (title.includes('gdpr')) return 'gdpr';
         if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
         if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
         if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
         if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
+        if (title.includes('notableAward') || title.includes('giải thưởng nổi bật')) return 'notableAwards';
+        if (title.includes('community') || title.includes('cộng đồng')) return 'communityActivities';
+        if (title.includes('cookies') || title.includes('cookies')) return 'cookies';
       }
       
       // Try to detect from current content or active elements
@@ -3774,16 +3776,25 @@ document.addEventListener("DOMContentLoaded", function() {
       if (activeNavLinkText) {
         const linkText = activeNavLinkText.textContent.toLowerCase().trim();
         console.log('[Language Switcher] Found active nav link:', linkText);
-        if (linkText.includes('about') || linkText.includes('giới thiệu')) return 'aboutUs';
-        if (linkText.includes('service') || linkText.includes('dịch vụ')) return 'Services';
-        if (linkText.includes('project') || linkText.includes('dự án')) return 'pastProjects';
-        if (linkText.includes('news') || linkText.includes('tin tức')) return 'News';
-        if (linkText.includes('contact') || linkText.includes('liên hệ')) return 'Contact';
-        if (linkText.includes('nhân lực') || linkText.includes('people')) return 'ourPeople';
-        if (linkText.includes('công việc') || linkText.includes('work')) return 'ourWork';
-        if (linkText.includes('cơ cấu') || linkText.includes('structure')) return 'orgStructure';
-        if (linkText.includes('chuyên gia') || linkText.includes('expert')) return 'meetOurExperts';
-        if (linkText.includes('cán bộ') || linkText.includes('core')) return 'coreTeam';
+        if (title.includes('about') || title.includes('chúng tôi')) return 'aboutUs';
+        if (title.includes('service') || title.includes('dịch vụ')) return 'Services';
+        if (title.includes('project') || title.includes('dự án')) return 'pastProjects';
+        if (title.includes('news') || title.includes('tin tức')) return 'News';
+        if (title.includes('contact') || title.includes('liên hệ')) return 'Contact';
+        if (title.includes('people') || title.includes('nhân lực')) return 'ourPeople';
+        if (title.includes('work') || title.includes('công việc')) return 'ourWork';
+        if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
+        if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
+        if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
+        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
+        if (title.includes('gdpr')) return 'gdpr';
+        if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
+        if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
+        if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
+        if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
+        if (title.includes('notableAward') || title.includes('giải thưởng nổi bật')) return 'notableAwards';
+        if (title.includes('community') || title.includes('cộng đồng')) return 'communityActivities';
+        if (title.includes('cookies') || title.includes('cookies')) return 'cookies';
       }
       
       // Check for specific content identifiers on the page
@@ -3799,6 +3810,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (contentText.includes('contact') || contentText.includes('liên hệ')) return 'Contact';
         if (contentText.includes('experts') || contentText.includes('chuyên gia')) return 'meetOurExperts';
         if (contentText.includes('core team') || contentText.includes('cán bộ')) return 'coreTeam';
+        if (contentText.includes('donation') || contentText.includes('quyên góp')) return 'donations';
+        if (contentText.includes('gdpr') || contentText.includes('gdpr')) return 'gdpr';
+        if (contentText.includes('privacy') || contentText.includes('bảo mật') || contentText.includes('riêng tư')) return 'privacy';
+        if (contentText.includes('recruitment') || contentText.includes('tuyển dụng')) return 'recruitment';
+        if (contentText.includes('terms') || contentText.includes('điều khoản')) return 'terms';
+        if (contentText.includes('faq') || contentText.includes('hỏi đáp')) return 'faqs';
+        if (contentText.includes('notableAward') || contentText.includes('giải thưởng nổi bật')) return 'notableAwards';
+        if (contentText.includes('community') || contentText.includes('cộng đồng')) return 'communityActivities';
+        if (contentText.includes('cookies') || contentText.includes('cookies')) return 'cookies';
       }
       
       // Default fallback
@@ -3818,14 +3838,15 @@ document.addEventListener("DOMContentLoaded", function() {
       'meetOurExperts': 'meetOurExperts',
       'coreTeam': 'coreTeam',
       'Contact': 'Contact',
-      // Static pages
       'donations': 'donations',
       'gdpr': 'gdpr',
       'privacy': 'privacy',
       'recruitment': 'recruitment',
       'terms': 'terms',
       'faqs': 'faqs',
-      // Add any other page mappings as needed
+      'notableAwards': 'notableAwards',
+      'communityActivities': 'communityActivities',
+      'cookies': 'cookies',
     };
 
     // Get current page and map to target page
