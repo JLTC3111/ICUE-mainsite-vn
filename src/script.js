@@ -779,7 +779,11 @@ window.loadPage = (page) => {
               initAudioVisualizer();
               updateMusicBarColor(page);
               updateHamburgerIcon(page);
-              ICUEFooter.autoInject();
+              if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
+                ICUEFooter.autoInject();
+              } else {
+                console.warn('[Init] ICUEFooter not available');
+              }
               calendarModal();
               CommunityGallery.init();
               isTruelyTouchDevice();
@@ -3630,7 +3634,11 @@ function initializePageFunctions() {
     initAudioVisualizer();
     calendarModal();
     updateHamburgerIcon();
-    ICUEFooter.autoInject();
+    if (typeof ICUEFooter !== 'undefined' && ICUEFooter.autoInject) {
+      ICUEFooter.autoInject();
+    } else {
+      console.warn('[Init] ICUEFooter not available');
+    }
     CommunityGallery.init();
     initializeChatbot();
     
