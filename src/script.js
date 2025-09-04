@@ -3731,8 +3731,16 @@ document.addEventListener("DOMContentLoaded", function() {
       if (currentPath && currentPath !== '/') {
         const pathSegments = currentPath.split('/').filter(segment => segment);
         if (pathSegments.length > 0) {
-          const pathPage = pathSegments[pathSegments.length - 1];
+          let pathPage = pathSegments[pathSegments.length - 1];
+          // Remove .html extension if present
+          pathPage = pathPage.replace('.html', '');
           console.log('[Language Switcher] Detected path page:', pathPage);
+          
+          // Check for static pages that don't follow hash routing
+          if (['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'].includes(pathPage.toLowerCase())) {
+            return pathPage.toLowerCase();
+          }
+          
           return pathPage;
         }
       }
@@ -3752,6 +3760,13 @@ document.addEventListener("DOMContentLoaded", function() {
         if (title.includes('cơ cấu') || title.includes('structure')) return 'orgStructure';
         if (title.includes('chuyên gia') || title.includes('expert')) return 'meetOurExperts';
         if (title.includes('cán bộ') || title.includes('core')) return 'coreTeam';
+        // Static pages
+        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
+        if (title.includes('gdpr')) return 'gdpr';
+        if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
+        if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
+        if (title.includes('terms') || title.includes('điều khoản')) return 'terms';
+        if (title.includes('faq') || title.includes('hỏi đáp')) return 'faqs';
       }
       
       // Try to detect from current content or active elements
@@ -3803,6 +3818,13 @@ document.addEventListener("DOMContentLoaded", function() {
       'meetOurExperts': 'meetOurExperts',
       'coreTeam': 'coreTeam',
       'Contact': 'Contact',
+      // Static pages
+      'donations': 'donations',
+      'gdpr': 'gdpr',
+      'privacy': 'privacy',
+      'recruitment': 'recruitment',
+      'terms': 'terms',
+      'faqs': 'faqs',
       // Add any other page mappings as needed
     };
 
@@ -3813,11 +3835,23 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('[Language Switcher] Current page detected:', currentPageName);
     console.log('[Language Switcher] Target page mapped:', targetPageName);
     
-    // Build target hash
-    const targetHash = targetPageName === 'Home' ? '' : `#/${targetPageName}`;
+    // Static pages that use direct file paths instead of hash routing
+    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'];
+    
+    // Build target path
+    let targetPath = '';
+    if (targetPageName === 'Home') {
+      targetPath = '';
+    } else if (staticPages.includes(targetPageName)) {
+      // Static pages use direct file paths
+      targetPath = `src/pages/${targetPageName}.html`;
+    } else {
+      // Hash-based routing for main navigation pages
+      targetPath = `#/${targetPageName}`;
+    }
     
     // Build target URL with mapped page (ensure proper slash after domain)
-    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetHash}${currentSearch}`;
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
     
     console.log('[Language Switcher] Target URL:', targetUrl);
     
