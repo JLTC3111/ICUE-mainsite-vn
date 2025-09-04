@@ -2330,6 +2330,9 @@ function createImageModal() {
   const style = document.createElement('style');
   style.textContent = `
     @media (max-width: 768px) {
+      .ua-android .hide-on-android {
+        display: none !important;
+      }
       .modal-arrow {
         display: none !important;
       }
@@ -2516,7 +2519,7 @@ function updateModalImage() {
       
       // Add play icon overlay
       const playIcon = document.createElement('div');
-      playIcon.innerHTML = '<svg style="transform: translateY(1.5px);" width="48px" height="48px" viewBox="-6.4 -6.4 76.80 76.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"><path transform="translate(-6.4, -6.4), scale(4.8)" fill="#18353e" d="M9.166.33a2.25 2.25 0 00-2.332 0l-5.25 3.182A2.25 2.25 0 00.5 5.436v5.128a2.25 2.25 0 001.084 1.924l5.25 3.182a2.25 2.25 0 002.332 0l5.25-3.182a2.25 2.25 0 001.084-1.924V5.436a2.25 2.25 0 00-1.084-1.924L9.166.33z" strokewidth="0"></path></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle cx="32" cy="32" r="30" fill="#d84f4f"></circle><path fill="#ffffff" d="M25 12l20 20l-20 20z"></path></g></svg>';
+      playIcon.innerHTML = '<svg class="hide-on-android" style="transform: translateY(1.5px);" width="48px" height="48px" viewBox="-6.4 -6.4 76.80 76.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione" preserveAspectRatio="xMidYMid meet" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"><path transform="translate(-6.4, -6.4), scale(4.8)" fill="#18353e" d="M9.166.33a2.25 2.25 0 00-2.332 0l-5.25 3.182A2.25 2.25 0 00.5 5.436v5.128a2.25 2.25 0 001.084 1.924l5.25 3.182a2.25 2.25 0 002.332 0l5.25-3.182a2.25 2.25 0 001.084-1.924V5.436a2.25 2.25 0 00-1.084-1.924L9.166.33z" strokewidth="0"></path></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle cx="32" cy="32" r="30" fill="#d84f4f"></circle><path fill="#ffffff" d="M25 12l20 20l-20 20z"></path></g></svg>';
       playIcon.style.cssText = `
         position: absolute;
         top: 50%;
