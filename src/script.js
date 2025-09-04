@@ -3608,12 +3608,19 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
 // Function to initialize page-specific functions, especially for static pages
 function initializePageFunctions() {
+  console.log('🚀 [DEBUG] initializePageFunctions() called');
+  console.log('📍 [DEBUG] Current URL:', window.location.href);
+  console.log('📂 [DEBUG] Current pathname:', window.location.pathname);
+  console.log('🔗 [DEBUG] Current hash:', window.location.hash);
+  console.log('⏰ [DEBUG] Timestamp:', new Date().toISOString());
+  
   console.log('[Init] Initializing page functions...');
   
   // Check if we arrived here via language switch to static page
   let languageSwitchTarget = null;
   try {
     languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
+    console.log('🔄 [DEBUG] Language switch target from sessionStorage:', languageSwitchTarget);
     if (languageSwitchTarget) {
       sessionStorage.removeItem('language_switch_to_static');
       console.log('[Init] Detected language switch to static page:', languageSwitchTarget);
@@ -3669,15 +3676,33 @@ function initializePageFunctions() {
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
     
-    // Check if we're on a static page
+    console.log('🔍 [DEBUG] Analyzing current page...');
+    console.log('🔍 [DEBUG] currentPath:', currentPath);
+    console.log('🔍 [DEBUG] currentHash:', currentHash);
+    
+    // Check if we're on a static page OR hash-routed page
     const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
+    const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
     
-    if (isStaticPage || languageSwitchTarget) {
-      console.log('[Init] Detected static page, initializing specific functions...');
+    console.log('📄 [DEBUG] Static pages list:', staticPages);
+    console.log('📄 [DEBUG] isStaticPage:', isStaticPage);
+    console.log('📄 [DEBUG] isHashRoutedPage:', isHashRoutedPage);
+    console.log('📄 [DEBUG] languageSwitchTarget:', languageSwitchTarget);
+    
+    if (isStaticPage || languageSwitchTarget || isHashRoutedPage) {
+      console.log('✅ [DEBUG] Static/Hash page detected, proceeding with initialization...');
+      console.log('[Init] Detected static or hash-routed page, initializing specific functions...');
       
       // Determine which page we're on
-      const pageName = languageSwitchTarget || staticPages.find(page => currentPath.includes(`${page}.html`));
+      let pageName = languageSwitchTarget;
+      if (!pageName && isStaticPage) {
+        pageName = staticPages.find(page => currentPath.includes(`${page}.html`));
+      }
+      if (!pageName && isHashRoutedPage) {
+        pageName = staticPages.find(page => currentHash.includes(page));
+      }
+      console.log('🎯 [DEBUG] Determined pageName:', pageName);
       
       // Initialize functions based on the specific static page
       if (pageName === 'recruitment' || currentPath.includes('recruitment.html')) {
@@ -3980,25 +4005,29 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('[Language Switcher] Current page detected:', currentPageName);
     console.log('[Language Switcher] Target page mapped:', targetPageName);
     
-    // Static pages that use direct file paths instead of hash routing
+    // Static pages that can be accessed via hash routing
     const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     
-    // Build target path
+    // Build target path - using hash-based routing for consistency
     let targetPath = '';
+    console.log('🔧 [DEBUG] Building target path for:', targetPageName);
     if (targetPageName === 'Home') {
       targetPath = '';
+      console.log('🔧 [DEBUG] Home page - empty path');
     } else if (staticPages.includes(targetPageName)) {
-      // Static pages use direct file paths
-      targetPath = `src/pages/${targetPageName}.html`;
+      // Use hash-based routing for static pages too
+      targetPath = `#/${targetPageName}`;
+      console.log('🔧 [DEBUG] Static page - hash path:', targetPath);
     } else {
       // Hash-based routing for main navigation pages
       targetPath = `#/${targetPageName}`;
+      console.log('🔧 [DEBUG] Regular page - hash path:', targetPath);
     }
     
     // Build target URL with mapped page (ensure proper slash after domain)
     const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
     
-    console.log('[Language Switcher] Target URL:', targetUrl);
+    console.log('[Language Switcher] Target URL (hash-based):', targetUrl);
     
     // Update the language switcher elements
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
@@ -4434,29 +4463,34 @@ function initAudioVisualizer(
 };
 
 window.addEventListener('DOMContentLoaded', () => {
+  console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages and setup');
   window.preloadProfileImages();
   
   // Setup language switcher
   setupLanguageSwitcher();
   
   // Initialize functions for static pages
+  console.log('🚀 [DEBUG] Calling initializePageFunctions from main DOMContentLoaded');
   initializePageFunctions();
 });
 
 // Also listen for page visibility changes (when switching back to tab)
 // and when hash changes for better coverage
 window.addEventListener('hashchange', () => {
+  console.log('🔄 [DEBUG] Hash changed event fired');
   console.log('[Init] Hash changed, reinitializing...');
   setTimeout(initializePageFunctions, 100);
 });
 
 window.addEventListener('pageshow', () => {
+  console.log('👁️ [DEBUG] Page show event fired');
   console.log('[Init] Page shown, checking for initialization...');
   setTimeout(initializePageFunctions, 100);
 });
 
 // Additional safety net: initialize after a delay
 setTimeout(() => {
+  console.log('⏰ [DEBUG] Safety net timer fired');
   console.log('[Init] Safety net initialization...');
   initializePageFunctions();
 }, 1000);
