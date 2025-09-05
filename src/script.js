@@ -784,7 +784,6 @@ window.loadPage = (page) => {
               CommunityGallery.init();
               isTruelyTouchDevice();
               initializeChatbot();
-              setupLanguageSwitcher();
 
               switch (page) {
                 case 'meetOurExperts':
