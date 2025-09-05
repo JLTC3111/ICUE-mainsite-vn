@@ -2461,7 +2461,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.DonationForm = (function () {
-  let selectedAmount = 100;
+  let selectedAmount = '200,000';
   let selectedFrequency = "monthly";
 
   function selectAmount(button, amount) {
