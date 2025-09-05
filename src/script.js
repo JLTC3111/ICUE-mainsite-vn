@@ -3600,17 +3600,9 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     }
 };
 
-// Function to initialize page-specific functions, especially for static pages
 function initializePageFunctions() {
-  console.log('🚀 [DEBUG] initializePageFunctions() called');
-  console.log('📍 [DEBUG] Current URL:', window.location.href);
-  console.log('📂 [DEBUG] Current pathname:', window.location.pathname);
-  console.log('🔗 [DEBUG] Current hash:', window.location.hash);
-  console.log('⏰ [DEBUG] Timestamp:', new Date().toISOString());
-  
   console.log('[Init] Initializing page functions...');
   
-  // Check if we arrived here via language switch to static page
   let languageSwitchTarget = null;
   try {
     languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
@@ -3623,7 +3615,6 @@ function initializePageFunctions() {
     console.warn('[Init] Could not check language switch flag:', e);
   }
   
-  // Core functions that should be available on all pages
   requestAnimationFrame(() => {
     retriggerMenuAnimations();
     updateCalendarSvgTime();
@@ -3633,8 +3624,7 @@ function initializePageFunctions() {
     ICUEFooter.autoInject();
     CommunityGallery.init();
     initializeChatbot();
-    
-    // Initialize core page functions that should be available everywhere
+   
     if (typeof initFrequentlyAskedQuestions === 'function') {
       initFrequentlyAskedQuestions();
       console.log('[Init] FAQ functions initialized globally');
@@ -3668,7 +3658,7 @@ function initializePageFunctions() {
     console.log('🔍 [DEBUG] currentPath:', currentPath);
     console.log('🔍 [DEBUG] currentHash:', currentHash);
     
-    // Check if we're on a static page OR hash-routed page
+    // static page OR hash-routed page
     const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
     const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
@@ -3682,7 +3672,7 @@ function initializePageFunctions() {
       console.log('✅ [DEBUG] Static/Hash page detected, proceeding with initialization...');
       console.log('[Init] Detected static or hash-routed page, initializing specific functions...');
       
-      // Determine which page we're on
+      // Determine which page
       let pageName = languageSwitchTarget;
       if (!pageName && isStaticPage) {
         pageName = staticPages.find(page => currentPath.includes(`${page}.html`));
@@ -3692,7 +3682,6 @@ function initializePageFunctions() {
       }
       console.log('🎯 [DEBUG] Determined pageName:', pageName);
       
-      // Initialize functions based on the specific static page
       if (pageName === 'recruitment' || currentPath.includes('recruitment.html')) {
         if (typeof JobBoard !== 'undefined' && JobBoard.init) {
           JobBoard.init();
@@ -3725,50 +3714,6 @@ function initializePageFunctions() {
         console.log('[Init] Static page initialization complete for:', pageName);
       }, 100);
     }
-    
-    // Additional element-based detection for safety
-    // Check for specific page elements and initialize accordingly
-    setTimeout(() => {
-      // Job board elements
-      if (document.querySelector('.job-listings, .job-board, [data-job-board], #job-board')) {
-        console.log('[Init] Found job board elements, ensuring JobBoard is initialized...');
-        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
-          JobBoard.init();
-        }
-      }
-      
-      // Donation form elements  
-      if (document.querySelector('.donation-form, .donate, [data-donation], #donation-form')) {
-        console.log('[Init] Found donation elements, ensuring DonationForm is initialized...');
-        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-          DonationForm.init();
-        }
-      }
-      
-      // FAQ elements
-      if (document.querySelector('.faq-container, .faq, [data-faq], #faq')) {
-        console.log('[Init] Found FAQ elements, ensuring FAQ is initialized...');
-        if (typeof initFrequentlyAskedQuestions === 'function') {
-          initFrequentlyAskedQuestions();
-        }
-      }
-      
-      // Awards elements
-      if (document.querySelector('.awards-container, .awards, [data-awards], #awards')) {
-        console.log('[Init] Found awards elements, ensuring AwardsPage is initialized...');
-        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
-          AwardsPage.init();
-        }
-      }
-      
-      // Community elements
-      if (document.querySelector('.community-container, .community, [data-community], #community')) {
-        console.log('[Init] Found community elements, ensuring CommunityPage is initialized...');
-        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
-          CommunityPage.init();
-        }
-      }
-    }, 300); // Small delay to ensure DOM is ready
     
     console.log('[Init] Page functions initialization complete');
   });
