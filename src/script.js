@@ -3600,125 +3600,6 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     }
 };
 
-function initializePageFunctions() {
-  console.log('[Init] Initializing page functions...');
-  
-  let languageSwitchTarget = null;
-  try {
-    languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
-    console.log('🔄 [DEBUG] Language switch target from sessionStorage:', languageSwitchTarget);
-    if (languageSwitchTarget) {
-      sessionStorage.removeItem('language_switch_to_static');
-      console.log('[Init] Detected language switch to static page:', languageSwitchTarget);
-    }
-  } catch (e) {
-    console.warn('[Init] Could not check language switch flag:', e);
-  }
-  
-  requestAnimationFrame(() => {
-    retriggerMenuAnimations();
-    updateCalendarSvgTime();
-    initAudioVisualizer();
-    calendarModal();
-    updateHamburgerIcon();
-    ICUEFooter.autoInject();
-    CommunityGallery.init();
-    initializeChatbot();
-   
-    if (typeof initFrequentlyAskedQuestions === 'function') {
-      initFrequentlyAskedQuestions();
-      console.log('[Init] FAQ functions initialized globally');
-    }
-    
-    if (typeof JobBoard !== 'undefined' && JobBoard.init) {
-      JobBoard.init();
-      console.log('[Init] JobBoard initialized globally');
-    }
-    
-    if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-      DonationForm.init();
-      console.log('[Init] DonationForm initialized globally');
-    }
-    
-    if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
-      AwardsPage.init();
-      console.log('[Init] AwardsPage initialized globally');
-    }
-    
-    if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
-      CommunityPage.init();
-      console.log('[Init] CommunityPage initialized globally');
-    }
-    
-    // Page-specific initializations based on current path or hash
-    const currentPath = window.location.pathname;
-    const currentHash = window.location.hash;
-    
-    console.log('🔍 [DEBUG] Analyzing current page...');
-    console.log('🔍 [DEBUG] currentPath:', currentPath);
-    console.log('🔍 [DEBUG] currentHash:', currentHash);
-    
-    // static page OR hash-routed page
-    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
-    const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
-    const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
-    
-    console.log('📄 [DEBUG] Static pages list:', staticPages);
-    console.log('📄 [DEBUG] isStaticPage:', isStaticPage);
-    console.log('📄 [DEBUG] isHashRoutedPage:', isHashRoutedPage);
-    console.log('📄 [DEBUG] languageSwitchTarget:', languageSwitchTarget);
-    
-    if (isStaticPage || languageSwitchTarget || isHashRoutedPage) {
-      console.log('✅ [DEBUG] Static/Hash page detected, proceeding with initialization...');
-      console.log('[Init] Detected static or hash-routed page, initializing specific functions...');
-      
-      // Determine which page
-      let pageName = languageSwitchTarget;
-      if (!pageName && isStaticPage) {
-        pageName = staticPages.find(page => currentPath.includes(`${page}.html`));
-      }
-      if (!pageName && isHashRoutedPage) {
-        pageName = staticPages.find(page => currentHash.includes(page));
-      }
-      console.log('🎯 [DEBUG] Determined pageName:', pageName);
-      
-      if (pageName === 'recruitment' || currentPath.includes('recruitment.html')) {
-        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
-          JobBoard.init();
-          console.log('[Init] JobBoard initialized');
-        }
-      } else if (pageName === 'donations' || currentPath.includes('donations.html')) {
-        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-          DonationForm.init();
-          console.log('[Init] DonationForm initialized');
-        }
-      } else if (pageName === 'faqs' || currentPath.includes('faqs.html')) {
-        if (typeof initFrequentlyAskedQuestions === 'function') {
-          initFrequentlyAskedQuestions();
-          console.log('[Init] FAQ functions initialized');
-        }
-      } else if (pageName === 'notableAwards' || currentPath.includes('notableAwards.html')) {
-        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
-          AwardsPage.init();
-          console.log('[Init] AwardsPage initialized');
-        }
-      } else if (pageName === 'communityActivities' || currentPath.includes('communityActivities.html')) {
-        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
-          CommunityPage.init();
-          console.log('[Init] CommunityPage initialized');
-        }
-      }
-      
-      // Add a small delay to ensure DOM is ready for static pages
-      setTimeout(() => {
-        console.log('[Init] Static page initialization complete for:', pageName);
-      }, 100);
-    }
-    
-    console.log('[Init] Page functions initialization complete');
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function() {
 
   function setupLanguageSwitcher() {
@@ -3939,8 +3820,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let targetPath = '';
     console.log('🔧 [DEBUG] Building target path for:', targetPageName);
     if (targetPageName === 'Home') {
-      targetPath = '';
-      console.log('🔧 [DEBUG] Home page - empty path');
+      targetPath = '#/Home';
+      console.log('🔧 [DEBUG] Home page - hash path:', targetPath);
     } else if (staticPages.includes(targetPageName)) {
       // Use hash-based routing for static pages too
       targetPath = `#/${targetPageName}`;
@@ -3951,10 +3832,14 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log('🔧 [DEBUG] Regular page - hash path:', targetPath);
     }
     
-    // Build target URL with mapped page (ensure proper slash after domain)
-    const targetUrl = `${currentProtocol}//${targetSite.domain}/${targetPath}${currentSearch}`;
+    // Build target URL with mapped page (no extra slash before hash)
+    const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
     
     console.log('[Language Switcher] Target URL (hash-based):', targetUrl);
+    console.log('🔧 [DEBUG] currentProtocol:', currentProtocol);
+    console.log('🔧 [DEBUG] targetSite.domain:', targetSite.domain);
+    console.log('🔧 [DEBUG] targetPath:', targetPath);
+    console.log('🔧 [DEBUG] currentSearch:', currentSearch);
     
     // Update the language switcher elements
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
@@ -4007,12 +3892,126 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log(`Target URL: ${targetUrl}`);
   }
   
-  // Also update when popstate occurs (back/forward navigation)
+  // Initialize language switcher on page load
+  setupLanguageSwitcher();
+  
   window.addEventListener('popstate', function() {
     console.log('[Language Switcher] Popstate event, updating language switcher...');
-    setTimeout(() => setupLanguageSwitcher(), 100); // Small delay to ensure page content is updated
+    setTimeout(() => setupLanguageSwitcher(), 100); 
   });
 });
+
+function initializePageFunctions() {
+  console.log('[Init] Initializing page functions...');
+  
+  let languageSwitchTarget = null;
+  try {
+    languageSwitchTarget = sessionStorage.getItem('language_switch_to_static');
+    console.log('🔄 [DEBUG] Language switch target from sessionStorage:', languageSwitchTarget);
+    if (languageSwitchTarget) {
+      sessionStorage.removeItem('language_switch_to_static');
+      console.log('[Init] Detected language switch to static page:', languageSwitchTarget);
+    }
+  } catch (e) {
+    console.warn('[Init] Could not check language switch flag:', e);
+  }
+  
+  requestAnimationFrame(() => {
+    retriggerMenuAnimations();
+    updateCalendarSvgTime();
+    initAudioVisualizer();
+    calendarModal();
+    updateHamburgerIcon();
+    ICUEFooter.autoInject();
+    CommunityGallery.init();
+    initializeChatbot();
+   
+    if (typeof initFrequentlyAskedQuestions === 'function') {
+      initFrequentlyAskedQuestions();
+      console.log('[Init] FAQ functions initialized globally');
+    }
+    
+    if (typeof JobBoard !== 'undefined' && JobBoard.init) {
+      JobBoard.init();
+      console.log('[Init] JobBoard initialized globally');
+    }
+    
+    if (typeof DonationForm !== 'undefined' && DonationForm.init) {
+      DonationForm.init();
+      console.log('[Init] DonationForm initialized globally');
+    }
+    
+    if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
+      AwardsPage.init();
+      console.log('[Init] AwardsPage initialized globally');
+    }
+    
+    if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
+      CommunityPage.init();
+      console.log('[Init] CommunityPage initialized globally');
+    }
+    
+    // Page-specific initializations based on current path or hash
+    const currentPath = window.location.pathname;
+    const currentHash = window.location.hash;
+    
+    // static page OR hash-routed page
+    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+    const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
+    const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
+    
+    console.log('📄 [DEBUG] languageSwitchTarget:', languageSwitchTarget);
+    
+    if (isStaticPage || languageSwitchTarget || isHashRoutedPage) {
+      console.log('✅ [DEBUG] Static/Hash page detected, proceeding with initialization...');
+      console.log('[Init] Detected static or hash-routed page, initializing specific functions...');
+      
+      // Determine which page
+      let pageName = languageSwitchTarget;
+      if (!pageName && isStaticPage) {
+        pageName = staticPages.find(page => currentPath.includes(`${page}.html`));
+      }
+      if (!pageName && isHashRoutedPage) {
+        pageName = staticPages.find(page => currentHash.includes(page));
+      }
+      console.log('🎯 [DEBUG] Determined pageName:', pageName);
+      
+      if (pageName === 'recruitment' || currentPath.includes('recruitment.html')) {
+        if (typeof JobBoard !== 'undefined' && JobBoard.init) {
+          JobBoard.init();
+          console.log('[Init] JobBoard initialized');
+        }
+      } else if (pageName === 'donations' || currentPath.includes('donations.html')) {
+        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
+          DonationForm.init();
+          console.log('[Init] DonationForm initialized');
+        }
+      } else if (pageName === 'faqs' || currentPath.includes('faqs.html')) {
+        if (typeof initFrequentlyAskedQuestions === 'function') {
+          initFrequentlyAskedQuestions();
+          console.log('[Init] FAQ functions initialized');
+        }
+      } else if (pageName === 'notableAwards' || currentPath.includes('notableAwards.html')) {
+        if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
+          AwardsPage.init();
+          console.log('[Init] AwardsPage initialized');
+        }
+      } else if (pageName === 'communityActivities' || currentPath.includes('communityActivities.html')) {
+        if (typeof CommunityPage !== 'undefined' && CommunityPage.init) {
+          CommunityPage.init();
+          console.log('[Init] CommunityPage initialized');
+        }
+      }
+      
+      // Add a small delay to ensure DOM is ready for static pages
+      setTimeout(() => {
+        console.log('[Init] Static page initialization complete for:', pageName);
+      }, 100);
+    }
+    
+    console.log('[Init] Page functions initialization complete');
+  });
+}
 
 window.createBalloons = () => {
     const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead', '#d4a5a5', '#9b5de5'];
@@ -4398,7 +4397,5 @@ window.addEventListener('pageshow', () => {
 
 // Additional safety net: initialize after a delay
 setTimeout(() => {
-  console.log('⏰ [DEBUG] Safety net timer fired');
-  console.log('[Init] Safety net initialization...');
   initializePageFunctions();
 }, 1000);
