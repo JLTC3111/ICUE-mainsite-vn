@@ -784,6 +784,7 @@ window.loadPage = (page) => {
               CommunityGallery.init();
               isTruelyTouchDevice();
               initializeChatbot();
+              setupLanguageSwitcher();
 
               switch (page) {
                 case 'meetOurExperts':
@@ -3727,14 +3728,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (!pageSwitch || !langIcon) return;
 
-    // Get current URL components
     let currentHost = window.location.host;
     const currentPath = window.location.pathname;
     const currentHash = window.location.hash;
     const currentSearch = window.location.search;
     const currentProtocol = window.location.protocol;
 
-    // Configuration for language switching
     const siteConfig = {
       vietnamese: {
         domain: "icue.vn",
@@ -3762,11 +3761,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentSite, targetSite;
     
     if (currentHost.startsWith("en.") || currentHost === siteConfig.english.domain) {
-      // Currently on English site, switch to Vietnamese
       currentSite = siteConfig.english;
       targetSite = siteConfig.vietnamese;
     } else {
-      // Currently on Vietnamese site, switch to English  
       currentSite = siteConfig.vietnamese;
       targetSite = siteConfig.english;
     }
@@ -3785,13 +3782,11 @@ document.addEventListener("DOMContentLoaded", function() {
         return hashPage;
       }
       
-      // Check if there's a global currentPage variable
       if (typeof window.currentPage !== 'undefined' && window.currentPage) {
         console.log('[Language Switcher] Found global currentPage:', window.currentPage);
         return window.currentPage;
       }
       
-      // Try to detect from active navigation elements (data-page attribute)
       const activeNavLink = document.querySelector('nav a.active, .menu a.active, .drawer-menu a.active, [data-page].active');
       if (activeNavLink) {
         const dataPage = activeNavLink.getAttribute('data-page');
