@@ -2489,12 +2489,10 @@ window.DonationForm = (function () {
   function updateCustomAmount(input) {
     const customAmount = parseInt(input.value);
     if (customAmount && customAmount > 0) {
-      // Remove active class from preset buttons
       document.querySelectorAll('.amount-btn').forEach(btn => {
         btn.classList.remove('active');
       });
-
-      // Update selected amount
+      
       selectedAmount = customAmount;
       const donateAmountElement = document.getElementById('donateAmount');
       if (donateAmountElement) {
@@ -3836,10 +3834,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
     
     console.log('[Language Switcher] Target URL (hash-based):', targetUrl);
-    console.log('🔧 [DEBUG] currentProtocol:', currentProtocol);
-    console.log('🔧 [DEBUG] targetSite.domain:', targetSite.domain);
-    console.log('🔧 [DEBUG] targetPath:', targetPath);
-    console.log('🔧 [DEBUG] currentSearch:', currentSearch);
     
     // Update the language switcher elements
     langIcon.className = `flag-icon ${targetSite.flagClass}`;
