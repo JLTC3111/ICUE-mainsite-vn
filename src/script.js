@@ -1328,7 +1328,7 @@ window.attachProfileEvents_coreTeam = () => {
       img: "public/profilePhotos/duong.png"
     },
     {
-      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Chuyên gia tận tụy chuyên về <span class="highlight-text-phrase-core">khảo sát số lượng</span>, <span class="highlight-text-phrase-core">lập kế hoạch chi tiết</span> và <span class="highlight-text-phrase-core">vẽ kỹ thuật</span>. Với kỹ năng làm việc nhóm mạnh mẽ và cách tiếp cận đáng tin cậy, chăm chỉ, tôi đóng góp hiệu quả vào các dự án hợp tác và hoạt động văn phòng. Là một đối tác tích cực của ICUE, tôi đã xây dựng được mạng lưới mạnh mẽ với các chính quyền địa phương, đảm bảo giao tiếp suôn sẻ và hỗ trợ dự án. Tôi rất thành thạo trong các nhiệm vụ hành chính thường xuyên, lập tài liệu dự án và điều phối tại chỗ. Tôi đam mê đóng góp cho nhóm và hỗ trợ sự phát triển và thành công của tổ chức`,  
+      name: `<span class="intro-core">Nguyễn Thanh Tâm</span> Chuyên gia về <span class="highlight-text-phrase-core">khảo sát số lượng</span>, <span class="highlight-text-phrase-core">lập kế hoạch chi tiết</span> và <span class="highlight-text-phrase-core">vẽ kỹ thuật</span>. Với kỹ năng làm việc nhóm mạnh mẽ và cách tiếp cận đáng tin cậy, chăm chỉ, tôi đóng góp hiệu quả vào các dự án hợp tác và hoạt động văn phòng. Là một đối tác tích cực của ICUE, tôi đã xây dựng được mạng lưới mạnh mẽ với các chính quyền địa phương, đảm bảo giao tiếp suôn sẻ và hỗ trợ dự án. Tôi rất thành thạo trong các nhiệm vụ hành chính thường xuyên, lập tài liệu dự án và điều phối tại chỗ. Tôi đam mê đóng góp cho nhóm và hỗ trợ sự phát triển và thành công của tổ chức`,  
       img: "public/profilePhotos/tam.png"
     },
     {
