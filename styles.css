@@ -515,7 +515,7 @@ nav a {
 }
 
 .sub-text {
-  display: inline;
+  display: inline-block;
   justify-content: left;
   font-family: 'Press Start 2P';
   font-style: normal;
