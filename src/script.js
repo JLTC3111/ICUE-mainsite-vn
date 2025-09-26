@@ -2162,7 +2162,7 @@ window.JobBoard = (function() {
   
   const jobPositions = [
     {
-        title: "Trợ lý Trưởng phòng Công nghệ",
+        title: "Trợ lý trưởng phòng công nghệ",
         department: "Công nghệ",
         location: "Hà Nội, Việt Nam",
         description: "Chúng tôi đang tìm một chuyên gia am hiểu công nghệ, tổ chức tốt để hỗ trợ CTO và đội ngũ lãnh đạo công nghệ. Giúp quản lý dự án, tối ưu quy trình làm việc và đảm bảo các nhóm kỹ thuật vận hành trơn tru.",
