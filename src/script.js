@@ -1337,7 +1337,7 @@ window.attachProfileEvents_coreTeam = () => {
     },
     {
       name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> Tôi tốt nghiệp <span class="highlight-text-phrase-core">Đại học Kinh tế Quốc dân</span>, được đào tạo bài bản và có tinh thần trách nhiệm cao trong công việc. Tôi có kinh nghiệm <span class="highlight-text-phrase-core">đấu thầu các dự án máy móc thiết bị</span>, cũng như các dự án liên quan đến <span class="highlight-text-phrase-core">quy hoạch đô thị</span>. Ngoài ra, tôi có khả năng xử lý nhiều công việc hành chính khác nhau. Những vai trò này đã giúp tôi xây dựng được các kỹ năng chuyên môn và làm việc nhóm mạnh mẽ. Tôi mong muốn được làm việc trong một môi trường chuyên nghiệp, nơi tôi có thể áp dụng các khả năng của mình và đóng góp vào sự phát triển của tổ chức.`,
-      img: "public/profilePhotos/lyicue.png"
+      img: "public/profilePhotos/nguyenquynhly.png"
     },
     {
       name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">kế toán</span> tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về <span class="highlight-text-phrase-core">kế toán</span>, <span class="highlight-text-phrase-core">báo cáo tài chính</span> và <span class="highlight-text-phrase-core">phân tích dữ liệu</span>. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
