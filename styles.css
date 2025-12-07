@@ -534,42 +534,43 @@ nav a {
   object-fit: contain;
 }
 
-.hero-body {
-  display:block;
-  margin-top:0.75rem;
-  font-size: clamp(18px, 1.65vw, 24px);
-}
-
-.sub-text {
-  display: inline-block;
-  justify-content: left;
-  font-family: 'Press Start 2P';
-  font-style: normal;
-  font-size: clamp(22px, 2.5vw, 32px);
-  font-weight: 400;
-  text-shadow:
-    1px 1px 0 yellow,       /* hard shadow base */
-    2px 2px 3px rgba(255, 255, 255, 0.6), /* soft shadow offset */
-    -1.25px -1.25px 0 rgb(127, 127, 127); /* slight highlight */
-  transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
-}
-
 .cursive-default {
+  text-align: center;
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   font-style: italic;
-  font-size: clamp(18px, 1.65vw, 24px);
+  font-size: clamp(14px, 5vw, 28px);
   background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
   -webkit-background-clip: text;
-  word-spacing: clamp(0.35rem, 0.85vw, 1rem);
   background-clip: text;
-  margin:7.5% 25% -4.5% 3%;
-  text-shadow:
-    .25px .25px 0 #9be1ff,       /* hard shadow base */
-    1px 1px 1.5px rgba(255, 255, 255, 0.6), /* soft shadow offset */
-    -.25px -.25px 0 rgb(253, 253, 253); /* slight highlight */
+  word-spacing: clamp(0.35rem, 0.85vw, 1rem);
+  letter-spacing: 0.2rem;
+  margin: 7.5% 25% 5% 3%;
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
   line-height: 1.6;
+}
+
+.sub-text {
+  text-align: center;
+  display: inline-block;
+  font-family: 'Rubik', sans-serif;
+  font-style: normal;
+  font-size: clamp(22px, 7.5vw, 36px);
+  font-weight: 500;
+  margin-bottom: 0;
+  margin-left: 0;
+  text-shadow:
+    1px 1px yellow,
+    2px 2px 3px rgba(255, 255, 255, 0.6),
+    -1.25px -1.25px 0 rgb(127, 127, 127);
+  transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
+}
+
+.hero-body {
+  text-align: center;
+  display:block;
+  margin-top:0.75rem;
+  font-size: clamp(18px, 1.65vw, 24px);
 }
 
 .slam-container {
@@ -582,7 +583,7 @@ nav a {
 }
 
 .slam-text {
-  font-size: 2.5rem;
+  font-size: clamp(20px, 2.5vw, 32px);
   font-weight: 900;
   transform-style: preserve-3d;
   z-index: 2;
@@ -1926,7 +1927,7 @@ body.loaded #app {
   }
 
   .sub-text{
-    font-size: clamp(22px, 5vw, 32px);
+    font-size: clamp(22px, 5vw, 28px);
   } 
 
   .lets-talk {
@@ -2166,14 +2167,18 @@ body.loaded #app {
   }
 
   .sub-text {
-    font-size: clamp(14px, 2.5vw, 16px);
-    z-index: 2;
-  } 
-  
+    font-size: clamp(16px, 5vw, 24px);
+    margin: 14.5rem 0 -1.5rem 0;
+  }
+
+  .hero-body {
+    font-size: clamp(16px, 2vw, 22px);
+  }
+
   .cursive-default {
-    margin: 16.5rem 0 0 0;
-    font-size: clamp(12px, 2vw, 14px);
-    letter-spacing: 1.75px;
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1.5;
+    margin: 8.5rem 2.5rem .75rem -0.25rem;
   }
 
   .lets-talk {
@@ -2666,57 +2671,54 @@ body.loaded #app {
 .balloon:nth-child(15) { background-color: #ff6b6b; left: 65%; }
 
 body.contact-page {
-  font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
-  background-color: #f4f4f4; /* Light background color */
+  font-family: 'Montserrat', sans-serif; 
+  background-color: #f4f4f4; 
   margin: 0;
   padding: 0;
 }
 
-/* Contact Container */
 .contact-container {
-  max-width: 600px; /* Limit the width of the contact form */
-  margin: 150px auto; /* Center the container */
-  padding: 20px; /* Add padding */
-  background: white; /* White background for the form */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 600px; 
+  margin: 150px auto; 
+  padding: 20px; 
+  background: white; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
 }
 
-/* Headings */
-h1 {
-  text-align: center; /* Center the heading */
-  color: #333; /* Dark text color */
-  margin-bottom: 20px; /* Space below the heading */
+body.contact-page h1 {
+  text-align: center; 
+  color: #333; 
+  margin-bottom: 20px; 
 }
 
-/* Form Styles */
 .contact-form {
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack elements vertically */
+  display: flex; 
+  flex-direction: column; 
 }
 
 .form-group {
-  margin-bottom: 15px; /* Space between form groups */
+  margin-bottom: 15px; 
   margin-right: 12px;
 }
 
 label {
-  margin-bottom: 5px; /* Space below labels */
-  color: #555; /* Slightly lighter text color */
+  margin-bottom: 5px; 
+  color: #555; 
 }
 
 input[type="text"],
 input[type="email"],
 textarea {
-  padding: 10px; /* Padding inside input fields */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 14px; /* Font size */
-  width: 100%; /* Full width */
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  font-size: 14px; 
+  width: 100%; 
 }
 
 textarea {
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical; 
 }
 
 /* Button Styles */
