@@ -67,6 +67,26 @@ nav a {
   text-decoration: none; 
 }
 
+.menu-bar.nav-on-dark {
+  color: #f8f8f8;
+}
+
+.menu-bar.nav-on-dark a,
+.menu-bar.nav-on-dark a:visited {
+  color: #f8f8f8;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+.menu-bar.nav-on-dark #menuIcon,
+.menu-bar.nav-on-dark .menu-toggle,
+.menu-bar.nav-on-dark .contact-link {
+  color: inherit;
+}
+
+.menu-bar.nav-on-dark .flag-link {
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.5));
+}
+
 .svg-blinking-cursor {
   display: inline-block;
   margin-left: -1.5px;
@@ -514,12 +534,18 @@ nav a {
   object-fit: contain;
 }
 
+.hero-body {
+  display:block;
+  margin-top:0.75rem;
+  font-size: clamp(18px, 1.65vw, 24px);
+}
+
 .sub-text {
   display: inline-block;
   justify-content: left;
   font-family: 'Press Start 2P';
   font-style: normal;
-  font-size: clamp(32px, 2.5vw, 42px);
+  font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 400;
   text-shadow:
     1px 1px 0 yellow,       /* hard shadow base */
@@ -532,10 +558,10 @@ nav a {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
   font-style: italic;
-  font-size: clamp(30px, 2.5vw, 40px);
+  font-size: clamp(18px, 1.65vw, 24px);
   background: linear-gradient(to left, #000000, #1010bd, rgb(45, 73, 4), rgb(174, 15, 15));
   -webkit-background-clip: text;
-  word-spacing: 1vw;
+  word-spacing: clamp(0.35rem, 0.85vw, 1rem);
   background-clip: text;
   margin:7.5% 25% -4.5% 3%;
   text-shadow:
@@ -543,7 +569,7 @@ nav a {
     1px 1px 1.5px rgba(255, 255, 255, 0.6), /* soft shadow offset */
     -.25px -.25px 0 rgb(253, 253, 253); /* slight highlight */
   transform: perspective(500px) rotateX(1deg) rotateY(-1deg);
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 .slam-container {
@@ -1895,8 +1921,8 @@ body.loaded #app {
   }
 
   .cursive-default {
-    font-size: clamp(16px, 4.2vw, 28px);
-    margin: 8.5rem 0 auto;
+    font-size: clamp(18px, 2.4vw, 26px);
+    margin: 7rem 2% auto;
   }
 
   .sub-text{

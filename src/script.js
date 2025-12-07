@@ -728,6 +728,270 @@ if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calenda
   });
 }}
 
+window.setNavLinkContrast = (useLightLinks = false) => {
+  const nav = document.querySelector('.menu-bar');
+  if (!nav) return;
+  nav.classList.toggle('nav-on-dark', !!useLightLinks);
+};
+
+const HomeBackgroundVideoManager = (() => {
+  const videoPlaylist = [
+    {
+      id: 'heritage',
+      desktop: 'public/bgVideos/bg_video_home.mp4',
+      mobile: 'public/bgVideos/bg_video_home_mobile.mp4',
+      poster: 'public/preview.jpg',
+      prefersLightNav: true
+    },
+    {
+      id: 'momentum',
+      desktop: 'public/bgVideos/home_bg_1.mp4',
+      mobile: 'public/bgVideos/home_bg_1_mobile.mp4',
+      poster: 'public/preview.jpg',
+      prefersLightNav: true
+    },
+    {
+      id: 'harmony',
+      desktop: 'public/bgVideos/home_bg_2.mp4',
+      mobile: 'public/bgVideos/home_bg_2_mobile.mp4',
+      poster: 'public/preview.jpg',
+      prefersLightNav: true
+    },
+    {
+      id: 'luminous',
+      desktop: 'public/bgVideos/home_bg_3.mp4',
+      mobile: 'public/bgVideos/home_bg_3_mobile.mp4',
+      poster: 'public/preview.jpg',
+      prefersLightNav: true
+    },
+    {
+      id: 'kaleidoscope',
+      desktop: 'public/bgVideos/home_bg_4.mp4',
+      mobile: 'public/bgVideos/home_bg_4_mobile.mp4',
+      poster: 'public/preview.jpg',
+      prefersLightNav: true
+    },
+  ];
+
+  const fallbackPoster = 'public/preview.jpg';
+  const preloadedSources = new Set();
+  let videoEl = null;
+  let resizeHandler = null;
+  let visibilityHandler = null;
+  let currentIndex = -1;
+
+  const debounce = (fn, delay = 200) => {
+    let timer;
+    return function debounced(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  };
+
+  const scheduleIdleTask = (task) => {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(task, { timeout: 1000 });
+    } else {
+      setTimeout(task, 0);
+    }
+  };
+
+  const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  const shouldKeepStatic = () => {
+    const connection = getConnection();
+    const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
+  };
+
+  const ensureVideoElement = () => {
+    videoEl = document.getElementById('bgVideo');
+    if (videoEl) {
+      videoEl.loop = false;
+      videoEl.preload = 'metadata';
+      videoEl.muted = true;
+      videoEl.playsInline = true;
+    }
+    return videoEl;
+  };
+
+  const ensureSources = () => {
+    if (!videoEl) return { desktop: null, mobile: null };
+    let desktop = document.getElementById('bgVideoHome');
+    let mobile = document.getElementById('bgVideHomeMobile');
+
+    if (!desktop) {
+      desktop = document.createElement('source');
+      desktop.id = 'bgVideoHome';
+      desktop.type = 'video/mp4';
+      desktop.media = '(min-width: 768px)';
+      desktop.setAttribute('data-variant', 'desktop');
+      videoEl.appendChild(desktop);
+    }
+
+    if (!mobile) {
+      mobile = document.createElement('source');
+      mobile.id = 'bgVideHomeMobile';
+      mobile.type = 'video/mp4';
+      mobile.media = '(max-width: 767px)';
+      mobile.setAttribute('data-variant', 'mobile');
+      videoEl.appendChild(mobile);
+    }
+
+    return { desktop, mobile };
+  };
+
+  const applyPoster = (meta) => {
+    if (!videoEl) return;
+    const poster = meta?.poster || fallbackPoster;
+    videoEl.setAttribute('poster', poster);
+  };
+
+  const applyNavTheme = (meta) => {
+    if (typeof window.setNavLinkContrast === 'function') {
+      window.setNavLinkContrast(!!meta?.prefersLightNav);
+    }
+  };
+
+  const clearVideoSources = () => {
+    if (!videoEl) return;
+    videoEl.pause();
+    videoEl.removeAttribute('src');
+    videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
+    videoEl.load();
+  };
+
+  const persistIndex = (index) => sessionStorage.setItem('home_bg_video_index', String(index));
+
+  const nextIndex = () => {
+    if (!videoPlaylist.length) return -1;
+    const cached = parseInt(sessionStorage.getItem('home_bg_video_index') ?? '-1', 10);
+    if (Number.isInteger(cached) && cached >= 0) {
+      return (cached + 1) % videoPlaylist.length;
+    }
+    return Math.floor(Math.random() * videoPlaylist.length);
+  };
+
+  const prefetchSources = (meta) => {
+    if (!meta) return;
+    [meta.desktop, meta.mobile ?? meta.desktop].forEach(src => {
+      if (!src || preloadedSources.has(src)) return;
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'video';
+      link.href = src;
+      document.head.appendChild(link);
+      preloadedSources.add(src);
+    });
+  };
+
+  const activateVideo = (meta) => {
+    if (!videoEl || !meta) return;
+    const { desktop, mobile } = ensureSources();
+    if (!desktop || !mobile) return;
+
+    desktop.src = meta.desktop;
+    mobile.src = meta.mobile || meta.desktop;
+
+    desktop.setAttribute('data-video-key', meta.id);
+    mobile.setAttribute('data-video-key', meta.id);
+
+    videoEl.load();
+
+    const tryPlay = () => {
+      const playPromise = videoEl.play();
+      if (playPromise?.catch) {
+        playPromise.catch(err => console.warn('[HomeBackgroundVideo] Autoplay blocked:', err));
+      }
+    };
+
+    if (videoEl.readyState >= 2) {
+      tryPlay();
+    } else {
+      videoEl.addEventListener('canplay', tryPlay, { once: true });
+    }
+
+    if (videoPlaylist.length > 1) {
+      const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
+      scheduleIdleTask(() => prefetchSources(upcoming));
+    }
+  };
+
+  const goToIndex = (index) => {
+    if (!videoPlaylist[index]) return;
+    currentIndex = index;
+    persistIndex(index);
+    const meta = videoPlaylist[index];
+    applyPoster(meta);
+    activateVideo(meta);
+    applyNavTheme(meta);
+  };
+
+  const handleEnded = () => {
+    if (!videoPlaylist.length) return;
+    goToIndex((currentIndex + 1) % videoPlaylist.length);
+  };
+
+  const handleResize = () => {
+    if (currentIndex === -1 || !videoPlaylist[currentIndex]) return;
+    activateVideo(videoPlaylist[currentIndex]);
+  };
+
+  const handleVisibilityChange = () => {
+    if (!videoEl) return;
+    if (document.hidden) {
+      videoEl.pause();
+    } else if (!shouldKeepStatic()) {
+      videoEl.play().catch(() => {});
+    }
+  };
+
+  const init = () => {
+    HomeBackgroundVideoManager.destroy();
+    if (!ensureVideoElement()) return;
+
+    applyPoster(videoPlaylist[0]);
+
+    if (shouldKeepStatic()) {
+      clearVideoSources();
+      applyNavTheme(null);
+      return;
+    }
+
+    const startIndex = nextIndex();
+    if (startIndex === -1) return;
+    goToIndex(startIndex);
+
+    videoEl.addEventListener('ended', handleEnded);
+    resizeHandler = debounce(handleResize, 250);
+    window.addEventListener('resize', resizeHandler);
+    visibilityHandler = handleVisibilityChange;
+    document.addEventListener('visibilitychange', visibilityHandler);
+  };
+
+  const destroy = () => {
+    if (videoEl) {
+      videoEl.pause();
+      videoEl.removeEventListener('ended', handleEnded);
+    }
+    if (resizeHandler) {
+      window.removeEventListener('resize', resizeHandler);
+      resizeHandler = null;
+    }
+    if (visibilityHandler) {
+      document.removeEventListener('visibilitychange', visibilityHandler);
+      visibilityHandler = null;
+    }
+    currentIndex = -1;
+    videoEl = null;
+    applyNavTheme(null);
+  };
+
+  return { init, destroy };
+})();
+
+window.HomeBackgroundVideoManager = HomeBackgroundVideoManager;
+
 window.loadPage = (page) => {
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
@@ -735,6 +999,8 @@ window.loadPage = (page) => {
   const progressText = document.getElementById('progress-text');
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
+
+  window.HomeBackgroundVideoManager?.destroy();
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
@@ -797,6 +1063,7 @@ window.loadPage = (page) => {
                   realSlamnorSlam();
                   initHomeTextSlider();
                   attachHomeButtonEvents();
+                  HomeBackgroundVideoManager.init();
                   break;
                 case 'News':
                   initLogoSlider();
