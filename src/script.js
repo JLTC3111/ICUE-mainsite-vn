@@ -730,8 +730,15 @@ if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calenda
 
 window.setNavLinkContrast = (useLightLinks = false) => {
   const nav = document.querySelector('.menu-bar');
-  if (!nav) return;
-  nav.classList.toggle('nav-on-dark', !!useLightLinks);
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menuIcon = document.getElementById('menuIcon');
+  const contactLink = document.getElementById('contactLink');
+  const shouldUseLight = !!useLightLinks;
+
+  if (nav) nav.classList.toggle('nav-on-dark', shouldUseLight);
+  if (menuToggle) menuToggle.classList.toggle('nav-on-dark', shouldUseLight);
+  if (menuIcon) menuIcon.classList.toggle('nav-icon-on-dark', shouldUseLight);
+  if (contactLink) contactLink.classList.toggle('nav-link-on-dark', shouldUseLight);
 };
 
 const HomeBackgroundVideoManager = (() => {
@@ -4574,24 +4581,12 @@ function initAudioVisualizer(
   }
 
   function updateHamburgerIcon(page) {
-      const hamburgerIcon = document.getElementById('menuIcon');
-      const contactLink = document.getElementById('contactLink');
-      if (!hamburgerIcon || !contactLink) return;
-
-      // Pages with dark backgrounds that need white icons
-      const darkBackgroundPages = ['communityActivities', 'aboutUs'];
-      
-      if (darkBackgroundPages.includes(page)) {
-        hamburgerIcon.style.stroke = 'white';
-        hamburgerIcon.style.strokeWidth = '0.5px';
-        hamburgerIcon.style.fill = 'none';
-        contactLink.style.color = 'white';
-      } else {
-        contactLink.style.color = 'black';
-        hamburgerIcon.style.stroke = 'none';
-        hamburgerIcon.style.fill = 'none';
-      }
+    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+    const useLightNav = darkBackgroundPages.includes(page);
+    if (typeof window.setNavLinkContrast === 'function') {
+      window.setNavLinkContrast(useLightNav);
     }
+  }
 
   function enableCursorGradientTrail(color = 'yellow') {
     document.addEventListener('mousemove', (e) => {
@@ -4618,11 +4613,11 @@ function initAudioVisualizer(
   window.preloadProfileImages = () => {
   // Images for meetourexperts.html
   const expertImages = [
-    "public/profilePhotos/nguyenhonghanh.jpg",
+    "public/profilePhotos/hanhnguyen.jpg",
     "public/profilePhotos/hoangthuha.jpg",
     "public/profilePhotos/tranthilananh.jpg",
     "public/profilePhotos/tranquoctoan.jpg",
-    "public/profilePhotos/longdo.jpg"
+    "public/profilePhotos/giaminh.jpg"
   ];
   // Images for coreTeam.html
   const coreTeamImages = [
