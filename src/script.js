@@ -775,12 +775,12 @@ const HomeBackgroundVideoManager = (() => {
     },
   ];
 
-  const fallbackPoster = 'public/preview.jpg';
   const preloadedSources = new Set();
   let videoEl = null;
   let resizeHandler = null;
   let visibilityHandler = null;
   let currentIndex = -1;
+  let warmupVideo = null;
 
   const debounce = (fn, delay = 200) => {
     let timer;
@@ -810,7 +810,7 @@ const HomeBackgroundVideoManager = (() => {
     videoEl = document.getElementById('bgVideo');
     if (videoEl) {
       videoEl.loop = false;
-      videoEl.preload = 'metadata';
+      videoEl.preload = 'auto';
       videoEl.muted = true;
       videoEl.playsInline = true;
     }
@@ -854,12 +854,6 @@ const HomeBackgroundVideoManager = (() => {
     videoEl.pause();
     videoEl.removeAttribute('src');
     videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
-    // Also clear poster so old poster image doesn't remain visible
-    try {
-      videoEl.removeAttribute('poster');
-      videoEl.poster = '';
-      videoEl.style.backgroundImage = 'none';
-    } catch (e) {}
     videoEl.load();
   };
 
@@ -887,17 +881,38 @@ const HomeBackgroundVideoManager = (() => {
     });
   };
 
+  const warmVideoForMeta = (meta) => {
+    if (!meta) return;
+
+    if (!warmupVideo) {
+      warmupVideo = document.createElement('video');
+      warmupVideo.muted = true;
+      warmupVideo.playsInline = true;
+      warmupVideo.preload = 'auto';
+      warmupVideo.setAttribute('aria-hidden', 'true');
+      warmupVideo.style.position = 'absolute';
+      warmupVideo.style.width = '1px';
+      warmupVideo.style.height = '1px';
+      warmupVideo.style.left = '-9999px';
+      document.body.appendChild(warmupVideo);
+    }
+
+    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const src = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
+    if (!src) return;
+
+    const cachedSrc = warmupVideo.getAttribute('data-src');
+    if (cachedSrc === src) return;
+
+    warmupVideo.setAttribute('data-src', src);
+    warmupVideo.src = src;
+    warmupVideo.load();
+  };
+
   const activateVideo = (meta) => {
     if (!videoEl || !meta) return;
     const { desktop, mobile } = ensureSources();
     if (!desktop || !mobile) return;
-
-    // Ensure any previous poster is removed so it doesn't flash between videos
-    try {
-      videoEl.removeAttribute('poster');
-      videoEl.poster = '';
-      videoEl.style.backgroundImage = 'none';
-    } catch (e) {}
 
     desktop.src = meta.desktop;
     mobile.src = meta.mobile || meta.desktop;
@@ -920,19 +935,12 @@ const HomeBackgroundVideoManager = (() => {
       videoEl.addEventListener('canplay', tryPlay, { once: true });
     }
 
-    // Remove poster once playback actually starts (covers browsers that keep showing poster until first frame)
-    const removePosterOnPlay = () => {
-      try {
-        videoEl.removeAttribute('poster');
-        videoEl.poster = '';
-        videoEl.style.backgroundImage = 'none';
-      } catch (e) {}
-    };
-    videoEl.addEventListener('playing', removePosterOnPlay, { once: true });
-
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
-      scheduleIdleTask(() => prefetchSources(upcoming));
+      scheduleIdleTask(() => {
+        prefetchSources(upcoming);
+        warmVideoForMeta(upcoming);
+      });
     }
   };
 
@@ -978,6 +986,15 @@ const HomeBackgroundVideoManager = (() => {
     if (startIndex === -1) return;
     goToIndex(startIndex);
 
+    // Warm the next video as soon as we know what is currently active
+    if (videoPlaylist.length > 1) {
+      const upcoming = videoPlaylist[(startIndex + 1) % videoPlaylist.length];
+      scheduleIdleTask(() => {
+        prefetchSources(upcoming);
+        warmVideoForMeta(upcoming);
+      });
+    }
+
     videoEl.addEventListener('ended', handleEnded);
     resizeHandler = debounce(handleResize, 250);
     window.addEventListener('resize', resizeHandler);
@@ -997,6 +1014,12 @@ const HomeBackgroundVideoManager = (() => {
     if (visibilityHandler) {
       document.removeEventListener('visibilitychange', visibilityHandler);
       visibilityHandler = null;
+    }
+    if (warmupVideo) {
+      warmupVideo.removeAttribute('src');
+      warmupVideo.load();
+      warmupVideo.remove();
+      warmupVideo = null;
     }
     currentIndex = -1;
     videoEl = null;
