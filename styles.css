@@ -84,7 +84,7 @@ h3:hover {
 .menu-toggle svg path,
 .menu-toggle svg line {
   fill: currentColor;
-  stroke: currentColor;
+  stroke: #cecece;
   transition: fill 180ms ease, stroke 180ms ease;
 }
 
