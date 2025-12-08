@@ -564,22 +564,24 @@ nav a {
     height: 70%; 
 }
 
-.contact-sidebar .music-bars {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.contact-sidebar .music-bars svg {
-  transform: rotate(90deg);
-}
-
 .contact-item:hover svg {
   transform: rotate(-360deg) scale(1.25);
   transition: transform 0.3s ease-in-out;
 }
 
+.contact-sidebar .music-bars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  width:50px;
+  height:50px;
+  background-color: transparent; 
+}
+
 .contact-sidebar .music-bars:hover svg {
-  transform: rotate(-90deg);
+  transform: scale(1.25);
   transition: transform 0.3s ease-in-out;
 }
 
