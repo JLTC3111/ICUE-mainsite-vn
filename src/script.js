@@ -740,35 +740,30 @@ const HomeBackgroundVideoManager = (() => {
       id: 'heritage',
       desktop: 'public/bgVideos/bg_video_home.mp4',
       mobile: 'public/bgVideos/bg_video_home_mobile.mp4',
-      poster: 'public/preview.jpg',
       prefersLightNav: true
     },
     {
       id: 'momentum',
       desktop: 'public/bgVideos/home_bg_1.mp4',
       mobile: 'public/bgVideos/home_bg_1_mobile.mp4',
-      poster: 'public/preview.jpg',
       prefersLightNav: true
     },
     {
       id: 'harmony',
       desktop: 'public/bgVideos/home_bg_2.mp4',
       mobile: 'public/bgVideos/home_bg_2_mobile.mp4',
-      poster: 'public/preview.jpg',
       prefersLightNav: true
     },
     {
       id: 'luminous',
       desktop: 'public/bgVideos/home_bg_3.mp4',
       mobile: 'public/bgVideos/home_bg_3_mobile.mp4',
-      poster: 'public/preview.jpg',
       prefersLightNav: true
     },
     {
       id: 'kaleidoscope',
       desktop: 'public/bgVideos/home_bg_4.mp4',
       mobile: 'public/bgVideos/home_bg_4_mobile.mp4',
-      poster: 'public/preview.jpg',
       prefersLightNav: true
     },
   ];
