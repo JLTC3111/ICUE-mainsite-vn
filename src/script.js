@@ -836,12 +836,6 @@ const HomeBackgroundVideoManager = (() => {
     return { desktop, mobile };
   };
 
-  const applyPoster = (meta) => {
-    if (!videoEl) return;
-    const poster = meta?.poster || fallbackPoster;
-    videoEl.setAttribute('poster', poster);
-  };
-
   const applyNavTheme = (meta) => {
     if (typeof window.setNavLinkContrast === 'function') {
       window.setNavLinkContrast(!!meta?.prefersLightNav);
@@ -917,7 +911,6 @@ const HomeBackgroundVideoManager = (() => {
     currentIndex = index;
     persistIndex(index);
     const meta = videoPlaylist[index];
-    applyPoster(meta);
     activateVideo(meta);
     applyNavTheme(meta);
   };
@@ -944,8 +937,6 @@ const HomeBackgroundVideoManager = (() => {
   const init = () => {
     HomeBackgroundVideoManager.destroy();
     if (!ensureVideoElement()) return;
-
-    applyPoster(videoPlaylist[0]);
 
     if (shouldKeepStatic()) {
       clearVideoSources();

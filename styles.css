@@ -48,6 +48,84 @@ h3:hover {
   transform: scale(1.02);
 }
 
+/* Theme Variables */
+:root {
+  --nav-bg: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
+  --nav-text: #000;           
+  --nav-text-contrast: #fff;   
+  --nav-link-hover: #1db7ff;
+  --nav-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  --nav-blur-bg: rgba(0,0,0,0.35); 
+}
+
+/* Base nav */
+.menu-bar {
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  transition: color 240ms ease, background 300ms ease;
+  -webkit-font-smoothing: antialiased;
+  backdrop-filter: blur(6px); 
+}
+
+.menu-bar svg,
+.menu-bar .logo-content,
+.menu-bar .flag-icon,
+.menu-bar #menuIcon,
+.menu-bar .contact-link svg {
+  color: inherit;
+  stroke: currentColor;
+  fill: currentColor;
+  transition: color 240ms ease, opacity 240ms ease;
+}
+
+.menu-bar a,
+.menu-bar a:visited {
+  color: var(--nav-text);
+  text-decoration: none;
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+.menu-bar a:hover,
+.menu-bar a:focus {
+  color: var(--nav-link-hover);
+  text-shadow: none;
+}
+
+.menu-bar.nav-on-dark {
+  background: var(--nav-blur-bg); 
+  color: var(--nav-text-contrast);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.55);
+}
+
+.menu-bar.nav-on-dark a,
+.menu-bar.nav-on-dark a:visited {
+  color: var(--nav-text-contrast);
+}
+
+.menu-bar.nav-on-dark a:hover,
+.menu-bar.nav-on-dark a:focus {
+  color: var(--nav-link-hover);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.menu-bar .contact-link {
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.menu-bar.nav-on-dark .contact-link {
+  background: rgba(255,255,255,0.06);
+  color: var(--nav-text-contrast);
+}
+
+@media (prefers-contrast: more) {
+  .menu-bar, .menu-bar.nav-on-dark {
+    box-shadow: var(--nav-shadow);
+  }
+}
+
 nav {
   display: flex;
   justify-content: space-between; 
@@ -2068,7 +2146,6 @@ body.loaded #app {
     text-align: center;
   }
 
-  /* Shrink big headers */
   h1 {
     font-size: clamp(1.5rem, 6vw, 2.5rem);
     justify-content: left;
