@@ -432,6 +432,10 @@ nav a {
 }
 
 @media (max-width: 768px) {
+    .hr-button {
+      margin-top: 1rem;
+    }
+    
     .chatbot-window {
         width: 300px;
         height: 450px;
@@ -3085,7 +3089,7 @@ button:hover {
   border-radius: 50px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: clamp(12px, 3.5vw, 18px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   position: relative;
