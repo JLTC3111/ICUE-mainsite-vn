@@ -740,7 +740,7 @@ const HomeBackgroundVideoManager = (() => {
       id: 'heritage',
       desktop: 'public/bgVideos/bg_video_home.mp4',
       mobile: 'public/bgVideos/bg_video_home_mobile.mp4',
-      prefersLightNav: true
+      prefersLightNav: false
     },
     {
       id: 'momentum',
@@ -847,6 +847,12 @@ const HomeBackgroundVideoManager = (() => {
     videoEl.pause();
     videoEl.removeAttribute('src');
     videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
+    // Also clear poster so old poster image doesn't remain visible
+    try {
+      videoEl.removeAttribute('poster');
+      videoEl.poster = '';
+      videoEl.style.backgroundImage = 'none';
+    } catch (e) {}
     videoEl.load();
   };
 
@@ -879,6 +885,13 @@ const HomeBackgroundVideoManager = (() => {
     const { desktop, mobile } = ensureSources();
     if (!desktop || !mobile) return;
 
+    // Ensure any previous poster is removed so it doesn't flash between videos
+    try {
+      videoEl.removeAttribute('poster');
+      videoEl.poster = '';
+      videoEl.style.backgroundImage = 'none';
+    } catch (e) {}
+
     desktop.src = meta.desktop;
     mobile.src = meta.mobile || meta.desktop;
 
@@ -899,6 +912,16 @@ const HomeBackgroundVideoManager = (() => {
     } else {
       videoEl.addEventListener('canplay', tryPlay, { once: true });
     }
+
+    // Remove poster once playback actually starts (covers browsers that keep showing poster until first frame)
+    const removePosterOnPlay = () => {
+      try {
+        videoEl.removeAttribute('poster');
+        videoEl.poster = '';
+        videoEl.style.backgroundImage = 'none';
+      } catch (e) {}
+    };
+    videoEl.addEventListener('playing', removePosterOnPlay, { once: true });
 
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];

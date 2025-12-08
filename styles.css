@@ -50,26 +50,23 @@ h3:hover {
 
 /* Theme Variables */
 :root {
-  --nav-bg: linear-gradient(30deg, #eeedf1, #0b3f10, rgb(7, 8, 7));
+  --nav-bg: transparent;
   --nav-text: #000;           
-  --nav-text-contrast: #fff;   
+  --nav-text-contrast: #cecece;   
   --nav-link-hover: #1db7ff;
   --nav-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  --nav-blur-bg: rgba(0,0,0,0.35); 
+  --nav-blur-bg: transparent; 
 }
 
-/* Base nav */
 .menu-bar {
   background: var(--nav-bg);
   color: var(--nav-text);
   transition: color 240ms ease, background 300ms ease;
   -webkit-font-smoothing: antialiased;
-  backdrop-filter: blur(6px); 
 }
 
 .menu-bar svg,
 .menu-bar .logo-content,
-.menu-bar .flag-icon,
 .menu-bar #menuIcon,
 .menu-bar .contact-link svg {
   color: inherit;
@@ -116,8 +113,8 @@ h3:hover {
 }
 
 .menu-bar.nav-on-dark .contact-link {
-  background: rgba(255,255,255,0.06);
-  color: var(--nav-text-contrast);
+  background: transparent;
+  color: var(--nav-text-contrast) !important;
 }
 
 @media (prefers-contrast: more) {
