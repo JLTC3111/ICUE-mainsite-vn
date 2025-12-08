@@ -96,12 +96,6 @@ h3:hover {
   transition: color 200ms ease, text-shadow 200ms ease;
 }
 
-.menu-bar a:hover,
-.menu-bar a:focus {
-  color: var(--nav-link-hover);
-  text-shadow: none;
-}
-
 .menu-bar.nav-on-dark {
   background: var(--nav-blur-bg); 
   color: var(--nav-text-contrast);
@@ -109,7 +103,7 @@ h3:hover {
 }
 
 .menu-bar.nav-on-dark .menu-toggle {
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
   color: var(--nav-text-contrast);
 }
 
@@ -1131,7 +1125,7 @@ nav a {
     transform: translateY(-5.5px) rotate(47.5deg);
 }
 
-.drawer-menu {
+#drawerMenu {
   position: fixed;
   top: 0;
   left: 0;
@@ -1157,7 +1151,7 @@ nav a {
   z-index: -2;
 }
 
-.drawer-menu a {
+#drawerMenu a {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -1170,7 +1164,7 @@ nav a {
   transition: all .75s ease, border-color 0.2s ease;
 }
 
-.drawer-menu a:hover {
+#drawerMenu a:hover {
   transform: translateX(40px);
   background-color: #f3f8ff;
   border-left: 12.5px solid #737373;
@@ -1179,13 +1173,13 @@ nav a {
   box-shadow: -4px -6px 8px rgba(255, 255, 255, 1);
 }
 
-.drawer-menu a.active {
+#drawerMenu a.active {
   font-weight: bold;
   background-color: #dfdfdf;
   border-left: 2.5px solid rgb(254, 254, 254);
 }
 
-.drawer-menu.open {
+#drawerMenu.open {
   transform: translateX(0px); 
 }
 
@@ -1228,7 +1222,7 @@ nav a {
   pointer-events: none;
 }
 
-.drawer-menu .submenu a {
+#drawerMenu .submenu a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1241,14 +1235,14 @@ nav a {
   transition: all .3s ease;
 }
 
-.drawer-menu .moe-subMenu:hover {
+#drawerMenu .moe-subMenu:hover {
   text-decoration: none;
   font-style: bold;
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffff03;
 }
 
-.drawer-menu .core-subMenu:hover {
+#drawerMenu .core-subMenu:hover {
   text-decoration: none;
   font-style: bold;
   background-color: rgba(255, 255, 255, 0.1);
@@ -1533,7 +1527,7 @@ body.loading .slider,
 body.loading .dot,
 body.loading .language-switcher,
 body.loading .menu-toggle,
-body.loading .drawer-menu,
+body.loading #drawerMenu,
 body.loading .content,
 body.loading .video-bg {
   visibility: hidden;
@@ -1931,7 +1925,7 @@ body.loaded #app {
 }
 
 @media (max-width: 1440px) {
-  .drawer-menu {
+  #drawerMenu {
     position: fixed;
     top: 0;
     left: 0;
@@ -1963,7 +1957,7 @@ body.loaded #app {
   a.core-subMenu svg {
     display: none;
   }
-  .drawer-menu a {
+  #drawerMenu a {
     padding: 1rem;
     margin-left: 0.5rem;
     font-size: clamp(1.15rem, 3vw, 1.75rem);
@@ -1971,7 +1965,7 @@ body.loaded #app {
     border-left: 5px solid transparent;
     transition: all 0.3s;
   }
-  .drawer-menu .submenu a {
+  #drawerMenu .submenu a {
     font-size: clamp(0.95rem, 2.5vw, 1.25rem);
     padding: 0.5rem 1rem;
     padding-top: 0.15rem;
