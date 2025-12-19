@@ -176,9 +176,6 @@ const deviceDetection = {
     }
 };
 
-// Export the functions for use
-// export { isTruelyTouchDevice, isTouchPrimaryDevice, isMobileDevice, deviceDetection };
-
 // NEW: Speed calculation and analysis function
 function calculateSpeeds(baseSpeed = null) {
     // Get base speed from input or use provided value
@@ -196,10 +193,8 @@ function calculateSpeeds(baseSpeed = null) {
     const overallWPM = Math.round(charsPerMinute / 6);
     const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
     
-    // Calculate realistic average WPM
     const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
     
-    // Create results object for programmatic use
     const speedData = {
         baseSpeed: speed,
         overallWPM: overallWPM,
@@ -209,12 +204,11 @@ function calculateSpeeds(baseSpeed = null) {
         realisticAverage: realisticAverage
     };
     
-    // If there's a results element, update the display
     const resultsElement = document.getElementById('speedResults');
     if (resultsElement) {
         const results = `
             <div class="result">
-                <h4>🎯 Your Typing Speeds:</h4>
+                <h4>Your Typing Speeds:</h4>
                 <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
                 <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
                 <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
@@ -228,8 +222,7 @@ function calculateSpeeds(baseSpeed = null) {
         `;
         resultsElement.innerHTML = results;
     }
-    
-    // Return the data for programmatic use
+ 
     return speedData;
 }
 
@@ -269,29 +262,24 @@ function typeHTMLString(
   let burstCounter = 0;
 
   function randomSpeed(baseSpeed, lastChar = "") {
-      // Punctuation pause: <span class="highlight">5-8x slower</span>
       if (/[.,!?]/.test(lastChar)) {
           return baseSpeed * (5 + Math.random() * 3);
       }
       
-      // Burst mode: <span class="highlight">0.4-0.8x base speed (FAST!)</span>
       if (burstMode) {
           if (--burstCounter <= 0) burstMode = false;
           return baseSpeed * (0.4 + Math.random() * 0.4);
       }
       
-      // 10% chance to enter burst mode
       if (Math.random() < 0.1) {
           burstMode = true;
           burstCounter = Math.floor(Math.random() * 5) + 3;
       }
       
-      // Default typing: <span class="highlight">2.5-5x slower than base</span>
       return baseSpeed * (1.5 + Math.random() * 1.5);
   }
 
   function getTypingSpeed(baseSpeed, lastChar = "", showAnalysis = false) {
-      // Get the random delay using your existing logic
       const delay = randomSpeed(baseSpeed, lastChar);
       
       if (showAnalysis) {
@@ -304,7 +292,6 @@ function typeHTMLString(
 
   function typeNextNode() {
     if ((typingSessionObj && typingSessionObj.skip) || nodeIndex >= nodes.length) {
-      // dump remaining instantly
       for (; nodeIndex < nodes.length; nodeIndex++) {
         const node = nodes[nodeIndex];
         targetElement.insertBefore(node.cloneNode(true), cursor);
@@ -743,12 +730,6 @@ window.setNavLinkContrast = (useLightLinks = false) => {
 
 const HomeBackgroundVideoManager = (() => {
   const videoPlaylist = [
-    {
-      id: 'heritage',
-      desktop: 'public/bgVideos/bg_video_home.mp4',
-      mobile: 'public/bgVideos/bg_video_home_mobile.mp4',
-      prefersLightNav: false
-    },
     {
       id: 'momentum',
       desktop: 'public/bgVideos/home_bg_1.mp4',
