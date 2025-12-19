@@ -781,7 +781,7 @@ nav a {
   visibility: visible; 
   line-height: 2;
   opacity: 1;    
-  color: #d5d5d5;      
+  color: #b5b5b5;      
   transition: opacity 0.5s ease-in-out;
   pointer-events: none; 
 }
