@@ -1329,6 +1329,8 @@ window.initHomeTextSlider = () => {
     `💥 Tạo ra những <strong class="highlight-text-phrase"> trải nghiệm trường tồn </strong> mãi mãi.`
   ];
 
+  const SLIDE_INTERVAL = 25000;
+
   const textElement = document.querySelector("#homeSliderText .highlight-text");
   const dots = document.querySelectorAll("#sliderDots .dot");
 
@@ -1338,10 +1340,11 @@ window.initHomeTextSlider = () => {
   }
 
   let index = 0;
-  let isPaused = true;
+  let isPaused = false;
 
   function updateText(newIndex) {
     index = newIndex;
+    console.debug('[slider] updateText start', { index, time: Date.now() });
     typingSessionId += 1;
     const thisSession = typingSessionId;
   
@@ -1364,7 +1367,7 @@ window.initHomeTextSlider = () => {
         onComplete: () => {
           typeHTMLString(textElement, message, typingSpeed, () => {
             isTyping = false;
-            
+            console.debug('[slider] typing complete', { index, time: Date.now() });
             const speedStats = calculateSpeeds(typingSpeed);
             console.log('✨ Home slider typing session completed. Speed stats:', speedStats);
             
@@ -1375,7 +1378,7 @@ window.initHomeTextSlider = () => {
     );
   
     dots.forEach((dot, i) => {
-      const progress = dot.querySelector(".progress-dot");
+      const progress = dot.classList.contains("progress-dot") ? dot : dot.querySelector(".progress-dot");
       dot.classList.remove("active");
   
       if (progress) {
@@ -1389,13 +1392,14 @@ window.initHomeTextSlider = () => {
         if (progress) {
           progress.style.animation = "none";
           void progress.offsetWidth;
-          progress.style.animation = "slide-progress 8s linear forwards";
+          progress.style.animation = `slide-progress ${SLIDE_INTERVAL / 1000}s linear forwards`;
         }
       }
     });
   }
 
   function nextText(force = false) {
+    console.debug('[slider] nextText called', { isPaused, force, time: Date.now() });
     if (!isPaused || force) {
       index = (index + 1) % messages.length;
       updateText(index);
@@ -1412,12 +1416,18 @@ window.initHomeTextSlider = () => {
   function restartInterval() {
     clearInterval(window.homeSliderIntervalId);
     if (!isPaused) {
-      window.homeSliderIntervalId = setInterval(nextText, 15000);
+      // ensure only one interval exists
+      clearInterval(window.homeSliderIntervalId);
+      window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
+      console.debug('[slider] interval (re)started', { SLIDE_INTERVAL, id: window.homeSliderIntervalId, time: Date.now() });
     }
   }
 
   updateText(index);
-  window.homeSliderIntervalId = setInterval(nextText, 15000);
+  // ensure no leftover interval, then start
+  clearInterval(window.homeSliderIntervalId);
+  window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
+  console.debug('[slider] interval started', { SLIDE_INTERVAL, id: window.homeSliderIntervalId, time: Date.now() });
 
   dots.forEach((dot, i) => {
     // hover effect
@@ -1440,7 +1450,7 @@ window.initHomeTextSlider = () => {
       setTimeout(() => {
         isPaused = false;
         restartInterval();
-      }, 15000);
+      }, SLIDE_INTERVAL);
     });
   });
 
@@ -1452,7 +1462,9 @@ window.initHomeTextSlider = () => {
   sliderContainer.addEventListener("mouseleave", () => {
     if (!isPaused) {
       clearInterval(window.homeSliderIntervalId);
-      window.homeSliderIntervalId = setInterval(nextText, 15000);
+      clearInterval(window.homeSliderIntervalId);
+      window.homeSliderIntervalId = setInterval(nextText, SLIDE_INTERVAL);
+      console.debug('[slider] interval restarted on mouseleave', { SLIDE_INTERVAL, id: window.homeSliderIntervalId, time: Date.now() });
     }
   });
 
