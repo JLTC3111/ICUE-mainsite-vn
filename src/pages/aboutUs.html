@@ -419,7 +419,43 @@
 </style>
 
 <body>
-    
+    <div id="model-container"></div>
+
+    <section class="about-legacy-hero" aria-label="About hero">
+        <div class="about-legacy-hero__content">
+            <h1 class="cursive-default">
+                <span id="rainText" class="sub-text">Sáng Tạo, Kết Nối, Thành Công</span>
+                <span class="hero-body">Tri Ân Đất Nước – Tiền Nhân, Cộng Đồng</span>
+            </h1>
+
+            <model-viewer 
+            class="model-home"
+            src="public/models/grand_piano.glb" 
+            alt="A 3D model of a grand piano" 
+            auto-rotate
+            camera-orbit="45deg 45deg 45deg 10m"
+            camera-controls>
+            </model-viewer>
+
+            <div class="about-legacy-hero__slider">
+                <div class="home-text-slider" id="homeTextSlider">
+                    <div class="home-slider-text" id="homeSliderText">
+                        <span class="highlight-text"></span>
+                    </div>
+                </div>
+
+                <div class="slider-dots" id="sliderDots">
+                    <span class="dot progress-dot" data-index="0"></span>
+                    <span class="dot progress-dot" data-index="1"></span>
+                    <span class="dot progress-dot" data-index="2"></span>
+                    <span class="dot progress-dot" data-index="3"></span>
+                    <span class="dot progress-dot" data-index="4"></span>
+                    <span class="dot progress-dot" data-index="5"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="about-container">
         <div class="section">
             <h1 class="greeting-text">Xin Chào!</h1>

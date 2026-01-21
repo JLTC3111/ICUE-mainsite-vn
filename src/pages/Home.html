@@ -1,47 +1,158 @@
 
-<body class="homePageContainer">
-  
-<h1 class="cursive-default">
-  <span id="rainText" class="sub-text">Sáng Tạo, Kết Nối, Thành Công</span>
-  <span class="hero-body">Tri Ân Đất Nước – Tiền Nhân, Cộng Đồng</span>
-</h1>
+<body>
+  <section class="home-hero" aria-label="Home hero">
+    <div class="home-hero__media" aria-hidden="true">
+      <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+        <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
+        <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
+      </video>
+      <div class="home-hero__overlay"></div>
+    </div>
 
-<model-viewer 
-class="model-home"
-src="public/models/grand_piano.glb" 
-alt="A 3D model of a grand piano" 
-auto-rotate
-camera-orbit="45deg 45deg 45deg 10m"
-camera-controls>
-</model-viewer>
+    <div class="home-hero__content">
+      <div class="home-banner"><a href="#/News" onclick="loadPage('News');" data-page="News">Tin tức mới nhất</a></div>
+      <h1 class="home-hero__title">iCUE Vietnam</h1>
+      <p class="home-hero__subtitle">
+        Xây dựng nghiên cứu xây dựng quản lý đô thị, sáng kiến cộng đồng và các giải pháp thực tiễn vì một tương lai tốt đẹp hơn.
+      </p>
 
-<div id="textSlam" class="slam-container">
-  <h2 class="lets-talk slam-text"><a href="#/Contact" onclick="loadPage('Contact');" data-page="Contact">Thành Quả Tổng Kết:</a></h2>
-  <div class="slam-dust"></div>
-</div>
+      <div class="home-hero__actions">
+        <a class="home-btn home-btn--primary" href="#/Contact" onclick="loadPage('Contact');" data-page="Contact">Liên hệ</a>
+        <a class="home-btn home-btn--ghost" href="#/pastProjects" onclick="loadPage('pastProjects');" data-page="pastProjects">Khám phá công việc</a>
+      </div>
+    </div>
+  </section>
 
-    
-     <div>
-       <div class="home-text-slider" id="homeTextSlider">
-         <div class="slider-text" id="homeSliderText">
-           <span class="highlight-text"></span>
-         </div>
-       </div>
+  <section class="home-section" id="home-past-projects">
+    <div class="home-section__header">
+      <h2>Dự án tiêu biểu</h2>
+      <p>Điểm nổi bật từ các hợp tác liên ngành và sáng kiến phát triển do cộng đồng khởi xướng.</p>
+      <a class="home-section__link" href="#/pastProjects" onclick="loadPage('pastProjects');" data-page="pastProjects">Xem tất cả dự án →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/pastProjects/pp_1.jpg" alt="Project preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Chương trình Tác động Cộng đồng</h3>
+          <p>Các sáng kiến mở rộng tập trung vào phát triển địa phương bền vững.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/pastProjects/pp_3.jpg" alt="Project preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Chuỗi Thử thách Đổi mới</h3>
+          <p>Các nhóm được cố vấn tạo ra nguyên mẫu thực tế và kết quả có thể đo lường.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/pastProjects/pp_5.jpg" alt="Project preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Hợp tác Giáo dục</h3>
+          <p>Các hợp tác trang bị cho người học kỹ năng sẵn sàng cho tương lai.</p>
+        </div>
+      </article>
+    </div>
+  </section>
 
-       <div class="slider-dots" id="sliderDots">
-         <span class="dot progress-dot" data-index="0"></span>
-         <span class="dot progress-dot" data-index="1"></span>
-         <span class="dot progress-dot" data-index="2"></span>
-         <span class="dot progress-dot" data-index="3"></span>
-         <span class="dot progress-dot" data-index="4"></span>
-         <span class="dot progress-dot" data-index="5"></span>
-       </div>
-     </div>
-   
-    <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
-         <source id="bgVideoHome" src="public/bgVideos/bg_video_home.mp4" type="video/mp4" media="(min-width: 768px)">
-         <source id="bgVideHomeMobile" src="public/bgVideos/bg_video_home_mobile.mp4" type="video/mp4">
-    </video>  
- 
+  <section class="home-section home-section--alt" id="home-our-work">
+    <div class="home-section__header">
+      <h2>Công việc của chúng tôi</h2>
+      <p>Nghiên cứu, phát triển sản phẩm và trải nghiệm được xây dựng với mục tiêu rõ ràng.</p>
+      <a class="home-section__link" href="#/ourWork" onclick="loadPage('ourWork');" data-page="ourWork">Khám phá công việc →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/work/ourWork_img1.jpg" alt="Our work preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Nghiên cứu Ứng dụng</h3>
+          <p>Những hiểu biết được chuyển thành các giải pháp thực tiễn có thể mở rộng.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/work/ourWork_img2.jpg" alt="Our work preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Phát triển Nguyên mẫu</h3>
+          <p>Lặp nhanh để xác thực ý tưởng và tăng tốc tác động.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/work/ourWork_img3.jpg" alt="Our work preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Chương trình Cộng đồng</h3>
+          <p>Các sáng kiến thúc đẩy hợp tác và giá trị xã hội.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-section" id="home-news">
+    <div class="home-section__header">
+      <h2>Tin tức mới nhất</h2>
+      <p>Thông báo, sự kiện và góc nhìn từ iCUE Vietnam.</p>
+      <a class="home-section__link" href="#/News" onclick="loadPage('News');" data-page="News">Đọc tất cả tin tức →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/news/articles/Card_1.jpg" alt="News preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Điểm sáng Đổi mới</h3>
+          <p>Các mốc quan trọng từ những sáng kiến gần đây của iCUE.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/news/articles/Card_2.jpg" alt="News preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Điểm nhấn Cộng đồng</h3>
+          <p>Những khoảnh khắc và câu chuyện từ cộng đồng đối tác.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/news/articles/Card_3.jpg" alt="News preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Sự kiện sắp tới</h3>
+          <p>Tham gia các hội thảo, buổi nói chuyện và hoạt động hợp tác sắp tới.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-section home-section--alt" id="home-recruitment">
+    <div class="home-section__header">
+      <h2>Tuyển dụng</h2>
+      <p>Tham gia đội ngũ theo sứ mệnh, tập trung vào đổi mới và tác động xã hội.</p>
+      <a class="home-section__link" href="#/recruitment" onclick="loadPage('recruitment');" data-page="recruitment">Xem vị trí tuyển dụng →</a>
+    </div>
+    <div class="home-grid">
+      <article class="home-card">
+        <img src="public/recruitment/office.jpg" alt="Recruitment preview 1" loading="lazy">
+        <div class="home-card__body">
+          <h3>Văn hóa Hợp tác</h3>
+          <p>Làm việc cùng nhà nghiên cứu, nhà thiết kế và người xây dựng cộng đồng.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/recruitment/event.jpg" alt="Recruitment preview 2" loading="lazy">
+        <div class="home-card__body">
+          <h3>Học hỏi & Phát triển</h3>
+          <p>Học tập liên tục qua hội thảo và chương trình cố vấn.</p>
+        </div>
+      </article>
+      <article class="home-card">
+        <img src="public/recruitment/survey.jpg" alt="Recruitment preview 3" loading="lazy">
+        <div class="home-card__body">
+          <h3>Tạo khác biệt</h3>
+          <p>Góp phần vào các chương trình tạo ra thay đổi thực sự.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-cta" aria-label="About Us">
+    <div class="home-cta__content">
+      <h2>Hãy cùng xây dựng tương lai</h2>
+      <p>Bạn có dự án hay muốn hợp tác với iCUE Vietnam? Hãy bắt đầu cuộc trò chuyện.</p>
+    </div>
+    <a class="home-btn home-btn--primary" href="#/aboutUs" onclick="loadPage('aboutUs');" data-page="aboutUs">Liên hệ ngay</a>
+  </section>
 </body>
 

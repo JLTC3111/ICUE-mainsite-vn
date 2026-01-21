@@ -1487,6 +1487,313 @@ nav a {
   text-align: left;
 }
 
+.about-legacy-hero {
+  position: relative;
+  padding: 6rem 8vw 4rem;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(6, 10, 18, 0.95) 0%, rgba(16, 20, 30, 0.85) 60%, rgba(10, 14, 22, 0.98) 100%);
+  overflow: hidden;
+}
+
+/* Home page rebuild */
+.home-hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 8vw 4rem;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.home-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.home-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 20% 10%, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.1) 60%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 40%, rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  text-align: center;
+}
+
+.home-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.home-banner a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.25rem;
+}
+
+.home-banner a:hover {
+  color: #fff2b2;
+}
+
+.home-banner a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.home-hero__title {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  margin: 0 0 1rem;
+  font-family: "Audiowide", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.home-hero__subtitle {
+  font-size: clamp(1rem, 2.4vw, 1.35rem);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 auto 2rem;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+.home-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.6rem;
+  border-radius: 999px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.home-btn--primary {
+  background: #ffffff;
+  color: #0a1a3a;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.home-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+.home-btn--ghost {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.home-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.home-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.home-quicklinks a {
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.home-quicklinks a:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.home-section {
+  padding: 4.5rem 8vw;
+  background: #0c0f14;
+  color: #f5f5f5;
+}
+
+.home-section--alt {
+  background: #11151c;
+}
+
+.home-section__header {
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.home-section__header h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  margin-bottom: 0.75rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.home-section__header p {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.home-section__link {
+  display: inline-flex;
+  color: #a6d4ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.home-card__body {
+  padding: 1.2rem 1.3rem 1.5rem;
+}
+
+.home-card__body h3 {
+  margin: 0 0 0.6rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.home-card__body p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
+}
+
+.home-cta {
+  padding: 3.5rem 8vw 5rem;
+  background: linear-gradient(135deg, rgba(5, 20, 45, 0.95), rgba(15, 25, 40, 0.9));
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.home-cta__content {
+  max-width: 600px;
+}
+
+.home-cta h2 {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  margin: 0 0 0.75rem;
+}
+
+.home-cta p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .home-hero {
+    padding-top: 5.5rem;
+  }
+
+  .home-cta {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.about-legacy-hero__content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.about-legacy-hero .cursive-default {
+  color: #ffffff;
+}
+
+.about-legacy-hero .hero-body {
+  color: #d9d9d9;
+}
+
+.about-legacy-hero .slam-container {
+  margin: 2rem auto 1.5rem;
+}
+
+.about-legacy-hero__slider {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .about-legacy-hero {
+    padding: 5rem 6vw 3rem;
+  }
+}
+
+
 #landing-page {
   position: fixed;
   inset: 0;
