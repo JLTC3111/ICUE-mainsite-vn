@@ -562,66 +562,89 @@ Trong sự kiện kéo dài ba ngày, sẽ có một **sự kiện học tập c
         {
           src: "/public/news/articles/article_3/area_affected.png",
           caption: "Khu vực bị ảnh hưởng bởi bão Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_1.mp4",
           caption: "Nguồn: ABC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_1.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_1.jpg"
         },
         {
           src: "/public/news/articles/article_3/1.jpg",
-          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_2.mp4",
           caption: "Nguồn: VTV1- BBC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_2.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_2.jpg"
+
         },
         {
           src: "/public/news/articles/article_3/2.jpg",
-          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/video_3.mp4",
           caption: "Nguồn: ABC NEWS",
+          type: "video",
+          poster: "/public/news/articles/article_3/video_poster_3.jpg",
+          previewImage: "/public/news/articles/article_3/video_poster_3.jpg"
         },
         {
           src: "/public/news/articles/article_3/3.jpg",
-          caption: "Khu vực bị ảnh hưởng bởi bão Yagi"
+          caption: "Khu vực bị ảnh hưởng bởi bão Yagi",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/4.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/5.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/6.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/7.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/8.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/9.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/10.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
         {
           src: "/public/news/articles/article_3/11.jpg",
-          caption: "Nhóm Tình Nguyện (ICUE)"
+          caption: "Nhóm Tình Nguyện (ICUE)",
+          type: "image"
         },
          {
           src: "/public/news/articles/article_3/a_thank_you_letter.png",
-          caption: "Thư Cám Ơn"
+          caption: "Thư Cám Ơn",
+          type: "image"
         }
       ],
       bodyMarkdown: `
