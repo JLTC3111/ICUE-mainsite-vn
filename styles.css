@@ -1521,6 +1521,7 @@ nav a {
 }
 
 .home-hero__content {
+  margin-top: -15%;
   position: relative;
   z-index: 2;
   max-width: 920px;
@@ -1795,6 +1796,10 @@ nav a {
 }
 
 @media (max-width: 768px) {
+  .home-hero__content {
+    border: 1px solid red;
+    margin-top: -50%;
+  }
   .about-legacy-hero {
     padding: 5rem 6vw 3rem;
   }
@@ -2526,8 +2531,18 @@ body.loaded #app {
   }
 
   .contact-sidebar {
-    top:37.5%;
+    top:47.5%;
     right:1.75%;
+  }
+
+  .contact-sidebar .contact-item svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .contact-sidebar .music-bars svg {
+    width: 25px;
+    height: 25px;
   }
 
   .submenu {
