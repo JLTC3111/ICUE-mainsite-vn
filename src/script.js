@@ -761,6 +761,7 @@ const HomeBackgroundVideoManager = (() => {
   let resizeHandler = null;
   let visibilityHandler = null;
   let endFallbackHandler = null;
+  let isTransitioning = false;
   let currentIndex = -1;
   let warmupVideo = null;
 
@@ -936,8 +937,10 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const handleEnded = () => {
-    if (!videoPlaylist.length) return;
+    if (!videoPlaylist.length || isTransitioning) return;
+    isTransitioning = true;
     goToIndex((currentIndex + 1) % videoPlaylist.length);
+    setTimeout(() => { isTransitioning = false; }, 500);
   };
 
   const handleResize = () => {
@@ -979,14 +982,13 @@ const HomeBackgroundVideoManager = (() => {
 
     videoEl.addEventListener('ended', handleEnded);
     // Mobile fallback: some mobile browsers/devices may not reliably fire 'ended'.
-    // Use a lightweight `timeupdate` handler on small viewports to advance the
-    // playlist when the playhead is within ~300ms of the end.
+    // Keep a persistent timeupdate listener that works across all videos.
     if (window.matchMedia('(max-width: 767px)').matches) {
       endFallbackHandler = function () {
         try {
-          if (!videoEl || videoEl.paused || !videoEl.duration) return;
-          if (videoEl.currentTime >= videoEl.duration - 0.3) {
-            videoEl.removeEventListener('timeupdate', endFallbackHandler);
+          if (!videoEl || videoEl.paused || !videoEl.duration || isTransitioning) return;
+          // Trigger when within 0.5s of end to ensure it fires before video actually ends
+          if (videoEl.currentTime >= videoEl.duration - 0.5) {
             handleEnded();
           }
         } catch (e) {
