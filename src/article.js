@@ -390,8 +390,8 @@ const articles = [
           src: "/public/news/articles/article_1/video_1.mp4",
           caption: "Công Viên Âu Cơ",
           type: "video",
-          poster: "/public/news/articles/article_1/all_together.jpg",
-          previewImage: "/public/news/articles/article_1/all_together.jpg"
+          poster: "/public/news/articles/article_1/video_poster.jpg",
+          previewImage: "/public/news/articles/article_1/video_poster.jpg"
         },
         {
           src: "/public/news/articles/article_1/1.jpg",
@@ -445,7 +445,7 @@ const articles = [
         },
       ],
       bodyMarkdown: `
-Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (**ICUE**), phối hợp cùng **UBND thành phố Hội An**, tổ chức một sự kiện đặc biệt: **Khánh thành và bàn giao Không gian xanh và công viên ven biển** (đặt tên là **Công viên Âu Cơ**) 
+Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (**ICUE**), phối hợp cùng **UBND thành phố Hội An**, tổ chức một sự kiện đặc biệt: [**Khánh thành và bàn giao Không gian xanh và công viên ven biển**](https://gizvn.longd.tech/) (đặt tên là **Công viên Âu Cơ**) 
 
 <div style="margin-left: var(--article-indent, 1rem);"> 
 # Sự kiện này đánh dấu sự kết thúc thành công của dự án:  
