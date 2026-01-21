@@ -1276,7 +1276,7 @@ nav a {
     #7f7e7e 180deg,
     #616161 270deg,
     #000000 360deg,
-  );
+  ) !important;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
