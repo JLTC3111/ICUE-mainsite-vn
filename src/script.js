@@ -1065,7 +1065,9 @@ window.loadPage = (page) => {
               initAudioVisualizer();
               updateMusicBarColor(page);
               updateHamburgerIcon(page);
-              ICUEFooter.autoInject();
+              if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+                window.ICUEFooter.autoInject();
+              }
               calendarModal();
               CommunityGallery.init();
               isTruelyTouchDevice();
@@ -4208,7 +4210,9 @@ function initializePageFunctions() {
     initAudioVisualizer();
     calendarModal();
     updateHamburgerIcon();
-    ICUEFooter.autoInject();
+    if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+      window.ICUEFooter.autoInject();
+    }
     CommunityGallery.init();
     initializeChatbot();
    
