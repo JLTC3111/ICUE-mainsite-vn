@@ -1797,7 +1797,6 @@ nav a {
 
 @media (max-width: 768px) {
   .home-hero__content {
-    border: 1px solid red;
     margin-top: -50%;
   }
   .about-legacy-hero {
