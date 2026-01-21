@@ -345,36 +345,6 @@ function parseMarkdownAdvanced(markdownText, options = {}) {
   return html;
 }
 
-// Example usage:
-/*
-const markdownText = `
-# Header 1
-
-This is a **bold** and *italic* text with \`inline code\`.
-
-## Header 2
-
-- List item 1
-- List item 2
-- List item 3
-
-### Header 3
-
-> This is a blockquote
-
-| Header 1 | Header 2 |
-|----------|----------|
-| Cell 1   | Cell 2   |
-
-[Link text](https://abc.com)
-
-![Alt text](image.jpg)
-`;
-
-const html = parseMarkdown(markdownText);
-console.log(html);
-*/
-
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { 
@@ -419,7 +389,9 @@ const articles = [
          {
           src: "/public/news/articles/article_1/video_1.mp4",
           caption: "Công Viên Âu Cơ",
-          type: "video"
+          type: "video",
+          poster: "/public/news/articles/article_1/all_together.jpg",
+          previewImage: "/public/news/articles/article_1/all_together.jpg"
         },
         {
           src: "/public/news/articles/article_1/1.jpg",
@@ -1295,6 +1267,23 @@ Hành lang xanh Cửa Đại được kỳ vọng trở thành </div></div>
 },
 ];
 
+const defaultMediaAttrs = {
+  loading: 'lazy',
+  decoding: 'async',
+  fetchPriority: 'low',
+  preload: 'metadata'
+};
+
+articles.forEach(article => {
+  if (Array.isArray(article.images)) {
+    article.images = article.images.map(item => ({
+      ...defaultMediaAttrs,
+      ...item,
+      previewImage: item.previewImage || item.poster || null
+    }));
+  }
+});
+
 // Modal and Image Swipe Functionality
 let currentModalImages = [];
 let currentModalIndex = 0;
@@ -1558,7 +1547,12 @@ function updateArticleMedia() {
     const video = document.createElement('video');
     video.src = media.src;
     video.controls = false; 
-    video.preload = 'metadata';
+    video.preload = media.preload || 'metadata';
+    if (media.poster || media.previewImage) {
+      video.poster = media.poster || media.previewImage;
+    }
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.style.cssText = `
       width: 100%;
       height: 100%;
@@ -1855,6 +1849,17 @@ function updateArticleMedia() {
       articleImageElement.style.objectFit = 'cover';
       articleImageElement.style.borderRadius = '8px';
       articleImageElement.src = media.src;
+      articleImageElement.loading = media.loading || 'lazy';
+      articleImageElement.decoding = media.decoding || 'async';
+      if (media.fetchPriority) {
+        articleImageElement.fetchPriority = media.fetchPriority;
+      }
+      if (media.srcset) {
+        articleImageElement.setAttribute('srcset', media.srcset);
+      }
+      if (media.sizes) {
+        articleImageElement.setAttribute('sizes', media.sizes);
+      }
       articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
       
       // Add hover effects for images
@@ -2429,6 +2434,9 @@ function updateModalImage() {
   const modalCaption = document.getElementById('modal-caption');
   const modalCounter = document.getElementById('modal-counter');
   const thumbnailContainer = document.getElementById('modal-thumbnails');
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+  const useImagePreview = isIOS || isMobileViewport || /android/i.test(navigator.userAgent);
   
   const isVideo = media.type === 'video' || media.src.toLowerCase().includes('.mp4') || 
                   media.src.toLowerCase().includes('.mov') || media.src.toLowerCase().includes('.webm') ||
@@ -2440,11 +2448,28 @@ function updateModalImage() {
   // Show and update the appropriate element
   if (isVideo) {
     modalVideo.src = media.src;
+    modalVideo.preload = media.preload || 'metadata';
+    if (media.poster || media.previewImage) {
+      modalVideo.poster = media.poster || media.previewImage;
+    }
+    modalVideo.setAttribute('playsinline', '');
+    modalVideo.setAttribute('webkit-playsinline', '');
     modalVideo.style.display = 'block';
     // Pause video when switching (optional)
     modalVideo.currentTime = 0;
   } else {
     modalImage.src = media.src;
+    modalImage.loading = media.loading || 'lazy';
+    modalImage.decoding = media.decoding || 'async';
+    if (media.fetchPriority) {
+      modalImage.fetchPriority = media.fetchPriority;
+    }
+    if (media.srcset) {
+      modalImage.setAttribute('srcset', media.srcset);
+    }
+    if (media.sizes) {
+      modalImage.setAttribute('sizes', media.sizes);
+    }
     modalImage.style.display = 'block';
   }
   
@@ -2498,24 +2523,49 @@ function updateModalImage() {
         border: 1px solid rgba(255,255,255,0.3);
       `;
       
-      // Try to create video thumbnail
-      const video = document.createElement('video');
-      video.src = item.src;
-      video.style.cssText = `
-        width: 100%;
-        height: 100%;
-        min-width: 60px;
-        min-height: 60px;
-        object-fit: cover;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 2;
-        opacity: 1;
-        transition: opacity 0.3s ease;
-      `;
-      video.muted = true;
-      video.preload = 'metadata';
+      const previewSrc = item.previewImage || item.poster || '';
+      if (useImagePreview && previewSrc) {
+        const img = document.createElement('img');
+        img.src = previewSrc;
+        img.loading = item.loading || 'lazy';
+        img.decoding = item.decoding || 'async';
+        img.style.cssText = `
+          width: 100%;
+          height: 100%;
+          min-width: 60px;
+          min-height: 60px;
+          object-fit: cover;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          opacity: 1;
+        `;
+        thumbContainer.appendChild(img);
+      } else {
+        // Try to create video thumbnail
+        const video = document.createElement('video');
+        video.src = item.src;
+        video.style.cssText = `
+          width: 100%;
+          height: 100%;
+          min-width: 60px;
+          min-height: 60px;
+          object-fit: cover;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          opacity: 1;
+          transition: opacity 0.3s ease;
+        `;
+        video.muted = true;
+        video.preload = item.preload || 'metadata';
+        if (item.poster || item.previewImage) {
+          video.poster = item.poster || item.previewImage;
+        }
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
       
       // Add play icon overlay
       const playIcon = document.createElement('div');
@@ -2546,40 +2596,41 @@ function updateModalImage() {
       };
       
       // Event listeners for better iOS compatibility
-      video.addEventListener('loadedmetadata', loadThumbnail);
-      video.addEventListener('loadeddata', loadThumbnail);
-      video.addEventListener('canplay', () => {
-        console.log('Video can play - showing thumbnail');
-        video.style.opacity = '1';
-        videoIcon.style.opacity = '0.3';
-      });
-      
-      video.addEventListener('seeked', () => {
-        console.log('Video seeked successfully');
-        video.style.opacity = '1';
-        videoIcon.style.opacity = '0.3';
-      });
-      
-      // Error handling - show fallback if video fails to load
-      video.addEventListener('error', () => {
-        console.log('Video failed to load');
-        video.style.opacity = '0';
-        videoIcon.style.opacity = '1';
-        videoIcon.innerHTML = '🎬';
-        videoIcon.style.background = 'rgba(255,0,0,0.4)';
-      });
-      
-      // Timeout to ensure emoji stays visible if video doesn't load
-      setTimeout(() => {
-        if (video.style.opacity === '0') {
-          console.log('Video thumbnail timeout - keeping emoji visible');
+        video.addEventListener('loadedmetadata', loadThumbnail);
+        video.addEventListener('loadeddata', loadThumbnail);
+        video.addEventListener('canplay', () => {
+          console.log('Video can play - showing thumbnail');
+          video.style.opacity = '1';
+          videoIcon.style.opacity = '0.3';
+        });
+        
+        video.addEventListener('seeked', () => {
+          console.log('Video seeked successfully');
+          video.style.opacity = '1';
+          videoIcon.style.opacity = '0.3';
+        });
+        
+        // Error handling - show fallback if video fails to load
+        video.addEventListener('error', () => {
+          console.log('Video failed to load');
+          video.style.opacity = '0';
           videoIcon.style.opacity = '1';
-        }
-      }, 3000);
-      
-      thumbContainer.appendChild(videoIcon); // Fallback background
-      thumbContainer.appendChild(video);
-      thumbContainer.appendChild(playIcon);
+          videoIcon.innerHTML = '🎬';
+          videoIcon.style.background = 'rgba(255,0,0,0.4)';
+        });
+        
+        // Timeout to ensure emoji stays visible if video doesn't load
+        setTimeout(() => {
+          if (video.style.opacity === '0') {
+            console.log('Video thumbnail timeout - keeping emoji visible');
+            videoIcon.style.opacity = '1';
+          }
+        }, 3000);
+        
+        thumbContainer.appendChild(videoIcon); // Fallback background
+        thumbContainer.appendChild(video);
+        thumbContainer.appendChild(playIcon);
+      }
       
       thumbContainer.onclick = () => {
         currentModalIndex = index;
@@ -2591,6 +2642,11 @@ function updateModalImage() {
       // Create image thumbnail
       const thumb = document.createElement('img');
       thumb.src = item.src;
+      thumb.loading = item.loading || 'lazy';
+      thumb.decoding = item.decoding || 'async';
+      if (item.fetchPriority) {
+        thumb.fetchPriority = item.fetchPriority;
+      }
       thumb.style.cssText = `
         width: 60px;
         height: 60px;
