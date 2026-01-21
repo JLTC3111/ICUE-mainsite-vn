@@ -65,9 +65,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px auto;
+    margin: 10% auto;
     width: 100%;
-    transform: translate(125px, -75px);  /* Combines both X and Y translations */
+    transform: translate(25px, -75px);  /* Combines both X and Y translations */
 }
 
 .highlight-firstPart, .highlight-secondPart {
@@ -84,14 +84,12 @@
 .highlight-firstPart {
     display: inline-block;
     transform: rotate(5deg);
-    margin-left: 0;
     margin-right: 5px;
 }
 
 .highlight-secondPart {
     display: inline-flex;
     transform: rotate(-5deg);
-    margin-left: 5px;
     white-space: nowrap;
 }
 
@@ -122,13 +120,10 @@
 }
 
 .regular-text {
-    transform: rotate(-2deg);
-    color: whitesmoke;
+    font-size: clamp(1em, 2.5vw, 1.5em);
+    color: rgb(135, 48, 48);
     display: inline-block;
-    font-style: italic;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    margin-left: 200px;
-    margin-top: 0px;
 }
 
 .image-grid-top {
@@ -255,7 +250,7 @@
 }
 
 .greeting-text::before {
-    content: 'Hi There! -And- Welcome to ICUE';
+    content: 'Xin Chào ! -Bạn- Đã Đến Với ICUE';
     position: absolute;
     width: 100%;
     left: 0;
@@ -284,6 +279,14 @@
     height: auto;
     display: block;
     margin: 0 auto;
+}
+
+.middle-text {
+    font-size: clamp (1.5em, 3vw, 2.5em);
+    display: inline-block;
+    color: #874b1d;
+    padding: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .postcard-image:hover {
