@@ -1297,6 +1297,47 @@ const defaultMediaAttrs = {
   preload: 'metadata'
 };
 
+const preloadQueue = new Set();
+
+const scheduleIdleTask = (task) => {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(task, { timeout: 1000 });
+  } else {
+    setTimeout(task, 0);
+  }
+};
+
+const applyImageLoadEffects = (img) => {
+  if (!img) return;
+  img.style.filter = 'blur(12px)';
+  img.style.transition = 'filter 0.35s ease';
+  img.addEventListener('load', () => {
+    img.style.filter = 'blur(0)';
+  }, { once: true });
+};
+
+const preloadMediaItem = (item) => {
+  if (!item) return;
+  const isVideo = item.type === 'video' || item.src?.toLowerCase().includes('.mp4');
+  const src = isVideo ? (item.previewImage || item.poster || '') : item.src;
+  if (!src || preloadQueue.has(src)) return;
+  const img = new Image();
+  img.decoding = 'async';
+  img.src = src;
+  preloadQueue.add(src);
+};
+
+const preloadAdjacentMedia = (article, index) => {
+  if (!article || !Array.isArray(article.images) || article.images.length === 0) return;
+  const len = article.images.length;
+  const next = article.images[(index + 1) % len];
+  const prev = article.images[(index - 1 + len) % len];
+  scheduleIdleTask(() => {
+    preloadMediaItem(next);
+    preloadMediaItem(prev);
+  });
+};
+
 articles.forEach(article => {
   if (Array.isArray(article.images)) {
     article.images = article.images.map(item => ({
@@ -1322,6 +1363,7 @@ let articleEndX = 0;
 function setupArticleSwipe(article) {
   currentArticle = article;
   currentArticleIndex = 0;
+  preloadAdjacentMedia(article, 0);
   
   const imageContainer = document.getElementById("article-image").parentElement;
 
@@ -1463,6 +1505,7 @@ function navigateArticleMedia(direction) {
   
   updateArticleMedia();
   updateMediaIndicatorDots();
+  preloadAdjacentMedia(currentArticle, currentArticleIndex);
 }
 
 function updateArticleMedia() {
@@ -1883,6 +1926,7 @@ function updateArticleMedia() {
       if (media.sizes) {
         articleImageElement.setAttribute('sizes', media.sizes);
       }
+      applyImageLoadEffects(articleImageElement);
       articleImageElement.onclick = () => openImageModal(currentArticle.images, currentArticleIndex);
       
       // Add hover effects for images
@@ -2493,6 +2537,7 @@ function updateModalImage() {
     if (media.sizes) {
       modalImage.setAttribute('sizes', media.sizes);
     }
+    applyImageLoadEffects(modalImage);
     modalImage.style.display = 'block';
   }
   
@@ -2670,6 +2715,7 @@ function updateModalImage() {
       if (item.fetchPriority) {
         thumb.fetchPriority = item.fetchPriority;
       }
+      applyImageLoadEffects(thumb);
       thumb.style.cssText = `
         width: 60px;
         height: 60px;
@@ -2803,17 +2849,42 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isFirstVideo) {
         // If first media is video, create a video thumbnail with play overlay
         const imageContainer = articleImageElement.parentElement;
+        const prefersImagePreview = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+          window.matchMedia('(max-width: 768px)').matches || /android/i.test(navigator.userAgent);
+        const previewSrc = firstMedia.previewImage || firstMedia.poster || '';
         
-        // Create video element to extract thumbnail
-        const video = document.createElement('video');
-        video.src = firstMedia.src;
-        video.style.cssText = `
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        `;
-        video.muted = true;
-        video.currentTime = 1; // Try to get a frame from 1 second in
+        // Create preview media for video
+        let previewEl;
+        if (prefersImagePreview && previewSrc) {
+          const img = document.createElement('img');
+          img.src = previewSrc;
+          img.loading = 'eager';
+          img.decoding = 'async';
+          img.style.cssText = `
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          `;
+          applyImageLoadEffects(img);
+          previewEl = img;
+        } else {
+          const video = document.createElement('video');
+          video.src = firstMedia.src;
+          video.preload = firstMedia.preload || 'metadata';
+          if (firstMedia.poster || firstMedia.previewImage) {
+            video.poster = firstMedia.poster || firstMedia.previewImage;
+          }
+          video.setAttribute('playsinline', '');
+          video.setAttribute('webkit-playsinline', '');
+          video.style.cssText = `
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          `;
+          video.muted = true;
+          video.currentTime = 1; // Try to get a frame from 1 second in
+          previewEl = video;
+        }
         
         // Hide original image and show video thumbnail
         articleImageElement.style.display = 'none';
@@ -2864,7 +2935,7 @@ document.addEventListener("DOMContentLoaded", () => {
           z-index: 10;
         `;
         
-        videoContainer.appendChild(video);
+        videoContainer.appendChild(previewEl);
         videoContainer.appendChild(playIcon);
         videoContainer.appendChild(videoIndicator);
         
@@ -2878,11 +2949,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // If first media is image, use normal behavior
         articleImageElement.src = firstMedia.src;
+        articleImageElement.loading = 'eager';
+        articleImageElement.decoding = firstMedia.decoding || 'async';
+        articleImageElement.fetchPriority = 'high';
         articleImageElement.style.display = 'block';
         articleImageElement.style.width = '100%';
         articleImageElement.style.height = '550px';
         articleImageElement.style.objectFit = 'cover';
         articleImageElement.style.borderRadius = '8px';
+        applyImageLoadEffects(articleImageElement);
         articleCaptionElement.textContent = firstMedia.caption;
         
         // Add click handler for modal
