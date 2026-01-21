@@ -762,8 +762,21 @@ const HomeBackgroundVideoManager = (() => {
   let visibilityHandler = null;
   let endFallbackHandler = null;
   let isTransitioning = false;
+  let watchdogTimer = null;
+  let lastProgressTime = 0;
+  let lastCurrentTime = 0;
+  let playRetryTimer = null;
+  let playHandler = null;
+  let pauseHandler = null;
+  let waitingHandler = null;
+  let stalledHandler = null;
+  let errorHandler = null;
+  let activeMeta = null;
+  let errorSwapAttempted = false;
   let currentIndex = -1;
   let warmupVideo = null;
+
+  const logHomeBg = (...args) => console.log('[HomeBackgroundVideo]', ...args);
 
   const debounce = (fn, delay = 200) => {
     let timer;
@@ -796,6 +809,10 @@ const HomeBackgroundVideoManager = (() => {
       videoEl.preload = 'auto';
       videoEl.muted = true;
       videoEl.playsInline = true;
+      videoEl.setAttribute('muted', '');
+      videoEl.setAttribute('playsinline', '');
+      videoEl.setAttribute('autoplay', '');
+      videoEl.setAttribute('webkit-playsinline', '');
     }
     return videoEl;
   };
@@ -892,6 +909,22 @@ const HomeBackgroundVideoManager = (() => {
     warmupVideo.load();
   };
 
+  const attemptPlay = (label = 'play') => {
+    if (!videoEl) return;
+    const playPromise = videoEl.play();
+    if (playPromise?.catch) {
+      playPromise.catch(err => {
+        console.warn('[HomeBackgroundVideo] Autoplay blocked:', err);
+        logHomeBg('play failed', { label, err });
+        videoEl.muted = true;
+        videoEl.setAttribute('muted', '');
+        setTimeout(() => {
+          videoEl.play().catch(e2 => console.warn('[HomeBackgroundVideo] Retry play failed:', e2));
+        }, 200);
+      });
+    }
+  };
+
   const activateVideo = (meta) => {
     if (!videoEl || !meta) return;
     const { desktop, mobile } = ensureSources();
@@ -900,23 +933,42 @@ const HomeBackgroundVideoManager = (() => {
     desktop.src = meta.desktop;
     mobile.src = meta.mobile || meta.desktop;
 
+    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
+    if (!chosenSrc) return;
+    videoEl.src = chosenSrc;
+    videoEl.setAttribute('data-active-src', chosenSrc);
+    activeMeta = meta;
+    errorSwapAttempted = false;
+
     desktop.setAttribute('data-video-key', meta.id);
     mobile.setAttribute('data-video-key', meta.id);
 
+    logHomeBg('activate', meta.id, { desktop: meta.desktop, mobile: meta.mobile || meta.desktop, chosenSrc });
+
     videoEl.load();
 
-    const tryPlay = () => {
-      const playPromise = videoEl.play();
-      if (playPromise?.catch) {
-        playPromise.catch(err => console.warn('[HomeBackgroundVideo] Autoplay blocked:', err));
-      }
-    };
+    try {
+      videoEl.currentTime = 0;
+    } catch (e) {
+      logHomeBg('currentTime reset failed', e);
+    }
 
     if (videoEl.readyState >= 2) {
-      tryPlay();
+      attemptPlay('ready');
     } else {
-      videoEl.addEventListener('canplay', tryPlay, { once: true });
+      videoEl.addEventListener('loadedmetadata', () => logHomeBg('loadedmetadata', { duration: videoEl.duration, src: videoEl.currentSrc || videoEl.src }), { once: true });
+      videoEl.addEventListener('canplay', () => attemptPlay('canplay'), { once: true });
     }
+
+    if (playRetryTimer) clearTimeout(playRetryTimer);
+    playRetryTimer = setTimeout(() => {
+      if (!videoEl || isTransitioning) return;
+      if (videoEl.paused) {
+        logHomeBg('retry watchdog: forcing play', { currentTime: videoEl.currentTime, duration: videoEl.duration });
+        attemptPlay('retry-watchdog');
+      }
+    }, 1200);
 
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
@@ -939,6 +991,7 @@ const HomeBackgroundVideoManager = (() => {
   const handleEnded = () => {
     if (!videoPlaylist.length || isTransitioning) return;
     isTransitioning = true;
+    logHomeBg('handleEnded', { currentIndex, nextIndex: (currentIndex + 1) % videoPlaylist.length });
     goToIndex((currentIndex + 1) % videoPlaylist.length);
     setTimeout(() => { isTransitioning = false; }, 500);
   };
@@ -980,22 +1033,85 @@ const HomeBackgroundVideoManager = (() => {
       });
     }
 
+    playHandler = () => logHomeBg('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    pauseHandler = () => logHomeBg('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    waitingHandler = () => logHomeBg('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    stalledHandler = () => logHomeBg('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    errorHandler = () => {
+      const currentSrc = videoEl?.currentSrc || videoEl?.src;
+      logHomeBg('error', { error: videoEl?.error, currentSrc, active: videoEl?.getAttribute('data-active-src') });
+      if (!activeMeta || errorSwapAttempted) return;
+      const mobileSrc = activeMeta.mobile || activeMeta.desktop;
+      const desktopSrc = activeMeta.desktop;
+      const matchesMobile = currentSrc && mobileSrc && currentSrc.includes(mobileSrc);
+      const matchesDesktop = currentSrc && desktopSrc && currentSrc.includes(desktopSrc);
+      const trySwap = (nextSrc, reason) => {
+        if (!nextSrc || nextSrc === currentSrc) return;
+        errorSwapAttempted = true;
+        logHomeBg('error fallback swap', { reason, nextSrc });
+        videoEl.src = nextSrc;
+        videoEl.setAttribute('data-active-src', nextSrc);
+        videoEl.load();
+        attemptPlay('error-swap');
+      };
+      if (matchesMobile && desktopSrc) {
+        trySwap(desktopSrc, 'mobile->desktop');
+      } else if (matchesDesktop && mobileSrc && mobileSrc !== desktopSrc) {
+        trySwap(mobileSrc, 'desktop->mobile');
+      }
+    };
+
     videoEl.addEventListener('ended', handleEnded);
-    // Mobile fallback: some mobile browsers/devices may not reliably fire 'ended'.
-    // Keep a persistent timeupdate listener that works across all videos.
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      endFallbackHandler = function () {
-        try {
-          if (!videoEl || videoEl.paused || !videoEl.duration || isTransitioning) return;
-          // Trigger when within 0.5s of end to ensure it fires before video actually ends
-          if (videoEl.currentTime >= videoEl.duration - 0.5) {
+    videoEl.addEventListener('playing', playHandler);
+    videoEl.addEventListener('pause', pauseHandler);
+    videoEl.addEventListener('waiting', waitingHandler);
+    videoEl.addEventListener('stalled', stalledHandler);
+    videoEl.addEventListener('error', errorHandler);
+    
+    // Universal fallback: some browsers (especially mobile) don't reliably fire 'ended'.
+    // This persistent timeupdate listener ensures videos always transition.
+    endFallbackHandler = function () {
+      try {
+        if (!videoEl || videoEl.paused || isTransitioning) return;
+        const duration = videoEl.duration;
+        if (!duration || !isFinite(duration)) return;
+        
+        const timeRemaining = duration - videoEl.currentTime;
+        // Trigger transition when less than 1 second remains
+        if (timeRemaining <= 1.0 && timeRemaining >= 0) {
+          logHomeBg('fallback timeupdate', { currentTime: videoEl.currentTime, duration });
+          handleEnded();
+        }
+      } catch (e) {
+        console.warn('[HomeBackgroundVideo] endFallback error', e);
+      }
+    };
+    videoEl.addEventListener('timeupdate', endFallbackHandler);
+
+    if (!watchdogTimer) {
+      lastProgressTime = Date.now();
+      lastCurrentTime = 0;
+      watchdogTimer = setInterval(() => {
+        if (!videoEl || videoEl.paused || isTransitioning) return;
+        const duration = videoEl.duration;
+        const currentTime = videoEl.currentTime || 0;
+        const now = Date.now();
+        if (currentTime !== lastCurrentTime) {
+          lastCurrentTime = currentTime;
+          lastProgressTime = now;
+        }
+
+        if (duration && isFinite(duration)) {
+          const remaining = duration - currentTime;
+          if (remaining <= 1.0 && remaining >= 0) {
+            logHomeBg('fallback watchdog near-end', { currentTime, duration });
+            handleEnded();
+          } else if (currentTime > 0.1 && now - lastProgressTime > 3000) {
+            logHomeBg('fallback watchdog stalled', { currentTime, duration });
             handleEnded();
           }
-        } catch (e) {
-          console.warn('[HomeBackgroundVideo] endFallback error', e);
         }
-      };
-      videoEl.addEventListener('timeupdate', endFallbackHandler);
+      }, 500);
     }
     resizeHandler = debounce(handleResize, 250);
     window.addEventListener('resize', resizeHandler);
@@ -1007,10 +1123,28 @@ const HomeBackgroundVideoManager = (() => {
     if (videoEl) {
       videoEl.pause();
       videoEl.removeEventListener('ended', handleEnded);
+      if (playHandler) videoEl.removeEventListener('playing', playHandler);
+      if (pauseHandler) videoEl.removeEventListener('pause', pauseHandler);
+      if (waitingHandler) videoEl.removeEventListener('waiting', waitingHandler);
+      if (stalledHandler) videoEl.removeEventListener('stalled', stalledHandler);
+      if (errorHandler) videoEl.removeEventListener('error', errorHandler);
+      playHandler = null;
+      pauseHandler = null;
+      waitingHandler = null;
+      stalledHandler = null;
+      errorHandler = null;
       if (endFallbackHandler) {
         videoEl.removeEventListener('timeupdate', endFallbackHandler);
         endFallbackHandler = null;
       }
+    }
+    if (playRetryTimer) {
+      clearTimeout(playRetryTimer);
+      playRetryTimer = null;
+    }
+    if (watchdogTimer) {
+      clearInterval(watchdogTimer);
+      watchdogTimer = null;
     }
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
