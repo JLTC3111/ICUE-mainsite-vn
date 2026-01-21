@@ -1521,7 +1521,6 @@ nav a {
 }
 
 .home-hero__content {
-  margin-top: -15%;
   position: relative;
   z-index: 2;
   max-width: 920px;
@@ -1796,9 +1795,6 @@ nav a {
 }
 
 @media (max-width: 768px) {
-  .home-hero__content {
-    margin-top: -50%;
-  }
   .about-legacy-hero {
     padding: 5rem 6vw 3rem;
   }
