@@ -1271,15 +1271,11 @@ nav a {
 .contact-link {
   background: conic-gradient(
     from 180deg at 50% 50%,
-    #333 0deg,
-    #666 45deg,
-    #111 90deg,
-    #000 135deg,
-    #222 180deg,
-    #444 225deg,
-    #111 270deg,
-    #000 315deg,
-    #333 360deg
+    #fffdfd 0deg,
+    #c7c7c7 90deg,
+    #7f7e7e 180deg,
+    #616161 270deg,
+    #000000 360deg,
   );
   -webkit-background-clip: text;
   background-clip: text;
