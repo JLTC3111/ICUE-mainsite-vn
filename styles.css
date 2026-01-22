@@ -1712,7 +1712,7 @@ nav a {
   }
 }
 
-@media (max-width: 1440px) {
+@supports (animation-timeline: view()) {
   .home-section__header {
     opacity: 0;
     animation: clipPath 0.8s linear;
@@ -1728,7 +1728,7 @@ nav a {
 }
 
 @supports (animation-timeline: scroll()) {
-  @media (max-width: 1440px) {
+  @media (prefers-reduced-motion: no-preference) {
     @scroll-timeline home-sections-scroll {
       source: auto;
       axis: block;
