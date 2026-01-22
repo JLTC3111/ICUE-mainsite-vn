@@ -517,3 +517,65 @@ footer {
         }
     };
 })(window);
+
+function initHomeScrollReveal() {
+    const isHomeHash = !window.location.hash || window.location.hash === '#' || window.location.hash.toLowerCase() === '#/home';
+    const hasHomeSections = document.querySelector('#home-past-projects, #home-our-work, #home-news, #home-recruitment');
+    if (!isHomeHash && !hasHomeSections) return;
+
+    const targets = document.querySelectorAll('.home-section__header, #home-past-projects .home-card, #home-our-work .home-card, #home-news .home-card, #home-recruitment .home-card');
+    if (!targets.length) return;
+
+    const isMobile = window.innerWidth < 1440;
+    if (!isMobile) {
+        targets.forEach(el => {
+            el.classList.remove('home-reveal-target', 'home-in-view');
+        });
+        if (window.__homeScrollObserver) {
+            window.__homeScrollObserver.disconnect();
+            window.__homeScrollObserver = null;
+        }
+        return;
+    }
+
+    targets.forEach(el => {
+        el.classList.add('home-reveal-target');
+        el.classList.remove('home-in-view');
+    });
+
+    if (window.__homeScrollObserver) {
+        window.__homeScrollObserver.disconnect();
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('home-in-view');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.2,
+        rootMargin: '0px 0px -10% 0px'
+    });
+
+    targets.forEach(el => observer.observe(el));
+    window.__homeScrollObserver = observer;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initHomeScrollReveal, 50);
+});
+
+window.addEventListener('hashchange', () => {
+    setTimeout(initHomeScrollReveal, 50);
+});
+
+if (!window.__homeScrollResizeBound) {
+    window.__homeScrollResizeBound = true;
+    window.addEventListener('resize', () => {
+        clearTimeout(window.__homeScrollResizeTimer);
+        window.__homeScrollResizeTimer = setTimeout(initHomeScrollReveal, 150);
+    }, { passive: true });
+}
