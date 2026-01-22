@@ -1983,9 +1983,34 @@ window.initLogoSlider = () => {
   let speed = 1.75;
   let isPaused = false;
 
-  const loop = () => {
-    if (!isPaused) {
-      position -= speed;
+  const sliderState = window.__logoSliderState || {
+    rafId: null,
+    isRunning: false,
+    lastTs: 0,
+    visibilityBound: false
+  };
+  window.__logoSliderState = sliderState;
+
+  const stopLoop = () => {
+    sliderState.isRunning = false;
+    if (sliderState.rafId) {
+      cancelAnimationFrame(sliderState.rafId);
+      sliderState.rafId = null;
+    }
+  };
+
+  const loop = (ts) => {
+    if (!sliderState.isRunning) return;
+
+    if (!document.body.contains(logoList)) {
+      stopLoop();
+      return;
+    }
+
+    if (!document.hidden && !isPaused) {
+      const delta = sliderState.lastTs ? (ts - sliderState.lastTs) : 16.67;
+      const step = delta / 16.67;
+      position -= speed * step;
       const listWidth = logoList.scrollWidth;
       const containerWidth = logoList.parentElement.offsetWidth;
 
@@ -1996,10 +2021,25 @@ window.initLogoSlider = () => {
 
       logoList.style.transform = `translateX(${position}px)`;
     }
-    requestAnimationFrame(loop);
+
+    sliderState.lastTs = ts;
+    sliderState.rafId = requestAnimationFrame(loop);
   };
 
-  requestAnimationFrame(loop);
+  if (!sliderState.isRunning) {
+    sliderState.isRunning = true;
+    sliderState.lastTs = 0;
+    sliderState.rafId = requestAnimationFrame(loop);
+  }
+
+  if (!sliderState.visibilityBound) {
+    sliderState.visibilityBound = true;
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && sliderState.isRunning && !sliderState.rafId) {
+        sliderState.rafId = requestAnimationFrame(loop);
+      }
+    });
+  }
 
   // Pause on hover
   logoList.parentElement.addEventListener('mouseenter', () => isPaused = true);
@@ -4702,27 +4742,47 @@ function initAudioVisualizer(
   }
   
   function startAudioVisualizerLoop(barSelector = '.music-bars') {
-    function loop() {
-      requestAnimationFrame(loop);
-  
-      const av = window.__audioVisualizer;
-      if (!av) return;
-  
-      const { analyser, freqData } = av;
-      const bars = document.querySelectorAll(barSelector);
-  
-      if (!analyser || bars.length === 0) return;
-  
-      analyser.getByteFrequencyData(freqData);
-  
-      bars.forEach((bar, i) => {
-        const value = freqData[i];
-        const scale = Math.max(0.5, value / 180);
-        bar.style.transform = `scaleY(${scale})`;
-      });
-    }
-  
-    loop();
+    const vizState = window.__audioVisualizerLoopState || {
+      rafId: null,
+      isRunning: false,
+      lastTs: 0,
+      cachedBars: null
+    };
+    window.__audioVisualizerLoopState = vizState;
+
+    if (vizState.isRunning) return;
+
+    const loop = (ts) => {
+      if (!vizState.isRunning) return;
+
+      if (!document.hidden && ts - vizState.lastTs >= 33) {
+        vizState.lastTs = ts;
+        const av = window.__audioVisualizer;
+        if (av) {
+          const { analyser, freqData } = av;
+          if (!vizState.cachedBars || vizState.cachedBars.length === 0 || !vizState.cachedBars[0].isConnected) {
+            vizState.cachedBars = document.querySelectorAll(barSelector);
+          }
+          const bars = vizState.cachedBars || [];
+
+          if (analyser && bars.length > 0) {
+            analyser.getByteFrequencyData(freqData);
+
+            bars.forEach((bar, i) => {
+              const value = freqData[i];
+              const scale = Math.max(0.5, value / 180);
+              bar.style.transform = `scaleY(${scale})`;
+            });
+          }
+        }
+      }
+
+      vizState.rafId = requestAnimationFrame(loop);
+    };
+
+    vizState.isRunning = true;
+    vizState.lastTs = 0;
+    vizState.rafId = requestAnimationFrame(loop);
   }
   
   window.addEventListener('DOMContentLoaded', () => {
