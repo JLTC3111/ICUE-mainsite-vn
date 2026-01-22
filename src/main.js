@@ -525,20 +525,18 @@ function initHomeScrollReveal() {
 
     const targets = document.querySelectorAll('.home-section__header, #home-past-projects .home-card, #home-our-work .home-card, #home-news .home-card, #home-recruitment .home-card');
     if (!targets.length) return;
+    const state = window.__homeScrollRevealState || {
+        rafId: null,
+        targets: [],
+        needsUpdate: false,
+        done: false
+    };
+    window.__homeScrollRevealState = state;
 
-    const isMobile = window.innerWidth < 1440;
-    if (!isMobile) {
-        targets.forEach(el => {
-            el.classList.remove('home-reveal-target', 'home-in-view');
-        });
-        if (window.__homeScrollRafId) {
-            cancelAnimationFrame(window.__homeScrollRafId);
-            window.__homeScrollRafId = null;
-        }
-        return;
-    }
+    state.targets = Array.from(targets);
+    state.done = false;
 
-    targets.forEach(el => {
+    state.targets.forEach(el => {
         el.classList.add('home-reveal-target');
         el.classList.remove('home-in-view');
     });
@@ -546,10 +544,13 @@ function initHomeScrollReveal() {
     const revealThreshold = 0.8;
 
     const updateReveal = () => {
+        state.rafId = null;
+        if (state.done) return;
+
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         let allRevealed = true;
 
-        targets.forEach(el => {
+        state.targets.forEach(el => {
             if (el.classList.contains('home-in-view')) return;
             const rect = el.getBoundingClientRect();
             const isVisible = rect.top <= viewportHeight * revealThreshold && rect.bottom >= 0;
@@ -560,18 +561,17 @@ function initHomeScrollReveal() {
             }
         });
 
-        if (!allRevealed) {
-            window.__homeScrollRafId = requestAnimationFrame(updateReveal);
-        } else {
-            window.__homeScrollRafId = null;
+        state.done = allRevealed;
+        if (!state.done && state.needsUpdate) {
+            state.needsUpdate = false;
+            state.rafId = requestAnimationFrame(updateReveal);
         }
     };
 
-    if (window.__homeScrollRafId) {
-        cancelAnimationFrame(window.__homeScrollRafId);
+    state.needsUpdate = true;
+    if (!state.rafId) {
+        state.rafId = requestAnimationFrame(updateReveal);
     }
-
-    window.__homeScrollRafId = requestAnimationFrame(updateReveal);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -589,10 +589,25 @@ if (!window.__homeScrollResizeBound) {
         window.__homeScrollResizeTimer = setTimeout(initHomeScrollReveal, 150);
     }, { passive: true });
     window.addEventListener('scroll', () => {
-        if (window.__homeScrollRafId == null) {
-            window.__homeScrollRafId = requestAnimationFrame(() => {
-                window.__homeScrollRafId = null;
-                initHomeScrollReveal();
+        const state = window.__homeScrollRevealState;
+        if (!state || state.done) return;
+        state.needsUpdate = true;
+        if (!state.rafId) {
+            state.rafId = requestAnimationFrame(() => {
+                state.rafId = null;
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                let allRevealed = true;
+                state.targets.forEach(el => {
+                    if (el.classList.contains('home-in-view')) return;
+                    const rect = el.getBoundingClientRect();
+                    const isVisible = rect.top <= viewportHeight * 0.8 && rect.bottom >= 0;
+                    if (isVisible) {
+                        el.classList.add('home-in-view');
+                    } else {
+                        allRevealed = false;
+                    }
+                });
+                state.done = allRevealed;
             });
         }
     }, { passive: true });

@@ -1701,17 +1701,6 @@ nav a {
   }
 }
 
-@keyframes homeFadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes homeFadeInUp {
   from {
     opacity: 0;
@@ -1720,41 +1709,6 @@ nav a {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@media (max-width: 1440px) {
-  .home-reveal-target {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  .home-section__header.home-reveal-target {
-    transform: translateX(24px);
-  }
-
-  .home-reveal-target.home-in-view {
-    animation: homeFadeInUp 0.9s ease-out forwards;
-  }
-
-  .home-section__header.home-reveal-target.home-in-view {
-    animation: homeFadeInRight 0.8s ease-out forwards;
-  }
-
-  .home-grid .home-card.home-in-view:nth-child(2) {
-    animation-delay: 0.12s;
-  }
-
-  .home-grid .home-card.home-in-view:nth-child(3) {
-    animation-delay: 0.24s;
-  }
-}
-
-@media (max-width: 1440px) and (prefers-reduced-motion: reduce) {
-  .home-reveal-target {
-    opacity: 1;
-    transform: none;
-    animation: none !important;
   }
 }
 
