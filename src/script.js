@@ -788,9 +788,9 @@ const HomeBackgroundVideoManager = (() => {
 
   const scheduleIdleTask = (task) => {
     if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(task, { timeout: 1000 });
+      window.requestIdleCallback(task, { timeout: 2000 });
     } else {
-      setTimeout(task, 0);
+      setTimeout(task, 100); // Small delay instead of 0 to avoid blocking main thread
     }
   };
 
@@ -817,30 +817,10 @@ const HomeBackgroundVideoManager = (() => {
     return videoEl;
   };
 
+  // Simplified - no longer needed since we use direct src assignment
+  // Kept for backward compatibility but returns early
   const ensureSources = () => {
-    if (!videoEl) return { desktop: null, mobile: null };
-    let desktop = document.getElementById('bgVideoHome');
-    let mobile = document.getElementById('bgVideHomeMobile');
-
-    if (!desktop) {
-      desktop = document.createElement('source');
-      desktop.id = 'bgVideoHome';
-      desktop.type = 'video/mp4';
-      desktop.media = '(min-width: 768px)';
-      desktop.setAttribute('data-variant', 'desktop');
-      videoEl.appendChild(desktop);
-    }
-
-    if (!mobile) {
-      mobile = document.createElement('source');
-      mobile.id = 'bgVideHomeMobile';
-      mobile.type = 'video/mp4';
-      mobile.media = '(max-width: 767px)';
-      mobile.setAttribute('data-variant', 'mobile');
-      videoEl.appendChild(mobile);
-    }
-
-    return { desktop, mobile };
+    return { desktop: null, mobile: null };
   };
 
   const applyNavTheme = (meta) => {
@@ -888,12 +868,9 @@ const HomeBackgroundVideoManager = (() => {
       warmupVideo = document.createElement('video');
       warmupVideo.muted = true;
       warmupVideo.playsInline = true;
-      warmupVideo.preload = 'auto';
+      warmupVideo.preload = 'metadata'; // Changed from 'auto' to 'metadata' for lighter load
       warmupVideo.setAttribute('aria-hidden', 'true');
-      warmupVideo.style.position = 'absolute';
-      warmupVideo.style.width = '1px';
-      warmupVideo.style.height = '1px';
-      warmupVideo.style.left = '-9999px';
+      warmupVideo.style.cssText = 'position:absolute;width:1px;height:1px;left:-9999px;pointer-events:none;';
       document.body.appendChild(warmupVideo);
     }
 
@@ -927,24 +904,25 @@ const HomeBackgroundVideoManager = (() => {
 
   const activateVideo = (meta) => {
     if (!videoEl || !meta) return;
-    const { desktop, mobile } = ensureSources();
-    if (!desktop || !mobile) return;
-
-    desktop.src = meta.desktop;
-    mobile.src = meta.mobile || meta.desktop;
-
+    
     const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
     const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!chosenSrc) return;
+    
+    // Skip if already active to avoid unnecessary reloads
+    const currentActiveSrc = videoEl.getAttribute('data-active-src');
+    if (currentActiveSrc === chosenSrc) {
+      logHomeBg('skip activate - already active', meta.id);
+      return;
+    }
+    
     videoEl.src = chosenSrc;
     videoEl.setAttribute('data-active-src', chosenSrc);
+    videoEl.setAttribute('data-video-key', meta.id);
     activeMeta = meta;
     errorSwapAttempted = false;
 
-    desktop.setAttribute('data-video-key', meta.id);
-    mobile.setAttribute('data-video-key', meta.id);
-
-    logHomeBg('activate', meta.id, { desktop: meta.desktop, mobile: meta.mobile || meta.desktop, chosenSrc });
+    logHomeBg('activate', meta.id, { chosenSrc });
 
     videoEl.load();
 
@@ -963,12 +941,10 @@ const HomeBackgroundVideoManager = (() => {
 
     if (playRetryTimer) clearTimeout(playRetryTimer);
     playRetryTimer = setTimeout(() => {
-      if (!videoEl || isTransitioning) return;
-      if (videoEl.paused) {
-        logHomeBg('retry watchdog: forcing play', { currentTime: videoEl.currentTime, duration: videoEl.duration });
-        attemptPlay('retry-watchdog');
-      }
-    }, 1200);
+      if (!videoEl || isTransitioning || !videoEl.paused) return;
+      logHomeBg('retry watchdog: forcing play', { currentTime: videoEl.currentTime, duration: videoEl.duration });
+      attemptPlay('retry-watchdog');
+    }, 1500);
 
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
@@ -1033,10 +1009,18 @@ const HomeBackgroundVideoManager = (() => {
       });
     }
 
-    playHandler = () => logHomeBg('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
-    pauseHandler = () => logHomeBg('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
-    waitingHandler = () => logHomeBg('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
-    stalledHandler = () => logHomeBg('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    let lastLogTime = 0;
+    const throttleLog = (msg, data) => {
+      const now = Date.now();
+      if (now - lastLogTime > 1000) { // Only log once per second
+        logHomeBg(msg, data);
+        lastLogTime = now;
+      }
+    };
+    playHandler = () => throttleLog('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    pauseHandler = () => throttleLog('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    waitingHandler = () => throttleLog('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    stalledHandler = () => throttleLog('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
     errorHandler = () => {
       const currentSrc = videoEl?.currentSrc || videoEl?.src;
       logHomeBg('error', { error: videoEl?.error, currentSrc, active: videoEl?.getAttribute('data-active-src') });
@@ -1106,17 +1090,17 @@ const HomeBackgroundVideoManager = (() => {
           if (remaining <= 1.0 && remaining >= 0) {
             logHomeBg('fallback watchdog near-end', { currentTime, duration });
             handleEnded();
-          } else if (currentTime > 0.1 && now - lastProgressTime > 3000) {
+          } else if (currentTime > 0.1 && now - lastProgressTime > 5000) {
             logHomeBg('fallback watchdog stalled', { currentTime, duration });
             handleEnded();
           }
         }
-      }, 500);
+      }, 1000);
     }
-    resizeHandler = debounce(handleResize, 250);
-    window.addEventListener('resize', resizeHandler);
+    resizeHandler = debounce(handleResize, 300);
+    window.addEventListener('resize', resizeHandler, { passive: true });
     visibilityHandler = handleVisibilityChange;
-    document.addEventListener('visibilitychange', visibilityHandler);
+    document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
   };
 
   const destroy = () => {
