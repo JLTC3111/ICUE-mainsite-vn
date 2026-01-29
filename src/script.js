@@ -1193,29 +1193,22 @@ window.loadPage = (page) => {
   landing.style.opacity = 1;
   landing.style.pointerEvents = 'All';
 
-  let fakeProgress = setInterval(() => {
-    progress += Math.random() * 1.5;
-    if (progress > 90) progress = 90;
-    setProgress(progress);
-  }, 80);
+  // Show quick progress animation
+  setProgress(30);
   
   fetch(`/src/pages/${page}.html`)
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
-    clearInterval(fakeProgress); 
+    setProgress(100);
 
-    let finalize = setInterval(() => {
-      progress += 2;
-      setProgress(progress);
-      if (progress >= 100) {
-        clearInterval(finalize);
+    // Hide loading overlay immediately after content loads
+    setTimeout(() => {
+      landing.style.opacity = 0;
+      landing.style.pointerEvents = 'none';
 
-        landing.style.opacity = 0;
-        landing.style.pointerEvents = 'none';
-
-        setTimeout(() => {
-          landing.style.display = 'none';
+      setTimeout(() => {
+        landing.style.display = 'none';
 
             requestAnimationFrame(() => {
               retriggerMenuAnimations();
@@ -1289,9 +1282,8 @@ window.loadPage = (page) => {
                   break;
               }
             });
-          }, 10);
-        }
-      }, 0);
+          }, 100);
+      }, 200);
     });
 };
 

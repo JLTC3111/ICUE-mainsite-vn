@@ -14,6 +14,18 @@
   <meta name="description" content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Và Đô Thị, Trung Tâm Sáng Tạo, Đổi Mới. Khám phá các dự án, hoạt động cộng đồng, tin tức và thông tin liên hệ." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://icue.vn/" />
+  
+  <!-- Resource hints for faster loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  
   <meta property="og:url" content="https://icue.vn/" />
   <meta property="og:site_name" content="iCUE Vietnam" />
   <meta property="og:image" content="https://icue.vn/logoIcons/logo.png" />
@@ -39,7 +51,7 @@
   <link rel="stylesheet" href="styles.css?v=20250712">
   <script src="src/script.js?v=20250712" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
 </head>
 
 <body class="preload">
@@ -243,9 +255,9 @@
   </main>
   
   <!-- Load model-viewer once -->
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
 <script>
   window.addEventListener("load", () => {
     document.body.classList.remove("preload");
