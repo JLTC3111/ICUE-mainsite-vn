@@ -1,5 +1,13 @@
+const ICUE_FOOTER_ID = 'icue-footer';
+const ICUE_FOOTER_STYLE_ID = 'icue-footer-style';
+
 function injectFooter(targetSelector = 'body') {
-try { 
+try {
+        // Idempotency: never inject twice
+        if (document.getElementById(ICUE_FOOTER_ID)) {
+            return true;
+        }
+
 const css = `
 footer {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
@@ -167,11 +175,55 @@ footer {
     transform: scale(1.025);
 }
 
-.footer-column h3 {
-    color: #ffffff;
-    font-size: clamp(14px, 2.5vw, 18px);
-    font-weight: 500;
-    text-align: center;
+.footer-toggle {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        padding: 10px 0;
+        color: #ffffff;
+        font-size: clamp(14px, 2.5vw, 18px);
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+}
+
+.footer-toggle:hover {
+        transform: scale(1.025);
+}
+
+.collapsible {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+}
+
+.underline-hover {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+}
+
+.underline-hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 1px;
+    background-color: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.underline-hover:hover::after {
+    transform: scaleX(1);
+}
+
+.footer-section a {
     margin-bottom: 5px;
 }
 
@@ -180,8 +232,8 @@ footer {
     color: #888;
     font-size: clamp(12px, 2.5vw, 15px);
     text-align: center;
-    text-decoration: none;
-    margin-bottom: 12px;
+
+.footer-section a:hover {
     transition: color 0.3s ease;
 }
 
@@ -248,24 +300,28 @@ footer {
         justify-content: center;
     }
 
-    .footer-column h3 {
+    .footer-toggle {
         text-decoration: underline;
+    }
+
+    .footer-section:not(.open) .collapsible {
+        display: none;
     }
 }`;
 
 const html = `
-<footer>
+<footer id="${ICUE_FOOTER_ID}" data-icue-footer="true">
     <div class="footer-container">
         <div class="footer-section">
-            <h3>Công Ty</h3>
+            <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Công Ty</button>
             <div class="collapsible">
-                <a href="#">Giải Thưởng Nổi Bật</a>
-                <a href="#">Hoạt Động Cộng Đồng</a>
-                <a href="#">Bản Tin</a>
+                <a href="#/notableAwards">Giải Thưởng Nổi Bật</a>
+                <a href="#/communityActivities">Hoạt Động Cộng Đồng</a>
+                <a href="#/News">Bản Tin</a>
             </div>
         </div>
         <div class="footer-section">
-            <h3>Các Trang Khác</h3>
+            <button class="footer-toggle underline-hover" type="button" aria-expanded="false">Các Trang Khác</button>
             <div class="collapsible">
                 <a href="#/FAQs">Câu Hỏi Thường Gặp</a>
                 <a href="#/recruitment">Tuyển Dụng</a>
@@ -274,19 +330,19 @@ const html = `
         </div>
         <div class="footer-brand">
             <div class="security-badges">
-                <div class="badge norton">
+                <div class="badge norton" data-tooltip="Norton Secured">
                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                         <path d="M12 2V7M12 2C11.2867 2 10.5909 2.07467 9.91991 2.21663M12 2C12.7132 2 13.4091 2.07467 14.08 2.21663M12 7C9.23855 7 7 9.2386 7 12M12 7C14.7614 7 17 9.2386 17 12M12 17V22M12 17C14.7614 17 17 14.7614 17 12M12 17C9.23855 17 7 14.7614 7 12M12 22C12.7122 22 13.407 21.9255 14.077 21.784M12 22C11.2851 22 10.5878 21.925 9.91545 21.7824" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     Norton Secured
                 </div>
-                <div class="badge ssl">
+                <div class="badge ssl" data-tooltip="SSL Encrypted">
                     <svg width="16px" height="16px" viewBox="0 0 24 24" fill="#ffffff">
                         <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 7C13.4 7 14.8 8.6 14.8 10.2V11H16V16H8V11H9.2V10.2C9.2 8.6 10.6 7 12 7M12 8.2C11.2 8.2 10.4 8.7 10.4 10.2V11H13.6V10.2C13.6 8.7 12.8 8.2 12 8.2Z"/>
                     </svg>
                     SSL Encrypted
                 </div>
-                <div class="badge payment">
+                <div class="badge payment" data-tooltip="Visa / MasterCard">
                     <svg fill="#ffffff" width="16px" height="16px" viewBox="0 0 32 32">
                         <path d="M29.005 5.5h-26.009c-1.657 0-3 1.343-3 3v15c0 1.657 1.343 3 3 3h26.009c1.657 0 3-1.343 3-3v-15c0-1.657-1.343-3-3-3z"/>
                     </svg>
@@ -297,29 +353,32 @@ const html = `
     </div>
     <div class="footer-bottom">
         <div class="footer-bottom-left">
-            <a href="#">Quyền Riêng Tư</a>
+            <a href="#/privacy">Quyền Riêng Tư</a>
             <span>|</span>
-            <a href="#">Điều Khoản</a>
+            <a href="#/terms">Điều Khoản</a>
             <span>|</span>
-            <a href="#">GDPR</a>
+            <a href="#/gdpr">GDPR</a>
             <span>|</span>
-            <a href="#">Cookies</a>
+            <a href="#/cookies">Cookies</a>
         </div>
         <div class="footer-bottom-right">
-            <a href="#" class="company-deck">
-                Hợp Tác Cùng Chúng Tôi
-            </a>
+            <a href="#/Contact" class="company-deck">Hợp Tác Cùng Chúng Tôi</a>
         </div>
     </div>
 </footer>`;
 
-        // Inject CSS
-        const styleElement = document.createElement('style');
-        styleElement.textContent = css;
-        document.head.appendChild(styleElement);
+        // Inject CSS (once)
+        if (!document.getElementById(ICUE_FOOTER_STYLE_ID)) {
+            const styleElement = document.createElement('style');
+            styleElement.id = ICUE_FOOTER_STYLE_ID;
+            styleElement.textContent = css;
+            document.head.appendChild(styleElement);
+        }
 
         // Inject HTML
-        const targetElement = document.querySelector(targetSelector);
+        const targetElement = (typeof targetSelector === 'string')
+            ? document.querySelector(targetSelector)
+            : targetSelector;
         if (!targetElement) {
             console.error('ICUEFooter: Target element not found');
             return false;
@@ -327,8 +386,8 @@ const html = `
 
         targetElement.insertAdjacentHTML('beforeend', html);
 
-        // Inject JavaScript for mobile toggles
-        const toggles = document.querySelectorAll(".footer-toggle");
+        // Mobile toggle behavior
+        const toggles = document.querySelectorAll("#" + ICUE_FOOTER_ID + " .footer-toggle");
         toggles.forEach(toggle => {
             toggle.addEventListener("click", () => {
                 const section = toggle.closest(".footer-section");
@@ -350,12 +409,12 @@ const html = `
 function autoInjectFooter() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            if (!document.querySelector('footer')) {
+            if (!document.getElementById(ICUE_FOOTER_ID)) {
                 injectFooter();
             }
         });
     } else {
-        if (!document.querySelector('footer')) {
+        if (!document.getElementById(ICUE_FOOTER_ID)) {
             injectFooter();
         }
     }
@@ -372,7 +431,7 @@ if (typeof window !== 'undefined') {
             if (typeof element === 'string') {
                 element = document.querySelector(element);
             }
-            
+
             if (!element) {
                 console.error('ICUEFooter: Element not found');
                 return false;
@@ -403,3 +462,12 @@ if (typeof window !== 'undefined') {
 
 // Auto-inject if this script is loaded directly
 autoInjectFooter();
+
+// Re-inject on BFCache restore
+if (typeof window !== 'undefined') {
+    window.addEventListener('pageshow', (event) => {
+        if (event && event.persisted) {
+            autoInjectFooter();
+        }
+    });
+}
