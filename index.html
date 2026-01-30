@@ -81,6 +81,16 @@
       <a id="page-switch" href="" class="flag-link">
           <span id="langSwitcher" class="flag-icon flag-icon-gb"></span>    
       </a>
+
+      <div class="home-video-toggle" id="homeVideoToggleContainer" aria-label="Bật/tắt video nền" hidden>
+        <label class="home-video-toggle__label" for="homeVideoToggle">
+          <input id="homeVideoToggle" class="home-video-toggle__input" type="checkbox" />
+          <span class="home-video-toggle__track" aria-hidden="true">
+            <span class="home-video-toggle__thumb" aria-hidden="true"></span>
+          </span>
+          <span class="home-video-toggle__text">Video</span>
+        </label>
+      </div>
     </div>
   
     <div class="menu-toggle" id="menuToggle" onclick="toggleDrawerMenu()">

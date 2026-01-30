@@ -729,6 +729,28 @@ window.setNavLinkContrast = (useLightLinks = false) => {
 };
 
 const HomeBackgroundVideoManager = (() => {
+  const STORAGE_KEY_ENABLED = 'home_bg_video_enabled';
+
+  const getUserEnabled = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
+      // Default OFF when user has never set a preference.
+      if (raw === null) return false;
+      return raw === '1' || raw === 'true' || raw === 'on';
+    } catch (e) {
+      // If storage is unavailable, keep the experience conservative.
+      return false;
+    }
+  };
+
+  const setUserEnabled = (enabled) => {
+    try {
+      localStorage.setItem(STORAGE_KEY_ENABLED, enabled ? '1' : '0');
+    } catch (e) {
+      // ignore
+    }
+  };
+
   const videoPlaylist = [
     {
       id: 'momentum',
@@ -798,10 +820,24 @@ const HomeBackgroundVideoManager = (() => {
 
   const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
-  const shouldKeepStatic = () => {
+  const canPlayVideosInThisContext = () => {
     const connection = getConnection();
     const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return isMobileViewport() || window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
+    return !isMobileViewport() && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
+  };
+
+  const shouldKeepStatic = () => {
+    if (!getUserEnabled()) return true;
+    return !canPlayVideosInThisContext();
+  };
+
+  const syncRootVideoStateAttr = () => {
+    if (!document?.documentElement) return;
+    if (shouldKeepStatic()) {
+      document.documentElement.setAttribute('data-home-bg-video', 'off');
+    } else {
+      document.documentElement.removeAttribute('data-home-bg-video');
+    }
   };
 
   const ensureVideoElement = () => {
@@ -992,6 +1028,11 @@ const HomeBackgroundVideoManager = (() => {
     HomeBackgroundVideoManager.destroy();
     if (!ensureVideoElement()) return;
 
+    // Bind toggle UI whenever Home is (re)rendered
+    HomeBackgroundVideoManager.bindToggleUI();
+
+    syncRootVideoStateAttr();
+
     if (shouldKeepStatic()) {
       clearVideoSources();
       // Static hero background is dark; keep navigation readable.
@@ -1108,6 +1149,7 @@ const HomeBackgroundVideoManager = (() => {
 
   const destroy = () => {
     if (videoEl) {
+      clearVideoSources();
       videoEl.pause();
       videoEl.removeEventListener('ended', handleEnded);
       if (playHandler) videoEl.removeEventListener('playing', playHandler);
@@ -1152,7 +1194,42 @@ const HomeBackgroundVideoManager = (() => {
     applyNavTheme(null);
   };
 
-  return { init, destroy };
+  const bindToggleUI = () => {
+    const toggle = document.getElementById('homeVideoToggle');
+    if (!toggle) return;
+    if (toggle.getAttribute('data-home-video-toggle-bound') === '1') {
+      // Still keep state in sync across rerenders
+      toggle.checked = getUserEnabled();
+      toggle.disabled = !canPlayVideosInThisContext();
+      return;
+    }
+
+    toggle.setAttribute('data-home-video-toggle-bound', '1');
+    toggle.checked = getUserEnabled();
+    toggle.disabled = !canPlayVideosInThisContext();
+    syncRootVideoStateAttr();
+
+    toggle.addEventListener('change', () => {
+      HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
+    });
+  };
+
+  const setEnabled = (enabled) => {
+    setUserEnabled(!!enabled);
+    syncRootVideoStateAttr();
+    if (enabled) {
+      HomeBackgroundVideoManager.init();
+    } else {
+      HomeBackgroundVideoManager.destroy();
+      // Static hero background is dark; keep navigation readable.
+      applyNavTheme({ prefersLightNav: true });
+      bindToggleUI();
+    }
+  };
+
+  const isEnabled = () => getUserEnabled();
+
+  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
 })();
 
 window.HomeBackgroundVideoManager = HomeBackgroundVideoManager;
@@ -1166,6 +1243,9 @@ window.loadPage = (page) => {
   const circumference = 2 * Math.PI * radius;
 
   window.HomeBackgroundVideoManager?.destroy();
+
+  const homeVideoToggleContainer = document.getElementById('homeVideoToggleContainer');
+  if (homeVideoToggleContainer) homeVideoToggleContainer.hidden = true;
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
@@ -1219,10 +1299,12 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
+                  if (homeVideoToggleContainer) homeVideoToggleContainer.hidden = false;
                   makeItRainText();
                   realSlamnorSlam();
                   
                   attachHomeButtonEvents();
+                  HomeBackgroundVideoManager.bindToggleUI();
                   HomeBackgroundVideoManager.init();
                   break;
                 case 'News':
