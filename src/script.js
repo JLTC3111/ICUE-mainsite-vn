@@ -794,12 +794,14 @@ const HomeBackgroundVideoManager = (() => {
     }
   };
 
+  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+
   const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
   const shouldKeepStatic = () => {
     const connection = getConnection();
     const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
+    return isMobileViewport() || window.matchMedia('(prefers-reduced-motion: reduce)').matches || slowNetwork;
   };
 
   const ensureVideoElement = () => {
@@ -992,7 +994,8 @@ const HomeBackgroundVideoManager = (() => {
 
     if (shouldKeepStatic()) {
       clearVideoSources();
-      applyNavTheme(null);
+      // Static hero background is dark; keep navigation readable.
+      applyNavTheme({ prefersLightNav: true });
       return;
     }
 

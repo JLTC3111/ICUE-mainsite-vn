@@ -1512,6 +1512,21 @@ nav a {
   z-index: 0;
 }
 
+/* Static Home hero background (always present under the video).
+   Best practice: provides a fast first paint and a graceful fallback when video is disabled
+   (mobile, reduced motion, or data-saver). */
+.home-hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 800px at 18% 20%, rgba(29, 183, 255, 0.32) 0%, rgba(29, 183, 255, 0) 60%),
+    radial-gradient(900px 700px at 82% 16%, rgba(31, 210, 128, 0.22) 0%, rgba(31, 210, 128, 0) 55%),
+    radial-gradient(700px 700px at 70% 85%, rgba(255, 242, 178, 0.12) 0%, rgba(255, 242, 178, 0) 60%),
+    linear-gradient(180deg, #071a24 0%, #081b13 50%, #05070b 100%);
+  transform: translateZ(0);
+}
+
 .home-hero__overlay {
   position: absolute;
   inset: 0;
@@ -1662,6 +1677,12 @@ nav a {
 
 .home-hero .video-bg {
   z-index: 0;
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .home-hero .video-bg {
+    display: none !important;
+  }
 }
 
 .home-section__header {
