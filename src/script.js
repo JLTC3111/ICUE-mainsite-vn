@@ -823,7 +823,9 @@ const HomeBackgroundVideoManager = (() => {
   const canPlayVideosInThisContext = () => {
     const connection = getConnection();
     const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return !isMobileViewport() && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
+    // Mobile is allowed: keep video available and let the user toggle.
+    // Still respect reduced-motion and data-saver/slow-network.
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
   };
 
   const shouldKeepStatic = () => {
@@ -1195,22 +1197,29 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const bindToggleUI = () => {
-    const toggle = document.getElementById('homeVideoToggle');
-    if (!toggle) return;
-    if (toggle.getAttribute('data-home-video-toggle-bound') === '1') {
-      // Still keep state in sync across rerenders
-      toggle.checked = getUserEnabled();
-      toggle.disabled = !canPlayVideosInThisContext();
-      return;
-    }
+    const toggles = [
+      document.getElementById('homeVideoToggleDesktop'),
+      document.getElementById('homeVideoToggleMobile')
+    ].filter(Boolean);
 
-    toggle.setAttribute('data-home-video-toggle-bound', '1');
-    toggle.checked = getUserEnabled();
-    toggle.disabled = !canPlayVideosInThisContext();
+    if (!toggles.length) return;
+
+    const enabled = getUserEnabled();
+    const canPlay = canPlayVideosInThisContext();
     syncRootVideoStateAttr();
 
-    toggle.addEventListener('change', () => {
-      HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
+    toggles.forEach((toggle) => {
+      toggle.checked = enabled;
+      toggle.disabled = !canPlay;
+
+      if (toggle.getAttribute('data-home-video-toggle-bound') === '1') {
+        return;
+      }
+
+      toggle.setAttribute('data-home-video-toggle-bound', '1');
+      toggle.addEventListener('change', () => {
+        HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
+      });
     });
   };
 
@@ -1223,8 +1232,10 @@ const HomeBackgroundVideoManager = (() => {
       HomeBackgroundVideoManager.destroy();
       // Static hero background is dark; keep navigation readable.
       applyNavTheme({ prefersLightNav: true });
-      bindToggleUI();
     }
+
+    // Keep both (desktop + mobile) toggles in sync.
+    bindToggleUI();
   };
 
   const isEnabled = () => getUserEnabled();
@@ -1243,9 +1254,6 @@ window.loadPage = (page) => {
   const circumference = 2 * Math.PI * radius;
 
   window.HomeBackgroundVideoManager?.destroy();
-
-  const homeVideoToggleContainer = document.getElementById('homeVideoToggleContainer');
-  if (homeVideoToggleContainer) homeVideoToggleContainer.hidden = true;
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
@@ -1278,6 +1286,33 @@ window.loadPage = (page) => {
         landing.style.display = 'none';
 
             requestAnimationFrame(() => {
+              // Handle video toggle and contact link visibility first
+              const homeVideoToggleContainers = [
+                document.getElementById('homeVideoToggleContainerDesktop'),
+                document.getElementById('homeVideoToggleContainerMobile')
+              ].filter(Boolean);
+              const contactLink = document.getElementById('contactLink');
+
+              if (page === 'Home') {
+                // Show toggle and contact link on Home page - let CSS control responsive display
+                homeVideoToggleContainers.forEach((container) => {
+                  container.hidden = false;
+                  container.style.removeProperty('display');
+                });
+                if (contactLink) {
+                  contactLink.style.removeProperty('display');
+                }
+              } else {
+                // Hide on all other pages with !important to override CSS
+                homeVideoToggleContainers.forEach((container) => {
+                  container.hidden = true;
+                  container.style.setProperty('display', 'none', 'important');
+                });
+                if (contactLink) {
+                  contactLink.style.setProperty('display', 'none', 'important');
+                }
+              }
+
               retriggerMenuAnimations();
               updateCalendarSvgTime();
               initAudioVisualizer();
@@ -1299,10 +1334,8 @@ window.loadPage = (page) => {
                   attachProfileEvents_coreTeam();
                   break;
                 case 'Home':
-                  if (homeVideoToggleContainer) homeVideoToggleContainer.hidden = false;
                   makeItRainText();
                   realSlamnorSlam();
-                  
                   attachHomeButtonEvents();
                   HomeBackgroundVideoManager.bindToggleUI();
                   HomeBackgroundVideoManager.init();
@@ -1729,14 +1762,27 @@ window.initHomeTextSlider = () => {
   console.log("✅ Slider initialized with enhanced features");  
 }
 
-let currentPage = 'Home'; 
+let currentPage = 'Home';
+let isInitialLoad = true;
+
 window.addEventListener('DOMContentLoaded', router);
 window.addEventListener('hashchange', router);
 
 function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
-  window.loadPage(page);
+  
+  // Prevent duplicate initial load
+  if (isInitialLoad && page === currentPage) {
+    isInitialLoad = false;
+    window.loadPage(page);
+  } else if (!isInitialLoad) {
+    window.loadPage(page);
+  } else {
+    isInitialLoad = false;
+  }
+  
+  currentPage = page;
 }
 
 window.toggleDrawerMenu = () => {

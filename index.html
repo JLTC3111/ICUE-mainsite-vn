@@ -75,6 +75,15 @@
       <a href="https://icue.vn" id="logo-link" aria-label="Go to homepage">
         <img class="logo-content" src="public/logoIcons/logo.png" alt="Company Logo" />
       </a>
+
+      <div class="home-video-toggle home-video-toggle--sidebar" id="homeVideoToggleContainerMobile" aria-label="Bật/tắt video nền" hidden>
+        <label class="home-video-toggle__label" for="homeVideoToggleMobile">
+          <input id="homeVideoToggleMobile" class="home-video-toggle__input" type="checkbox" />
+          <span class="home-video-toggle__track" aria-hidden="true">
+            <span class="home-video-toggle__thumb" aria-hidden="true"></span>
+          </span>
+        </label>
+      </div>
     </div>
 
     <div class="language-switcher">
@@ -82,9 +91,9 @@
           <span id="langSwitcher" class="flag-icon flag-icon-gb"></span>    
       </a>
 
-      <div class="home-video-toggle" id="homeVideoToggleContainer" aria-label="Bật/tắt video nền" hidden>
-        <label class="home-video-toggle__label" for="homeVideoToggle">
-          <input id="homeVideoToggle" class="home-video-toggle__input" type="checkbox" />
+      <div class="home-video-toggle home-video-toggle--nav" id="homeVideoToggleContainerDesktop" aria-label="Bật/tắt video nền" hidden>
+        <label class="home-video-toggle__label" for="homeVideoToggleDesktop">
+          <input id="homeVideoToggleDesktop" class="home-video-toggle__input" type="checkbox" />
           <span class="home-video-toggle__track" aria-hidden="true">
             <span class="home-video-toggle__thumb" aria-hidden="true"></span>
           </span>
@@ -105,6 +114,7 @@
   
     <div class="drawer-menu" id="drawerMenu">
        <div class="drawer-blur-overlay"></div>
+
       <a href="#/Home" onclick="closeDrawerMenu();" data-page="Home"><svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6">
         <style>
           path[d="M10 21h4"] {transition: all 0.01s ease-in-out; stroke: transparent;}
@@ -250,6 +260,7 @@
         rx="15%"
         fill="#fff"/><linearGradient id="a" x1="256" x2="256" y1="78.2" y2="441.2" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#00B2FF"/><stop offset="1" stop-color="#006AFF"/></linearGradient><path fill="url(#a)" d="M256 78.2c-102.4 0-181.8 75 -181.8 176.4c0 53 21.7 98.8 57 130.4a14.7 14.7 0 015 10.4l1 32.3a14.6 14.6 0 0020.4 12.9l36-16a14.5 14.5 0 019.8-.7a197.8 197.8 0 0052.6 7c102.4 0 181.8-75 181.8 -176.3S358.4 78.2 256 78.2z"/><path fill="#fff" d="M146.8 306.1l53.4-84.7a27.3 27.3 0 0139.5-7.3l42.5 31.9a11 11 0 0013 0l57.5-43.6c7.6-5.8 17.6 3.4 12.5 11.5l-53.4 84.7a27.3 27.3 0 01-39.4 7.3L229.9 274a11 11 0 00-13.2 0l-57.4 43.6c-7.6 5.8-17.6 -3.4 -12.5 -11.5z"/></svg>
     </a>
+    <div class="icon-bar"></div>
   </div>
   <!-- Calendar Modal -->
     <div id="calendar-modal" style="display:none;position:fixed;z-index:10000;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
