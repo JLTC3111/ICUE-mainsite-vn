@@ -1084,7 +1084,9 @@ nav a {
   right: 5.5%;
   display: flex;
   gap: 9px;
-  z-index: 22;
+  z-index: 60;
+  pointer-events: auto;
+  isolation: isolate;
   animation: slideInFromRight 4.5s ease-in-out forwards;
 }
 
@@ -1654,10 +1656,13 @@ nav a {
 }
 
 .home-video-toggle {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   justify-content: center;
   opacity: 0.7;
   transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: auto;
 }
 
 .home-video-toggle:hover {
@@ -1679,6 +1684,7 @@ nav a {
   letter-spacing: 0.01em;
   user-select: none;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .home-video-toggle__input {
