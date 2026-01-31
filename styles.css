@@ -1744,11 +1744,11 @@ nav a {
 /* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
 @media (max-width: 1024px) {
   .home-video-toggle--nav { display: none !important; }
-  .home-video-toggle--sidebar { display: inline-flex !important; }
+  .home-video-toggle--navbar { display: inline-flex !important; }
 }
 
 @media (min-width: 1025px) {
-  .home-video-toggle--sidebar { display: none !important; }
+  .home-video-toggle--navbar { display: none !important; }
   .home-video-toggle--nav { display: inline-flex !important; }
 }
 
@@ -1758,11 +1758,13 @@ nav a {
     align-items: center;
   }
 
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar {
-    margin-right: 5%;
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar {
+    margin: 4.5px 5% 0 0;
+    position: relative;
+    z-index: 1001; /* Ensure it is clickable */
   }
 
-  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--sidebar .home-video-toggle__label {
+  .logo-banner #homeVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
     padding: 0;
     border: 0;
     background: transparent;
@@ -2899,6 +2901,7 @@ body.loaded #app {
     align-items: center;
     border-radius: 25px;
     cursor: pointer;
+    margin-top: 2px;
   }
   
   .flag-icon {
@@ -2907,9 +2910,8 @@ body.loaded #app {
   }
 
   .contact-link {
-    margin-top: 0;
-    margin-right: 10.5%;
-    font-size: 16px;
+    margin: auto;
+    font-size: clamp(14px, 3vw, 18px);
     font-weight: bold;
     padding: 0.5rem 1.5rem;
     text-decoration: none;
@@ -3400,6 +3402,15 @@ button:hover {
 .submit-button:hover {
   color: #fff; /* Darker text color on hover */
 }
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .contact-link {
+    font-size: clamp(16px, 2vw, 20px);
+    padding: 0.5rem 1.75rem;
+    margin: 0 auto;
+  }
+}
+
 @media (max-width: 399px) {
   .sub-text {
     font-size: 12px;
@@ -3460,6 +3471,13 @@ button:hover {
   }
 }
 
+@media (max-width: 378px) and (max-aspect-ratio: .73/1) {
+  .flag-link {
+    font-size: clamp(10px, 3vw, 12px);
+    margin-top: clamp(9px, 2.5vw, 12px) !important;
+  }
+}
+
 @media (max-width: 449px) and (max-aspect-ratio: .7299/1) {
   .image-container-coreTeam{
     left:46.5%;
@@ -3469,6 +3487,10 @@ button:hover {
     width:70%;
     top:70%;
     left:-5%;
+  }
+  .flag-link {
+    font-size: clamp(12px, 2.5vw, 14px);
+    margin-top: clamp(3.5px, 2.0vw, 5.0px);
   }
 }
 
@@ -3519,20 +3541,20 @@ button:hover {
 
 @media (min-width: 1025px) and (min-aspect-ratio: 1.35) {
   #text-slider-coreTeam {
-    transform: translate(14.5vw, -125vh); /* adjust as needed */
+    transform: translate(14.5vw, -125vh); 
   }
 }
 
 @media (min-width: 1025px) and (min-aspect-ratio: 2.05) {
   #text-slider-coreTeam {
-    transform: translate(14.5vw, -145vh); /* adjust as needed */
+    transform: translate(14.5vw, -145vh); 
   }
 }
 
 
 @media (min-width: 1025px) and (max-aspect-ratio: 1.81) {
   #text-slider {
-    transform: translate(-36%, -39.5%); /* adjust as needed */
+    transform: translate(-36%, -39.5%); 
     margin-left: 1rem;
   }
   .arrow-button{

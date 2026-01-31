@@ -139,10 +139,6 @@ function isMobileDevice() {
     return hasTouch && (isMobile || (isTablet && isSmallScreen));
 }
 
-console.log('Truly touch device:', isTruelyTouchDevice());
-console.log('Touch primary device:', isTouchPrimaryDevice());
-console.log('Mobile device:', isMobileDevice());
-
 const deviceDetection = {
     hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
     
@@ -730,26 +726,32 @@ window.setNavLinkContrast = (useLightLinks = false) => {
 
 const HomeBackgroundVideoManager = (() => {
   const STORAGE_KEY_ENABLED = 'home_bg_video_enabled';
+  let _enabled = false; // In-memory state
 
-  const getUserEnabled = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
-      // Default OFF when user has never set a preference.
-      if (raw === null) return false;
-      return raw === '1' || raw === 'true' || raw === 'on';
-    } catch (e) {
-      // If storage is unavailable, keep the experience conservative.
-      return false;
-    }
+  const initEnabledState = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
+        // Default OFF when user has never set a preference.
+        if (raw === null) _enabled = false;
+        else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
+      } catch (e) {
+        _enabled = false;
+      }
   };
 
+  const getUserEnabled = () => _enabled;
+
   const setUserEnabled = (enabled) => {
+    _enabled = enabled;
     try {
       localStorage.setItem(STORAGE_KEY_ENABLED, enabled ? '1' : '0');
     } catch (e) {
       // ignore
     }
   };
+
+  // Initialize state immediately
+  initEnabledState();
 
   const videoPlaylist = [
     {
@@ -835,15 +837,37 @@ const HomeBackgroundVideoManager = (() => {
 
   const syncRootVideoStateAttr = () => {
     if (!document?.documentElement) return;
-    if (shouldKeepStatic()) {
+    const shouldHide = shouldKeepStatic();
+    
+    // Safety check: ensure we have the element reference even if internal state is cleared
+    const el = videoEl || document.getElementById('bgVideo');
+
+    if (shouldHide) {
       document.documentElement.setAttribute('data-home-bg-video', 'off');
+      // Direct force hide to ensure it applies even if CSS is lagging or overridden
+      if (el) el.style.display = 'none';
     } else {
       document.documentElement.removeAttribute('data-home-bg-video');
+      if (el) el.style.display = '';
     }
   };
 
   const ensureVideoElement = () => {
     videoEl = document.getElementById('bgVideo');
+    if (!videoEl) {
+        const mediaContainer = document.querySelector('.home-hero__media');
+        if (mediaContainer) {
+            videoEl = document.createElement('video');
+            videoEl.id = 'bgVideo';
+            videoEl.className = 'video-bg';
+            const overlay = mediaContainer.querySelector('.home-hero__overlay');
+            if (overlay) {
+                mediaContainer.insertBefore(videoEl, overlay);
+            } else {
+                mediaContainer.appendChild(videoEl);
+            }
+        }
+    }
     if (videoEl) {
       videoEl.loop = false;
       videoEl.preload = 'auto';
@@ -1197,27 +1221,54 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const bindToggleUI = () => {
-    const toggles = [
-      document.getElementById('homeVideoToggleDesktop'),
-      document.getElementById('homeVideoToggleMobile')
-    ].filter(Boolean);
+    const desktopToggle = document.getElementById('homeVideoToggleDesktop');
+    const mobileToggle = document.getElementById('homeVideoToggleMobile');
+    const toggles = [desktopToggle, mobileToggle].filter(Boolean);
 
-    if (!toggles.length) return;
+    console.log('[HomeVideoToggle] bindToggleUI called');
+    console.log('[HomeVideoToggle] Desktop toggle found:', !!desktopToggle);
+    console.log('[HomeVideoToggle] Mobile toggle found:', !!mobileToggle);
+    console.log('[HomeVideoToggle] Viewport width:', window.innerWidth);
+    console.log('[HomeVideoToggle] isMobileViewport:', isMobileViewport());
+
+    if (!toggles.length) {
+      console.warn('[HomeVideoToggle] No toggle elements found!');
+      return;
+    }
 
     const enabled = getUserEnabled();
     const canPlay = canPlayVideosInThisContext();
+    console.log('[HomeVideoToggle] User enabled:', enabled);
+    console.log('[HomeVideoToggle] Can play videos:', canPlay);
     syncRootVideoStateAttr();
 
     toggles.forEach((toggle) => {
+      // Set initial state
       toggle.checked = enabled;
       toggle.disabled = !canPlay;
 
-      if (toggle.getAttribute('data-home-video-toggle-bound') === '1') {
-        return;
+      // Handle label interaction robustly (fix for mobile/touch issues)
+      const label = toggle.closest('label');
+      if (label && label.getAttribute('data-home-video-label-bound') !== '1') {
+        label.setAttribute('data-home-video-label-bound', '1');
+        label.addEventListener('click', (e) => {
+          // If the click came from the input itself, let the native change event handle it
+          if (e.target === toggle) return;
+
+          e.preventDefault(); // Prevent native label behavior
+          e.stopPropagation(); // Stop bubbling
+          
+          toggle.checked = !toggle.checked;
+          console.warn('[HomeVideoToggle] Toggle clicked manually (Label). New state:', toggle.checked);
+          HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
+        });
       }
 
+      if (toggle.getAttribute('data-home-video-toggle-bound') === '1') return;
       toggle.setAttribute('data-home-video-toggle-bound', '1');
+      
       toggle.addEventListener('change', () => {
+        console.warn('[HomeVideoToggle] Toggle changed (Native). New state:', toggle.checked);
         HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
       });
     });
