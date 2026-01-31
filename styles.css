@@ -1483,8 +1483,8 @@ nav a {
   position: relative;
   padding: 6rem 8vw 4rem;
   text-align: center;
-  color: #ffffff;
-  background: linear-gradient(180deg, rgba(6, 10, 18, 0.95) 0%, rgba(16, 20, 30, 0.85) 60%, rgba(10, 14, 22, 0.98) 100%);
+  color: #000000;
+  background: transparent;
   overflow: hidden;
 }
 
@@ -2113,11 +2113,17 @@ nav a {
 }
 
 .about-legacy-hero .cursive-default {
-  color: #ffffff;
+  color: #000000;
+}
+
+@media (min-width: 1025px) {
+  .about-legacy-hero .cursive-default {
+    margin-left: 25%;
+  }
 }
 
 .about-legacy-hero .hero-body {
-  color: #d9d9d9;
+  color: #000000;
 }
 
 .about-legacy-hero .slam-container {
@@ -3084,7 +3090,7 @@ body.loaded #app {
   }
 
   .model-home {
-    top: 7.5%;
+    top: 17.5%;
     right: 25%;
     height: 200px;
     animation: slideInFromRight 7.5s ease-in-out;
