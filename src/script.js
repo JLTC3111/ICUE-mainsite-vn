@@ -1823,17 +1823,15 @@ function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
   
-  // Prevent duplicate initial load
-  if (isInitialLoad && page === currentPage) {
-    isInitialLoad = false;
-    window.loadPage(page);
-  } else if (!isInitialLoad) {
-    window.loadPage(page);
-  } else {
-    isInitialLoad = false;
+  // If we are already on the target page and this isn't the first load, do nothing
+  if (page === currentPage && !isInitialLoad) {
+    return;
   }
   
+  // Update state and load the page
   currentPage = page;
+  isInitialLoad = false;
+  window.loadPage(page);
 }
 
 window.toggleDrawerMenu = () => {
