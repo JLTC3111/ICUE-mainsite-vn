@@ -1224,7 +1224,26 @@ const HomeBackgroundVideoManager = (() => {
     applyNavTheme(null);
   };
 
+  let toggleDelegationBound = false;
+  const ensureToggleDelegation = () => {
+    if (toggleDelegationBound) return;
+    toggleDelegationBound = true;
+
+    const handler = (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.id !== 'homeVideoToggleDesktop' && target.id !== 'homeVideoToggleMobile') return;
+      if (target.disabled) return;
+      console.warn('[HomeVideoToggle] Event:', e.type, 'id:', target.id, 'checked:', target.checked);
+      setEnabled(!!target.checked);
+    };
+
+    document.addEventListener('change', handler, true);
+    document.addEventListener('input', handler, true);
+  };
+
   const bindToggleUI = () => {
+    ensureToggleDelegation();
     const desktopToggle = document.getElementById('homeVideoToggleDesktop');
     const mobileToggle = document.getElementById('homeVideoToggleMobile');
     const toggles = [desktopToggle, mobileToggle].filter(Boolean);
@@ -1247,34 +1266,8 @@ const HomeBackgroundVideoManager = (() => {
     syncRootVideoStateAttr();
 
     toggles.forEach((toggle) => {
-      // Set initial state
       toggle.checked = enabled;
       toggle.disabled = !canPlay;
-
-      // Handle label interaction robustly (fix for mobile/touch issues)
-      const label = toggle.closest('label');
-      if (label && label.getAttribute('data-home-video-label-bound') !== '1') {
-        label.setAttribute('data-home-video-label-bound', '1');
-        label.addEventListener('click', (e) => {
-          // If the click came from the input itself, let the native change event handle it
-          if (e.target === toggle) return;
-
-          e.preventDefault(); // Prevent native label behavior
-          e.stopPropagation(); // Stop bubbling
-          
-          toggle.checked = !toggle.checked;
-          console.warn('[HomeVideoToggle] Toggle clicked manually (Label). New state:', toggle.checked);
-          HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
-        });
-      }
-
-      if (toggle.getAttribute('data-home-video-toggle-bound') === '1') return;
-      toggle.setAttribute('data-home-video-toggle-bound', '1');
-      
-      toggle.addEventListener('change', () => {
-        console.warn('[HomeVideoToggle] Toggle changed (Native). New state:', toggle.checked);
-        HomeBackgroundVideoManager.setEnabled(!!toggle.checked);
-      });
     });
   };
 
