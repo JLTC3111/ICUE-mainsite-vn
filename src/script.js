@@ -1167,7 +1167,11 @@ const HomeBackgroundVideoManager = (() => {
         }
       }, 1000);
     }
-    resizeHandler = debounce(handleResize, 300);
+    resizeHandler = debounce(() => {
+      handleResize();
+      // Ensure toggle UI state persists correctly across layout changes
+      bindToggleUI(); 
+    }, 300);
     window.addEventListener('resize', resizeHandler, { passive: true });
     visibilityHandler = handleVisibilityChange;
     document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
