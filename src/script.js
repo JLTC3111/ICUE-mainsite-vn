@@ -1293,6 +1293,229 @@ const HomeBackgroundVideoManager = (() => {
 
 window.HomeBackgroundVideoManager = HomeBackgroundVideoManager;
 
+const MeetOurExpertsBackgroundVideoManager = (() => {
+  const STORAGE_KEY_ENABLED = 'moe_bg_video_enabled';
+  let _enabled = false;
+
+  const initEnabledState = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
+      if (raw === null) _enabled = true; // Default ON
+      else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
+    } catch (e) {
+      _enabled = true; // Default ON
+    }
+  };
+
+  const getUserEnabled = () => _enabled;
+  const setUserEnabled = (enabled) => {
+    _enabled = !!enabled;
+    try {
+      localStorage.setItem(STORAGE_KEY_ENABLED, _enabled ? '1' : '0');
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  initEnabledState();
+
+  const debounce = (fn, delay = 200) => {
+    let timer;
+    return function debounced(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  };
+
+  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+  const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const canPlayVideosInThisContext = () => {
+    const connection = getConnection();
+    const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
+  };
+
+  const shouldKeepStatic = () => {
+    if (!getUserEnabled()) return true;
+    return !canPlayVideosInThisContext();
+  };
+
+  const getVideoEl = () => document.querySelector('.video-bg-moe');
+  const getChosenSrc = () => (isMobileViewport() ? 'public/bgVideos/moe_bg_mobile.mp4' : 'public/bgVideos/moe_bg.mp4');
+
+  const syncRootVideoStateAttr = () => {
+    if (!document?.documentElement) return;
+    const shouldHide = shouldKeepStatic();
+    const el = getVideoEl();
+
+    if (shouldHide) {
+      document.documentElement.setAttribute('data-moe-bg-video', 'off');
+      if (el) {
+        el.pause();
+        el.style.display = 'none';
+      }
+    } else {
+      document.documentElement.removeAttribute('data-moe-bg-video');
+      if (el) {
+        el.style.display = '';
+      }
+    }
+  };
+
+  const setVideoSource = (el) => {
+    if (!el) return;
+    const src = getChosenSrc();
+    const current = el.getAttribute('data-active-src') || el.currentSrc || el.src;
+    if (current && current.includes(src)) return;
+    el.src = src;
+    el.setAttribute('data-active-src', src);
+    el.load();
+  };
+
+  const attemptPlay = (el) => {
+    if (!el) return;
+    const p = el.play();
+    if (p?.catch) {
+      p.catch(() => {
+        el.muted = true;
+        el.setAttribute('muted', '');
+      });
+    }
+  };
+
+  let resizeHandler = null;
+  let visibilityHandler = null;
+
+  // Use a global flag on document to ensure delegation is bound only once
+  const ensureToggleDelegation = () => {
+    if (document._moeToggleDelegationBound) return;
+    document._moeToggleDelegationBound = true;
+
+    const handler = (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.id !== 'moeVideoToggleDesktop' && target.id !== 'moeVideoToggleMobile') return;
+      if (target.disabled) return;
+      console.warn('[MOEVideoToggle] Event:', e.type, 'id:', target.id, 'checked:', target.checked);
+      
+      // Update state and UI directly
+      const newState = !!target.checked;
+      setUserEnabled(newState);
+      syncRootVideoStateAttr();
+      
+      if (newState) {
+        // Enable: start video
+        const el = getVideoEl();
+        if (el) {
+          el.muted = true;
+          el.playsInline = true;
+          setVideoSource(el);
+          attemptPlay(el);
+        }
+      } else {
+        // Disable: pause video
+        const el = getVideoEl();
+        if (el) el.pause();
+      }
+      
+      // Sync both toggles
+      const otherToggle = document.getElementById(
+        target.id === 'moeVideoToggleDesktop' ? 'moeVideoToggleMobile' : 'moeVideoToggleDesktop'
+      );
+      if (otherToggle) otherToggle.checked = newState;
+    };
+
+    document.addEventListener('change', handler, true);
+    document.addEventListener('input', handler, true);
+  };
+
+  const bindToggleUI = () => {
+    ensureToggleDelegation();
+    const desktopToggle = document.getElementById('moeVideoToggleDesktop');
+    const mobileToggle = document.getElementById('moeVideoToggleMobile');
+    const toggles = [desktopToggle, mobileToggle].filter(Boolean);
+    if (!toggles.length) return;
+
+    const enabled = getUserEnabled();
+    const canPlay = canPlayVideosInThisContext();
+    syncRootVideoStateAttr();
+
+    toggles.forEach((toggle) => {
+      toggle.checked = enabled;
+      toggle.disabled = !canPlay;
+    });
+  };
+
+  const init = () => {
+    MeetOurExpertsBackgroundVideoManager.destroy();
+    bindToggleUI();
+    syncRootVideoStateAttr();
+
+    if (shouldKeepStatic()) return;
+    const el = getVideoEl();
+    if (!el) return;
+
+    el.muted = true;
+    el.playsInline = true;
+    el.setAttribute('muted', '');
+    el.setAttribute('playsinline', '');
+    el.setAttribute('webkit-playsinline', '');
+
+    setVideoSource(el);
+    attemptPlay(el);
+
+    resizeHandler = debounce(() => {
+      bindToggleUI();
+      if (shouldKeepStatic()) {
+        syncRootVideoStateAttr();
+        return;
+      }
+      const currentEl = getVideoEl();
+      setVideoSource(currentEl);
+      attemptPlay(currentEl);
+    }, 300);
+    window.addEventListener('resize', resizeHandler, { passive: true });
+
+    visibilityHandler = () => {
+      const currentEl = getVideoEl();
+      if (!currentEl) return;
+      if (document.hidden) currentEl.pause();
+      else if (!shouldKeepStatic()) attemptPlay(currentEl);
+    };
+    document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
+  };
+
+  const destroy = () => {
+    const el = getVideoEl();
+    if (el) {
+      el.pause();
+    }
+    if (resizeHandler) {
+      window.removeEventListener('resize', resizeHandler);
+      resizeHandler = null;
+    }
+    if (visibilityHandler) {
+      document.removeEventListener('visibilitychange', visibilityHandler);
+      visibilityHandler = null;
+    }
+    syncRootVideoStateAttr();
+  };
+
+  const setEnabled = (enabled) => {
+    setUserEnabled(!!enabled);
+    syncRootVideoStateAttr();
+    if (enabled) init();
+    else destroy();
+    bindToggleUI();
+  };
+
+  const isEnabled = () => getUserEnabled();
+
+  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
+})();
+
+window.MeetOurExpertsBackgroundVideoManager = MeetOurExpertsBackgroundVideoManager;
+
 window.loadPage = (page) => {
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
@@ -1302,6 +1525,7 @@ window.loadPage = (page) => {
   const circumference = 2 * Math.PI * radius;
 
   window.HomeBackgroundVideoManager?.destroy();
+  window.MeetOurExpertsBackgroundVideoManager?.destroy();
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
@@ -1319,7 +1543,8 @@ window.loadPage = (page) => {
   // Show quick progress animation
   setProgress(30);
   
-  fetch(`/src/pages/${page}.html`)
+  const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
+  fetch(`/src/pages/${pageToFetch}.html`)
   .then(response => response.text())
   .then(data => {
     content.innerHTML = data;
@@ -1339,26 +1564,35 @@ window.loadPage = (page) => {
                 document.getElementById('homeVideoToggleContainerDesktop'),
                 document.getElementById('homeVideoToggleContainerMobile')
               ].filter(Boolean);
+              const moeVideoToggleContainers = [
+                document.getElementById('moeVideoToggleContainerDesktop'),
+                document.getElementById('moeVideoToggleContainerMobile')
+              ].filter(Boolean);
               const contactLink = document.getElementById('contactLink');
 
+              const showContainers = (containers, show) => {
+                containers.forEach((container) => {
+                  container.hidden = !show;
+                  if (show) {
+                    container.style.removeProperty('display');
+                  } else {
+                    container.style.setProperty('display', 'none', 'important');
+                  }
+                });
+              };
+
               if (page === 'Home') {
-                // Show toggle and contact link on Home page - let CSS control responsive display
-                homeVideoToggleContainers.forEach((container) => {
-                  container.hidden = false;
-                  container.style.removeProperty('display');
-                });
-                if (contactLink) {
-                  contactLink.style.removeProperty('display');
-                }
+                showContainers(homeVideoToggleContainers, true);
+                showContainers(moeVideoToggleContainers, false);
+                if (contactLink) contactLink.style.removeProperty('display');
+              } else if (page === 'meetOurExperts') {
+                showContainers(homeVideoToggleContainers, false);
+                showContainers(moeVideoToggleContainers, true);
+                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
               } else {
-                // Hide on all other pages with !important to override CSS
-                homeVideoToggleContainers.forEach((container) => {
-                  container.hidden = true;
-                  container.style.setProperty('display', 'none', 'important');
-                });
-                if (contactLink) {
-                  contactLink.style.setProperty('display', 'none', 'important');
-                }
+                showContainers(homeVideoToggleContainers, false);
+                showContainers(moeVideoToggleContainers, false);
+                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
               }
 
               retriggerMenuAnimations();
@@ -1377,6 +1611,8 @@ window.loadPage = (page) => {
               switch (page) {
                 case 'meetOurExperts':
                   attachProfileEvents_moe();
+                  MeetOurExpertsBackgroundVideoManager.bindToggleUI();
+                  MeetOurExpertsBackgroundVideoManager.init();
                   break;
                 case 'coreTeam':
                   attachProfileEvents_coreTeam();

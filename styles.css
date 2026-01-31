@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: #0f1117;
 }
 
 html {
@@ -499,7 +500,7 @@ nav a {
 .video-background {
   position: relative;
   width: 100vw;
-  height: 100dvh; 
+  height: 120dvh; 
 }
 
 .video-bg {
@@ -533,8 +534,11 @@ nav a {
   top: 0;
   left: 0;
   z-index: -9;
-  opacity: 0.85;
   animation: intro 1.5s ease-in-out forwards;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .contact-sidebar {
@@ -1672,6 +1676,7 @@ nav a {
 
 .home-video-toggle__label {
   display: inline-flex;
+  position: relative;
   align-items: center;
   gap: 0.6rem;
   padding: 0.35rem 0.6rem;
@@ -1745,6 +1750,126 @@ nav a {
   opacity: 0.65;
 }
 
+/* MOE Video Toggle - Separate styling from Home */
+.moe-video-toggle {
+  display: inline-flex;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 200ms ease, transform 200ms ease;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.moe-video-toggle:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.moe-video-toggle__label {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  user-select: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.moe-video-toggle__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+  cursor: pointer;
+  margin: 0;
+}
+
+.moe-video-toggle__track {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  position: relative;
+  display: inline-block;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.moe-video-toggle__thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  transition: transform 200ms ease, background 200ms ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.moe-video-toggle__input:checked + .moe-video-toggle__track {
+  background: rgba(31, 210, 128, 0.35);
+  border-color: rgba(31, 210, 128, 0.55);
+}
+
+.moe-video-toggle__input:checked + .moe-video-toggle__track .moe-video-toggle__thumb {
+  transform: translate(18px, -50%);
+}
+
+.moe-video-toggle__input:focus-visible + .moe-video-toggle__track {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.moe-video-toggle__input:disabled + .moe-video-toggle__track {
+  opacity: 0.55;
+}
+
+.moe-video-toggle__input:disabled ~ .moe-video-toggle__text {
+  opacity: 0.65;
+}
+
+/* Responsive placement for MOE toggle: nav toggle on desktop, logo toggle on mobile/tablets */
+@media (max-width: 1024px) {
+  .moe-video-toggle--nav { display: none !important; }
+  .moe-video-toggle--navbar { display: inline-flex !important; margin-top: clamp(4.5px, 2.0vw, 5px); }
+}
+
+@media (min-width: 1025px) {
+  .moe-video-toggle--navbar { display: none !important; }
+  .moe-video-toggle--nav { display: inline-flex !important; }
+}
+
+@media (max-width: 1024px) {
+  .logo-banner #moeVideoToggleContainerMobile.moe-video-toggle--navbar {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5%;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .logo-banner #moeVideoToggleContainerMobile.moe-video-toggle--navbar .moe-video-toggle__label {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
 /* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
 @media (max-width: 1024px) {
   .home-video-toggle--nav { display: none !important; }
@@ -1779,6 +1904,18 @@ nav a {
 
 [data-home-bg-video="off"] .home-hero .video-bg {
   display: none !important;
+}
+
+/* Meet Our Experts: allow user toggle for background video */
+[data-moe-bg-video="off"] .video-bg-moe {
+  display: none !important;
+}
+
+/* Static background when MOE video is off (video element hides) */
+[data-moe-bg-video="off"] .video-background#video-bg-container {
+  background: linear-gradient(135deg, #2a2d35 0%, #1a1d25 50%, #0f1117 100%);
+  background-size: cover;
+  background-position: center;
 }
 
 .home-section {
