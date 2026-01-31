@@ -772,7 +772,7 @@ nav a {
 
 .slider-text {
   text-align: center;
-  color: rgb(44, 44, 44);
+  color: #000000;
   max-width: 80%;
   margin-top: auto;
   pointer-events: all;
@@ -785,7 +785,7 @@ nav a {
   visibility: visible; 
   line-height: 2;
   opacity: 1;    
-  color: #b5b5b5;      
+  color: #000000;      
   transition: opacity 0.5s ease-in-out;
   pointer-events: none; 
 }
@@ -2953,7 +2953,7 @@ body.loaded #app {
   }
 
   .highlight-text {
-    color:rgb(44, 44, 44);
+    color:#000000;
     font-family: 'Roboto', cursive ;
     font-size: 12px;
     font-weight: 400;
