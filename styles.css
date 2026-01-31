@@ -3430,6 +3430,9 @@ button:hover {
   .text-container-coreTeam{
     margin-top: 5.5rem;
   }
+  .flag-link {
+    margin-top: clamp(6px, 2.0vw, 8px) !important;
+  }
 }
 
 @media (max-width: 1024px) and (min-aspect-ratio: .78/1) {
