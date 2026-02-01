@@ -764,6 +764,7 @@ nav a {
   transition: all .5s ease;
   pointer-events: all;
   user-select: none;
+  width: 100%;
 }
 
 .home-text-slider:hover {
@@ -773,7 +774,7 @@ nav a {
 .slider-text {
   text-align: center;
   color: #000000;
-  max-width: 80%;
+  max-width: 90%;
   margin-top: auto;
   pointer-events: all;
 }
@@ -2952,7 +2953,7 @@ body.loaded #app {
   .cursive-default {
     font-size: clamp(16px, 2vw, 22px);
     line-height: 1.5;
-    margin: 15% auto;
+    margin: 10% auto;
   }
 
   .lets-talk {
@@ -2964,8 +2965,8 @@ body.loaded #app {
 
   .home-text-slider {
     text-align: left;
-    margin-top: -3rem;
     z-index: 3;
+    margin-left: clamp(-1.75rem, 3vw, -2.25rem);
   }
 
   .highlight-text {
