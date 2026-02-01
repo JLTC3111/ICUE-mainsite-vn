@@ -1868,6 +1868,22 @@ nav a {
     background: transparent;
     box-shadow: none;
   }
+
+  /* Make About Us navbar toggle match Home/MOE compact/logo styling */
+  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 5%;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .logo-banner #aboutUsVideoToggleContainerMobile.home-video-toggle--navbar .home-video-toggle__label {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
 }
 
 /* Responsive placement: nav toggle on desktop, logo toggle on mobile/tablets */
@@ -2936,7 +2952,7 @@ body.loaded #app {
   .cursive-default {
     font-size: clamp(16px, 2vw, 22px);
     line-height: 1.5;
-    margin: 8.5rem 2.5rem .75rem -0.25rem;
+    margin: 15% auto;
   }
 
   .lets-talk {
@@ -3048,7 +3064,7 @@ body.loaded #app {
     align-items: center;
     border-radius: 25px;
     cursor: pointer;
-    margin-top: 2px;
+    margin-top: clamp(0.25rem, 1.5vw, 0.5rem);
   }
   
   .flag-icon {
@@ -3760,6 +3776,17 @@ button:hover {
   }
   .arrow-button{
     top:50%;
+  }
+}
+
+@media (min-width: 499px) and (max-width: 1024px) 
+{
+   .model-home {
+    top: 17.5%;
+    right: 37.5%;
+    height: 240px;
+    width: 240px;
+    animation: slideDownFromTop 3s ease-in-out;
   }
 }
 

@@ -1516,6 +1516,262 @@ const MeetOurExpertsBackgroundVideoManager = (() => {
 
 window.MeetOurExpertsBackgroundVideoManager = MeetOurExpertsBackgroundVideoManager;
 
+const AboutUsBackgroundVideoManager = (() => {
+  const STORAGE_KEY_ENABLED = 'aboutUs_bg_video_enabled';
+  let _enabled = true;
+
+  const initEnabledState = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
+      if (raw === null) _enabled = true; // Default ON to match previous behavior
+      else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
+    } catch (e) {
+      _enabled = true;
+    }
+  };
+
+  const getUserEnabled = () => _enabled;
+  const setUserEnabled = (enabled) => {
+    _enabled = !!enabled;
+    try {
+      localStorage.setItem(STORAGE_KEY_ENABLED, _enabled ? '1' : '0');
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  initEnabledState();
+
+  const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const canPlayVideosInThisContext = () => {
+    const connection = getConnection();
+    const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
+  };
+
+  const shouldKeepStatic = () => {
+    if (!getUserEnabled()) return true;
+    return !canPlayVideosInThisContext();
+  };
+
+  const getVideoEl = () => {
+    const content = document.getElementById('content');
+    return (
+      content?.querySelector('.about-container video.video-bg') ||
+      document.querySelector('.about-container video.video-bg')
+    );
+  };
+
+  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+
+  const getSources = (el) => {
+    const fallback = {
+      desktop: 'public/bgVideos/bg9.mp4',
+      mobile: 'public/bgVideos/bg9-mobile.mp4'
+    };
+    if (!el) return fallback;
+
+    const sources = Array.from(el.querySelectorAll('source'));
+    const desktop = sources.find(s => s.getAttribute('media'))?.getAttribute('src') || fallback.desktop;
+    const mobile = (sources.find(s => !s.getAttribute('media'))?.getAttribute('src')) || fallback.mobile;
+    return { desktop, mobile };
+  };
+
+  const getChosenSrc = (el) => {
+    const { desktop, mobile } = getSources(el);
+    return isMobileViewport() ? (mobile || desktop) : (desktop || mobile);
+  };
+
+  const syncRootVideoStateAttr = () => {
+    if (!document?.documentElement) return;
+    const el = getVideoEl();
+    const shouldHide = shouldKeepStatic();
+
+    if (shouldHide) {
+      document.documentElement.setAttribute('data-aboutus-bg-video', 'off');
+      if (el) {
+        el.pause();
+        el.style.display = 'none';
+      }
+    } else {
+      document.documentElement.removeAttribute('data-aboutus-bg-video');
+      if (el) {
+        el.style.display = '';
+      }
+    }
+  };
+
+  const setVideoSource = (el) => {
+    if (!el) return;
+    const src = getChosenSrc(el);
+    const current = el.getAttribute('data-active-src') || el.currentSrc || el.src;
+    if (current && src && current.includes(src)) return;
+    el.preload = 'auto';
+    el.src = src;
+    el.setAttribute('data-active-src', src);
+    el.load();
+  };
+
+  const attemptPlay = (el) => {
+    if (!el) return;
+    const p = el.play();
+    if (p?.catch) {
+      p.catch(() => {
+        el.muted = true;
+        el.setAttribute('muted', '');
+      });
+    }
+  };
+
+  let removeViewportListener = null;
+  let visibilityHandler = null;
+
+  const ensureToggleDelegation = () => {
+    if (document._aboutUsToggleDelegationBound) return;
+    document._aboutUsToggleDelegationBound = true;
+
+    const handler = (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.id !== 'aboutUsVideoToggleDesktop' && target.id !== 'aboutUsVideoToggleMobile') return;
+      if (target.disabled) return;
+
+      const newState = !!target.checked;
+      setUserEnabled(newState);
+      syncRootVideoStateAttr();
+
+      const el = getVideoEl();
+      if (newState && el && !shouldKeepStatic()) {
+        el.muted = true;
+        el.playsInline = true;
+        el.setAttribute('muted', '');
+        el.setAttribute('playsinline', '');
+        el.setAttribute('webkit-playsinline', '');
+        setVideoSource(el);
+        attemptPlay(el);
+      } else if (el) {
+        el.pause();
+      }
+
+      const otherToggle = document.getElementById(
+        target.id === 'aboutUsVideoToggleDesktop' ? 'aboutUsVideoToggleMobile' : 'aboutUsVideoToggleDesktop'
+      );
+      if (otherToggle) otherToggle.checked = newState;
+    };
+
+    document.addEventListener('change', handler, true);
+    document.addEventListener('input', handler, true);
+  };
+
+  const bindToggleUI = () => {
+    ensureToggleDelegation();
+    const desktopToggle = document.getElementById('aboutUsVideoToggleDesktop');
+    const mobileToggle = document.getElementById('aboutUsVideoToggleMobile');
+    const toggles = [desktopToggle, mobileToggle].filter(Boolean);
+    if (!toggles.length) return;
+
+    const enabled = getUserEnabled();
+    const canPlay = canPlayVideosInThisContext();
+    syncRootVideoStateAttr();
+
+    toggles.forEach((toggle) => {
+      toggle.checked = enabled;
+      toggle.disabled = !canPlay;
+    });
+  };
+
+  const init = () => {
+    AboutUsBackgroundVideoManager.destroy();
+    bindToggleUI();
+    syncRootVideoStateAttr();
+
+    if (shouldKeepStatic()) return;
+    const el = getVideoEl();
+    if (!el) return;
+
+    el.muted = true;
+    el.playsInline = true;
+    el.setAttribute('muted', '');
+    el.setAttribute('playsinline', '');
+    el.setAttribute('webkit-playsinline', '');
+
+    setVideoSource(el);
+    attemptPlay(el);
+
+    const mql = window.matchMedia('(max-width: 767px)');
+    const onViewportChange = () => {
+      bindToggleUI();
+      if (shouldKeepStatic()) {
+        syncRootVideoStateAttr();
+        return;
+      }
+      const currentEl = getVideoEl();
+      setVideoSource(currentEl);
+      attemptPlay(currentEl);
+    };
+
+    if (typeof mql.addEventListener === 'function') {
+      mql.addEventListener('change', onViewportChange);
+      removeViewportListener = () => mql.removeEventListener('change', onViewportChange);
+    } else if (typeof mql.addListener === 'function') {
+      mql.addListener(onViewportChange);
+      removeViewportListener = () => mql.removeListener(onViewportChange);
+    } else {
+      let raf = 0;
+      const onResize = () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          onViewportChange();
+        });
+      };
+      window.addEventListener('resize', onResize, { passive: true });
+      removeViewportListener = () => window.removeEventListener('resize', onResize);
+    }
+
+    visibilityHandler = () => {
+      const currentEl = getVideoEl();
+      if (!currentEl) return;
+      if (document.hidden) currentEl.pause();
+      else if (!shouldKeepStatic()) attemptPlay(currentEl);
+    };
+    document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
+  };
+
+  const destroy = () => {
+    const el = getVideoEl();
+    if (el) {
+      el.pause();
+      el.removeAttribute('src');
+      el.removeAttribute('data-active-src');
+      try { el.load(); } catch (e) {}
+    }
+    if (removeViewportListener) {
+      removeViewportListener();
+      removeViewportListener = null;
+    }
+    if (visibilityHandler) {
+      document.removeEventListener('visibilitychange', visibilityHandler);
+      visibilityHandler = null;
+    }
+    syncRootVideoStateAttr();
+  };
+
+  const setEnabled = (enabled) => {
+    setUserEnabled(!!enabled);
+    syncRootVideoStateAttr();
+    if (enabled) init();
+    else destroy();
+    bindToggleUI();
+  };
+
+  const isEnabled = () => getUserEnabled();
+
+  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
+})();
+
+window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
+
 window.loadPage = (page) => {
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
@@ -1526,6 +1782,7 @@ window.loadPage = (page) => {
 
   window.HomeBackgroundVideoManager?.destroy();
   window.MeetOurExpertsBackgroundVideoManager?.destroy();
+  window.AboutUsBackgroundVideoManager?.destroy();
 
   let progress = 0;
   progressBar.style.strokeDasharray = `${circumference}`;
@@ -1568,6 +1825,10 @@ window.loadPage = (page) => {
                 document.getElementById('moeVideoToggleContainerDesktop'),
                 document.getElementById('moeVideoToggleContainerMobile')
               ].filter(Boolean);
+              const aboutUsVideoToggleContainers = [
+                document.getElementById('aboutUsVideoToggleContainerDesktop'),
+                document.getElementById('aboutUsVideoToggleContainerMobile')
+              ].filter(Boolean);
               const contactLink = document.getElementById('contactLink');
 
               const showContainers = (containers, show) => {
@@ -1584,14 +1845,22 @@ window.loadPage = (page) => {
               if (page === 'Home') {
                 showContainers(homeVideoToggleContainers, true);
                 showContainers(moeVideoToggleContainers, false);
+                showContainers(aboutUsVideoToggleContainers, false);
                 if (contactLink) contactLink.style.removeProperty('display');
               } else if (page === 'meetOurExperts') {
                 showContainers(homeVideoToggleContainers, false);
                 showContainers(moeVideoToggleContainers, true);
+                showContainers(aboutUsVideoToggleContainers, false);
+                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+              } else if (page === 'aboutUs') {
+                showContainers(homeVideoToggleContainers, false);
+                showContainers(moeVideoToggleContainers, false);
+                showContainers(aboutUsVideoToggleContainers, true);
                 if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
               } else {
                 showContainers(homeVideoToggleContainers, false);
                 showContainers(moeVideoToggleContainers, false);
+                showContainers(aboutUsVideoToggleContainers, false);
                 if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
               }
 
@@ -1630,6 +1899,8 @@ window.loadPage = (page) => {
                   break;
                 case 'aboutUs':
                   initHomeTextSlider();
+                  AboutUsBackgroundVideoManager.bindToggleUI();
+                  AboutUsBackgroundVideoManager.init();
                   break;
                 case 'Contact':
                   initPostMethod();
