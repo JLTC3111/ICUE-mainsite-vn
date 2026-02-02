@@ -1938,6 +1938,13 @@ window.loadPage = (page) => {
                 case 'cookies':
                   break;
               }
+
+              // Mark route initialization complete to avoid duplicate init from
+              // `initializePageFunctions()` (hashchange/pageshow safety nets).
+              window.__pageInitState = {
+                page,
+                time: Date.now()
+              };
             });
           }, 100);
       }, 200);
@@ -5094,6 +5101,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function initializePageFunctions() {
   console.log('[Init] Initializing page functions...');
+
+  // If `loadPage()` already initialized the current SPA route recently, skip.
+  // This prevents duplicate init work (and duplicate listeners/animations) on Home load.
+  try {
+    const hash = window.location.hash || '#/Home';
+    const pageFromHash = hash.replace('#/', '') || 'Home';
+    const st = window.__pageInitState;
+    if (st && st.page === pageFromHash && (Date.now() - st.time) < 1500) {
+      console.log('[Init] Skipping: page already initialized by loadPage()', { page: pageFromHash });
+      return;
+    }
+  } catch (e) {
+    // ignore
+  }
   
   let languageSwitchTarget = null;
   try {
@@ -5396,23 +5417,30 @@ setInterval(updateCalendarSvgTime, 60 * 1000);
 
 function initAudioVisualizer(
     audioSrc = 'public/music/royalty_free.mp3',
-    barSelector = 'contact-sidebar .music-bars',
+  barSelector = '.music-bars',
     clickTargetSelector = '#visualizer'
   ) {
     const clickTarget = document.querySelector(clickTargetSelector);
+
+    const bindClickOnce = (audio, ctx) => {
+      if (!clickTarget) return;
+      // Element may be recreated on SPA navigation; bind at most once per element.
+      if (clickTarget.hasAttribute('data-av-click-bound')) return;
+      clickTarget.setAttribute('data-av-click-bound', '1');
+      clickTarget.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (ctx.state === 'suspended') ctx.resume();
+        audio.paused ? audio.play() : audio.pause();
+      });
+    };
   
     if (window.__audioVisualizer) {
       const { audio, ctx } = window.__audioVisualizer;
-  
-      if (clickTarget) {
-        clickTarget.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (ctx.state === 'suspended') ctx.resume();
-          audio.paused ? audio.play() : audio.pause();
-        });
-      }
-  
+
+      bindClickOnce(audio, ctx);
+      // Ensure loop is running if/when the visualizer exists.
+      if (typeof startAudioVisualizerLoop === 'function') startAudioVisualizerLoop(barSelector);
       return;
     }
   
@@ -5425,25 +5453,15 @@ function initAudioVisualizer(
   
     const freqData = new Uint8Array(analyser.frequencyBinCount);
   
-    function toggleAudio() {
-      if (ctx.state === 'suspended') ctx.resume();
-      audio.paused ? audio.play() : audio.pause();
-    }
-  
-    if (clickTarget) {
-      clickTarget.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleAudio();
-      });
-    }
-  
     window.__audioVisualizer = {
       audio,
       ctx,
       analyser,
       freqData
     };
+
+    bindClickOnce(audio, ctx);
+    if (typeof startAudioVisualizerLoop === 'function') startAudioVisualizerLoop(barSelector);
   }
   
   function startAudioVisualizerLoop(barSelector = '.music-bars') {
@@ -5457,29 +5475,45 @@ function initAudioVisualizer(
 
     if (vizState.isRunning) return;
 
+    const stopLoop = () => {
+      vizState.isRunning = false;
+      if (vizState.rafId) {
+        cancelAnimationFrame(vizState.rafId);
+        vizState.rafId = null;
+      }
+      vizState.cachedBars = null;
+      vizState.lastTs = 0;
+    };
+
     const loop = (ts) => {
       if (!vizState.isRunning) return;
 
+      // If the visualizer or bars are missing (e.g., SPA navigated), stop instead
+      // of burning a permanent RAF loop.
+      const av = window.__audioVisualizer;
+      if (!av?.analyser) {
+        stopLoop();
+        return;
+      }
+
+      if (!vizState.cachedBars || vizState.cachedBars.length === 0 || !vizState.cachedBars[0].isConnected) {
+        vizState.cachedBars = document.querySelectorAll(barSelector);
+      }
+      const bars = vizState.cachedBars || [];
+      if (!bars.length) {
+        stopLoop();
+        return;
+      }
+
       if (!document.hidden && ts - vizState.lastTs >= 33) {
         vizState.lastTs = ts;
-        const av = window.__audioVisualizer;
-        if (av) {
-          const { analyser, freqData } = av;
-          if (!vizState.cachedBars || vizState.cachedBars.length === 0 || !vizState.cachedBars[0].isConnected) {
-            vizState.cachedBars = document.querySelectorAll(barSelector);
-          }
-          const bars = vizState.cachedBars || [];
-
-          if (analyser && bars.length > 0) {
-            analyser.getByteFrequencyData(freqData);
-
-            bars.forEach((bar, i) => {
-              const value = freqData[i];
-              const scale = Math.max(0.5, value / 180);
-              bar.style.transform = `scaleY(${scale})`;
-            });
-          }
-        }
+        const { analyser, freqData } = av;
+        analyser.getByteFrequencyData(freqData);
+        bars.forEach((bar, i) => {
+          const value = freqData[i];
+          const scale = Math.max(0.5, value / 180);
+          bar.style.transform = `scaleY(${scale})`;
+        });
       }
 
       vizState.rafId = requestAnimationFrame(loop);
@@ -5489,10 +5523,6 @@ function initAudioVisualizer(
     vizState.lastTs = 0;
     vizState.rafId = requestAnimationFrame(loop);
   }
-  
-  window.addEventListener('DOMContentLoaded', () => {
-    startAudioVisualizerLoop(); 
-  });
 
   function updateMusicBarColor(page) {
     const paths = document.querySelectorAll('.music-bars svg path');
