@@ -2852,7 +2852,7 @@ body.loaded #app {
     }
 }
 
-@media (max-width: 1365px) and (min-width: 1024px) {
+@media (max-width: 1365px) and (min-width: 1024px) and (max-aspect-ratio: 1.3338/1) {
   .image-container-coreTeam {
       position: absolute;
       width: clamp(220px , 25vw, 260px) !important;
@@ -2867,7 +2867,7 @@ body.loaded #app {
     .text-container-coreTeam {
       width:90% !important;
       max-width: 600px !important;
-      top:52.5%;
+      top:54.5% !important;
       left:clamp(0.5%, 2vw, 0.75%) !important;
       padding: 25px !important;
     }
