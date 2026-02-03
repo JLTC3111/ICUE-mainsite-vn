@@ -1308,7 +1308,7 @@ nav a {
 
 .corePageContainer{
   position: relative;
-  height: 100vh;
+  height: 140vh;
   margin: 1% 2.5%;
 }
 
@@ -1354,7 +1354,7 @@ nav a {
   letter-spacing: 1.5px; 
   display: flex;
   justify-content: center;
-  font-size: 45px;
+  font-size: clamp(40px, 15vw, 44px);
   font-weight: bold;
   background: linear-gradient(to left, #000000, #742222, #a09b0e, rgb(148, 246, 1));
   -webkit-background-clip: text;
@@ -1364,10 +1364,10 @@ nav a {
 
 .core-team-text {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(1rem, 1.5vw, 2rem);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
   font-weight: 400;
-  line-height: 26px;
-  letter-spacing: 0px;
+  line-height: clamp(1.5rem, 2.5vw, 2.5rem);
+  letter-spacing: 0.35px;
   text-align: left;
   color: rgb(51, 51, 51);
   z-index: 1;
@@ -2795,12 +2795,12 @@ body.loaded #app {
   }
 
   .core-team-text {
-    font-size: 14px;
+    font-size: clamp(14px, 3.25vw, 18px);
   }
 
   .intro-core {
     letter-spacing: 1.5px; 
-    font-size: 32px
+    font-size: 32px !important;
   }
 
   .arrow-container {
@@ -2827,6 +2827,53 @@ body.loaded #app {
     transform: translateX(32.5vw);
   }
  
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+   .image-container-coreTeam {
+      position: absolute;
+      width: clamp(180px , 25vw, 190px);
+      height: clamp(220px , 25vw, 270px);
+      left: 50% !important;
+      top: 15%; 
+      transform: translateX(-50%);
+    } 
+    .profile-photo-coreTeam {
+      width: clamp(150px , 25vw, 190px);
+    }
+    .text-container-coreTeam {
+      width:70%;
+      top:52.5%;
+      left:clamp(1%, 2vw, 1.25%) !important;
+      padding:15px;
+    }
+    .intro-core {
+      font-size: clamp(2rem, 3.5vw, 2.5px) !important;
+    }
+}
+
+@media (max-width: 1365px) and (min-width: 1024px) {
+  .image-container-coreTeam {
+      position: absolute;
+      width: clamp(220px , 25vw, 260px) !important;
+      height: clamp(260px , 25vw, 330px) !important;
+      left: 50% !important;
+      top: 15%; 
+      transform: translateX(-50%);
+    } 
+    .profile-photo-coreTeam {
+      width: clamp(220px , 25vw, 260px) !important;
+    }
+    .text-container-coreTeam {
+      width:90% !important;
+      max-width: 600px !important;
+      top:52.5%;
+      left:clamp(0.5%, 2vw, 0.75%) !important;
+      padding: 25px !important;
+    }
+    .intro-core {
+      font-size: clamp(2.5rem, 15vw, 3rem) !important;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -3139,8 +3186,6 @@ body.loaded #app {
 }
 
 @media (max-width: 1024px) {
-  
-    /* Prevent horizontal scroll globally */
     body, html {
       height:100%;
       padding:0;
@@ -3161,7 +3206,7 @@ body.loaded #app {
       width: 140px;
       height: 198.5px;
       left: 50%;
-      top: 15%; /* or adjust as needed */
+      top: 15%;
       transform: translateX(-50%);
     }
   
@@ -3637,7 +3682,7 @@ button:hover {
   .text-container-coreTeam{
     max-width:700px;
     width:65%;
-    top:50.5%;
+    top:52.5%;
     left:-1.5%;
   }
 }
@@ -3656,7 +3701,7 @@ button:hover {
   .text-container-coreTeam{
     max-width:550px;
     width:70%;
-    top:50%;
+    top:52.5%;
     left:-5%;
   }
   .flag-link {
@@ -3672,7 +3717,7 @@ button:hover {
   .text-container-coreTeam{
     max-width:550px;
     width:70%;
-    top:60%;
+    top:45%;
     left:-5%;
   }
 }
