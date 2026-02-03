@@ -4581,7 +4581,9 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
       };
 
       // Warm the cache (non-blocking)
-      ensureKb(siteLang).catch(() => {});
+      // Prefetch both languages so we can route per-message.
+      ensureKb('en').catch(() => {});
+      ensureKb('vi').catch(() => {});
 
       return {
         siteLang,
@@ -4669,16 +4671,18 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           return { content: kb.fallback?.answer || '', links: [] };
         }
 
-        const detectedLang = detectUserLanguage(raw) || siteLang;
-        const kb = await ensureKb(detectedLang);
         const queryNorm = normalizeForSearch(raw);
         const queryTokens = tokenize(queryNorm);
+
+        // Route language per-message. If detection is uncertain, score both KBs and pick the best match.
+        const detectedLang = await routeLanguage(raw, queryNorm, queryTokens);
+        const kb = await ensureKb(detectedLang);
 
         // 1) Match intents in KB
         const bestIntent = findBestIntent(kb, queryNorm, queryTokens);
 
         // 2) Match against FAQ data (if available)
-        const bestFaq = findBestFaq(queryNorm, queryTokens);
+        const bestFaq = findBestFaq(queryNorm, queryTokens, detectedLang);
 
         // Decide
         const intentScore = bestIntent?.score ?? 0;
@@ -4694,7 +4698,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         }
 
         return {
-          content: kb.fallback?.answer || (siteLang === 'vi'
+          content: kb.fallback?.answer || (detectedLang === 'vi'
             ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn giúp mình không?'
             : 'I’m not fully sure I understood. Could you clarify your question?'),
           links: [
@@ -4704,11 +4708,53 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         };
       }
 
+      async function routeLanguage(raw, queryNorm, queryTokens) {
+        const direct = detectUserLanguage(raw);
+        if (direct === 'en' || direct === 'vi') return direct;
+
+        // If we can't confidently detect, compare intent match strength across both KBs.
+        const [kbEn, kbVi] = await Promise.all([ensureKb('en'), ensureKb('vi')]);
+        const bestEn = findBestIntent(kbEn, queryNorm, queryTokens);
+        const bestVi = findBestIntent(kbVi, queryNorm, queryTokens);
+        const enScore = bestEn?.score ?? 0;
+        const viScore = bestVi?.score ?? 0;
+
+        // Only switch away from siteLang if there's a clear winner.
+        const minToSwitch = 0.45;
+        const margin = 0.05;
+        if (Math.max(enScore, viScore) >= minToSwitch && Math.abs(enScore - viScore) >= margin) {
+          return enScore > viScore ? 'en' : 'vi';
+        }
+        return siteLang;
+      }
+
       function detectUserLanguage(text) {
-        const hasVietnamese = /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i.test(text);
-        if (hasVietnamese) return 'vi';
-        const englishHints = /\b(what|how|where|when|services?|projects?|contact|recruitment|donation|privacy|terms|cookies|gdpr)\b/i;
-        if (englishHints.test(text)) return 'en';
+        const raw = String(text || '');
+        const hasVietnameseDiacritics = /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i.test(raw);
+        if (hasVietnameseDiacritics) return 'vi';
+
+        // Also detect Vietnamese typed WITHOUT diacritics (e.g., "xin chao", "dich vu").
+        const norm = normalizeForSearch(raw);
+        const tokens = norm.split(' ').filter(Boolean);
+
+        const viHints = new Set([
+          'xin','chao','camon','cam','on','dich','vu','lien','he','tuyen','dung','ung','tuyen','du','an','quyen','gop',
+          'bao','gia','chi','phi','gia','thoi','gian','quy','trinh','hop','tac','doi','tac','bao','chi','truyen','thong'
+        ]);
+        const enHints = new Set([
+          'what','how','where','when','services','service','projects','project','contact','recruitment','donation','donate',
+          'privacy','terms','cookies','gdpr','price','pricing','quote','proposal','meeting','schedule','internship','partner','press'
+        ]);
+
+        let viScore = 0;
+        let enScore = 0;
+        for (const t of tokens) {
+          if (viHints.has(t)) viScore++;
+          if (enHints.has(t)) enScore++;
+        }
+
+        if (viScore >= 2 && viScore > enScore) return 'vi';
+        if (enScore >= 1 && enScore > viScore) return 'en';
         return null;
       }
 
@@ -4774,9 +4820,15 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         return best;
       }
 
-      function findBestFaq(queryNorm, queryTokens) {
+      function findBestFaq(queryNorm, queryTokens, desiredLang) {
         const faqData = window.__icueFaqData;
         if (!faqData || typeof faqData !== 'object') return null;
+
+        // Avoid answering in the wrong language via FAQ corpus.
+        const faqLang = window.__icueFaqLang;
+        if ((desiredLang === 'en' || desiredLang === 'vi') && (faqLang === 'en' || faqLang === 'vi') && faqLang !== desiredLang) {
+          return null;
+        }
 
         let best = null;
         for (const cat of Object.keys(faqData)) {
