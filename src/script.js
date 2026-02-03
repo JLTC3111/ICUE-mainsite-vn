@@ -1701,27 +1701,19 @@ window.loadPage = (page) => {
   const progressText = document.getElementById('progress-text');
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
-
-  // Navigation concurrency guard:
-  // If the user navigates again before the current fetch finishes, ignore stale
-  // callbacks so we don't briefly show multiple page-specific UI (video toggles,
-  // contact link visibility, etc.).
   if (!window.__spaNavState) {
     window.__spaNavState = { seq: 0, controller: null, fetching: false };
   }
   const navState = window.__spaNavState;
   navState.seq += 1;
   const navSeq = navState.seq;
-
-  // Only abort if there's actually an in-flight fetch; otherwise the first load
-  // would abort its own fresh controller immediately.
   if (navState.fetching && navState.controller) {
     try { navState.controller.abort(); } catch (e) {}
   }
   navState.controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
   navState.fetching = true;
 
-  const updateNavVideoToggleVisibility = () => {
+  const getNavToggleEls = () => {
     const homeVideoToggleContainers = [
       document.getElementById('homeVideoToggleContainerDesktop'),
       document.getElementById('homeVideoToggleContainerMobile')
@@ -1735,14 +1727,27 @@ window.loadPage = (page) => {
       document.getElementById('aboutUsVideoToggleContainerMobile')
     ].filter(Boolean);
     const contactLink = document.getElementById('contactLink');
+    return { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink };
+  };
 
-    const showContainers = (containers, show) => {
-      containers.forEach((container) => {
-        container.hidden = !show;
-        if (show) container.style.removeProperty('display');
-        else container.style.setProperty('display', 'none', 'important');
-      });
-    };
+  const showContainers = (containers, show) => {
+    containers.forEach((container) => {
+      container.hidden = !show;
+      if (show) container.style.removeProperty('display');
+      else container.style.setProperty('display', 'none', 'important');
+    });
+  };
+
+  const hideAllNavVideoToggles = () => {
+    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    showContainers(homeVideoToggleContainers, false);
+    showContainers(moeVideoToggleContainers, false);
+    showContainers(aboutUsVideoToggleContainers, false);
+    if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+  };
+
+  const updateNavVideoToggleVisibility = () => {
+    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
 
     if (page === 'Home') {
       showContainers(homeVideoToggleContainers, true);
@@ -1767,8 +1772,8 @@ window.loadPage = (page) => {
     }
   };
 
-  // Apply immediately so we don't show stale toggles while loading.
-  updateNavVideoToggleVisibility();
+  // Hide all per-page toggles while loading so they don't flash.
+  hideAllNavVideoToggles();
 
   window.HomeBackgroundVideoManager?.destroy();
   window.MeetOurExpertsBackgroundVideoManager?.destroy();
@@ -1817,8 +1822,6 @@ window.loadPage = (page) => {
       markFetchDoneIfCurrent();
       if (navSeq !== window.__spaNavState?.seq) return;
       if (content) content.innerHTML = data;
-      // Immediately apply per-page toggle visibility to newly injected DOM.
-      updateNavVideoToggleVisibility();
       setProgress(100);
 
       setTimeout(() => {
@@ -1835,9 +1838,10 @@ window.loadPage = (page) => {
           requestAnimationFrame(() => {
             if (navSeq !== window.__spaNavState?.seq) return;
 
-            updateNavVideoToggleVisibility();
-
+            // Retrigger menu animation may clone/replace nav nodes.
+            // Apply toggle visibility AFTER it runs so we target the live nodes only once.
             retriggerMenuAnimations();
+            updateNavVideoToggleVisibility();
             updateCalendarSvgTime();
             initAudioVisualizer();
             updateMusicBarColor(page);
@@ -1950,8 +1954,6 @@ window.loadPage = (page) => {
 
 window.retriggerMenuAnimations = (isFirstLoad = true) => {
   if (typeof window.gsap === 'undefined') {
-    // Fallback: never crash the app if GSAP failed to load.
-    // Just make sure elements are visible.
     const selectors = [
       '.menu-toggle', '.logo-banner', '.flag-link', '.contact-link', '.contact-sidebar',
       '#langSwitcher', '#contactLink', '#menuIcon'
@@ -1968,9 +1970,11 @@ window.retriggerMenuAnimations = (isFirstLoad = true) => {
 
   const animatedSelectors = [
     { selector: '.menu-toggle', delay: 0 },
-    { selector: '.logo-banner', delay: -0.3 },
+    // Avoid cloning/replacing `.logo-banner` because it contains per-page video toggles.
+    // Animating only the logo link prevents toggle “double render”/flash.
+    { selector: '#logo-link', delay: -0.3 },
     { selector: '.flag-link', delay: -0.3 },
-    { selector: '.contact-link', delay: 1 },
+    // Contact link is handled explicitly below (hover handlers + clone), so don't double-animate it here.
     { selector: '.contact-sidebar', delay: 1.25 },
   ];
 
@@ -2064,7 +2068,7 @@ if (langSwitcher) {
         opacity: 1,
         onStart: () => unhide(newContact)
       },
-      '-=0.3'
+      1
     );
     
     // ✅ Attach hover animation directly to the new clone
@@ -5851,9 +5855,6 @@ function initAudioVisualizer(
 
     const loop = (ts) => {
       if (!vizState.isRunning) return;
-
-      // If the visualizer or bars are missing (e.g., SPA navigated), stop instead
-      // of burning a permanent RAF loop.
       const av = window.__audioVisualizer;
       if (!av?.analyser) {
         stopLoop();
