@@ -608,6 +608,10 @@ nav a {
   visibility: hidden !important;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .logo-banner {
   display: flex;
   margin: 0 auto;

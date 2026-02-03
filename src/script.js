@@ -92,134 +92,10 @@ function isTouchPrimaryDevice() {
     if (!hasTouchCapability) return false;
     
     const primaryPointerCoarse = window.matchMedia('(pointer: coarse)').matches;
-    
-    const cannotHover = window.matchMedia('(hover: none)').matches;
-    
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileUA = /mobile|android|iphone|ipad|tablet/.test(userAgent);
-    
-    const isLaptopUA = /macintosh|windows.*touch/.test(userAgent);
-    
-    return hasTouchCapability && 
-           primaryPointerCoarse && 
-           cannotHover && 
-           !isLaptopUA;
-}
+    if (!primaryPointerCoarse) return false;
 
-function isMobileDevice() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    
-    const mobilePatterns = [
-        /android.*mobile/,
-        /iphone/,
-        /ipod/,
-        /blackberry/,
-        /windows phone/,
-        /mobile/
-    ];
-    
-    const tabletPatterns = [
-        /ipad/,
-        /android(?!.*mobile)/,
-        /tablet/
-    ];
-    
-    const isMobile = mobilePatterns.some(pattern => pattern.test(userAgent));
-    const isTablet = tabletPatterns.some(pattern => pattern.test(userAgent));
-    
-    const hasTouch = (
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0
-    );
-
-    const screenWidth = screen.width;
-    const screenHeight = screen.height;
-    const isSmallScreen = Math.min(screenWidth, screenHeight) <= 768;
-    
-    return hasTouch && (isMobile || (isTablet && isSmallScreen));
-}
-
-const deviceDetection = {
-    hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-    
-    isProbablyMac: (() => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        if (/mac os x|macos|macintosh/.test(userAgent)) return true;
-        
-        if (navigator.userAgentData?.platform) {
-            return navigator.userAgentData.platform.toLowerCase() === 'macos';
-        }
-        
-        return false;
-    })(),
-    
-    canHover: window.matchMedia('(hover: hover)').matches,
-    hasCoarsePointer: window.matchMedia('(pointer: coarse)').matches,
-    hasFinePointer: window.matchMedia('(pointer: fine)').matches,
-    screenSize: { width: screen.width, height: screen.height },
-    userAgent: navigator.userAgent.toLowerCase(),
-    
-    isTouchDevice: function() {
-        return isTruelyTouchDevice();
-    },
-    
-    getDeviceType: function() {
-        if (this.isTouchDevice()) {
-            const minDimension = Math.min(this.screenSize.width, this.screenSize.height);
-            return minDimension <= 480 ? 'phone' : 'tablet';
-        }
-        return this.hasTouch ? 'laptop-with-touch' : 'desktop';
-    }
-};
-
-// NEW: Speed calculation and analysis function
-function calculateSpeeds(baseSpeed = null) {
-    // Get base speed from input or use provided value
-    const speed = baseSpeed || parseInt(document.getElementById('baseSpeed')?.value) || 100;
-    
-    // Calculate average WPM for different scenarios
-    const normalSpeed = speed * 3.75; // Average of 2.5-5x
-    const burstSpeed = speed * 0.6; // Average of 0.4-0.8x
-    const punctuationSpeed = speed * 6.5; // Average of 5-8x
-    
-    // WPM calculation (assuming average word length of 5 characters + 1 space)
-    const charsPerMinute = 60000 / speed; // 60000ms = 1 minute
-    const normalWPM = Math.round((60000 / normalSpeed) / 6);
-    const burstWPM = Math.round((60000 / burstSpeed) / 6);
-    const overallWPM = Math.round(charsPerMinute / 6);
-    const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
-    
-    const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
-    
-    const speedData = {
-        baseSpeed: speed,
-        overallWPM: overallWPM,
-        normalWPM: normalWPM,
-        burstWPM: burstWPM,
-        punctuationWPM: punctuationWPM,
-        realisticAverage: realisticAverage
-    };
-    
-    const resultsElement = document.getElementById('speedResults');
-    if (resultsElement) {
-        const results = `
-            <div class="result">
-                <h4>Your Typing Speeds:</h4>
-                <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
-                <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
-                <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
-                <p><strong>Burst Mode:</strong> <span class="highlight">${burstWPM} WPM</span> (10% of time - FAST!)</p>
-                <p><strong>After Punctuation:</strong> ${punctuationWPM} WPM (10% of time - thinking pauses)</p>
-                
-                <div style="margin-top: 15px; padding: 10px; background: #0f2419; border-radius: 4px;">
-                    <strong>Realistic Average: ${realisticAverage} WPM</strong>
-                </div>
-            </div>
-        `;
-        resultsElement.innerHTML = results;
-    }
- 
-    return speedData;
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    return !canHover;
 }
 
 let isAnimating = false;
@@ -274,6 +150,52 @@ function typeHTMLString(
       
       return baseSpeed * (1.5 + Math.random() * 1.5);
   }
+
+      function calculateSpeeds(baseSpeed = null) {
+        const speed = baseSpeed || parseInt(document.getElementById('baseSpeed')?.value) || 100;
+
+        const normalSpeed = speed * 3.75;
+        const burstSpeed = speed * 0.6;
+        const punctuationSpeed = speed * 6.5;
+
+        const charsPerMinute = 60000 / speed;
+        const normalWPM = Math.round((60000 / normalSpeed) / 6);
+        const burstWPM = Math.round((60000 / burstSpeed) / 6);
+        const overallWPM = Math.round(charsPerMinute / 6);
+        const punctuationWPM = Math.round((60000 / punctuationSpeed) / 6);
+
+        const realisticAverage = Math.round((normalWPM * 0.8) + (burstWPM * 0.1) + (punctuationWPM * 0.1));
+
+        const speedData = {
+          baseSpeed: speed,
+          overallWPM: overallWPM,
+          normalWPM: normalWPM,
+          burstWPM: burstWPM,
+          punctuationWPM: punctuationWPM,
+          realisticAverage: realisticAverage
+        };
+
+        const resultsElement = document.getElementById('speedResults');
+        if (resultsElement) {
+          const results = `
+            <div class="result">
+              <h4>Your Typing Speeds:</h4>
+              <p><strong>Base Speed:</strong> ${speed}ms between characters</p>
+              <p><strong>Overall WPM:</strong> <span class="highlight">${overallWPM} WPM</span></p>
+              <p><strong>Normal Typing:</strong> ${normalWPM} WPM (80% of time)</p>
+              <p><strong>Burst Mode:</strong> <span class="highlight">${burstWPM} WPM</span> (10% of time - FAST!)</p>
+              <p><strong>After Punctuation:</strong> ${punctuationWPM} WPM (10% of time - thinking pauses)</p>
+
+              <div style="margin-top: 15px; padding: 10px; background: #0f2419; border-radius: 4px;">
+                <strong>Realistic Average: ${realisticAverage} WPM</strong>
+              </div>
+            </div>
+          `;
+          resultsElement.innerHTML = results;
+        }
+
+        return speedData;
+      }
 
   function getTypingSpeed(baseSpeed, lastChar = "", showAnalysis = false) {
       const delay = randomSpeed(baseSpeed, lastChar);
@@ -1780,178 +1702,270 @@ window.loadPage = (page) => {
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
 
+  // Navigation concurrency guard:
+  // If the user navigates again before the current fetch finishes, ignore stale
+  // callbacks so we don't briefly show multiple page-specific UI (video toggles,
+  // contact link visibility, etc.).
+  if (!window.__spaNavState) {
+    window.__spaNavState = { seq: 0, controller: null, fetching: false };
+  }
+  const navState = window.__spaNavState;
+  navState.seq += 1;
+  const navSeq = navState.seq;
+
+  // Only abort if there's actually an in-flight fetch; otherwise the first load
+  // would abort its own fresh controller immediately.
+  if (navState.fetching && navState.controller) {
+    try { navState.controller.abort(); } catch (e) {}
+  }
+  navState.controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  navState.fetching = true;
+
+  const updateNavVideoToggleVisibility = () => {
+    const homeVideoToggleContainers = [
+      document.getElementById('homeVideoToggleContainerDesktop'),
+      document.getElementById('homeVideoToggleContainerMobile')
+    ].filter(Boolean);
+    const moeVideoToggleContainers = [
+      document.getElementById('moeVideoToggleContainerDesktop'),
+      document.getElementById('moeVideoToggleContainerMobile')
+    ].filter(Boolean);
+    const aboutUsVideoToggleContainers = [
+      document.getElementById('aboutUsVideoToggleContainerDesktop'),
+      document.getElementById('aboutUsVideoToggleContainerMobile')
+    ].filter(Boolean);
+    const contactLink = document.getElementById('contactLink');
+
+    const showContainers = (containers, show) => {
+      containers.forEach((container) => {
+        container.hidden = !show;
+        if (show) container.style.removeProperty('display');
+        else container.style.setProperty('display', 'none', 'important');
+      });
+    };
+
+    if (page === 'Home') {
+      showContainers(homeVideoToggleContainers, true);
+      showContainers(moeVideoToggleContainers, false);
+      showContainers(aboutUsVideoToggleContainers, false);
+      if (contactLink) contactLink.style.removeProperty('display');
+    } else if (page === 'meetOurExperts') {
+      showContainers(homeVideoToggleContainers, false);
+      showContainers(moeVideoToggleContainers, true);
+      showContainers(aboutUsVideoToggleContainers, false);
+      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    } else if (page === 'aboutUs') {
+      showContainers(homeVideoToggleContainers, false);
+      showContainers(moeVideoToggleContainers, false);
+      showContainers(aboutUsVideoToggleContainers, true);
+      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    } else {
+      showContainers(homeVideoToggleContainers, false);
+      showContainers(moeVideoToggleContainers, false);
+      showContainers(aboutUsVideoToggleContainers, false);
+      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    }
+  };
+
+  // Apply immediately so we don't show stale toggles while loading.
+  updateNavVideoToggleVisibility();
+
   window.HomeBackgroundVideoManager?.destroy();
   window.MeetOurExpertsBackgroundVideoManager?.destroy();
   window.AboutUsBackgroundVideoManager?.destroy();
 
-  let progress = 0;
-  progressBar.style.strokeDasharray = `${circumference}`;
+  if (progressBar) {
+    progressBar.style.strokeDasharray = `${circumference}`;
+  }
 
   const setProgress = (percent) => {
+    if (!progressBar || !progressText) return;
     const offset = circumference - (percent / 100) * circumference;
     progressBar.style.strokeDashoffset = offset;
     progressText.textContent = `${Math.round(percent)}%`;
   };
 
-  landing.style.display = 'grid';
-  landing.style.opacity = 1;
-  landing.style.pointerEvents = 'All';
+  if (landing) {
+    landing.style.display = 'grid';
+    landing.style.opacity = 1;
+    landing.style.pointerEvents = 'All';
+  }
 
   // Show quick progress animation
   setProgress(30);
-  
-  const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
-  fetch(`/src/pages/${pageToFetch}.html`)
-  .then(response => response.text())
-  .then(data => {
-    content.innerHTML = data;
-    setProgress(100);
 
-    // Hide loading overlay immediately after content loads
-    setTimeout(() => {
-      landing.style.opacity = 0;
-      landing.style.pointerEvents = 'none';
+  const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
+  // Capture the controller/signal used for THIS navigation.
+  // navState.controller can be replaced by a newer navigation before this one settles.
+  const controller = navState.controller;
+  const signal = controller ? controller.signal : undefined;
+  const fetchOptions = signal ? { signal } : undefined;
+
+  const markFetchDoneIfCurrent = () => {
+    try {
+      if (window.__spaNavState?.seq === navSeq && window.__spaNavState?.controller === controller) {
+        window.__spaNavState.fetching = false;
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  fetch(`/src/pages/${pageToFetch}.html`, fetchOptions)
+    .then((response) => response.text())
+    .then((data) => {
+      markFetchDoneIfCurrent();
+      if (navSeq !== window.__spaNavState?.seq) return;
+      if (content) content.innerHTML = data;
+      // Immediately apply per-page toggle visibility to newly injected DOM.
+      updateNavVideoToggleVisibility();
+      setProgress(100);
 
       setTimeout(() => {
-        landing.style.display = 'none';
+        if (navSeq !== window.__spaNavState?.seq) return;
+        if (landing) {
+          landing.style.opacity = 0;
+          landing.style.pointerEvents = 'none';
+        }
 
-            requestAnimationFrame(() => {
-              // Handle video toggle and contact link visibility first
-              const homeVideoToggleContainers = [
-                document.getElementById('homeVideoToggleContainerDesktop'),
-                document.getElementById('homeVideoToggleContainerMobile')
-              ].filter(Boolean);
-              const moeVideoToggleContainers = [
-                document.getElementById('moeVideoToggleContainerDesktop'),
-                document.getElementById('moeVideoToggleContainerMobile')
-              ].filter(Boolean);
-              const aboutUsVideoToggleContainers = [
-                document.getElementById('aboutUsVideoToggleContainerDesktop'),
-                document.getElementById('aboutUsVideoToggleContainerMobile')
-              ].filter(Boolean);
-              const contactLink = document.getElementById('contactLink');
+        setTimeout(() => {
+          if (navSeq !== window.__spaNavState?.seq) return;
+          if (landing) landing.style.display = 'none';
 
-              const showContainers = (containers, show) => {
-                containers.forEach((container) => {
-                  container.hidden = !show;
-                  if (show) {
-                    container.style.removeProperty('display');
-                  } else {
-                    container.style.setProperty('display', 'none', 'important');
-                  }
-                });
-              };
+          requestAnimationFrame(() => {
+            if (navSeq !== window.__spaNavState?.seq) return;
 
-              if (page === 'Home') {
-                showContainers(homeVideoToggleContainers, true);
-                showContainers(moeVideoToggleContainers, false);
-                showContainers(aboutUsVideoToggleContainers, false);
-                if (contactLink) contactLink.style.removeProperty('display');
-              } else if (page === 'meetOurExperts') {
-                showContainers(homeVideoToggleContainers, false);
-                showContainers(moeVideoToggleContainers, true);
-                showContainers(aboutUsVideoToggleContainers, false);
-                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
-              } else if (page === 'aboutUs') {
-                showContainers(homeVideoToggleContainers, false);
-                showContainers(moeVideoToggleContainers, false);
-                showContainers(aboutUsVideoToggleContainers, true);
-                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
-              } else {
-                showContainers(homeVideoToggleContainers, false);
-                showContainers(moeVideoToggleContainers, false);
-                showContainers(aboutUsVideoToggleContainers, false);
-                if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
-              }
+            updateNavVideoToggleVisibility();
 
-              retriggerMenuAnimations();
-              updateCalendarSvgTime();
-              initAudioVisualizer();
-              updateMusicBarColor(page);
-              updateHamburgerIcon(page);
-              if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
-                window.ICUEFooter.autoInject();
-              }
-              calendarModal();
-              CommunityGallery.init();
-              isTruelyTouchDevice();
-              initializeChatbot();
+            retriggerMenuAnimations();
+            updateCalendarSvgTime();
+            initAudioVisualizer();
+            updateMusicBarColor(page);
+            updateHamburgerIcon(page);
+            if (window.ICUEFooter && typeof window.ICUEFooter.autoInject === 'function') {
+              window.ICUEFooter.autoInject();
+            }
+            calendarModal();
+            CommunityGallery.init();
+            isTruelyTouchDevice();
+            initializeChatbot();
 
-              switch (page) {
-                case 'meetOurExperts':
-                  attachProfileEvents_moe();
-                  MeetOurExpertsBackgroundVideoManager.bindToggleUI();
-                  MeetOurExpertsBackgroundVideoManager.init();
-                  break;
-                case 'coreTeam':
-                  attachProfileEvents_coreTeam();
-                  break;
-                case 'Home':
-                  makeItRainText();
-                  realSlamnorSlam();
-                  attachHomeButtonEvents();
-                  HomeBackgroundVideoManager.bindToggleUI();
-                  HomeBackgroundVideoManager.init();
-                  break;
-                case 'News':
-                  initLogoSlider();
-                  initMobileNewsSlider();
-                  break;
-                case 'aboutUs':
-                  initHomeTextSlider();
-                  AboutUsBackgroundVideoManager.bindToggleUI();
-                  AboutUsBackgroundVideoManager.init();
-                  break;
-                case 'Contact':
-                  initPostMethod();
-                  break;
-                case 'ourWork':
-                  initializeCarousel();
-                  break;
-                case 'pastProjects':
-                  initMobileProjectsSlider();
-                  handleAOSByScreenSize();
-                  break;
-                case 'orgStructure':
-                  break;
-                case 'FAQs':
-                  initFrequentlyAskedQuestions();
-                  break;
-                case 'recruitment':
-                  JobBoard.init();
-                  break;
-                case 'donations':
-                  DonationForm.init();
-                  break;
-                case 'notableAwards':
-                  AwardsPage.init();
-                  break;
-                case 'communityActivities':
-                  CommunityPage.init();
-                  break;
-                case 'privacy':
-                  break;
-                case 'terms':
-                  break;
-                case 'gdpr':
-                  break;
-                case 'cookies':
-                  break;
-              }
+            if (typeof setupLanguageSwitcher === 'function') {
+              setupLanguageSwitcher();
+              console.log('[LoadPage] Language switcher updated for page:', page);
+            }
 
-              // Mark route initialization complete to avoid duplicate init from
-              // `initializePageFunctions()` (hashchange/pageshow safety nets).
-              window.__pageInitState = {
-                page,
-                time: Date.now()
-              };
-            });
-          }, 100);
+            switch (page) {
+              case 'meetOurExperts':
+                attachProfileEvents_moe();
+                MeetOurExpertsBackgroundVideoManager.bindToggleUI();
+                MeetOurExpertsBackgroundVideoManager.init();
+                break;
+              case 'coreTeam':
+                attachProfileEvents_coreTeam();
+                break;
+              case 'Home':
+                makeItRainText();
+                realSlamnorSlam();
+                attachHomeButtonEvents();
+                HomeBackgroundVideoManager.bindToggleUI();
+                HomeBackgroundVideoManager.init();
+                break;
+              case 'News':
+                initLogoSlider();
+                initMobileNewsSlider();
+                break;
+              case 'aboutUs':
+                initHomeTextSlider();
+                AboutUsBackgroundVideoManager.bindToggleUI();
+                AboutUsBackgroundVideoManager.init();
+                break;
+              case 'Contact':
+                initPostMethod();
+                break;
+              case 'ourWork':
+                initializeCarousel();
+                break;
+              case 'pastProjects':
+                initMobileProjectsSlider();
+                handleAOSByScreenSize();
+                break;
+              case 'orgStructure':
+                break;
+              case 'FAQs':
+                initFrequentlyAskedQuestions();
+                break;
+              case 'recruitment':
+                JobBoard.init();
+                break;
+              case 'donations':
+                DonationForm.init();
+                break;
+              case 'notableAwards':
+                AwardsPage.init();
+                break;
+              case 'communityActivities':
+                CommunityPage.init();
+                break;
+              case 'privacy':
+                break;
+              case 'terms':
+                break;
+              case 'gdpr':
+                break;
+              case 'cookies':
+                break;
+            }
+
+            // Mark route initialization complete to avoid duplicate init from
+            // `initializePageFunctions()` (hashchange/pageshow safety nets).
+            window.__pageInitState = {
+              page,
+              time: Date.now()
+            };
+          });
+        }, 100);
       }, 200);
+    })
+    .catch((err) => {
+      markFetchDoneIfCurrent();
+      // Ignore expected aborts (usually due to fast navigation).
+      if (signal?.aborted || err?.name === 'AbortError') return;
+      console.error('[loadPage] Failed to fetch page:', pageToFetch, err);
+      setProgress(100);
+      try {
+        if (landing) {
+          landing.style.opacity = 0;
+          landing.style.pointerEvents = 'none';
+          setTimeout(() => {
+            if (navSeq !== window.__spaNavState?.seq) return;
+            landing.style.display = 'none';
+          }, 200);
+        }
+      } catch (e) {
+        // ignore
+      }
     });
 };
 
 window.retriggerMenuAnimations = (isFirstLoad = true) => {
+  if (typeof window.gsap === 'undefined') {
+    // Fallback: never crash the app if GSAP failed to load.
+    // Just make sure elements are visible.
+    const selectors = [
+      '.menu-toggle', '.logo-banner', '.flag-link', '.contact-link', '.contact-sidebar',
+      '#langSwitcher', '#contactLink', '#menuIcon'
+    ];
+    selectors.forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => {
+        el.classList.remove('pre-hidden');
+        el.style.opacity = '';
+        el.style.visibility = '';
+      });
+    });
+    return;
+  }
+
   const animatedSelectors = [
     { selector: '.menu-toggle', delay: 0 },
     { selector: '.logo-banner', delay: -0.3 },
@@ -2646,17 +2660,22 @@ window.initLogoSlider = () => {
   const logoList = document.getElementById('logoList');
   if (!logoList) return;
 
-  let position = 0;
-  let speed = 1.75;
-  let isPaused = false;
-
   const sliderState = window.__logoSliderState || {
     rafId: null,
     isRunning: false,
     lastTs: 0,
-    visibilityBound: false
+    position: 0,
+    speed: 1.75,
+    isPaused: false,
+    logoList: null,
+    container: null,
+    visibilityHandler: null
   };
   window.__logoSliderState = sliderState;
+
+  // Always refresh references on SPA navigation.
+  sliderState.logoList = logoList;
+  sliderState.container = logoList.parentElement;
 
   const stopLoop = () => {
     sliderState.isRunning = false;
@@ -2664,59 +2683,69 @@ window.initLogoSlider = () => {
       cancelAnimationFrame(sliderState.rafId);
       sliderState.rafId = null;
     }
+    sliderState.lastTs = 0;
   };
+
+  // Stop any previous loop immediately so re-init always uses the latest DOM refs.
+  stopLoop();
 
   const loop = (ts) => {
     if (!sliderState.isRunning) return;
 
-    if (!document.body.contains(logoList)) {
+    const list = sliderState.logoList;
+    const container = sliderState.container;
+    if (!list || !container || !document.body.contains(list) || !document.body.contains(container)) {
       stopLoop();
       return;
     }
 
-    if (!document.hidden && !isPaused) {
+    if (!document.hidden && !sliderState.isPaused) {
       const delta = sliderState.lastTs ? (ts - sliderState.lastTs) : 16.67;
       const step = delta / 16.67;
-      position -= speed * step;
-      const listWidth = logoList.scrollWidth;
-      const containerWidth = logoList.parentElement.offsetWidth;
-
-      // Reset when it scrolls out of view
-      if (-position >= listWidth) {
-        position = containerWidth;
+      sliderState.position -= sliderState.speed * step;
+      const listWidth = list.scrollWidth;
+      const containerWidth = container.offsetWidth;
+      if (-sliderState.position >= listWidth) {
+        sliderState.position = containerWidth;
       }
-
-      logoList.style.transform = `translateX(${position}px)`;
+      list.style.transform = `translateX(${sliderState.position}px)`;
     }
 
     sliderState.lastTs = ts;
     sliderState.rafId = requestAnimationFrame(loop);
   };
 
-  if (!sliderState.isRunning) {
-    sliderState.isRunning = true;
-    sliderState.lastTs = 0;
-    sliderState.rafId = requestAnimationFrame(loop);
-  }
+  sliderState.isRunning = true;
+  sliderState.rafId = requestAnimationFrame(loop);
 
-  if (!sliderState.visibilityBound) {
-    sliderState.visibilityBound = true;
-    document.addEventListener('visibilitychange', () => {
+  // Visibility handler (bind once) must not capture stale `loop`.
+  if (!sliderState.visibilityHandler) {
+    sliderState.visibilityHandler = () => {
       if (!document.hidden && sliderState.isRunning && !sliderState.rafId) {
         sliderState.rafId = requestAnimationFrame(loop);
       }
-    });
+    };
+    document.addEventListener('visibilitychange', sliderState.visibilityHandler);
   }
 
-  // Pause on hover
-  logoList.parentElement.addEventListener('mouseenter', () => isPaused = true);
-  logoList.parentElement.addEventListener('mouseleave', () => isPaused = false);
+  // Pause on hover (bind once per container)
+  if (sliderState.container && !sliderState.container.hasAttribute('data-logo-slider-hover-bound')) {
+    sliderState.container.setAttribute('data-logo-slider-hover-bound', '1');
+    sliderState.container.addEventListener('mouseenter', () => sliderState.isPaused = true);
+    sliderState.container.addEventListener('mouseleave', () => sliderState.isPaused = false);
+  }
 
   const arrowLeft = document.getElementById('arrowLeft');
   const arrowRight = document.getElementById('arrowRight');
 
-  if (arrowLeft) arrowLeft.addEventListener('click', () => { speed = 1; isPaused = false; });
-  if (arrowRight) arrowRight.addEventListener('click', () => { speed = -1; isPaused = false; });
+  if (arrowLeft && !arrowLeft.hasAttribute('data-logo-slider-click-bound')) {
+    arrowLeft.setAttribute('data-logo-slider-click-bound', '1');
+    arrowLeft.addEventListener('click', () => { sliderState.speed = 1; sliderState.isPaused = false; });
+  }
+  if (arrowRight && !arrowRight.hasAttribute('data-logo-slider-click-bound')) {
+    arrowRight.setAttribute('data-logo-slider-click-bound', '1');
+    arrowRight.addEventListener('click', () => { sliderState.speed = -1; sliderState.isPaused = false; });
+  }
 };
 
 // ===================
@@ -4576,8 +4605,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
       const kbLoading = Object.create(null);
       const siteLang = ((document.documentElement.lang || 'vi').toLowerCase().startsWith('vi')) ? 'vi' : 'en';
       const kbPaths = {
-        vi: '/chatbot/kb.vi.json',
-        en: '/chatbot/kb.en.json'
+        vi: '/public/chatbot/kb.vi.json',
+        en: '/public/chatbot/kb.en.json'
       };
 
       // Warm the cache (non-blocking)
@@ -4671,6 +4700,16 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           return { content: kb.fallback?.answer || '', links: [] };
         }
 
+        const unsupported = detectUnsupportedLanguage(raw);
+        if (unsupported) {
+          return {
+            content: siteLang === 'vi'
+              ? 'Hiện tại chatbot chỉ hỗ trợ Tiếng Việt và English. Vui lòng đặt câu hỏi bằng Tiếng Việt hoặc English (bạn có thể đổi ngôn ngữ bằng biểu tượng lá cờ trên thanh menu).'
+              : 'This chatbot currently supports Vietnamese and English only. Please ask your question in Vietnamese or English (you can switch site language via the flag icon in the menu).',
+            links: []
+          };
+        }
+
         const queryNorm = normalizeForSearch(raw);
         const queryTokens = tokenize(queryNorm);
 
@@ -4755,6 +4794,44 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
         if (viScore >= 2 && viScore > enScore) return 'vi';
         if (enScore >= 1 && enScore > viScore) return 'en';
+        return null;
+      }
+
+      function detectUnsupportedLanguage(text) {
+        const raw = String(text || '');
+
+        // Script-based detection (high confidence).
+        if (/[\u3040-\u30ff]/.test(raw)) return 'ja'; // Japanese Hiragana/Katakana
+        if (/[\u4e00-\u9fff]/.test(raw)) return 'zh'; // CJK Unified Ideographs
+        if (/[\uac00-\ud7af]/.test(raw)) return 'ko'; // Hangul
+        if (/[\u0e00-\u0e7f]/.test(raw)) return 'th'; // Thai
+        if (/[\u0400-\u04ff]/.test(raw)) return 'ru'; // Cyrillic
+        if (/[\u0600-\u06ff]/.test(raw)) return 'ar'; // Arabic
+        if (/[\u0590-\u05ff]/.test(raw)) return 'he'; // Hebrew
+
+        // Latin-script heuristics for common unsupported languages.
+        const norm = normalizeForSearch(raw);
+        const tokens = norm.split(' ').filter(Boolean);
+        if (!tokens.length) return null;
+
+        const esHints = new Set(['hola','gracias','por','favor','buenos','dias','buenas','noches','donde','precio','contacto','ayuda','necesito','quiero']);
+        const frHints = new Set(['bonjour','merci','svp','silvousplait','ou','prix','contact','aide','besoin','je','veux']);
+        const deHints = new Set(['hallo','danke','bitte','preis','kontakt','hilfe','ich','brauche','mochte']);
+
+        let es = 0;
+        let fr = 0;
+        let de = 0;
+        for (const t of tokens) {
+          if (esHints.has(t)) es++;
+          if (frHints.has(t)) fr++;
+          if (deHints.has(t)) de++;
+        }
+        const max = Math.max(es, fr, de);
+        if (max >= 2) {
+          if (es === max) return 'es';
+          if (fr === max) return 'fr';
+          if (de === max) return 'de';
+        }
         return null;
       }
 
@@ -5900,25 +5977,9 @@ function initAudioVisualizer(
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages and setup');
+  console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages');
   window.preloadProfileImages();
 });
 
-// Also listen for page visibility changes (when switching back to tab)
-// and when hash changes for better coverage
-window.addEventListener('hashchange', () => {
-  console.log('🔄 [DEBUG] Hash changed event fired');
-  console.log('[Init] Hash changed, reinitializing...');
-  setTimeout(initializePageFunctions, 100);
-});
-
-window.addEventListener('pageshow', () => {
-  console.log('👁️ [DEBUG] Page show event fired');
-  console.log('[Init] Page shown, checking for initialization...');
-  setTimeout(initializePageFunctions, 100);
-});
-
-// Additional safety net: initialize after a delay
-setTimeout(() => {
-  initializePageFunctions();
-}, 1000);
+// hashchange is handled by `router`, and `loadPage` already sets `__pageInitState`
+// so `initializePageFunctions` will early-exit. No need for redundant listeners here.
