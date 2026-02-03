@@ -1308,7 +1308,7 @@ nav a {
 
 .corePageContainer{
   position: relative;
-  height: 140vh;
+  height: 130vh;
   margin: 1% 2.5%;
 }
 
@@ -3692,6 +3692,12 @@ button:hover {
     font-size: clamp(10px, 3vw, 12px);
     margin-top: clamp(9px, 2.5vw, 12px) !important;
   }
+  .text-container-coreTeam{
+    max-width:550px;
+    width:70%;
+    top:52.5%;
+    left:-5%;
+  }
 }
 
 @media (max-width: 449px) and (max-aspect-ratio: .7299/1) {
@@ -3701,7 +3707,7 @@ button:hover {
   .text-container-coreTeam{
     max-width:550px;
     width:70%;
-    top:52.5%;
+    top:47.5%;
     left:-5%;
   }
   .flag-link {
