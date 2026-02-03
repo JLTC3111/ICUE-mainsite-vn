@@ -3204,6 +3204,14 @@ window.initFrequentlyAskedQuestions = function() {
           ]
       };
 
+      // Expose FAQ data for the chatbot / search features
+      try {
+        window.__icueFaqData = faqData;
+        window.__icueFaqLang = 'vi';
+      } catch (e) {
+        // ignore
+      }
+
       
       function openCategory(category) {
             // Find the clicked card first
@@ -4558,12 +4566,238 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     targetElement.insertAdjacentHTML('beforeend', chatbotHTML);
 
     // Initialize chatbot functionality
-    setupChatbotEvents();
+    const chatbotKnowledge = createChatbotKnowledge();
+    setupChatbotEvents(chatbotKnowledge);
     
     return true;
 
+    function createChatbotKnowledge() {
+      const kbCache = Object.create(null);
+      const kbLoading = Object.create(null);
+      const siteLang = ((document.documentElement.lang || 'vi').toLowerCase().startsWith('vi')) ? 'vi' : 'en';
+      const kbPaths = {
+        vi: '/chatbot/kb.vi.json',
+        en: '/chatbot/kb.en.json'
+      };
+
+      // Warm the cache (non-blocking)
+      ensureKb(siteLang).catch(() => {});
+
+      return {
+        siteLang,
+        ensureKb,
+        getResponse
+      };
+
+      async function ensureKb(lang) {
+        const safeLang = (lang === 'en' || lang === 'vi') ? lang : siteLang;
+        if (kbCache[safeLang]) return kbCache[safeLang];
+        if (!kbLoading[safeLang]) {
+          kbLoading[safeLang] = loadKb(safeLang)
+            .catch(() => getFallbackKb(safeLang))
+            .then((kb) => prepareKb(kb, safeLang));
+        }
+        kbCache[safeLang] = await kbLoading[safeLang];
+        return kbCache[safeLang];
+      }
+
+      async function loadKb(lang) {
+        const url = kbPaths[lang];
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`KB fetch failed: ${res.status}`);
+        const kb = await res.json();
+        if (!kb || !Array.isArray(kb.intents)) throw new Error('KB invalid shape');
+        return kb;
+      }
+
+      function getFallbackKb(lang) {
+        return {
+          version: 1,
+          language: lang,
+          intents: [
+            {
+              id: 'contact',
+              keywords: ['liên hệ', 'contact', 'email', 'điện thoại', 'hotline'],
+              phrases: ['làm sao để liên hệ', 'thông tin liên hệ'],
+              answer: lang === 'vi'
+                ? 'Bạn có thể xem trang Liên hệ để biết email/số điện thoại/biểu mẫu.'
+                : 'Please check the Contact page for email/phone/form details.',
+              links: [{ label: 'Contact', url: '#/Contact' }]
+            }
+          ],
+          fallback: {
+            answer: lang === 'vi'
+              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Quyên góp / Liên hệ)?'
+              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Donations / Contact)?'
+          }
+        };
+      }
+
+      function prepareKb(kb, lang) {
+        const safe = {
+          version: kb.version || 1,
+          language: kb.language || lang,
+          intents: Array.isArray(kb.intents) ? kb.intents : [],
+          fallback: kb.fallback || { answer: lang === 'vi' ? 'Bạn có thể nói rõ hơn giúp mình không?' : 'Could you clarify your question?' }
+        };
+
+        safe.intents = safe.intents
+          .filter((it) => it && typeof it.answer === 'string')
+          .map((it) => {
+            const keywords = Array.isArray(it.keywords) ? it.keywords.filter(Boolean) : [];
+            const phrases = Array.isArray(it.phrases) ? it.phrases.filter(Boolean) : [];
+            const links = Array.isArray(it.links) ? it.links.filter(l => l && l.label && l.url) : [];
+            const candidates = [...keywords, ...phrases]
+              .map((s) => normalizeForSearch(String(s)))
+              .filter(Boolean);
+            const candidateTokens = candidates.map(tokenize);
+            return {
+              id: it.id || 'intent',
+              answer: String(it.answer),
+              links,
+              _candidates: candidates,
+              _candidateTokens: candidateTokens
+            };
+          });
+        return safe;
+      }
+
+      async function getResponse(userMessage) {
+        const raw = String(userMessage || '').trim();
+        if (!raw) {
+          const kb = await ensureKb(siteLang);
+          return { content: kb.fallback?.answer || '', links: [] };
+        }
+
+        const detectedLang = detectUserLanguage(raw) || siteLang;
+        const kb = await ensureKb(detectedLang);
+        const queryNorm = normalizeForSearch(raw);
+        const queryTokens = tokenize(queryNorm);
+
+        // 1) Match intents in KB
+        const bestIntent = findBestIntent(kb, queryNorm, queryTokens);
+
+        // 2) Match against FAQ data (if available)
+        const bestFaq = findBestFaq(queryNorm, queryTokens);
+
+        // Decide
+        const intentScore = bestIntent?.score ?? 0;
+        const faqScore = bestFaq?.score ?? 0;
+
+        if (faqScore >= 0.52 && faqScore >= intentScore) {
+          const links = [{ label: detectedLang === 'vi' ? 'Xem FAQ' : 'View FAQs', url: '#/faqs' }];
+          return { content: bestFaq.answer, links };
+        }
+
+        if (intentScore >= 0.45) {
+          return { content: bestIntent.intent.answer, links: bestIntent.intent.links || [] };
+        }
+
+        return {
+          content: kb.fallback?.answer || (siteLang === 'vi'
+            ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn giúp mình không?'
+            : 'I’m not fully sure I understood. Could you clarify your question?'),
+          links: [
+            { label: detectedLang === 'vi' ? 'FAQ' : 'FAQs', url: '#/faqs' },
+            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: '#/Contact' }
+          ]
+        };
+      }
+
+      function detectUserLanguage(text) {
+        const hasVietnamese = /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i.test(text);
+        if (hasVietnamese) return 'vi';
+        const englishHints = /\b(what|how|where|when|services?|projects?|contact|recruitment|donation|privacy|terms|cookies|gdpr)\b/i;
+        if (englishHints.test(text)) return 'en';
+        return null;
+      }
+
+      function normalizeForSearch(text) {
+        let s = String(text || '').toLowerCase();
+        try {
+          s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        } catch (e) {
+          // ignore
+        }
+        s = s.replace(/[đ]/g, 'd');
+        // After diacritics removal, keep it ASCII-only for compatibility.
+        s = s.replace(/[^a-z0-9\s]/g, ' ');
+        s = s.replace(/\s+/g, ' ').trim();
+        return s;
+      }
+
+      function tokenize(normText) {
+        const stop = new Set([
+          'la','va','hoac','cua','cho','ve','o','toi','ban','minh','chung','toi','xin','vui','long','nhe','a','oi',
+          'the','a','an','to','for','and','or','of','in','on','at','is','are','am','i','you','we','our','about','please'
+        ]);
+        return String(normText || '')
+          .split(' ')
+          .map(t => t.trim())
+          .filter(t => t.length >= 2 && !stop.has(t));
+      }
+
+      function scoreTokens(queryTokens, candTokens, queryNorm, candNorm) {
+        if (!candNorm) return 0;
+        if (queryNorm === candNorm) return 1;
+        if (queryNorm.includes(candNorm) || candNorm.includes(queryNorm)) return 0.92;
+
+        const qSet = new Set(queryTokens);
+        const cSet = new Set(candTokens);
+        if (qSet.size === 0 || cSet.size === 0) return 0;
+
+        let intersect = 0;
+        for (const t of cSet) if (qSet.has(t)) intersect++;
+        const union = qSet.size + cSet.size - intersect;
+        const jaccard = union ? (intersect / union) : 0;
+        const coverage = cSet.size ? (intersect / cSet.size) : 0;
+
+        return (0.65 * jaccard) + (0.35 * coverage);
+      }
+
+      function findBestIntent(kb, queryNorm, queryTokens) {
+        let best = null;
+        for (const intent of kb.intents || []) {
+          let bestScore = 0;
+          const candidates = intent._candidates || [];
+          const candidateTokens = intent._candidateTokens || [];
+          for (let i = 0; i < candidates.length; i++) {
+            const candNorm = candidates[i];
+            const candTokens = candidateTokens[i] || [];
+            const s = scoreTokens(queryTokens, candTokens, queryNorm, candNorm);
+            if (s > bestScore) bestScore = s;
+          }
+          if (!best || bestScore > best.score) {
+            best = { intent, score: bestScore };
+          }
+        }
+        return best;
+      }
+
+      function findBestFaq(queryNorm, queryTokens) {
+        const faqData = window.__icueFaqData;
+        if (!faqData || typeof faqData !== 'object') return null;
+
+        let best = null;
+        for (const cat of Object.keys(faqData)) {
+          const items = Array.isArray(faqData[cat]) ? faqData[cat] : [];
+          for (const item of items) {
+            const q = item?.q;
+            const a = item?.a;
+            if (!q || !a) continue;
+            const qNorm = normalizeForSearch(q);
+            const s = scoreTokens(queryTokens, tokenize(qNorm), queryNorm, qNorm);
+            if (!best || s > best.score) {
+              best = { question: q, answer: String(a), score: s };
+            }
+          }
+        }
+        return best;
+      }
+    }
+
     // Function to set up chatbot events
-    function setupChatbotEvents() {
+    function setupChatbotEvents(chatbotKnowledge) {
         const chatbotToggle = document.getElementById('chatbot-toggle');
         const chatbotWindow = document.getElementById('chatbot-window');
         const chatbotClose = document.getElementById('chatbot-close');
@@ -4575,7 +4809,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         if (!chatbotToggle || !chatbotWindow) return;
         
         // Local storage chat history
-        const CHAT_HISTORY_KEY = 'icueChatbotHistory';
+        const CHAT_HISTORY_KEY = 'icueChatbotHistory:vi';
         
         function saveChatHistory(history) {
             try {
@@ -4609,6 +4843,64 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             saveChatHistory(chatHistory);
         }
         
+        function createMessageElement(msg) {
+          const messageDiv = document.createElement('div');
+          const role = msg?.role === 'user' ? 'user' : 'bot';
+          const content = String(msg?.content ?? '');
+          const links = Array.isArray(msg?.links) ? msg.links : [];
+          messageDiv.className = `message ${role === 'user' ? 'user-message' : 'bot-message'}`;
+
+          if (role === 'user') {
+            messageDiv.innerHTML = `
+              <div class="message-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              <div class="message-content"></div>
+            `;
+          } else {
+            messageDiv.innerHTML = `
+              <div class="message-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.4L1 22l5.6-2.05C8.96 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                </svg>
+              </div>
+              <div class="message-content"></div>
+            `;
+          }
+
+          const contentEl = messageDiv.querySelector('.message-content');
+          if (contentEl) contentEl.textContent = content;
+
+          if (role === 'bot' && links.length && contentEl) {
+            const linksWrap = document.createElement('div');
+            linksWrap.className = 'chatbot-links';
+            links.forEach((l) => {
+              if (!l || !l.label || !l.url) return;
+              const a = document.createElement('a');
+              a.href = String(l.url);
+              a.textContent = String(l.label);
+              a.style.display = 'inline-block';
+              a.style.marginRight = '10px';
+              a.style.marginTop = '6px';
+              a.style.textDecoration = 'underline';
+              a.addEventListener('click', (e) => {
+                // allow hash routing; prevent full page reload
+                if (String(l.url).startsWith('#/')) {
+                  e.preventDefault();
+                  window.location.hash = l.url;
+                }
+              });
+              linksWrap.appendChild(a);
+            });
+            contentEl.appendChild(document.createElement('br'));
+            contentEl.appendChild(linksWrap);
+          }
+
+          return messageDiv;
+        }
+
         function renderChatHistory() {
             // Clear existing messages except the initial bot message
             const initialMessage = chatbotMessages.querySelector('.bot-message');
@@ -4622,32 +4914,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             
             // Render history
             chatHistory.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${msg.role === 'user' ? 'user-message' : 'bot-message'}`;
-                
-                if (msg.role === 'user') {
-                    messageDiv.innerHTML = `
-                        <div class="message-avatar">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                        </div>
-                        <div class="message-content">${msg.content}</div>
-                    `;
-                } else {
-                    messageDiv.innerHTML = `
-                        <div class="message-avatar">
-                            <svg style="transform:translateY(6px)" width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 12C15.87 12.0016 15.7409 11.9778 15.62 11.93C15.4971 11.8781 15.3852 11.8035 15.29 11.7101C15.2001 11.6179 15.1287 11.5092 15.08 11.39C15.0296 11.266 15.0025 11.1338 15 11C15.0011 10.7376 15.1053 10.4863 15.29 10.3C15.3825 10.2033 15.4952 10.1282 15.62 10.0801C15.8031 10.0047 16.0044 9.98535 16.1984 10.0245C16.3924 10.0637 16.5705 10.1596 16.71 10.3C16.8947 10.4863 16.9989 10.7376 17 11C16.9975 11.1338 16.9704 11.266 16.92 11.39C16.8713 11.5092 16.7999 11.6179 16.71 11.7101C16.6166 11.8027 16.5057 11.876 16.3839 11.9258C16.2621 11.9755 16.1316 12.0007 16 12Z" fill="#000000"></path>
-                                <path d="M12 12C11.87 12.0016 11.7409 11.9778 11.62 11.93C11.4971 11.8781 11.3852 11.8035 11.29 11.7101C11.2001 11.6179 11.1287 11.5092 11.08 11.39C11.0296 11.266 11.0025 11.1338 11 11C11.0011 10.7376 11.1053 10.4863 11.29 10.3C11.3825 10.2033 11.4952 10.1282 11.62 10.0801C11.8031 10.0047 12.0044 9.98535 12.1984 10.0245C12.3924 10.0637 12.5705 10.1596 12.71 10.3C12.8947 10.4863 12.9989 10.7376 13 11C12.9975 11.1338 12.9704 11.266 12.92 11.39C12.8713 11.5092 12.7999 11.6179 12.71 11.7101C12.6166 11.8027 12.5057 11.876 12.3839 11.9258C12.2621 11.9755 12.1316 12.0007 12 12Z" fill="#000000"></path>
-                                <path d="M8 12C7.86999 12.0016 7.74091 11.9778 7.62 11.93C7.49713 11.8781 7.38519 11.8035 7.29001 11.7101C7.20006 11.6179 7.12873 11.5092 7.07999 11.39C7.0296 11.266 7.0025 11.1338 7 11C7.0011 10.7376 7.10526 10.4863 7.29001 10.3C7.3825 10.2033 7.49516 10.1282 7.62 10.0801C7.80305 10.0047 8.00435 9.98535 8.19839 10.0245C8.39244 10.0637 8.57048 10.1596 8.70999 10.3C8.89474 10.4863 8.9989 10.7376 9 11C8.9975 11.1338 8.9704 11.266 8.92001 11.39C8.87127 11.5092 8.79994 11.6179 8.70999 11.7101C8.61655 11.8027 8.50575 11.876 8.38391 11.9258C8.26207 11.9755 8.13161 12.0007 8 12Z" fill="#000000"></path>
-                            </svg>
-                        </div>
-                        <div class="message-content">${msg.content}</div>
-                    `;
-                }
-                
-                chatbotMessages.appendChild(messageDiv);
+              chatbotMessages.appendChild(createMessageElement(msg));
             });
             
             // Scroll to bottom
@@ -4702,7 +4969,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         });
         
         // Send message function
-        const sendMessage = (message) => {
+        const sendMessage = async (message) => {
             if (!message.trim()) return;
             
             // Add to chat history
@@ -4712,17 +4979,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             });
             
             // Add user message to UI
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message user-message';
-            userMessage.innerHTML = `
-                <div class="message-avatar">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                </div>
-                <div class="message-content">${message}</div>
-            `;
-            chatbotMessages.appendChild(userMessage);
+            chatbotMessages.appendChild(createMessageElement({ role: 'user', content: message.trim() }));
             
             // Clear input
             chatbotInput.value = '';
@@ -4730,48 +4987,40 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             // Scroll to bottom
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             
-            // Simulate bot response (placeholder)
-            setTimeout(() => {
-                const botResponse = generateBotResponse(message);
-                
-                // Add to chat history
-                addMessageToHistory({
-                    role: 'bot',
-                    content: botResponse
-                });
-                
-                const botMessage = document.createElement('div');
-                botMessage.className = 'message bot-message';
-                botMessage.innerHTML = `
-                    <div class="message-avatar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.4L1 22l5.6-2.05C8.96 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
-                        </svg>
-                    </div>
-                    <div class="message-content">${botResponse}</div>
-                `;
-                chatbotMessages.appendChild(botMessage);
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-            }, 1000);
+            // Simulate bot response delay
+            setTimeout(async () => {
+              const resp = await chatbotKnowledge.getResponse(message);
+              addMessageToHistory({
+                role: 'bot',
+                content: resp.content,
+                links: resp.links || []
+              });
+              chatbotMessages.appendChild(createMessageElement({
+                role: 'bot',
+                content: resp.content,
+                links: resp.links || []
+              }));
+              chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }, 700);
         };
         
         // Send button click
-        chatbotSend?.addEventListener('click', () => {
-            sendMessage(chatbotInput.value);
+        chatbotSend?.addEventListener('click', async () => {
+          await sendMessage(chatbotInput.value);
         });
         
         // Enter key to send
-        chatbotInput?.addEventListener('keypress', (e) => {
+        chatbotInput?.addEventListener('keypress', async (e) => {
             if (e.key === 'Enter') {
-                sendMessage(chatbotInput.value);
+            await sendMessage(chatbotInput.value);
             }
         });
         
         // Suggestion buttons
         suggestionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                sendMessage(btn.textContent);
-            });
+          btn.addEventListener('click', async () => {
+            await sendMessage(btn.textContent || '');
+          });
         });
         
         // Company deck link to open chatbot
@@ -4785,21 +5034,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         }
     }
     
-    // Bot response generator
-    function generateBotResponse(userMessage) {
-        const message = userMessage.toLowerCase();
-        if (message.includes('dịch vụ') || message.includes('service') || message.includes('cost') || message.includes('giá')) {
-            return 'ICUE cung cấp các dịch vụ nghiên cứu kinh tế xây dựng và phát triển đô thị, tư vấn phát triển bền vững và quản lý dự án môi trường. Chi phí tư vấn của chúng tôi khác nhau tùy thuộc vào từng dự án. Vui lòng liên hệ với chúng tôi để biết thêm chi tiết.';
-        } else if (message.includes('dự án') || message.includes('project')) {
-            return 'Chúng tôi đã thực hiện các dự án quan trọng như Công viên Âu Cơ ở Hội An, các dự án bảo tồn biển, và dự án phát triển đô thị thông minh. Bạn có muốn biết thêm chi tiết về một dự án cụ thể không?';
-        } else if (message.includes('liên hệ') || message.includes('contact')) {
-            return 'Bạn có thể liên hệ với ICUE qua email hoặc điện thoại. Vui lòng kiểm tra trang Liên hệ để biết thêm chi tiết. Tôi có thể giúp gì thêm cho bạn không?';  
-        } else if (message.includes('ơi') || message.includes('hello') || message.includes('hi') || message.includes('chào')) {
-            return 'Xin chào! Rất vui được giúp bạn. Tôi có thể cung cấp thông tin về các dịch vụ, dự án hoặc thông tin liên hệ của ICUE. Bạn cần hỗ trợ gì?';
-        } else {
-            return 'Cảm ơn bạn đã liên hệ! Tôi vẫn đang trong quá trình phát triển, vui lòng xem trang Câu hỏi thường gặp để biết thêm thông tin. Để được hỗ trợ tốt nhất, vui lòng liên hệ trực tiếp với ICUE qua trang Liên hệ. Tôi sẽ sớm được cải thiện để phục vụ bạn tốt hơn!';
-        }
-    }
+    // Bot response generator now lives in createChatbotKnowledge().
 };
 
 document.addEventListener("DOMContentLoaded", function() {
