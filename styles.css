@@ -1312,7 +1312,7 @@ nav a {
 .corePageContainer{
   position: relative;
   height: 130vh;
-  margin: 1% 2.5%;
+  padding: 2.5%;
 }
 
 .image-container-coreTeam {
