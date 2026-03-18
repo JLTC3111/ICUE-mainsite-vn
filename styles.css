@@ -1007,7 +1007,7 @@ nav a {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
-  color: #131313;
+  color: #ffffff;
   justify-content: center;
   text-align: center;
 }
@@ -1029,7 +1029,7 @@ nav a {
 .arrow-button {
   position: fixed;
   display: flex;
-  top: 55%;
+  top: 65% !important;
   width: 65px;
   height: 65px;
   justify-content: center;
