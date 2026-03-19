@@ -1449,7 +1449,7 @@ nav a {
   width: 40%;
   height: 325px;
   top: 12.5%;
-  right: 9.5%;
+  right: 5.25% !important;
   z-index: 11;
   animation: slideInFromRight 3.5s ease-in-out;
 }
