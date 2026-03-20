@@ -227,12 +227,12 @@ nav a {
 .chatbot-badge {
     position: absolute;
     top: -5px;
-    right: -5px;
+    right: -15px;
     background: #ff4757;
     color: white;
     border-radius: 10px;
     padding: 2px 6px;
-    font-size: 10px;
+    font-size: clamp(8px, 2vw, 10px);
     font-weight: bold;
 }
 
