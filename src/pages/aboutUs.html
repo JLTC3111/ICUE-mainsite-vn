@@ -221,20 +221,20 @@
 
 .space {
     display: inline-block;
-    width: 0.5em;  /* Adjustable width for the space */
+    width: 0.5em; 
 }
 
 .space-wide {
     display: inline-block;
-    width: 0.5em;  /* Wider space than the regular .space class */
+    width: 0.5em; 
 }
 
 .extra-bold {
-    font-weight: 900;  /* Maximum font weight */
+    font-weight: 900;  
     text-shadow: -1px -1px 0 #874b1d, 
                  1px -1px 0 #874b1d,
                 -1px 1px 0 #874b1d,
-                 1px 1px 0 #874b1d;  /* Text stroke effect */
+                 1px 1px 0 #874b1d; 
     letter-spacing: 2px;
 }
 
@@ -288,7 +288,16 @@
     display: inline-block;
     color: #874b1d;
     padding: 10px;
+    margin-left: -7.5vw;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.desc-text {
+    font-size: clamp(1em, 2vw, 1.5em);
+    color: rgb(135, 48, 48);
+    display: inline-block;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    margin-top: 15px;
 }
 
 .postcard-image:hover {
@@ -384,6 +393,10 @@
       margin: 10px 15px;
       letter-spacing: 2px;
       text-align: center;
+  }
+  
+.middle-text {
+      margin-left: 12.5vw !important;
   }
 
 .highlight-fourthPart {
@@ -494,7 +507,7 @@
             <h2 class="handwritten">Chúng Tôi Là</h2>
             <span class="space-wide"></span>
             <div class="fuzzy-text">ĐAM MÊ</div>
-            <p class="regular-text">đội ngũ chuyên gia phát triển thành phố</p>
+            <p class="regular-text">Đội ngũ chuyên gia Quy hoạch, phát triển đô thị ứng phó biến đổi khí hậu và bảo vệ môi trường tự nhiên trong nước và quốc tế</p>
         </div>
 
         <div class="section">
@@ -508,7 +521,7 @@
                 <img src="public/aboutUs/kids1.png" alt="Construction">
             </div>
 
-            <p class="middle-text">20 Năm Quản Lý Đô Thị</p>
+            <p class="middle-text">Hơn 10 Năm Quản Lý Đô Thị</p>
         </div>
 
         <div class="section">
