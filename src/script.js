@@ -304,7 +304,7 @@ const homeMobileObserver = new IntersectionObserver((entries) => {
       entry.target.classList.add('animate-in');
     }
     else if (entry.intersectionRatio === 0) {
-      entry.target.classList.remove('animate-in');
+      entry.target.classList.add('animate-out');
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });

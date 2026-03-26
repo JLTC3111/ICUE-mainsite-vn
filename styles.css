@@ -1980,6 +1980,10 @@ nav a {
   opacity: 1;
   transform: translateX(0);
 }
+.home-section__header.animate-out {
+  opacity: 0;
+  transform: translateX(-250px);
+}
 
 
 .home-section__header h2 {
