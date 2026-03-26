@@ -1923,6 +1923,9 @@ nav a {
     background: transparent;
     box-shadow: none;
   }
+  .home-section__header {
+    animation: fadeInFromLeft 1.5s ease-out both;
+  }
 }
 
 
@@ -2016,7 +2019,7 @@ nav a {
   .home-section__header {
     opacity: 0;
     transform-origin: top;
-    animation: clipPath 0.8s linear both;
+    animation: clipPath 8s linear both;
     animation-timeline: view();
     animation-range: entry 0% cover 30%;
   }
