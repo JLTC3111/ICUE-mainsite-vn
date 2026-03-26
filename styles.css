@@ -1923,21 +1923,6 @@ nav a {
     background: transparent;
     box-shadow: none;
   }
-  @supports (animation-timeline: view()) {
-  .home-section__header {
-    opacity: 0;
-    transform-origin: top;
-    animation: clipPath 8s linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-  }
-
-  .home-grid .home-card {
-    animation: homeFadeInUp 1.5s ease-out forwards;
-    animation-timeline: view();
-    animation-range: entry 0% cover 25%;
-  }
-}
 }
 
 
@@ -1984,6 +1969,18 @@ nav a {
   margin: 0 auto 2.5rem;
   text-align: center;
 }
+
+.home-section__header {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.home-section__header.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 .home-section__header h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);

@@ -298,6 +298,23 @@ function typeHTMLString(
   typeNextNode();
 }
 
+const homeMobileObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '0px 0px -50px 0px' });
+
+const initHomeMobileObserver = () => {
+  document.querySelectorAll('.home-section__header').forEach(el => {
+    homeMobileObserver.observe(el);
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initHomeMobileObserver();
+});
 
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
@@ -330,89 +347,6 @@ window.makeItRainText = () => {
 // Call when DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
-});
-
-window.realSlamnorSlam = function () {
-  const text = document.querySelector('#textSlam .slam-text');
-  const dust = document.querySelector('#textSlam .slam-dust');
-
-  if (!text || !dust) {
-    return;
-  }
-
-  // Reset state
-  gsap.set(text, {
-    x: 0,
-    y: 0,
-    rotateX: 0,
-    scale: 1,
-    opacity: 0,
-    transformOrigin: "50% 50%",
-    perspective: 1200
-  });
-
-  gsap.set(dust, {
-    scale: 0.5,
-    opacity: 0,
-    filter: "brightness(1)"
-  });
-
-  const tl = gsap.timeline();
-
-  // 🌀 Spin + Drop Slam
-  tl.to(text, {
-    opacity: 1,
-    x: 1000,
-    y: 0,
-    rotationX: 360,
-    rotationY: 360,
-    rotationZ: 360,
-    scale: 1.05,
-    duration: 1.5,
-    ease: "back.out(1.7)",
-    transformPerspective: 1200
-  })
-  
-  // 💥 Slam Impact
-  .to(text, {
-    x: -1000,
-    y: 0,
-    scaleY: 1.05,
-    scaleX: 1.05,
-    duration: 0.7,
-    ease: "power4.inOut"
-  })
-
-  // 👊 Bounce Back
-  .to(text, {
-    x:0,
-    y:0,
-    scaleY: 1,
-    scaleX: 1,
-    duration: 0.7,
-    ease: "elastic.out(1, 0.5)"
-  })
-
-  // 💨 Dust Puff
-  .to(dust, {
-    opacity: 1,
-    scale: 1.4,
-    filter: "brightness(1.5)",
-    duration: 0.75,
-    ease: "power2.out"
-  }, "-=1") // overlap dust with squash
-
-  .to(dust, {
-    opacity: 0,
-    scale: 2.2,
-    filter: "brightness(.75)",
-    duration: 1.2,
-    ease: "power2.in"
-  }, "-=0.6"); // overlap exit
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-  realSlamnorSlam();
 });
 
 window.attachProfileEvents_moe = () => {
@@ -1869,8 +1803,7 @@ window.loadPage = (page) => {
                 attachProfileEvents_coreTeam();
                 break;
               case 'Home':
-                makeItRainText();
-                realSlamnorSlam();
+                initHomeMobileObserver();
                 attachHomeButtonEvents();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
