@@ -1923,9 +1923,21 @@ nav a {
     background: transparent;
     box-shadow: none;
   }
+  @supports (animation-timeline: view()) {
   .home-section__header {
-    animation: fadeInFromLeft 1.5s ease-out both;
+    opacity: 0;
+    transform-origin: top;
+    animation: clipPath 8s linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
   }
+
+  .home-grid .home-card {
+    animation: homeFadeInUp 1.5s ease-out forwards;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+}
 }
 
 
