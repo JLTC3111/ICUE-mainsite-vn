@@ -1993,11 +1993,11 @@ nav a {
 @keyframes clipPath {
   from {
     opacity: 0;
-    clip-path: inset(100% 100% 0 0);
+    transform: scaleY(0)
   }
   to {
     opacity: 1;
-    clip-path: inset(0);
+    transform: scaleY(1);
   }
 }
 
@@ -2015,7 +2015,8 @@ nav a {
 @supports (animation-timeline: view()) {
   .home-section__header {
     opacity: 0;
-    animation: clipPath 0.8s linear;
+    transform-origin: top;
+    animation: clipPath 0.8s linear both;
     animation-timeline: view();
     animation-range: entry 0% cover 30%;
   }
