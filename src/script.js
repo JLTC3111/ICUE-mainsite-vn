@@ -308,7 +308,7 @@ const homeMobileObserver = new IntersectionObserver((entries) => {
       entry.target.classList.add('animate-out');
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+}, { threshold: 0.25, rootMargin: '0px 0px -50px 0px' });
 
 const initHomeMobileObserver = () => {
     homeMobileObserver.disconnect();
