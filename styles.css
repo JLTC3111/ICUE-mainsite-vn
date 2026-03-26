@@ -1987,9 +1987,10 @@ nav a {
 
 .home-section__header h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  margin-bottom: 0.75rem;
+  margin-bottom: clamp(0.25rem, 1.5vw, 0.5rem);
   color: #ffffff;
   font-family: "Poppins", sans-serif;
+  width: 100%;
 }
 
 .home-section__header p {
