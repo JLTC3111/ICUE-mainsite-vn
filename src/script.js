@@ -302,8 +302,9 @@ const homeMobileObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('animate-in');
+       entry.target.classList.remove('animate-out');
     }
-    else if (entry.intersectionRatio === 0) {
+    else {
       entry.target.classList.remove('animate-in');
       entry.target.classList.add('animate-out');
     }
