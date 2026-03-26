@@ -311,10 +311,14 @@ const homeMobileObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.25, rootMargin: '0px 0px -50px 0px' });
 
 const initHomeMobileObserver = () => {
-    homeMobileObserver.disconnect();
+  homeMobileObserver.disconnect();
   document.querySelectorAll('.home-section__header').forEach(el => {
     homeMobileObserver.observe(el);
   });
+};
+
+const destroyHomeMobileObserver = () => {
+  homeMobileObserver.disconnect();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1717,6 +1721,9 @@ window.loadPage = (page) => {
   window.HomeBackgroundVideoManager?.destroy();
   window.MeetOurExpertsBackgroundVideoManager?.destroy();
   window.AboutUsBackgroundVideoManager?.destroy();
+  if (typeof destroyHomeMobileObserver === 'function') {
+    destroyHomeMobileObserver();
+  }
 
   if (progressBar) {
     progressBar.style.strokeDasharray = `${circumference}`;
