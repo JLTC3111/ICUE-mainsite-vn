@@ -1972,13 +1972,13 @@ nav a {
 
 .home-section__header {
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateX(250px);
+  transition: opacity 2.5s ease, transform 2.5s ease;
 }
 
 .home-section__header.animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 
