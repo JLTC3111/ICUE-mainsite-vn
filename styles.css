@@ -2008,11 +2008,11 @@ nav a {
 @keyframes clipPath {
   from {
     opacity: 0;
-    transform: scaleY(0)
+    clip-path: inset(100% 100% 0 0);
   }
   to {
     opacity: 1;
-    transform: scaleY(1);
+    clip-path: inset(0);
   }
 }
 
