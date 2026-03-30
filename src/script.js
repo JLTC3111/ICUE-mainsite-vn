@@ -326,6 +326,30 @@ document.addEventListener('DOMContentLoaded', () => {
   initHomeMobileObserver();
 });
 
+const homeMobileCardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-up');
+      entry.target.classList.remove('animate-down');
+    }
+    else {
+      entry.target.classList.remove('animate-up');
+      entry.target.classList.add('animate-down');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+const initHomeMobileCardObserver = () => {
+  homeMobileCardObserver.disconnect();
+  document.querySelectorAll('.home-card').forEach(el => {
+    homeMobileCardObserver.observe(el);
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initHomeMobileCardObserver();
+});
+
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
   if (!el) return;
@@ -1818,6 +1842,7 @@ window.loadPage = (page) => {
               case 'Home':
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
+                initHomeMobileCardObserver();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
                 break;
