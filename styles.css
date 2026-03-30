@@ -2050,9 +2050,9 @@ nav a {
   .home-section__header {
     opacity: 0;
     transform-origin: top;
-    animation: clipPath 8s linear both;
+    animation: clipPath 2.5s linear both;
     animation-timeline: view();
-    animation-range: entry 0% cover 30%;
+    animation-range: entry 0% cover 15%;
   }
 
   .home-grid .home-card img {
@@ -2073,7 +2073,7 @@ nav a {
 
     .home-section__header {
       animation-timeline: home-sections-scroll;
-      animation-range: entry 0% cover 30%;
+      animation-range: entry 0% cover 15%;
       animation-fill-mode: both;
     }
 
