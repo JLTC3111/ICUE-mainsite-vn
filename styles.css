@@ -2667,10 +2667,6 @@ body.loaded #app {
     z-index: 5;
   }
 
-  .home-grid .home-card {
-    animation: homeFadeInUp 1.5s ease-out forwards;
-  }
-
   .sub-menu {
     position: relative;
     margin: 2rem auto; 
