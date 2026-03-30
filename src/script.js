@@ -329,12 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
 const homeMobileCardObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.classList.add('animate-up');
-      entry.target.classList.remove('animate-down');
+      entry.target.classList.add('animate-in-card');
+      entry.target.classList.remove('animate-out-card');
     }
     else {
-      entry.target.classList.remove('animate-up');
-      entry.target.classList.add('animate-down');
+      entry.target.classList.remove('animate-in-card');
+      entry.target.classList.add('animate-out-card');
     }
   });
 }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
