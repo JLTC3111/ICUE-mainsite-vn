@@ -341,7 +341,7 @@ const homeMobileCardObserver = new IntersectionObserver((entries) => {
 
 const initHomeMobileCardObserver = () => {
   homeMobileCardObserver.disconnect();
-  document.querySelectorAll('.home-card img').forEach(el => {
+  document.querySelectorAll('.home-card').forEach(el => {
     homeMobileCardObserver.observe(el);
   });
 };
