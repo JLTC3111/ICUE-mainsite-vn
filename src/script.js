@@ -341,7 +341,7 @@ const homeMobileCardObserver = new IntersectionObserver((entries) => {
 
 const initHomeMobileCardObserver = () => {
   homeMobileCardObserver.disconnect();
-  document.querySelectorAll('.home-card').forEach(el => {
+  document.querySelectorAll('.home-card img').forEach(el => {
     homeMobileCardObserver.observe(el);
   });
 };
@@ -349,6 +349,10 @@ const initHomeMobileCardObserver = () => {
 document.addEventListener('DOMContentLoaded', () => {
   initHomeMobileCardObserver();
 });
+
+const destroyHomeMobileCardObserver = () => {
+  homeMobileCardObserver.disconnect();
+};
 
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
@@ -378,7 +382,6 @@ window.makeItRainText = () => {
   });
 };
 
-// Call when DOM is ready
 window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });

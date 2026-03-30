@@ -2060,7 +2060,7 @@ nav a {
     transform-origin: top;
     animation: homeFadeInUp 3.5s ease-out forwards;
     animation-timeline: view();
-    animation-range: entry 0% cover 25%;
+    animation-range: entry 0% cover 15%;
   }
 }
 
