@@ -1987,7 +1987,7 @@ nav a {
 
 .home-card {
   opacity: 0;
-  transform: translateX(-300px);
+  transform: translateX(300px);
   transition: opacity 1.5s ease, transform 1.5s ease;
 }
 
@@ -1999,7 +1999,7 @@ nav a {
 
 .home-card.animate-out-card {
   opacity: 0;
-  transform: translateX(-300px);
+  transform: translateX(300px);
   transition: opacity 2.5s ease, transform 2.5s ease;
 }
 
