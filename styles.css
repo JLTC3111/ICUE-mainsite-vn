@@ -2055,8 +2055,10 @@ nav a {
     animation-range: entry 0% cover 30%;
   }
 
-  .home-grid .home-card {
-    animation: homeFadeInUp 1.5s ease-out forwards;
+  .home-grid .home-card img {
+    opacity: 0;
+    transform-origin: top;
+    animation: homeFadeInUp 3.5s ease-out forwards;
     animation-timeline: view();
     animation-range: entry 0% cover 25%;
   }
@@ -2077,7 +2079,7 @@ nav a {
 
     .home-grid .home-card {
       animation-timeline: home-sections-scroll;
-      animation-range: entry 0% cover 25%;
+      animation-range: entry 0% cover 15%;
       animation-fill-mode: both;
     }
   }
@@ -2095,7 +2097,6 @@ nav a {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 18px;
   overflow: hidden;
-  opacity: 0;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -2126,8 +2127,10 @@ nav a {
 }
 
 .home-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px) !important;
+  cursor: pointer;
+  box-shadow: 0 18px 36px rgba(255, 255, 255, 0.75);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .home-cta {
