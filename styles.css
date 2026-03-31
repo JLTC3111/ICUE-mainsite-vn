@@ -1607,6 +1607,10 @@ nav a {
   margin-bottom: 2.5rem;
 }
 
+.home-hero__actions a:hover {
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.75);
+}
+
 .home-btn {
   display: inline-flex;
   align-items: center;
