@@ -1847,6 +1847,7 @@ window.loadPage = (page) => {
                 MeetOurExpertsBackgroundVideoManager.init();
                 break;
               case 'coreTeam':
+                makeItRainText();
                 attachProfileEvents_coreTeam();
                 break;
               case 'Home':
@@ -2468,7 +2469,7 @@ window.attachProfileEvents_coreTeam = () => {
   ];
 
   let currentIndex = 0;
-
+  
   const textBox = document.getElementById('profile-text-coreTeam');
   const photo = document.getElementById('profile-photo-coreTeam');
   const container = document.getElementById('profile-text-coreTeam')?.parentElement;
