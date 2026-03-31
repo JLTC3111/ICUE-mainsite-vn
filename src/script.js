@@ -370,12 +370,12 @@ window.makeItRainText = () => {
 
     gsap.fromTo(
       span,
-      { y: "-40vh", opacity: 0 },
+      { x: "-50vw", opacity: 0 },
       {
-        y: 0,
+        x: 0,
         opacity: 1,
-        delay: i * 0.25,
-        duration: 3,
+        delay: i * 0.05,
+        duration: 0.75,
         ease: "bounce.out"
       }
     );
@@ -1846,6 +1846,7 @@ window.loadPage = (page) => {
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
                 initHomeMobileCardObserver();
+                makeItRainText();
                 HomeBackgroundVideoManager.bindToggleUI();
                 HomeBackgroundVideoManager.init();
                 break;

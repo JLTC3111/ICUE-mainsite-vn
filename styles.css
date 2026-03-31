@@ -1587,7 +1587,7 @@ nav a {
   margin: 0 0 1rem;
   font-family: "Audiowide", sans-serif;
   letter-spacing: 0.02em;
-  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+  text-shadow: 0 6px 18px rgba(0, 10, 156, 0.95);
 }
 
 .home-hero__subtitle {
@@ -1596,7 +1596,7 @@ nav a {
   margin: 0 auto 2rem;
   max-width: 760px;
   line-height: 1.6;
-  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 4px 14px rgba(255, 255, 255, 0.75);
 }
 
 .home-hero__actions {
