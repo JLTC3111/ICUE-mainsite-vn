@@ -326,6 +326,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initHomeMobileObserver();
 });
 
+let homeMobileCardObserverTargets = new WeakSet();
+
 const homeMobileCardObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -340,9 +342,13 @@ const homeMobileCardObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
 const initHomeMobileCardObserver = () => {
-  homeMobileCardObserver.disconnect();
-  document.querySelectorAll('.home-card').forEach(el => {
+  const cards = document.querySelectorAll('.home-card');
+  if (!cards.length) return;
+
+  cards.forEach(el => {
+    if (homeMobileCardObserverTargets.has(el)) return;
     homeMobileCardObserver.observe(el);
+    homeMobileCardObserverTargets.add(el);
   });
 };
 
@@ -352,6 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const destroyHomeMobileCardObserver = () => {
   homeMobileCardObserver.disconnect();
+  homeMobileCardObserverTargets = new WeakSet();
 };
 
 window.makeItRainText = () => {
