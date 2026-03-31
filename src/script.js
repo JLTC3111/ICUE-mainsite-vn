@@ -397,15 +397,15 @@ window.attachProfileEvents_moe = () => {
   const profileData_moe = [
     {
       name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị thuộc Tổng Hội Xây Dựng Việt Nam; là chuyên gia về tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng. Nguyên là phó cục trưởng Cục Phát Triển Đô thị thuộc Bộ Xây Dựng (2008-2013); Phó Viện Trưởng thường trực Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (2013-2018); Viện Trưởng Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (3/2018 - nay). Có những sáng kiến lớn về phát triển đô thị xanh, biến đổi khí hậu và đa dạng sinh học; chuyển giao ứng dụng khoa học công nghệ vào chuyển đổi xanh trong kinh tế nông nghiệp và đô thị; tư vấn pháp luật, chính sách cho quy hoạch quốc gia và khu vực.`,
-      img: "public/profilePhotos/hanhnguyen.jpg"
+      img: "public/profilePhotos/hanhnguyen__nobg.png"
     },
     {
       name: `<span class="intro-people">Phó Viện Trưởng TS.KTS Trần Thị Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị; xây dựng chiến lược, hoạch định chính sách và phát triển bền vững. Tiến Sỹ và Thạc Sỹ từ Đại học Tokyo, nền tảng vững chắc về thích ứng với biến đổi khí hậu, phân lại đô thị và chiến lược phát triển quốc gia. Nguyên Phó cục trưởng Cục Phát triển Đô thị-Bộ xây dựng, tham gia các chương trình lớn về phát triển đô thị và quy hoạch đô thị`,
-      img: "public/profilePhotos/tranthilananh.jpg"
+      img: "public/profilePhotos/tranthilananh__nobg.png"
     },
     {
       name: `<span class="intro-people">Phó Viện Trưởng KS. Trần Quốc Toản </span><br> Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông. Phó cục trưởng Cục giám định-Bộ Giao thông vận tải và các hiệp hội kỹ thuật. Tư vấn chính sách, quy hoạch thông minh và phát triển chiến lược tăng trưởng xanh, các dự án quốc gia lớn`,
-      img: "public/profilePhotos/tranquoctoan.jpg"
+      img: "public/profilePhotos/tranquoctoan__nobg.png"
     },
     {
       name: `<span class="intro-people">Phó Viện Trưởng KTS. Nguyễn Thanh Tâm </span><br> Công tác trong lĩnh vực quy hoạch đô thị, tham gia nghiên cứu và quản lý các đồ án quy hoạch, phục vụ công tác quản lý nhà nước và định hướng phát triển không gian đô thị theo quy định`,
@@ -413,7 +413,7 @@ window.attachProfileEvents_moe = () => {
     },
     {
       name: `<span class="intro-people"> Đỗ Bảo Long - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, <span class="highlight-text-phrase-moe">quản lý hợp đồng (thông minh)</span> và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm <span class="highlight-text-phrase-moe">thiết kế</span> và <span class="highlight-text-phrase-moe">giải quyết vấn đề sáng tạo</span>. 🔧💬 <a href="https://longd.tech/" target="_blank">Trang cá nhân</a>`,
-      img: "public/profilePhotos/giaminh.jpg"
+      img: "public/profilePhotos/dolong__nobg.png"
     }
   ];
 
