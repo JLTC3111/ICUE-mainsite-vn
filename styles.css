@@ -1010,7 +1010,7 @@ nav a {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
-  color: #252525;
+  color: #282828;
   justify-content: center;
   text-align: center;
 }
@@ -2787,6 +2787,7 @@ body.loaded #app {
   }
 
   .montserrat-pepple{
+    color: #e3e3e3;
     font-size: clamp(14px, 1.25vw, 18px);
   }
 
@@ -3089,15 +3090,15 @@ body.loaded #app {
     left: 50%;
     width: 150px;
     height: 200px;
-    transform: translate(-50%, -75%);
+    transform: translate(-50%, -85%);
   }
 
   .text-container {
     position: absolute;
     top: 45%;
     left: 50%;
-    width: 100%;
-    max-width: 90vw;
+    width: 70%;
+    max-width: 70vw;
     transform: translate(-50%, 12.5%);
     padding: 15px;
     margin-top: clamp(1.5rem, 1.4vw, 3.5rem);
@@ -3105,6 +3106,7 @@ body.loaded #app {
   }
 
   .montserrat-pepple {
+    color: #e3e3e3;
     font-size: clamp(12px, 3vw, 15px);
     margin: 1rem 0;
     line-height: 1.8;
