@@ -398,19 +398,19 @@ function initOrgProfiles() {
     const orgProfileData = [
       {
         name: 'Nguyễn Hồng Hạnh',
-        img: 'public/profilePhotos/hanhnguyen__nobg.png',
+        img: 'public/profilePhotos/hanhnguyenorgstructure.png',
         title: 'Viện Trưởng',
         bio: 'Tiến Sỹ Nguyễn Hồng Hạnh — Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị. Chuyên gia tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng.'
       },
       {
         name: 'Trần Thị Lan Anh',
-        img: 'public/profilePhotos/tranthilananh__nobg.png',
+        img: 'public/profilePhotos/tranthilananhorgstructure.png',
         title: 'Phó Viện Trưởng',
         bio: 'TS.KTS Trần Thị Lan Anh — Chuyên gia quy hoạch và phát triển đô thị. Tiến Sỹ từ Đại học Tokyo.'
       },
       {
         name: 'Trần Quốc Toản',
-        img: 'public/profilePhotos/tranquoctoan__nobg.png',
+        img: 'public/profilePhotos/tranquoctoanorgstructure.png',
         title: 'Phó Viện Trưởng',
         bio: 'KS. Trần Quốc Toản — Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông.'
       },
@@ -422,7 +422,7 @@ function initOrgProfiles() {
       },
       {
         name: 'Đỗ Bảo Long',
-        img: 'public/profilePhotos/longdo__nobg.png',
+        img: 'public/profilePhotos/longdoorgstructure.png',
         title: 'Giám Đốc Công Nghệ',
         bio: 'Đỗ Bảo Long — Thạc sỹ Quản Lý Dự Án từ Đại học Salford, Vương quốc Anh.'
       },
