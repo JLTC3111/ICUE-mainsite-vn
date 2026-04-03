@@ -355,6 +355,72 @@ body {
     padding: 12.5px;
 }
 
+.profile-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.profile-modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.profile-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: #333;
+}
+
+.profile-modal-close:hover {
+  color: #ffffff;
+}
+
+.profile-modal-body {
+  padding: 40px 30px;
+  text-align: center;
+}
+
+#profileModalImg {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.profile-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0066cc;
+  margin: 10px 0;
+}
+
+.profile-bio {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  margin-top: 15px;
+}
+
 @media (max-width: 768px) {
     .container {
         margin-top: 100px;
@@ -405,6 +471,19 @@ body {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+        
+    .profile-modal-content {
+        max-width: 95%;
+    }
+    
+    .profile-modal-body {
+        padding: 30px 20px;
+    }
+    
+    #profileModalImg {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -450,7 +529,7 @@ body {
                             <h3>Tiến Sỹ. Nguyễn Hồng Hạnh</h3>
                             <div class="title">Viện Trưởng</div>
                         </div>
-                        <div class="person-card" onclick="showPersonDetails('KS Trần Thị Lan Anh', 'Phó Viện Trưởng')"> 
+                        <div class="person-card" onclick="showPersonDetails('KS Trần Quốc Toản', 'Phó Viện Trưởng')"> 
                             <h3>KS. Trần Quốc Toản</h3>
                             <div class="title">Phó Viện Trưởng </div>
                         </div>
@@ -468,9 +547,9 @@ body {
                             <div class="title">Giám Đốc Vận Hành</div>
                         </div>
 
-                        <div class="person-card" onclick="showPersonDetails('Phan Thị Hiến', 'Giám Đốc Tài Chính')">
+                        <div class="person-card" onclick="showPersonDetails('Phan Thị Hiến', 'Kế Toán Trưởng')">
                             <h3>Cử Nhân. Phan Thị Hiến</h3>
-                            <div class="title">Giám Đốc Tài Chính</div>
+                            <div class="title">Kế Toán Trưởng</div>
                         </div> 
                     </div>
 
@@ -483,7 +562,7 @@ body {
 
                         <div class="person-card" onclick="showPersonDetails('Nguyễn Quỳnh Ly', 'Đấu Thầu - Hồ Sơ')">
                             <h3>Nguyễn Quỳnh Ly</h3>
-                            <div class="title">Quản Lý Đấu Thầu - Hồ Sơ</div>
+                            <div class="title">Quản Lý Hồ Sơ Dự Án</div>
                         </div>
 
                         <div class="person-card" onclick="showPersonDetails('Nguyễn Thị Ly', 'Hỗ Trợ')">
@@ -867,6 +946,15 @@ body {
             </div> <!-- .tab-content -->
         </div> <!-- .content-wrapper -->
     </div> <!-- .container -->
-
+<!-- Profile Modal -->
+<div id="profileModal" class="profile-modal">
+  <div class="profile-modal-content">
+    <button class="profile-modal-close">&times;</button>
+    <div class="profile-modal-body">
+      <img id="profileModalImg" src="" alt="Profile" />
+      <div id="profileModalText"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

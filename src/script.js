@@ -393,6 +393,107 @@ window.addEventListener("DOMContentLoaded", () => {
   window.makeItRainText();
 });
 
+function initOrgProfiles() {
+    // Profile data for org structure
+    const orgProfileData = [
+      {
+        name: 'Nguyễn Hồng Hạnh',
+        img: 'public/profilePhotos/hanhnguyenorgstructure.png',
+        title: 'Viện Trưởng',
+        bio: 'Tiến Sỹ Nguyễn Hồng Hạnh — Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị. Chuyên gia tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng.'
+      },
+      {
+        name: 'Trần Thị Lan Anh',
+        img: 'public/profilePhotos/tranthilananhorgstructure.png',
+        title: 'Phó Viện Trưởng',
+        bio: 'TS.KTS Trần Thị Lan Anh — Chuyên gia quy hoạch và phát triển đô thị. Tiến Sỹ từ Đại học Tokyo.'
+      },
+      {
+        name: 'Trần Quốc Toản',
+        img: 'public/profilePhotos/tranquoctoanorgstructure.png',
+        title: 'Phó Viện Trưởng',
+        bio: 'KS. Trần Quốc Toản — Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông.'
+      },
+      {
+        name: 'Nguyễn Thanh Tâm',
+        img: 'public/profilePhotos/tamorgstructure.png',
+        title: 'Phó Viện Trưởng',
+        bio: 'KTS. Nguyễn Thanh Tâm — Công tác trong lĩnh vực quy hoạch đô thị.'
+      },
+      {
+        name: 'Đỗ Bảo Long',
+        img: 'public/profilePhotos/longdoorgstructure.png',
+        title: 'Giám Đốc Công Nghệ',
+        bio: 'Đỗ Bảo Long — Thạc sỹ Quản Lý Dự Án từ Đại học Salford, Vương quốc Anh.'
+      },
+      {
+        name: 'Phan Thị Hiến',
+        img: 'public/profilePhotos/hienorgstructure.png',
+        title: 'Kế Toán Trưởng',
+        bio: 'Phan Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán.'
+      },
+      {
+        name: 'Trịnh Thị Tình',
+        img: 'public/profilePhotos/tinhorgstructure.png',
+        title: 'Trưởng Phòng Hành Chính',
+        bio: 'Trịnh Thị Tình — Trưởng phòng Hành chính với nhiều năm kinh nghiệm trong lĩnh vực quản lý nhân sự và hành chính.'
+      },
+      {
+        name: 'Nguyễn Quỳnh Ly',
+        img: 'public/profilePhotos/lyicueorgstructure.png',
+        title: 'Quản Lý Hồ Sơ Dự Án',
+        bio: 'Nguyễn Quỳnh Ly — Quản lý hồ sơ dự án với nhiều năm kinh nghiệm trong lĩnh vực đấu thầu.'
+      },
+      {
+        name: 'Nguyễn Thị Ly',
+        img: 'public/profilePhotos/lylyorgstructure.png',
+        title: 'Trương Phòng Hỗ Trợ Dự Án',
+        bio: 'Nguyễn Thị Ly — Hỗ trợ dự án với các kĩ năng quản lý và phối hợp.'
+      },
+      {
+        name: 'Đinh Tùng Dương',
+        img: 'public/profilePhotos/duongorgstructure.png',
+        title: 'Cán Bộ Dự Án',
+        bio: 'Đinh Tùng Dương — Cán bộ dự án với các kĩ năng quản lý và phối hợp.'
+      }
+    ];
+
+    window.showPersonDetails = (name) => {
+      const modal = document.getElementById('profileModal');
+      const modalImg = document.getElementById('profileModalImg');
+      const modalText = document.getElementById('profileModalText');
+
+      const searchName = (name || '').trim().toLowerCase();
+
+      const profile = orgProfileData.find(p =>
+        p.name.toLowerCase().includes(searchName) ||
+        searchName.includes(p.name.toLowerCase())
+      );
+
+      if (!profile) {
+        console.warn(`Profile not found: ${name}`);
+        return;
+      }
+
+      modalImg.src = profile.img;
+      modalText.innerHTML = `
+        <h2>${profile.name}</h2>
+        <p class="profile-title">${profile.title}</p>
+        <p class="profile-bio">${profile.bio}</p>
+      `;
+
+      modal.style.display = 'flex';
+    };
+
+    document.getElementById('profileModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'profileModal' || e.target.classList.contains('profile-modal-close')) {
+        document.getElementById('profileModal').style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initOrgProfiles);
+
 window.attachProfileEvents_moe = () => {
   const profileData_moe = [
     {
@@ -413,7 +514,7 @@ window.attachProfileEvents_moe = () => {
     },
     {
       name: `<span class="intro-people"> Đỗ Bảo Long - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, <span class="highlight-text-phrase-moe">quản lý hợp đồng (thông minh)</span> và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm <span class="highlight-text-phrase-moe">thiết kế</span> và <span class="highlight-text-phrase-moe">giải quyết vấn đề sáng tạo</span>. 🔧💬 <a href="https://longd.tech/" target="_blank">Trang cá nhân</a>`,
-      img: "public/profilePhotos/dolong__nobg.png"
+      img: "public/profilePhotos/longdo__nobg.png"
     }
   ];
 
@@ -495,12 +596,12 @@ window.attachProfileEvents_moe = () => {
       photo.classList.remove('slide-exit-left', 'slide-exit-right');
       const tl = gsap.timeline();
       tl.fromTo(photo, 
-        { x: direction === 'right' ? -100 : 100, scale: 0.5, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" }
+        { x: direction === 'right' ? -37.5 : 100, scale: .75, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 0.25, scale: 1, ease: "power2.out" }
       );
       tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -100, scale: 1.5, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 1.5, scale: 1, ease: "power2.out" },
+        { x: direction === 'right' ? 100 : -37.5, scale: .75, opacity: 0 }, 
+        { x: 0, opacity: 1, duration: 0.25, scale: 1, ease: "power2.out" },
         "-=0.5"
       );
     }, 300);
@@ -1878,6 +1979,7 @@ window.loadPage = (page) => {
                 handleAOSByScreenSize();
                 break;
               case 'orgStructure':
+                initOrgProfiles();
                 break;
               case 'FAQs':
                 initFrequentlyAskedQuestions();
