@@ -416,7 +416,7 @@ function initOrgProfiles() {
       },
       {
         name: 'Nguyễn Thanh Tâm',
-        img: 'public/profilePhotos/tam.png',
+        img: 'public/profilePhotos/tamorgstructure.png',
         title: 'Phó Viện Trưởng',
         bio: 'KTS. Nguyễn Thanh Tâm — Công tác trong lĩnh vực quy hoạch đô thị.'
       },
@@ -428,31 +428,31 @@ function initOrgProfiles() {
       },
       {
         name: 'Phan Thị Hiến',
-        img: 'public/profilePhotos/hien.png',
+        img: 'public/profilePhotos/hienorgstructure.png',
         title: 'Kế Toán Trưởng',
         bio: 'Phan Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán.'
       },
       {
         name: 'Trịnh Thị Tình',
-        img: 'public/profilePhotos/tinh.png',
+        img: 'public/profilePhotos/tinhorgstructure.png',
         title: 'Trưởng Phòng Hành Chính',
         bio: 'Trịnh Thị Tình — Trưởng phòng Hành chính với nhiều năm kinh nghiệm trong lĩnh vực quản lý nhân sự và hành chính.'
       },
       {
         name: 'Nguyễn Quỳnh Ly',
-        img: 'public/profilePhotos/lyicue.png',
+        img: 'public/profilePhotos/lyicueorgstructure.png',
         title: 'Quản Lý Hồ Sơ Dự Án',
         bio: 'Nguyễn Quỳnh Ly — Quản lý hồ sơ dự án với nhiều năm kinh nghiệm trong lĩnh vực đấu thầu.'
       },
       {
         name: 'Nguyễn Thị Ly',
-        img: 'public/profilePhotos/lyly.png',
+        img: 'public/profilePhotos/lylyorgstructure.png',
         title: 'Trương Phòng Hỗ Trợ Dự Án',
         bio: 'Nguyễn Thị Ly — Hỗ trợ dự án với các kĩ năng quản lý và phối hợp.'
       },
       {
         name: 'Đinh Tùng Dương',
-        img: 'public/profilePhotos/duong.png',
+        img: 'public/profilePhotos/duongorgstructure.png',
         title: 'Cán Bộ Dự Án',
         bio: 'Đinh Tùng Dương — Cán bộ dự án với các kĩ năng quản lý và phối hợp.'
       }
