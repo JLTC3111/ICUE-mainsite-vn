@@ -3747,6 +3747,19 @@ button:hover {
   }
 }
 
+@media (min-width: 1025px) and (max-width: 1440px) and (min-aspect-ratio: 1.32) {
+  .image-container-coreTeam{
+    top:5%;
+    left:-18%;
+  }
+  .text-container-coreTeam{
+    top: 50% !important;
+    left: 2.5%;
+    width: 70%;
+    max-width: 100vw;
+  }
+}
+
 @media (min-width: 1025px) and (min-aspect-ratio: 1.35) {
   #text-slider-coreTeam {
     transform: translate(14.5vw, -125vh); 
