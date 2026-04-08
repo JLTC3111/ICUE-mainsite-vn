@@ -1345,7 +1345,6 @@ nav a {
 }
 
 .text-container-coreTeam {
-  border: 1px solid rgba(248, 2, 2);
   position: relative;
   top:30% !important;
   right:2.5%;
@@ -3681,12 +3680,6 @@ button:hover {
   }
   .montserrat-pepple{
     font-size: 15px;
-  }
-  .image-container-coreTeam{
-    display: none;
-  }
-  .profile-photo-coreTeam {
-    display: none;
   }
 }
 
