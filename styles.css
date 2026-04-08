@@ -2811,8 +2811,6 @@ body.loaded #app {
 
   .image-container-coreTeam {
     position: relative;
-    top:5rem;
-    right:2.5rem;
     width: 200px;
     height: 266px;
   }
