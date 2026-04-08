@@ -2707,9 +2707,9 @@ body.loaded #app {
   }
 }
 
-@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+@media only screen and (min-width: 1024px) and (max-width: 1366px) {
   .svg-blinking-cursor {
-    height: 1.35em; /* optional scaling */
+    height: 1.35em;
     width: auto;
   }
 
@@ -2790,6 +2790,12 @@ body.loaded #app {
     margin-left: clamp(2.5rem, 1.75vw, 4.5rem)
   }
 
+  .text-container-coreTeam {
+    margin-top: 50%;
+    left: 5%;
+    width: 90%;
+  }
+
   .montserrat-pepple{
     font-size: clamp(14px, 1.25vw, 18px);
   }
@@ -2822,14 +2828,6 @@ body.loaded #app {
     width: 200px;
     height: auto;
     z-index: 3;
-  }
-
-  .text-container-coreTeam {
-    top: 15%;
-    left: 0;
-    min-width: 300px;    
-    max-width: 40vw;     
-    width: 100%;   
   }
 
   .core-team-text {
@@ -2881,8 +2879,8 @@ body.loaded #app {
     }
     .text-container-coreTeam {
       width:70%;
-      top:55% !important;
-      left:-5%; 
+      margin-top:55% !important;
+      left:-2.5%; 
       padding:15px;
     }
     .intro-core {
@@ -3656,9 +3654,6 @@ button:hover {
   .text-container{
     margin-top: 18.5%;
   }
-  .text-container-coreTeam{
-    margin-top: 5.5rem;
-  }
   .flag-link {
     margin-top: clamp(6px, 2.0vw, 8px) !important;
   }
@@ -3692,12 +3687,6 @@ button:hover {
   }
   .profile-photo-coreTeam {
     display: none;
-  }
-  .text-container-coreTeam{
-    max-width:700px;
-    width:65%;
-    top:52.5%;
-    left:-1.5%;
   }
 }
 
