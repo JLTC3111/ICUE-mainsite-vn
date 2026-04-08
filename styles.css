@@ -474,7 +474,7 @@ nav a {
 .highlight-text-phrase-core {
   font-weight: 300;
   font-style: italic;
-  background: linear-gradient(45deg, #ffffff, #e2d7ff, #00f7ff, #ffe5e5, #ffffff);
+  background: linear-gradient(45deg, #4400ff, #027d81, #00963e, #b0b300);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
