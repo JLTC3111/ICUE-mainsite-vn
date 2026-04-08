@@ -1386,7 +1386,7 @@ nav a {
   position: absolute;
   display: flex;
   flex-direction: row;
-  top: 50%;
+  top: 60%;
   left: 50%;
   background-color:transparent;
   z-index: 1;
@@ -3753,7 +3753,7 @@ button:hover {
     left:-18%;
   }
   .text-container-coreTeam{
-    top: 50% !important;
+    margin-top: 40% !important;
     left: 2.5%;
     width: 70%;
     max-width: 100vw;
