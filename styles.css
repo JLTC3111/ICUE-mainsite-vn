@@ -472,8 +472,12 @@ nav a {
 }
 
 .highlight-text-phrase-core {
-  color: rgb(140, 138, 138);
-  text-shadow: 0 .5px 1px #fffefe, 0 0 2px rgb(252, 255, 50);
+  font-weight: 300;
+  font-style: italic;
+  background: linear-gradient(45deg, #ffffff, #e2d7ff, #00f7ff, #ffe5e5, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .menu-bar {
@@ -1010,7 +1014,7 @@ nav a {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(12px, 2.5vw, 18px);
   line-height: 2;
-  color: #282828;
+  color: #000000;
   justify-content: center;
   text-align: center;
 }
@@ -1314,8 +1318,6 @@ nav a {
 
 .corePageContainer{
   position: relative;
-  height: 130vh;
-  padding: 2.5%;
 }
 
 .image-container-coreTeam {
@@ -1343,8 +1345,10 @@ nav a {
 }
 
 .text-container-coreTeam {
+  border: 1px solid rgba(248, 2, 2);
   position: relative;
-  top:2.5%;
+  top:30% !important;
+  right:2.5%;
   width: 50%;
   max-width: 625px;
   padding: 25px;
@@ -2787,7 +2791,6 @@ body.loaded #app {
   }
 
   .montserrat-pepple{
-    color: #e3e3e3;
     font-size: clamp(14px, 1.25vw, 18px);
   }
 
@@ -2822,8 +2825,8 @@ body.loaded #app {
   }
 
   .text-container-coreTeam {
-    top:15vh;
-    left:-.5rem;
+    top: 15%;
+    left: 0;
     min-width: 300px;    
     max-width: 40vw;     
     width: 100%;   
@@ -2878,36 +2881,12 @@ body.loaded #app {
     }
     .text-container-coreTeam {
       width:70%;
-      top:52.5%;
-      left:clamp(1%, 2vw, 1.25%) !important;
+      top:55% !important;
+      left:-5%; 
       padding:15px;
     }
     .intro-core {
       font-size: clamp(2rem, 3.5vw, 2.5px) !important;
-    }
-}
-
-@media (max-width: 1368px) and (min-width: 1024px) and (max-aspect-ratio: 0.76/1) {
-  .image-container-coreTeam {
-      position: absolute;
-      width: clamp(220px , 25vw, 260px) !important;
-      height: clamp(260px , 25vw, 330px) !important;
-      left: 50% !important;
-      top: 15%; 
-      transform: translateX(-50%);
-    } 
-    .profile-photo-coreTeam {
-      width: clamp(220px , 25vw, 260px) !important;
-    }
-    .text-container-coreTeam {
-      width:90% !important;
-      max-width: 600px !important;
-      top:54.5% !important;
-      left:clamp(0.5%, 2vw, 0.75%) !important;
-      padding: 25px !important;
-    }
-    .intro-core {
-      font-size: clamp(2.5rem, 15vw, 3rem) !important;
     }
 }
 
@@ -3106,7 +3085,7 @@ body.loaded #app {
   }
 
   .montserrat-pepple {
-    color: #e3e3e3;
+    color: #000000;
     font-size: clamp(12px, 3vw, 15px);
     margin: 1rem 0;
     line-height: 1.8;
@@ -3253,13 +3232,6 @@ body.loaded #app {
   
     .profile-photo-coreTeam {
       width: 150px;
-    }
-  
-    .text-container-coreTeam {
-      width:70%;
-      top:50.5%;
-      left:5%;
-      padding:15px;
     }
     
     .intro-core {
@@ -3716,13 +3688,11 @@ button:hover {
     font-size: 15px;
   }
   .image-container-coreTeam{
-    width: 140px;
-    height: 198.5px;
-    left:45%;
+    display: none;
   }
   .profile-photo-coreTeam {
-      width: 150px;
-    }
+    display: none;
+  }
   .text-container-coreTeam{
     max-width:700px;
     width:65%;
@@ -3737,9 +3707,10 @@ button:hover {
     margin-top: clamp(9px, 2.5vw, 12px) !important;
   }
   .text-container-coreTeam{
+    position: absolute;
     max-width:550px;
     width:70%;
-    top:52.5%;
+    margin-top: 60rem !important;
     left:-5%;
   }
 }
@@ -3749,26 +3720,15 @@ button:hover {
     left:46.5%;
   }
   .text-container-coreTeam{
+    position: absolute;
     max-width:550px;
     width:70%;
-    top:47.5%;
+    margin-top: 75rem;
     left:-5%;
   }
   .flag-link {
     font-size: clamp(12px, 2.5vw, 14px);
     margin-top: clamp(3.5px, 2.0vw, 5.0px);
-  }
-}
-
-@media (min-width: 450px) and (max-aspect-ratio: .7799/1) {
-  .image-container-coreTeam{
-    left:45%;
-  }
-  .text-container-coreTeam{
-    max-width:550px;
-    width:70%;
-    top:45%;
-    left:-5%;
   }
 }
 
@@ -3797,7 +3757,7 @@ button:hover {
     left:45%;
   }
   .text-container-coreTeam{
-    top:72.5%;
+    top: 72.5% !important;
     left: -1.5%;
   }
   .arrow-container{
