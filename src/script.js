@@ -5751,8 +5751,8 @@ window.initializeCarousel = () => {
 
   let autoAdvanceTimeout;
   let animationTimeout;
-  const timeRunning = 3000;
-  const timeAutoNext = 25000;
+  const timeRunning = 10000;
+  const timeAutoNext = 11000;
 
   const resetAutoAdvance = () => {
     clearTimeout(autoAdvanceTimeout);
