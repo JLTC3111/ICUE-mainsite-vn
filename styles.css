@@ -2016,6 +2016,7 @@ nav a {
 }
 
 .home-card a:hover img {
+  margin-bottom: 10px;
   transform: scale(1.25);
 }
 
