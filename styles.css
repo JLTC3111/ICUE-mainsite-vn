@@ -1989,7 +1989,17 @@ nav a {
   transform: translateX(-250px);
 }
 
+.home-card__body {
+  will-change: transform;
+  text-decoration: none;
+}
+
+.home-card__body:hover {
+  transform: scale(1.1);
+}
+
 .home-card {
+  padding: 10px;
   opacity: 0;
   transform: translateX(300px);
   transition: opacity 1.5s ease, transform 1.5s ease;
