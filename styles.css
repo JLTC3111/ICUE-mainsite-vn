@@ -1990,11 +1990,15 @@ nav a {
 }
 
 .home-card__body {
-  will-change: transform;
   text-decoration: none;
 }
 
-.home-card__body:hover {
+.home-card_body a {
+  transition: transform 1.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card__body a:hover {
   transform: scale(1.1);
 }
 
@@ -2007,7 +2011,7 @@ nav a {
 
 .home-card a {
   overflow: hidden;
-  transition: box-shadow 0.5s ease-in-out;
+  transition: box-shadow 0.3s ease;
 }
 
 .home-card a img {
