@@ -5977,7 +5977,7 @@ function initAudioVisualizer(
   
     switch (page) {
       case 'ourWork':
-        color = '#ffcc00';
+        color = '#000000';
         break;
       case 'Contact':
         color = '#210000ff';
