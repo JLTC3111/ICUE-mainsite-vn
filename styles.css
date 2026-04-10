@@ -2005,6 +2005,20 @@ nav a {
   transition: opacity 1.5s ease, transform 1.5s ease;
 }
 
+.home-card a {
+  overflow: hidden;
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+.home-card a img {
+  transition: transform 4.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card a:hover img {
+  transform: scale(1.25);
+}
+
 .home-card.animate-in-card {
   opacity: 1;
   transform: translateX(0);
