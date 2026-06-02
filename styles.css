@@ -2226,7 +2226,9 @@ nav a {
 #landing-page {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, #000 40%, #111);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(0, 247, 255, 0.07), transparent 55%),
+    radial-gradient(circle at center, #04060a 38%, #0b0f14 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2234,7 +2236,36 @@ nav a {
   z-index: 999;
   color: #00ffcc;
   font-family: 'Audiowide', 'Courier New', monospace;
+  overflow: hidden;
 }
+
+/* Soft drifting aurora behind the loader for a premium, alive ambiance. */
+#landing-page::before {
+  content: '';
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  background: radial-gradient(circle, rgba(0, 247, 255, 0.12), transparent 60%);
+  filter: blur(48px);
+  pointer-events: none;
+  animation: landing-aurora 9s ease-in-out infinite alternate;
+}
+
+@keyframes landing-aurora {
+  0%   { transform: translate(-12%, -8%) scale(1);    opacity: 0.65; }
+  100% { transform: translate(12%, 10%)  scale(1.18); opacity: 1; }
+}
+
+.loading-logo {
+  filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.35));
+  animation: logo-float 3.4s ease-in-out infinite;
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
 .progress-container {
   position: relative;
   width: 200px;
@@ -2242,12 +2273,19 @@ nav a {
   margin-top: clamp(-27rem, -27.5rem, -30rem);
   margin-left: 7.5rem;
 }
+.progress-container svg {
+  overflow: visible;
+}
 .progress-bg {
-  stroke: #333;
+  stroke: rgba(255, 255, 255, 0.06);
 }
 .progress-bar {
-  stroke: #00f7ff;
-  transition: stroke-dashoffset 0.5s ease;
+  stroke: url(#progressGradient);
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 0 7px rgba(0, 247, 255, 0.55));
+  transition: filter 0.3s ease;
 }
 .progress-text {
   position: absolute;
@@ -2255,24 +2293,64 @@ nav a {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: clamp(2rem, 4.5vw, 3rem);
-  color: #00f7ff;
+  color: #ffffff;
   font-family: 'Audiowide', sans-serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 16px rgba(0, 247, 255, 0.45);
 }
 .loading-text {
   display: flex;
   flex-direction: column;
   font-family: 'Audiowide', sans-serif;
   font-size: clamp(2rem, 4.5vw, 3rem);
-  color: whitesmoke;
   justify-content: center;
   align-items: center;
   margin-top: clamp(2.5rem, 2.5vw, 3.75rem);
-  text-shadow: 0 0 8px #00ffcc;
-  animation: pulse 1.5s ease-in-out infinite;
+  letter-spacing: 0.04em;
+  background: linear-gradient(100deg, #f4f7f7 0%, #00ffcc 42%, #00f7ff 58%, #f4f7f7 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: loading-shimmer 2.8s linear infinite;
+}
+
+@keyframes loading-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.progress-ms {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: 'Space Mono', 'Courier New', monospace;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  letter-spacing: 0.12em;
+  color: #9bfff0;
+  margin-top: 1rem;
+  padding: 0.32em 0.9em;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 255, 204, 0.25);
+  background: rgba(0, 247, 255, 0.05);
+  box-shadow: 0 0 14px rgba(0, 247, 255, 0.12), inset 0 0 8px rgba(0, 247, 255, 0.08);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-ms::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #00ffcc;
+  box-shadow: 0 0 8px #00ffcc;
+  animation: pulse 1.2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.4 }
+  0%, 100% { opacity: 0.35 }
   50% { opacity: 1 }
 }
 
@@ -3016,6 +3094,11 @@ body.loaded #app {
 
   .loading-text {
     font-size: 1.5rem;
+    margin-left: 1.5rem;
+  }
+
+  .progress-ms {
+    font-size: 0.8rem;
     margin-left: 1.5rem;
   }
 

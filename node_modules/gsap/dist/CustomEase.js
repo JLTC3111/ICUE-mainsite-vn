@@ -17,6 +17,9 @@
 	    _roundingNum = 1e5,
 	    _round = function _round(value) {
 	  return Math.round(value * _roundingNum) / _roundingNum || 0;
+	},
+	    _segmentIsClosed = function _segmentIsClosed(segment) {
+	  return segment.closed = Math.abs(segment[0] - segment[segment.length - 2]) < 0.001 && Math.abs(segment[1] - segment[segment.length - 1]) < 0.001;
 	};
 	function transformRawPath(rawPath, a, b, c, d, tx, ty) {
 	  var j = rawPath.length,
@@ -201,6 +204,8 @@
 	        } else {
 	          points += segment.length;
 	        }
+
+	        _segmentIsClosed(segment);
 	      }
 
 	      relativeX = startX = x;
@@ -318,8 +323,8 @@
 	  if (i < 6) {
 	    path.pop();
 	    i = 0;
-	  } else if (segment[0] === segment[i - 2] && segment[1] === segment[i - 1]) {
-	    segment.closed = true;
+	  } else {
+	    _segmentIsClosed(segment);
 	  }
 
 	  path.totalPoints = points + i;
@@ -355,12 +360,11 @@
 	}
 
 	/*!
-	 * CustomEase 3.12.7
+	 * CustomEase 3.15.0
 	 * https://gsap.com
 	 *
-	 * @license Copyright 2008-2025, GreenSock. All rights reserved.
-	 * Subject to the terms at https://gsap.com/standard-license or for
-	 * Club GSAP members, the agreement issued with that membership.
+	 * @license Copyright 2008-2026, GreenSock. All rights reserved.
+	 * Subject to the terms at https://gsap.com/standard-license
 	 * @author: Jack Doyle, jack@greensock.com
 	*/
 
@@ -672,7 +676,7 @@
 	    }
 
 	    if (ease instanceof CustomEase) {
-	      a = rawPathToString(transformRawPath([ease.segment], width, 0, 0, -height, x, y));
+	      a = rawPathToString(transformRawPath([ease.segment.slice(0)], width, 0, 0, -height, x, y));
 	    } else {
 	      a = [x, y];
 	      precision = Math.max(5, (config.precision || 1) * 200);
@@ -705,7 +709,7 @@
 
 	  return CustomEase;
 	}();
-	CustomEase.version = "3.12.7";
+	CustomEase.version = "3.15.0";
 	CustomEase.headless = true;
 	_getGSAP() && gsap.registerPlugin(CustomEase);
 

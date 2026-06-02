@@ -1865,21 +1865,74 @@ window.loadPage = (page) => {
     progressBar.style.strokeDasharray = `${circumference}`;
   }
 
-  const setProgress = (percent) => {
-    if (!progressBar || !progressText) return;
-    const offset = circumference - (percent / 100) * circumference;
-    progressBar.style.strokeDashoffset = offset;
-    progressText.textContent = `${Math.round(percent)}%`;
+  const progressMs = document.getElementById('progress-ms');
+
+  // Real-time loading state. We track three things:
+  //  - `targetPercent`: where the ring SHOULD be (driven by real download progress)
+  //  - `shownPercent`:  where the ring currently sits (eased toward target each frame)
+  //  - elapsed wall-clock time, rendered live in milliseconds.
+  const clock = () => ((typeof performance !== 'undefined' && performance.now)
+    ? performance.now()
+    : Date.now());
+  const startTime = clock();
+  let targetPercent = 0;
+  let shownPercent = 0;
+  let finished = false;
+  let finalElapsed = 0;
+  let rafId = null;
+
+  const isStale = () => navSeq !== window.__spaNavState?.seq;
+
+  const renderRing = (percent) => {
+    if (!progressBar) return;
+    const clamped = Math.max(0, Math.min(100, percent));
+    progressBar.style.strokeDashoffset = circumference - (clamped / 100) * circumference;
+    if (progressText) progressText.textContent = `${Math.round(clamped)}%`;
   };
+
+  const finishProgress = () => {
+    if (!finished) {
+      finished = true;
+      finalElapsed = clock() - startTime;
+    }
+    targetPercent = 100;
+    if (rafId == null && !isStale()) rafId = requestAnimationFrame(tick);
+  };
+
+  function tick() {
+    if (isStale()) { rafId = null; return; }
+
+    const elapsed = finished ? finalElapsed : (clock() - startTime);
+    if (progressMs) progressMs.textContent = `${Math.round(elapsed)} ms`;
+
+    // While the real total is unknown (or still downloading), creep toward a
+    // believable ceiling so the ring never stalls or fakes early completion.
+    if (!finished && targetPercent < 90) {
+      const simulated = 90 * (1 - Math.exp(-(clock() - startTime) / 600));
+      if (simulated > targetPercent) targetPercent = simulated;
+    }
+
+    shownPercent += (targetPercent - shownPercent) * 0.18;
+    if (finished && targetPercent - shownPercent < 0.4) shownPercent = targetPercent;
+    renderRing(shownPercent);
+
+    if (finished && shownPercent >= 99.95) {
+      renderRing(100);
+      rafId = null;
+      return;
+    }
+    rafId = requestAnimationFrame(tick);
+  }
 
   if (landing) {
     landing.style.display = 'grid';
     landing.style.opacity = 1;
-    landing.style.pointerEvents = 'All';
+    landing.style.pointerEvents = 'auto';
   }
 
-  // Show quick progress animation
-  setProgress(30);
+  renderRing(0);
+  if (progressMs) progressMs.textContent = '0 ms';
+  rafId = requestAnimationFrame(tick);
 
   const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
   // Capture the controller/signal used for THIS navigation.
@@ -1898,13 +1951,39 @@ window.loadPage = (page) => {
     }
   };
 
-  fetch(`/src/pages/${pageToFetch}.html`, fetchOptions)
-    .then((response) => response.text())
+  // Stream the response body so the ring reflects real bytes-downloaded progress.
+  // Falls back to a plain read when the body stream or Content-Length is absent.
+  const loadHtmlWithProgress = async () => {
+    const response = await fetch(`/src/pages/${pageToFetch}.html`, fetchOptions);
+    const total = Number(response.headers.get('Content-Length')) || 0;
+
+    if (!total || !response.body || typeof response.body.getReader !== 'function') {
+      return await response.text();
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let received = 0;
+    let html = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.length;
+      html += decoder.decode(value, { stream: true });
+      const pct = Math.min(99, (received / total) * 100);
+      if (pct > targetPercent) targetPercent = pct;
+    }
+    html += decoder.decode();
+    return html;
+  };
+
+  loadHtmlWithProgress()
     .then((data) => {
       markFetchDoneIfCurrent();
       if (navSeq !== window.__spaNavState?.seq) return;
       if (content) content.innerHTML = data;
-      setProgress(100);
+      finishProgress();
 
       setTimeout(() => {
         if (navSeq !== window.__spaNavState?.seq) return;
@@ -2021,7 +2100,7 @@ window.loadPage = (page) => {
       // Ignore expected aborts (usually due to fast navigation).
       if (signal?.aborted || err?.name === 'AbortError') return;
       console.error('[loadPage] Failed to fetch page:', pageToFetch, err);
-      setProgress(100);
+      finishProgress();
       try {
         if (landing) {
           landing.style.opacity = 0;
@@ -2754,7 +2833,10 @@ window.initLogoSlider = () => {
     isPaused: false,
     logoList: null,
     container: null,
-    visibilityHandler: null
+    visibilityHandler: null,
+    listWidth: 0,
+    containerWidth: 0,
+    resizeHandler: null
   };
   window.__logoSliderState = sliderState;
 
@@ -2774,6 +2856,14 @@ window.initLogoSlider = () => {
   // Stop any previous loop immediately so re-init always uses the latest DOM refs.
   stopLoop();
 
+  // Cache layout metrics instead of reading `scrollWidth`/`offsetWidth` every
+  // animation frame — those reads force a synchronous reflow ~60x per second.
+  const measure = () => {
+    if (sliderState.logoList) sliderState.listWidth = sliderState.logoList.scrollWidth;
+    if (sliderState.container) sliderState.containerWidth = sliderState.container.offsetWidth;
+  };
+  measure();
+
   const loop = (ts) => {
     if (!sliderState.isRunning) return;
 
@@ -2788,10 +2878,9 @@ window.initLogoSlider = () => {
       const delta = sliderState.lastTs ? (ts - sliderState.lastTs) : 16.67;
       const step = delta / 16.67;
       sliderState.position -= sliderState.speed * step;
-      const listWidth = list.scrollWidth;
-      const containerWidth = container.offsetWidth;
-      if (-sliderState.position >= listWidth) {
-        sliderState.position = containerWidth;
+      if (!sliderState.listWidth) measure();
+      if (-sliderState.position >= sliderState.listWidth) {
+        sliderState.position = sliderState.containerWidth;
       }
       list.style.transform = `translateX(${sliderState.position}px)`;
     }
@@ -2799,6 +2888,20 @@ window.initLogoSlider = () => {
     sliderState.lastTs = ts;
     sliderState.rafId = requestAnimationFrame(loop);
   };
+
+  // Re-measure when the viewport changes or logo images finish loading
+  // (both can change the track width). Coalesced via rAF; bound once.
+  if (!sliderState.resizeHandler) {
+    let resizeRaf = null;
+    sliderState.resizeHandler = () => {
+      if (resizeRaf) return;
+      resizeRaf = requestAnimationFrame(() => { measure(); resizeRaf = null; });
+    };
+    window.addEventListener('resize', sliderState.resizeHandler, { passive: true });
+  }
+  logoList.querySelectorAll('img').forEach((img) => {
+    if (!img.complete) img.addEventListener('load', measure, { once: true });
+  });
 
   sliderState.isRunning = true;
   sliderState.rafId = requestAnimationFrame(loop);
@@ -2916,12 +3019,13 @@ window.initMobileNewsSlider = () => {
   };
 
   const cleanupWrapper = () => {
+    // No wrapper to tear down (e.g. desktop, or repeated resize events) — skip
+    // so we don't re-append every card to the grid on each call.
+    if (!state.sliderWrapper) return;
     unbindTouch();
-    if (state.sliderWrapper) {
-      state.sliderWrapper.remove();
-      state.sliderWrapper = null;
-      state.sliderTrack = null;
-    }
+    state.sliderWrapper.remove();
+    state.sliderWrapper = null;
+    state.sliderTrack = null;
     cards.forEach(card => gridContainer.appendChild(card));
   };
 
@@ -3166,12 +3270,13 @@ window.OrgStructure = {
       };
 
       const cleanupWrapper = () => {
+        // No wrapper to tear down (e.g. desktop, or repeated resize events) — skip
+        // so we don't re-append every card to the grid on each call.
+        if (!state.sliderWrapper) return;
         unbindTouch();
-        if (state.sliderWrapper) {
-          state.sliderWrapper.remove();
-          state.sliderWrapper = null;
-          state.sliderTrack = null;
-        }
+        state.sliderWrapper.remove();
+        state.sliderWrapper = null;
+        state.sliderTrack = null;
         cards.forEach(card => gridContainer.appendChild(card));
       };
 

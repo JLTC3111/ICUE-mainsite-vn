@@ -21,12 +21,11 @@
   }
 
   /*!
-   * Observer 3.12.7
+   * Observer 3.15.0
    * https://gsap.com
    *
-   * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license or for
-   * Club GSAP members, the agreement issued with that membership.
+   * @license Copyright 2008-2026, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
    * @author: Jack Doyle, jack@greensock.com
   */
   var gsap,
@@ -138,6 +137,17 @@
       _getTarget = function _getTarget(t, self) {
     return (self && self._ctx && self._ctx.selector || gsap.utils.toArray)(t)[0] || (typeof t === "string" && gsap.config().nullTargetWarn !== false ? console.warn("Element not found:", t) : null);
   },
+      _isWithin = function _isWithin(element, list) {
+    var i = list.length;
+
+    while (i--) {
+      if (list[i] === element || list[i].contains(element)) {
+        return true;
+      }
+    }
+
+    return false;
+  },
       _getScrollFunc = function _getScrollFunc(element, _ref) {
     var s = _ref.s,
         sc = _ref.sc;
@@ -197,7 +207,7 @@
     };
   },
       _getEvent = function _getEvent(e, preventDefault) {
-    preventDefault && !e._gsapAllow && e.preventDefault();
+    preventDefault && !e._gsapAllow && e.cancelable !== false && e.preventDefault();
     return e.changedTouches ? e.changedTouches[0] : e;
   },
       _getAbsoluteMax = function _getAbsoluteMax(a) {
@@ -228,12 +238,10 @@
       setTimeout(function () {
         return _startup = 0;
       }, 500);
-
-      _setScrollTrigger();
-
       _coreInitted = 1;
     }
 
+    ScrollTrigger || _setScrollTrigger();
     return _coreInitted;
   };
 
@@ -327,7 +335,7 @@
         return onClickTime = _getTime();
       },
           _ignoreCheck = function _ignoreCheck(e, isPointerOrTouch) {
-        return (self.event = e) && ignore && ~ignore.indexOf(e.target) || isPointerOrTouch && limitToTouch && e.pointerType !== "touch" || ignoreCheck && ignoreCheck(e, isPointerOrTouch);
+        return (self.event = e) && ignore && _isWithin(e.target, ignore) || isPointerOrTouch && limitToTouch && e.pointerType !== "touch" || ignoreCheck && ignoreCheck(e, isPointerOrTouch);
       },
           onStopFunc = function onStopFunc() {
         self._vx.reset();
@@ -429,7 +437,7 @@
         self.y = y;
 
         if (isDragging || (dx || dy) && (Math.abs(self.startX - x) >= dragMinimum || Math.abs(self.startY - y) >= dragMinimum)) {
-          dragged = isDragging ? 2 : 1;
+          dragged || (dragged = isDragging ? 2 : 1);
           isDragging || (self.isDragging = true);
           onTouchOrPointerDelta(dx, dy);
         }
@@ -671,7 +679,7 @@
 
     return Observer;
   }();
-  Observer.version = "3.12.7";
+  Observer.version = "3.15.0";
 
   Observer.create = function (vars) {
     return new Observer(vars);
@@ -692,12 +700,11 @@
   _getGSAP() && gsap.registerPlugin(Observer);
 
   /*!
-   * ScrollTrigger 3.12.7
+   * ScrollTrigger 3.15.0
    * https://gsap.com
    *
-   * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license or for
-   * Club GSAP members, the agreement issued with that membership.
+   * @license Copyright 2008-2026, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
    * @author: Jack Doyle, jack@greensock.com
   */
 
@@ -826,11 +833,11 @@
       _endAnimation = function _endAnimation(animation, reversed, pause) {
     return animation && animation.progress(reversed ? 0 : 1) && pause && animation.pause();
   },
-      _callback = function _callback(self, func) {
+      _callback = function _callback(self, func, extraParam) {
     if (self.enabled) {
       var result = self._ctx ? self._ctx.add(function () {
-        return func(self);
-      }) : func(self);
+        return func(self, extraParam);
+      }) : func(self, extraParam);
       result && result.totalTime && (self.callbackAnimation = result);
     }
   },
@@ -851,7 +858,7 @@
       _Height = "Height",
       _px = "px",
       _getComputedStyle = function _getComputedStyle(element) {
-    return _win$1.getComputedStyle(element);
+    return _win$1.getComputedStyle(element.nodeType === Node.DOCUMENT_NODE ? element.scrollingElement : element);
   },
       _makePositionable = function _makePositionable(element) {
     var position = _getComputedStyle(element).position;
@@ -878,7 +885,7 @@
       skewX: 0,
       skewY: 0
     }).progress(1),
-        bounds = element.getBoundingClientRect();
+        bounds = element.getBoundingClientRect ? element.getBoundingClientRect() : element.scrollingElement.getBoundingClientRect();
     tween && tween.progress(0).kill();
     return bounds;
   },
@@ -1020,7 +1027,7 @@
     var e = _doc$1.createElement("div"),
         useFixedPosition = _isViewport$1(container) || _getProxyProp(container, "pinType") === "fixed",
         isScroller = type.indexOf("scroller") !== -1,
-        parent = useFixedPosition ? _body$1 : container,
+        parent = useFixedPosition ? _body$1 : container.tagName === "IFRAME" ? container.contentDocument.body : container,
         isStart = type.indexOf("start") !== -1,
         color = isStart ? startColor : endColor,
         css = "border-color:" + color + ";font-size:" + fontSize + ";color:" + color + ";font-weight:" + fontWeight + ";pointer-events:none;white-space:nowrap;font-family:sans-serif,Arial;z-index:1000;padding:4px 8px;border-width:0;border-style:solid;";
@@ -1101,6 +1108,11 @@
       }
     }
   },
+      _recordScrollPositions = function _recordScrollPositions() {
+    return _scrollers.forEach(function (obj) {
+      return _isFunction(obj) && ++obj.cacheID && (obj.rec = obj());
+    });
+  },
       _revertAll = function _revertAll(kill, media) {
     var trigger;
 
@@ -1164,10 +1176,7 @@
     _refresh100vh();
 
     _refreshingAll = ScrollTrigger$1.isRefreshing = true;
-
-    _scrollers.forEach(function (obj) {
-      return _isFunction(obj) && ++obj.cacheID && (obj.rec = obj());
-    });
+    _isReverted || _recordScrollPositions();
 
     var refreshInits = _dispatch("refreshInit");
 
@@ -1779,7 +1788,7 @@
                 ease: snap.ease || "power3",
                 data: _abs(endScroll - scroll),
                 onInterrupt: function onInterrupt() {
-                  return snapDelayedCall.restart(true) && _onInterrupt && _onInterrupt(self);
+                  return snapDelayedCall.restart(true) && _onInterrupt && _callback(self, _onInterrupt);
                 },
                 onComplete: function onComplete() {
                   self.update();
@@ -1791,10 +1800,10 @@
 
                   snap1 = snap2 = animation && !isToggle ? animation.totalProgress() : self.progress;
                   onSnapComplete && onSnapComplete(self);
-                  _onComplete && _onComplete(self);
+                  _onComplete && _callback(self, _onComplete);
                 }
               }, scroll, change1 * change, endScroll - scroll - change1 * change);
-              onStart && onStart(self, tweenTo.tween);
+              onStart && _callback(self, onStart, tweenTo.tween);
             }
           } else if (self.isActive && lastSnap !== scroll) {
             snapDelayedCall.restart(true);
@@ -1945,16 +1954,23 @@
         }
 
         scrubTween && scrubTween.pause();
-        invalidateOnRefresh && animation && animation.revert({
-          kill: false
-        }).invalidate();
+
+        if (invalidateOnRefresh && animation) {
+          animation.revert({
+            kill: false
+          }).invalidate();
+          animation.getChildren ? animation.getChildren(true, true, false).forEach(function (t) {
+            return t.vars.immediateRender && t.render(0, true, true);
+          }) : animation.vars.immediateRender && animation.render(0, true, true);
+        }
+
         self.isReverted || self.revert(true, true);
         self._subPinOffset = false;
 
         var size = getScrollerSize(),
             scrollerBounds = getScrollerOffsets(),
             max = containerAnimation ? containerAnimation.duration() : _maxScroll(scroller, direction),
-            isFirstRefresh = change <= 0.01,
+            isFirstRefresh = change <= 0.01 || !change,
             offset = 0,
             otherPinOffset = pinOffset || 0,
             parsedEnd = _isObject(position) ? position.end : vars.end,
@@ -2020,7 +2036,7 @@
         i = triggerIndex;
 
         while (i--) {
-          curTrigger = _triggers[i];
+          curTrigger = _triggers[i] || {};
           curPin = curTrigger.pin;
 
           if (curPin && curTrigger.start - curTrigger._pinPush <= start && !containerAnimation && curTrigger.end > 0) {
@@ -2183,7 +2199,7 @@
         animation && isToggle && (animation._initted || prevAnimProgress) && animation.progress() !== prevAnimProgress && animation.progress(prevAnimProgress || 0, true).render(animation.time(), true, true);
 
         if (isFirstRefresh || prevProgress !== self.progress || containerAnimation || invalidateOnRefresh || animation && !animation._initted) {
-          animation && !isToggle && animation.totalProgress(containerAnimation && start < -0.001 && !prevProgress ? gsap$1.utils.normalize(start, end, 0) : prevProgress, true);
+          animation && !isToggle && (animation._initted || prevProgress || animation.vars.immediateRender !== false) && animation.totalProgress(containerAnimation && start < -0.001 && !prevProgress ? gsap$1.utils.normalize(start, end, 0) : prevProgress, true);
           self.progress = isFirstRefresh || (scroll1 - start) / change === prevProgress ? 0 : prevProgress;
         }
 
@@ -2439,8 +2455,9 @@
       };
 
       self.disable = function (reset, allowAnimation) {
+        reset !== false && self.revert(true, true);
+
         if (self.enabled) {
-          reset !== false && self.revert(true, true);
           self.enabled = self.isActive = false;
           allowAnimation || scrubTween && scrubTween.pause();
           prevScroll = 0;
@@ -2635,7 +2652,9 @@
             };
 
             gsap$1.addEventListener("matchMediaInit", function () {
-              return _revertAll();
+              _recordScrollPositions();
+
+              _revertAll();
             });
             gsap$1.addEventListener("matchMediaRevert", function () {
               return _revertRecorded();
@@ -2724,6 +2743,14 @@
 
             _wheelListener(_removeListener$1, _scrollers[i], _scrollers[i + 2]);
           }
+        } else if (_doc$1) {
+          var onLoad = function onLoad() {
+            ScrollTrigger.enable();
+
+            _doc$1.removeEventListener("DOMContentLoaded", onLoad);
+          };
+
+          _doc$1.addEventListener("DOMContentLoaded", onLoad);
         }
       }
     };
@@ -2790,7 +2817,7 @@
 
     return ScrollTrigger;
   }();
-  ScrollTrigger$1.version = "3.12.7";
+  ScrollTrigger$1.version = "3.15.0";
 
   ScrollTrigger$1.saveStyles = function (targets) {
     return targets ? _toArray(targets).forEach(function (target) {
