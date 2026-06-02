@@ -58,9 +58,10 @@
 <body class="preload">
   <div id="app">
     <div id="landing-page" class="content-wrapper">
-      <img src="public/logoIcons/logo.png" class="loading-logo" alt="Logo" />
-      <div class="progress-container">
-          <svg width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+      <div class="loader-panel" role="status" aria-live="polite" aria-label="Loading page">
+        <img src="public/logoIcons/logo.png" class="loading-logo" alt="ICUE" width="200" height="80" />
+        <div class="progress-container">
+          <svg width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
             <defs>
               <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#00ffcc" />
@@ -73,8 +74,9 @@
                     stroke-dasharray="565.48" stroke-dashoffset="565.48" />
           </svg>
           <div class="progress-text" id="progress-text">0%</div>
-          <p class="loading-text"><span> LOADING</span><span>PAGE</span></p>
-          <div class="progress-ms" id="progress-ms">0 ms</div>
+        </div>
+        <p class="loading-text"><span>LOADING</span><span>PAGE</span></p>
+        <div class="progress-ms" id="progress-ms">0 ms</div>
       </div>
     </div>
   </div>
