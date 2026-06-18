@@ -20,10 +20,14 @@ i18n
       vi: { translation: vi },
     },
     fallbackLng: 'vi',
+    // Default to Vietnamese on first load. We only read a previously saved
+    // choice from localStorage — without one we fall through to fallbackLng (vi),
+    // ignoring the browser language so the Newsroom always opens in VI by default.
+    lng: localStorage.getItem('icue_news_lang') || 'vi',
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     interpolation: { escapeValue: false },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
       lookupLocalStorage: 'icue_news_lang',
     },

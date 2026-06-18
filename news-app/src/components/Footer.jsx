@@ -16,6 +16,7 @@ function Footer() {
           <a href={`${MAIN}#/notableAwards`}>{t('footer.awards')}</a>
           <a href={`${MAIN}#/communityActivities`}>{t('footer.community')}</a>
           <a href="/newsroom/">{t('footer.news')}</a>
+          <a href={`${MAIN}#/News`}>{t('nav.archive')}</a>
         </div>
         <div className="icue-footer__col">
           <h4>{t('footer.otherPages')}</h4>
@@ -25,6 +26,7 @@ function Footer() {
         </div>
         <div className="icue-footer__brand">
           <span className="icue-footer__logo">ICUE</span>
+          <p className="icue-footer__institute">{t('instituteName')}</p>
           <p className="icue-footer__rights">© {year} {t('footer.rights')}</p>
         </div>
       </div>

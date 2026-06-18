@@ -381,6 +381,10 @@ body {
     0 1px 3px rgba(16, 19, 24, 0.04);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
+/* Safety net: AOS keeps [data-aos] at opacity:0 until it adds .aos-animate, but
+   this page is injected dynamically and AOS may never re-scan it — which left the
+   banner invisible. Higher specificity than AOS's [data-aos] rule forces it shown. */
+.new-news-cta[data-aos] { opacity: 1; transform: none; }
 .new-news-cta::before {
   content: '';
   position: absolute;
@@ -453,11 +457,18 @@ body {
     padding: 16px;
     margin: 0 auto 20px;
     border-radius: 16px;
+    /* Stronger surface + accent border so the banner clearly stands out on the
+       white page (glass-on-white is too faint on small screens). */
+    background: rgba(248, 250, 240, 0.92);
+    border: 1px solid rgba(158, 224, 0, 0.45);
+    box-shadow: 0 6px 20px rgba(16, 19, 24, 0.1);
   }
   .new-news-cta__title { font-size: 17px; }
   .new-news-cta__sub { font-size: 12.5px; max-width: 100%; }
   .new-news-cta__btn {
-    width: 100%;
+    align-self: stretch;
+    width: auto;
+    margin-right: 15%;
     text-align: center;
     padding: 12px 18px;
     font-size: 15px;
@@ -532,7 +543,7 @@ body {
     </div>
   </div>
 
-  <a class="new-news-cta" href="/newsroom/" data-aos="fade-up">
+  <a class="new-news-cta aos-animate" href="/newsroom/" data-aos="fade-up">
     <div class="new-news-cta__text">
       <span class="new-news-cta__eyebrow">Mới · New</span>
       <strong class="new-news-cta__title">Cổng bản tin mới của ICUE</strong>

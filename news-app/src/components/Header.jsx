@@ -23,10 +23,10 @@ function Header() {
   return (
     <header className="icue-header">
       <div className="icue-header__inner icue-container">
-        <Link to="/" className="icue-header__brand" onClick={close} aria-label={`${t('brand')} ${t('brandBadge')}`}>
+        <a href={MAIN_SITE} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
           <span className="icue-header__logo">{t('brand')}</span>
           <span className="icue-header__tag">{t('brandBadge')}</span>
-        </Link>
+        </a>
 
         <button
           className={`icue-header__burger ${open ? 'is-open' : ''}`}

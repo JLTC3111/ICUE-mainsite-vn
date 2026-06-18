@@ -5,9 +5,12 @@
   margin-bottom: 40px;
 }
 .news-hero__eyebrow {
-  margin: 0 0 10px;
-  font-size: 13px; font-weight: 800; letter-spacing: 0.18em;
+  margin: 0 0 12px;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
   color: var(--icue-accent);
+  max-width: 620px;
 }
 .news-hero__title { margin: 0 0 10px; font-size: clamp(32px, 5vw, 52px); font-weight: 800; letter-spacing: -0.02em; }
 .news-hero__subtitle { margin: 0; font-size: clamp(15px, 2.2vw, 18px); color: #aab0b6; max-width: 620px; }
