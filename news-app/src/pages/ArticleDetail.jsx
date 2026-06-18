@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { formatDate } from '../lib/helpers'
+import MediaGallery from '../components/MediaGallery'
 import './ArticleDetail.css'
 
 export default function ArticleDetail() {
@@ -105,23 +106,7 @@ export default function ArticleDetail() {
         dangerouslySetInnerHTML={{ __html: article.content_html }}
       />
 
-      {videos.length > 0 && (
-        <section className="article-detail__videos icue-readw">
-          {videos.map((v) => (
-            <video key={v.id} src={v.url} poster={v.poster_url || undefined} controls preload="metadata" playsInline />
-          ))}
-        </section>
-      )}
-
-      {images.length > 0 && (
-        <section className="article-detail__gallery icue-readw">
-          {images.map((img) => (
-            <figure key={img.id} className="article-detail__gallery-item">
-              <img src={img.url} alt="" loading="lazy" decoding="async" />
-            </figure>
-          ))}
-        </section>
-      )}
+      <MediaGallery images={images} videos={videos} />
 
       <div className="article-detail__foot icue-readw">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>

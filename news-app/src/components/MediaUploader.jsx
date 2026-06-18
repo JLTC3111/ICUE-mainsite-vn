@@ -1,4 +1,4 @@
-import { memo, useCallback, useId } from 'react'
+import { memo, useCallback, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MEDIA_LIMITS } from '../lib/supabase'
 import './MediaUploader.css'
@@ -6,32 +6,49 @@ import './MediaUploader.css'
 let tmpId = 0
 const nextTmpId = () => `tmp_${Date.now()}_${tmpId++}`
 
+const kindOf = (file) => {
+  if (file.type.startsWith('image/')) return 'image'
+  if (file.type.startsWith('video/')) return 'video'
+  return null
+}
+
 // A media item: { id, kind, url, storagePath?, file?, isNew }
 function MediaUploader({ items, onChange }) {
   const { t } = useTranslation()
-  const imgInputId = useId()
-  const vidInputId = useId()
+  const inputId = useId()
+  const [dragging, setDragging] = useState(false)
+  const [notice, setNotice] = useState('')
 
   const images = items.filter((m) => m.kind === 'image')
   const videos = items.filter((m) => m.kind === 'video')
   const imagesLeft = MEDIA_LIMITS.images - images.length
   const videosLeft = MEDIA_LIMITS.videos - videos.length
 
+  // Accepts a mixed list, routes each file by MIME type, respects per-type caps.
   const addFiles = useCallback(
-    (fileList, kind) => {
+    (fileList) => {
       const files = Array.from(fileList || [])
       if (!files.length) return
-      const cap = kind === 'image' ? imagesLeft : videosLeft
-      const next = files.slice(0, cap).map((file) => ({
-        id: nextTmpId(),
-        kind,
-        url: URL.createObjectURL(file),
-        file,
-        isNew: true,
-      }))
-      onChange([...items, ...next])
+      let imgLeft = imagesLeft
+      let vidLeft = videosLeft
+      let skipped = 0
+      const next = []
+      for (const file of files) {
+        const kind = kindOf(file)
+        if (kind === 'image' && imgLeft > 0) {
+          next.push({ id: nextTmpId(), kind, url: URL.createObjectURL(file), file, isNew: true })
+          imgLeft -= 1
+        } else if (kind === 'video' && vidLeft > 0) {
+          next.push({ id: nextTmpId(), kind, url: URL.createObjectURL(file), file, isNew: true })
+          vidLeft -= 1
+        } else {
+          skipped += 1
+        }
+      }
+      if (next.length) onChange([...items, ...next])
+      setNotice(skipped ? t('editor.skipped', { count: skipped }) : '')
     },
-    [items, onChange, imagesLeft, videosLeft],
+    [items, onChange, imagesLeft, videosLeft, t],
   )
 
   const remove = useCallback(
@@ -39,57 +56,79 @@ function MediaUploader({ items, onChange }) {
       const target = items.find((m) => m.id === id)
       if (target?.isNew && target.url?.startsWith('blob:')) URL.revokeObjectURL(target.url)
       onChange(items.filter((m) => m.id !== id))
+      setNotice('')
     },
     [items, onChange],
   )
+
+  const onDrop = useCallback(
+    (e) => {
+      e.preventDefault()
+      setDragging(false)
+      addFiles(e.dataTransfer?.files)
+    },
+    [addFiles],
+  )
+
+  const full = imagesLeft <= 0 && videosLeft <= 0
 
   return (
     <div className="media-uploader">
       <div className="media-uploader__head">
         <h3>{t('editor.media')}</h3>
+        <div className="media-uploader__counts">
+          <span className={`media-chip ${imagesLeft <= 0 ? 'is-full' : ''}`}>
+            🖼 {images.length}/{MEDIA_LIMITS.images}
+          </span>
+          <span className={`media-chip ${videosLeft <= 0 ? 'is-full' : ''}`}>
+            🎬 {videos.length}/{MEDIA_LIMITS.videos}
+          </span>
+        </div>
       </div>
 
-      <div className="media-uploader__actions">
-        <label className={`btn btn-ghost btn-sm ${imagesLeft <= 0 ? 'is-disabled' : ''}`} htmlFor={imgInputId}>
-          🖼 {t('editor.addImages')}
-          <span className="media-uploader__count">{t('editor.imagesLeft', { count: imagesLeft })}</span>
-        </label>
+      <label
+        htmlFor={inputId}
+        className={`media-dropzone ${dragging ? 'is-dragging' : ''} ${full ? 'is-full' : ''}`}
+        onDragOver={(e) => { e.preventDefault(); if (!full) setDragging(true) }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+      >
+        <span className="media-dropzone__icon">⬆</span>
+        <span className="media-dropzone__title">
+          {full ? t('editor.mediaFull') : t('editor.dropHint')}
+        </span>
+        <span className="media-dropzone__sub">{t('editor.mediaLimits')}</span>
         <input
-          id={imgInputId}
+          id={inputId}
           className="visually-hidden"
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
-          disabled={imagesLeft <= 0}
-          onChange={(e) => { addFiles(e.target.files, 'image'); e.target.value = '' }}
+          disabled={full}
+          onChange={(e) => { addFiles(e.target.files); e.target.value = '' }}
         />
+      </label>
 
-        <label className={`btn btn-ghost btn-sm ${videosLeft <= 0 ? 'is-disabled' : ''}`} htmlFor={vidInputId}>
-          🎬 {t('editor.addVideos')}
-          <span className="media-uploader__count">{t('editor.videosLeft', { count: videosLeft })}</span>
-        </label>
-        <input
-          id={vidInputId}
-          className="visually-hidden"
-          type="file"
-          accept="video/*"
-          multiple
-          disabled={videosLeft <= 0}
-          onChange={(e) => { addFiles(e.target.files, 'video'); e.target.value = '' }}
-        />
-      </div>
+      {notice && <p className="media-uploader__notice">{notice}</p>}
 
       {items.length > 0 && (
-        <ul className="media-uploader__grid">
+        <ul className="media-strip">
           {items.map((m) => (
-            <li key={m.id} className="media-uploader__tile">
+            <li key={m.id} className="media-thumb">
               {m.kind === 'image' ? (
                 <img src={m.url} alt="" loading="lazy" decoding="async" />
               ) : (
-                <video src={m.url} muted playsInline preload="metadata" />
+                <>
+                  <video src={m.url} muted playsInline preload="metadata" />
+                  <span className="media-thumb__play">▶</span>
+                </>
               )}
-              <span className="media-uploader__kind">{m.kind === 'image' ? 'IMG' : 'VIDEO'}</span>
-              <button type="button" className="media-uploader__remove" onClick={() => remove(m.id)} aria-label="Remove">
+              <button
+                type="button"
+                className="media-thumb__remove"
+                onClick={() => remove(m.id)}
+                aria-label={t('common.delete')}
+              >
                 ✕
               </button>
             </li>

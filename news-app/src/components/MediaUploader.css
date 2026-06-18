@@ -1,43 +1,115 @@
 .media-uploader { border-top: 1px solid var(--icue-border); padding-top: 24px; }
-.media-uploader__head h3 { margin: 0 0 14px; font-size: 16px; font-weight: 700; }
 
-.media-uploader__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.media-uploader__actions label { cursor: pointer; }
-.media-uploader__actions label.is-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-.media-uploader__count { font-weight: 500; color: var(--icue-text-faint); font-size: 12px; }
-
-.media-uploader__grid {
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+.media-uploader__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
+  margin-bottom: 14px;
 }
-.media-uploader__tile {
+.media-uploader__head h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.media-uploader__counts { display: flex; gap: 8px; }
+.media-chip {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--icue-text-soft);
+  background: var(--icue-surface-2);
+  border: 1px solid var(--icue-border);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.media-chip.is-full { color: #1a7f37; background: rgba(46, 160, 67, 0.1); border-color: rgba(46, 160, 67, 0.25); }
+
+/* Drag & drop zone ----------------------------------------------------- */
+.media-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 26px 20px;
+  border: 1.5px dashed var(--icue-border);
+  border-radius: var(--icue-radius);
+  background: var(--icue-surface-2);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+}
+.media-dropzone:hover { border-color: var(--icue-ink); }
+.media-dropzone.is-dragging {
+  border-color: var(--icue-accent-ink);
+  background: rgba(200, 255, 0, 0.12);
+  transform: scale(1.005);
+}
+.media-dropzone.is-full { opacity: 0.6; cursor: not-allowed; }
+.media-dropzone__icon {
+  font-size: 22px;
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--icue-surface);
+  border: 1px solid var(--icue-border);
+  margin-bottom: 4px;
+}
+.media-dropzone__title { font-size: 15px; font-weight: 700; color: var(--icue-text); }
+.media-dropzone__sub { font-size: 12px; color: var(--icue-text-faint); }
+
+.media-uploader__notice {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #8a6d00;
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+/* Compact thumbnail strip --------------------------------------------- */
+.media-strip {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.media-thumb {
   position: relative;
-  aspect-ratio: 1 / 1;
+  width: 84px;
+  height: 84px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--icue-surface-2);
   border: 1px solid var(--icue-border);
+  flex: 0 0 auto;
 }
-.media-uploader__tile img,
-.media-uploader__tile video { width: 100%; height: 100%; object-fit: cover; }
-.media-uploader__kind {
-  position: absolute; bottom: 6px; left: 6px;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
-  background: rgba(10, 10, 10, 0.78); color: #fff;
-  padding: 2px 6px; border-radius: 5px;
+.media-thumb img,
+.media-thumb video { width: 100%; height: 100%; object-fit: cover; }
+.media-thumb__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
 }
-.media-uploader__remove {
-  position: absolute; top: 6px; right: 6px;
-  width: 24px; height: 24px;
+.media-thumb__remove {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 20px; height: 20px;
   border: 0; border-radius: 50%;
-  background: rgba(10, 10, 10, 0.78); color: #fff;
-  font-size: 12px; line-height: 1;
+  background: rgba(10, 10, 10, 0.8);
+  color: #fff;
+  font-size: 11px; line-height: 1;
   display: grid; place-items: center;
-  transition: background 0.15s ease, transform 0.1s ease;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, transform 0.1s ease;
 }
-.media-uploader__remove:hover { background: var(--icue-danger); }
-.media-uploader__remove:active { transform: scale(0.9); }
+.media-thumb:hover .media-thumb__remove { opacity: 1; }
+.media-thumb__remove:hover { background: var(--icue-danger); }
+.media-thumb__remove:active { transform: scale(0.9); }
+
+@media (hover: none) {
+  .media-thumb__remove { opacity: 1; }
+}

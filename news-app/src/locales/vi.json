@@ -63,6 +63,10 @@
     "addVideos": "Thêm video",
     "imagesLeft": "{{count}} hình còn lại",
     "videosLeft": "{{count}} video còn lại",
+    "dropHint": "Kéo thả tệp vào đây hoặc bấm để chọn",
+    "mediaLimits": "Tối đa 10 hình ảnh và 2 video",
+    "mediaFull": "Đã đạt giới hạn tệp",
+    "skipped": "Đã bỏ qua {{count}} tệp (vượt giới hạn hoặc không hỗ trợ)",
     "saveDraft": "Lưu nháp",
     "publish": "Đăng bài",
     "update": "Cập nhật",
@@ -82,6 +86,10 @@
     "changePhoto": "Đổi ảnh",
     "save": "Lưu hồ sơ",
     "saved": "Đã lưu hồ sơ."
+  },
+  "article": {
+    "gallery": "Thư viện hình ảnh & video",
+    "viewImage": "Xem hình {{n}}"
   },
   "common": {
     "cancel": "Hủy",

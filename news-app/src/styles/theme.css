@@ -35,7 +35,13 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Render the app in light mode regardless of OS dark mode, so editable
+     areas / inputs never get auto white-on-white text. */
+  color-scheme: light;
+}
 
 body {
   margin: 0;

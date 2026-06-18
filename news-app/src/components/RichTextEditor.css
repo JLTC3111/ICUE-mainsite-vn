@@ -36,15 +36,27 @@
 .rte-btn.is-active { background: var(--icue-accent); color: var(--icue-accent-ink); }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
 
-.rte-content {
+.rte-content,
+.rte .ProseMirror {
   min-height: 320px;
   padding: 24px 26px;
   font-family: var(--icue-serif);
   font-size: 20px;
   line-height: 1.7;
-  color: #1a1a1a;
+  color-scheme: light;
+  background: #fff;
   outline: none;
 }
+/* Force dark text on all editor content regardless of OS dark mode. */
+.rte-content,
+.rte .ProseMirror,
+.rte-content *,
+.rte .ProseMirror * {
+  color: #111316;
+  caret-color: #111316;
+}
+.rte-content a,
+.rte .ProseMirror a { color: #1a73e8; }
 .rte-content p { margin: 0 0 1em; }
 .rte-content h2 { font-size: 30px; line-height: 1.25; margin: 1.2em 0 0.4em; font-weight: 700; }
 .rte-content h3 { font-size: 24px; line-height: 1.3; margin: 1em 0 0.3em; font-weight: 700; }
