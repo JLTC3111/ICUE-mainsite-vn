@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
-const MAIN_SITE = 'https://icue.vn'
+const MAIN_SITE = '/'
 
 function Header() {
   const { t } = useTranslation()
@@ -70,22 +70,15 @@ function Header() {
                 <span className="icue-header__logout-label">{t('nav.logout')}</span>
               </button>
             ) : (
-              <a href={loginUrl()} className="btn btn-primary btn-sm" onClick={close}>
+              <Link to="/login" className="btn btn-primary btn-sm" onClick={close}>
                 {t('nav.login')}
-              </a>
+              </Link>
             )}
           </div>
         </nav>
       </div>
     </header>
   )
-}
-
-// Login lives on its own subdomain in production; locally it is the /login route.
-function loginUrl() {
-  const origin = import.meta.env.VITE_LOGIN_ORIGIN
-  if (origin && !location.hostname.includes('localhost')) return origin
-  return '/login'
 }
 
 export default memo(Header)

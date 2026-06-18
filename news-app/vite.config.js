@@ -4,8 +4,12 @@ import react from '@vitejs/plugin-react'
 // Performance-oriented build: aggressive code-splitting so the heavy editor
 // (TipTap/ProseMirror) and Supabase client never block the public news grid.
 export default defineConfig({
+  // Distinct from legacy #/News — served at icue.vn/newsroom/
+  base: '/newsroom/',
   plugins: [react()],
   build: {
+    outDir: '../public/newsroom',
+    emptyOutDir: true,
     target: 'es2020',
     cssCodeSplit: true,
     sourcemap: false,

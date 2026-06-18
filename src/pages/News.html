@@ -352,44 +352,95 @@ body {
   transition: all 0.75s ease-in-out;
 }
 
-/* CTA banner linking to the new news platform (news.icue.vn) */
+/* CTA banner — glass morphism, blends with the white News page layout */
 .new-news-cta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
   flex-wrap: wrap;
   max-width: 1100px;
-  margin: 0 auto 40px;
-  padding: 24px 32px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  border: 1px solid rgba(200, 255, 0, 0.25);
+  margin: 0 auto 32px;
+  padding: 18px 24px;
+  border-radius: 18px;
   text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 8px 32px rgba(16, 19, 24, 0.06),
+    0 1px 3px rgba(16, 19, 24, 0.04);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.new-news-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(200, 255, 0, 0.14) 0%, transparent 42%),
+    linear-gradient(225deg, rgba(10, 10, 10, 0.04) 0%, transparent 55%);
+  pointer-events: none;
 }
 .new-news-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  transform: translateY(-1px);
+  border-color: rgba(200, 255, 0, 0.35);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 14px 40px rgba(16, 19, 24, 0.08),
+    0 0 0 1px rgba(200, 255, 0, 0.12);
 }
-.new-news-cta__text { display: flex; flex-direction: column; gap: 4px; }
+.new-news-cta__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+}
 .new-news-cta__eyebrow {
-  font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: #c8ff00;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5b6068;
 }
-.new-news-cta__title { color: #fff; font-size: clamp(18px, 3vw, 24px); font-weight: 800; }
-.new-news-cta__sub { color: #aab0b6; font-size: 14px; max-width: 560px; }
+.new-news-cta__title {
+  color: #16181d;
+  font-size: clamp(16px, 2.4vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.new-news-cta__sub {
+  color: #6b7077;
+  font-size: 13px;
+  max-width: 520px;
+  line-height: 1.45;
+}
 .new-news-cta__btn {
   flex: 0 0 auto;
-  background: linear-gradient(135deg, #c8ff00 0%, #9ee000 100%);
-  color: #0a0a0a; font-weight: 700; font-size: 15px;
-  padding: 12px 22px; border-radius: 999px;
-  box-shadow: 0 6px 18px rgba(200, 255, 0, 0.3);
-  transition: filter 0.2s ease, transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(200, 255, 0, 0.92) 0%, rgba(158, 224, 0, 0.88) 100%);
+  color: #0a0a0a;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 255, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(200, 255, 0, 0.22);
+  transition: filter 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
-.new-news-cta:hover .new-news-cta__btn { filter: brightness(1.08); transform: translateY(-1px); }
+.new-news-cta:hover .new-news-cta__btn {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(200, 255, 0, 0.32);
+}
 
 @media (max-width: 600px) {
-  .new-news-cta { padding: 20px; }
+  .new-news-cta { padding: 16px 18px; margin-bottom: 24px; }
   .new-news-cta__btn { width: 100%; text-align: center; }
 }
 
@@ -461,13 +512,13 @@ body {
     </div>
   </div>
 
-  <a class="new-news-cta" href="https://news.icue.vn" target="_blank" rel="noopener noreferrer" data-aos="fade-up">
+  <a class="new-news-cta" href="/newsroom/" data-aos="fade-up">
     <div class="new-news-cta__text">
-      <span class="new-news-cta__eyebrow">MỚI · NEW</span>
-      <strong class="new-news-cta__title">Cổng Bản Tin Mới của ICUE</strong>
+      <span class="new-news-cta__eyebrow">Mới · New</span>
+      <strong class="new-news-cta__title">Cổng bản tin mới của ICUE</strong>
       <span class="new-news-cta__sub">Khám phá các bài viết mới nhất trên nền tảng tin tức nâng cấp của chúng tôi.</span>
     </div>
-    <span class="new-news-cta__btn">Xem Bản Tin Mới →</span>
+    <span class="new-news-cta__btn">Xem bản tin mới →</span>
   </a>
 
   <main class="grid">

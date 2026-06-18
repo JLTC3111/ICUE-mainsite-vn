@@ -27,21 +27,16 @@ function ScrollToTop() {
   return null
 }
 
-// On the dedicated login subdomain, send the bare root straight to the form.
-function isLoginHost() {
-  return typeof window !== 'undefined' && window.location.hostname.startsWith('newslogin')
-}
-
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/newsroom">
       <ScrollToTop />
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/login" element={<Login />} />
 
           <Route element={<Layout />}>
-            <Route index element={isLoginHost() ? <Navigate to="/login" replace /> : <NewsGrid />} />
+            <Route index element={<NewsGrid />} />
             <Route path="article/:slug" element={<ArticleDetail />} />
 
             <Route path="write" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
