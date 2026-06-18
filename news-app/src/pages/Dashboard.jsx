@@ -1,0 +1,64 @@
+import { useEffect, useState, useCallback } from 'react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { useAuth } from '../context/AuthContext'
+import { fetchMyArticles, deleteArticle } from '../lib/articles'
+import { formatDate } from '../lib/helpers'
+import './Dashboard.css'
+
+export default function Dashboard() {
+  const { t, i18n } = useTranslation()
+  const { user } = useAuth()
+  const [articles, setArticles] = useState([])
+  const [state, setState] = useState('loading')
+
+  const load = useCallback(() => {
+    if (!user) return
+    fetchMyArticles(user.id)
+      .then((data) => { setArticles(data); setState('ready') })
+      .catch(() => setState('error'))
+  }, [user])
+
+  useEffect(() => { load() }, [load])
+
+  const handleDelete = async (id) => {
+    if (!window.confirm(t('common.confirmDelete'))) return
+    await deleteArticle(id)
+    setArticles((prev) => prev.filter((a) => a.id !== id))
+  }
+
+  return (
+    <div className="dash icue-container">
+      <div className="dash__head">
+        <h1>{t('nav.dashboard')}</h1>
+        <Link to="/write" className="btn btn-accent btn-sm">{t('nav.write')}</Link>
+      </div>
+
+      {state === 'loading' && <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>}
+      {state === 'ready' && articles.length === 0 && <p className="dash__empty">{t('news.empty')}</p>}
+
+      {state === 'ready' && articles.length > 0 && (
+        <ul className="dash__list">
+          {articles.map((a) => (
+            <li key={a.id} className="dash__row">
+              <div className="dash__thumb">
+                {a.cover_image_url ? <img src={a.cover_image_url} alt="" loading="lazy" /> : <span>ICUE</span>}
+              </div>
+              <div className="dash__info">
+                <span className={`dash__status dash__status--${a.status}`}>
+                  {a.status === 'published' ? t('common.published') : t('common.draft')}
+                </span>
+                <Link to={`/article/${a.slug}`} className="dash__title">{a.title}</Link>
+                <span className="dash__date">{formatDate(a.updated_at, i18n.resolvedLanguage)}</span>
+              </div>
+              <div className="dash__actions">
+                <Link to={`/edit/${a.id}`} className="btn btn-ghost btn-sm">{t('common.edit')}</Link>
+                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(a.id)}>{t('common.delete')}</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}

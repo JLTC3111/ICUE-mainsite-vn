@@ -352,6 +352,47 @@ body {
   transition: all 0.75s ease-in-out;
 }
 
+/* CTA banner linking to the new news platform (news.icue.vn) */
+.new-news-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto 40px;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  border: 1px solid rgba(200, 255, 0, 0.25);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.new-news-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+}
+.new-news-cta__text { display: flex; flex-direction: column; gap: 4px; }
+.new-news-cta__eyebrow {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: #c8ff00;
+}
+.new-news-cta__title { color: #fff; font-size: clamp(18px, 3vw, 24px); font-weight: 800; }
+.new-news-cta__sub { color: #aab0b6; font-size: 14px; max-width: 560px; }
+.new-news-cta__btn {
+  flex: 0 0 auto;
+  background: linear-gradient(135deg, #c8ff00 0%, #9ee000 100%);
+  color: #0a0a0a; font-weight: 700; font-size: 15px;
+  padding: 12px 22px; border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(200, 255, 0, 0.3);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.new-news-cta:hover .new-news-cta__btn { filter: brightness(1.08); transform: translateY(-1px); }
+
+@media (max-width: 600px) {
+  .new-news-cta { padding: 20px; }
+  .new-news-cta__btn { width: 100%; text-align: center; }
+}
+
 </style>
 <body>
   <div class="news-slider-wrapper">
@@ -419,6 +460,15 @@ body {
       </svg>
     </div>
   </div>
+
+  <a class="new-news-cta" href="https://news.icue.vn" target="_blank" rel="noopener noreferrer" data-aos="fade-up">
+    <div class="new-news-cta__text">
+      <span class="new-news-cta__eyebrow">MỚI · NEW</span>
+      <strong class="new-news-cta__title">Cổng Bản Tin Mới của ICUE</strong>
+      <span class="new-news-cta__sub">Khám phá các bài viết mới nhất trên nền tảng tin tức nâng cấp của chúng tôi.</span>
+    </div>
+    <span class="new-news-cta__btn">Xem Bản Tin Mới →</span>
+  </a>
 
   <main class="grid">
     <a href="src/pages/article_template.html?id=4" class="card image-card aos-animate" data-aos="fade-up">

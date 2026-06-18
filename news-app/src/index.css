@@ -1,0 +1,16 @@
+#root {
+  min-height: 100vh;
+}
+
+.icue-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.icue-main { flex: 1; }
+
+.route-loading {
+  display: grid;
+  place-items: center;
+  min-height: 50vh;
+}

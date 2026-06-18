@@ -1,0 +1,80 @@
+.article-form { padding-bottom: 60px; }
+
+.article-form__bar {
+  position: sticky;
+  top: var(--icue-header-h);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--icue-border);
+}
+.article-form__author { display: flex; align-items: center; gap: 12px; }
+.article-form__avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; display: grid; place-items: center; }
+.article-form__avatar--fallback { background: var(--icue-gradient-dark); color: #fff; font-weight: 700; }
+.article-form__author-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--icue-text-faint); }
+.article-form__author-name { font-size: 14px; font-weight: 700; }
+.article-form__actions { display: flex; gap: 10px; }
+
+.article-form__canvas { max-width: var(--icue-readw); margin-top: 32px; }
+.article-form__error {
+  background: rgba(229, 72, 77, 0.08);
+  color: var(--icue-danger);
+  border: 1px solid rgba(229, 72, 77, 0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.article-form__meta { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+.article-form__meta-field { flex: 0 0 auto; }
+.article-form__meta-field--author { flex: 1 1 220px; min-width: 200px; }
+.article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.article-form__cover {
+  display: block;
+  margin-bottom: 26px;
+  border: 1.5px dashed var(--icue-border);
+  border-radius: var(--icue-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.article-form__cover:hover { border-color: var(--icue-ink); background: var(--icue-surface-2); }
+.article-form__cover-img { width: 100%; max-height: 380px; object-fit: cover; }
+.article-form__cover-empty {
+  display: grid; place-items: center;
+  min-height: 120px; color: var(--icue-text-faint);
+  font-weight: 600; font-size: 15px;
+}
+
+.article-form__title,
+.article-form__subtitle {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  outline: none;
+  font-family: var(--icue-serif);
+  display: block;
+  transition: border-color 0.18s ease;
+}
+/* Affordance so these read as editable fields, not static headings. */
+.article-form__title:hover,
+.article-form__subtitle:hover { border-bottom-color: var(--icue-border); }
+.article-form__title:focus,
+.article-form__subtitle:focus { border-bottom-color: var(--icue-ink); }
+.article-form__title { font-size: 44px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 8px; }
+.article-form__title::placeholder { color: #c8ccc4; }
+.article-form__subtitle { font-size: 24px; color: var(--icue-text-soft); margin-bottom: 26px; }
+.article-form__subtitle::placeholder { color: #ccd0c8; }
+
+@media (max-width: 600px) {
+  .article-form__title { font-size: 32px; }
+  .article-form__subtitle { font-size: 19px; }
+  .article-form__bar { flex-wrap: wrap; }
+}
