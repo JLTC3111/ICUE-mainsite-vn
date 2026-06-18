@@ -12,6 +12,18 @@
     "login": "Log In",
     "logout": "Log Out"
   },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Home",
+    "org": "Organization & Structure",
+    "work": "Our Work",
+    "projects": "Topics & Projects",
+    "newsEvents": "News & Events",
+    "about": "About Us",
+    "people": "Our People",
+    "experts": "Our Experts",
+    "coreTeam": "Core Team"
+  },
   "footer": {
     "company": "Company",
     "otherPages": "Other Pages",

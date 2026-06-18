@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import RichTextEditor from './RichTextEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
@@ -102,13 +103,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       <div className="article-form__bar icue-container">
         <div className="article-form__author">
           <Link to="/profile" className="article-form__avatar-link" title={t('profile.avatar')}>
-            {profile?.avatar_url ? (
-              <img src={profile.avatar_url} alt="" className="article-form__avatar" />
-            ) : (
-              <span className="article-form__avatar article-form__avatar--fallback">
-                {loginName.slice(0, 1).toUpperCase()}
-              </span>
-            )}
+            <img src={profile?.avatar_url || DEFAULT_AVATAR} alt="" className="article-form__avatar" />
           </Link>
           <div>
             <span className="article-form__author-label">{t('editor.loggedInAs')}</span>

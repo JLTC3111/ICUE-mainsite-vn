@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { formatDate, plainExcerpt } from '../lib/helpers'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import './ArticleCard.css'
 
 function ArticleCard({ article }) {
@@ -37,13 +38,7 @@ function ArticleCard({ article }) {
 
         <div className="news-card__foot">
           <span className="news-card__author">
-            {author.avatar_url ? (
-              <img src={author.avatar_url} alt="" className="news-card__avatar" loading="lazy" />
-            ) : (
-              <span className="news-card__avatar news-card__avatar--fallback">
-                {(author.display_name || author.full_name || '?').slice(0, 1).toUpperCase()}
-              </span>
-            )}
+            <img src={author.avatar_url || DEFAULT_AVATAR} alt="" className="news-card__avatar" loading="lazy" />
             <span>{byline}</span>
           </span>
           <span className="news-card__read">{article.read_minutes || 1} {t('news.minRead')}</span>

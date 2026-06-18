@@ -91,6 +91,26 @@
 @media (max-width: 760px) {
   .news-featured { grid-template-columns: 1fr; }
   .news-featured__body { padding: 22px 24px 28px; }
-  .news-hero__inner { flex-direction: column; align-items: flex-start; gap: 22px; }
-  .news-hero__social { width: 100%; }
+
+  .news-hero { padding: 36px 0 30px; margin-bottom: 28px; }
+  .news-hero__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+  /* In a column the desktop `flex: 1 1 420px` would make this 420px TALL,
+     creating dead space above the social row — reset it to hug its content. */
+  .news-hero__text { flex: 0 0 auto; width: 100%; }
+  .news-hero__eyebrow { font-size: clamp(22px, 6.6vw, 32px); line-height: 1.2; margin-bottom: 6px; }
+  .news-hero__title { font-size: 12px; margin-bottom: 8px; }
+  .news-hero__subtitle { font-size: 14px; line-height: 1.5; }
+  .news-hero__social { width: 100%; justify-content: flex-start; gap: 14px; padding-top: 4px; }
+  .news-hero__social a { width: 46px; height: 46px; }
+}
+
+@media (max-width: 400px) {
+  .news-hero { padding: 28px 0 24px; }
+  .news-hero__social { gap: 12px; }
+  .news-hero__social a { width: 42px; height: 42px; }
 }

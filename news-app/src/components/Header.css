@@ -103,21 +103,22 @@
 
 .icue-header__burger {
   display: none;
-  flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   background: transparent;
   border: 0;
   padding: 8px;
   margin-left: auto;
+  cursor: pointer;
+  color: var(--icue-text);
 }
-.icue-header__burger span {
-  width: 22px; height: 2px;
-  background: var(--icue-text);
-  transition: transform 0.25s ease, opacity 0.2s ease;
+.icue-header__burger svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
-.icue-header__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.icue-header__burger.is-open span:nth-child(2) { opacity: 0; }
-.icue-header__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 860px) {
   .icue-header__burger { display: flex; }

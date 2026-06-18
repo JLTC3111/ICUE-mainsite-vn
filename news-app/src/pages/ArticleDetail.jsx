@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { formatDate } from '../lib/helpers'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
 import './ArticleDetail.css'
 
@@ -70,13 +71,7 @@ export default function ArticleDetail() {
         {article.subtitle && <p className="article-detail__subtitle">{article.subtitle}</p>}
 
         <div className="article-detail__byline">
-          {author.avatar_url ? (
-            <img src={author.avatar_url} alt="" className="article-detail__avatar" />
-          ) : (
-            <span className="article-detail__avatar article-detail__avatar--fallback">
-              {(author.display_name || author.full_name || '?').slice(0, 1).toUpperCase()}
-            </span>
-          )}
+          <img src={author.avatar_url || DEFAULT_AVATAR} alt="" className="article-detail__avatar" />
           <div className="article-detail__byline-text">
             <span className="article-detail__author">{byline}</span>
             <span className="article-detail__meta">

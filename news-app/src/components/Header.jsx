@@ -2,7 +2,9 @@ import { memo, useState, useCallback } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import LanguageSwitcher from './LanguageSwitcher'
+import DrawerMenu from './DrawerMenu'
 import './Header.css'
 
 const MAIN_SITE = 'https://icue.vn'
@@ -23,6 +25,8 @@ function Header() {
   return (
     <header className="icue-header">
       <div className="icue-header__inner icue-container">
+        <DrawerMenu />
+
         <a href={MAIN_SITE} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
           <span className="icue-header__logo">{t('brand')}</span>
           <span className="icue-header__tag">{t('brandBadge')}</span>
@@ -30,11 +34,21 @@ function Header() {
 
         <button
           className={`icue-header__burger ${open ? 'is-open' : ''}`}
-          aria-label="Menu"
+          aria-label={t('nav.news')}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          <span /><span /><span />
+          {open ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="12" cy="19" r="2" />
+            </svg>
+          )}
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
@@ -63,13 +77,7 @@ function Header() {
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>
-                {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="" className="icue-header__avatar" />
-                ) : (
-                  <span className="icue-header__avatar icue-header__avatar--fallback">
-                    {(profile?.display_name || profile?.full_name || '?').slice(0, 1).toUpperCase()}
-                  </span>
-                )}
+                <img src={profile?.avatar_url || DEFAULT_AVATAR} alt="" className="icue-header__avatar" />
                 <span className="icue-header__logout-label">{t('nav.logout')}</span>
               </button>
             ) : (

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { uploadAvatar } from '../lib/articles'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import './Profile.css'
 
 export default function Profile() {
@@ -65,7 +66,7 @@ export default function Profile() {
 
       <div className="profile__avatar-row">
         <div className="profile__avatar">
-          {preview ? <img src={preview} alt="" /> : <span>{(displayName || '?').slice(0, 1).toUpperCase()}</span>}
+          <img src={preview || DEFAULT_AVATAR} alt="" />
         </div>
         <label className="btn btn-ghost btn-sm">
           {t('profile.changePhoto')}
