@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
-const MAIN_SITE = '/'
+const MAIN_SITE = 'https://icue.vn'
 
 function Header() {
   const { t } = useTranslation()
