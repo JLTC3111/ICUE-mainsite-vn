@@ -1,0 +1,8 @@
+# Newsroom React app (history routing) lives at /newsroom.
+# Real asset files (/newsroom/assets/*) are served directly by the host;
+# these rules only fire for the bare route and deep SPA links.
+/newsroom            /newsroom/index.html   200
+/newsroom/*          /newsroom/index.html   200
+
+# Silence the browser's default /favicon.ico probe.
+/favicon.ico         /public/logoIcons/favicon.png   200

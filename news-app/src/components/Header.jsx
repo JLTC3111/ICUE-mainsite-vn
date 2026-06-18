@@ -23,9 +23,9 @@ function Header() {
   return (
     <header className="icue-header">
       <div className="icue-header__inner icue-container">
-        <Link to="/" className="icue-header__brand" onClick={close} aria-label="ICUE News">
-          <span className="icue-header__logo">ICUE</span>
-          <span className="icue-header__tag">News</span>
+        <Link to="/" className="icue-header__brand" onClick={close} aria-label={`${t('brand')} ${t('brandBadge')}`}>
+          <span className="icue-header__logo">{t('brand')}</span>
+          <span className="icue-header__tag">{t('brandBadge')}</span>
         </Link>
 
         <button
@@ -44,6 +44,9 @@ function Header() {
           <NavLink to="/" end className="icue-header__link" onClick={close}>
             {t('nav.news')}
           </NavLink>
+          <a href="/#/News" className="icue-header__link" onClick={close}>
+            {t('nav.archive')}
+          </a>
 
           {isAuthed && (
             <>

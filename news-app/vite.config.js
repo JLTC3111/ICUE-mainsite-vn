@@ -8,7 +8,9 @@ export default defineConfig({
   base: '/newsroom/',
   plugins: [react()],
   build: {
-    outDir: '../public/newsroom',
+    // Production serves the repo ROOT statically, so the app must live at
+    // /newsroom (not /public/newsroom) to match its base + the banner link.
+    outDir: '../newsroom',
     emptyOutDir: true,
     target: 'es2020',
     cssCodeSplit: true,

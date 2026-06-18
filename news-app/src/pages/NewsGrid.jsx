@@ -53,7 +53,6 @@ export default function NewsGrid() {
     <div className="news-page">
       <header className="news-hero">
         <div className="icue-container">
-          <p className="news-hero__eyebrow">ICUE</p>
           <h1 className="news-hero__title">{t('news.title')}</h1>
           <p className="news-hero__subtitle">{t('news.subtitle')}</p>
         </div>

@@ -1,8 +1,10 @@
 {
   "brand": "ICUE",
+  "brandBadge": "News",
   "nav": {
     "home": "Home",
     "news": "News",
+    "archive": "News Archive",
     "mainSite": "Main Site",
     "write": "Write",
     "dashboard": "My Articles",

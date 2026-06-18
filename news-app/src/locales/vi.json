@@ -1,8 +1,10 @@
 {
   "brand": "ICUE",
+  "brandBadge": "Bản Tin",
   "nav": {
     "home": "Trang Chủ",
     "news": "Bản Tin",
+    "archive": "Bản Tin Cũ",
     "mainSite": "Trang Chính",
     "write": "Viết Bài",
     "dashboard": "Bài Viết Của Tôi",

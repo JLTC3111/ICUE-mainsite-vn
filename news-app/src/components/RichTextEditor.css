@@ -47,16 +47,25 @@
   background: #fff;
   outline: none;
 }
-/* Force dark text on all editor content regardless of OS dark mode. */
+/* Force dark text on all editor content regardless of OS/browser dark mode.
+   !important guarantees it wins over any inherited or UA dark-mode color. */
 .rte-content,
 .rte .ProseMirror,
 .rte-content *,
 .rte .ProseMirror * {
-  color: #111316;
-  caret-color: #111316;
+  color: #111316 !important;
+  caret-color: #111316 !important;
+  -webkit-text-fill-color: #111316;
 }
 .rte-content a,
-.rte .ProseMirror a { color: #1a73e8; }
+.rte .ProseMirror a {
+  color: #1a73e8 !important;
+  -webkit-text-fill-color: #1a73e8;
+}
+.rte-content p.is-editor-empty:first-child::before {
+  color: #9aa0a6 !important;
+  -webkit-text-fill-color: #9aa0a6;
+}
 .rte-content p { margin: 0 0 1em; }
 .rte-content h2 { font-size: 30px; line-height: 1.25; margin: 1.2em 0 0.4em; font-weight: 700; }
 .rte-content h3 { font-size: 24px; line-height: 1.3; margin: 1em 0 0.3em; font-weight: 700; }
