@@ -39,6 +39,21 @@ export function formatDate(value, locale = 'vi') {
   }
 }
 
+export function formatDateTime(value, locale = 'vi') {
+  if (!value) return ''
+  try {
+    return new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(new Date(value))
+  } catch {
+    return ''
+  }
+}
+
 export function plainExcerpt(html, max = 160) {
   const text = (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
   return text.length > max ? `${text.slice(0, max).trim()}…` : text

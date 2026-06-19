@@ -1,0 +1,68 @@
+/* Heart button ------------------------------------------------------------ */
+.heart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+}
+.heart-btn:hover:not(:disabled) { border-color: #e0245e; color: #e0245e; }
+.heart-btn:active:not(:disabled) { transform: scale(0.96); }
+.heart-btn:disabled { opacity: 0.6; cursor: default; }
+
+.heart-btn__icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  transition: fill 0.18s ease, stroke 0.18s ease, transform 0.18s ease;
+}
+.heart-btn.is-liked { border-color: #e0245e; color: #e0245e; }
+.heart-btn.is-liked .heart-btn__icon { fill: #e0245e; stroke: #e0245e; transform: scale(1.08); }
+.heart-btn__count { font-variant-numeric: tabular-nums; min-width: 1ch; text-align: left; }
+
+/* Comments ----------------------------------------------------------------- */
+.comments {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--icue-border);
+}
+.comments__title {
+  margin: 0 0 20px;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.comments__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.comments__name { max-width: 320px; }
+.comments__body { resize: vertical; min-height: 84px; }
+.comments__actions { display: flex; justify-content: flex-end; }
+.comments__error { color: var(--icue-danger); font-size: 14px; margin: 0; }
+
+.comments__empty { color: var(--icue-text-faint); font-size: 15px; }
+
+.comments__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.comments__item {
+  padding: 16px 18px;
+  background: var(--icue-surface-2);
+  border: 1px solid var(--icue-border);
+  border-radius: var(--icue-radius);
+}
+.comments__meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.comments__author { font-size: 14px; font-weight: 700; color: var(--icue-text); }
+.comments__date { font-size: 12px; color: var(--icue-text-faint); white-space: nowrap; }
+.comments__text { margin: 0; font-size: 15px; line-height: 1.6; color: var(--icue-text-soft); white-space: pre-wrap; overflow-wrap: anywhere; }

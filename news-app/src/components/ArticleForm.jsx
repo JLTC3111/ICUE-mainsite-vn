@@ -32,7 +32,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [contentHtml, setContentHtml] = useState(initial?.content_html || '')
   const [contentJson, setContentJson] = useState(initial?.content_json || null)
   const [items, setItems] = useState(initial?.items || [])
-  const [coverUrl] = useState(initial?.cover_image_url || '')
+  const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
   const coverFileRef = useRef(null)
   const [coverPreview, setCoverPreview] = useState(initial?.cover_image_url || '')
 
@@ -55,6 +55,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
     if (!file) return
     coverFileRef.current = file
     setCoverPreview(URL.createObjectURL(file))
+  }, [])
+
+  // Drop the cover entirely: clear any pending upload, the preview, and the
+  // stored URL so submit persists a null cover.
+  const removeCover = useCallback(() => {
+    coverFileRef.current = null
+    setCoverPreview('')
+    setCoverUrl('')
   }, [])
 
   const submit = useCallback(
@@ -80,7 +88,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             time,
             contentHtml,
             contentJson,
-            coverImageUrl: coverUrl,
+            coverImageUrl: coverUrl || null,
             language: i18n.resolvedLanguage || 'vi',
           },
           items,
@@ -151,14 +159,27 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           </label>
         </div>
 
-        <label className="article-form__cover">
+        <div className="article-form__cover-block">
           {coverPreview ? (
-            <img src={coverPreview} alt="" className="article-form__cover-img" />
+            <div className="article-form__cover-filled">
+              <img src={coverPreview} alt="" className="article-form__cover-img" />
+              <div className="article-form__cover-tools">
+                <label className="btn btn-ghost btn-sm article-form__cover-change">
+                  {t('editor.changeCover')}
+                  <input type="file" accept="image/*" className="visually-hidden" onChange={onCoverChange} />
+                </label>
+                <button type="button" className="btn btn-danger btn-sm" onClick={removeCover}>
+                  {t('editor.removeCover')}
+                </button>
+              </div>
+            </div>
           ) : (
-            <span className="article-form__cover-empty">＋ {t('editor.coverImage')}</span>
+            <label className="article-form__cover">
+              <span className="article-form__cover-empty">＋ {t('editor.coverImage')}</span>
+              <input type="file" accept="image/*" className="visually-hidden" onChange={onCoverChange} />
+            </label>
           )}
-          <input type="file" accept="image/*" className="visually-hidden" onChange={onCoverChange} />
-        </label>
+        </div>
 
         <input
           className="article-form__title"

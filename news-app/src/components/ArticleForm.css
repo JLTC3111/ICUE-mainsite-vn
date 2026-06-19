@@ -36,9 +36,9 @@
 .article-form__meta-field--author { flex: 1 1 220px; min-width: 200px; }
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 
+.article-form__cover-block { margin-bottom: 26px; }
 .article-form__cover {
   display: block;
-  margin-bottom: 26px;
   border: 1.5px dashed var(--icue-border);
   border-radius: var(--icue-radius);
   overflow: hidden;
@@ -46,12 +46,33 @@
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 .article-form__cover:hover { border-color: var(--icue-ink); background: var(--icue-surface-2); }
-.article-form__cover-img { width: 100%; max-height: 380px; object-fit: cover; }
+.article-form__cover-img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
 .article-form__cover-empty {
   display: grid; place-items: center;
   min-height: 120px; color: var(--icue-text-faint);
   font-weight: 600; font-size: 15px;
 }
+
+/* Cover with an image: show it framed, with change/remove controls overlaid. */
+.article-form__cover-filled {
+  position: relative;
+  border-radius: var(--icue-radius);
+  overflow: hidden;
+  box-shadow: var(--icue-shadow-sm);
+}
+.article-form__cover-tools {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+.article-form__cover-tools .btn {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.article-form__cover-change { cursor: pointer; margin: 0; }
 
 .article-form__title,
 .article-form__subtitle {

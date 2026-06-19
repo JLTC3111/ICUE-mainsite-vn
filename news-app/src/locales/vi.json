@@ -73,6 +73,8 @@
     "authorPlaceholder": "Tên tác giả hiển thị",
     "loggedInAs": "Đăng nhập bởi",
     "coverImage": "Ảnh bìa",
+    "changeCover": "Đổi ảnh bìa",
+    "removeCover": "Xóa ảnh bìa",
     "media": "Hình ảnh & Video",
     "addImages": "Thêm hình ảnh",
     "addVideos": "Thêm video",
@@ -105,6 +107,19 @@
   "article": {
     "gallery": "Thư viện hình ảnh & video",
     "viewImage": "Xem hình {{n}}"
+  },
+  "engagement": {
+    "like": "Thả tim",
+    "liked": "Bỏ tim",
+    "comments": "Bình luận",
+    "commentsCount": "Bình luận ({{count}})",
+    "namePlaceholder": "Tên của bạn (tùy chọn)",
+    "commentPlaceholder": "Chia sẻ cảm nghĩ của bạn…",
+    "post": "Gửi bình luận",
+    "posting": "Đang gửi…",
+    "empty": "Hãy là người bình luận đầu tiên.",
+    "anon": "Ẩn danh",
+    "error": "Đã có lỗi xảy ra. Vui lòng thử lại."
   },
   "common": {
     "cancel": "Hủy",

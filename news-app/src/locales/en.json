@@ -73,6 +73,8 @@
     "authorPlaceholder": "Display author name",
     "loggedInAs": "Logged in as",
     "coverImage": "Cover image",
+    "changeCover": "Change cover",
+    "removeCover": "Remove cover",
     "media": "Images & Videos",
     "addImages": "Add images",
     "addVideos": "Add videos",
@@ -105,6 +107,19 @@
   "article": {
     "gallery": "Image & video gallery",
     "viewImage": "View image {{n}}"
+  },
+  "engagement": {
+    "like": "Leave a heart",
+    "liked": "Remove heart",
+    "comments": "Comments",
+    "commentsCount": "Comments ({{count}})",
+    "namePlaceholder": "Your name (optional)",
+    "commentPlaceholder": "Share your thoughts…",
+    "post": "Post comment",
+    "posting": "Posting…",
+    "empty": "Be the first to comment.",
+    "anon": "Anonymous",
+    "error": "Something went wrong. Please try again."
   },
   "common": {
     "cancel": "Cancel",

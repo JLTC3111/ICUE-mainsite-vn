@@ -66,6 +66,6 @@
 .article-detail__gallery-item { margin: 0; }
 .article-detail__gallery-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; box-shadow: var(--icue-shadow-sm); }
 
-.article-detail__foot { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--icue-border); }
+.article-detail__foot { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--icue-border); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
 .article-detail__missing { padding: 90px 24px; text-align: center; display: flex; flex-direction: column; gap: 16px; align-items: center; color: var(--icue-text-soft); }

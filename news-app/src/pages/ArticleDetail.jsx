@@ -6,6 +6,8 @@ import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { formatDate } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
+import HeartButton from '../components/HeartButton'
+import CommentSection from '../components/CommentSection'
 import './ArticleDetail.css'
 
 export default function ArticleDetail() {
@@ -105,7 +107,10 @@ export default function ArticleDetail() {
 
       <div className="article-detail__foot icue-readw">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>
+        {article.status === 'published' && <HeartButton articleId={article.id} />}
       </div>
+
+      {article.status === 'published' && <CommentSection articleId={article.id} />}
     </article>
   )
 }
