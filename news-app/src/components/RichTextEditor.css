@@ -17,6 +17,10 @@
   background: var(--icue-ink);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
+.rte-toolbar--table {
+  background: #1a1d22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
 .rte-btn {
   min-width: 32px;
   height: 32px;
@@ -30,16 +34,53 @@
   place-items: center;
   transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
-.rte-btn:hover { background: rgba(255, 255, 255, 0.12); }
-.rte-btn:active { transform: scale(0.94); }
+.rte-btn:disabled { opacity: 0.35; cursor: default; }
+.rte-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
+.rte-btn:active:not(:disabled) { transform: scale(0.94); }
 .rte-btn.is-active { background: var(--icue-accent); color: var(--icue-accent-ink); }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
 
+.rte-colors,
 .rte-highlight {
   display: inline-flex;
   align-items: center;
   gap: 3px;
 }
+
+.rte-textcolor {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+.rte-textcolor::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--text-color);
+}
+.rte-textcolor {
+  position: relative;
+}
+.rte-textcolor:hover { transform: scale(1.06); }
+.rte-textcolor.is-active {
+  box-shadow: 0 0 0 2px var(--icue-accent);
+  border-color: var(--icue-accent);
+}
+
 .rte-swatch {
   width: 22px;
   height: 22px;
@@ -82,27 +123,26 @@
   line-height: 1.7;
   color-scheme: light;
   background: #fff;
+  color: #111316;
+  caret-color: #111316;
   outline: none;
+  overflow-x: auto;
 }
-/* Force dark text on all editor content regardless of OS/browser dark mode.
-   !important guarantees it wins over any inherited or UA dark-mode color. */
-.rte-content,
-.rte .ProseMirror,
-.rte-content *,
-.rte .ProseMirror * {
-  color: #111316 !important;
-  caret-color: #111316 !important;
-  -webkit-text-fill-color: #111316;
-}
+
 .rte-content a,
 .rte .ProseMirror a {
-  color: #1a73e8 !important;
-  -webkit-text-fill-color: #1a73e8;
+  color: #1a73e8;
+  text-decoration: underline;
 }
+
 .rte-content p.is-editor-empty:first-child::before {
-  color: #9aa0a6 !important;
-  -webkit-text-fill-color: #9aa0a6;
+  content: attr(data-placeholder);
+  float: left;
+  color: #9aa0a6;
+  pointer-events: none;
+  height: 0;
 }
+
 .rte-content p { margin: 0 0 1em; }
 .rte-content h2 { font-size: 30px; line-height: 1.25; margin: 1.2em 0 0.4em; font-weight: 700; }
 .rte-content h3 { font-size: 24px; line-height: 1.3; margin: 1em 0 0.3em; font-weight: 700; }
@@ -114,18 +154,41 @@
   font-style: italic;
 }
 .rte-content ul, .rte-content ol { padding-left: 1.4em; margin: 0 0 1em; }
-.rte-content a { color: #1a73e8; text-decoration: underline; }
-.rte-content img { border-radius: 10px; margin: 1.4em auto; box-shadow: var(--icue-shadow-sm); }
+.rte-content img { border-radius: 10px; margin: 1.4em auto; box-shadow: var(--icue-shadow-sm); max-width: 100%; }
+
 .rte-content mark {
   border-radius: 2px;
   padding: 0 0.12em;
-  color: inherit !important;
-  -webkit-text-fill-color: inherit;
 }
-.rte-content p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  float: left;
-  color: var(--icue-text-faint);
-  pointer-events: none;
-  height: 0;
+
+/* Tables --------------------------------------------------------------- */
+.rte-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2em 0;
+  font-size: 0.88em;
+  table-layout: auto;
+}
+.rte-content th,
+.rte-content td {
+  border: 1px solid var(--icue-border);
+  padding: 10px 14px;
+  vertical-align: top;
+  min-width: 80px;
+}
+.rte-content th {
+  background: var(--icue-surface-2);
+  font-weight: 700;
+  text-align: left;
+}
+.rte-content .selectedCell {
+  background: rgba(200, 255, 0, 0.12);
+}
+
+@media (max-width: 600px) {
+  .rte-toolbar { gap: 1px; padding: 6px 8px; }
+  .rte-sep { margin: 0 3px; }
+  .rte-textcolor { width: 24px; height: 24px; font-size: 12px; }
+  .rte-swatch { width: 20px; height: 20px; }
+  .rte-content, .rte .ProseMirror { padding: 18px 16px; font-size: 18px; }
 }

@@ -125,6 +125,7 @@
   "categories": {
     "label": "카테고리",
     "all": "전체",
+    "more": "더보기",
     "general": "일반",
     "economics": "경제",
     "urban": "도시계획",

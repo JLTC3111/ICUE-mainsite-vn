@@ -7,8 +7,21 @@ import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import TextAlign from '@tiptap/extension-text-align'
 import Highlight from '@tiptap/extension-highlight'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import { Table, TableRow, TableCell, TableHeader } from '@tiptap/extension-table'
 import { LineHeight } from '../lib/tiptapLineHeight'
 import './RichTextEditor.css'
+
+const TEXT_COLORS = [
+  { name: 'Black', value: '#111316' },
+  { name: 'Red', value: '#dc2626' },
+  { name: 'Orange', value: '#ea580c' },
+  { name: 'Green', value: '#059669' },
+  { name: 'Blue', value: '#2563eb' },
+  { name: 'Purple', value: '#7c3aed' },
+  { name: 'Gray', value: '#6b7280' },
+]
 
 const HIGHLIGHT_COLORS = [
   { name: 'Yellow', value: '#fef08a' },
@@ -32,18 +45,25 @@ const extensions = (placeholder) => [
   LinkExt.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: 'noopener noreferrer' } }),
   Image.configure({ inline: false, HTMLAttributes: { loading: 'lazy', decoding: 'async' } }),
   TextAlign.configure({ types: ['heading', 'paragraph'] }),
+  TextStyle,
+  Color,
   Highlight.configure({ multicolor: true }),
   LineHeight,
+  Table.configure({ resizable: false }),
+  TableRow,
+  TableHeader,
+  TableCell,
   Placeholder.configure({ placeholder }),
 ]
 
-function ToolbarButton({ active, onClick, label, children }) {
+function ToolbarButton({ active, onClick, label, children, disabled }) {
   return (
     <button
       type="button"
       className={`rte-btn ${active ? 'is-active' : ''}`}
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
+      disabled={disabled}
       aria-label={label}
       title={label}
     >
@@ -93,6 +113,8 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
   }, [editor])
 
   const activeHighlight = editor?.getAttributes('highlight').color
+  const activeColor = editor?.getAttributes('textStyle').color
+  const inTable = editor?.isActive('table')
 
   if (!editor) return <div className="rte rte--loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
 
@@ -103,6 +125,33 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <ToolbarButton label="Italic" active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()}><i>i</i></ToolbarButton>
         <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>U</u></ToolbarButton>
         <ToolbarButton label="Link" active={editor.isActive('link')} onClick={setLink}>🔗</ToolbarButton>
+        <span className="rte-sep" />
+        <div className="rte-colors" role="group" aria-label="Text color">
+          {TEXT_COLORS.map((c) => (
+            <button
+              key={c.value}
+              type="button"
+              className={`rte-textcolor${activeColor === c.value ? ' is-active' : ''}`}
+              style={{ '--text-color': c.value }}
+              title={`Text ${c.name}`}
+              aria-label={`Text ${c.name}`}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => editor.chain().focus().setColor(c.value).run()}
+            >
+              A
+            </button>
+          ))}
+          <button
+            type="button"
+            className="rte-btn rte-btn--clear"
+            title="Reset text color"
+            aria-label="Reset text color"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => editor.chain().focus().unsetColor().run()}
+          >
+            ✕
+          </button>
+        </div>
         <span className="rte-sep" />
         <div className="rte-highlight" role="group" aria-label="Highlight">
           {HIGHLIGHT_COLORS.map((c) => (
@@ -156,6 +205,21 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
           </select>
         </label>
       </div>
+
+      <div className="rte-toolbar rte-toolbar--table" role="toolbar" aria-label="Table">
+        <ToolbarButton
+          label="Insert table"
+          onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+        >
+          ⊞
+        </ToolbarButton>
+        <ToolbarButton label="Add row" disabled={!inTable} onClick={() => editor.chain().focus().addRowAfter().run()}>+R</ToolbarButton>
+        <ToolbarButton label="Add column" disabled={!inTable} onClick={() => editor.chain().focus().addColumnAfter().run()}>+C</ToolbarButton>
+        <ToolbarButton label="Delete row" disabled={!inTable} onClick={() => editor.chain().focus().deleteRow().run()}>−R</ToolbarButton>
+        <ToolbarButton label="Delete column" disabled={!inTable} onClick={() => editor.chain().focus().deleteColumn().run()}>−C</ToolbarButton>
+        <ToolbarButton label="Delete table" disabled={!inTable} onClick={() => editor.chain().focus().deleteTable().run()}>⊟</ToolbarButton>
+      </div>
+
       <EditorContent editor={editor} />
     </div>
   )

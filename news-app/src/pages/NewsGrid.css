@@ -40,66 +40,7 @@
 .news-hero__social svg { width: 20px; height: 20px; display: block; }
 .news-hero__subtitle { margin: 0; font-size: clamp(15px, 2.2vw, 18px); color: #aab0b6; max-width: 620px; }
 
-/* Category filter bar -------------------------------------------------- */
-.news-cats {
-  position: sticky;
-  top: var(--icue-header-h);
-  z-index: 15;
-  margin: -40px 0 24px;
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  border-bottom: 1px solid var(--icue-border);
-}
-.news-cats__inner {
-  display: flex;
-  gap: 8px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
-}
-.news-cats__inner::-webkit-scrollbar { display: none; }
-
-.news-cat {
-  --cat-color: var(--icue-text-soft);
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
-  background: var(--icue-surface);
-  color: var(--icue-text-soft);
-  font-size: 13.5px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
-}
-/* Accent dot keyed to the category colour (hidden on the "All" pill). */
-.news-cat::before {
-  content: '';
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--cat-color);
-  flex: none;
-}
-.news-cat:first-child::before { display: none; }
-.news-cat:hover { border-color: var(--cat-color); color: var(--icue-text); }
-.news-cat:active { transform: scale(0.97); }
-.news-cat.is-active {
-  background: var(--icue-gradient-dark);
-  border-color: transparent;
-  color: #fff;
-}
-.news-cat.is-active::before { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25); }
-
+/* Category filter bar — see CategoryFilter.css -------------------------------- */
 /* Category tag (cards + featured) -------------------------------------- */
 .news-tag {
   --cat-color: var(--icue-text-soft);
@@ -174,8 +115,6 @@
   .news-featured__body { padding: 22px 24px 28px; }
 
   .news-hero { padding: 36px 0 30px; margin-bottom: 28px; }
-  .news-cats { margin-top: -28px; }
-  .news-cats__inner { padding-left: 16px; padding-right: 16px; }
   .news-hero__inner {
     flex-direction: column;
     align-items: flex-start;

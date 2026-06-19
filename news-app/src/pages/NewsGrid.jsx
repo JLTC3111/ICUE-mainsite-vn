@@ -2,9 +2,10 @@ import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ArticleCard from '../components/ArticleCard'
+import CategoryFilter from '../components/CategoryFilter'
 import { fetchPublishedArticles } from '../lib/articles'
 import { formatDate, plainExcerpt } from '../lib/helpers'
-import { CATEGORY_SLUGS, isCategory, categoryColor } from '../lib/categories'
+import { isCategory, categoryColor } from '../lib/categories'
 import './NewsGrid.css'
 
 function FeaturedCard({ article }) {
@@ -96,32 +97,7 @@ export default function NewsGrid() {
       </header>
 
       {state === 'ready' && (
-        <nav className="news-cats" aria-label={t('categories.label')}>
-          <div className="icue-container news-cats__inner" role="tablist">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCat === 'all'}
-              className={`news-cat ${activeCat === 'all' ? 'is-active' : ''}`}
-              onClick={() => setActiveCat('all')}
-            >
-              {t('categories.all')}
-            </button>
-            {CATEGORY_SLUGS.map((slug) => (
-              <button
-                key={slug}
-                type="button"
-                role="tab"
-                aria-selected={activeCat === slug}
-                className={`news-cat ${activeCat === slug ? 'is-active' : ''}`}
-                style={{ '--cat-color': categoryColor(slug) }}
-                onClick={() => setActiveCat(slug)}
-              >
-                {t(`categories.${slug}`)}
-              </button>
-            ))}
-          </div>
-        </nav>
+        <CategoryFilter value={activeCat} onChange={setActiveCat} />
       )}
 
       <div className="icue-container">
