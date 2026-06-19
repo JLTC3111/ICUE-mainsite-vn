@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -17,6 +17,18 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState('idle') // idle | loading | error
   const [message, setMessage] = useState('')
+
+  // Dismiss the login screen: go back if possible, else to the newsroom home.
+  const close = useCallback(() => {
+    if (window.history.length > 1) navigate(-1)
+    else navigate('/')
+  }, [navigate])
+
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && close()
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [close])
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -43,13 +55,21 @@ export default function Login() {
   }, [email, t])
 
   return (
-    <div className="login">
+    <div
+      className="login"
+      onClick={(e) => { if (e.target === e.currentTarget) close() }}
+    >
       <div className="login__bg" aria-hidden />
       <div className="login__lang">
         <LanguageSwitcher />
       </div>
 
       <div className="login__card">
+        <button type="button" className="login__close" onClick={close} aria-label={t('common.close')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
         <div className="login__brand">
           <span className="login__logo">ICUE</span>
           <span className="login__pill">News</span>

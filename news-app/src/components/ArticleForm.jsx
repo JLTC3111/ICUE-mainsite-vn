@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
+import { CATEGORY_SLUGS, DEFAULT_CATEGORY } from '../lib/categories'
 import RichTextEditor from './RichTextEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
@@ -29,6 +30,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   )
   const [date, setDate] = useState(initial?.article_date || todayStr())
   const [time, setTime] = useState(initial?.article_time?.slice(0, 5) || nowTime())
+  const [category, setCategory] = useState(initial?.category || DEFAULT_CATEGORY)
   const [contentHtml, setContentHtml] = useState(initial?.content_html || '')
   const [contentJson, setContentJson] = useState(initial?.content_json || null)
   const [items, setItems] = useState(initial?.items || [])
@@ -90,6 +92,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             contentJson,
             coverImageUrl: coverUrl || null,
             language: i18n.resolvedLanguage || 'vi',
+            category,
           },
           items,
           coverFile: coverFileRef.current,
@@ -100,7 +103,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, contentHtml, contentJson, items, coverUrl, onSubmit, mode, t, i18n],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, items, coverUrl, onSubmit, mode, t, i18n],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -145,6 +148,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           <label className="field article-form__meta-field">
             <span>{t('editor.time')}</span>
             <input className="input" type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+          </label>
+          <label className="field article-form__meta-field">
+            <span>{t('editor.category')}</span>
+            <select className="input" value={category} onChange={(e) => setCategory(e.target.value)}>
+              {CATEGORY_SLUGS.map((slug) => (
+                <option key={slug} value={slug}>{t(`categories.${slug}`)}</option>
+              ))}
+            </select>
           </label>
           <label className="field article-form__meta-field article-form__meta-field--author">
             <span>{t('editor.author')}</span>

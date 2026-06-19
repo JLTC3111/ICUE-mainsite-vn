@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next'
 import ArticleCard from '../components/ArticleCard'
 import { fetchPublishedArticles } from '../lib/articles'
 import { formatDate, plainExcerpt } from '../lib/helpers'
+import { CATEGORY_SLUGS, isCategory, categoryColor } from '../lib/categories'
 import './NewsGrid.css'
 
 function FeaturedCard({ article }) {
   const { i18n, t } = useTranslation()
   const author = article.author || {}
   const byline = article.author_name || author.display_name || author.full_name || 'ICUE'
+  const cat = isCategory(article.category) && article.category !== 'general' ? article.category : null
   return (
     <Link to={`/article/${article.slug}`} className="news-featured">
       <div className="news-featured__media">
@@ -20,9 +22,16 @@ function FeaturedCard({ article }) {
         )}
       </div>
       <div className="news-featured__body">
-        <time className="news-featured__date">
-          {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
-        </time>
+        <div className="news-featured__topline">
+          {cat && (
+            <span className="news-tag" style={{ '--cat-color': categoryColor(cat) }}>
+              {t(`categories.${cat}`)}
+            </span>
+          )}
+          <time className="news-featured__date">
+            {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
+          </time>
+        </div>
         <h2 className="news-featured__title">{article.title}</h2>
         <p className="news-featured__excerpt">{article.subtitle || plainExcerpt(article.content_html, 220)}</p>
         <span className="news-featured__meta">
@@ -37,17 +46,29 @@ export default function NewsGrid() {
   const { t } = useTranslation()
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
+  const [activeCat, setActiveCat] = useState('all')
 
   useEffect(() => {
     let active = true
-    fetchPublishedArticles({ limit: 30 })
+    fetchPublishedArticles({ limit: 60 })
       .then((data) => { if (active) { setArticles(data); setState('ready') } })
       .catch(() => active && setState('error'))
     return () => { active = false }
   }, [])
 
-  const featured = articles[0]
-  const restList = useMemo(() => articles.slice(1), [articles])
+  // Only show filter pills for categories that actually have published articles.
+  const availableCats = useMemo(() => {
+    const present = new Set(articles.map((a) => (isCategory(a.category) ? a.category : 'general')))
+    return CATEGORY_SLUGS.filter((slug) => present.has(slug))
+  }, [articles])
+
+  const filtered = useMemo(() => {
+    if (activeCat === 'all') return articles
+    return articles.filter((a) => (isCategory(a.category) ? a.category : 'general') === activeCat)
+  }, [articles, activeCat])
+
+  const featured = filtered[0]
+  const restList = useMemo(() => filtered.slice(1), [filtered])
 
   return (
     <div className="news-page">
@@ -79,6 +100,35 @@ export default function NewsGrid() {
         </div>
       </header>
 
+      {state === 'ready' && availableCats.length > 0 && (
+        <nav className="news-cats" aria-label={t('categories.label')}>
+          <div className="icue-container news-cats__inner" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCat === 'all'}
+              className={`news-cat ${activeCat === 'all' ? 'is-active' : ''}`}
+              onClick={() => setActiveCat('all')}
+            >
+              {t('categories.all')}
+            </button>
+            {availableCats.map((slug) => (
+              <button
+                key={slug}
+                type="button"
+                role="tab"
+                aria-selected={activeCat === slug}
+                className={`news-cat ${activeCat === slug ? 'is-active' : ''}`}
+                style={{ '--cat-color': categoryColor(slug) }}
+                onClick={() => setActiveCat(slug)}
+              >
+                {t(`categories.${slug}`)}
+              </button>
+            ))}
+          </div>
+        </nav>
+      )}
+
       <div className="icue-container">
         {state === 'loading' && (
           <div className="news-grid">
@@ -88,7 +138,7 @@ export default function NewsGrid() {
           </div>
         )}
 
-        {(state === 'ready' && articles.length === 0) && <p className="news-empty">{t('news.empty')}</p>}
+        {(state === 'ready' && filtered.length === 0) && <p className="news-empty">{t('news.empty')}</p>}
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
         {state === 'ready' && featured && <FeaturedCard article={featured} />}

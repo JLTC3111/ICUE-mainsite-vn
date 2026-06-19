@@ -73,6 +73,10 @@ create index if not exists articles_author_idx on public.articles (author_id);
 -- Migration for databases created before author_name existed.
 alter table public.articles add column if not exists author_name text;
 
+-- Editorial category (slug). See news-app/src/lib/categories.js for the set.
+alter table public.articles add column if not exists category text not null default 'general';
+create index if not exists articles_category_idx on public.articles (category);
+
 -- ----------------------------------------------------------------------------
 -- article_media: up to 10 images + 2 videos enforced at app + trigger level
 -- ----------------------------------------------------------------------------

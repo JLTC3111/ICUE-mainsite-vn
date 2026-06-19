@@ -69,6 +69,7 @@
     "storyPlaceholder": "Tell your story…",
     "date": "Date",
     "time": "Time",
+    "category": "Category",
     "author": "Author",
     "authorPlaceholder": "Display author name",
     "loggedInAs": "Logged in as",
@@ -121,9 +122,22 @@
     "anon": "Anonymous",
     "error": "Something went wrong. Please try again."
   },
+  "categories": {
+    "label": "Categories",
+    "all": "All",
+    "general": "General",
+    "economics": "Economics",
+    "urban": "Urban Development",
+    "projects": "New Projects",
+    "legal": "Legal",
+    "social": "Social",
+    "research": "Research",
+    "events": "Events"
+  },
   "common": {
     "cancel": "Cancel",
     "back": "Back",
+    "close": "Close",
     "edit": "Edit",
     "delete": "Delete",
     "confirmDelete": "Are you sure you want to delete this article?",

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { formatDate, plainExcerpt } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
+import { isCategory, categoryColor } from '../lib/categories'
 import './ArticleCard.css'
 
 function ArticleCard({ article }) {
@@ -10,6 +11,7 @@ function ArticleCard({ article }) {
   const author = article.author || {}
   const byline = article.author_name || author.display_name || author.full_name || 'ICUE'
   const excerpt = article.subtitle || plainExcerpt(article.content_html, 140)
+  const cat = isCategory(article.category) && article.category !== 'general' ? article.category : null
 
   return (
     <article className="news-card">
@@ -28,9 +30,16 @@ function ArticleCard({ article }) {
       </Link>
 
       <div className="news-card__body">
-        <time className="news-card__date" dateTime={article.published_at || article.article_date || ''}>
-          {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
-        </time>
+        <div className="news-card__topline">
+          {cat && (
+            <span className="news-tag" style={{ '--cat-color': categoryColor(cat) }}>
+              {t(`categories.${cat}`)}
+            </span>
+          )}
+          <time className="news-card__date" dateTime={article.published_at || article.article_date || ''}>
+            {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
+          </time>
+        </div>
         <h3 className="news-card__title">
           <Link to={`/article/${article.slug}`}>{article.title}</Link>
         </h3>

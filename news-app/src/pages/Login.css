@@ -8,10 +8,12 @@
   overflow: hidden;
 }
 
-/* Soft animated accent glow — GPU-only transforms for cheap rendering. */
+/* Soft animated accent glow — GPU-only transforms for cheap rendering.
+   pointer-events:none so clicks on empty space reach .login (close target). */
 .login__bg {
   position: absolute;
   inset: -30%;
+  pointer-events: none;
   background:
     radial-gradient(40% 40% at 20% 20%, rgba(200, 255, 0, 0.18), transparent 70%),
     radial-gradient(45% 45% at 85% 75%, rgba(120, 200, 255, 0.12), transparent 70%);
@@ -43,6 +45,24 @@
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.login__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--icue-border);
+  border-radius: 50%;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+.login__close:hover { background: var(--icue-surface-2); color: var(--icue-text); border-color: #d9dad5; }
+.login__close:active { transform: scale(0.94); }
+.login__close svg { width: 18px; height: 18px; }
 
 .login__brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 22px; }
 .login__logo { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--icue-black); }

@@ -3,7 +3,7 @@ import { fileExt, readMinutes, uniqueSlug } from './helpers'
 
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, article_date, article_time, read_minutes, published_at,
+  status, language, category, article_date, article_time, read_minutes, published_at,
   created_at, updated_at, author_id, author_name,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
@@ -119,6 +119,7 @@ export async function createArticle({ form, items, coverFile, userId, status }) 
     author_name: form.author?.trim() || null,
     status,
     language: form.language || 'vi',
+    category: form.category || 'general',
     article_date: form.date || null,
     article_time: form.time || null,
     read_minutes: readMinutes(form.contentHtml),
@@ -148,6 +149,7 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     language: form.language || 'vi',
+    category: form.category || 'general',
     article_date: form.date || null,
     article_time: form.time || null,
     read_minutes: readMinutes(form.contentHtml),

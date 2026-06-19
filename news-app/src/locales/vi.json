@@ -69,6 +69,7 @@
     "storyPlaceholder": "Kể câu chuyện của bạn…",
     "date": "Ngày",
     "time": "Giờ",
+    "category": "Chuyên mục",
     "author": "Tác giả",
     "authorPlaceholder": "Tên tác giả hiển thị",
     "loggedInAs": "Đăng nhập bởi",
@@ -121,9 +122,22 @@
     "anon": "Ẩn danh",
     "error": "Đã có lỗi xảy ra. Vui lòng thử lại."
   },
+  "categories": {
+    "label": "Chuyên mục",
+    "all": "Tất Cả",
+    "general": "Tổng Hợp",
+    "economics": "Kinh Tế",
+    "urban": "Đô Thị",
+    "projects": "Dự Án Mới",
+    "legal": "Pháp Lý",
+    "social": "Xã Hội",
+    "research": "Nghiên Cứu",
+    "events": "Sự Kiện"
+  },
   "common": {
     "cancel": "Hủy",
     "back": "Quay lại",
+    "close": "Đóng",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
     "confirmDelete": "Bạn có chắc muốn xóa bài viết này?",
