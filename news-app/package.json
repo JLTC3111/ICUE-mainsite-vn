@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
+    "@tiptap/extension-highlight": "^3.27.0",
     "@tiptap/extension-image": "^3.27.0",
     "@tiptap/extension-link": "^3.27.0",
     "@tiptap/extension-placeholder": "^3.27.0",

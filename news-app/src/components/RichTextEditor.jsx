@@ -6,16 +6,34 @@ import LinkExt from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import TextAlign from '@tiptap/extension-text-align'
+import Highlight from '@tiptap/extension-highlight'
+import { LineHeight } from '../lib/tiptapLineHeight'
 import './RichTextEditor.css'
 
+const HIGHLIGHT_COLORS = [
+  { name: 'Yellow', value: '#fef08a' },
+  { name: 'Green', value: '#bbf7d0' },
+  { name: 'Blue', value: '#bfdbfe' },
+  { name: 'Pink', value: '#fbcfe8' },
+  { name: 'Orange', value: '#fed7aa' },
+]
+
+const LINE_HEIGHTS = [
+  { label: '1.0', value: '1' },
+  { label: '1.25', value: '1.25' },
+  { label: '1.5', value: '1.5' },
+  { label: '1.75', value: '1.75' },
+  { label: '2.0', value: '2' },
+]
+
 const extensions = (placeholder) => [
-  // StarterKit v3 already bundles Link + Underline, so disable them here to
-  // avoid duplicate-extension schema corruption, then add our configured ones.
   StarterKit.configure({ heading: { levels: [2, 3] }, link: false, underline: false }),
   Underline,
   LinkExt.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: 'noopener noreferrer' } }),
   Image.configure({ inline: false, HTMLAttributes: { loading: 'lazy', decoding: 'async' } }),
   TextAlign.configure({ types: ['heading', 'paragraph'] }),
+  Highlight.configure({ multicolor: true }),
+  LineHeight,
   Placeholder.configure({ placeholder }),
 ]
 
@@ -35,10 +53,6 @@ function ToolbarButton({ active, onClick, label, children }) {
 }
 
 function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' }) {
-  // Tracks the HTML the editor itself last emitted, so the sync effect below
-  // can tell an *external* value change (article load) apart from our own
-  // keystroke-driven updates — preventing a setContent loop that resets the
-  // caret on every character typed.
   const lastEmitted = useRef(value || '')
 
   const editor = useEditor({
@@ -55,8 +69,6 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     },
   })
 
-  // Only push value into the editor when it changed externally (e.g. an article
-  // finished loading on the edit page), never on our own emitted updates.
   useEffect(() => {
     if (!editor || value == null) return
     if (value === lastEmitted.current) return
@@ -64,7 +76,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
       lastEmitted.current = value
       editor.commands.setContent(value, false)
     } catch {
-      /* editor not ready for serialization yet; ignore */
+      /* editor not ready */
     }
   }, [editor, value])
 
@@ -80,6 +92,8 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
 
+  const activeHighlight = editor?.getAttributes('highlight').color
+
   if (!editor) return <div className="rte rte--loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
 
   return (
@@ -90,6 +104,31 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>U</u></ToolbarButton>
         <ToolbarButton label="Link" active={editor.isActive('link')} onClick={setLink}>🔗</ToolbarButton>
         <span className="rte-sep" />
+        <div className="rte-highlight" role="group" aria-label="Highlight">
+          {HIGHLIGHT_COLORS.map((c) => (
+            <button
+              key={c.value}
+              type="button"
+              className={`rte-swatch${activeHighlight === c.value ? ' is-active' : ''}`}
+              style={{ '--swatch': c.value }}
+              title={`Highlight ${c.name}`}
+              aria-label={`Highlight ${c.name}`}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => editor.chain().focus().toggleHighlight({ color: c.value }).run()}
+            />
+          ))}
+          <button
+            type="button"
+            className="rte-btn rte-btn--clear"
+            title="Remove highlight"
+            aria-label="Remove highlight"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => editor.chain().focus().unsetHighlight().run()}
+          >
+            ✕
+          </button>
+        </div>
+        <span className="rte-sep" />
         <ToolbarButton label="Heading" active={editor.isActive('heading', { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>T</ToolbarButton>
         <ToolbarButton label="Subheading" active={editor.isActive('heading', { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}><small>T</small></ToolbarButton>
         <ToolbarButton label="Quote" active={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>❝</ToolbarButton>
@@ -99,6 +138,23 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <span className="rte-sep" />
         <ToolbarButton label="Align left" active={editor.isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()}>⯇</ToolbarButton>
         <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>≡</ToolbarButton>
+        <span className="rte-sep" />
+        <label className="rte-lineheight" title="Line spacing">
+          <span className="visually-hidden">Line spacing</span>
+          <select
+            value={editor.getAttributes('paragraph').lineHeight || editor.getAttributes('heading').lineHeight || ''}
+            onChange={(e) => {
+              const val = e.target.value
+              if (val) editor.chain().focus().setLineHeight(val).run()
+              else editor.chain().focus().unsetLineHeight().run()
+            }}
+          >
+            <option value="">↕</option>
+            {LINE_HEIGHTS.map((lh) => (
+              <option key={lh.value} value={lh.value}>{lh.label}</option>
+            ))}
+          </select>
+        </label>
       </div>
       <EditorContent editor={editor} />
     </div>

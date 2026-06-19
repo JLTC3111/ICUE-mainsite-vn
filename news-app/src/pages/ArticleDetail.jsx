@@ -8,6 +8,8 @@ import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
 import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
+import ArticleTranslator from '../components/ArticleTranslator'
+import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
 export default function ArticleDetail() {
@@ -18,11 +20,17 @@ export default function ArticleDetail() {
 
   const [article, setArticle] = useState(null)
   const [state, setState] = useState('loading')
+  const [translation, setTranslation] = useState(null)
+  const [translatedLang, setTranslatedLang] = useState(null)
 
   useEffect(() => {
     let active = true
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState('loading')
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslation(null)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslatedLang(null)
     fetchArticleBySlug(slug)
       .then((data) => {
         if (!active) return
@@ -42,6 +50,11 @@ export default function ArticleDetail() {
       videos: media.filter((m) => m.kind === 'video'),
     }
   }, [article])
+
+  const displayContent = useMemo(() => {
+    const raw = translation ? translation.content_html : article?.content_html
+    return embedVideosInHtml(raw || '')
+  }, [translation, article?.content_html])
 
   if (state === 'loading') {
     return <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
@@ -65,12 +78,24 @@ export default function ArticleDetail() {
     navigate('/dashboard')
   }
 
+  const displayTitle = translation ? translation.title : article.title
+  const displaySubtitle = translation ? translation.subtitle : article.subtitle
+
+  const applyTranslation = (result, code) => {
+    setTranslation(result)
+    setTranslatedLang(code)
+  }
+  const resetTranslation = () => {
+    setTranslation(null)
+    setTranslatedLang(null)
+  }
+
   return (
     <article className="article-detail">
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
-        <h1 className="article-detail__title">{article.title}</h1>
-        {article.subtitle && <p className="article-detail__subtitle">{article.subtitle}</p>}
+        <h1 className="article-detail__title">{displayTitle}</h1>
+        {displaySubtitle && <p className="article-detail__subtitle">{displaySubtitle}</p>}
 
         <div className="article-detail__byline">
           <img src={author.avatar_url || DEFAULT_AVATAR} alt="" className="article-detail__avatar" />
@@ -92,6 +117,13 @@ export default function ArticleDetail() {
         </div>
       </div>
 
+      <ArticleTranslator
+        article={article}
+        activeLang={translatedLang}
+        onApply={applyTranslation}
+        onReset={resetTranslation}
+      />
+
       {article.cover_image_url && (
         <figure className="article-detail__cover">
           <img src={article.cover_image_url} alt="" decoding="async" />
@@ -100,7 +132,7 @@ export default function ArticleDetail() {
 
       <div
         className="article-detail__content icue-readw"
-        dangerouslySetInnerHTML={{ __html: article.content_html }}
+        dangerouslySetInnerHTML={{ __html: displayContent }}
       />
 
       <MediaGallery images={images} videos={videos} />

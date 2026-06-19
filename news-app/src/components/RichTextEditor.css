@@ -35,6 +35,44 @@
 .rte-btn.is-active { background: var(--icue-accent); color: var(--icue-accent-ink); }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
 
+.rte-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.rte-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: var(--swatch);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+.rte-swatch:hover { transform: scale(1.08); }
+.rte-swatch.is-active {
+  box-shadow: 0 0 0 2px var(--icue-accent);
+  border-color: var(--icue-accent-ink);
+}
+.rte-btn--clear { font-size: 12px; min-width: 28px; }
+
+.rte-lineheight select {
+  height: 32px;
+  min-width: 52px;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e7e8e4;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 8px;
+  cursor: pointer;
+}
+.rte-lineheight select:hover { background: rgba(255, 255, 255, 0.16); }
+.rte-lineheight select option { color: #111316; background: #fff; }
+
 .rte-content,
 .rte .ProseMirror {
   min-height: 320px;
@@ -78,6 +116,12 @@
 .rte-content ul, .rte-content ol { padding-left: 1.4em; margin: 0 0 1em; }
 .rte-content a { color: #1a73e8; text-decoration: underline; }
 .rte-content img { border-radius: 10px; margin: 1.4em auto; box-shadow: var(--icue-shadow-sm); }
+.rte-content mark {
+  border-radius: 2px;
+  padding: 0 0.12em;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit;
+}
 .rte-content p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;

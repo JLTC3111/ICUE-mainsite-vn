@@ -56,12 +56,7 @@ export default function NewsGrid() {
     return () => { active = false }
   }, [])
 
-  // Only show filter pills for categories that actually have published articles.
-  const availableCats = useMemo(() => {
-    const present = new Set(articles.map((a) => (isCategory(a.category) ? a.category : 'general')))
-    return CATEGORY_SLUGS.filter((slug) => present.has(slug))
-  }, [articles])
-
+  // Show every category in the filter bar — not just ones with articles.
   const filtered = useMemo(() => {
     if (activeCat === 'all') return articles
     return articles.filter((a) => (isCategory(a.category) ? a.category : 'general') === activeCat)
@@ -100,7 +95,7 @@ export default function NewsGrid() {
         </div>
       </header>
 
-      {state === 'ready' && availableCats.length > 0 && (
+      {state === 'ready' && (
         <nav className="news-cats" aria-label={t('categories.label')}>
           <div className="icue-container news-cats__inner" role="tablist">
             <button
@@ -112,7 +107,7 @@ export default function NewsGrid() {
             >
               {t('categories.all')}
             </button>
-            {availableCats.map((slug) => (
+            {CATEGORY_SLUGS.map((slug) => (
               <button
                 key={slug}
                 type="button"

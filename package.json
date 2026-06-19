@@ -25,6 +25,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server.js",
-    "server-dev": "nodemon server.js"
+    "server-dev": "nodemon server.js",
+    "build:newsroom": "npm run build --prefix news-app",
+    "dev:newsroom": "npm run dev --prefix news-app"
   }
 }

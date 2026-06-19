@@ -10,6 +10,8 @@ export const CATEGORIES = [
   { slug: 'social', color: '#ec4899' },
   { slug: 'research', color: '#f59e0b' },
   { slug: 'events', color: '#ef4444' },
+  { slug: 'traffic', color: '#f97316' },
+  { slug: 'health', color: '#14b8a6' },
 ]
 
 export const CATEGORY_SLUGS = CATEGORIES.map((c) => c.slug)

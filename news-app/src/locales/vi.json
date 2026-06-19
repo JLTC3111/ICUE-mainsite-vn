@@ -132,7 +132,18 @@
     "legal": "Pháp Lý",
     "social": "Xã Hội",
     "research": "Nghiên Cứu",
-    "events": "Sự Kiện"
+    "events": "Sự Kiện",
+    "traffic": "Giao Thông",
+    "health": "Sức Khỏe"
+  },
+  "translate": {
+    "button": "Dịch",
+    "heading": "Đọc bằng ngôn ngữ của bạn",
+    "translating": "Đang dịch…",
+    "original": "Xem bản gốc",
+    "translated": "Đã dịch sang {{lang}}",
+    "error": "Dịch không thành công. Vui lòng thử lại.",
+    "note": "Dịch tự động"
   },
   "common": {
     "cancel": "Hủy",

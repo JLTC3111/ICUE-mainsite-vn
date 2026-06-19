@@ -34,6 +34,12 @@
 .article-form__meta { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
 .article-form__meta-field { flex: 0 0 auto; }
 .article-form__meta-field--author { flex: 1 1 220px; min-width: 200px; }
+.article-form__meta-field--category { flex: 1 1 100%; }
+.article-form__meta-field--category .input--category {
+  font-weight: 600;
+  border-color: #cdd1c8;
+  background: var(--icue-surface-2);
+}
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 .article-form__cover-block { margin-bottom: 26px; }

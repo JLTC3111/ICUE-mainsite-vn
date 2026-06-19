@@ -20,17 +20,18 @@ const MIME = {
 
 // In dev, Vite's SPA fallback serves the main index.html for any extensionless
 // route — which hijacks the React news app built into /newsroom. This plugin
-// serves the prebuilt newsroom app for /newsroom/* requests: real asset files
-// are streamed with the right mime type, and unknown (deep SPA) routes fall
-// back to the newsroom index.html. Production (repo root served statically)
-// resolves /newsroom/index.html + its assets natively, with _redirects handling
-// the SPA deep-link fallback.
+// serves the prebuilt newsroom app for /newsroom/* requests.
+//
+// IMPORTANT: Run `npm run build:newsroom` after news-app changes when using the
+// root `npm run dev`. For live HMR while editing the newsroom, use
+// `npm run dev:newsroom` (http://localhost:5173/newsroom/) instead.
 function newsroomDevFallback() {
   const root = process.cwd();
   const newsroomDir = path.resolve(root, 'newsroom');
   return {
     name: 'newsroom-dev-fallback',
     configureServer(server) {
+      // Register first so /newsroom wins over any stale public/ copies.
       server.middlewares.use((req, res, next) => {
         const urlPath = (req.url || '').split('?')[0];
         if (urlPath !== '/newsroom' && !urlPath.startsWith('/newsroom/')) {

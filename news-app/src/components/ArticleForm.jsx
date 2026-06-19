@@ -141,6 +141,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         {error && <p className="article-form__error">{error}</p>}
 
         <div className="article-form__meta">
+          <label className="field article-form__meta-field article-form__meta-field--category">
+            <span>{t('editor.category')}</span>
+            <select className="input input--category" value={category} onChange={(e) => setCategory(e.target.value)}>
+              {CATEGORY_SLUGS.map((slug) => (
+                <option key={slug} value={slug}>{t(`categories.${slug}`)}</option>
+              ))}
+            </select>
+          </label>
           <label className="field article-form__meta-field">
             <span>{t('editor.date')}</span>
             <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
@@ -148,14 +156,6 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           <label className="field article-form__meta-field">
             <span>{t('editor.time')}</span>
             <input className="input" type="time" value={time} onChange={(e) => setTime(e.target.value)} />
-          </label>
-          <label className="field article-form__meta-field">
-            <span>{t('editor.category')}</span>
-            <select className="input" value={category} onChange={(e) => setCategory(e.target.value)}>
-              {CATEGORY_SLUGS.map((slug) => (
-                <option key={slug} value={slug}>{t(`categories.${slug}`)}</option>
-              ))}
-            </select>
           </label>
           <label className="field article-form__meta-field article-form__meta-field--author">
             <span>{t('editor.author')}</span>

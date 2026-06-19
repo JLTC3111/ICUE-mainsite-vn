@@ -132,7 +132,18 @@
     "legal": "Legal",
     "social": "Social",
     "research": "Research",
-    "events": "Events"
+    "events": "Events",
+    "traffic": "Traffic",
+    "health": "Health"
+  },
+  "translate": {
+    "button": "Translate",
+    "heading": "Read in your language",
+    "translating": "Translating…",
+    "original": "Show original",
+    "translated": "Translated to {{lang}}",
+    "error": "Translation failed. Please try again.",
+    "note": "Machine translation"
   },
   "common": {
     "cancel": "Cancel",
