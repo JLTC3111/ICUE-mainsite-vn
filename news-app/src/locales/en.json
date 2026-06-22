@@ -135,7 +135,11 @@
     "research": "Research",
     "events": "Events",
     "traffic": "Traffic",
-    "health": "Health"
+    "health": "Health",
+    "technology": "Technology",
+    "sport": "Sport",
+    "travel": "Travel",
+    "entertainment": "Entertainment"
   },
   "translate": {
     "button": "Translate",
@@ -145,6 +149,20 @@
     "translated": "Translated to {{lang}}",
     "error": "Translation failed. Please try again.",
     "note": "Machine translation"
+  },
+  "search": {
+    "label": "Search articles",
+    "placeholder": "Search keywords…",
+    "submit": "Search",
+    "noResults": "No articles match your search.",
+    "clear": "Clear",
+    "open": "Open search",
+    "showing": "Showing results for “{{query}}”"
+  },
+  "market": {
+    "label": "Market indices",
+    "loading": "Loading markets…",
+    "unavailable": "Market data temporarily unavailable"
   },
   "common": {
     "cancel": "Cancel",

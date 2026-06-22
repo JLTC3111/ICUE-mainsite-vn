@@ -1,0 +1,113 @@
+/* Hero search — full-width, always visible on the news landing page */
+.article-search--hero {
+  width: 100%;
+  max-width: 760px;
+  margin-top: 28px;
+}
+
+.article-search__hero-label {
+  display: block;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.article-search__hero-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 6px 6px 6px 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+.article-search__hero-icon {
+  display: inline-flex;
+  color: var(--icue-text-soft);
+  flex: none;
+}
+
+.article-search__hero-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.article-search__hero-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 12px 10px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--icue-text);
+}
+
+.article-search__hero-input:focus { outline: none; }
+.article-search__hero-input::placeholder { color: var(--icue-text-faint); }
+
+.article-search__hero-clear {
+  flex: none;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--icue-text-soft);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.article-search__hero-clear:hover { color: var(--icue-text); }
+
+.article-search__hero-submit {
+  flex: none;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--icue-accent-ink);
+  background: var(--icue-gradient-accent);
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.article-search__hero-submit:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.article-search__hero-hint {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 640px) {
+  .article-search--hero { margin-top: 22px; }
+
+  .article-search__hero-row {
+    flex-wrap: wrap;
+    border-radius: 16px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .article-search__hero-input {
+    width: 100%;
+    padding: 10px 4px;
+  }
+
+  .article-search__hero-submit {
+    width: 100%;
+    text-align: center;
+  }
+}

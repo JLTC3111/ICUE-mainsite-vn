@@ -135,7 +135,11 @@
     "research": "연구",
     "events": "행사",
     "traffic": "교통",
-    "health": "건강"
+    "health": "건강",
+    "technology": "기술",
+    "sport": "스포츠",
+    "travel": "여행",
+    "entertainment": "엔터테인먼트"
   },
   "translate": {
     "button": "번역",
@@ -145,6 +149,20 @@
     "translated": "{{lang}}(으)로 번역됨",
     "error": "번역에 실패했습니다. 다시 시도해 주세요.",
     "note": "기계 번역"
+  },
+  "search": {
+    "label": "기사 검색",
+    "placeholder": "키워드를 입력하세요…",
+    "submit": "검색",
+    "noResults": "검색 결과가 없습니다.",
+    "clear": "지우기",
+    "open": "검색 열기",
+    "showing": "“{{query}}” 검색 결과"
+  },
+  "market": {
+    "label": "시장 지수",
+    "loading": "시장 데이터 로딩 중…",
+    "unavailable": "시장 데이터를 일시적으로 불러올 수 없습니다"
   },
   "common": {
     "cancel": "취소",

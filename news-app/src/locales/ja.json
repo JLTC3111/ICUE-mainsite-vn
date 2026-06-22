@@ -135,7 +135,11 @@
     "research": "研究",
     "events": "イベント",
     "traffic": "交通",
-    "health": "健康"
+    "health": "健康",
+    "technology": "テクノロジー",
+    "sport": "スポーツ",
+    "travel": "旅行",
+    "entertainment": "エンタメ"
   },
   "translate": {
     "button": "翻訳",
@@ -145,6 +149,20 @@
     "translated": "{{lang}} に翻訳しました",
     "error": "翻訳に失敗しました。もう一度お試しください。",
     "note": "機械翻訳"
+  },
+  "search": {
+    "label": "記事を検索",
+    "placeholder": "キーワードを入力…",
+    "submit": "検索",
+    "noResults": "該当する記事がありません。",
+    "clear": "クリア",
+    "open": "検索を開く",
+    "showing": "「{{query}}」の検索結果"
+  },
+  "market": {
+    "label": "市場指数",
+    "loading": "市場データを読み込み中…",
+    "unavailable": "市場データを一時的に取得できません"
   },
   "common": {
     "cancel": "キャンセル",

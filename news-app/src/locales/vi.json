@@ -135,7 +135,11 @@
     "research": "Nghiên Cứu",
     "events": "Sự Kiện",
     "traffic": "Giao Thông",
-    "health": "Sức Khỏe"
+    "health": "Sức Khỏe",
+    "technology": "Công Nghệ",
+    "sport": "Thể Thao",
+    "travel": "Du Lịch",
+    "entertainment": "Giải Trí"
   },
   "translate": {
     "button": "Dịch",
@@ -145,6 +149,20 @@
     "translated": "Đã dịch sang {{lang}}",
     "error": "Dịch không thành công. Vui lòng thử lại.",
     "note": "Dịch tự động"
+  },
+  "search": {
+    "label": "Tìm kiếm bài viết",
+    "placeholder": "Nhập từ khóa…",
+    "submit": "Tìm",
+    "noResults": "Không có bài viết phù hợp.",
+    "clear": "Xóa",
+    "open": "Mở tìm kiếm",
+    "showing": "Kết quả cho “{{query}}”"
+  },
+  "market": {
+    "label": "Chỉ số thị trường",
+    "loading": "Đang tải thị trường…",
+    "unavailable": "Dữ liệu thị trường tạm thời không khả dụng"
   },
   "common": {
     "cancel": "Hủy",

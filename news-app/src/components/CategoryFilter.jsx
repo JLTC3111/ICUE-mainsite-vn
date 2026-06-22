@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CATEGORY_SLUGS, categoryColor } from '../lib/categories'
+import { CATEGORY_SLUGS } from '../lib/categories'
 import './CategoryFilter.css'
 
-// Compact category filter: quick chips for common topics + a "More" menu for the rest.
-// On small screens it collapses to a single styled dropdown.
-const PRIMARY_SLUGS = ['economics', 'urban', 'projects', 'social', 'health']
+// Desktop: BBC/NYT-style horizontal tabs. Mobile: compact native select (easier with 14+ topics).
+const PRIMARY_SLUGS = [
+  'economics', 'urban', 'technology', 'projects', 'social', 'health', 'sport',
+]
 const OVERFLOW_SLUGS = CATEGORY_SLUGS.filter((s) => !PRIMARY_SLUGS.includes(s))
 
 export default function CategoryFilter({ value, onChange }) {
   const { t } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const rootRef = useRef(null)
-
   const overflowActive = OVERFLOW_SLUGS.includes(value)
 
   useEffect(() => {
@@ -35,70 +35,71 @@ export default function CategoryFilter({ value, onChange }) {
   }
 
   return (
-    <nav className="cat-filter" aria-label={t('categories.label')} ref={rootRef}>
-      <div className="icue-container cat-filter__inner">
-        {/* Desktop / tablet: All + primary chips + More menu */}
-        <div className="cat-filter__chips" role="tablist">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={value === 'all'}
-            className={`cat-filter__chip${value === 'all' ? ' is-active' : ''}`}
-            onClick={() => pick('all')}
-          >
-            {t('categories.all')}
-          </button>
-          {PRIMARY_SLUGS.map((slug) => (
-            <button
-              key={slug}
-              type="button"
-              role="tab"
-              aria-selected={value === slug}
-              className={`cat-filter__chip${value === slug ? ' is-active' : ''}`}
-              style={{ '--cat-color': categoryColor(slug) }}
-              onClick={() => pick(slug)}
-            >
-              {t(`categories.${slug}`)}
-            </button>
-          ))}
-          <div className="cat-filter__more-wrap">
-            <button
-              type="button"
-              className={`cat-filter__chip cat-filter__more${overflowActive ? ' is-active' : ''}${menuOpen ? ' is-open' : ''}`}
-              aria-haspopup="listbox"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              {overflowActive ? t(`categories.${value}`) : t('categories.more')}
-              <span className="cat-filter__chev" aria-hidden>▾</span>
-            </button>
-            {menuOpen && (
-              <ul className="cat-filter__menu" role="listbox">
-                {OVERFLOW_SLUGS.map((slug) => (
-                  <li key={slug}>
-                    <button
-                      type="button"
-                      role="option"
-                      aria-selected={value === slug}
-                      className={`cat-filter__menu-item${value === slug ? ' is-active' : ''}`}
-                      style={{ '--cat-color': categoryColor(slug) }}
-                      onClick={() => pick(slug)}
-                    >
-                      <span className="cat-filter__dot" aria-hidden />
-                      {t(`categories.${slug}`)}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+    <nav className="section-nav" aria-label={t('categories.label')} ref={rootRef}>
+      <div className="icue-container section-nav__inner">
+        {/* Desktop / tablet */}
+        <div className="section-nav__desktop">
+          <div className="section-nav__scroll">
+            <div className="section-nav__list" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={value === 'all'}
+                className={`section-nav__item${value === 'all' ? ' is-active' : ''}`}
+                onClick={() => pick('all')}
+              >
+                {t('categories.all')}
+              </button>
+              {PRIMARY_SLUGS.map((slug) => (
+                <button
+                  key={slug}
+                  type="button"
+                  role="tab"
+                  aria-selected={value === slug}
+                  className={`section-nav__item${value === slug ? ' is-active' : ''}`}
+                  onClick={() => pick(slug)}
+                >
+                  {t(`categories.${slug}`)}
+                </button>
+              ))}
+              <div className="section-nav__more-wrap">
+                <button
+                  type="button"
+                  className={`section-nav__item section-nav__more${overflowActive ? ' is-active' : ''}${menuOpen ? ' is-open' : ''}`}
+                  aria-haspopup="listbox"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen((v) => !v)}
+                >
+                  {overflowActive ? t(`categories.${value}`) : t('categories.more')}
+                  <span className="section-nav__chev" aria-hidden>▾</span>
+                </button>
+                {menuOpen && (
+                  <ul className="section-nav__menu" role="listbox">
+                    {OVERFLOW_SLUGS.map((slug) => (
+                      <li key={slug}>
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={value === slug}
+                          className={`section-nav__menu-item${value === slug ? ' is-active' : ''}`}
+                          onClick={() => pick(slug)}
+                        >
+                          {t(`categories.${slug}`)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Mobile: compact dropdown */}
-        <label className="cat-filter__select-wrap">
+        {/* Mobile: single compact dropdown */}
+        <label className="section-nav__mobile">
           <span className="visually-hidden">{t('categories.label')}</span>
           <select
-            className="cat-filter__select"
+            className="section-nav__select"
             value={value}
             onChange={(e) => onChange(e.target.value)}
           >

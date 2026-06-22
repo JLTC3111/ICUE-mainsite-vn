@@ -135,7 +135,11 @@
     "research": "Forschung",
     "events": "Veranstaltungen",
     "traffic": "Verkehr",
-    "health": "Gesundheit"
+    "health": "Gesundheit",
+    "technology": "Technologie",
+    "sport": "Sport",
+    "travel": "Reisen",
+    "entertainment": "Unterhaltung"
   },
   "translate": {
     "button": "Übersetzen",
@@ -145,6 +149,20 @@
     "translated": "Übersetzt: {{lang}}",
     "error": "Übersetzung fehlgeschlagen. Bitte versuche es erneut.",
     "note": "Maschinelle Übersetzung"
+  },
+  "search": {
+    "label": "Artikel suchen",
+    "placeholder": "Stichwörter eingeben…",
+    "submit": "Suchen",
+    "noResults": "Keine passenden Artikel gefunden.",
+    "clear": "Löschen",
+    "open": "Suche öffnen",
+    "showing": "Ergebnisse für „{{query}}“"
+  },
+  "market": {
+    "label": "Marktindizes",
+    "loading": "Märkte werden geladen…",
+    "unavailable": "Marktdaten vorübergehend nicht verfügbar"
   },
   "common": {
     "cancel": "Abbrechen",

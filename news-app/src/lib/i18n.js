@@ -1,6 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import { detectInitialLanguage } from './referrerLang'
 
 import en from '../locales/en.json'
 import vi from '../locales/vi.json'
@@ -36,7 +37,7 @@ i18n
     // Default to Vietnamese on first load. We only read a previously saved
     // choice from localStorage — without one we fall through to fallbackLng (vi),
     // ignoring the browser language so the Newsroom always opens in VI by default.
-    lng: localStorage.getItem('icue_news_lang') || 'vi',
+    lng: detectInitialLanguage(),
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     interpolation: { escapeValue: false },
     detection: {

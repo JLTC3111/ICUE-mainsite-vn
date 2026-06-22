@@ -135,7 +135,11 @@
     "research": "Recherche",
     "events": "Événements",
     "traffic": "Circulation",
-    "health": "Santé"
+    "health": "Santé",
+    "technology": "Technologie",
+    "sport": "Sport",
+    "travel": "Voyage",
+    "entertainment": "Divertissement"
   },
   "translate": {
     "button": "Traduire",
@@ -145,6 +149,20 @@
     "translated": "Traduit en {{lang}}",
     "error": "Échec de la traduction. Veuillez réessayer.",
     "note": "Traduction automatique"
+  },
+  "search": {
+    "label": "Rechercher des articles",
+    "placeholder": "Mots-clés…",
+    "submit": "Rechercher",
+    "noResults": "Aucun article ne correspond à votre recherche.",
+    "clear": "Effacer",
+    "open": "Ouvrir la recherche",
+    "showing": "Résultats pour « {{query}} »"
+  },
+  "market": {
+    "label": "Indices boursiers",
+    "loading": "Chargement des marchés…",
+    "unavailable": "Données de marché temporairement indisponibles"
   },
   "common": {
     "cancel": "Annuler",

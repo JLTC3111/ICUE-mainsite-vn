@@ -1,11 +1,13 @@
 import { useEffect, useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ArticleCard from '../components/ArticleCard'
 import CategoryFilter from '../components/CategoryFilter'
+import ArticleSearch from '../components/ArticleSearch'
 import { fetchPublishedArticles } from '../lib/articles'
 import { formatDate, plainExcerpt } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
+import { searchArticles } from '../lib/searchArticles'
 import './NewsGrid.css'
 
 function FeaturedCard({ article }) {
@@ -45,23 +47,28 @@ function FeaturedCard({ article }) {
 
 export default function NewsGrid() {
   const { t } = useTranslation()
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
   const [activeCat, setActiveCat] = useState('all')
 
   useEffect(() => {
     let active = true
-    fetchPublishedArticles({ limit: 60 })
+    fetchPublishedArticles({ limit: 120 })
       .then((data) => { if (active) { setArticles(data); setState('ready') } })
       .catch(() => active && setState('error'))
     return () => { active = false }
   }, [])
 
-  // Show every category in the filter bar — not just ones with articles.
+  // Category filter, then keyword search across all article languages.
   const filtered = useMemo(() => {
-    if (activeCat === 'all') return articles
-    return articles.filter((a) => (isCategory(a.category) ? a.category : 'general') === activeCat)
-  }, [articles, activeCat])
+    let list = articles
+    if (activeCat !== 'all') {
+      list = list.filter((a) => (isCategory(a.category) ? a.category : 'general') === activeCat)
+    }
+    return searchArticles(list, searchQuery)
+  }, [articles, activeCat, searchQuery])
 
   const featured = filtered[0]
   const restList = useMemo(() => filtered.slice(1), [filtered])
@@ -74,6 +81,7 @@ export default function NewsGrid() {
             <p className="news-hero__eyebrow">{t('instituteName')}</p>
             <h1 className="news-hero__title">{t('news.title')}</h1>
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
+            <ArticleSearch variant="hero" />
           </div>
           <nav className="news-hero__social" aria-label="Social media">
             <a href="https://www.youtube.com/channel/UCy6xFBIvD8_i0gOJbyXE8xg" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
@@ -109,7 +117,9 @@ export default function NewsGrid() {
           </div>
         )}
 
-        {(state === 'ready' && filtered.length === 0) && <p className="news-empty">{t('news.empty')}</p>}
+        {(state === 'ready' && filtered.length === 0) && (
+          <p className="news-empty">{searchQuery ? t('search.noResults') : t('news.empty')}</p>
+        )}
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
         {state === 'ready' && featured && <FeaturedCard article={featured} />}
