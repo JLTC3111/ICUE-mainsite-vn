@@ -28,7 +28,11 @@ async function fetchQuote({ symbol, label }) {
   }
 }
 
-exports.handler = async () => {
+exports.handler = async (event = {}) => {
+  if (event.queryStringParameters?.scope === 'vn') {
+    return require('./market-quotes-vn').handler(event)
+  }
+
   try {
     const results = await Promise.allSettled(INDEXES.map(fetchQuote))
     const data = results

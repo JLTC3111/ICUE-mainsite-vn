@@ -1,6 +1,7 @@
 // vite.config.js
 import fs from 'node:fs'
 import path from 'node:path'
+import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -33,7 +34,10 @@ function newsroomDevFallback() {
     configureServer(server) {
       // Register first so /newsroom wins over any stale public/ copies.
       server.middlewares.use((req, res, next) => {
-        const urlPath = (req.url || '').split('?')[0];
+        const urlPath = (req.url || '').split('?')[0]
+        if (urlPath.startsWith('/newsroom/api/')) {
+          return next()
+        }
         if (urlPath !== '/newsroom' && !urlPath.startsWith('/newsroom/')) {
           return next();
         }
@@ -62,5 +66,5 @@ function newsroomDevFallback() {
 
 export default {
   base: '', // Use '' or './' to keep all paths relative after build
-  plugins: [newsroomDevFallback()],
+  plugins: [marketApiPlugin(), newsroomDevFallback()],
 };

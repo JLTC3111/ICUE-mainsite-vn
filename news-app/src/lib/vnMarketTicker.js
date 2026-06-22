@@ -1,3 +1,5 @@
+import { fetchMarketApi } from './fetchMarketApi'
+
 const CACHE_KEY = 'icue_vn_market_quotes'
 const CACHE_MS = 60 * 1000
 
@@ -25,14 +27,9 @@ export async function fetchVnMarketQuotes() {
   const cached = readCache()
   if (cached?.length) return cached
 
-  const res = await fetch(API_URL)
-  if (!res.ok) {
-    if (cached) return cached
-    throw new Error('vn market unavailable')
-  }
-
-  const data = await res.json()
-  if (!Array.isArray(data) || !data.length) {
+  try {
+    data = await fetchMarketApi(API_URL)
+  } catch {
     if (cached) return cached
     throw new Error('vn market unavailable')
   }

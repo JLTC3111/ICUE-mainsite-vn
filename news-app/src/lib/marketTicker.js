@@ -1,3 +1,5 @@
+import { fetchMarketApi } from './fetchMarketApi'
+
 const CACHE_KEY = 'icue_market_quotes'
 const CACHE_MS = 5 * 60 * 1000
 
@@ -25,14 +27,10 @@ export async function fetchMarketQuotes() {
   const cached = readCache()
   if (cached?.length) return cached
 
-  const res = await fetch(API_URL)
-  if (!res.ok) {
-    if (cached) return cached
-    throw new Error('market data unavailable')
-  }
-
-  const data = await res.json()
-  if (!Array.isArray(data) || !data.length) {
+  let data
+  try {
+    data = await fetchMarketApi(API_URL)
+  } catch {
     if (cached) return cached
     throw new Error('market data unavailable')
   }
