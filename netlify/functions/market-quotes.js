@@ -3,6 +3,9 @@ const INDEXES = [
   { symbol: '^IXIC', label: 'Nasdaq' },
   { symbol: '^DJI', label: 'Dow Jones' },
   { symbol: '^GDAXI', label: 'DAX' },
+  { symbol: 'GC=F', label: 'Gold' },
+  { symbol: 'SI=F', label: 'Silver' },
+  { symbol: 'CL=F', label: 'Oil' },
 ]
 
 async function fetchQuote({ symbol, label }) {

@@ -4,6 +4,9 @@ export const MARKET_INDEXES = [
   { symbol: '^IXIC', label: 'Nasdaq' },
   { symbol: '^DJI', label: 'Dow Jones' },
   { symbol: '^GDAXI', label: 'DAX' },
+  { symbol: 'GC=F', label: 'Gold' },
+  { symbol: 'SI=F', label: 'Silver' },
+  { symbol: 'CL=F', label: 'Oil' },
 ]
 
 export async function fetchYahooQuotes(indexes = MARKET_INDEXES) {

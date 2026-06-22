@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import './ArticleSearch.css'
 
-export default function ArticleSearch({ variant = 'hero' }) {
+export default function ArticleSearch() {
   const { t } = useTranslation()
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
+  const [open, setOpen] = useState(false)
   const [value, setValue] = useState(params.get('q') || '')
   const inputRef = useRef(null)
 
@@ -15,45 +16,61 @@ export default function ArticleSearch({ variant = 'hero' }) {
     setValue(params.get('q') || '')
   }, [params])
 
-  const applySearch = useCallback((q) => {
-    const trimmed = q.trim()
-    if (location.pathname === '/') {
-      setParams(trimmed ? { q: trimmed } : {})
-    } else {
-      navigate(trimmed ? `/?q=${encodeURIComponent(trimmed)}` : '/')
-    }
-  }, [location.pathname, navigate, setParams])
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   const submit = useCallback((e) => {
     e?.preventDefault()
-    applySearch(value)
-    inputRef.current?.blur()
-  }, [applySearch, value])
+    const q = value.trim()
+    if (location.pathname === '/') {
+      setParams(q ? { q } : {})
+    } else {
+      navigate(q ? `/?q=${encodeURIComponent(q)}` : '/')
+    }
+    setOpen(false)
+  }, [value, location.pathname, navigate, setParams])
 
   const clear = useCallback(() => {
     setValue('')
-    applySearch('')
-    inputRef.current?.focus()
-  }, [applySearch])
+    if (location.pathname === '/') {
+      setParams({})
+    } else {
+      navigate('/')
+    }
+    setOpen(false)
+  }, [location.pathname, navigate, setParams])
 
-  if (variant === 'hero') {
-    return (
-      <form className="article-search article-search--hero" onSubmit={submit} role="search">
-        <label className="article-search__hero-label" htmlFor="news-search-input">
-          {t('search.label')}
-        </label>
-        <div className="article-search__hero-row">
-          <span className="article-search__hero-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="7" />
-              <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
-            </svg>
-          </span>
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
+
+  return (
+    <div className={`article-search${open ? ' is-open' : ''}`}>
+      <button
+        type="button"
+        className="article-search__toggle"
+        aria-label={t('search.open')}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <form className="article-search__panel" onSubmit={submit} role="search">
+          <label className="visually-hidden" htmlFor="article-search-input">{t('search.label')}</label>
           <input
             ref={inputRef}
-            id="news-search-input"
+            id="article-search-input"
             type="search"
-            className="article-search__hero-input"
+            className="article-search__input"
             placeholder={t('search.placeholder')}
             value={value}
             onChange={(e) => setValue(e.target.value)}
@@ -61,31 +78,13 @@ export default function ArticleSearch({ variant = 'hero' }) {
             enterKeyHint="search"
           />
           {value && (
-            <button
-              type="button"
-              className="article-search__hero-clear"
-              onClick={clear}
-              aria-label={t('search.clear')}
-            >
-              <span aria-hidden>×</span>
+            <button type="button" className="article-search__clear" onClick={clear}>
+              {t('search.clear')}
             </button>
           )}
-          <button type="submit" className="article-search__hero-submit" aria-label={t('search.submit')}>
-            <span className="article-search__submit-text">{t('search.submit')}</span>
-            <svg className="article-search__submit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-        {params.get('q') && (
-          <p className="article-search__hero-hint">
-            {t('search.showing', { query: params.get('q') })}
-          </p>
-        )}
-      </form>
-    )
-  }
-
-  return null
+          <button type="submit" className="article-search__submit">{t('search.submit')}</button>
+        </form>
+      )}
+    </div>
+  )
 }

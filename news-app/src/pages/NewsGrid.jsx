@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ArticleCard from '../components/ArticleCard'
 import CategoryFilter from '../components/CategoryFilter'
-import ArticleSearch from '../components/ArticleSearch'
 import { fetchPublishedArticles } from '../lib/articles'
 import { formatDate, plainExcerpt } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
@@ -81,7 +80,6 @@ export default function NewsGrid() {
             <p className="news-hero__eyebrow">{t('instituteName')}</p>
             <h1 className="news-hero__title">{t('news.title')}</h1>
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
-            <ArticleSearch variant="hero" />
           </div>
           <nav className="news-hero__social" aria-label="Social media">
             <a href="https://www.youtube.com/channel/UCy6xFBIvD8_i0gOJbyXE8xg" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">

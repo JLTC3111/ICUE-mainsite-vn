@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import LanguageSwitcher from './LanguageSwitcher'
 import DrawerMenu from './DrawerMenu'
+import ArticleSearch from './ArticleSearch'
 import './Header.css'
 
 const MAIN_SITE = 'https://icue.vn'
@@ -26,6 +27,7 @@ function Header() {
     <header className="icue-header">
       <div className="icue-header__inner icue-container">
         <DrawerMenu />
+        <ArticleSearch />
 
         <a href={MAIN_SITE} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
           <span className="icue-header__logo">{t('brand')}</span>

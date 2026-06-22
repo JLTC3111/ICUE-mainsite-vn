@@ -74,7 +74,20 @@ export default function CategoryFilter({ value, onChange }) {
               onClick={() => setMenuOpen((v) => !v)}
             >
               {overflowActive ? t(`categories.${value}`) : t('categories.more')}
-              <span className="section-nav__chev" aria-hidden>▾</span>
+              <svg
+                className="section-nav__chev"
+                viewBox="0 0 12 12"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2.5 4.5 6 7.5 9.5 4.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
             {menuOpen && (
               <ul className="section-nav__menu" role="listbox">
