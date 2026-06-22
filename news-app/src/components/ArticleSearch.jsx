@@ -27,6 +27,7 @@ export default function ArticleSearch({ variant = 'hero' }) {
   const submit = useCallback((e) => {
     e?.preventDefault()
     applySearch(value)
+    inputRef.current?.blur()
   }, [applySearch, value])
 
   const clear = useCallback(() => {
@@ -57,13 +58,25 @@ export default function ArticleSearch({ variant = 'hero' }) {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             autoComplete="off"
+            enterKeyHint="search"
           />
           {value && (
-            <button type="button" className="article-search__hero-clear" onClick={clear}>
-              {t('search.clear')}
+            <button
+              type="button"
+              className="article-search__hero-clear"
+              onClick={clear}
+              aria-label={t('search.clear')}
+            >
+              <span aria-hidden>×</span>
             </button>
           )}
-          <button type="submit" className="article-search__hero-submit">{t('search.submit')}</button>
+          <button type="submit" className="article-search__hero-submit" aria-label={t('search.submit')}>
+            <span className="article-search__submit-text">{t('search.submit')}</span>
+            <svg className="article-search__submit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
         {params.get('q') && (
           <p className="article-search__hero-hint">

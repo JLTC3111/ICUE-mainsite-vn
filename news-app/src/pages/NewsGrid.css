@@ -40,6 +40,19 @@
 .news-hero__social svg { width: 20px; height: 20px; display: block; }
 .news-hero__subtitle { margin: 0; font-size: clamp(15px, 2.2vw, 18px); color: #aab0b6; max-width: 620px; }
 
+@media (max-width: 640px) {
+  .news-hero {
+    padding: 40px 0 36px;
+    margin-bottom: 28px;
+  }
+  .news-hero__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .news-hero__social { align-self: flex-start; }
+}
+
 /* Category filter bar — see CategoryFilter.css -------------------------------- */
 /* Category tag (cards + featured) -------------------------------------- */
 .news-tag {

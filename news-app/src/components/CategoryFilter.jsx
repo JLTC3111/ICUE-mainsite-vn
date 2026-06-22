@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { CATEGORY_SLUGS } from '../lib/categories'
 import './CategoryFilter.css'
 
-// Desktop: BBC/NYT-style horizontal tabs. Mobile: compact native select (easier with 14+ topics).
+// Desktop: scrollable primary tabs + separate "More" control (dropdown must sit
+// outside the overflow scroll container or it gets clipped).
 const PRIMARY_SLUGS = [
   'economics', 'urban', 'technology', 'projects', 'social', 'health', 'sport',
 ]
@@ -37,7 +38,6 @@ export default function CategoryFilter({ value, onChange }) {
   return (
     <nav className="section-nav" aria-label={t('categories.label')} ref={rootRef}>
       <div className="icue-container section-nav__inner">
-        {/* Desktop / tablet */}
         <div className="section-nav__desktop">
           <div className="section-nav__scroll">
             <div className="section-nav__list" role="tablist">
@@ -62,40 +62,40 @@ export default function CategoryFilter({ value, onChange }) {
                   {t(`categories.${slug}`)}
                 </button>
               ))}
-              <div className="section-nav__more-wrap">
-                <button
-                  type="button"
-                  className={`section-nav__item section-nav__more${overflowActive ? ' is-active' : ''}${menuOpen ? ' is-open' : ''}`}
-                  aria-haspopup="listbox"
-                  aria-expanded={menuOpen}
-                  onClick={() => setMenuOpen((v) => !v)}
-                >
-                  {overflowActive ? t(`categories.${value}`) : t('categories.more')}
-                  <span className="section-nav__chev" aria-hidden>▾</span>
-                </button>
-                {menuOpen && (
-                  <ul className="section-nav__menu" role="listbox">
-                    {OVERFLOW_SLUGS.map((slug) => (
-                      <li key={slug}>
-                        <button
-                          type="button"
-                          role="option"
-                          aria-selected={value === slug}
-                          className={`section-nav__menu-item${value === slug ? ' is-active' : ''}`}
-                          onClick={() => pick(slug)}
-                        >
-                          {t(`categories.${slug}`)}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
             </div>
+          </div>
+
+          <div className="section-nav__more-wrap">
+            <button
+              type="button"
+              className={`section-nav__item section-nav__more${overflowActive ? ' is-active' : ''}${menuOpen ? ' is-open' : ''}`}
+              aria-haspopup="listbox"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {overflowActive ? t(`categories.${value}`) : t('categories.more')}
+              <span className="section-nav__chev" aria-hidden>▾</span>
+            </button>
+            {menuOpen && (
+              <ul className="section-nav__menu" role="listbox">
+                {OVERFLOW_SLUGS.map((slug) => (
+                  <li key={slug}>
+                    <button
+                      type="button"
+                      role="option"
+                      aria-selected={value === slug}
+                      className={`section-nav__menu-item${value === slug ? ' is-active' : ''}`}
+                      onClick={() => pick(slug)}
+                    >
+                      {t(`categories.${slug}`)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
-        {/* Mobile: single compact dropdown */}
         <label className="section-nav__mobile">
           <span className="visually-hidden">{t('categories.label')}</span>
           <select

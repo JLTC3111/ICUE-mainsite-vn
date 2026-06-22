@@ -14,9 +14,14 @@
 }
 
 /* Desktop tabs --------------------------------------------------------- */
-.section-nav__desktop { display: block; }
+.section-nav__desktop {
+  display: flex;
+  align-items: stretch;
+}
 
 .section-nav__scroll {
+  flex: 1;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -54,12 +59,17 @@
   border-bottom-color: var(--icue-ink);
 }
 
-.section-nav__more-wrap { position: relative; }
+.section-nav__more-wrap {
+  position: relative;
+  flex: none;
+  border-left: 1px solid var(--icue-border);
+}
 
 .section-nav__more {
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  height: 100%;
 }
 
 .section-nav__chev {
@@ -72,7 +82,7 @@
 
 .section-nav__menu {
   position: absolute;
-  z-index: 25;
+  z-index: 40;
   top: calc(100% + 2px);
   right: 0;
   min-width: 200px;
