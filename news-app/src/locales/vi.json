@@ -162,7 +162,10 @@
   "market": {
     "label": "Chỉ số thị trường",
     "loading": "Đang tải thị trường…",
-    "unavailable": "Dữ liệu thị trường tạm thời không khả dụng"
+    "unavailable": "Dữ liệu thị trường tạm thời không khả dụng",
+    "vnLabel": "Việt Nam",
+    "vnLoading": "Đang tải TTCK Việt Nam…",
+    "ohlc": "Mở / Cao / Thấp"
   },
   "common": {
     "cancel": "Hủy",

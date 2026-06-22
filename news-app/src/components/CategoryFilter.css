@@ -1,6 +1,6 @@
 .section-nav {
   position: sticky;
-  top: calc(var(--icue-header-h) + var(--icue-ticker-h));
+  top: calc(var(--icue-header-h) + var(--icue-ticker-h) + var(--icue-vn-ticker-h));
   z-index: 15;
   margin: -40px 0 24px;
   background: #fff;

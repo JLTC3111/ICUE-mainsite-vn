@@ -162,7 +162,10 @@
   "market": {
     "label": "시장 지수",
     "loading": "시장 데이터 로딩 중…",
-    "unavailable": "시장 데이터를 일시적으로 불러올 수 없습니다"
+    "unavailable": "시장 데이터를 일시적으로 불러올 수 없습니다",
+    "vnLabel": "베트남",
+    "vnLoading": "베트남 시장 로딩 중…",
+    "ohlc": "시가 / 고가 / 저가"
   },
   "common": {
     "cancel": "취소",

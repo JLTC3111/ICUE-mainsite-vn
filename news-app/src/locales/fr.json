@@ -162,7 +162,10 @@
   "market": {
     "label": "Indices boursiers",
     "loading": "Chargement des marchés…",
-    "unavailable": "Données de marché temporairement indisponibles"
+    "unavailable": "Données de marché temporairement indisponibles",
+    "vnLabel": "Vietnam",
+    "vnLoading": "Chargement des marchés VN…",
+    "ohlc": "Ouverture / Haut / Bas"
   },
   "common": {
     "cancel": "Annuler",

@@ -4,6 +4,7 @@
 
 # Market ticker API — must be before the /newsroom/* SPA catch-all.
 /newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
+/newsroom/api/market-quotes-vn  /.netlify/functions/market-quotes-vn  200
 
 /newsroom            /newsroom/index.html   200
 /newsroom/*          /newsroom/index.html   200

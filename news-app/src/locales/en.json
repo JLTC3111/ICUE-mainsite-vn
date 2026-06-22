@@ -162,7 +162,10 @@
   "market": {
     "label": "Market indices",
     "loading": "Loading markets…",
-    "unavailable": "Market data temporarily unavailable"
+    "unavailable": "Market data temporarily unavailable",
+    "vnLabel": "Vietnam",
+    "vnLoading": "Loading VN markets…",
+    "ohlc": "Open / High / Low"
   },
   "common": {
     "cancel": "Cancel",

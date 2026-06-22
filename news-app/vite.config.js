@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fetchYahooQuotes } from './src/lib/marketQuotesFetch.js'
+import { fetchVnMarketQuotes } from './src/lib/vnMarketQuotesFetch.js'
 
 /** Dev-only proxy so market quotes work without browser CORS blocks. */
 function marketApiPlugin() {
@@ -9,19 +10,33 @@ function marketApiPlugin() {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const path = req.url?.split('?')[0] || ''
-        if (path !== '/newsroom/api/market-quotes' && path !== '/api/market-quotes') {
-          return next()
+        if (path === '/newsroom/api/market-quotes' || path === '/api/market-quotes') {
+          try {
+            const data = await fetchYahooQuotes()
+            res.setHeader('Content-Type', 'application/json')
+            res.setHeader('Cache-Control', 'public, max-age=120')
+            res.end(JSON.stringify(data))
+          } catch {
+            res.statusCode = 502
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'unavailable' }))
+          }
+          return
         }
-        try {
-          const data = await fetchYahooQuotes()
-          res.setHeader('Content-Type', 'application/json')
-          res.setHeader('Cache-Control', 'public, max-age=120')
-          res.end(JSON.stringify(data))
-        } catch {
-          res.statusCode = 502
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ error: 'unavailable' }))
+        if (path === '/newsroom/api/market-quotes-vn' || path === '/api/market-quotes-vn') {
+          try {
+            const data = await fetchVnMarketQuotes()
+            res.setHeader('Content-Type', 'application/json')
+            res.setHeader('Cache-Control', 'public, max-age=60')
+            res.end(JSON.stringify(data))
+          } catch {
+            res.statusCode = 502
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'unavailable' }))
+          }
+          return
         }
+        return next()
       })
     },
   }
