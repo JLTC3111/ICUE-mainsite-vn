@@ -3,7 +3,7 @@ import { fetchMarketApi } from './fetchMarketApi'
 const CACHE_KEY = 'icue_vn_market_quotes'
 const CACHE_MS = 60 * 1000
 
-const API_URL = `${import.meta.env.BASE_URL}api/market-quotes-vn`
+const API_URL = `${import.meta.env.BASE_URL}api/market-quotes?scope=vn`
 
 function readCache() {
   try {
@@ -27,8 +27,10 @@ export async function fetchVnMarketQuotes() {
   const cached = readCache()
   if (cached?.length) return cached
 
+  let data
   try {
     data = await fetchMarketApi(API_URL)
+    if (!data[0]?.kind) throw new Error('vn market wrong payload')
   } catch {
     if (cached) return cached
     throw new Error('vn market unavailable')

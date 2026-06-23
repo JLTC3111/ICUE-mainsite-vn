@@ -133,6 +133,11 @@
 .vn-ticker__item.is-up .vn-ticker__change { color: #15803d; }
 .vn-ticker__item.is-down .vn-ticker__change { color: #b91c1c; }
 
+.vn-ticker--error .vn-ticker__loading {
+  padding: 8px 14px;
+  color: var(--icue-text-soft);
+}
+
 @keyframes vn-ticker-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

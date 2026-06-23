@@ -63,7 +63,14 @@ export default function VnMarketTicker() {
     }
   }, [])
 
-  if (status === 'error' && !quotes.length) return null
+  if (status === 'error' && !quotes.length) {
+    return (
+      <div className="vn-ticker vn-ticker--error" aria-live="polite">
+        <div className="vn-ticker__label">{t('market.vnLabel')}</div>
+        <span className="vn-ticker__loading">{t('market.unavailable')}</span>
+      </div>
+    )
+  }
 
   const locale = i18n.resolvedLanguage === 'vi' ? 'vi-VN' : 'en-US'
   const ohlcLabel = t('market.ohlc')

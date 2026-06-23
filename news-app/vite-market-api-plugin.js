@@ -14,10 +14,14 @@ export function marketApiPlugin() {
     name: 'icue-market-api',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        const path = req.url?.split('?')[0] || ''
-        if (!MARKET_PATHS.has(path)) return next()
+        const [path, query = ''] = (req.url || '').split('?')
+        const isMarketPath = MARKET_PATHS.has(path)
+          || path === '/newsroom/api/market-quotes'
+          || path === '/api/market-quotes'
+        if (!isMarketPath) return next()
 
-        const isVn = path.endsWith('market-quotes-vn')
+        const params = new URLSearchParams(query)
+        const isVn = path.endsWith('market-quotes-vn') || params.get('scope') === 'vn'
         try {
           const data = isVn ? await fetchVnMarketQuotes() : await fetchYahooQuotes()
           res.setHeader('Content-Type', 'application/json')
