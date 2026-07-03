@@ -1,4 +1,5 @@
 import { memo, useId, useRef, useState } from 'react'
+import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import './ContactSidebar.css'
@@ -141,11 +142,10 @@ function ContactSidebar() {
         <div className="contact-sidebar__divider" aria-hidden="true" />
 
         <a
-          href="https://zalo.me/84768748391"
-          target="_blank"
-          rel="noopener noreferrer"
+          href={zaloWebUrl(ICUE_ZALO_PHONE)}
           className="contact-sidebar__item"
           aria-label="Zalo"
+          onClick={(e) => openZaloChat(ICUE_ZALO_PHONE, e)}
         >
           <svg width="30" height="30" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path fillRule="evenodd" clipRule="evenodd" d="M22.782 0.166016H27.199C33.2653 0.166016 36.8103 1.05701 39.9572 2.74421C43.1041 4.4314 45.5875 6.89585 47.2557 10.0428C48.9429 13.1897 49.8339 16.7347 49.8339 22.801V27.1991C49.8339 33.2654 48.9429 36.8104 47.2557 39.9573C45.5685 43.1042 43.1041 45.5877 39.9572 47.2559C36.8103 48.9431 33.2653 49.8341 27.199 49.8341H22.8009C16.7346 49.8341 13.1896 48.9431 10.0427 47.2559C6.89583 45.5687 4.41243 43.1042 2.7442 39.9573C1.057 36.8104 0.166016 33.2654 0.166016 27.1991V22.801C0.166016 16.7347 1.057 13.1897 2.7442 10.0428C4.43139 6.89585 6.89583 4.41245 10.0427 2.74421C13.1707 1.05701 16.7346 0.166016 22.782 0.166016Z" fill="#0068FF" />

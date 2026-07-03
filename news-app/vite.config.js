@@ -18,6 +18,7 @@ export default defineConfig({
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
       '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),
+      '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
     },
   },
   build: {
