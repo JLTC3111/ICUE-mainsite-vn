@@ -1,17 +1,20 @@
 .contact-sidebar {
   position: fixed;
   right: 1.5%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  margin-block: auto;
+  height: fit-content;
+  max-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
   gap: 12.5px;
   z-index: 140;
-  background: rgba(255, 255, 255, 0.15);
+  background: transparent;
   border-radius: 12px;
   padding: 0;
   width: fit-content;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
   animation: contactSidebarFadeIn 4.5s ease-in-out;
 }
 
@@ -136,9 +139,8 @@
 
 @media (max-width: 768px) {
   .contact-sidebar {
-    top: 50%;
     right: 1.75%;
-    transform: translateY(-50%);
+    max-height: calc(100dvh - 24px);
   }
 
   .contact-sidebar__item svg,

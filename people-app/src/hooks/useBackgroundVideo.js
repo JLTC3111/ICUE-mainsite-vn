@@ -12,13 +12,14 @@ function prefersSlowNetwork() {
   return conn.saveData || conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g'
 }
 
+function readInitialEnabled() {
+  if (prefersReducedMotion() || prefersSlowNetwork()) return false
+  const stored = localStorage.getItem(STORAGE_KEY)
+  return stored === null ? true : stored === 'true'
+}
+
 export function useBackgroundVideo() {
-  const [enabled, setEnabled] = useState(() => {
-    if (typeof window === 'undefined') return false
-    if (prefersReducedMotion() || prefersSlowNetwork()) return false
-    const stored = localStorage.getItem(STORAGE_KEY)
-    return stored === null ? true : stored === 'true'
-  })
+  const [enabled, setEnabled] = useState(readInitialEnabled)
 
   const toggle = useCallback(() => {
     setEnabled((prev) => {
