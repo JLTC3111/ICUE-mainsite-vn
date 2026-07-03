@@ -7,13 +7,17 @@
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
+  align-items: stretch;
+  flex-shrink: 0;
   gap: 5px;
   width: 42px;
+  min-width: 42px;
   height: 42px;
+  min-height: 42px;
   padding: 9px;
   border: 1px solid var(--icue-border);
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(255, 255, 255, 0.95);
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
@@ -26,11 +30,17 @@
 .nav-drawer__toggle span {
   display: block;
   height: 2px;
+  min-height: 2px;
   width: 100%;
+  min-width: 18px;
   border-radius: 2px;
-  background: var(--icue-black, #111);
-  transition: transform 0.35s ease, opacity 0.25s ease;
+  background: var(--icue-ink, #111316);
+  transition: transform 0.35s ease, opacity 0.25s ease, background 0.2s ease;
   transform-origin: center;
+}
+
+.nav-drawer__toggle:hover span {
+  background: var(--icue-accent);
 }
 
 .nav-drawer__toggle.is-open span:nth-child(1) {

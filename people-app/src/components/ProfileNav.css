@@ -54,16 +54,20 @@
 }
 
 .profile-nav__dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--icue-border);
-  transition: background 0.18s ease, transform 0.18s ease;
+  background: rgba(54, 138, 223, 0.28);
+  border: 2px solid rgba(54, 138, 223, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65);
+  transition: background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
 }
 
 .profile-nav__dot--active {
   background: var(--icue-accent);
-  transform: scale(1.25);
+  border-color: var(--icue-accent);
+  transform: scale(1.2);
+  box-shadow: 0 0 0 2px rgba(54, 138, 223, 0.25);
 }
 
 .profile-nav__arrows {
@@ -82,7 +86,7 @@
   border: 1px solid var(--icue-border);
   color: var(--icue-text);
   box-shadow: var(--icue-shadow-sm);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
 }
 
 .profile-nav__arrow svg {
@@ -93,7 +97,14 @@
 .profile-nav__arrow:hover {
   transform: translateY(-1px);
   box-shadow: var(--icue-shadow-md);
-  border-color: #d9dad5;
+  border-color: #facc15;
+  color: #facc15;
+  background: rgba(250, 204, 21, 0.12);
+}
+
+.profile-nav__arrow:focus-visible {
+  outline: 2px solid #facc15;
+  outline-offset: 2px;
 }
 
 .profile-nav__arrow:active {

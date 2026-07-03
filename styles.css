@@ -939,10 +939,47 @@ nav a {
   animation: dropDown 2.5s ease-in-out forwards;
 }
 
-#menuIcon rect { /* Selects all <rect> elements inside the SVG with id="menuIcon" */
-    transition: transform 0.5s ease, opacity 0.3s ease; 
-    transform-origin: center; /* Crucial: Ensures rotations happen from the center of each bar */
-    fill: #000000; /* Sets the default color of the bars to black */
+#menuIcon rect {
+    transition: transform 0.5s ease, opacity 0.3s ease;
+    transform-origin: center;
+    fill: currentColor;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    top: max(10px, env(safe-area-inset-top));
+    transform: none;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--nav-text, #111316);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: var(--nav-shadow, 0 2px 6px rgba(0, 0, 0, 0.12));
+  }
+
+  .menu-bar.nav-on-dark .menu-toggle {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.42);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .menu-toggle svg {
+    width: 26px !important;
+    height: 26px !important;
+    display: block;
+  }
+
+  .menu-toggle svg rect,
+  #menuIcon rect {
+    fill: currentColor !important;
+  }
 }
 
 #menuIcon.is-open #top-bar {
@@ -2693,15 +2730,16 @@ body.loaded #app {
   }
 
   .menu-toggle {
-    position: absolute;
-    left: 49s.5%;
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    top: max(10px, env(safe-area-inset-top));
     cursor: pointer;
-    z-index: 17;
+    z-index: 100;
   }
 
   .menu-toggle svg{
-    width:38px;
-    height:38px;
+    width: 26px;
+    height: 26px;
   }
 
   .menu-bar .contact-link:hover {
