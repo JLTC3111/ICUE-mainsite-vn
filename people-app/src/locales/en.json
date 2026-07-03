@@ -1,5 +1,6 @@
 {
   "brandBadge": "Our People",
+  "instituteName": "Institute of Economics and Urban Planning",
   "meta": {
     "expertsTitle": "ICUE — Our Experts",
     "coreTitle": "ICUE — Core Team",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "Home",
     "org": "Organization & Structure",
+    "archive": "News Archive",
     "mainAria": "ICUE — back to home",
     "mainNav": "Main navigation"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Home",
+    "org": "Organization & Structure",
+    "work": "Our Work",
+    "projects": "Topics & Projects",
+    "newsEvents": "News & Events",
+    "about": "About Us",
+    "people": "Our People",
+    "experts": "Our Experts",
+    "coreTeam": "Core Team"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "community": "Community Activities",
+    "news": "News",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "donations": "Donations",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
   },
   "video": {
     "on": "Video: On",

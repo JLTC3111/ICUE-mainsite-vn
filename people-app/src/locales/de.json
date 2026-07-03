@@ -1,5 +1,6 @@
 {
   "brandBadge": "Unser Team",
+  "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
   "meta": {
     "expertsTitle": "ICUE — Experten",
     "coreTitle": "ICUE — Kernteam",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "Startseite",
     "org": "Organisation & Struktur",
+    "archive": "Archiv",
     "mainAria": "ICUE — zur Startseite",
     "mainNav": "Hauptnavigation"
+  },
+  "drawer": {
+    "menu": "Menü",
+    "home": "Startseite",
+    "org": "Organisation & Struktur",
+    "work": "Unsere Arbeit",
+    "projects": "Themen & Projekte",
+    "newsEvents": "News & Veranstaltungen",
+    "about": "Über uns",
+    "people": "Unser Team",
+    "experts": "Unsere Experten",
+    "coreTeam": "Kernteam"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "community": "Gemeinschaftsaktivitäten",
+    "news": "Aktuelles",
+    "faqs": "FAQ",
+    "recruitment": "Karriere",
+    "donations": "Spenden",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Partner werden",
+    "rights": "Alle Rechte vorbehalten, ICUE."
   },
   "video": {
     "on": "Video: Ein",

@@ -1,5 +1,6 @@
 {
   "brandBadge": "Nhân Lực",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
   "meta": {
     "expertsTitle": "ICUE — Chuyên Gia",
     "coreTitle": "ICUE — Cán Bộ",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "Trang chủ",
     "org": "Cơ cấu tổ chức",
+    "archive": "Tin Cũ",
     "mainAria": "ICUE — về trang chủ",
     "mainNav": "Điều hướng chính"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Trang Chủ",
+    "org": "Cơ Cấu & Tổ Chức",
+    "work": "Công Việc",
+    "projects": "Đề Tài, Dự Án",
+    "newsEvents": "Tin Tức & Sự Kiện",
+    "about": "Về Chúng Tôi",
+    "people": "Nhân Lực",
+    "experts": "Chuyên Gia",
+    "coreTeam": "Cán Bộ"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "community": "Hoạt Động Cộng Đồng",
+    "news": "Bản Tin",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "donations": "Quyên Góp",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
   },
   "video": {
     "on": "Video: Bật",

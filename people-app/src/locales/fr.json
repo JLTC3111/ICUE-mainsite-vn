@@ -1,5 +1,6 @@
 {
   "brandBadge": "Notre équipe",
+  "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
   "meta": {
     "expertsTitle": "ICUE — Nos experts",
     "coreTitle": "ICUE — Équipe principale",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "Accueil",
     "org": "Organisation & Structure",
+    "archive": "Archives",
     "mainAria": "ICUE — retour à l'accueil",
     "mainNav": "Navigation principale"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Accueil",
+    "org": "Organisation & Structure",
+    "work": "Nos travaux",
+    "projects": "Thèmes & Projets",
+    "newsEvents": "Actualités & Événements",
+    "about": "À propos",
+    "people": "Notre équipe",
+    "experts": "Nos experts",
+    "coreTeam": "Équipe principale"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "community": "Activités communautaires",
+    "news": "Actualités",
+    "faqs": "FAQ",
+    "recruitment": "Recrutement",
+    "donations": "Dons",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Devenir partenaire",
+    "rights": "Tous droits réservés, ICUE."
   },
   "video": {
     "on": "Vidéo : Activée",

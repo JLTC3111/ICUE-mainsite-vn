@@ -1,5 +1,6 @@
 {
   "brandBadge": "私たちのチーム",
+  "instituteName": "建設経済・都市計画研究所",
   "meta": {
     "expertsTitle": "ICUE — 専門家",
     "coreTitle": "ICUE — コアチーム",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "ホーム",
     "org": "組織 & 体制",
+    "archive": "アーカイブ",
     "mainAria": "ICUE — ホームへ",
     "mainNav": "メインナビゲーション"
+  },
+  "drawer": {
+    "menu": "メニュー",
+    "home": "ホーム",
+    "org": "組織・体制",
+    "work": "私たちの活動",
+    "projects": "テーマ・プロジェクト",
+    "newsEvents": "ニュース・イベント",
+    "about": "私たちについて",
+    "people": "私たちのチーム",
+    "experts": "専門家",
+    "coreTeam": "コアチーム"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "受賞",
+    "community": "地域活動",
+    "news": "ニュース",
+    "faqs": "よくある質問",
+    "recruitment": "採用",
+    "donations": "寄付",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "クッキー",
+    "partner": "パートナーになる",
+    "rights": "無断転載を禁じます、ICUE。"
   },
   "video": {
     "on": "動画: オン",

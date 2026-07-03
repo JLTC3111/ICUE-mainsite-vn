@@ -1,5 +1,11 @@
 const LANG_KEY = 'icue_news_lang'
-const FALLBACK_CHAIN = ['vi', 'en']
+
+/** Profile bios only exist in vi + en; other UI langs should fall back to English. */
+function profileLangChain(lang) {
+  if (lang === 'vi') return ['vi', 'en']
+  if (lang === 'en') return ['en', 'vi']
+  return [lang, 'en']
+}
 
 export function detectInitialLanguage() {
   const saved = localStorage.getItem(LANG_KEY)
@@ -16,7 +22,7 @@ export function detectInitialLanguage() {
 
 export function pickLocalized(map, lang) {
   if (!map || typeof map !== 'object') return ''
-  for (const code of [lang, ...FALLBACK_CHAIN]) {
+  for (const code of profileLangChain(lang)) {
     if (map[code]) return map[code]
   }
   return Object.values(map)[0] || ''
@@ -24,7 +30,7 @@ export function pickLocalized(map, lang) {
 
 export function localizePerson(person, lang) {
   const i18n = person.i18n || {}
-  const chain = [lang, ...FALLBACK_CHAIN.filter((c) => c !== lang)]
+  const chain = profileLangChain(lang)
 
   let fields = null
   for (const code of chain) {
@@ -60,7 +66,7 @@ export function localizePerson(person, lang) {
     highlights: fields.highlights || [],
     links: (person.links || []).map((link) => ({
       url: link.url,
-      label: pickLocalized(link.label, lang) || pickLocalized(link.label, 'vi'),
+      label: pickLocalized(link.label, lang) || pickLocalized(link.label, 'en'),
     })),
   }
 }

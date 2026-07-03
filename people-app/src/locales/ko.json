@@ -1,5 +1,6 @@
 {
   "brandBadge": "우리 팀",
+  "instituteName": "건설경제 및 도시계획 연구원",
   "meta": {
     "expertsTitle": "ICUE — 전문가",
     "coreTitle": "ICUE — 핵심 팀",
@@ -8,8 +9,37 @@
   "nav": {
     "home": "홈",
     "org": "조직 & 구조",
+    "archive": "아카이브",
     "mainAria": "ICUE — 홈으로",
     "mainNav": "주요 탐색"
+  },
+  "drawer": {
+    "menu": "메뉴",
+    "home": "홈",
+    "org": "조직 및 구조",
+    "work": "우리의 활동",
+    "projects": "주제 및 프로젝트",
+    "newsEvents": "뉴스 및 행사",
+    "about": "소개",
+    "people": "우리 팀",
+    "experts": "전문가",
+    "coreTeam": "핵심 팀"
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "기타 페이지",
+    "awards": "수상",
+    "community": "커뮤니티 활동",
+    "news": "뉴스",
+    "faqs": "자주 묻는 질문",
+    "recruitment": "채용",
+    "donations": "기부",
+    "privacy": "개인정보 처리방침",
+    "terms": "이용약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "파트너 되기",
+    "rights": "모든 권리 보유, ICUE."
   },
   "video": {
     "on": "비디오: 켜짐",

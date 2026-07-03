@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Header from './Header'
+import Footer from './Footer'
 import BackgroundVideo from './BackgroundVideo'
 import './PageShell.css'
 
@@ -74,6 +75,10 @@ export default function PageShell({
           </div>
         )}
       </main>
+
+      <div className="page-shell__site-footer">
+        <Footer />
+      </div>
     </div>
   )
 }

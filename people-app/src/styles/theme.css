@@ -1,21 +1,23 @@
-/* ICUE People — shared theme tokens (mirrors news-app) */
+/* ICUE People — blue theme aligned with main site org structure palette */
 :root {
   --icue-black: #0a0a0a;
   --icue-black-2: #1a1a1a;
   --icue-ink: #111316;
   --icue-surface: #ffffff;
-  --icue-surface-2: #f6f7f5;
-  --icue-border: #e7e8e4;
+  --icue-surface-2: #f0f4fa;
+  --icue-border: #d8e2ef;
   --icue-text: #16181d;
   --icue-text-soft: #5b6068;
   --icue-text-faint: #8c929c;
-  --icue-accent: #c8ff00;
-  --icue-accent-ink: #0a0a0a;
+  --icue-accent: #368adf;
+  --icue-accent-light: #1db7ff;
+  --icue-accent-ink: #ffffff;
+  --icue-accent-muted: rgba(54, 138, 223, 0.12);
   --icue-danger: #e5484d;
 
-  --icue-gradient-dark: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  --icue-gradient-accent: linear-gradient(135deg, #c8ff00 0%, #9ee000 100%);
-  --icue-gradient-page: linear-gradient(160deg, #f0f2f5 0%, #e8ecf0 45%, #dfe5eb 100%);
+  --icue-gradient-dark: linear-gradient(135deg, #0a1628 0%, #1a2a42 100%);
+  --icue-gradient-accent: linear-gradient(135deg, #4d5053 0%, #368adf 100%);
+  --icue-gradient-page: linear-gradient(160deg, #eef4fc 0%, #e3ecf8 45%, #d6e4f5 100%);
 
   --icue-radius: 14px;
   --icue-radius-sm: 9px;
@@ -106,12 +108,12 @@ button {
 .btn-accent {
   background: var(--icue-gradient-accent);
   color: var(--icue-accent-ink);
-  box-shadow: 0 6px 18px rgba(200, 255, 0, 0.28);
+  box-shadow: 0 6px 18px rgba(54, 138, 223, 0.28);
 }
 
 .btn-accent:hover {
   transform: translateY(-1.5px);
-  box-shadow: 0 10px 28px rgba(200, 255, 0, 0.4);
+  box-shadow: 0 10px 28px rgba(54, 138, 223, 0.4);
 }
 
 .visually-hidden {

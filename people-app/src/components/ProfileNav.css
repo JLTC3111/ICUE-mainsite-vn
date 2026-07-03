@@ -39,7 +39,7 @@
 .profile-nav__thumb--active {
   opacity: 1;
   border-color: var(--icue-accent);
-  box-shadow: 0 0 0 2px rgba(200, 255, 0, 0.3);
+  box-shadow: 0 0 0 2px rgba(54, 138, 223, 0.35);
 }
 
 .profile-nav__controls {
@@ -62,7 +62,7 @@
 }
 
 .profile-nav__dot--active {
-  background: var(--icue-accent-ink);
+  background: var(--icue-accent);
   transform: scale(1.25);
 }
 

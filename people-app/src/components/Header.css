@@ -11,9 +11,8 @@
 .people-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: var(--icue-header-h);
-  gap: 16px;
+  gap: 20px;
 }
 
 .people-header__brand {
@@ -35,14 +34,16 @@
 }
 
 .people-header__tag {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--icue-text-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--icue-accent-ink);
+  background: var(--icue-gradient-accent);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 
 .people-header__nav {
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -58,8 +59,8 @@
 }
 
 .people-header__link:hover {
-  color: var(--icue-text);
-  background: var(--icue-surface-2);
+  color: var(--icue-accent);
+  background: var(--icue-accent-muted);
 }
 
 .people-header__video-toggle {
@@ -80,8 +81,8 @@
 
 .people-header__video-toggle[aria-pressed="true"] {
   border-color: var(--icue-accent);
-  color: var(--icue-accent-ink);
-  background: rgba(200, 255, 0, 0.15);
+  color: var(--icue-accent);
+  background: var(--icue-accent-muted);
 }
 
 .lang-switcher select {
