@@ -1,5 +1,7 @@
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
 
+const LANG_KEY = 'icue_news_lang'
+
 /** Profile copy in vi, en, de, fr, ko, ja; other langs fall back via profileLangChain. */
 function profileLangChain(lang) {
   if (lang === 'vi') return ['vi', 'en']
