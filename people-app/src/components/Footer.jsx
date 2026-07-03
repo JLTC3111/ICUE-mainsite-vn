@@ -1,11 +1,11 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMainSite } from '../hooks/useMainSite'
 import './Footer.css'
-
-const MAIN = '/'
 
 function Footer() {
   const { t } = useTranslation()
+  const { hashLink, newsroomHref } = useMainSite()
   const year = new Date().getFullYear()
 
   return (
@@ -13,16 +13,16 @@ function Footer() {
       <div className="icue-footer__container">
         <div className="icue-footer__col">
           <h4>{t('footer.company')}</h4>
-          <a href={`${MAIN}#/notableAwards`}>{t('footer.awards')}</a>
-          <a href={`${MAIN}#/communityActivities`}>{t('footer.community')}</a>
-          <a href="/newsroom/">{t('footer.news')}</a>
-          <a href={`${MAIN}#/News`}>{t('nav.archive')}</a>
+          <a href={hashLink('notableAwards')}>{t('footer.awards')}</a>
+          <a href={hashLink('communityActivities')}>{t('footer.community')}</a>
+          <a href={newsroomHref}>{t('footer.news')}</a>
+          <a href={hashLink('News')}>{t('nav.archive')}</a>
         </div>
         <div className="icue-footer__col">
           <h4>{t('footer.otherPages')}</h4>
-          <a href={`${MAIN}#/FAQs`}>{t('footer.faqs')}</a>
-          <a href={`${MAIN}#/recruitment`}>{t('footer.recruitment')}</a>
-          <a href={`${MAIN}#/donations`}>{t('footer.donations')}</a>
+          <a href={hashLink('FAQs')}>{t('footer.faqs')}</a>
+          <a href={hashLink('recruitment')}>{t('footer.recruitment')}</a>
+          <a href={hashLink('donations')}>{t('footer.donations')}</a>
         </div>
         <div className="icue-footer__brand">
           <span className="icue-footer__logo">ICUE</span>
@@ -33,12 +33,12 @@ function Footer() {
 
       <div className="icue-footer__bottom icue-container">
         <div className="icue-footer__legal">
-          <a href={`${MAIN}#/privacy`}>{t('footer.privacy')}</a><span>|</span>
-          <a href={`${MAIN}#/terms`}>{t('footer.terms')}</a><span>|</span>
-          <a href={`${MAIN}#/gdpr`}>{t('footer.gdpr')}</a><span>|</span>
-          <a href={`${MAIN}#/cookies`}>{t('footer.cookies')}</a>
+          <a href={hashLink('privacy')}>{t('footer.privacy')}</a><span>|</span>
+          <a href={hashLink('terms')}>{t('footer.terms')}</a><span>|</span>
+          <a href={hashLink('gdpr')}>{t('footer.gdpr')}</a><span>|</span>
+          <a href={hashLink('cookies')}>{t('footer.cookies')}</a>
         </div>
-        <a href={`${MAIN}#/Contact`} className="icue-footer__partner">{t('footer.partner')}</a>
+        <a href={hashLink('Contact')} className="icue-footer__partner">{t('footer.partner')}</a>
       </div>
     </footer>
   )
