@@ -20,6 +20,13 @@ export function detectInitialLanguage() {
   return 'vi'
 }
 
+export function resolveAssetUrl(assetPath) {
+  if (!assetPath) return ''
+  if (/^https?:\/\//.test(assetPath)) return assetPath
+  const normalized = assetPath.replace(/^\//, '')
+  return `${import.meta.env.BASE_URL}${normalized}`
+}
+
 export function pickLocalized(map, lang) {
   if (!map || typeof map !== 'object') return ''
   for (const code of profileLangChain(lang)) {
@@ -43,7 +50,7 @@ export function localizePerson(person, lang) {
   if (!fields) {
     return {
       id: person.id,
-      photo: person.photo,
+      photo: resolveAssetUrl(person.photo),
       name: person.name || '',
       honorific: person.honorific || '',
       title: person.title || '',
@@ -58,7 +65,7 @@ export function localizePerson(person, lang) {
 
   return {
     id: person.id,
-    photo: person.photo,
+    photo: resolveAssetUrl(person.photo),
     name: fields.name || '',
     honorific: fields.honorific || '',
     title: fields.title || '',

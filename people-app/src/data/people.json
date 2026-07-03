@@ -2,7 +2,7 @@
   {
     "id": "nguyen-hong-hanh",
     "group": "experts",
-    "photo": "/profilePhotos/hanhnguyen__nobg.png",
+    "photo": "profilePhotos/hanhnguyen__nobg.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -24,7 +24,7 @@
   {
     "id": "tran-thi-lan-anh",
     "group": "experts",
-    "photo": "/profilePhotos/tranthilananh__nobg.png",
+    "photo": "profilePhotos/tranthilananh__nobg.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -46,7 +46,7 @@
   {
     "id": "tran-quoc-toan",
     "group": "experts",
-    "photo": "/profilePhotos/tranquoctoan__nobg.png",
+    "photo": "profilePhotos/tranquoctoan__nobg.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -68,7 +68,7 @@
   {
     "id": "nguyen-thanh-tam",
     "group": "experts",
-    "photo": "/profilePhotos/tam.png",
+    "photo": "profilePhotos/tam.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -90,7 +90,7 @@
   {
     "id": "do-bao-long",
     "group": "experts",
-    "photo": "/profilePhotos/longdo__nobg.png",
+    "photo": "profilePhotos/longdo__nobg.png",
     "links": [
       {
         "url": "https://longd.tech/",
@@ -117,7 +117,7 @@
   {
     "id": "nguyen-thi-ly",
     "group": "core",
-    "photo": "/profilePhotos/lyly.png",
+    "photo": "profilePhotos/lyly.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -139,7 +139,7 @@
   {
     "id": "dinh-tung-duong",
     "group": "core",
-    "photo": "/profilePhotos/duong.png",
+    "photo": "profilePhotos/duong.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -161,7 +161,7 @@
   {
     "id": "trinh-thi-tinh",
     "group": "core",
-    "photo": "/profilePhotos/tinh.png",
+    "photo": "profilePhotos/tinh.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -183,7 +183,7 @@
   {
     "id": "nguyen-quynh-ly",
     "group": "core",
-    "photo": "/profilePhotos/nguyenquynhly.png",
+    "photo": "profilePhotos/nguyenquynhly.png",
     "links": [],
     "i18n": {
       "vi": {
@@ -205,7 +205,7 @@
   {
     "id": "phan-thi-hien",
     "group": "core",
-    "photo": "/profilePhotos/hien.png",
+    "photo": "profilePhotos/hien.png",
     "links": [],
     "i18n": {
       "vi": {
