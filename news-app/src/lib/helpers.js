@@ -1,5 +1,7 @@
 // Small dependency-free helpers shared across pages.
 
+import { normalizeHtmlUnicode, normalizeUnicode } from '@icue/text/normalizeUnicode'
+
 export function slugify(text) {
   return (text || '')
     .toString()
@@ -55,9 +57,13 @@ export function formatDateTime(value, locale = 'vi') {
 }
 
 export function plainExcerpt(html, max = 160) {
-  const text = (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  const text = normalizeUnicode(
+    (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(),
+  )
   return text.length > max ? `${text.slice(0, max).trim()}…` : text
 }
+
+export { normalizeHtmlUnicode, normalizeUnicode }
 
 export const fileExt = (name = '') => {
   const i = name.lastIndexOf('.')

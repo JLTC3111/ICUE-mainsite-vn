@@ -9,7 +9,7 @@
 // document, so headings, bold/italic, links, images and embedded media keep
 // their structure — we only swap the human-readable text.
 
-import { normalizeUnicode } from '@icue/text/normalizeUnicode'
+import { normalizeHtmlUnicode, normalizeUnicode } from '@icue/text/normalizeUnicode'
 
 const ENDPOINT = 'https://translate.googleapis.com/translate_a/single'
 
@@ -120,7 +120,7 @@ export async function translateHtml(html, target) {
     }
   })
 
-  const result = doc.body.innerHTML
+  const result = normalizeHtmlUnicode(doc.body.innerHTML)
   cache.set(key, result)
   return result
 }

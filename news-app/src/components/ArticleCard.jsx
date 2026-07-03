@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { formatDate, plainExcerpt } from '../lib/helpers'
+import { formatDate, plainExcerpt, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import { isCategory, categoryColor } from '../lib/categories'
 import './ArticleCard.css'
@@ -11,11 +11,12 @@ function ArticleCard({ article }) {
   const author = article.author || {}
   const byline = article.author_name || author.display_name || author.full_name || 'ICUE'
   const excerpt = article.subtitle || plainExcerpt(article.content_html, 140)
+  const title = normalizeUnicode(article.title)
   const cat = isCategory(article.category) && article.category !== 'general' ? article.category : null
 
   return (
     <article className="news-card">
-      <Link to={`/article/${article.slug}`} className="news-card__media" aria-label={article.title}>
+      <Link to={`/article/${article.slug}`} className="news-card__media" aria-label={title}>
         {article.cover_image_url ? (
           <img
             src={article.cover_image_url}
@@ -41,7 +42,7 @@ function ArticleCard({ article }) {
           </time>
         </div>
         <h3 className="news-card__title">
-          <Link to={`/article/${article.slug}`}>{article.title}</Link>
+          <Link to={`/article/${article.slug}`}>{title}</Link>
         </h3>
         {excerpt && <p className="news-card__excerpt">{excerpt}</p>}
 

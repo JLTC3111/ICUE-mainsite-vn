@@ -15,6 +15,13 @@
   font-size: clamp(30px, 5vw, 46px);
   font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
 }
+
+html:lang(vi) .article-detail__title,
+html:lang(vi) .article-detail__subtitle,
+html:lang(vi) .article-detail__content {
+  font-family: var(--icue-vi-sans);
+  letter-spacing: normal;
+}
 .article-detail__subtitle {
   margin: 0 0 26px;
   font-family: var(--icue-serif);

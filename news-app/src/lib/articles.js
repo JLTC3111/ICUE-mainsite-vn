@@ -1,6 +1,6 @@
 import { supabase, STORAGE_BUCKETS } from './supabase'
 import { fileExt, readMinutes, uniqueSlug } from './helpers'
-import { normalizeDeep } from '@icue/text/normalizeUnicode'
+import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode'
 
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
@@ -11,7 +11,12 @@ const ARTICLE_SELECT = `
 `
 
 function normalizeArticle(article) {
-  return article ? normalizeDeep(article) : article
+  if (!article) return article
+  const normalized = normalizeDeep(article)
+  if (normalized.content_html) {
+    normalized.content_html = normalizeHtmlUnicode(normalized.content_html)
+  }
+  return normalized
 }
 
 // Upload a single File to a public bucket under the user's folder. Returns

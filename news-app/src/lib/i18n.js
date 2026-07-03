@@ -1,7 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import { normalizeUnicode } from '@icue/text/normalizeUnicode'
+import { normalizeDeep } from '@icue/text/normalizeUnicode'
 import { detectInitialLanguage } from './referrerLang'
 
 import en from '../locales/en.json'
@@ -25,7 +25,7 @@ export const SUPPORTED_LANGUAGES = [
 const normalizePostProcessor = {
   type: 'postProcessor',
   name: 'normalizeUnicode',
-  process: normalizeUnicode,
+  process: (value) => normalizeDeep(value),
 }
 
 i18n
@@ -34,12 +34,12 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
-      vi: { translation: vi },
-      de: { translation: de },
-      fr: { translation: fr },
-      ko: { translation: ko },
-      ja: { translation: ja },
+      en: { translation: normalizeDeep(en) },
+      vi: { translation: normalizeDeep(vi) },
+      de: { translation: normalizeDeep(de) },
+      fr: { translation: normalizeDeep(fr) },
+      ko: { translation: normalizeDeep(ko) },
+      ja: { translation: normalizeDeep(ja) },
     },
     fallbackLng: 'vi',
     // Default to Vietnamese on first load. We only read a previously saved

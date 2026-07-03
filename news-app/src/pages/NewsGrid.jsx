@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import ArticleCard from '../components/ArticleCard'
 import CategoryFilter from '../components/CategoryFilter'
 import { fetchPublishedArticles } from '../lib/articles'
-import { formatDate, plainExcerpt } from '../lib/helpers'
+import { formatDate, plainExcerpt, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import { searchArticles } from '../lib/searchArticles'
 import './NewsGrid.css'
@@ -14,6 +14,8 @@ function FeaturedCard({ article }) {
   const author = article.author || {}
   const byline = article.author_name || author.display_name || author.full_name || 'ICUE'
   const cat = isCategory(article.category) && article.category !== 'general' ? article.category : null
+  const title = normalizeUnicode(article.title)
+  const excerpt = normalizeUnicode(article.subtitle || plainExcerpt(article.content_html, 220))
   return (
     <Link to={`/article/${article.slug}`} className="news-featured">
       <div className="news-featured__media">
@@ -34,8 +36,8 @@ function FeaturedCard({ article }) {
             {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
           </time>
         </div>
-        <h2 className="news-featured__title">{article.title}</h2>
-        <p className="news-featured__excerpt">{article.subtitle || plainExcerpt(article.content_html, 220)}</p>
+        <h2 className="news-featured__title">{title}</h2>
+        <p className="news-featured__excerpt">{excerpt}</p>
         <span className="news-featured__meta">
           {byline} · {article.read_minutes || 1} {t('news.minRead')}
         </span>

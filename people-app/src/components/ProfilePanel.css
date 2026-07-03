@@ -71,11 +71,23 @@
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   background: linear-gradient(135deg, #0a1628 0%, #3d3d3d 40%, #368adf 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+html:lang(vi) .profile-panel__title {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+html:lang(vi) .profile-panel__name,
+html:lang(vi) .profile-panel__bio,
+html:lang(vi) .profile-panel__tag {
+  font-family: var(--icue-vi-sans);
+  letter-spacing: normal;
 }
 
 .profile-panel__bio {

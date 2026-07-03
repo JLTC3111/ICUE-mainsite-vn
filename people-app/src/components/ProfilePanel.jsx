@@ -1,10 +1,13 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { normalizeUnicode } from '@icue/text/normalizeUnicode'
 import './ProfilePanel.css'
 
 function ProfilePanel({ person, direction, isActive }) {
   const { t } = useTranslation()
-  const displayName = [person.honorific, person.name].filter(Boolean).join(' ')
+  const displayName = normalizeUnicode(
+    [person.honorific, person.name].filter(Boolean).join(' '),
+  )
   const slideClass = direction === 'left' ? 'profile-panel--from-left' : 'profile-panel--from-right'
 
   return (
@@ -24,15 +27,15 @@ function ProfilePanel({ person, direction, isActive }) {
 
       <div className="profile-panel__content">
         {person.title && (
-          <p className="profile-panel__title">{person.title}</p>
+          <p className="profile-panel__title">{normalizeUnicode(person.title)}</p>
         )}
         <h2 className="profile-panel__name">{displayName}</h2>
-        <p className="profile-panel__bio">{person.bio}</p>
+        <p className="profile-panel__bio">{normalizeUnicode(person.bio)}</p>
 
         {person.highlights?.length > 0 && (
           <ul className="profile-panel__tags" aria-label={t('carousel.highlights')}>
             {person.highlights.map((tag) => (
-              <li key={tag} className="profile-panel__tag">{tag}</li>
+              <li key={tag} className="profile-panel__tag">{normalizeUnicode(tag)}</li>
             ))}
           </ul>
         )}

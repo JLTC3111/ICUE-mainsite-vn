@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
-import { formatDate } from '../lib/helpers'
+import { formatDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
 import HeartButton from '../components/HeartButton'
@@ -53,7 +53,7 @@ export default function ArticleDetail() {
 
   const displayContent = useMemo(() => {
     const raw = translation ? translation.content_html : article?.content_html
-    return embedVideosInHtml(raw || '')
+    return normalizeHtmlUnicode(embedVideosInHtml(raw || ''))
   }, [translation, article?.content_html])
 
   if (state === 'loading') {
@@ -78,8 +78,8 @@ export default function ArticleDetail() {
     navigate('/dashboard')
   }
 
-  const displayTitle = translation ? translation.title : article.title
-  const displaySubtitle = translation ? translation.subtitle : article.subtitle
+  const displayTitle = normalizeUnicode(translation ? translation.title : article.title)
+  const displaySubtitle = normalizeUnicode(translation ? translation.subtitle : article.subtitle)
 
   const applyTranslation = (result, code) => {
     setTranslation(result)
