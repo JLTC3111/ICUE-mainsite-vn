@@ -1,18 +1,6 @@
-const LANG_KEY = 'icue_news_lang'
+import { referrerSiteHint } from './siteOrigin'
 
-function isEnNewsReferrer() {
-  try {
-    const ref = document.referrer
-    if (!ref) return false
-    const url = new URL(ref)
-    const host = url.hostname.toLowerCase()
-    const fromEnSite = host === 'en.icue.vn' || host.endsWith('.en.icue.vn')
-    const newsSection = /#\/News\b/i.test(url.hash) || /\/News/i.test(url.pathname)
-    return fromEnSite && newsSection
-  } catch {
-    return false
-  }
-}
+const LANG_KEY = 'icue_news_lang'
 
 function cleanReferrerParams() {
   const params = new URLSearchParams(window.location.search)
@@ -32,7 +20,7 @@ export function detectInitialLanguage() {
   const params = new URLSearchParams(window.location.search)
   const fromEnBanner = params.get('from') === 'en-news' || params.get('lang') === 'en'
 
-  if (fromEnBanner || isEnNewsReferrer()) {
+  if (fromEnBanner || params.get('site') === 'en' || referrerSiteHint() === 'en') {
     localStorage.setItem(LANG_KEY, 'en')
     cleanReferrerParams()
     return 'en'

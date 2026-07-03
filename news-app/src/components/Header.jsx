@@ -3,15 +3,15 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
+import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
 import DrawerMenu from './DrawerMenu'
 import ArticleSearch from './ArticleSearch'
 import './Header.css'
 
-const MAIN_SITE = 'https://icue.vn'
-
 function Header() {
   const { t } = useTranslation()
+  const { base, archiveLink } = useMainSite()
   const { isAuthed, profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -29,7 +29,7 @@ function Header() {
         <DrawerMenu />
         <ArticleSearch />
 
-        <a href={MAIN_SITE} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
+        <a href={base} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
           <span className="icue-header__logo">{t('brand')}</span>
           <span className="icue-header__tag">{t('brandBadge')}</span>
         </a>
@@ -54,13 +54,13 @@ function Header() {
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
-          <a href={MAIN_SITE} className="icue-header__link" onClick={close}>
+          <a href={base} className="icue-header__link" onClick={close}>
             {t('nav.mainSite')}
           </a>
           <NavLink to="/" end className="icue-header__link" onClick={close}>
             {t('nav.news')}
           </NavLink>
-          <a href="/#/News" className="icue-header__link" onClick={close}>
+          <a href={archiveLink()} className="icue-header__link" onClick={close}>
             {t('nav.archive')}
           </a>
 
