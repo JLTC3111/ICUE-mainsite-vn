@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcherBase from '@icue/i18n/LanguageSwitcher'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 
 function LanguageSwitcher() {
@@ -7,20 +8,13 @@ function LanguageSwitcher() {
   const current = i18n.resolvedLanguage || i18n.language
 
   return (
-    <label className="lang-switcher" title="Language">
-      <span className="visually-hidden">Language</span>
-      <select
-        value={current}
-        onChange={(e) => i18n.changeLanguage(e.target.value)}
-        aria-label="Select language"
-      >
-        {SUPPORTED_LANGUAGES.map((l) => (
-          <option key={l.code} value={l.code}>
-            {l.flag} {l.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <LanguageSwitcherBase
+      languages={SUPPORTED_LANGUAGES}
+      value={current}
+      onChange={(code) => i18n.changeLanguage(code)}
+      ariaLabel="Select language"
+      title="Language"
+    />
   )
 }
 

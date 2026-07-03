@@ -1,6 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import { normalizeUnicode } from '@icue/text/normalizeUnicode'
 import { detectInitialLanguage } from './people'
 
 import en from '../locales/en.json'
@@ -11,15 +12,22 @@ import ko from '../locales/ko.json'
 import ja from '../locales/ja.json'
 
 export const SUPPORTED_LANGUAGES = [
-  { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'ko', label: '한국어', flag: '🇰🇷' },
-  { code: 'ja', label: '日本語', flag: '🇯🇵' },
+  { code: 'vi', label: 'Tiếng Việt' },
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'fr', label: 'Français' },
+  { code: 'ko', label: '한국어' },
+  { code: 'ja', label: '日本語' },
 ]
 
+const normalizePostProcessor = {
+  type: 'postProcessor',
+  name: 'normalizeUnicode',
+  process: normalizeUnicode,
+}
+
 i18n
+  .use(normalizePostProcessor)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -34,6 +42,7 @@ i18n
     fallbackLng: ['en', 'vi'],
     lng: detectInitialLanguage(),
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
+    postProcess: ['normalizeUnicode'],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage'],

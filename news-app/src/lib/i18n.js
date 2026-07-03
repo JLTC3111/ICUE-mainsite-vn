@@ -1,6 +1,7 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import { normalizeUnicode } from '@icue/text/normalizeUnicode'
 import { detectInitialLanguage } from './referrerLang'
 
 import en from '../locales/en.json'
@@ -13,15 +14,22 @@ import ja from '../locales/ja.json'
 // Add more languages by dropping a JSON file in src/locales and registering it here.
 // `code` is the BCP-47 / ISO-639 code used for both the UI and machine translation.
 export const SUPPORTED_LANGUAGES = [
-  { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'ko', label: '한국어', flag: '🇰🇷' },
-  { code: 'ja', label: '日本語', flag: '🇯🇵' },
+  { code: 'vi', label: 'Tiếng Việt' },
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'fr', label: 'Français' },
+  { code: 'ko', label: '한국어' },
+  { code: 'ja', label: '日本語' },
 ]
 
+const normalizePostProcessor = {
+  type: 'postProcessor',
+  name: 'normalizeUnicode',
+  process: normalizeUnicode,
+}
+
 i18n
+  .use(normalizePostProcessor)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -39,6 +47,7 @@ i18n
     // ignoring the browser language so the Newsroom always opens in VI by default.
     lng: detectInitialLanguage(),
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
+    postProcess: ['normalizeUnicode'],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage'],

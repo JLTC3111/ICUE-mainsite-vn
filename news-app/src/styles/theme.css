@@ -24,7 +24,8 @@
   --icue-shadow-lg: 0 24px 60px rgba(16, 19, 24, 0.16);
 
   --icue-serif: "Georgia", "Times New Roman", serif;
-  --icue-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --icue-sans: "Inter", "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --icue-vi-sans: "Noto Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   --icue-maxw: 1200px;
   --icue-readw: 720px;
@@ -54,6 +55,10 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+html:lang(vi) body {
+  font-family: var(--icue-vi-sans);
 }
 
 img, video { max-width: 100%; display: block; }

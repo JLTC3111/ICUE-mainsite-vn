@@ -9,6 +9,8 @@
 // document, so headings, bold/italic, links, images and embedded media keep
 // their structure — we only swap the human-readable text.
 
+import { normalizeUnicode } from '@icue/text/normalizeUnicode'
+
 const ENDPOINT = 'https://translate.googleapis.com/translate_a/single'
 
 // gtx rejects very long `q` values; keep each request comfortably under the limit.
@@ -65,7 +67,7 @@ export async function translateText(text, target) {
   const translatedChunks = await Promise.all(
     chunks.map((chunk) => requestTranslation(chunk, target)),
   )
-  const result = translatedChunks.join('')
+  const result = normalizeUnicode(translatedChunks.join(''))
   cache.set(key, result)
   return result
 }

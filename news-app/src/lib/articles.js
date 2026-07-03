@@ -1,5 +1,6 @@
 import { supabase, STORAGE_BUCKETS } from './supabase'
 import { fileExt, readMinutes, uniqueSlug } from './helpers'
+import { normalizeDeep } from '@icue/text/normalizeUnicode'
 
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
@@ -8,6 +9,10 @@ const ARTICLE_SELECT = `
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
+
+function normalizeArticle(article) {
+  return article ? normalizeDeep(article) : article
+}
 
 // Upload a single File to a public bucket under the user's folder. Returns
 // { url, path }. Storage RLS requires the first path segment to be the user id.
@@ -37,7 +42,7 @@ export async function fetchPublishedArticles({ limit = 24, language } = {}) {
   if (language) q = q.eq('language', language)
   const { data, error } = await q
   if (error) throw error
-  return data ?? []
+  return (data ?? []).map(normalizeArticle)
 }
 
 export async function fetchMyArticles(userId) {
@@ -47,7 +52,7 @@ export async function fetchMyArticles(userId) {
     .eq('author_id', userId)
     .order('updated_at', { ascending: false })
   if (error) throw error
-  return data ?? []
+  return (data ?? []).map(normalizeArticle)
 }
 
 export async function fetchArticleBySlug(slug) {
@@ -57,7 +62,7 @@ export async function fetchArticleBySlug(slug) {
     .eq('slug', slug)
     .maybeSingle()
   if (error) throw error
-  return data
+  return normalizeArticle(data)
 }
 
 export async function fetchArticleById(id) {
@@ -67,7 +72,7 @@ export async function fetchArticleById(id) {
     .eq('id', id)
     .maybeSingle()
   if (error) throw error
-  return data
+  return normalizeArticle(data)
 }
 
 // Persist media: upload any new files, then reconcile rows for the article.

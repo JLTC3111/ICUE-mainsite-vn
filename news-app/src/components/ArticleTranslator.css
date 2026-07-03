@@ -97,8 +97,7 @@
 }
 .translator__opt:hover { background: var(--icue-surface-2); }
 .translator__opt.is-active { font-weight: 700; }
-.translator__flag { font-size: 17px; line-height: 1; }
-.translator__check { margin-left: auto; color: #4a8a00; font-weight: 700; }
+.translator__check { margin-left: auto; color: #4a8a00; flex-shrink: 0; }
 
 .translator__status {
   margin: 10px 0 0;

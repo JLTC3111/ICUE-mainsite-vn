@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import FlagIcon from '@icue/i18n/FlagIcon'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import { translateArticle } from '../lib/translate'
 import './ArticleTranslator.css'
@@ -87,9 +89,11 @@ export default function ArticleTranslator({ article, activeLang, onApply, onRese
                 className={`translator__opt${l.code === activeLang ? ' is-active' : ''}`}
                 onClick={() => choose(l.code)}
               >
-                <span className="translator__flag" aria-hidden>{l.flag}</span>
+                <FlagIcon lang={l.code} className="translator__flag-img" />
                 <span>{l.label}</span>
-                {l.code === activeLang && <span className="translator__check" aria-hidden>✓</span>}
+                {l.code === activeLang && (
+                  <Check className="translator__check" size={16} strokeWidth={2.5} aria-hidden />
+                )}
               </button>
             </li>
           ))}

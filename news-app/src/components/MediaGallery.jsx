@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import './MediaGallery.css'
 
@@ -72,7 +73,9 @@ export default function MediaGallery({ images = [], videos = [] }) {
               aria-label={t('article.viewImage', { n: i + 1 })}
             >
               <img src={img.url} alt="" loading="lazy" decoding="async" />
-              <span className="media-gallery__zoom" aria-hidden>⤢</span>
+              <span className="media-gallery__zoom" aria-hidden>
+                <Maximize2 size={15} strokeWidth={2} />
+              </span>
             </button>
           ))}
         </div>
@@ -80,9 +83,13 @@ export default function MediaGallery({ images = [], videos = [] }) {
 
       {index !== null && images[index] && (
         <div className="lightbox" onClick={close} role="dialog" aria-modal="true">
-          <button className="lightbox__close" onClick={close} aria-label={t('common.cancel')}>✕</button>
+          <button className="lightbox__close" onClick={close} aria-label={t('common.cancel')}>
+            <X size={22} strokeWidth={2} />
+          </button>
           {images.length > 1 && (
-            <button className="lightbox__nav lightbox__prev" onClick={prev} aria-label="Previous">‹</button>
+            <button className="lightbox__nav lightbox__prev" onClick={prev} aria-label="Previous">
+              <ChevronLeft size={28} strokeWidth={2} />
+            </button>
           )}
           <img
             className="lightbox__img"
@@ -91,7 +98,9 @@ export default function MediaGallery({ images = [], videos = [] }) {
             onClick={(e) => e.stopPropagation()}
           />
           {images.length > 1 && (
-            <button className="lightbox__nav lightbox__next" onClick={next} aria-label="Next">›</button>
+            <button className="lightbox__nav lightbox__next" onClick={next} aria-label="Next">
+              <ChevronRight size={28} strokeWidth={2} />
+            </button>
           )}
           {images.length > 1 && (
             <span className="lightbox__count">{index + 1} / {images.length}</span>

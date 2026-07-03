@@ -1,4 +1,5 @@
 import { memo, useCallback, useId, useState } from 'react'
+import { Play, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { MEDIA_LIMITS } from '../lib/supabase'
 import './MediaUploader.css'
@@ -120,7 +121,9 @@ function MediaUploader({ items, onChange }) {
               ) : (
                 <>
                   <video src={m.url} muted playsInline preload="metadata" />
-                  <span className="media-thumb__play">▶</span>
+                  <span className="media-thumb__play" aria-hidden>
+                    <Play size={18} strokeWidth={2} fill="currentColor" />
+                  </span>
                 </>
               )}
               <button
@@ -129,7 +132,7 @@ function MediaUploader({ items, onChange }) {
                 onClick={() => remove(m.id)}
                 aria-label={t('common.delete')}
               >
-                ✕
+                <X size={16} strokeWidth={2} />
               </button>
             </li>
           ))}

@@ -16,6 +16,8 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
     alias: {
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
+      '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
+      '@icue/text': path.resolve(__dirname, '../shared/text'),
     },
   },
   build: {
@@ -44,6 +46,9 @@ export default defineConfig({
   server: {
     fs: {
       allow: [path.resolve(__dirname, '..')],
+    },
+    proxy: {
+      '/flags': { target: 'http://localhost:5173', changeOrigin: true },
     },
   },
 })

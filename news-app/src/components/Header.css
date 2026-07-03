@@ -82,6 +82,12 @@
   margin-left: 4px;
 }
 
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .lang-switcher select {
   appearance: none;
   border: 1px solid var(--icue-border);

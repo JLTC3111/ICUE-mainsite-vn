@@ -1,4 +1,13 @@
 import { useEffect, memo, useCallback, useRef } from 'react'
+import {
+  AlignCenter,
+  AlignLeft,
+  Link as LinkIcon,
+  Quote,
+  Table2,
+  TableProperties,
+  X,
+} from 'lucide-react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -12,6 +21,8 @@ import { Color } from '@tiptap/extension-color'
 import { Table, TableRow, TableCell, TableHeader } from '@tiptap/extension-table'
 import { LineHeight } from '../lib/tiptapLineHeight'
 import './RichTextEditor.css'
+
+const ICON = { size: 16, strokeWidth: 2 }
 
 const TEXT_COLORS = [
   { name: 'Black', value: '#111316' },
@@ -124,7 +135,9 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <ToolbarButton label="Bold" active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}><b>B</b></ToolbarButton>
         <ToolbarButton label="Italic" active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()}><i>i</i></ToolbarButton>
         <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>U</u></ToolbarButton>
-        <ToolbarButton label="Link" active={editor.isActive('link')} onClick={setLink}>🔗</ToolbarButton>
+        <ToolbarButton label="Link" active={editor.isActive('link')} onClick={setLink}>
+          <LinkIcon {...ICON} />
+        </ToolbarButton>
         <span className="rte-sep" />
         <div className="rte-colors" role="group" aria-label="Text color">
           {TEXT_COLORS.map((c) => (
@@ -149,7 +162,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => editor.chain().focus().unsetColor().run()}
           >
-            ✕
+            <X size={14} strokeWidth={2} />
           </button>
         </div>
         <span className="rte-sep" />
@@ -174,19 +187,25 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => editor.chain().focus().unsetHighlight().run()}
           >
-            ✕
+            <X size={14} strokeWidth={2} />
           </button>
         </div>
         <span className="rte-sep" />
         <ToolbarButton label="Heading" active={editor.isActive('heading', { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>T</ToolbarButton>
         <ToolbarButton label="Subheading" active={editor.isActive('heading', { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}><small>T</small></ToolbarButton>
-        <ToolbarButton label="Quote" active={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>❝</ToolbarButton>
+        <ToolbarButton label="Quote" active={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
+          <Quote {...ICON} />
+        </ToolbarButton>
         <span className="rte-sep" />
         <ToolbarButton label="Bullet list" active={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}>•</ToolbarButton>
         <ToolbarButton label="Numbered list" active={editor.isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()}>1.</ToolbarButton>
         <span className="rte-sep" />
-        <ToolbarButton label="Align left" active={editor.isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()}>⯇</ToolbarButton>
-        <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>≡</ToolbarButton>
+        <ToolbarButton label="Align left" active={editor.isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()}>
+          <AlignLeft {...ICON} />
+        </ToolbarButton>
+        <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>
+          <AlignCenter {...ICON} />
+        </ToolbarButton>
         <span className="rte-sep" />
         <label className="rte-lineheight" title="Line spacing">
           <span className="visually-hidden">Line spacing</span>
@@ -211,13 +230,15 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
           label="Insert table"
           onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
         >
-          ⊞
+          <Table2 {...ICON} />
         </ToolbarButton>
         <ToolbarButton label="Add row" disabled={!inTable} onClick={() => editor.chain().focus().addRowAfter().run()}>+R</ToolbarButton>
         <ToolbarButton label="Add column" disabled={!inTable} onClick={() => editor.chain().focus().addColumnAfter().run()}>+C</ToolbarButton>
         <ToolbarButton label="Delete row" disabled={!inTable} onClick={() => editor.chain().focus().deleteRow().run()}>−R</ToolbarButton>
         <ToolbarButton label="Delete column" disabled={!inTable} onClick={() => editor.chain().focus().deleteColumn().run()}>−C</ToolbarButton>
-        <ToolbarButton label="Delete table" disabled={!inTable} onClick={() => editor.chain().focus().deleteTable().run()}>⊟</ToolbarButton>
+        <ToolbarButton label="Delete table" disabled={!inTable} onClick={() => editor.chain().focus().deleteTable().run()}>
+          <TableProperties {...ICON} />
+        </ToolbarButton>
       </div>
 
       <EditorContent editor={editor} />

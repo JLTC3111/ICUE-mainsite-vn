@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -27,9 +28,18 @@ function ScrollToTop() {
   return null
 }
 
+function LangSync() {
+  const { i18n } = useTranslation()
+  useEffect(() => {
+    document.documentElement.lang = i18n.resolvedLanguage || i18n.language || 'vi'
+  }, [i18n.language, i18n.resolvedLanguage])
+  return null
+}
+
 export default function App() {
   return (
     <BrowserRouter basename="/newsroom">
+      <LangSync />
       <ScrollToTop />
       <Suspense fallback={<RouteFallback />}>
         <Routes>

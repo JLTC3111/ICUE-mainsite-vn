@@ -1,4 +1,4 @@
-const LANG_KEY = 'icue_news_lang'
+import { normalizeDeep } from '@icue/text/normalizeUnicode'
 
 /** Profile copy in vi, en, de, fr, ko, ja; other langs fall back via profileLangChain. */
 function profileLangChain(lang) {
@@ -64,7 +64,7 @@ export function localizePerson(person, lang) {
   }
 
   if (!fields) {
-    return {
+    return normalizeDeep({
       id: person.id,
       photo: resolveAssetUrl(person.photo),
       name: person.name || '',
@@ -76,10 +76,10 @@ export function localizePerson(person, lang) {
         url: link.url,
         label: typeof link.label === 'string' ? link.label : pickLocalized(link.label, lang),
       })),
-    }
+    })
   }
 
-  return {
+  return normalizeDeep({
     id: person.id,
     photo: resolveAssetUrl(person.photo),
     name: fields.name || '',
@@ -91,7 +91,7 @@ export function localizePerson(person, lang) {
       url: link.url,
       label: pickLocalized(link.label, lang) || pickLocalized(link.label, 'en'),
     })),
-  }
+  })
 }
 
 export function localizePeople(people, lang) {

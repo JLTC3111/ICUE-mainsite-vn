@@ -38,6 +38,7 @@
 .rte-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
 .rte-btn:active:not(:disabled) { transform: scale(0.94); }
 .rte-btn.is-active { background: var(--icue-accent); color: var(--icue-accent-ink); }
+.rte-btn svg { display: block; }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
 
 .rte-colors,
