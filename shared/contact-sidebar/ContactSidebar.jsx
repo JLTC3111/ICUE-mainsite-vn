@@ -104,7 +104,7 @@ function ContactSidebar() {
           aria-label="Toggle background music"
         >
           <svg
-            fill="#ffffff"
+            fill="#000000"
             width="30"
             height="30"
             viewBox="0 0 512 512"
