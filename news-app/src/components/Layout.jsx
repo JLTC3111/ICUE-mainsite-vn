@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { Outlet } from 'react-router-dom'
+import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
 import Footer from './Footer'
 import MarketTicker from './MarketTicker'
@@ -15,6 +16,7 @@ function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ContactSidebar />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
 import Footer from './Footer'
 import BackgroundVideo from './BackgroundVideo'
@@ -79,6 +80,8 @@ export default function PageShell({
       <div className="page-shell__site-footer">
         <Footer />
       </div>
+
+      <ContactSidebar />
     </div>
   )
 }

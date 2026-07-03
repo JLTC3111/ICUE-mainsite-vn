@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import './ProfileNav.css'
 
-function ProfileNav({ count, currentIndex, onPrev, onNext, onSelect, profiles }) {
+function ProfileNav({ currentIndex, onPrev, onNext, onSelect, profiles }) {
   const { t } = useTranslation()
 
   return (
@@ -24,11 +24,16 @@ function ProfileNav({ count, currentIndex, onPrev, onNext, onSelect, profiles })
       </div>
 
       <div className="profile-nav__controls">
-        <div className="profile-nav__dots" aria-hidden="true">
-          {Array.from({ length: count }, (_, i) => (
-            <span
-              key={i}
+        <div className="profile-nav__dots" role="tablist" aria-label={t('carousel.selectMember')}>
+          {profiles.map((person, i) => (
+            <button
+              key={person.id}
+              type="button"
+              role="tab"
+              aria-selected={i === currentIndex}
+              aria-label={person.name}
               className={`profile-nav__dot ${i === currentIndex ? 'profile-nav__dot--active' : ''}`}
+              onClick={() => onSelect(i)}
             />
           ))}
         </div>

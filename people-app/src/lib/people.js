@@ -1,10 +1,10 @@
 const LANG_KEY = 'icue_news_lang'
 
-/** Profile bios only exist in vi + en; other UI langs should fall back to English. */
+/** Profile copy in vi, en, de, fr, ko, ja; other langs fall back via profileLangChain. */
 function profileLangChain(lang) {
   if (lang === 'vi') return ['vi', 'en']
   if (lang === 'en') return ['en', 'vi']
-  return [lang, 'en']
+  return [lang, 'en', 'vi']
 }
 
 function isEnReferrer() {

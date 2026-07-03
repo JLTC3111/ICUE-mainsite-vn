@@ -102,7 +102,6 @@ export default function ProfileCarousel({ profiles, group }) {
       </div>
 
       <ProfileNav
-        count={localizedProfiles.length}
         currentIndex={currentIndex}
         profiles={localizedProfiles}
         onPrev={goPrev}

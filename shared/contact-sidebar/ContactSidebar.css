@@ -1,0 +1,149 @@
+.contact-sidebar {
+  position: fixed;
+  right: 1.5%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12.5px;
+  z-index: 140;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  animation: contactSidebarFadeIn 4.5s ease-in-out;
+}
+
+@keyframes contactSidebarFadeIn {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.contact-sidebar__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.contact-sidebar__item svg {
+  width: 70%;
+  height: 70%;
+}
+
+.contact-sidebar__item:hover svg {
+  transform: rotate(-360deg) scale(1.25);
+  transition: transform 0.3s ease-in-out;
+}
+
+.contact-sidebar__music {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  transition: transform 0.12s ease;
+}
+
+.contact-sidebar__music:hover svg {
+  transform: scale(1.25);
+  transition: transform 0.3s ease-in-out;
+}
+
+.contact-sidebar__music svg {
+  width: 30px;
+  height: 30px;
+}
+
+.contact-sidebar__divider {
+  width: 15px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.25);
+  margin: -7.5px auto;
+  border-left: 0.5px dotted black;
+  border-right: 0.5px dotted black;
+}
+
+.contact-sidebar__calendar svg {
+  width: 50px;
+  height: 50px;
+}
+
+.contact-sidebar__modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 16px;
+}
+
+.contact-sidebar__modal-panel {
+  position: relative;
+  background: #fff;
+  padding: 36px;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-sidebar__modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 2rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+.contact-sidebar__modal-calendar svg {
+  width: 340px;
+  height: 340px;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .contact-sidebar {
+    top: 50%;
+    right: 1.75%;
+    transform: translateY(-50%);
+  }
+
+  .contact-sidebar__item svg,
+  .contact-sidebar__music svg {
+    width: 25px;
+    height: 25px;
+  }
+}

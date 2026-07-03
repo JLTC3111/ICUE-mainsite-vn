@@ -1,6 +1,10 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { marketApiPlugin } from './vite-market-api-plugin.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Performance-oriented build: aggressive code-splitting so the heavy editor
 // (TipTap/ProseMirror) and Supabase client never block the public news grid.
@@ -8,6 +12,12 @@ export default defineConfig({
   // Distinct from legacy #/News — served at icue.vn/newsroom/
   base: '/newsroom/',
   plugins: [react(), marketApiPlugin()],
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+    alias: {
+      '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
+    },
+  },
   build: {
     // Production serves the repo ROOT statically, so the app must live at
     // /newsroom (not /public/newsroom) to match its base + the banner link.
@@ -29,6 +39,11 @@ export default defineConfig({
           return 'vendor'
         },
       },
+    },
+  },
+  server: {
+    fs: {
+      allow: [path.resolve(__dirname, '..')],
     },
   },
 })
