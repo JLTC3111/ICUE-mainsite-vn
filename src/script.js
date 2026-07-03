@@ -494,191 +494,6 @@ function initOrgProfiles() {
 
   document.addEventListener('DOMContentLoaded', initOrgProfiles);
 
-window.attachProfileEvents_moe = () => {
-  const profileData_moe = [
-    {
-      name: `<span class="intro-people">Tiến Sỹ Nguyễn Hồng Hạnh</span><br> Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị thuộc Tổng Hội Xây Dựng Việt Nam; là chuyên gia về tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng. Nguyên là phó cục trưởng Cục Phát Triển Đô thị thuộc Bộ Xây Dựng (2008-2013); Phó Viện Trưởng thường trực Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (2013-2018); Viện Trưởng Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (3/2018 - nay). Có những sáng kiến lớn về phát triển đô thị xanh, biến đổi khí hậu và đa dạng sinh học; chuyển giao ứng dụng khoa học công nghệ vào chuyển đổi xanh trong kinh tế nông nghiệp và đô thị; tư vấn pháp luật, chính sách cho quy hoạch quốc gia và khu vực.`,
-      img: "public/profilePhotos/hanhnguyen__nobg.png"
-    },
-    {
-      name: `<span class="intro-people">Phó Viện Trưởng TS.KTS Trần Thị Lan Anh</span><br> Chuyên gia quy hoạch và phát triển đô thị; xây dựng chiến lược, hoạch định chính sách và phát triển bền vững. Tiến Sỹ và Thạc Sỹ từ Đại học Tokyo, nền tảng vững chắc về thích ứng với biến đổi khí hậu, phân lại đô thị và chiến lược phát triển quốc gia. Nguyên Phó cục trưởng Cục Phát triển Đô thị-Bộ xây dựng, tham gia các chương trình lớn về phát triển đô thị và quy hoạch đô thị`,
-      img: "public/profilePhotos/tranthilananh__nobg.png"
-    },
-    {
-      name: `<span class="intro-people">Phó Viện Trưởng KS. Trần Quốc Toản </span><br> Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông. Phó cục trưởng Cục giám định-Bộ Giao thông vận tải và các hiệp hội kỹ thuật. Tư vấn chính sách, quy hoạch thông minh và phát triển chiến lược tăng trưởng xanh, các dự án quốc gia lớn`,
-      img: "public/profilePhotos/tranquoctoan__nobg.png"
-    },
-    {
-      name: `<span class="intro-people">Phó Viện Trưởng KTS. Nguyễn Thanh Tâm </span><br> Công tác trong lĩnh vực quy hoạch đô thị, tham gia nghiên cứu và quản lý các đồ án quy hoạch, phục vụ công tác quản lý nhà nước và định hướng phát triển không gian đô thị theo quy định`,
-      img: "public/profilePhotos/tam.png"
-    },
-    {
-      name: `<span class="intro-people"> Đỗ Bảo Long - Quản Lý Dự Án </span><br> Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, <span class="highlight-text-phrase-moe">quản lý hợp đồng (thông minh)</span> và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan. Có khả năng thích nghi cao và chú ý đến chi tiết, với niềm đam mê với phần cứng máy tính, mã hóa và trò chơi. Có kinh nghiệm <span class="highlight-text-phrase-moe">thiết kế</span> và <span class="highlight-text-phrase-moe">giải quyết vấn đề sáng tạo</span>. 🔧💬 <a href="https://longd.tech/" target="_blank">Trang cá nhân</a>`,
-      img: "public/profilePhotos/longdo__nobg.png"
-    }
-  ];
-
-  let currentIndex = 0;
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchEndX = 0;
-  let touchEndY = 0;
-  const MIN_SWIPE_DISTANCE = 15;
-  
-  const textBox = document.getElementById('profile-text');
-  const photo = document.getElementById('profile-photo');
-  const container = document.querySelector('.image-container');
-
-  // Visual cues: add left/right overlays
-  if (textBox && !document.getElementById('profile-cue-left')) {
-    const leftCue = document.createElement('div');
-    leftCue.id = 'profile-cue-left';
-    leftCue.style.position = 'absolute';
-    leftCue.style.left = 0;
-    leftCue.style.top = 0;
-    leftCue.style.width = '40%';
-    leftCue.style.height = '100%';
-    leftCue.style.pointerEvents = 'none';
-    leftCue.style.display = 'flex';
-    leftCue.style.alignItems = 'center';
-    leftCue.style.justifyContent = 'flex-start';
-    leftCue.style.zIndex = 2;
-    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
-    textBox.style.position = 'relative';
-    textBox.appendChild(leftCue);
-    const rightCue = document.createElement('div');
-    rightCue.id = 'profile-cue-right';
-    rightCue.style.position = 'absolute';
-    rightCue.style.right = 0;
-    rightCue.style.top = 0;
-    rightCue.style.width = '40%';
-    rightCue.style.height = '100%';
-    rightCue.style.pointerEvents = 'none';
-    rightCue.style.display = 'flex';
-    rightCue.style.alignItems = 'center';
-    rightCue.style.justifyContent = 'flex-end';
-    rightCue.style.zIndex = 2;
-    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
-    textBox.appendChild(rightCue);
-  }
-
-  let typingSessionObj = { skip: false };
-  let isTyping = false;
-  let skipOnNextClick = false;
-
-  function updateProfile_moe (index, direction = 'right') {
-    if (!textBox || !photo) return;
-    const isFirstLoad = (currentIndex === 0 && index === 0);
-    if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-right' : 'slide-exit-left');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    }
-    
-    setTimeout(() => {
-      textBox.innerHTML = "";
-      const message = profileData_moe[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
-      typingSessionObj = { skip: false };
-      isTyping = true;
-      skipOnNextClick = false;
-      typeHTMLString(containerDiv, message, 50, () => {
-        gsap.fromTo(containerDiv, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
-        );
-        isTyping = false;
-        skipOnNextClick = false;
-      }, typingSessionObj);
-      
-      photo.src = profileData_moe[index].img;
-      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
-      photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      const tl = gsap.timeline();
-      tl.fromTo(photo, 
-        { x: direction === 'right' ? -37.5 : 100, scale: .75, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 0.25, scale: 1, ease: "power2.out" }
-      );
-      tl.fromTo(textBox, 
-        { x: direction === 'right' ? 100 : -37.5, scale: .75, opacity: 0 }, 
-        { x: 0, opacity: 1, duration: 0.25, scale: 1, ease: "power2.out" },
-        "-=0.5"
-      );
-    }, 300);
-  };
-
-  document.getElementById('moe-next-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % profileData_moe.length;
-    updateProfile_moe(currentIndex, 'right');
-  });
-  document.getElementById('moe-prev-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
-    updateProfile_moe(currentIndex, 'left');
-  });
-
-  
-  updateProfile_moe(0);
-
-  if (textBox) {
-      const handleClick = (e) => {
-        if (isTyping) {
-          typingSessionObj.skip = true;
-          return;
-        }
-      };
-      textBox.addEventListener('click', handleClick);
-    }
-
-  if (textBox && isTruelyTouchDevice()) {
-  const swipeElements = [container, textBox];
-  let swipeLocked = false;
-  
-  const prevBtn = document.getElementById('moe-prev-btn');
-  const nextBtn = document.getElementById('moe-next-btn');
-  if (prevBtn) prevBtn.style.display = 'none';
-  if (nextBtn) nextBtn.style.display = 'none';
-
-  swipeElements.forEach(el => {
-    el.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;  // Track vertical position
-    });
-
-    el.addEventListener('touchend', (e) => {
-      if (swipeLocked) return;
-
-      touchEndX = e.changedTouches[0].screenX;
-      touchEndY = e.changedTouches[0].screenY;  // Track vertical position
-
-      const deltaX = touchEndX - touchStartX;
-      const deltaY = touchEndY - touchStartY;
-
-      // Ignore diagonal or mostly vertical swipes
-      if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaY) > Math.abs(deltaX)) {
-        return;  // Vertical or diagonal swipe
-      }
-
-      const swipeDistance = deltaX;
-
-      if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
-        swipeLocked = true;
-          // Right swipe (next)
-            if (swipeDistance > 0) {
-                currentIndex = (currentIndex - 1 + profileData_moe.length) % profileData_moe.length;
-                updateProfile_moe(currentIndex, 'left');
-              }
-              // Left swipe (previous)
-              else {
-                currentIndex = (currentIndex + 1) % profileData_moe.length;
-                updateProfile_moe(currentIndex, 'right');
-              }
-
-              setTimeout(() => swipeLocked = false, 500); // Debounce
-            }
-          });
-        });
-      }
-  }
 
 window.calendarModal = () => {
     const calendarIcon = document.querySelector('.calendar-icon svg');
@@ -1294,228 +1109,6 @@ const HomeBackgroundVideoManager = (() => {
 
 window.HomeBackgroundVideoManager = HomeBackgroundVideoManager;
 
-const MeetOurExpertsBackgroundVideoManager = (() => {
-  const STORAGE_KEY_ENABLED = 'moe_bg_video_enabled';
-  let _enabled = false;
-
-  const initEnabledState = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
-      if (raw === null) _enabled = true; // Default ON
-      else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
-    } catch (e) {
-      _enabled = true; // Default ON
-    }
-  };
-
-  const getUserEnabled = () => _enabled;
-  const setUserEnabled = (enabled) => {
-    _enabled = !!enabled;
-    try {
-      localStorage.setItem(STORAGE_KEY_ENABLED, _enabled ? '1' : '0');
-    } catch (e) {
-      // ignore
-    }
-  };
-
-  initEnabledState();
-
-  const debounce = (fn, delay = 200) => {
-    let timer;
-    return function debounced(...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), delay);
-    };
-  };
-
-  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
-  const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  const canPlayVideosInThisContext = () => {
-    const connection = getConnection();
-    const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
-  };
-
-  const shouldKeepStatic = () => {
-    if (!getUserEnabled()) return true;
-    return !canPlayVideosInThisContext();
-  };
-
-  const getVideoEl = () => document.querySelector('.video-bg-moe');
-  const getChosenSrc = () => (isMobileViewport() ? 'public/bgVideos/moe_bg_mobile.mp4' : 'public/bgVideos/moe_bg.mp4');
-
-  const syncRootVideoStateAttr = () => {
-    if (!document?.documentElement) return;
-    const shouldHide = shouldKeepStatic();
-    const el = getVideoEl();
-
-    if (shouldHide) {
-      document.documentElement.setAttribute('data-moe-bg-video', 'off');
-      if (el) {
-        el.pause();
-        el.style.display = 'none';
-      }
-    } else {
-      document.documentElement.removeAttribute('data-moe-bg-video');
-      if (el) {
-        el.style.display = '';
-      }
-    }
-  };
-
-  const setVideoSource = (el) => {
-    if (!el) return;
-    const src = getChosenSrc();
-    const current = el.getAttribute('data-active-src') || el.currentSrc || el.src;
-    if (current && current.includes(src)) return;
-    el.src = src;
-    el.setAttribute('data-active-src', src);
-    el.load();
-  };
-
-  const attemptPlay = (el) => {
-    if (!el) return;
-    const p = el.play();
-    if (p?.catch) {
-      p.catch(() => {
-        el.muted = true;
-        el.setAttribute('muted', '');
-      });
-    }
-  };
-
-  let resizeHandler = null;
-  let visibilityHandler = null;
-
-  // Use a global flag on document to ensure delegation is bound only once
-  const ensureToggleDelegation = () => {
-    if (document._moeToggleDelegationBound) return;
-    document._moeToggleDelegationBound = true;
-
-    const handler = (e) => {
-      const target = e.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.id !== 'moeVideoToggleDesktop' && target.id !== 'moeVideoToggleMobile') return;
-      if (target.disabled) return;
-      console.warn('[MOEVideoToggle] Event:', e.type, 'id:', target.id, 'checked:', target.checked);
-      
-      // Update state and UI directly
-      const newState = !!target.checked;
-      setUserEnabled(newState);
-      syncRootVideoStateAttr();
-      
-      if (newState) {
-        // Enable: start video
-        const el = getVideoEl();
-        if (el) {
-          el.muted = true;
-          el.playsInline = true;
-          setVideoSource(el);
-          attemptPlay(el);
-        }
-      } else {
-        // Disable: pause video
-        const el = getVideoEl();
-        if (el) el.pause();
-      }
-      
-      // Sync both toggles
-      const otherToggle = document.getElementById(
-        target.id === 'moeVideoToggleDesktop' ? 'moeVideoToggleMobile' : 'moeVideoToggleDesktop'
-      );
-      if (otherToggle) otherToggle.checked = newState;
-    };
-
-    document.addEventListener('change', handler, true);
-    document.addEventListener('input', handler, true);
-  };
-
-  const bindToggleUI = () => {
-    ensureToggleDelegation();
-    const desktopToggle = document.getElementById('moeVideoToggleDesktop');
-    const mobileToggle = document.getElementById('moeVideoToggleMobile');
-    const toggles = [desktopToggle, mobileToggle].filter(Boolean);
-    if (!toggles.length) return;
-
-    const enabled = getUserEnabled();
-    const canPlay = canPlayVideosInThisContext();
-    syncRootVideoStateAttr();
-
-    toggles.forEach((toggle) => {
-      toggle.checked = enabled;
-      toggle.disabled = !canPlay;
-    });
-  };
-
-  const init = () => {
-    MeetOurExpertsBackgroundVideoManager.destroy();
-    bindToggleUI();
-    syncRootVideoStateAttr();
-
-    if (shouldKeepStatic()) return;
-    const el = getVideoEl();
-    if (!el) return;
-
-    el.muted = true;
-    el.playsInline = true;
-    el.setAttribute('muted', '');
-    el.setAttribute('playsinline', '');
-    el.setAttribute('webkit-playsinline', '');
-
-    setVideoSource(el);
-    attemptPlay(el);
-
-    resizeHandler = debounce(() => {
-      bindToggleUI();
-      if (shouldKeepStatic()) {
-        syncRootVideoStateAttr();
-        return;
-      }
-      const currentEl = getVideoEl();
-      setVideoSource(currentEl);
-      attemptPlay(currentEl);
-    }, 300);
-    window.addEventListener('resize', resizeHandler, { passive: true });
-
-    visibilityHandler = () => {
-      const currentEl = getVideoEl();
-      if (!currentEl) return;
-      if (document.hidden) currentEl.pause();
-      else if (!shouldKeepStatic()) attemptPlay(currentEl);
-    };
-    document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
-  };
-
-  const destroy = () => {
-    const el = getVideoEl();
-    if (el) {
-      el.pause();
-    }
-    if (resizeHandler) {
-      window.removeEventListener('resize', resizeHandler);
-      resizeHandler = null;
-    }
-    if (visibilityHandler) {
-      document.removeEventListener('visibilitychange', visibilityHandler);
-      visibilityHandler = null;
-    }
-    syncRootVideoStateAttr();
-  };
-
-  const setEnabled = (enabled) => {
-    setUserEnabled(!!enabled);
-    syncRootVideoStateAttr();
-    if (enabled) init();
-    else destroy();
-    bindToggleUI();
-  };
-
-  const isEnabled = () => getUserEnabled();
-
-  return { init, destroy, bindToggleUI, setEnabled, isEnabled };
-})();
-
-window.MeetOurExpertsBackgroundVideoManager = MeetOurExpertsBackgroundVideoManager;
 
 const AboutUsBackgroundVideoManager = (() => {
   const STORAGE_KEY_ENABLED = 'aboutUs_bg_video_enabled';
@@ -1774,6 +1367,15 @@ const AboutUsBackgroundVideoManager = (() => {
 window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
 
 window.loadPage = (page) => {
+  if (page === 'meetOurExperts') {
+    window.location.replace('/people/experts');
+    return;
+  }
+  if (page === 'coreTeam') {
+    window.location.replace('/people/core-team');
+    return;
+  }
+
   const content = document.getElementById('content');
   const landing = document.getElementById('landing-page');
   const progressBar = document.querySelector('.progress-bar');
@@ -1797,16 +1399,12 @@ window.loadPage = (page) => {
       document.getElementById('homeVideoToggleContainerDesktop'),
       document.getElementById('homeVideoToggleContainerMobile')
     ].filter(Boolean);
-    const moeVideoToggleContainers = [
-      document.getElementById('moeVideoToggleContainerDesktop'),
-      document.getElementById('moeVideoToggleContainerMobile')
-    ].filter(Boolean);
     const aboutUsVideoToggleContainers = [
       document.getElementById('aboutUsVideoToggleContainerDesktop'),
       document.getElementById('aboutUsVideoToggleContainerMobile')
     ].filter(Boolean);
     const contactLink = document.getElementById('contactLink');
-    return { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink };
+    return { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink };
   };
 
   const showContainers = (containers, show) => {
@@ -1818,34 +1416,25 @@ window.loadPage = (page) => {
   };
 
   const hideAllNavVideoToggles = () => {
-    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
     showContainers(homeVideoToggleContainers, false);
-    showContainers(moeVideoToggleContainers, false);
     showContainers(aboutUsVideoToggleContainers, false);
     if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
   };
 
   const updateNavVideoToggleVisibility = () => {
-    const { homeVideoToggleContainers, moeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
 
     if (page === 'Home') {
       showContainers(homeVideoToggleContainers, true);
-      showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
       if (contactLink) contactLink.style.removeProperty('display');
-    } else if (page === 'meetOurExperts') {
-      showContainers(homeVideoToggleContainers, false);
-      showContainers(moeVideoToggleContainers, true);
-      showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else if (page === 'aboutUs') {
       showContainers(homeVideoToggleContainers, false);
-      showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, true);
       if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else {
       showContainers(homeVideoToggleContainers, false);
-      showContainers(moeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
       if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     }
@@ -1855,7 +1444,6 @@ window.loadPage = (page) => {
   hideAllNavVideoToggles();
 
   window.HomeBackgroundVideoManager?.destroy();
-  window.MeetOurExpertsBackgroundVideoManager?.destroy();
   window.AboutUsBackgroundVideoManager?.destroy();
   if (typeof destroyHomeMobileObserver === 'function') {
     destroyHomeMobileObserver();
@@ -1934,7 +1522,7 @@ window.loadPage = (page) => {
   if (progressMs) progressMs.textContent = '0 ms';
   rafId = requestAnimationFrame(tick);
 
-  const pageToFetch = page === 'meetOurExperts' ? 'meetourexperts' : page;
+  const pageToFetch = page;
   // Capture the controller/signal used for THIS navigation.
   // navState.controller can be replaced by a newer navigation before this one settles.
   const controller = navState.controller;
@@ -2021,15 +1609,6 @@ window.loadPage = (page) => {
             }
 
             switch (page) {
-              case 'meetOurExperts':
-                attachProfileEvents_moe();
-                MeetOurExpertsBackgroundVideoManager.bindToggleUI();
-                MeetOurExpertsBackgroundVideoManager.init();
-                break;
-              case 'coreTeam':
-                makeItRainText();
-                attachProfileEvents_coreTeam();
-                break;
               case 'Home':
                 initHomeMobileObserver();
                 attachHomeButtonEvents();
@@ -2610,199 +2189,6 @@ window.toggleSubmenu = (e) => {
   }
 };
 
-window.attachProfileEvents_coreTeam = () => {
-  const profileData_coreTeam = [
-    {name: 
-      `<span class="intro-core"> Nguyễn Thị Ly </span> Có nền tảng học thuật vững chắc về <span class="highlight-text-phrase-core">quy hoạch đô thị</span>, <span class="highlight-text-phrase-core">phát triển đô thị bền vững</span>, <span class="highlight-text-phrase-core">quản lý cơ sở hạ tầng</span> và <span class="highlight-text-phrase-core">thiết kế không gian công cộng</span>. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao. Chủ động, ham học hỏi và cam kết thúc đẩy chuyên môn thông qua việc tham gia vào các dự án đô thị ưu tiên các giải pháp <span class="highlight-text-phrase-core">bền vững</span> và thân thiện với môi trường.`, 
-      img: "public/profilePhotos/lyly.png"
-    },
-    {
-      name: `<span class="intro-core">Đinh Tùng Dương</span> Tôi có bằng <span class="highlight-text-phrase-core">Quản lý Đô thị</span> của Đại học Kiến trúc Hà Nội, nơi tôi vinh dự được vinh danh là <span class="highlight-text-phrase-core">Thủ khoa</span> của Hà Nội năm 2023. Trong hai năm qua, tôi đã tích cực đóng góp vào các dự án phát triển đô thị tập trung vào <span class="highlight-text-phrase-core">quy hoạch không gian</span>, <span class="highlight-text-phrase-core">cải thiện cảnh quan</span> và <span class="highlight-text-phrase-core">cuộc sống đô thị bền vững</span>. Tôi có khả năng <span class="highlight-text-phrase-core">phân tích</span> và <span class="highlight-text-phrase-core">tổ chức mạnh mẽ</span>, cùng với sự thành thạo trong cả phần mềm văn phòng và phần mềm kỹ thuật. Tôi cam kết phát triển chuyên môn liên tục và đặt mục tiêu đóng góp hiệu quả cho một tổ chức tiến bộ, có uy tín. `,
-      img: "public/profilePhotos/duong.png"
-    },
-    {
-      name: `<span class="intro-core">Trịnh Thị Tình </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">Quản trị kinh doanh</span> tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có <span class="highlight-text-phrase-core">trách nhiệm</span>, luôn khao khát học hỏi và phát triển. Với tinh thần trách nhiệm cao, tôi coi trọng tinh thần làm việc theo nhóm và áp dụng kinh nghiệm tích lũy được để mang lại kết quả chất lượng. Tôi mong muốn phát triển sự nghiệp của mình hơn nữa trong một môi trường chuyên nghiệp, nơi tôi có thể đóng góp tích cực vào thành công của tổ chức.`,
-      img: "public/profilePhotos/tinh.png"
-    },
-    {
-      name: `<span class="intro-core">Nguyễn Quỳnh Ly </span> Tôi tốt nghiệp <span class="highlight-text-phrase-core">Đại học Kinh tế Quốc dân</span>, được đào tạo bài bản và có tinh thần trách nhiệm cao trong công việc. Tôi có kinh nghiệm <span class="highlight-text-phrase-core">đấu thầu các dự án máy móc thiết bị</span>, cũng như các dự án liên quan đến <span class="highlight-text-phrase-core">quy hoạch đô thị</span>. Ngoài ra, tôi có khả năng xử lý nhiều công việc hành chính khác nhau. Những vai trò này đã giúp tôi xây dựng được các kỹ năng chuyên môn và làm việc nhóm mạnh mẽ. Tôi mong muốn được làm việc trong một môi trường chuyên nghiệp, nơi tôi có thể áp dụng các khả năng của mình và đóng góp vào sự phát triển của tổ chức.`,
-      img: "public/profilePhotos/nguyenquynhly.png"
-    },
-    {
-      name: `<span class="intro-core">Phan Thị Hiến </span> Tốt nghiệp chuyên ngành <span class="highlight-text-phrase-core">kế toán</span> tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến ​​thức và kỹ năng về <span class="highlight-text-phrase-core">kế toán</span>, <span class="highlight-text-phrase-core">báo cáo tài chính</span> và <span class="highlight-text-phrase-core">phân tích dữ liệu</span>. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc. Ngoài ra, tôi còn có khả năng làm việc nhóm, giúp tôi phối hợp hiệu quả với các phòng ban khác. Tôi hy vọng sẽ tiếp tục phát triển sự nghiệp kế toán và đóng góp vào sự thành công của công ty.`,
-      img: "public/profilePhotos/hien.png"
-    },
-  ];
-
-  let currentIndex = 0;
-  
-  const textBox = document.getElementById('profile-text-coreTeam');
-  const photo = document.getElementById('profile-photo-coreTeam');
-  const container = document.getElementById('profile-text-coreTeam')?.parentElement;
-
-  // Visual cues: add left/right overlays
-  if (textBox && !document.getElementById('profile-cue-left-core')) {
-    const leftCue = document.createElement('div');
-    leftCue.id = 'profile-cue-left-core';
-    leftCue.style.position = 'absolute';
-    leftCue.style.left = 0;
-    leftCue.style.top = 0;
-    leftCue.style.width = '40%';
-    leftCue.style.height = '100%';
-    leftCue.style.pointerEvents = 'none';
-    leftCue.style.display = 'flex';
-    leftCue.style.alignItems = 'center';
-    leftCue.style.justifyContent = 'flex-start';
-    leftCue.style.zIndex = 2;
-    leftCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-left:8px;user-select:none;">&#8592;</span>';
-    textBox.style.position = 'relative';
-    textBox.appendChild(leftCue);
-    const rightCue = document.createElement('div');
-    rightCue.id = 'profile-cue-right-core';
-    rightCue.style.position = 'absolute';
-    rightCue.style.right = 0;
-    rightCue.style.top = 0;
-    rightCue.style.width = '40%';
-    rightCue.style.height = '100%';
-    rightCue.style.pointerEvents = 'none';
-    rightCue.style.display = 'flex';
-    rightCue.style.alignItems = 'center';
-    rightCue.style.justifyContent = 'flex-end';
-    rightCue.style.zIndex = 2;
-    rightCue.innerHTML = '<span style="font-size:2rem;opacity:0.25;margin-right:8px;user-select:none;">&#8594;</span>';
-    textBox.appendChild(rightCue);
-  }
-
-  let typingSessionObj = { skip: false };
-  let isTyping = false;
-  let skipOnNextClick = false;
-
-  window.updateProfile_coreTeam = (index, direction = 'right') => {
-    if (!textBox || !photo) return;
-    const isFirstLoad = (currentIndex === 0 && index === 0);
-    if (!isFirstLoad) {
-      textBox.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-      photo.classList.add(direction === 'right' ? 'slide-exit-left' : 'slide-exit-right');
-    }
-    setTimeout(() => {
-      textBox.innerHTML = "";
-      const message = profileData_coreTeam[index].name;
-      const containerDiv = document.createElement("div");
-      textBox.appendChild(containerDiv);
-      typingSessionObj = { skip: false };
-      isTyping = true;
-      skipOnNextClick = false;
-      typeHTMLString(containerDiv, message, 30, () => {
-        gsap.fromTo(containerDiv, 
-          { opacity: 0, y: 10, scale: 0.98 }, 
-          { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power1.out" }
-        );
-        isTyping = false;
-        skipOnNextClick = false;
-      }, typingSessionObj);
-      photo.src = profileData_coreTeam[index].img;
-      textBox.classList.remove('slide-exit-left', 'slide-exit-right');
-      photo.classList.remove('slide-exit-left', 'slide-exit-right');
-      textBox.classList.remove('slide-enter-left', 'slide-enter-right');
-      photo.classList.remove('slide-enter-left', 'slide-enter-right');
-      const tl = gsap.timeline();
-      if (isFirstLoad) {
-        tl.fromTo(photo,
-          { y: 100, scale: 0.25, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
-        );
-        tl.fromTo(textBox,
-          { y: -50, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, ease: "bounce.out" },
-          "-=0.8"
-        );
-      } else {
-        tl.fromTo(photo,
-          { y: 100, scale: 0.25, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1, ease: "power3.out" }
-        );
-        tl.to(photo, {
-          y: 10,
-          duration: 0.3,
-          ease: "power2.out"
-        }, "-=0.4");
-        tl.set(photo, { y: 10 });
-        tl.fromTo(textBox,
-          { x: direction === 'right' ? 100 : -100, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-          "-=0.5"
-        );
-      }
-    }, isFirstLoad ? 0 : 800);
-  };
-
-  document.getElementById('core-next-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'right');
-  });
-
-  document.getElementById('core-prev-btn')?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-    updateProfile_coreTeam(currentIndex, 'left');
-  });
-
-  updateProfile_coreTeam(0);
-
-  if (textBox) {
-      const handleClick = (e) => {
-        if (isTyping) {
-          typingSessionObj.skip = true;
-          return;
-        }
-      };
-      textBox.addEventListener('click', handleClick);
-    }
-
-    if (textBox && isTruelyTouchDevice()) {
-      const prevBtn = document.getElementById('core-prev-btn');
-      const nextBtn = document.getElementById('core-next-btn');
-      if (prevBtn) prevBtn.style.display = 'none';
-      if (nextBtn) nextBtn.style.display = 'none';
-      
-      const swipeTarget = container || textBox; 
-      let swipeLocked = false;
-      const MIN_SWIPE_DISTANCE = 25;
-      
-      let touchStartX = 0;
-      let touchStartY = 0;
-
-      swipeTarget.addEventListener('touchstart', (e) => {
-        const touch = e.changedTouches[0];
-        touchStartX = touch.screenX;
-        touchStartY = touch.screenY;
-      });
-
-      swipeTarget.addEventListener('touchend', (e) => {
-        if (swipeLocked) return;
-
-        const touch = e.changedTouches[0];
-        const touchEndX = touch.screenX;
-        const touchEndY = touch.screenY;
-
-        const deltaX = touchEndX - touchStartX;
-        const deltaY = touchEndY - touchStartY;
-
-        // Ignore diagonal or mostly vertical swipes
-        if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE || Math.abs(deltaX) < Math.abs(deltaY)) return;
-          swipeLocked = true;
-          if (deltaX > 0) {
-            // Swipe right = previous profile
-            currentIndex = (currentIndex - 1 + profileData_coreTeam.length) % profileData_coreTeam.length;
-            updateProfile_coreTeam(currentIndex, 'left');
-          } else if (deltaX < 0) {
-            // Swipe left = next profile
-            currentIndex = (currentIndex + 1) % profileData_coreTeam.length;
-            updateProfile_coreTeam(currentIndex, 'right');
-          }
-          setTimeout(() => swipeLocked = false, 500);
-      });
-    }
-  }
 
 
 window.initLogoSlider = () => {
@@ -5563,6 +4949,12 @@ document.addEventListener("DOMContentLoaded", function() {
     if (targetPageName === 'Home') {
       targetPath = '#/Home';
       console.log('🔧 [DEBUG] Home page - hash path:', targetPath);
+    } else if (targetPageName === 'meetOurExperts') {
+      targetPath = '/people/experts';
+      console.log('🔧 [DEBUG] People experts page - path:', targetPath);
+    } else if (targetPageName === 'coreTeam') {
+      targetPath = '/people/core-team';
+      console.log('🔧 [DEBUG] People core team page - path:', targetPath);
     } else if (staticPages.includes(targetPageName)) {
       // Use hash-based routing for static pages too
       targetPath = `#/${targetPageName}`;
@@ -6125,27 +5517,23 @@ function initAudioVisualizer(
   enableCursorGradientTrail(); 
 
   window.preloadProfileImages = () => {
-  // Images for meetourexperts.html
-  const expertImages = [
-    "public/profilePhotos/hanhnguyen__nobg.png",
-     "public/profilePhotos/tam.png",
-    "public/profilePhotos/tranthilananh__nobg.png",
-    "public/profilePhotos/tranquoctoan__nobg.png",
-    "public/profilePhotos/longdo__nobg.png"
-  ];
-  // Images for coreTeam.html
-  const coreTeamImages = [
-    "public/profilePhotos/lyly.png",
-    "public/profilePhotos/duong.png",
-    "public/profilePhotos/tinh.png",
-    "public/profilePhotos/lyicue.png",
-    "public/profilePhotos/hien.png"
-  ];
-  [...expertImages, ...coreTeamImages].forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-};
+    const peopleImages = [
+      '/profilePhotos/hanhnguyen__nobg.png',
+      '/profilePhotos/tranthilananh__nobg.png',
+      '/profilePhotos/tranquoctoan__nobg.png',
+      '/profilePhotos/tam.png',
+      '/profilePhotos/longdo__nobg.png',
+      '/profilePhotos/lyly.png',
+      '/profilePhotos/duong.png',
+      '/profilePhotos/tinh.png',
+      '/profilePhotos/nguyenquynhly.png',
+      '/profilePhotos/hien.png',
+    ];
+    peopleImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  };
 
 window.addEventListener('DOMContentLoaded', () => {
   console.log('🎯 [DEBUG] Main DOMContentLoaded fired - calling preloadProfileImages');

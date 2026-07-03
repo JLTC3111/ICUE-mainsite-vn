@@ -1,0 +1,19 @@
+.route-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.spin {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ddd;
+  border-top-color: #111;
+  border-radius: 50%;
+  animation: icue-spin 0.7s linear infinite;
+}
+
+@keyframes icue-spin {
+  to { transform: rotate(360deg); }
+}

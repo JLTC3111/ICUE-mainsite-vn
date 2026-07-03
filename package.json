@@ -27,6 +27,8 @@
     "server": "node server.js",
     "server-dev": "nodemon server.js",
     "build:newsroom": "npm run build --prefix news-app",
-    "dev:newsroom": "npm run dev --prefix news-app"
+    "dev:newsroom": "npm run dev --prefix news-app",
+    "build:people": "npm run build --prefix people-app",
+    "dev:people": "npm run dev --prefix people-app"
   }
 }

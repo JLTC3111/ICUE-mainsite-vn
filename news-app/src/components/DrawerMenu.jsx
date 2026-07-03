@@ -6,6 +6,7 @@ import './DrawerMenu.css'
 // structure + naming of the main site's drawer menu.
 const MAIN = 'https://icue.vn'
 const link = (page) => `${MAIN}/#/${page}`
+const peopleLink = (path) => `${MAIN}/people/${path}`
 
 const Icon = ({ children }) => (
   <svg
@@ -110,11 +111,11 @@ function DrawerMenu() {
           </button>
 
           <div className={`nav-drawer__submenu ${peopleOpen ? 'is-open' : ''}`}>
-            <a href={link('meetOurExperts')} onClick={close}>
+            <a href={peopleLink('experts')} onClick={close}>
               <Icon><path strokeLinecap="round" strokeLinejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" /></Icon>
               {t('drawer.experts')}
             </a>
-            <a href={link('coreTeam')} onClick={close}>
+            <a href={peopleLink('core-team')} onClick={close}>
               <Icon><path strokeLinecap="round" strokeLinejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" /></Icon>
               {t('drawer.coreTeam')}
             </a>

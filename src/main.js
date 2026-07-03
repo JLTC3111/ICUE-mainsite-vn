@@ -456,7 +456,7 @@ footer {
      function autoInjectFooter() {
         
         const injectIfMissing = () => {
-            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/meetOurExperts', '#/coreTeam', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities', '#/pastProjects'];
+            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities', '#/pastProjects'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);
             const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();

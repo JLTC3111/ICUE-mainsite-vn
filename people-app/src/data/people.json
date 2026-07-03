@@ -1,0 +1,112 @@
+[
+  {
+    "id": "nguyen-hong-hanh",
+    "group": "experts",
+    "name": "Nguyễn Hồng Hạnh",
+    "honorific": "Tiến Sỹ",
+    "title": "Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị thuộc Tổng Hội Xây Dựng Việt Nam",
+    "bio": "Là chuyên gia về tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng. Nguyên là phó cục trưởng Cục Phát Triển Đô thị thuộc Bộ Xây Dựng (2008-2013); Phó Viện Trưởng thường trực Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (2013-2018); Viện Trưởng Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị (3/2018 - nay). Có những sáng kiến lớn về phát triển đô thị xanh, biến đổi khí hậu và đa dạng sinh học; chuyển giao ứng dụng khoa học công nghệ vào chuyển đổi xanh trong kinh tế nông nghiệp và đô thị; tư vấn pháp luật, chính sách cho quy hoạch quốc gia và khu vực.",
+    "highlights": ["quy hoạch", "phát triển đô thị xanh", "biến đổi khí hậu", "chính sách"],
+    "photo": "/profilePhotos/hanhnguyen__nobg.png",
+    "links": []
+  },
+  {
+    "id": "tran-thi-lan-anh",
+    "group": "experts",
+    "name": "Trần Thị Lan Anh",
+    "honorific": "TS.KTS",
+    "title": "Phó Viện Trưởng",
+    "bio": "Chuyên gia quy hoạch và phát triển đô thị; xây dựng chiến lược, hoạch định chính sách và phát triển bền vững. Tiến Sỹ và Thạc Sỹ từ Đại học Tokyo, nền tảng vững chắc về thích ứng với biến đổi khí hậu, phân lại đô thị và chiến lược phát triển quốc gia. Nguyên Phó cục trưởng Cục Phát triển Đô thị-Bộ xây dựng, tham gia các chương trình lớn về phát triển đô thị và quy hoạch đô thị.",
+    "highlights": ["quy hoạch", "bền vững", "chính sách", "biến đổi khí hậu"],
+    "photo": "/profilePhotos/tranthilananh__nobg.png",
+    "links": []
+  },
+  {
+    "id": "tran-quoc-toan",
+    "group": "experts",
+    "name": "Trần Quốc Toản",
+    "honorific": "KS.",
+    "title": "Phó Viện Trưởng",
+    "bio": "Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông. Phó cục trưởng Cục giám định-Bộ Giao thông vận tải và các hiệp hội kỹ thuật. Tư vấn chính sách, quy hoạch thông minh và phát triển chiến lược tăng trưởng xanh, các dự án quốc gia lớn.",
+    "highlights": ["hạ tầng giao thông", "quy hoạch thông minh", "tăng trưởng xanh"],
+    "photo": "/profilePhotos/tranquoctoan__nobg.png",
+    "links": []
+  },
+  {
+    "id": "nguyen-thanh-tam",
+    "group": "experts",
+    "name": "Nguyễn Thanh Tâm",
+    "honorific": "KTS.",
+    "title": "Phó Viện Trưởng",
+    "bio": "Công tác trong lĩnh vực quy hoạch đô thị, tham gia nghiên cứu và quản lý các đồ án quy hoạch, phục vụ công tác quản lý nhà nước và định hướng phát triển không gian đô thị theo quy định.",
+    "highlights": ["quy hoạch đô thị", "quản lý nhà nước", "phát triển không gian"],
+    "photo": "/profilePhotos/tam.png",
+    "links": []
+  },
+  {
+    "id": "do-bao-long",
+    "group": "experts",
+    "name": "Đỗ Bảo Long",
+    "honorific": "",
+    "title": "Quản Lý Dự Án",
+    "bio": "Một cán bộ dự án tận tụy với bằng Thạc sỹ-Quản Lý Dự Án từ đại học Salford, vương quốc Anh, cùng với chứng chỉ CCNA và An ninh mạng. Có hơn 5 năm kinh nghiệm trong lĩnh vực ngân hàng, bán lẻ, quản lý hợp đồng (thông minh) và tài chính. Có thể quản lý các dự án phức tạp và mang lại kết quả hiệu quả. Kết hợp các kỹ năng kỹ thuật mạnh mẽ với thực hiện thực tế, đảm bảo sự phối hợp nhịp nhàng giữa các nhóm và các bên liên quan.",
+    "highlights": ["quản lý dự án", "quản lý hợp đồng", "thiết kế", "giải quyết vấn đề sáng tạo"],
+    "photo": "/profilePhotos/longdo__nobg.png",
+    "links": [{ "label": "Trang cá nhân", "url": "https://longd.tech/" }]
+  },
+  {
+    "id": "nguyen-thi-ly",
+    "group": "core",
+    "name": "Nguyễn Thị Ly",
+    "honorific": "",
+    "title": "Cán bộ nghiên cứu",
+    "bio": "Có nền tảng học thuật vững chắc về quy hoạch đô thị, phát triển đô thị bền vững, quản lý cơ sở hạ tầng và thiết kế không gian công cộng. Đóng góp vào nhiều dự án nghiên cứu và hỗ trợ kỹ thuật tập trung vào không gian công cộng, phát triển cộng đồng và các chương trình phát triển đô thị. Thể hiện tinh thần làm việc nhóm tuyệt vời, kỹ năng tổ chức rõ ràng và tinh thần trách nhiệm cao.",
+    "highlights": ["quy hoạch đô thị", "phát triển bền vững", "không gian công cộng"],
+    "photo": "/profilePhotos/lyly.png",
+    "links": []
+  },
+  {
+    "id": "dinh-tung-duong",
+    "group": "core",
+    "name": "Đinh Tùng Dương",
+    "honorific": "",
+    "title": "Cán bộ nghiên cứu",
+    "bio": "Tôi có bằng Quản lý Đô thị của Đại học Kiến trúc Hà Nội, nơi tôi vinh dự được vinh danh là Thủ khoa của Hà Nội năm 2023. Trong hai năm qua, tôi đã tích cực đóng góp vào các dự án phát triển đô thị tập trung vào quy hoạch không gian, cải thiện cảnh quan và cuộc sống đô thị bền vững. Tôi có khả năng phân tích và tổ chức mạnh mẽ, cùng với sự thành thạo trong cả phần mềm văn phòng và phần mềm kỹ thuật.",
+    "highlights": ["Quản lý Đô thị", "Thủ khoa", "quy hoạch không gian", "bền vững"],
+    "photo": "/profilePhotos/duong.png",
+    "links": []
+  },
+  {
+    "id": "trinh-thi-tinh",
+    "group": "core",
+    "name": "Trịnh Thị Tình",
+    "honorific": "",
+    "title": "Cán bộ hành chính",
+    "bio": "Tốt nghiệp chuyên ngành Quản trị kinh doanh tại trường Cao đẳng Du lịch Hà Nội. Ngoài việc quản lý các công việc hành chính văn phòng, tôi còn đóng góp và hỗ trợ nhiều dự án nghiên cứu khoa học khác nhau. Tôi là một cá nhân năng động và có trách nhiệm, luôn khao khát học hỏi và phát triển.",
+    "highlights": ["Quản trị kinh doanh", "trách nhiệm", "làm việc nhóm"],
+    "photo": "/profilePhotos/tinh.png",
+    "links": []
+  },
+  {
+    "id": "nguyen-quynh-ly",
+    "group": "core",
+    "name": "Nguyễn Quỳnh Ly",
+    "honorific": "",
+    "title": "Cán bộ nghiên cứu",
+    "bio": "Tôi tốt nghiệp Đại học Kinh tế Quốc dân, được đào tạo bài bản và có tinh thần trách nhiệm cao trong công việc. Tôi có kinh nghiệm đấu thầu các dự án máy móc thiết bị, cũng như các dự án liên quan đến quy hoạch đô thị. Ngoài ra, tôi có khả năng xử lý nhiều công việc hành chính khác nhau.",
+    "highlights": ["Đại học Kinh tế Quốc dân", "đấu thầu", "quy hoạch đô thị"],
+    "photo": "/profilePhotos/nguyenquynhly.png",
+    "links": []
+  },
+  {
+    "id": "phan-thi-hien",
+    "group": "core",
+    "name": "Phan Thị Hiến",
+    "honorific": "",
+    "title": "Kế toán",
+    "bio": "Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc.",
+    "highlights": ["kế toán", "báo cáo tài chính", "phân tích dữ liệu"],
+    "photo": "/profilePhotos/hien.png",
+    "links": []
+  }
+]

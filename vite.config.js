@@ -26,32 +26,29 @@ const MIME = {
 // IMPORTANT: Run `npm run build:newsroom` after news-app changes when using the
 // root `npm run dev`. For live HMR while editing the newsroom, use
 // `npm run dev:newsroom` (http://localhost:5173/newsroom/) instead.
-function newsroomDevFallback() {
+function spaDevFallback({ name, basePath, outDirName }) {
   const root = process.cwd();
-  const newsroomDir = path.resolve(root, 'newsroom');
+  const appDir = path.resolve(root, outDirName);
   return {
-    name: 'newsroom-dev-fallback',
+    name,
     configureServer(server) {
-      // Register first so /newsroom wins over any stale public/ copies.
       server.middlewares.use((req, res, next) => {
         const urlPath = (req.url || '').split('?')[0]
         if (urlPath.startsWith('/newsroom/api/')) {
           return next()
         }
-        if (urlPath !== '/newsroom' && !urlPath.startsWith('/newsroom/')) {
+        if (urlPath !== basePath && !urlPath.startsWith(`${basePath}/`)) {
           return next();
         }
-        const rel = urlPath.replace(/^\/newsroom\/?/, '');
-        const filePath = path.join(newsroomDir, rel);
-        // Serve a real asset file if it exists under /newsroom.
+        const rel = urlPath.replace(new RegExp(`^${basePath.replace('/', '\\/')}\\/?`), '');
+        const filePath = path.join(appDir, rel);
         if (rel && path.extname(rel) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
           res.statusCode = 200;
           res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
           res.end(fs.readFileSync(filePath));
           return;
         }
-        // Otherwise fall back to the SPA shell.
-        const indexPath = path.join(newsroomDir, 'index.html');
+        const indexPath = path.join(appDir, 'index.html');
         if (fs.existsSync(indexPath)) {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -66,5 +63,9 @@ function newsroomDevFallback() {
 
 export default {
   base: '', // Use '' or './' to keep all paths relative after build
-  plugins: [marketApiPlugin(), newsroomDevFallback()],
+  plugins: [
+    marketApiPlugin(),
+    spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom' }),
+    spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people' }),
+  ],
 };

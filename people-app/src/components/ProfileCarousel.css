@@ -1,0 +1,14 @@
+.profile-carousel {
+  width: 100%;
+}
+
+.profile-carousel__stage {
+  position: relative;
+  min-height: 420px;
+}
+
+@media (max-width: 900px) {
+  .profile-carousel__stage {
+    min-height: auto;
+  }
+}
