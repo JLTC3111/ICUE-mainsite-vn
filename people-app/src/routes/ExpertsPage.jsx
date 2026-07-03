@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import people from '../data/people.json'
 import PageShell from '../components/PageShell'
 import ProfileCarousel from '../components/ProfileCarousel'
@@ -7,16 +8,16 @@ import { useBackgroundVideo } from '../hooks/useBackgroundVideo'
 const experts = people.filter((p) => p.group === 'experts')
 
 export default function ExpertsPage() {
+  const { t, i18n } = useTranslation()
   const { enabled, toggle, canToggle } = useBackgroundVideo()
 
   useEffect(() => {
-    document.title = 'ICUE — Chuyên Gia'
-  }, [])
+    document.title = t('meta.expertsTitle')
+  }, [t, i18n.language])
 
   return (
     <PageShell
-      title="Chuyên Gia"
-      subtitle="Đội ngũ lãnh đạo và chuyên gia hàng đầu của Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị."
+      pageKey="experts"
       showHrLink
       showVideoToggle={canToggle}
       videoEnabled={enabled}

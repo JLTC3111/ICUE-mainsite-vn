@@ -1,7 +1,9 @@
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import './ProfilePanel.css'
 
 function ProfilePanel({ person, direction, isActive }) {
+  const { t } = useTranslation()
   const displayName = [person.honorific, person.name].filter(Boolean).join(' ')
   const slideClass = direction === 'left' ? 'profile-panel--from-left' : 'profile-panel--from-right'
 
@@ -28,7 +30,7 @@ function ProfilePanel({ person, direction, isActive }) {
         <p className="profile-panel__bio">{person.bio}</p>
 
         {person.highlights?.length > 0 && (
-          <ul className="profile-panel__tags" aria-label="Chuyên môn nổi bật">
+          <ul className="profile-panel__tags" aria-label={t('carousel.highlights')}>
             {person.highlights.map((tag) => (
               <li key={tag} className="profile-panel__tag">{tag}</li>
             ))}

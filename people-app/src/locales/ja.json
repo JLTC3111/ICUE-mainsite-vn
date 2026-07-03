@@ -1,0 +1,46 @@
+{
+  "brandBadge": "私たちのチーム",
+  "meta": {
+    "expertsTitle": "ICUE — 専門家",
+    "coreTitle": "ICUE — コアチーム",
+    "description": "ICUEの専門家とスタッフ"
+  },
+  "nav": {
+    "home": "ホーム",
+    "org": "組織 & 体制",
+    "mainAria": "ICUE — ホームへ",
+    "mainNav": "メインナビゲーション"
+  },
+  "video": {
+    "on": "動画: オン",
+    "off": "動画: オフ",
+    "enableAria": "背景動画を有効にする",
+    "disableAria": "背景動画を無効にする"
+  },
+  "tabs": {
+    "groupAria": "人材グループ",
+    "experts": "専門家",
+    "coreTeam": "コアチーム"
+  },
+  "experts": {
+    "title": "専門家",
+    "subtitle": "建設経済都市研究所のリーダーシップと上級専門家チーム。"
+  },
+  "core": {
+    "title": "コアチーム",
+    "subtitle": "研究所の日常業務を支える研究・事務スタッフ。"
+  },
+  "carousel": {
+    "aria": "チームメンバープロフィール",
+    "selectMember": "メンバーを選択",
+    "prev": "前の人",
+    "next": "次の人",
+    "viewing": "{{name}}を表示中、{{current}}/{{total}}",
+    "highlights": "主要な専門分野"
+  },
+  "hrLink": "人事管理ソフトウェアへ",
+  "links": {
+    "personalSite": "個人サイト"
+  },
+  "language": "言語"
+}

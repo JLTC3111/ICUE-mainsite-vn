@@ -1,0 +1,46 @@
+{
+  "brandBadge": "Notre équipe",
+  "meta": {
+    "expertsTitle": "ICUE — Nos experts",
+    "coreTitle": "ICUE — Équipe principale",
+    "description": "Experts et personnel ICUE"
+  },
+  "nav": {
+    "home": "Accueil",
+    "org": "Organisation & Structure",
+    "mainAria": "ICUE — retour à l'accueil",
+    "mainNav": "Navigation principale"
+  },
+  "video": {
+    "on": "Vidéo : Activée",
+    "off": "Vidéo : Désactivée",
+    "enableAria": "Activer la vidéo d'arrière-plan",
+    "disableAria": "Désactiver la vidéo d'arrière-plan"
+  },
+  "tabs": {
+    "groupAria": "Groupes de personnes",
+    "experts": "Nos experts",
+    "coreTeam": "Équipe principale"
+  },
+  "experts": {
+    "title": "Nos experts",
+    "subtitle": "La direction et les spécialistes de l'Institut d'économie de la construction et d'urbanisme."
+  },
+  "core": {
+    "title": "Équipe principale",
+    "subtitle": "Personnel de recherche et administratif de l'institut."
+  },
+  "carousel": {
+    "aria": "Profils de l'équipe",
+    "selectMember": "Choisir un membre",
+    "prev": "Personne précédente",
+    "next": "Personne suivante",
+    "viewing": "Affichage de {{name}}, {{current}} sur {{total}}",
+    "highlights": "Expertises clés"
+  },
+  "hrLink": "Accéder au logiciel RH",
+  "links": {
+    "personalSite": "Site personnel"
+  },
+  "language": "Langue"
+}

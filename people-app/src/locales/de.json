@@ -1,0 +1,46 @@
+{
+  "brandBadge": "Unser Team",
+  "meta": {
+    "expertsTitle": "ICUE — Experten",
+    "coreTitle": "ICUE — Kernteam",
+    "description": "ICUE-Experten und Mitarbeiter"
+  },
+  "nav": {
+    "home": "Startseite",
+    "org": "Organisation & Struktur",
+    "mainAria": "ICUE — zur Startseite",
+    "mainNav": "Hauptnavigation"
+  },
+  "video": {
+    "on": "Video: Ein",
+    "off": "Video: Aus",
+    "enableAria": "Hintergrundvideo aktivieren",
+    "disableAria": "Hintergrundvideo deaktivieren"
+  },
+  "tabs": {
+    "groupAria": "Personengruppen",
+    "experts": "Experten",
+    "coreTeam": "Kernteam"
+  },
+  "experts": {
+    "title": "Experten",
+    "subtitle": "Führung und führende Fachkräfte des Instituts für Bauwirtschaft und Stadtplanung."
+  },
+  "core": {
+    "title": "Kernteam",
+    "subtitle": "Forschungs- und Verwaltungsmitarbeiter des Instituts."
+  },
+  "carousel": {
+    "aria": "Teamprofile",
+    "selectMember": "Teammitglied auswählen",
+    "prev": "Vorherige Person",
+    "next": "Nächste Person",
+    "viewing": "{{name}} anzeigen, {{current}} von {{total}}",
+    "highlights": "Schwerpunkte"
+  },
+  "hrLink": "HR-Management-Software öffnen",
+  "links": {
+    "personalSite": "Persönliche Website"
+  },
+  "language": "Sprache"
+}

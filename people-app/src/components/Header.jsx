@@ -1,29 +1,34 @@
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
 const MAIN_SITE = 'https://icue.vn'
 
 function Header({ videoEnabled, onVideoToggle, showVideoToggle }) {
+  const { t } = useTranslation()
+
   return (
     <header className="people-header">
       <div className="people-header__inner icue-container">
-        <a href={MAIN_SITE} className="people-header__brand" aria-label="ICUE — về trang chủ">
+        <a href={MAIN_SITE} className="people-header__brand" aria-label={t('nav.mainAria')}>
           <span className="people-header__logo">ICUE</span>
-          <span className="people-header__tag">Nhân Lực</span>
+          <span className="people-header__tag">{t('brandBadge')}</span>
         </a>
 
-        <nav className="people-header__nav" aria-label="Điều hướng chính">
-          <a href={MAIN_SITE} className="people-header__link">Trang chủ</a>
-          <a href={`${MAIN_SITE}/#/orgStructure`} className="people-header__link">Cơ cấu tổ chức</a>
+        <nav className="people-header__nav" aria-label={t('nav.mainNav')}>
+          <a href={MAIN_SITE} className="people-header__link">{t('nav.home')}</a>
+          <a href={`${MAIN_SITE}/#/orgStructure`} className="people-header__link">{t('nav.org')}</a>
+          <LanguageSwitcher />
           {showVideoToggle && (
             <button
               type="button"
               className="people-header__video-toggle"
               onClick={onVideoToggle}
               aria-pressed={videoEnabled}
-              aria-label={videoEnabled ? 'Tắt video nền' : 'Bật video nền'}
+              aria-label={videoEnabled ? t('video.disableAria') : t('video.enableAria')}
             >
-              {videoEnabled ? 'Video: Bật' : 'Video: Tắt'}
+              {videoEnabled ? t('video.on') : t('video.off')}
             </button>
           )}
         </nav>

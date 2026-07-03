@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import ProfilePanel from './ProfilePanel'
 import ProfileNav from './ProfileNav'
 import { useSwipe } from '../hooks/useSwipe'
+import { localizePeople } from '../lib/people'
 import './ProfileCarousel.css'
 
 function getStoredIndex(group) {
@@ -22,9 +24,16 @@ function storeIndex(group, index) {
 }
 
 export default function ProfileCarousel({ profiles, group }) {
+  const { t, i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
+  const localizedProfiles = useMemo(
+    () => localizePeople(profiles, lang),
+    [profiles, lang],
+  )
+
   const [currentIndex, setCurrentIndex] = useState(() => {
     const stored = getStoredIndex(group)
-    return stored < profiles.length ? stored : 0
+    return stored < localizedProfiles.length ? stored : 0
   })
   const [direction, setDirection] = useState('right')
 
@@ -35,14 +44,14 @@ export default function ProfileCarousel({ profiles, group }) {
   }, [group])
 
   const goPrev = useCallback(() => {
-    const next = (currentIndex - 1 + profiles.length) % profiles.length
+    const next = (currentIndex - 1 + localizedProfiles.length) % localizedProfiles.length
     goTo(next, 'left')
-  }, [currentIndex, profiles.length, goTo])
+  }, [currentIndex, localizedProfiles.length, goTo])
 
   const goNext = useCallback(() => {
-    const next = (currentIndex + 1) % profiles.length
+    const next = (currentIndex + 1) % localizedProfiles.length
     goTo(next, 'right')
-  }, [currentIndex, profiles.length, goTo])
+  }, [currentIndex, localizedProfiles.length, goTo])
 
   const swipeHandlers = useSwipe({ onSwipeLeft: goNext, onSwipeRight: goPrev })
 
@@ -57,32 +66,32 @@ export default function ProfileCarousel({ profiles, group }) {
 
   useEffect(() => {
     const preload = (idx) => {
-      const person = profiles[idx]
+      const person = localizedProfiles[idx]
       if (!person) return
       const img = new Image()
       img.src = person.photo
     }
-    preload((currentIndex + 1) % profiles.length)
-    preload((currentIndex - 1 + profiles.length) % profiles.length)
-  }, [currentIndex, profiles])
+    preload((currentIndex + 1) % localizedProfiles.length)
+    preload((currentIndex - 1 + localizedProfiles.length) % localizedProfiles.length)
+  }, [currentIndex, localizedProfiles])
 
   useEffect(() => {
-    if (currentIndex >= profiles.length) {
+    if (currentIndex >= localizedProfiles.length) {
       goTo(0)
     }
-  }, [currentIndex, profiles.length, goTo])
+  }, [currentIndex, localizedProfiles.length, goTo])
 
-  const current = profiles[currentIndex]
+  const current = localizedProfiles[currentIndex]
 
   return (
     <section
       className="profile-carousel"
       aria-roledescription="carousel"
-      aria-label="Hồ sơ thành viên"
+      aria-label={t('carousel.aria')}
       {...swipeHandlers}
     >
       <div className="profile-carousel__stage" aria-live="polite">
-        {profiles.map((person, i) => (
+        {localizedProfiles.map((person, i) => (
           <ProfilePanel
             key={person.id}
             person={person}
@@ -93,16 +102,20 @@ export default function ProfileCarousel({ profiles, group }) {
       </div>
 
       <ProfileNav
-        count={profiles.length}
+        count={localizedProfiles.length}
         currentIndex={currentIndex}
-        profiles={profiles}
+        profiles={localizedProfiles}
         onPrev={goPrev}
         onNext={goNext}
         onSelect={(i) => goTo(i, i > currentIndex ? 'right' : 'left')}
       />
 
       <p className="visually-hidden">
-        Đang xem {current.name}, {currentIndex + 1} trên {profiles.length}
+        {t('carousel.viewing', {
+          name: current.name,
+          current: currentIndex + 1,
+          total: localizedProfiles.length,
+        })}
       </p>
     </section>
   )

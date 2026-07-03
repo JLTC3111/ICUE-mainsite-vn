@@ -84,6 +84,24 @@
   background: rgba(200, 255, 0, 0.15);
 }
 
+.lang-switcher select {
+  appearance: none;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--icue-text);
+  background: var(--icue-surface);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.lang-switcher select:hover {
+  border-color: var(--icue-text-faint);
+  background: var(--icue-surface-2);
+}
+
 @media (max-width: 640px) {
   .people-header__link:not(:first-child) {
     display: none;

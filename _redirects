@@ -9,5 +9,9 @@
 /newsroom            /newsroom/index.html   200
 /newsroom/*          /newsroom/index.html   200
 
+# People React app (history routing) lives at /people.
+/people              /people/index.html   200
+/people/*            /people/index.html   200
+
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200

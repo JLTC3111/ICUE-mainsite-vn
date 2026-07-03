@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import people from '../data/people.json'
 import PageShell from '../components/PageShell'
 import ProfileCarousel from '../components/ProfileCarousel'
@@ -7,16 +8,16 @@ import { useBackgroundVideo } from '../hooks/useBackgroundVideo'
 const coreTeam = people.filter((p) => p.group === 'core')
 
 export default function CoreTeamPage() {
+  const { t, i18n } = useTranslation()
   const { enabled, toggle, canToggle } = useBackgroundVideo()
 
   useEffect(() => {
-    document.title = 'ICUE — Cán Bộ'
-  }, [])
+    document.title = t('meta.coreTitle')
+  }, [t, i18n.language])
 
   return (
     <PageShell
-      title="Cán Bộ"
-      subtitle="Đội ngũ cán bộ nghiên cứu và hành chính đóng góp vào hoạt động hàng ngày của viện."
+      pageKey="core"
       showVideoToggle={canToggle}
       videoEnabled={enabled}
       onVideoToggle={toggle}

@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Header from './Header'
 import BackgroundVideo from './BackgroundVideo'
 import './PageShell.css'
 
 export default function PageShell({
-  title,
-  subtitle,
+  pageKey,
   children,
   showHrLink = false,
   showVideoToggle = false,
@@ -14,6 +14,8 @@ export default function PageShell({
   desktopVideoSrc,
   mobileVideoSrc,
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="page-shell">
       {showVideoToggle && (
@@ -32,14 +34,14 @@ export default function PageShell({
 
       <main className="page-shell__main icue-container">
         <div className="page-shell__header">
-          <nav className="page-shell__tabs" aria-label="Nhóm nhân sự">
+          <nav className="page-shell__tabs" aria-label={t('tabs.groupAria')}>
             <NavLink
               to="/experts"
               className={({ isActive }) =>
                 `page-shell__tab ${isActive ? 'page-shell__tab--active' : ''}`
               }
             >
-              Chuyên Gia
+              {t('tabs.experts')}
             </NavLink>
             <NavLink
               to="/core-team"
@@ -47,13 +49,13 @@ export default function PageShell({
                 `page-shell__tab ${isActive ? 'page-shell__tab--active' : ''}`
               }
             >
-              Cán Bộ
+              {t('tabs.coreTeam')}
             </NavLink>
           </nav>
 
           <div className="page-shell__titles">
-            <h1 className="page-shell__title">{title}</h1>
-            {subtitle && <p className="page-shell__subtitle">{subtitle}</p>}
+            <h1 className="page-shell__title">{t(`${pageKey}.title`)}</h1>
+            <p className="page-shell__subtitle">{t(`${pageKey}.subtitle`)}</p>
           </div>
         </div>
 
@@ -67,7 +69,7 @@ export default function PageShell({
               rel="noopener noreferrer"
               className="btn btn-accent"
             >
-              Truy Cập Phần Mềm Quản Lý Nhân Sự
+              {t('hrLink')}
             </a>
           </div>
         )}

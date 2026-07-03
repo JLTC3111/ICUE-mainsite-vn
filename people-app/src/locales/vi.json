@@ -1,0 +1,46 @@
+{
+  "brandBadge": "Nhân Lực",
+  "meta": {
+    "expertsTitle": "ICUE — Chuyên Gia",
+    "coreTitle": "ICUE — Cán Bộ",
+    "description": "Chuyên gia và cán bộ nghiên cứu ICUE"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "org": "Cơ cấu tổ chức",
+    "mainAria": "ICUE — về trang chủ",
+    "mainNav": "Điều hướng chính"
+  },
+  "video": {
+    "on": "Video: Bật",
+    "off": "Video: Tắt",
+    "enableAria": "Bật video nền",
+    "disableAria": "Tắt video nền"
+  },
+  "tabs": {
+    "groupAria": "Nhóm nhân sự",
+    "experts": "Chuyên Gia",
+    "coreTeam": "Cán Bộ"
+  },
+  "experts": {
+    "title": "Chuyên Gia",
+    "subtitle": "Đội ngũ lãnh đạo và chuyên gia hàng đầu của Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị."
+  },
+  "core": {
+    "title": "Cán Bộ",
+    "subtitle": "Đội ngũ cán bộ nghiên cứu và hành chính đóng góp vào hoạt động hàng ngày của viện."
+  },
+  "carousel": {
+    "aria": "Hồ sơ thành viên",
+    "selectMember": "Chọn thành viên",
+    "prev": "Người trước",
+    "next": "Người tiếp theo",
+    "viewing": "Đang xem {{name}}, {{current}} trên {{total}}",
+    "highlights": "Chuyên môn nổi bật"
+  },
+  "hrLink": "Truy Cập Phần Mềm Quản Lý Nhân Sự",
+  "links": {
+    "personalSite": "Trang cá nhân"
+  },
+  "language": "Ngôn ngữ"
+}

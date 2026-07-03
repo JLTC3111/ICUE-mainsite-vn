@@ -1,0 +1,46 @@
+{
+  "brandBadge": "Our People",
+  "meta": {
+    "expertsTitle": "ICUE — Our Experts",
+    "coreTitle": "ICUE — Core Team",
+    "description": "ICUE experts and core research staff"
+  },
+  "nav": {
+    "home": "Home",
+    "org": "Organization & Structure",
+    "mainAria": "ICUE — back to home",
+    "mainNav": "Main navigation"
+  },
+  "video": {
+    "on": "Video: On",
+    "off": "Video: Off",
+    "enableAria": "Enable background video",
+    "disableAria": "Disable background video"
+  },
+  "tabs": {
+    "groupAria": "People groups",
+    "experts": "Our Experts",
+    "coreTeam": "Core Team"
+  },
+  "experts": {
+    "title": "Our Experts",
+    "subtitle": "The leadership and senior specialists of the Institute of Construction Economics and Urban Planning."
+  },
+  "core": {
+    "title": "Core Team",
+    "subtitle": "Research and administrative staff who support the institute's day-to-day work."
+  },
+  "carousel": {
+    "aria": "Team member profiles",
+    "selectMember": "Select a team member",
+    "prev": "Previous person",
+    "next": "Next person",
+    "viewing": "Viewing {{name}}, {{current}} of {{total}}",
+    "highlights": "Key expertise"
+  },
+  "hrLink": "Access HR Management Software",
+  "links": {
+    "personalSite": "Personal website"
+  },
+  "language": "Language"
+}

@@ -22,7 +22,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:newsroom && npm run build:people",
     "preview": "vite preview",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
