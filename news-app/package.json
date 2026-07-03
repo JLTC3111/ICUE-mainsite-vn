@@ -4,8 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "sync-assets": "node scripts/sync-assets.mjs",
     "dev": "vite",
+    "predev": "npm run sync-assets",
     "build": "vite build",
+    "prebuild": "npm run sync-assets",
     "build:watch": "vite build --watch",
     "lint": "eslint .",
     "preview": "vite preview"

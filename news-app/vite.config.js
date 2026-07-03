@@ -47,8 +47,5 @@ export default defineConfig({
     fs: {
       allow: [path.resolve(__dirname, '..')],
     },
-    proxy: {
-      '/flags': { target: 'http://localhost:5173', changeOrigin: true },
-    },
   },
 })

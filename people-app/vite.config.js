@@ -31,7 +31,6 @@ export default defineConfig({
     proxy: {
       '/profilePhotos': { target: 'http://localhost:5173', changeOrigin: true },
       '/public': { target: 'http://localhost:5173', changeOrigin: true },
-      '/flags': { target: 'http://localhost:5173', changeOrigin: true },
     },
   },
 })

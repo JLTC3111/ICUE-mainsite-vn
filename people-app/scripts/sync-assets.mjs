@@ -23,8 +23,12 @@ const srcPhotos = path.join(siteRoot, 'public/profilePhotos')
 const destPhotos = path.join(appRoot, 'public/profilePhotos')
 const srcFavicon = path.join(siteRoot, 'public/logoIcons/favicon.png')
 const destFavicon = path.join(appRoot, 'public/favicon.png')
+const srcFlags = path.join(siteRoot, 'public/flags')
+const destFlags = path.join(appRoot, 'public/flags')
+const FLAG_FILES = ['vn', 'gb', 'de', 'fr', 'kr', 'jp']
 
 fs.mkdirSync(destPhotos, { recursive: true })
+fs.mkdirSync(destFlags, { recursive: true })
 
 for (const file of PHOTOS) {
   const from = path.join(srcPhotos, file)
@@ -42,4 +46,14 @@ if (!fs.existsSync(srcFavicon)) {
 }
 fs.copyFileSync(srcFavicon, destFavicon)
 
-console.log(`Synced ${PHOTOS.length} profile photos and favicon into people-app/public/`)
+for (const file of FLAG_FILES) {
+  const from = path.join(srcFlags, `${file}.svg`)
+  const to = path.join(destFlags, `${file}.svg`)
+  if (!fs.existsSync(from)) {
+    console.error(`Missing flag: ${from}`)
+    process.exit(1)
+  }
+  fs.copyFileSync(from, to)
+}
+
+console.log(`Synced ${PHOTOS.length} profile photos, ${FLAG_FILES.length} flags, and favicon into people-app/public/`)
