@@ -1,5 +1,5 @@
 /** ICUE Zalo account (country code + number, no + prefix). */
-export const ICUE_ZALO_PHONE = '84768748391'
+export const ICUE_ZALO_PHONE = '904540661'
 
 export function zaloWebUrl(phone = ICUE_ZALO_PHONE) {
   return `https://zalo.me/${phone}`
