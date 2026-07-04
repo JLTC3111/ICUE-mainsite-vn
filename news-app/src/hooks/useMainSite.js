@@ -16,7 +16,7 @@ export function useMainSite() {
     base,
     siteLang,
     hashLink: (page) => mainSiteLink(page, siteLang),
-    peopleLink: (path) => peopleSiteLink(path, siteLang),
+    peopleLink: (path) => peopleSiteLink(path),
     archiveLink: () => `${base}/#/News`,
   }
 }

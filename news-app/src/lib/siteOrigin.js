@@ -62,8 +62,9 @@ export function mainSiteLink(page, siteLang) {
   return `${getMainSiteBase(siteLang)}/#/${page}`
 }
 
-export function peopleSiteLink(path, siteLang) {
-  return `${getMainSiteBase(siteLang)}/people/${path}`
+/** People app lives only on icue.vn — not on en.icue.vn. */
+export function peopleSiteLink(path) {
+  return `${SITES.vi}/people/${path}`
 }
 
 export function newsroomLink(siteLang) {
