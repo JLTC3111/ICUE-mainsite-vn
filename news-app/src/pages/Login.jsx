@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { getAuthRedirectUrl, isPasswordRecoveryUrl } from '../lib/authRedirect'
+import { authErrorKey, sendPasswordResetEmail } from '../lib/authReset'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import './Login.css'
 
@@ -73,13 +74,21 @@ export default function Login() {
     setStatus('loading')
     setMessage('')
 
-    const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
-      redirectTo: getAuthRedirectUrl('login'),
-    })
+    const redirectTo = getAuthRedirectUrl('login')
+    let { error } = await sendPasswordResetEmail(trimmed, redirectTo)
+
+    // Fallback when the serverless proxy is not deployed yet.
+    if (error && (
+      String(error.code || '').startsWith('http_404')
+      || String(error.code || '').startsWith('http_502')
+      || error.code === 'network_error'
+    )) {
+      ;({ error } = await supabase.auth.resetPasswordForEmail(trimmed, { redirectTo }))
+    }
 
     if (error) {
       setStatus('error')
-      setMessage(t('login.resetError'))
+      setMessage(t(authErrorKey(error)))
       return
     }
 
@@ -107,7 +116,7 @@ export default function Login() {
       const { error } = await supabase.auth.updateUser({ password: newPassword })
       if (error) {
         setStatus('error')
-        setMessage(t('login.resetError'))
+        setMessage(t(authErrorKey(error)))
         return
       }
 

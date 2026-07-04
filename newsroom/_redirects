@@ -1,6 +1,7 @@
 # Market ticker API — must be before the SPA catch-all (Netlify site root publish).
 /newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
 /newsroom/api/market-quotes-vn  /.netlify/functions/market-quotes?scope=vn  200
+/newsroom/api/auth-forgot-password  /.netlify/functions/auth-forgot-password  200
 
 /newsroom            /newsroom/index.html   200
 /newsroom/*          /newsroom/index.html   200
