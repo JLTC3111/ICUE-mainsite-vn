@@ -50,7 +50,17 @@
     "forgot": "비밀번호를 잊으셨나요?",
     "inviteOnly": "초대 전용 액세스입니다.",
     "error": "이메일 또는 비밀번호가 올바르지 않습니다.",
-    "resetSent": "비밀번호 재설정 이메일을 보냈습니다."
+    "resetSent": "비밀번호 재설정 이메일을 보냈습니다.",
+    "resetNeedEmail": "먼저 이메일을 입력한 후 '비밀번호 찾기'를 클릭하세요.",
+    "resetError": "재설정 이메일을 보낼 수 없습니다. 잠시 후 다시 시도하세요.",
+    "resetTitle": "새 비밀번호 설정",
+    "resetSubtitle": "계정의 새 비밀번호를 입력하세요.",
+    "newPassword": "새 비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "resetSubmit": "비밀번호 업데이트",
+    "resetSuccess": "비밀번호가 업데이트되었습니다. 뉴스룸으로 계속할 수 있습니다.",
+    "resetMismatch": "비밀번호가 일치하지 않습니다.",
+    "resetTooShort": "비밀번호는 8자 이상이어야 합니다."
   },
   "news": {
     "title": "최신 뉴스",

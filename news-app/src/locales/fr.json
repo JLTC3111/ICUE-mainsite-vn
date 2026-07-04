@@ -50,7 +50,17 @@
     "forgot": "Mot de passe oublié ?",
     "inviteOnly": "Accès sur invitation uniquement.",
     "error": "E-mail ou mot de passe incorrect.",
-    "resetSent": "E-mail de réinitialisation du mot de passe envoyé."
+    "resetSent": "E-mail de réinitialisation du mot de passe envoyé.",
+    "resetNeedEmail": "Saisissez d'abord votre e-mail, puis cliquez sur « Mot de passe oublié ».",
+    "resetError": "Impossible d'envoyer l'e-mail de réinitialisation. Réessayez.",
+    "resetTitle": "Définir un nouveau mot de passe",
+    "resetSubtitle": "Choisissez un nouveau mot de passe pour votre compte.",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "resetSubmit": "Mettre à jour le mot de passe",
+    "resetSuccess": "Mot de passe mis à jour. Vous pouvez continuer vers le newsroom.",
+    "resetMismatch": "Les mots de passe ne correspondent pas.",
+    "resetTooShort": "Le mot de passe doit contenir au moins 8 caractères."
   },
   "news": {
     "title": "Dernières actualités",

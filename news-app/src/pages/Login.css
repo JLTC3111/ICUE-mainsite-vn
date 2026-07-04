@@ -107,6 +107,7 @@
 
 .login__msg { margin: 0; font-size: 13px; color: var(--icue-text-soft); }
 .login__msg.is-error { color: var(--icue-danger); }
+.login__msg.is-success { color: #15803d; }
 
 .login__note {
   margin: 22px 0 0;

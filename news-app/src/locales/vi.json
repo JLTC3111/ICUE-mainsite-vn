@@ -50,7 +50,17 @@
     "forgot": "Quên mật khẩu?",
     "inviteOnly": "Truy cập chỉ dành cho thành viên được mời.",
     "error": "Email hoặc mật khẩu không đúng.",
-    "resetSent": "Đã gửi email đặt lại mật khẩu."
+    "resetSent": "Đã gửi email đặt lại mật khẩu.",
+    "resetNeedEmail": "Nhập email trước, rồi bấm quên mật khẩu.",
+    "resetError": "Không gửi được email đặt lại. Vui lòng thử lại.",
+    "resetTitle": "Đặt mật khẩu mới",
+    "resetSubtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "resetSubmit": "Cập nhật mật khẩu",
+    "resetSuccess": "Đã cập nhật mật khẩu. Bạn có thể tiếp tục vào newsroom.",
+    "resetMismatch": "Mật khẩu xác nhận không khớp.",
+    "resetTooShort": "Mật khẩu phải có ít nhất 8 ký tự."
   },
   "news": {
     "title": "Chuyên Mục Báo Cáo",

@@ -3,8 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
+import { getAuthRedirectUrl, isPasswordRecoveryUrl } from '../lib/authRedirect'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import './Login.css'
+
+const MIN_PASSWORD_LEN = 8
 
 export default function Login() {
   const { t } = useTranslation()
@@ -13,12 +16,14 @@ export default function Login() {
   const location = useLocation()
   const redirectTo = location.state?.from || '/write'
 
+  const [mode, setMode] = useState(() => (isPasswordRecoveryUrl() ? 'recovery' : 'login'))
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [status, setStatus] = useState('idle') // idle | loading | error
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [status, setStatus] = useState('idle') // idle | loading | error | success
   const [message, setMessage] = useState('')
 
-  // Dismiss the login screen: go back if possible, else to the newsroom home.
   const close = useCallback(() => {
     if (window.history.length > 1) navigate(-1)
     else navigate('/')
@@ -29,6 +34,17 @@ export default function Login() {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [close])
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setMode('recovery')
+        setMessage('')
+        setStatus('idle')
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -47,12 +63,63 @@ export default function Login() {
   )
 
   const handleReset = useCallback(async () => {
-    if (!email) return
-    await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/login`,
+    const trimmed = email.trim()
+    if (!trimmed) {
+      setStatus('error')
+      setMessage(t('login.resetNeedEmail'))
+      return
+    }
+
+    setStatus('loading')
+    setMessage('')
+
+    const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
+      redirectTo: getAuthRedirectUrl('login'),
     })
+
+    if (error) {
+      setStatus('error')
+      setMessage(t('login.resetError'))
+      return
+    }
+
+    setStatus('success')
     setMessage(t('login.resetSent'))
   }, [email, t])
+
+  const handleUpdatePassword = useCallback(
+    async (e) => {
+      e.preventDefault()
+      setMessage('')
+
+      if (newPassword.length < MIN_PASSWORD_LEN) {
+        setStatus('error')
+        setMessage(t('login.resetTooShort'))
+        return
+      }
+      if (newPassword !== confirmPassword) {
+        setStatus('error')
+        setMessage(t('login.resetMismatch'))
+        return
+      }
+
+      setStatus('loading')
+      const { error } = await supabase.auth.updateUser({ password: newPassword })
+      if (error) {
+        setStatus('error')
+        setMessage(t('login.resetError'))
+        return
+      }
+
+      setStatus('success')
+      setMessage(t('login.resetSuccess'))
+      window.history.replaceState({}, '', getAuthRedirectUrl('login'))
+      setTimeout(() => navigate(redirectTo, { replace: true }), 1200)
+    },
+    [newPassword, confirmPassword, navigate, redirectTo, t],
+  )
+
+  const isRecovery = mode === 'recovery'
 
   return (
     <div
@@ -74,57 +141,115 @@ export default function Login() {
           <span className="login__logo">ICUE</span>
           <span className="login__pill">News</span>
         </div>
-        <h1 className="login__title">{t('login.title')}</h1>
-        <p className="login__subtitle">{t('login.subtitle')}</p>
+        <h1 className="login__title">{isRecovery ? t('login.resetTitle') : t('login.title')}</h1>
+        <p className="login__subtitle">{isRecovery ? t('login.resetSubtitle') : t('login.subtitle')}</p>
 
-        <form className="login__form" onSubmit={handleSubmit} noValidate>
-          <div className="field">
-            <label htmlFor="email">{t('login.email')}</label>
-            <input
-              id="email"
-              className="input"
-              type="email"
-              autoComplete="username"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@icue.vn"
-            />
-          </div>
+        {isRecovery ? (
+          <form className="login__form" onSubmit={handleUpdatePassword} noValidate>
+            <div className="field">
+              <label htmlFor="new-password">{t('login.newPassword')}</label>
+              <input
+                id="new-password"
+                className="input"
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={MIN_PASSWORD_LEN}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
 
-          <div className="field">
-            <label htmlFor="password">{t('login.password')}</label>
-            <input
-              id="password"
-              className="input"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
-          </div>
+            <div className="field">
+              <label htmlFor="confirm-password">{t('login.confirmPassword')}</label>
+              <input
+                id="confirm-password"
+                className="input"
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={MIN_PASSWORD_LEN}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
 
-          {message && (
-            <p className={`login__msg ${status === 'error' ? 'is-error' : ''}`}>{message}</p>
-          )}
-
-          <button className="btn btn-block login__submit" type="submit" disabled={status === 'loading'}>
-            {status === 'loading' ? (
-              <>
-                <span className="spin" />
-                {t('login.loading')}
-              </>
-            ) : (
-              t('login.submit')
+            {message && (
+              <p className={`login__msg ${status === 'error' ? 'is-error' : ''} ${status === 'success' ? 'is-success' : ''}`}>
+                {message}
+              </p>
             )}
-          </button>
 
-          <button type="button" className="login__forgot" onClick={handleReset}>
-            {t('login.forgot')}
-          </button>
-        </form>
+            <button className="btn btn-block login__submit" type="submit" disabled={status === 'loading'}>
+              {status === 'loading' ? (
+                <>
+                  <span className="spin" />
+                  {t('login.loading')}
+                </>
+              ) : (
+                t('login.resetSubmit')
+              )}
+            </button>
+          </form>
+        ) : (
+          <form className="login__form" onSubmit={handleSubmit} noValidate>
+            <div className="field">
+              <label htmlFor="email">{t('login.email')}</label>
+              <input
+                id="email"
+                className="input"
+                type="email"
+                autoComplete="username"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@icue.vn"
+              />
+            </div>
+
+            <div className="field">
+              <label htmlFor="password">{t('login.password')}</label>
+              <input
+                id="password"
+                className="input"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
+
+            {message && (
+              <p className={`login__msg ${status === 'error' ? 'is-error' : ''} ${status === 'success' ? 'is-success' : ''}`}>
+                {message}
+              </p>
+            )}
+
+            <button className="btn btn-block login__submit" type="submit" disabled={status === 'loading'}>
+              {status === 'loading' ? (
+                <>
+                  <span className="spin" />
+                  {t('login.loading')}
+                </>
+              ) : (
+                t('login.submit')
+              )}
+            </button>
+
+            <button
+              type="button"
+              className="login__forgot"
+              onClick={handleReset}
+              disabled={status === 'loading'}
+            >
+              {t('login.forgot')}
+            </button>
+          </form>
+        )}
 
         <p className="login__note">{t('login.inviteOnly')}</p>
       </div>
