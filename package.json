@@ -26,7 +26,8 @@
   },
   "scripts": {
     "dev": "node scripts/restore-dev-index.mjs && vite",
-    "build": "node scripts/prebuild-index.mjs && vite build && npm run build:newsroom && npm run build:people && node scripts/postbuild.mjs",
+    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app",
+    "build": "npm run install:apps && node scripts/prebuild-index.mjs && vite build && npm run build:newsroom && npm run build:people && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
