@@ -615,6 +615,7 @@
     grid-template-areas:
       "left right"
       "center center";
+    z-index: 30;
   }
 
   .main-site-nav__left {
@@ -631,13 +632,31 @@
     left: 50%;
     top: max(10px, env(safe-area-inset-top));
     transform: translateX(-50%);
-    z-index: 100;
+    z-index: 110;
   }
 
   .main-site-nav .menu-toggle {
     width: 44px;
     height: 44px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: inherit;
     animation: msn-dropDown 2.5s ease-in-out forwards;
+  }
+
+  .main-site-nav.nav-on-dark .menu-toggle,
+  .main-site-nav .menu-bar.nav-on-dark .menu-toggle {
+    color: inherit;
+    background: transparent;
+    border: none;
+  }
+
+  .main-site-nav:has(#drawerMenu.open) .menu-toggle {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
   .main-site-nav .menu-toggle svg {
@@ -648,6 +667,7 @@
   .main-site-nav .menu-toggle svg rect,
   .main-site-nav #menuIcon rect {
     fill: currentColor !important;
+    stroke: currentColor !important;
   }
 }
 
@@ -665,6 +685,36 @@
 }
 
 @media (max-width: 1440px) {
+  .main-site-nav__bar.menu-bar {
+    z-index: 30;
+  }
+
+  .main-site-nav__center {
+    z-index: 110;
+  }
+
+  .main-site-nav .menu-toggle {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: inherit;
+  }
+
+  .main-site-nav.nav-on-dark .menu-toggle,
+  .main-site-nav .menu-bar.nav-on-dark .menu-toggle {
+    color: inherit;
+    background: transparent;
+    border: none;
+  }
+
+  .main-site-nav.drawer-open .menu-toggle,
+  .main-site-nav:has(#drawerMenu.open) .menu-toggle {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
   .main-site-nav #drawerMenu {
     height: 100dvh;
     width: 100vw !important;
@@ -672,10 +722,11 @@
     gap: 0.25rem;
     align-items: center;
     justify-content: center;
-    padding: 3.5rem 0.5rem;
+    padding: 3.5rem 1rem;
     transform: translateY(-100%);
     transition: transform 0.5s ease-in-out;
     contain: layout;
+    box-sizing: border-box;
   }
 
   .main-site-nav #drawerMenu.open {
@@ -684,17 +735,31 @@
 
   .main-site-nav #drawerMenu a,
   .main-site-nav .has-submenu {
+    margin-left: 0;
+    margin-inline: auto;
+    width: fit-content;
+    min-width: min(280px, 82vw);
+    max-width: 100%;
+    justify-content: center;
     padding: 1rem;
-    margin-left: 0.5rem;
     font-size: clamp(1.15rem, 3vw, 1.75rem);
     text-decoration: none;
-    border-left: 5px solid transparent;
+    border-left: 0;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
 
   .main-site-nav #drawerMenu a:hover,
   .main-site-nav .has-submenu:hover {
-    transform: translateX(20px);
+    transform: none;
+    border-left: 0;
+    padding-left: 1rem;
+  }
+
+  .main-site-nav #drawerMenu .submenu {
+    padding-left: 0;
+    align-items: center;
+    width: 100%;
   }
 
   .main-site-nav #drawerMenu .submenu a {
@@ -702,8 +767,14 @@
     padding: 0.5rem 1rem;
     padding-top: 0.15rem;
     left: 0;
+    margin-inline: auto;
+    justify-content: center;
     position: relative;
     transition: all 1.5s ease;
+  }
+
+  .main-site-nav .drawer-blur-overlay {
+    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.16), #000 60%);
   }
 
   .main-site-nav .drawer-resize-handle {

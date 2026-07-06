@@ -180,7 +180,7 @@ export default function MainSiteNav() {
     }
   }, [showHomeVideoToggle, showAboutUsVideoToggle]);
 
-  const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '']
+  const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '', drawerOpen ? 'drawer-open' : '']
     .filter(Boolean)
     .join(' ');
 
