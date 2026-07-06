@@ -73,6 +73,7 @@ export default {
   resolve: {
     alias: {
       '@icue/main-site-nav': path.resolve(__dirname, 'shared/main-site-nav'),
+      '@icue/home-layout': path.resolve(__dirname, 'shared/home-layout'),
     },
   },
 };

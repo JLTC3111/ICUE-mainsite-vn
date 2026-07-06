@@ -1,0 +1,34 @@
+/* Tablet-landscape balance — toggled by HomeLayoutGuard.jsx */
+
+html.tablet-landscape {
+  scrollbar-gutter: stable;
+}
+
+html.tablet-landscape #content.home-layout-balanced,
+html.tablet-landscape #content.home-layout-balanced .home-hero,
+html.tablet-landscape #content.home-layout-balanced .home-section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+html.tablet-landscape #content.home-layout-balanced {
+  overflow-x: clip;
+  margin-inline: auto;
+}
+
+html.tablet-landscape #content.home-layout-balanced .home-hero,
+html.tablet-landscape #content.home-layout-balanced .home-section {
+  padding-inline: clamp(1.5rem, 6vw, 5rem);
+}
+
+html.tablet-landscape #content.home-layout-balanced .home-hero__content,
+html.tablet-landscape #content.home-layout-balanced .home-section__header,
+html.tablet-landscape #content.home-layout-balanced .home-grid {
+  margin-inline: auto;
+  width: 100%;
+}
+
+html.tablet-landscape #content.home-layout-balanced .home-grid {
+  max-width: min(1200px, 100%);
+}
