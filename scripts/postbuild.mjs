@@ -59,5 +59,9 @@ copyFile(builtIndex, path.join(root, 'index.html'));
 removeDir(path.join(root, 'assets'));
 copyDir(path.join(dist, 'assets'), path.join(root, 'assets'));
 copyFile(path.join(dist, 'zalo-link.js'), path.join(root, 'zalo-link.js'));
+if (fs.existsSync(path.join(dist, 'flags'))) {
+  removeDir(path.join(root, 'flags'));
+  copyDir(path.join(dist, 'flags'), path.join(root, 'flags'));
+}
 
 console.log('[postbuild] Synced production build to repo root for Netlify deploy.');

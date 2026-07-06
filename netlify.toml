@@ -2,5 +2,9 @@
   command = "npm run build"
   publish = "."
 
+# Newsroom requires Supabase credentials at build time (Site settings → Environment):
+#   VITE_SUPABASE_URL  or  SUPABASE_URL
+#   VITE_SUPABASE_ANON_KEY  or  SUPABASE_ANON_KEY
+
 [functions]
   directory = "netlify/functions"
