@@ -171,6 +171,15 @@ export default function MainSiteNav() {
     return () => window.clearTimeout(timer);
   }, [playEntranceAnimation]);
 
+  useEffect(() => {
+    if (showHomeVideoToggle) {
+      window.HomeBackgroundVideoManager?.bindToggleUI?.();
+    }
+    if (showAboutUsVideoToggle) {
+      window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
+    }
+  }, [showHomeVideoToggle, showAboutUsVideoToggle]);
+
   const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '']
     .filter(Boolean)
     .join(' ');

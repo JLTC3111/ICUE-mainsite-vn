@@ -20,3 +20,6 @@
 # Static assets live under /public in the repo root deploy layout.
 /zalo-link.js        /public/zalo-link.js            200
 /profilePhotos/*     /public/profilePhotos/:splat    200
+
+# Vite copies public/ to dist root; keep /public/* URLs working in production.
+/public/*            /:splat                         200

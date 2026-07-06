@@ -1049,7 +1049,6 @@ const HomeBackgroundVideoManager = (() => {
       if (!(target instanceof HTMLInputElement)) return;
       if (target.id !== 'homeVideoToggleDesktop' && target.id !== 'homeVideoToggleMobile') return;
       if (target.disabled) return;
-      console.warn('[HomeVideoToggle] Event:', e.type, 'id:', target.id, 'checked:', target.checked);
       setEnabled(!!target.checked);
     };
 
@@ -1063,21 +1062,10 @@ const HomeBackgroundVideoManager = (() => {
     const mobileToggle = document.getElementById('homeVideoToggleMobile');
     const toggles = [desktopToggle, mobileToggle].filter(Boolean);
 
-    console.log('[HomeVideoToggle] bindToggleUI called');
-    console.log('[HomeVideoToggle] Desktop toggle found:', !!desktopToggle);
-    console.log('[HomeVideoToggle] Mobile toggle found:', !!mobileToggle);
-    console.log('[HomeVideoToggle] Viewport width:', window.innerWidth);
-    console.log('[HomeVideoToggle] isMobileViewport:', isMobileViewport());
-
-    if (!toggles.length) {
-      console.warn('[HomeVideoToggle] No toggle elements found!');
-      return;
-    }
+    if (!toggles.length) return;
 
     const enabled = getUserEnabled();
     const canPlay = canPlayVideosInThisContext();
-    console.log('[HomeVideoToggle] User enabled:', enabled);
-    console.log('[HomeVideoToggle] Can play videos:', canPlay);
     syncRootVideoStateAttr();
 
     toggles.forEach((toggle) => {

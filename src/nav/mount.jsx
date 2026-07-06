@@ -1,3 +1,4 @@
+import '../../styles.css';
 import { createRoot } from 'react-dom/client';
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav';
 

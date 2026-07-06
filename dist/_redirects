@@ -1,0 +1,25 @@
+# Newsroom React app (history routing) lives at /newsroom.
+# Real asset files (/newsroom/assets/*) are served directly by the host;
+# these rules only fire for the bare route and deep SPA links.
+
+# Market ticker API — must be before the /newsroom/* SPA catch-all.
+/newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
+/newsroom/api/market-quotes-vn  /.netlify/functions/market-quotes?scope=vn  200
+/newsroom/api/auth-forgot-password  /.netlify/functions/auth-forgot-password  200
+
+/newsroom            /newsroom/index.html   200
+/newsroom/*          /newsroom/index.html   200
+
+# People React app (history routing) lives at /people.
+/people              /people/index.html   200
+/people/*            /people/index.html   200
+
+# Silence the browser's default /favicon.ico probe.
+/favicon.ico         /public/logoIcons/favicon.png   200
+
+# Static assets live under /public in the repo root deploy layout.
+/zalo-link.js        /public/zalo-link.js            200
+/profilePhotos/*     /public/profilePhotos/:splat    200
+
+# Vite copies public/ to dist root; keep /public/* URLs working in production.
+/public/*            /:splat                         200

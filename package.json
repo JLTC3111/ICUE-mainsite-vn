@@ -26,7 +26,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run build:newsroom && npm run build:people",
+    "build": "vite build && npm run build:newsroom && npm run build:people && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
