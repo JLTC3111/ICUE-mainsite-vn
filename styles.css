@@ -950,11 +950,11 @@ nav a {
 }
 
 .flag-icon-gb {
-  background-image: url('/flags/gb.svg');
+  background-image: url('public/flags/gb.svg');
 }
 
 .flag-icon-vn {
-  background-image: url('/flags/vn.svg');
+  background-image: url('public/flags/vn.svg');
 }
 
 .flag-icon:hover{
