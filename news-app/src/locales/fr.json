@@ -181,8 +181,8 @@
     "showing": "Résultats pour « {{query}} »"
   },
   "gallery": {
-    "ariaLabel": "Galerie d'articles. Faites glisser ou faites défiler pour parcourir ; cliquez sur l'article central pour l'ouvrir.",
-    "hint": "Glisser pour parcourir · Cliquer pour lire"
+    "ariaLabel": "Articles. Parcourez la grille masonry et cliquez sur un article pour l'ouvrir.",
+    "hint": "Cliquez sur un article pour lire"
   },
   "market": {
     "label": "Indices boursiers",

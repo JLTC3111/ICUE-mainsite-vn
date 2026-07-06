@@ -89,8 +89,8 @@
 .news-empty { text-align: center; color: var(--icue-text-faint); padding: 60px 0; font-size: 16px; }
 
 .news-gallery-skeleton {
-  height: clamp(380px, 52vh, 580px);
-  margin: 8px 0 48px;
+  min-height: 420px;
+  margin: 8px 0 56px;
   border-radius: var(--icue-radius);
   background: linear-gradient(100deg, #f0f1ed 30%, #f7f8f5 50%, #f0f1ed 70%);
   background-size: 200% 100%;

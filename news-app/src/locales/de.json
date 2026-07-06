@@ -181,8 +181,8 @@
     "showing": "Ergebnisse für „{{query}}“"
   },
   "gallery": {
-    "ariaLabel": "Nachrichten-Galerie. Ziehen oder scrollen zum Durchsuchen; auf den mittleren Artikel klicken, um ihn zu öffnen.",
-    "hint": "Ziehen zum Durchsuchen · Klicken zum Lesen"
+    "ariaLabel": "Nachrichtenartikel. Durchsuchen Sie das Masonry-Raster und klicken Sie auf einen Artikel, um ihn zu öffnen.",
+    "hint": "Artikel anklicken zum Lesen"
   },
   "market": {
     "label": "Marktindizes",

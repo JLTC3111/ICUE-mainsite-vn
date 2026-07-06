@@ -1,0 +1,42 @@
+.masonry {
+  position: relative;
+  width: 100%;
+}
+
+.masonry__item {
+  position: absolute;
+  will-change: transform, width, height, opacity;
+  padding: 8px;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+}
+
+.masonry__item-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--icue-radius);
+  overflow: hidden;
+  box-shadow: var(--icue-shadow-md);
+  background: var(--icue-surface-2);
+}
+
+.masonry__item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.masonry__item-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.1em;
+  color: #c6cabf;
+  background: var(--icue-gradient-dark);
+}

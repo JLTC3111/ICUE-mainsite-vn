@@ -181,8 +181,8 @@
     "showing": "Kết quả cho “{{query}}”"
   },
   "gallery": {
-    "ariaLabel": "Thư viện bài viết. Kéo hoặc cuộn để xem; nhấp vào bài ở giữa để mở.",
-    "hint": "Kéo để xem · Nhấp để đọc"
+    "ariaLabel": "Danh sách bài viết. Duyệt lưới masonry và nhấp vào bài để mở.",
+    "hint": "Nhấp vào bài để đọc"
   },
   "market": {
     "label": "Chỉ số thị trường",

@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
-import ArticleCircularGallery from '../components/ArticleCircularGallery'
+import ArticleMasonry from '../components/ArticleMasonry'
 import SocialLogoLoop from '../components/SocialLogoLoop'
 import CategoryFilter from '../components/CategoryFilter'
 import { fetchPublishedArticles } from '../lib/articles'
@@ -88,7 +88,7 @@ export default function NewsGrid() {
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
         {state === 'ready' && filtered.length > 0 && (
-          <ArticleCircularGallery articles={filtered} />
+          <ArticleMasonry articles={filtered} reduceMotion={reduceMotion} />
         )}
       </div>
     </div>
