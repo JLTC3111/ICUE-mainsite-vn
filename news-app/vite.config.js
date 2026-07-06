@@ -6,7 +6,8 @@ import { marketApiPlugin } from './vite-market-api-plugin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-function resolveSupabaseEnv(env) {
+function resolveSupabaseEnv(fileEnv = {}) {
+  const env = { ...fileEnv, ...process.env }
   return {
     url: env.VITE_SUPABASE_URL || env.SUPABASE_URL || '',
     anonKey: env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY || '',
