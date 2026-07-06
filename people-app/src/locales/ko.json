@@ -42,10 +42,10 @@
     "rights": "모든 권리 보유, ICUE."
   },
   "video": {
-    "on": "비디오: 켜짐",
-    "off": "비디오: 꺼짐",
-    "enableAria": "배경 비디오 켜기",
-    "disableAria": "배경 비디오 끄기"
+    "on": "배경: 켜짐",
+    "off": "배경: 꺼짐",
+    "enableAria": "인터랙티브 배경 켜기",
+    "disableAria": "인터랙티브 배경 끄기"
   },
   "tabs": {
     "groupAria": "인력 그룹",

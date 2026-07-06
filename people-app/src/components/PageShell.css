@@ -88,6 +88,44 @@
   justify-content: center;
 }
 
+/* Dark-theme overrides when interactive galaxy background is on */
+.page-shell--interactive-bg .page-shell__tabs {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.page-shell--interactive-bg .page-shell__tab {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.page-shell--interactive-bg .page-shell__tab:hover:not(.page-shell__tab--active) {
+  color: var(--icue-ink);
+  background: #fff;
+}
+
+.page-shell--interactive-bg .page-shell__title {
+  color: #fff;
+}
+
+.page-shell--interactive-bg .page-shell__subtitle {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.page-shell--interactive-bg .profile-nav__thumb--active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.page-shell--interactive-bg .profile-nav__thumb:hover {
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.page-shell--interactive-bg .contact-sidebar__music svg,
+.page-shell--interactive-bg .contact-sidebar__music svg path {
+  fill: #fff;
+  color: #fff;
+}
+
 @media (max-width: 640px) {
   .page-shell__main {
     padding: 24px 16px 48px;

@@ -18,11 +18,9 @@ export default function CoreTeamPage() {
   return (
     <PageShell
       pageKey="core"
-      showVideoToggle={canToggle}
-      videoEnabled={enabled}
-      onVideoToggle={toggle}
-      desktopVideoSrc="/public/bgVideos/bg10.mp4"
-      mobileVideoSrc="/public/bgVideos/bg10-mobile.mp4"
+      showBackgroundToggle={canToggle}
+      backgroundEnabled={enabled}
+      onBackgroundToggle={toggle}
     >
       <ProfileCarousel profiles={coreTeam} group="core" />
     </PageShell>

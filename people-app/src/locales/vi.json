@@ -42,10 +42,10 @@
     "rights": "Bản quyền thuộc về ICUE."
   },
   "video": {
-    "on": "Video: Bật",
-    "off": "Video: Tắt",
-    "enableAria": "Bật video nền",
-    "disableAria": "Tắt video nền"
+    "on": "Nền: Bật",
+    "off": "Nền: Tắt",
+    "enableAria": "Bật nền tương tác",
+    "disableAria": "Tắt nền tương tác"
   },
   "tabs": {
     "groupAria": "Nhóm nhân sự",

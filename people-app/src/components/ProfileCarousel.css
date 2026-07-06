@@ -5,10 +5,37 @@
 .profile-carousel__stage {
   position: relative;
   min-height: 420px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.profile-carousel__photo {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  max-width: min(340px, 100%);
+}
+
+.profile-carousel__panels {
+  position: relative;
+  min-height: 380px;
 }
 
 @media (max-width: 900px) {
   .profile-carousel__stage {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: auto;
+  }
+
+  .profile-carousel__photo {
+    max-width: min(320px, 100%);
+    margin-inline: auto;
+  }
+
+  .profile-carousel__panels {
     min-height: auto;
   }
 }

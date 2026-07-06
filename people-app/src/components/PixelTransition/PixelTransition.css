@@ -1,0 +1,35 @@
+.pixel-transition {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  line-height: 0;
+  vertical-align: top;
+}
+
+.pixel-transition__default {
+  position: relative;
+  display: block;
+  z-index: 1;
+}
+
+.pixel-transition__active {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pixel-transition__pixels {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.pixel-transition__pixel {
+  display: none;
+  position: absolute;
+}

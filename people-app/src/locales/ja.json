@@ -42,10 +42,10 @@
     "rights": "無断転載を禁じます、ICUE。"
   },
   "video": {
-    "on": "動画: オン",
-    "off": "動画: オフ",
-    "enableAria": "背景動画を有効にする",
-    "disableAria": "背景動画を無効にする"
+    "on": "背景: オン",
+    "off": "背景: オフ",
+    "enableAria": "インタラクティブ背景を有効にする",
+    "disableAria": "インタラクティブ背景を無効にする"
   },
   "tabs": {
     "groupAria": "人材グループ",

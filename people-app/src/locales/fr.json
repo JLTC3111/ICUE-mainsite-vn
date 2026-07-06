@@ -42,10 +42,10 @@
     "rights": "Tous droits réservés, ICUE."
   },
   "video": {
-    "on": "Vidéo : Activée",
-    "off": "Vidéo : Désactivée",
-    "enableAria": "Activer la vidéo d'arrière-plan",
-    "disableAria": "Désactiver la vidéo d'arrière-plan"
+    "on": "Arrière-plan : Activé",
+    "off": "Arrière-plan : Désactivé",
+    "enableAria": "Activer l'arrière-plan interactif",
+    "disableAria": "Désactiver l'arrière-plan interactif"
   },
   "tabs": {
     "groupAria": "Groupes de personnes",

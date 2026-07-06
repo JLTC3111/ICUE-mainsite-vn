@@ -42,10 +42,10 @@
     "rights": "Alle Rechte vorbehalten, ICUE."
   },
   "video": {
-    "on": "Video: Ein",
-    "off": "Video: Aus",
-    "enableAria": "Hintergrundvideo aktivieren",
-    "disableAria": "Hintergrundvideo deaktivieren"
+    "on": "Hintergrund: Ein",
+    "off": "Hintergrund: Aus",
+    "enableAria": "Interaktiven Hintergrund aktivieren",
+    "disableAria": "Interaktiven Hintergrund deaktivieren"
   },
   "tabs": {
     "groupAria": "Personengruppen",

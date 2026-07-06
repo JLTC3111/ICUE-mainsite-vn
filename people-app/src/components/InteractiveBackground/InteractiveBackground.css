@@ -1,0 +1,58 @@
+.interactive-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.interactive-bg--on {
+  background: #0a0e14;
+}
+
+.interactive-bg__base {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #0a0e14;
+}
+
+.interactive-bg__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.interactive-bg__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 14, 20, 0.35) 0%,
+    rgba(10, 14, 20, 0.5) 50%,
+    rgba(10, 14, 20, 0.6) 100%
+  );
+}
+
+.interactive-bg__fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--icue-gradient-page);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-bg--on {
+    background: var(--icue-gradient-page);
+  }
+
+  .interactive-bg--on .interactive-bg__base {
+    display: none;
+  }
+
+  .interactive-bg--on .interactive-bg__overlay,
+  .interactive-bg--off .interactive-bg__fallback {
+    background: var(--icue-gradient-page);
+  }
+}

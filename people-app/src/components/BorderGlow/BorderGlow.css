@@ -11,7 +11,7 @@
   border-radius: var(--border-radius);
   isolation: isolate;
   transform: translate3d(0, 0, 0.01px);
-  display: grid;
+  display: block;
   border: 1px solid rgb(255 255 255 / 15%);
   background: var(--card-bg, #120F17);
   overflow: visible;
@@ -136,6 +136,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: auto;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
   z-index: 1;
+}
+
+.profile-panel__glow--photo .border-glow-inner {
+  overflow: hidden;
 }

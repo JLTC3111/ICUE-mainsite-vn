@@ -1,13 +1,15 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { normalizeUnicode } from '@icue/text/normalizeUnicode'
+import { useInteractiveBackgroundActive } from '../contexts/InteractiveBackgroundContext'
 import BorderGlow from './BorderGlow/BorderGlow'
-import TiltedCard from './TiltedCard/TiltedCard'
 import './ProfilePanel.css'
 
-const GLOW_COLORS = ['#368adf', '#1db7ff', '#4d5053']
-const GLOW_PROPS = {
-  colors: GLOW_COLORS,
+const GLOW_COLORS_LIGHT = ['#368adf', '#1db7ff', '#4d5053']
+const GLOW_COLORS_DARK = ['#c084fc', '#f472b6', '#38bdf8']
+
+const GLOW_PROPS_LIGHT = {
+  colors: GLOW_COLORS_LIGHT,
   glowColor: '210 70 60',
   glowIntensity: 0.85,
   edgeSensitivity: 28,
@@ -15,11 +17,23 @@ const GLOW_PROPS = {
   fillOpacity: 0.3,
 }
 
-const PHOTO_FILL_FRAME_IDS = new Set(['nguyen-quynh-ly', 'tran-quoc-toan', 'do-bao-long'])
+const GLOW_PROPS_DARK = {
+  colors: GLOW_COLORS_DARK,
+  glowColor: '40 80 80',
+  glowIntensity: 1.0,
+  edgeSensitivity: 30,
+  coneSpread: 25,
+  fillOpacity: 0.5,
+}
+
+function cardBackground(interactiveBgActive) {
+  return interactiveBgActive ? '#120F17' : 'rgba(255, 255, 255, 0.72)'
+}
 
 function ProfilePanel({ person, direction, isActive }) {
   const { t } = useTranslation()
-  const photoFillsFrame = PHOTO_FILL_FRAME_IDS.has(person.id)
+  const interactiveBgActive = useInteractiveBackgroundActive()
+  const glowProps = interactiveBgActive ? GLOW_PROPS_DARK : GLOW_PROPS_LIGHT
   const displayName = normalizeUnicode(
     [person.honorific, person.name].filter(Boolean).join(' '),
   )
@@ -31,38 +45,12 @@ function ProfilePanel({ person, direction, isActive }) {
       aria-hidden={!isActive}
     >
       <BorderGlow
-        className="profile-panel__glow profile-panel__glow--photo"
-        backgroundColor="rgba(255, 255, 255, 0.55)"
-        borderRadius={24}
-        glowRadius={24}
-        {...GLOW_PROPS}
-      >
-        <div className={`profile-panel__photo-wrap${photoFillsFrame ? ' profile-panel__photo-wrap--fill' : ''}`}>
-          <TiltedCard
-            className={`tilted-card-figure--profile${photoFillsFrame ? ' tilted-card-figure--profile-fill' : ''}`}
-            imageSrc={person.photo}
-            altText={displayName}
-            containerHeight="100%"
-            containerWidth="100%"
-            imageWidth="100%"
-            imageHeight={photoFillsFrame ? '100%' : 'auto'}
-            scaleOnHover={1.03}
-            rotateAmplitude={10}
-            showMobileWarning={false}
-            showTooltip={false}
-            loading="eager"
-            draggable={false}
-          />
-        </div>
-      </BorderGlow>
-
-      <BorderGlow
         className="profile-panel__glow profile-panel__glow--content"
-        backgroundColor="rgba(255, 255, 255, 0.72)"
+        backgroundColor={cardBackground(interactiveBgActive)}
         borderRadius={14}
         glowRadius={28}
         animated={isActive}
-        {...GLOW_PROPS}
+        {...glowProps}
       >
         <div className="profile-panel__content">
           {person.title && (

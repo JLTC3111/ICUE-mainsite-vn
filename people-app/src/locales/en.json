@@ -42,10 +42,10 @@
     "rights": "All rights reserved, ICUE."
   },
   "video": {
-    "on": "Video: On",
-    "off": "Video: Off",
-    "enableAria": "Enable background video",
-    "disableAria": "Disable background video"
+    "on": "Background: On",
+    "off": "Background: Off",
+    "enableAria": "Enable interactive background",
+    "disableAria": "Disable interactive background"
   },
   "tabs": {
     "groupAria": "People groups",

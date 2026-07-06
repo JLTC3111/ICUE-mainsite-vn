@@ -1,0 +1,17 @@
+export const ICUE_GALAXY_PRESET = {
+  focal: [0.5, 0.5],
+  rotation: [1.0, 0.0],
+  starSpeed: 0.5,
+  density: 0.32,
+  hueShift: 210,
+  speed: 0.28,
+  mouseInteraction: true,
+  glowIntensity: 0.08,
+  saturation: 0.12,
+  mouseRepulsion: false,
+  repulsionStrength: 2,
+  twinkleIntensity: 0.06,
+  rotationSpeed: 0.02,
+  autoCenterRepulsion: 0,
+  transparent: true,
+}

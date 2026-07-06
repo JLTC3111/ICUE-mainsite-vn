@@ -1,8 +1,4 @@
 .profile-panel {
-  display: grid;
-  grid-template-columns: minmax(240px, 340px) 1fr;
-  gap: 40px;
-  align-items: center;
   opacity: 0;
   transform: translateX(24px);
   transition:
@@ -11,6 +7,7 @@
   pointer-events: none;
   position: absolute;
   inset: 0;
+  width: 100%;
 }
 
 .profile-panel--from-left {
@@ -36,40 +33,33 @@
   -webkit-backdrop-filter: blur(16px);
 }
 
+.profile-panel__glow--photo-snug.border-glow-card {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
 .profile-panel__photo-wrap {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 24px 16px 0;
-  min-height: 380px;
-  width: 100%;
+  display: block;
+  padding: 10px;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
-.profile-panel__photo-wrap--fill {
-  align-items: stretch;
-  padding: 0;
-  overflow: hidden;
+.profile-panel__photo-wrap--snug {
+  line-height: 0;
 }
 
-.tilted-card-figure--profile-fill {
-  justify-content: stretch;
-  min-height: 380px;
-}
-
-.tilted-card-figure--profile-fill .tilted-card-inner {
-  height: 100%;
-  min-height: 380px;
-}
-
-.tilted-card-figure--profile-fill .tilted-card-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  object-fit: cover;
-  object-position: center 20%;
-  filter: none;
+.profile-photo__img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(300px, 100%);
+  max-height: min(420px, 52vh);
+  object-fit: contain;
+  object-position: center center;
 }
 
 .profile-panel__content {
@@ -156,10 +146,37 @@ html:lang(vi) .profile-panel__tag {
   box-shadow: 0 6px 18px rgba(54, 138, 223, 0.35);
 }
 
+.page-shell--interactive-bg .profile-panel__glow--content.border-glow-card,
+.page-shell--interactive-bg .profile-panel__glow--photo.border-glow-card {
+  border-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+.page-shell--interactive-bg .profile-panel__title {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.page-shell--interactive-bg .profile-panel__name {
+  background: linear-gradient(135deg, #ffffff 0%, #c084fc 45%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-shell--interactive-bg .profile-panel__bio {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.page-shell--interactive-bg .profile-panel__tag {
+  background: rgba(192, 132, 252, 0.15);
+  color: #e9d5ff;
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
 @media (max-width: 900px) {
   .profile-panel {
-    grid-template-columns: 1fr;
-    gap: 24px;
     position: relative;
   }
 
@@ -168,18 +185,12 @@ html:lang(vi) .profile-panel__tag {
   }
 
   .profile-panel__photo-wrap {
-    min-height: 280px;
-    max-width: 320px;
-    margin: 0 auto;
+    max-width: 100%;
   }
 
-  .tilted-card-figure--profile:not(.tilted-card-figure--profile-fill) .tilted-card-img {
-    max-height: 320px;
-  }
-
-  .tilted-card-figure--profile-fill,
-  .tilted-card-figure--profile-fill .tilted-card-inner {
-    min-height: 280px;
+  .profile-photo__img {
+    max-width: min(280px, 100%);
+    max-height: min(320px, 45vh);
   }
 
   .profile-panel__content {

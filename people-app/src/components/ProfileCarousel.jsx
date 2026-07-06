@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import ProfilePanel from './ProfilePanel'
+import ProfilePhoto from './ProfilePhoto'
 import ProfileNav from './ProfileNav'
 import { useSwipe } from '../hooks/useSwipe'
 import { localizePeople } from '../lib/people'
@@ -91,14 +92,19 @@ export default function ProfileCarousel({ profiles, group }) {
       {...swipeHandlers}
     >
       <div className="profile-carousel__stage" aria-live="polite">
-        {localizedProfiles.map((person, i) => (
-          <ProfilePanel
-            key={person.id}
-            person={person}
-            direction={direction}
-            isActive={i === currentIndex}
-          />
-        ))}
+        <div className="profile-carousel__photo">
+          <ProfilePhoto person={current} />
+        </div>
+        <div className="profile-carousel__panels">
+          {localizedProfiles.map((person, i) => (
+            <ProfilePanel
+              key={person.id}
+              person={person}
+              direction={direction}
+              isActive={i === currentIndex}
+            />
+          ))}
+        </div>
       </div>
 
       <ProfileNav

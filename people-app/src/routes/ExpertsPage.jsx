@@ -19,11 +19,9 @@ export default function ExpertsPage() {
     <PageShell
       pageKey="experts"
       showHrLink
-      showVideoToggle={canToggle}
-      videoEnabled={enabled}
-      onVideoToggle={toggle}
-      desktopVideoSrc="/public/bgVideos/blueflow.mp4"
-      mobileVideoSrc="/public/bgVideos/moe_bg_mobile.mp4"
+      showBackgroundToggle={canToggle}
+      backgroundEnabled={enabled}
+      onBackgroundToggle={toggle}
     >
       <ProfileCarousel profiles={experts} group="experts" />
     </PageShell>

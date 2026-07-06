@@ -5,7 +5,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 
-function Header({ videoEnabled, onVideoToggle, showVideoToggle }) {
+function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
   const { t } = useTranslation()
   const { base, hashLink } = useMainSite()
 
@@ -23,15 +23,15 @@ function Header({ videoEnabled, onVideoToggle, showVideoToggle }) {
           <a href={hashLink('Home')} className="people-header__link">{t('nav.home')}</a>
           <a href={hashLink('orgStructure')} className="people-header__link">{t('nav.org')}</a>
           <LanguageSwitcher />
-          {showVideoToggle && (
+          {showBackgroundToggle && (
             <button
               type="button"
               className="people-header__video-toggle"
-              onClick={onVideoToggle}
-              aria-pressed={videoEnabled}
-              aria-label={videoEnabled ? t('video.disableAria') : t('video.enableAria')}
+              onClick={onBackgroundToggle}
+              aria-pressed={backgroundEnabled}
+              aria-label={backgroundEnabled ? t('video.disableAria') : t('video.enableAria')}
             >
-              {videoEnabled ? t('video.on') : t('video.off')}
+              {backgroundEnabled ? t('video.on') : t('video.off')}
             </button>
           )}
         </nav>
