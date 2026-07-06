@@ -1,6 +1,6 @@
 # Newsroom React app (history routing) lives at /newsroom.
-# Real asset files (/newsroom/assets/*) are served directly by the host;
-# these rules only fire for the bare route and deep SPA links.
+# Static files under /newsroom/assets/* are served as-is when present.
+# SPA fallback applies only to extensionless routes (not missing .js/.css files).
 
 # Market ticker API — must be before the /newsroom/* SPA catch-all.
 /newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
@@ -8,7 +8,12 @@
 /newsroom/api/auth-forgot-password  /.netlify/functions/auth-forgot-password  200
 
 /newsroom            /newsroom/index.html   200
-/newsroom/*          /newsroom/index.html   200
+/newsroom/login      /newsroom/index.html   200
+/newsroom/write      /newsroom/index.html   200
+/newsroom/edit/*     /newsroom/index.html   200
+/newsroom/dashboard  /newsroom/index.html   200
+/newsroom/profile    /newsroom/index.html   200
+/newsroom/article/*  /newsroom/index.html   200
 
 # People React app (history routing) lives at /people.
 /people              /people/index.html   200

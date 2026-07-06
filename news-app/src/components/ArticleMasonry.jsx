@@ -8,10 +8,29 @@ import './ArticleMasonry.css'
 
 const PLACEHOLDER_COVER = `${import.meta.env.BASE_URL}favicon.svg`
 
-function masonryHeight(title, slug, index) {
-  const seed = (slug || String(index)).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
-  const lengthBonus = Math.min(Math.ceil((title?.length || 0) / 16) * 36, 180)
-  return 560 + (seed % 160) + lengthBonus
+// React Bits demo uses a wide spread of logical heights (120–850) for visual variety.
+const HEIGHT_PALETTE = [400, 250, 600, 260, 120, 850, 720, 200, 350, 300, 350, 240, 320, 290]
+
+function hashSeed(value, index) {
+  return (value || String(index)).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+}
+
+function masonryLayout(title, slug, index, total) {
+  const seed = hashSeed(slug, index)
+  const height = HEIGHT_PALETTE[seed % HEIGHT_PALETTE.length]
+    + Math.min(Math.ceil((title?.length || 0) / 20) * 18, 120)
+
+  // Wider tiles for small sets; occasional 2-column spans when the grid is dense.
+  let colSpan = 1
+  if (total <= 2) {
+    colSpan = 2
+  } else if (total === 3) {
+    colSpan = [2, 1, 2][index % 3]
+  } else if (seed % 9 === 0 || seed % 11 === 0) {
+    colSpan = 2
+  }
+
+  return { height, colSpan }
 }
 
 export default function ArticleMasonry({ articles, reduceMotion = false }) {
@@ -22,11 +41,13 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
     () =>
       articles.map((article, index) => {
         const title = normalizeUnicode(article.title)
+        const { height, colSpan } = masonryLayout(title, article.slug, index, articles.length)
         return {
           id: article.slug || article.id || String(index),
           slug: article.slug,
           img: article.cover_image_url || PLACEHOLDER_COVER,
-          height: masonryHeight(title, article.slug, index),
+          height,
+          colSpan,
           title,
           category: isCategory(article.category) && article.category !== 'general' ? article.category : null,
           date: article.published_at || article.article_date || '',
@@ -47,7 +68,11 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
         items={items}
         reduceMotion={reduceMotion}
         adjustHeight
-        heightScale={0.82}
+        heightScale={0.5}
+        ease="power3.out"
+        animateFrom="bottom"
+        stagger={0.05}
+        hoverScale={0.95}
         blurToFocus={!reduceMotion}
         scaleOnHover={!reduceMotion}
         onItemClick={handleItemClick}

@@ -44,12 +44,22 @@ function spaDevFallback({ name, basePath, outDirName }) {
         }
         const rel = urlPath.replace(new RegExp(`^${basePath.replace('/', '\\/')}\\/?`), '');
         const filePath = path.join(appDir, rel);
-        if (rel && path.extname(rel) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-          res.statusCode = 200;
-          res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
-          res.end(fs.readFileSync(filePath));
+        const hasExtension = Boolean(rel && path.extname(rel));
+
+        if (hasExtension) {
+          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
+            res.end(fs.readFileSync(filePath));
+            return;
+          }
+          // Never SPA-fallback missing static assets — returning HTML breaks module scripts.
+          res.statusCode = 404;
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          res.end(`Asset not found: ${urlPath}. Rebuild with npm run build:newsroom.`);
           return;
         }
+
         const indexPath = path.join(appDir, 'index.html');
         if (fs.existsSync(indexPath)) {
           res.statusCode = 200;

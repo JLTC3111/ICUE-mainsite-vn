@@ -3,14 +3,9 @@ import { gsap } from 'gsap'
 
 import './Masonry.css'
 
-const COLUMN_QUERIES = ['(min-width:1200px)', '(min-width:900px)', '(min-width:600px)', '(min-width:400px)']
-const COLUMN_COUNTS = [4, 3, 2, 1]
-
-function getEffectiveColumns(responsiveColumns, itemCount) {
-  if (itemCount <= 1) return 1
-  if (itemCount <= 4) return Math.min(responsiveColumns, Math.max(2, Math.ceil(itemCount / 2)))
-  return responsiveColumns
-}
+// React Bits defaults — dense masonry with varied tile heights.
+const COLUMN_QUERIES = ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)']
+const COLUMN_COUNTS = [5, 4, 3, 2]
 
 function useMedia(queries, values, defaultValue) {
   const get = () => values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue
@@ -20,7 +15,7 @@ function useMedia(queries, values, defaultValue) {
   useEffect(() => {
     const handler = () => setValue(get)
     queries.forEach((q) => matchMedia(q).addEventListener('change', handler))
-    return () => queries.forEach((q) => matchMedia(q).removeEventListener('change', handler))
+    return () => queries.forEach(q => matchMedia(q).removeEventListener('change', handler))
   }, [queries, values, defaultValue])
 
   return value
@@ -88,6 +83,37 @@ function getInitialPosition(item, animateFrom, containerRect) {
   }
 }
 
+function layoutGrid(items, width, columns, heightScale) {
+  const colHeights = new Array(columns).fill(0)
+  const columnWidth = width / columns
+  const gap = 0
+
+  return items.map((child) => {
+    const span = Math.min(Math.max(1, child.colSpan || 1), columns)
+    let bestCol = 0
+    let bestY = Infinity
+
+    for (let col = 0; col <= columns - span; col += 1) {
+      const segmentTop = Math.max(...colHeights.slice(col, col + span))
+      if (segmentTop < bestY) {
+        bestY = segmentTop
+        bestCol = col
+      }
+    }
+
+    const x = columnWidth * bestCol
+    const w = columnWidth * span - (span < columns ? 0 : 0)
+    const h = child.height * heightScale
+    const y = bestY
+
+    for (let col = bestCol; col < bestCol + span; col += 1) {
+      colHeights[col] = y + h + gap
+    }
+
+    return { ...child, x, y, w, h, colSpan: span }
+  })
+}
+
 export default function Masonry({
   items,
   ease = 'power3.out',
@@ -95,7 +121,7 @@ export default function Masonry({
   stagger = 0.05,
   animateFrom = 'bottom',
   scaleOnHover = true,
-  hoverScale = 0.97,
+  hoverScale = 0.95,
   blurToFocus = true,
   adjustHeight = true,
   reduceMotion = false,
@@ -106,8 +132,7 @@ export default function Masonry({
   onItemClick,
   renderItem,
 }) {
-  const responsiveColumns = useMedia(columnQueries, columnCounts, 1)
-  const columns = getEffectiveColumns(responsiveColumns, items.length)
+  const columns = useMedia(columnQueries, columnCounts, 1)
   const [containerRef, { width }] = useMeasure()
   const [imagesReady, setImagesReady] = useState(false)
   const hasMounted = useRef(false)
@@ -119,20 +144,7 @@ export default function Masonry({
 
   const grid = useMemo(() => {
     if (!width) return []
-
-    const colHeights = new Array(columns).fill(0)
-    const columnWidth = width / columns
-
-    return items.map((child) => {
-      const col = colHeights.indexOf(Math.min(...colHeights))
-      const x = columnWidth * col
-      const height = child.height * heightScale
-      const y = colHeights[col]
-
-      colHeights[col] += height
-
-      return { ...child, x, y, w: columnWidth, h: height }
-    })
+    return layoutGrid(items, width, columns, heightScale)
   }, [columns, items, width, heightScale])
 
   const containerHeight = useMemo(() => {
@@ -202,7 +214,7 @@ export default function Masonry({
     containerRef,
   ])
 
-  const handleMouseEnter = (e, item) => {
+  const handleMouseEnter = (_e, item) => {
     if (reduceMotion || !scaleOnHover) return
     gsap.to(`[data-masonry-key="${item.id}"]`, {
       scale: hoverScale,
@@ -211,7 +223,7 @@ export default function Masonry({
     })
   }
 
-  const handleMouseLeave = (e, item) => {
+  const handleMouseLeave = (_e, item) => {
     if (reduceMotion || !scaleOnHover) return
     gsap.to(`[data-masonry-key="${item.id}"]`, {
       scale: 1,
