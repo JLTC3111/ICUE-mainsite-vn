@@ -28,11 +28,17 @@ function copyDir(src, dest) {
   }
 }
 
+function removeDir(dir) {
+  if (!fs.existsSync(dir)) return;
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 if (!fs.existsSync(dist)) {
   console.error('[postbuild] dist/ not found. Run vite build first.');
   process.exit(1);
 }
 
+// Populate dist/ with assets the SPA still expects at runtime.
 copyFile(path.join(root, 'styles.css'), path.join(dist, 'styles.css'));
 copyFile(path.join(root, 'src/script.js'), path.join(dist, 'src/script.js'));
 copyDir(path.join(root, 'src/pages'), path.join(dist, 'src/pages'));
@@ -41,4 +47,17 @@ copyDir(path.join(root, 'newsroom'), path.join(dist, 'newsroom'));
 copyDir(path.join(root, 'people'), path.join(dist, 'people'));
 copyDir(path.join(root, 'public'), path.join(dist, 'public'));
 
-console.log('[postbuild] Copied static assets into dist/');
+const builtIndex = path.join(dist, 'index.html');
+if (!fs.existsSync(builtIndex)) {
+  console.error('[postbuild] dist/index.html not found.');
+  process.exit(1);
+}
+
+// Netlify currently publishes the repo root (not dist/), so mirror the build
+// output to the paths production actually serves.
+copyFile(builtIndex, path.join(root, 'index.html'));
+removeDir(path.join(root, 'assets'));
+copyDir(path.join(dist, 'assets'), path.join(root, 'assets'));
+copyFile(path.join(dist, 'zalo-link.js'), path.join(root, 'zalo-link.js'));
+
+console.log('[postbuild] Synced production build to repo root for Netlify deploy.');
