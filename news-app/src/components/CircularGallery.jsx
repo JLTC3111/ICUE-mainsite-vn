@@ -475,6 +475,7 @@ class App {
     });
   }
   onTouchDown(e) {
+    if (!this.isPointerInside(e)) return;
     this.isDown = true;
     this.didDrag = false;
     this.scroll.position = this.scroll.current;
@@ -489,12 +490,25 @@ class App {
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = this.scroll.position + distance;
   }
-  onTouchUp() {
+  onTouchUp(e) {
+    if (!this.isDown) return;
+    const shouldClick = !this.didDrag && this.onItemClick && this.isPointerInside(e);
     this.isDown = false;
-    if (!this.didDrag && this.onItemClick) {
+    if (shouldClick) {
       this.onItemClick(this.getCenterIndex());
     }
     this.onCheck();
+  }
+  isPointerInside(e) {
+    const el = this.container;
+    if (!el) return false;
+    if (e.target instanceof Node && el.contains(e.target)) return true;
+    const touch = e.changedTouches?.[0] ?? e.touches?.[0];
+    const x = touch?.clientX ?? e.clientX;
+    const y = touch?.clientY ?? e.clientY;
+    if (x == null || y == null) return false;
+    const rect = el.getBoundingClientRect();
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
   getCenterIndex() {
     if (!this.medias?.[0] || !this.originalCount) return 0;
@@ -503,6 +517,7 @@ class App {
     return itemIndex % this.originalCount;
   }
   onWheel(e) {
+    if (!this.container?.contains(e.target)) return;
     const delta = e.deltaY || e.wheelDelta || e.detail;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();
@@ -582,13 +597,12 @@ class App {
     this.boundOnKeyDown = this.onKeyDown.bind(this);
 
     window.addEventListener('resize', this.boundOnResize);
-    window.addEventListener('mousewheel', this.boundOnWheel);
-    window.addEventListener('wheel', this.boundOnWheel);
-    window.addEventListener('mousedown', this.boundOnTouchDown);
+    this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
+    this.container.addEventListener('mousedown', this.boundOnTouchDown);
     window.addEventListener('mousemove', this.boundOnTouchMove);
     window.addEventListener('mouseup', this.boundOnTouchUp);
-    window.addEventListener('touchstart', this.boundOnTouchDown);
-    window.addEventListener('touchmove', this.boundOnTouchMove);
+    this.container.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
+    window.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
     window.addEventListener('touchend', this.boundOnTouchUp);
 
     this.container?.addEventListener('keydown', this.boundOnKeyDown);
@@ -596,20 +610,18 @@ class App {
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
-    window.removeEventListener('mousewheel', this.boundOnWheel);
-    window.removeEventListener('wheel', this.boundOnWheel);
-    window.removeEventListener('mousedown', this.boundOnTouchDown);
+    if (this.container) {
+      this.container.removeEventListener('wheel', this.boundOnWheel);
+      this.container.removeEventListener('mousedown', this.boundOnTouchDown);
+      this.container.removeEventListener('touchstart', this.boundOnTouchDown);
+      this.container.removeEventListener('keydown', this.boundOnKeyDown);
+    }
     window.removeEventListener('mousemove', this.boundOnTouchMove);
     window.removeEventListener('mouseup', this.boundOnTouchUp);
-    window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
-    }
-
-    if (this.container) {
-      this.container.removeEventListener('keydown', this.boundOnKeyDown);
     }
   }
 }
