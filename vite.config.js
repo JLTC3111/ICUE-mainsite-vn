@@ -1,6 +1,7 @@
 // vite.config.js
 import fs from 'node:fs'
 import path from 'node:path'
+import react from '@vitejs/plugin-react'
 import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
 
 const MIME = {
@@ -64,8 +65,14 @@ function spaDevFallback({ name, basePath, outDirName }) {
 export default {
   base: '', // Use '' or './' to keep all paths relative after build
   plugins: [
+    react(),
     marketApiPlugin(),
     spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom' }),
     spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people' }),
   ],
+  resolve: {
+    alias: {
+      '@icue/main-site-nav': path.resolve(__dirname, 'shared/main-site-nav'),
+    },
+  },
 };

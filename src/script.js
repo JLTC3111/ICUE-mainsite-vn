@@ -528,6 +528,11 @@ if (calendarIcon && calendarLink && calendarModal && calendarModalSvg && calenda
 }}
 
 window.setNavLinkContrast = (useLightLinks = false) => {
+  if (window.__mainSiteNav?.setDarkNav) {
+    window.__mainSiteNav.setDarkNav(!!useLightLinks);
+    return;
+  }
+
   const nav = document.querySelector('.menu-bar');
   const menuToggle = document.querySelector('.menu-toggle');
   const menuIcon = document.getElementById('menuIcon');
@@ -1438,6 +1443,11 @@ window.loadPage = (page) => {
   };
 
   const updateNavVideoToggleVisibility = () => {
+    if (window.__mainSiteNav?.setPage) {
+      window.__mainSiteNav.setPage(page);
+      return;
+    }
+
     const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
 
     if (page === 'Home') {
@@ -1618,9 +1628,10 @@ window.loadPage = (page) => {
             isTruelyTouchDevice();
             initializeChatbot();
 
-            if (typeof setupLanguageSwitcher === 'function') {
+            if (typeof window.__mainSiteNav?.refreshLanguageSwitcher === 'function') {
+              window.__mainSiteNav.refreshLanguageSwitcher();
+            } else if (typeof setupLanguageSwitcher === 'function') {
               setupLanguageSwitcher();
-              console.log('[LoadPage] Language switcher updated for page:', page);
             }
 
             switch (page) {
@@ -1713,6 +1724,16 @@ window.loadPage = (page) => {
 };
 
 window.retriggerMenuAnimations = (isFirstLoad = true) => {
+  if (document.getElementById('main-site-nav-root')?.firstElementChild) {
+    window.__mainSiteNav?.playEntranceAnimation?.(isFirstLoad);
+    return;
+  }
+
+  if (window.__mainSiteNav?.playEntranceAnimation) {
+    window.__mainSiteNav.playEntranceAnimation(isFirstLoad);
+    return;
+  }
+
   if (typeof window.gsap === 'undefined') {
     const selectors = [
       '.menu-toggle', '.logo-banner', '.flag-link', '.contact-link', '.contact-sidebar',
@@ -2124,6 +2145,12 @@ function router() {
 }
 
 window.toggleDrawerMenu = () => {
+  if (window.__mainSiteNav?.setDrawerOpen) {
+    const isOpen = window.__mainSiteNav.getDrawerOpen?.() ?? false;
+    window.__mainSiteNav.setDrawerOpen(!isOpen);
+    return;
+  }
+
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon'); 
   const isOpen = drawerMenu.classList.contains('open');
@@ -2142,6 +2169,11 @@ window.toggleDrawerMenu = () => {
 };
 
 window.closeDrawerMenu = () => {
+  if (window.__mainSiteNav?.setDrawerOpen) {
+    window.__mainSiteNav.setDrawerOpen(false);
+    return;
+  }
+
   const drawerMenu = document.getElementById('drawerMenu');
   const menuIcon = document.getElementById('menuIcon'); 
 
@@ -2179,6 +2211,11 @@ window.removeOverlayListener = () => {
 
 // Highlight active link
 window.highlightActiveLink = (page) => {
+  if (window.__mainSiteNav?.setPage) {
+    window.__mainSiteNav.setPage(page);
+    return;
+  }
+
   const links = document.querySelectorAll('#drawerMenu a');
   links.forEach(link => {
     link.classList.remove('active');
@@ -2190,6 +2227,7 @@ window.highlightActiveLink = (page) => {
 
 window.toggleSubmenu = (e) => {
   if (e) e.preventDefault();
+  if (window.__mainSiteNav) return;
   const submenu = document.getElementById('ourPeopleSubmenu');
   if (!submenu) {
     console.warn('toggleSubmenu: No element found with ID "ourPeopleSubmenu"');
@@ -2206,8 +2244,9 @@ window.toggleSubmenu = (e) => {
   }
 };
 
-/** User-resizable main-site drawer width (desktop only; not newsroom/people apps). */
+/** Legacy drawer resize — handled by React useDrawerResize when nav island is mounted. */
 window.initMainDrawerResize = () => {
+  if (window.__mainSiteNav) return;
   const drawer = document.getElementById('drawerMenu');
   const handle = document.getElementById('drawerResizeHandle');
   if (!drawer || !handle) return;
@@ -2216,9 +2255,9 @@ window.initMainDrawerResize = () => {
   if (path.startsWith('/newsroom') || path.startsWith('/people')) return;
 
   const STORAGE_KEY = 'icue_main_drawer_width';
-  const MIN_WIDTH = 260;
-  const MAX_WIDTH = 560;
-  const DEFAULT_WIDTH = 360;
+  const MIN_WIDTH = 140;
+  const MAX_WIDTH = 280;
+  const DEFAULT_WIDTH = 180;
   const desktopQuery = window.matchMedia('(min-width: 1441px)');
 
   const clampWidth = (width) => Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, width));
@@ -5116,12 +5155,9 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log(`Target URL: ${targetUrl}`);
   }
   
-  // Initialize language switcher on page load
-  setupLanguageSwitcher();
-  
+  // Language switcher is owned by the React nav island.
   window.addEventListener('popstate', function() {
-    console.log('[Language Switcher] Popstate event, updating language switcher...');
-    setTimeout(() => setupLanguageSwitcher(), 100); 
+    window.__mainSiteNav?.refreshLanguageSwitcher?.();
   });
 });
 
