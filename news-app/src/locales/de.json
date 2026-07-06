@@ -2,6 +2,9 @@
   "brand": "ICUE",
   "brandBadge": "Aktuelles",
   "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "hero": {
+    "rotatingTags": ["NEUESTE NACHRICHTEN", "LERNEN & WISSEN", "BAUEN & ENTDECKEN"]
+  },
   "nav": {
     "home": "Startseite",
     "news": "Aktuelles",
@@ -173,6 +176,10 @@
     "clear": "Löschen",
     "open": "Suche öffnen",
     "showing": "Ergebnisse für „{{query}}“"
+  },
+  "gallery": {
+    "ariaLabel": "Nachrichten-Galerie. Ziehen oder scrollen zum Durchsuchen; auf den mittleren Artikel klicken, um ihn zu öffnen.",
+    "hint": "Ziehen zum Durchsuchen · Klicken zum Lesen"
   },
   "market": {
     "label": "Marktindizes",

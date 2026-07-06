@@ -2,6 +2,9 @@
   "brand": "ICUE",
   "brandBadge": "Actualités",
   "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
+  "hero": {
+    "rotatingTags": ["DERNIÈRES NOUVELLES", "APPRENDRE & SAVOIR", "CONSTRUIRE & EXPLORER"]
+  },
   "nav": {
     "home": "Accueil",
     "news": "Actualités",
@@ -173,6 +176,10 @@
     "clear": "Effacer",
     "open": "Ouvrir la recherche",
     "showing": "Résultats pour « {{query}} »"
+  },
+  "gallery": {
+    "ariaLabel": "Galerie d'articles. Faites glisser ou faites défiler pour parcourir ; cliquez sur l'article central pour l'ouvrir.",
+    "hint": "Glisser pour parcourir · Cliquer pour lire"
   },
   "market": {
     "label": "Indices boursiers",

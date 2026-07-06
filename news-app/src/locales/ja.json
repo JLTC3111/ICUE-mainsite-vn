@@ -2,6 +2,9 @@
   "brand": "ICUE",
   "brandBadge": "ニュース",
   "instituteName": "建設経済・都市計画研究所",
+  "hero": {
+    "rotatingTags": ["最新ニュース", "学び & 知識", "構築 & 探索"]
+  },
   "nav": {
     "home": "ホーム",
     "news": "ニュース",
@@ -173,6 +176,10 @@
     "clear": "クリア",
     "open": "検索を開く",
     "showing": "「{{query}}」の検索結果"
+  },
+  "gallery": {
+    "ariaLabel": "ニュースギャラリー。ドラッグまたはスクロールで閲覧し、中央の記事をクリックして開きます。",
+    "hint": "ドラッグで閲覧 · クリックで読む"
   },
   "market": {
     "label": "市場指数",

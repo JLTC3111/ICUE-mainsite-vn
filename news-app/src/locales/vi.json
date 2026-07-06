@@ -2,6 +2,9 @@
   "brand": "ICUE",
   "brandBadge": "Bản Tin",
   "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "hero": {
+    "rotatingTags": ["TIN MỚI NHẤT", "HỌC HỎI & TRI THỨC", "XÂY DỰNG & KHÁM PHÁ"]
+  },
   "nav": {
     "home": "Trang Chủ",
     "news": "Bản Tin",
@@ -173,6 +176,10 @@
     "clear": "Xóa",
     "open": "Mở tìm kiếm",
     "showing": "Kết quả cho “{{query}}”"
+  },
+  "gallery": {
+    "ariaLabel": "Thư viện bài viết. Kéo hoặc cuộn để xem; nhấp vào bài ở giữa để mở.",
+    "hint": "Kéo để xem · Nhấp để đọc"
   },
   "market": {
     "label": "Chỉ số thị trường",

@@ -2,6 +2,9 @@
   "brand": "ICUE",
   "brandBadge": "News",
   "instituteName": "Institute of Economics and Urban Planning",
+  "hero": {
+    "rotatingTags": ["LATEST NEWS", "LEARNING & KNOWLEDGE", "BUILD & EXPLORE"]
+  },
   "nav": {
     "home": "Home",
     "news": "News",
@@ -173,6 +176,10 @@
     "clear": "Clear",
     "open": "Open search",
     "showing": "Showing results for “{{query}}”"
+  },
+  "gallery": {
+    "ariaLabel": "News articles gallery. Drag or scroll to browse; click the center article to open it.",
+    "hint": "Drag to browse · Click to read"
   },
   "market": {
     "label": "Market indices",

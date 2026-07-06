@@ -1,0 +1,13 @@
+.news-circular-gallery {
+  width: 100%;
+  height: clamp(380px, 52vh, 580px);
+  margin: 8px 0 48px;
+}
+
+@media (max-width: 640px) {
+  .news-circular-gallery {
+    height: clamp(320px, 46vh, 440px);
+    margin-top: 4px;
+    margin-bottom: 36px;
+  }
+}
