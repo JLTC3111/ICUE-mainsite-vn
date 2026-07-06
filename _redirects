@@ -16,3 +16,7 @@
 
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
+
+# Static assets live under /public in the repo root deploy layout.
+/zalo-link.js        /public/zalo-link.js            200
+/profilePhotos/*     /public/profilePhotos/:splat    200

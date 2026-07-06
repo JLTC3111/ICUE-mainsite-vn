@@ -948,9 +948,9 @@ nav a {
 @media (max-width: 768px) {
   .menu-toggle {
     position: fixed;
-    left: max(12px, env(safe-area-inset-left));
+    left: 50%;
     top: max(10px, env(safe-area-inset-top));
-    transform: none;
+    transform: translateX(-50%);
     z-index: 100;
     display: flex;
     align-items: center;
@@ -958,16 +958,16 @@ nav a {
     width: 44px;
     height: 44px;
     color: var(--nav-text, #111316);
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    box-shadow: var(--nav-shadow, 0 2px 6px rgba(0, 0, 0, 0.12));
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .menu-bar.nav-on-dark .menu-toggle {
     color: #fff;
-    background: rgba(0, 0, 0, 0.42);
-    border-color: rgba(255, 255, 255, 0.18);
+    background: transparent;
+    border: none;
   }
 
   .menu-toggle svg {
@@ -2779,8 +2779,9 @@ body.loaded #app {
 
   .menu-toggle {
     position: fixed;
-    left: max(12px, env(safe-area-inset-left));
+    left: 50%;
     top: max(10px, env(safe-area-inset-top));
+    transform: translateX(-50%);
     cursor: pointer;
     z-index: 100;
   }
