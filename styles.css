@@ -1000,15 +1000,58 @@ nav a {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 360px;
+  width: var(--drawer-width, 360px);
   background: transparent;
   display: flex;
   flex-direction: column;
   padding: 12.5rem 2.5rem;
   transform: translateX(-100%);
-  transition: all 0.5s ease-in-out;
+  transition: transform 0.5s ease-in-out, width 0.5s ease-in-out;
   z-index: 5;
   box-shadow: 4px -2px 12px rgba(255, 255, 255, 1);
+  overflow: hidden;
+}
+
+#drawerMenu.is-resizing {
+  transition: transform 0.5s ease-in-out;
+}
+
+.drawer-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 3;
+  touch-action: none;
+}
+
+.drawer-resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 52px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  transition: background 0.2s ease, height 0.2s ease;
+}
+
+.drawer-resize-handle:hover::after,
+#drawerMenu.is-resizing .drawer-resize-handle::after {
+  background: rgba(255, 255, 255, 0.72);
+  height: 64px;
+}
+
+.drawer-resize-handle:focus-visible {
+  outline: 2px solid #1db7ff;
+  outline-offset: -2px;
 }
 
 .drawer-blur-overlay {
@@ -2396,7 +2439,8 @@ body.loaded #app {
     top: 0;
     left: 0;
     height: 100dvh;
-    width: 100vw;
+    width: 100vw !important;
+    --drawer-width: 100vw;
     gap: 0.25rem;
     align-items: center;
     justify-content: center;
@@ -2439,6 +2483,10 @@ body.loaded #app {
     left: 0rem;
     position: relative;
     transition: all 1.5s ease;
+  }
+
+  .drawer-resize-handle {
+    display: none;
   }
 }
 

@@ -2189,6 +2189,84 @@ window.toggleSubmenu = (e) => {
   }
 };
 
+/** User-resizable main-site drawer width (desktop only; not newsroom/people apps). */
+window.initMainDrawerResize = () => {
+  const drawer = document.getElementById('drawerMenu');
+  const handle = document.getElementById('drawerResizeHandle');
+  if (!drawer || !handle) return;
+
+  const path = window.location.pathname || '';
+  if (path.startsWith('/newsroom') || path.startsWith('/people')) return;
+
+  const STORAGE_KEY = 'icue_main_drawer_width';
+  const MIN_WIDTH = 260;
+  const MAX_WIDTH = 560;
+  const DEFAULT_WIDTH = 360;
+  const desktopQuery = window.matchMedia('(min-width: 1441px)');
+
+  const clampWidth = (width) => Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, width));
+
+  const applyWidth = (width) => {
+    const next = clampWidth(width);
+    drawer.style.setProperty('--drawer-width', `${next}px`);
+    drawer.style.width = `${next}px`;
+    return next;
+  };
+
+  const loadSavedWidth = () => {
+    const saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    applyWidth(Number.isFinite(saved) ? saved : DEFAULT_WIDTH);
+  };
+
+  const syncHandle = () => {
+    handle.hidden = !desktopQuery.matches;
+  };
+
+  loadSavedWidth();
+  syncHandle();
+  desktopQuery.addEventListener('change', syncHandle);
+
+  let dragging = false;
+  let startX = 0;
+  let startWidth = DEFAULT_WIDTH;
+
+  const stopDragging = (event) => {
+    if (!dragging) return;
+    dragging = false;
+    drawer.classList.remove('is-resizing');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    const width = applyWidth(drawer.getBoundingClientRect().width);
+    localStorage.setItem(STORAGE_KEY, String(Math.round(width)));
+    if (event?.pointerId != null && handle.hasPointerCapture(event.pointerId)) {
+      handle.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  handle.addEventListener('pointerdown', (event) => {
+    if (!desktopQuery.matches) return;
+    dragging = true;
+    startX = event.clientX;
+    startWidth = drawer.getBoundingClientRect().width;
+    drawer.classList.add('is-resizing');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    handle.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+
+  handle.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    applyWidth(startWidth + (event.clientX - startX));
+  });
+
+  handle.addEventListener('pointerup', stopDragging);
+  handle.addEventListener('pointercancel', stopDragging);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.initMainDrawerResize?.();
+});
 
 
 window.initLogoSlider = () => {
