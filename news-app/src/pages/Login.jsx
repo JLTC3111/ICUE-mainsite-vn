@@ -150,7 +150,7 @@ export default function Login() {
         </button>
         <div className="login__brand">
           <span className="login__logo">ICUE</span>
-          <span className="login__pill">News</span>
+          <span className="login__pill">{t('login.brandPill')}</span>
         </div>
         <h1 className="login__title">{isRecovery ? t('login.resetTitle') : t('login.title')}</h1>
         <p className="login__subtitle">{isRecovery ? t('login.resetSubtitle') : t('login.subtitle')}</p>

@@ -45,6 +45,7 @@
   },
   "login": {
     "title": "Đăng Nhập",
+    "brandPill": "Tin tức",
     "subtitle": "Cổng quản trị bản tin ICUE",
     "email": "Email",
     "password": "Mật khẩu",

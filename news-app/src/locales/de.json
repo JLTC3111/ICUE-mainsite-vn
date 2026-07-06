@@ -45,6 +45,7 @@
   },
   "login": {
     "title": "Anmelden",
+    "brandPill": "Nachrichten",
     "subtitle": "ICUE Newsroom Verwaltungsportal",
     "email": "E-Mail",
     "password": "Passwort",

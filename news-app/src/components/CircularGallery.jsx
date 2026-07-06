@@ -409,6 +409,7 @@ class App {
     this.dragThreshold = 8;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
+    this.scrollOffset = 0;
     this.onCheckDebounce = debounce(this.onCheck, 200);
     this.createRenderer();
     this.createCamera();
@@ -480,6 +481,29 @@ class App {
         loop: this.loop,
       });
     });
+    this.applyGroupedScroll({ force: true });
+  }
+  shouldCenterGroup() {
+    if (this.loop || !this.medias?.[0] || this.originalCount <= 1) return false;
+    const width = this.medias[0].width;
+    const cardWidth = this.medias[0].plane.scale.x;
+    const contentWidth = (this.originalCount - 1) * width + cardWidth;
+    return contentWidth < this.viewport.width;
+  }
+  getGroupedScrollOffset() {
+    if (!this.shouldCenterGroup()) return 0;
+    const width = this.medias[0].width;
+    return ((this.originalCount - 1) / 2) * width;
+  }
+  applyGroupedScroll({ force = false } = {}) {
+    const next = this.getGroupedScrollOffset();
+    const prev = this.scrollOffset ?? 0;
+    this.scrollOffset = next;
+    if (force || Math.abs(this.scroll.current - prev) < 1) {
+      this.scroll.current = next;
+      this.scroll.target = next;
+      this.scroll.last = next;
+    }
   }
   onTouchDown(e) {
     if (!this.isPointerInside(e)) return;
@@ -555,7 +579,7 @@ class App {
 
       case 'Home':
         e.preventDefault();
-        this.scroll.target = 0;
+        this.scroll.target = this.getGroupedScrollOffset();
         this.onCheckDebounce();
         break;
 
@@ -593,6 +617,7 @@ class App {
     this.viewport = { width, height };
     if (this.medias) {
       this.medias.forEach(media => media.onResize({ screen: this.screen, viewport: this.viewport }));
+      this.applyGroupedScroll();
     }
   }
   update() {

@@ -45,6 +45,7 @@
   },
   "login": {
     "title": "Connexion",
+    "brandPill": "Actualités",
     "subtitle": "Portail d'administration de la salle de presse ICUE",
     "email": "E-mail",
     "password": "Mot de passe",

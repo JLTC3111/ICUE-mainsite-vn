@@ -45,6 +45,7 @@
   },
   "login": {
     "title": "Sign In",
+    "brandPill": "News",
     "subtitle": "ICUE newsroom admin portal",
     "email": "Email",
     "password": "Password",

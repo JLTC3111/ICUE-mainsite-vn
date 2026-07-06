@@ -45,6 +45,7 @@
   },
   "login": {
     "title": "ログイン",
+    "brandPill": "ニュース",
     "subtitle": "ICUE ニュースルーム管理ポータル",
     "email": "メール",
     "password": "パスワード",
