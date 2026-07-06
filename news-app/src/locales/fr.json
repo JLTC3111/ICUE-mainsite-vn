@@ -48,6 +48,8 @@
     "subtitle": "Portail d'administration de la salle de presse ICUE",
     "email": "E-mail",
     "password": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
     "submit": "Se connecter",
     "loading": "Connexion en cours…",
     "forgot": "Mot de passe oublié ?",

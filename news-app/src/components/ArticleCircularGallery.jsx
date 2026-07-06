@@ -33,6 +33,7 @@ export default function ArticleCircularGallery({ articles }) {
         bend={2}
         borderRadius={0.06}
         scrollSpeed={2}
+        loop={false}
         onItemClick={handleItemClick}
         ariaLabel={t('gallery.ariaLabel')}
       />

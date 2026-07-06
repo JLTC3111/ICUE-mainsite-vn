@@ -48,6 +48,8 @@
     "subtitle": "ICUE newsroom admin portal",
     "email": "Email",
     "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "submit": "Sign In",
     "loading": "Signing in…",
     "forgot": "Forgot password?",

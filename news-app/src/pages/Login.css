@@ -78,6 +78,34 @@
 
 .login__form { display: flex; flex-direction: column; gap: 16px; }
 
+.login__password { position: relative; }
+.login__password-input { padding-right: 44px; }
+.login__password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--icue-text-faint);
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.login__password-toggle:hover {
+  color: var(--icue-text);
+  background: var(--icue-surface-2);
+}
+.login__password-toggle:focus-visible {
+  outline: 2px solid var(--icue-ink);
+  outline-offset: 2px;
+}
+
 .login__submit {
   margin-top: 6px;
   background: var(--icue-gradient-dark);

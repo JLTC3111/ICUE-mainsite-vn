@@ -48,6 +48,8 @@
     "subtitle": "Cổng quản trị bản tin ICUE",
     "email": "Email",
     "password": "Mật khẩu",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
     "submit": "Đăng Nhập",
     "loading": "Đang đăng nhập…",
     "forgot": "Quên mật khẩu?",

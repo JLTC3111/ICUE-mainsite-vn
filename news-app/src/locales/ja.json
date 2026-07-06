@@ -48,6 +48,8 @@
     "subtitle": "ICUE ニュースルーム管理ポータル",
     "email": "メール",
     "password": "パスワード",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示",
     "submit": "ログイン",
     "loading": "ログイン中…",
     "forgot": "パスワードをお忘れですか？",

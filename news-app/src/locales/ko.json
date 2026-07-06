@@ -48,6 +48,8 @@
     "subtitle": "ICUE 뉴스룸 관리 포털",
     "email": "이메일",
     "password": "비밀번호",
+    "showPassword": "비밀번호 표시",
+    "hidePassword": "비밀번호 숨기기",
     "submit": "로그인",
     "loading": "로그인 중…",
     "forgot": "비밀번호를 잊으셨나요?",

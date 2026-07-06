@@ -48,6 +48,8 @@
     "subtitle": "ICUE Newsroom Verwaltungsportal",
     "email": "E-Mail",
     "password": "Passwort",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
     "submit": "Anmelden",
     "loading": "Anmeldung läuft…",
     "forgot": "Passwort vergessen?",

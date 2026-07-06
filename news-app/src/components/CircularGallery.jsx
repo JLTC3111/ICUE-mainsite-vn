@@ -208,7 +208,8 @@ class Media {
     bend,
     textColor,
     borderRadius = 0,
-    font
+    font,
+    loop = true,
   }) {
     this.extra = 0;
     this.geometry = geometry;
@@ -216,6 +217,7 @@ class Media {
     this.image = image;
     this.index = index;
     this.length = length;
+    this.loop = loop;
     this.renderer = renderer;
     this.scene = scene;
     this.screen = screen;
@@ -354,13 +356,15 @@ class Media {
     const viewportOffset = this.viewport.width / 2;
     this.isBefore = this.plane.position.x + planeOffset < -viewportOffset;
     this.isAfter = this.plane.position.x - planeOffset > viewportOffset;
-    if (direction === 'right' && this.isBefore) {
-      this.extra -= this.widthTotal;
-      this.isBefore = this.isAfter = false;
-    }
-    if (direction === 'left' && this.isAfter) {
-      this.extra += this.widthTotal;
-      this.isBefore = this.isAfter = false;
+    if (this.loop) {
+      if (direction === 'right' && this.isBefore) {
+        this.extra -= this.widthTotal;
+        this.isBefore = this.isAfter = false;
+      }
+      if (direction === 'left' && this.isAfter) {
+        this.extra += this.widthTotal;
+        this.isBefore = this.isAfter = false;
+      }
     }
   }
   onResize({ screen, viewport } = {}) {
@@ -394,11 +398,13 @@ class App {
       scrollSpeed = 2,
       scrollEase = 0.05,
       onItemClick,
+      loop = true,
     } = {}
   ) {
     document.documentElement.classList.remove('no-js');
     this.container = container;
     this.onItemClick = onItemClick;
+    this.loop = loop;
     this.didDrag = false;
     this.dragThreshold = 8;
     this.scrollSpeed = scrollSpeed;
@@ -454,7 +460,7 @@ class App {
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.originalCount = galleryItems.length;
-    this.mediasImages = galleryItems.concat(galleryItems);
+    this.mediasImages = this.loop ? galleryItems.concat(galleryItems) : galleryItems;
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         geometry: this.planeGeometry,
@@ -470,7 +476,8 @@ class App {
         bend,
         textColor,
         borderRadius,
-        font
+        font,
+        loop: this.loop,
       });
     });
   }
@@ -488,7 +495,7 @@ class App {
       this.didDrag = true;
     }
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
-    this.scroll.target = this.scroll.position + distance;
+    this.scroll.target = this.clampScroll(this.scroll.position + distance);
   }
   onTouchUp(e) {
     if (!this.isDown) return;
@@ -514,25 +521,35 @@ class App {
     if (!this.medias?.[0] || !this.originalCount) return 0;
     const width = this.medias[0].width;
     const itemIndex = Math.round(Math.abs(this.scroll.current) / width);
-    return itemIndex % this.originalCount;
+    if (this.loop) return itemIndex % this.originalCount;
+    return Math.min(this.originalCount - 1, Math.max(0, itemIndex));
+  }
+  clampScroll(target) {
+    if (this.loop || !this.medias?.[0]) return target;
+    const width = this.medias[0].width;
+    const max = width * Math.max(0, this.originalCount - 1);
+    const magnitude = Math.min(max, Math.max(0, Math.abs(target)));
+    return target < 0 ? -magnitude : magnitude;
   }
   onWheel(e) {
     if (!this.container?.contains(e.target)) return;
     const delta = e.deltaY || e.wheelDelta || e.detail;
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
+    this.scroll.target = this.clampScroll(
+      this.scroll.target + (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2
+    );
     this.onCheckDebounce();
   }
   onKeyDown(e) {
     switch (e.key) {
       case 'ArrowRight':
         e.preventDefault();
-        this.scroll.target += this.scrollSpeed * 5;
+        this.scroll.target = this.clampScroll(this.scroll.target + this.scrollSpeed * 5);
         this.onCheckDebounce();
         break;
 
       case 'ArrowLeft':
         e.preventDefault();
-        this.scroll.target -= this.scrollSpeed * 5;
+        this.scroll.target = this.clampScroll(this.scroll.target - this.scrollSpeed * 5);
         this.onCheckDebounce();
         break;
 
@@ -559,7 +576,7 @@ class App {
     const width = this.medias[0].width;
     const itemIndex = Math.round(Math.abs(this.scroll.target) / width);
     const item = width * itemIndex;
-    this.scroll.target = this.scroll.target < 0 ? -item : item;
+    this.scroll.target = this.clampScroll(this.scroll.target < 0 ? -item : item);
   }
   onResize() {
     this.screen = {
@@ -636,6 +653,7 @@ export default function CircularGallery({
   scrollSpeed = 2,
   scrollEase = 0.05,
   onItemClick,
+  loop = true,
   ariaLabel = 'Circular image gallery. Use left and right arrow keys to navigate.',
 }) {
   const containerRef = useRef(null);
@@ -657,6 +675,7 @@ export default function CircularGallery({
         scrollSpeed,
         scrollEase,
         onItemClick: (index) => onItemClickRef.current?.(index),
+        loop,
       });
     });
 
@@ -664,7 +683,7 @@ export default function CircularGallery({
       isMounted = false;
       if (app) app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, loop]);
 
   return (
     <div
