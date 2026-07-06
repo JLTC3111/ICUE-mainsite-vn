@@ -8,7 +8,7 @@
     "dev": "vite",
     "predev": "npm run sync-assets",
     "build": "vite build",
-    "prebuild": "npm run sync-assets && node scripts/check-env.mjs",
+    "prebuild": "npm run sync-assets && node scripts/write-supabase-config.mjs && node scripts/check-env.mjs",
     "build:watch": "vite build --watch",
     "lint": "eslint .",
     "preview": "vite preview"
