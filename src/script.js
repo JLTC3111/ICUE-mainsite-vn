@@ -596,7 +596,6 @@ const HomeBackgroundVideoManager = (() => {
     },
   ];
 
-  const preloadedSources = new Set();
   let videoEl = null;
   let resizeHandler = null;
   let visibilityHandler = null;
@@ -717,28 +716,25 @@ const HomeBackgroundVideoManager = (() => {
     videoEl.load();
   };
 
-  const persistIndex = (index) => sessionStorage.setItem('home_bg_video_index', String(index));
+  const persistIndex = (index) => {
+    try {
+      sessionStorage.setItem('home_bg_video_index', String(index));
+    } catch (e) {
+      // Storage may be blocked by browser privacy settings.
+    }
+  };
 
   const nextIndex = () => {
     if (!videoPlaylist.length) return -1;
-    const cached = parseInt(sessionStorage.getItem('home_bg_video_index') ?? '-1', 10);
-    if (Number.isInteger(cached) && cached >= 0) {
-      return (cached + 1) % videoPlaylist.length;
+    try {
+      const cached = parseInt(sessionStorage.getItem('home_bg_video_index') ?? '-1', 10);
+      if (Number.isInteger(cached) && cached >= 0) {
+        return (cached + 1) % videoPlaylist.length;
+      }
+    } catch (e) {
+      // ignore
     }
     return Math.floor(Math.random() * videoPlaylist.length);
-  };
-
-  const prefetchSources = (meta) => {
-    if (!meta) return;
-    [meta.desktop, meta.mobile ?? meta.desktop].forEach(src => {
-      if (!src || preloadedSources.has(src)) return;
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = src;
-      document.head.appendChild(link);
-      preloadedSources.add(src);
-    });
   };
 
   const warmVideoForMeta = (meta) => {
@@ -829,7 +825,6 @@ const HomeBackgroundVideoManager = (() => {
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(currentIndex + 1) % videoPlaylist.length];
       scheduleIdleTask(() => {
-        prefetchSources(upcoming);
         warmVideoForMeta(upcoming);
       });
     }
@@ -890,7 +885,6 @@ const HomeBackgroundVideoManager = (() => {
     if (videoPlaylist.length > 1) {
       const upcoming = videoPlaylist[(startIndex + 1) % videoPlaylist.length];
       scheduleIdleTask(() => {
-        prefetchSources(upcoming);
         warmVideoForMeta(upcoming);
       });
     }
@@ -1366,6 +1360,27 @@ const AboutUsBackgroundVideoManager = (() => {
 
 window.AboutUsBackgroundVideoManager = AboutUsBackgroundVideoManager;
 
+let modelViewerLoadPromise = null;
+
+const ensureModelViewerLoaded = () => {
+  if (window.customElements?.get('model-viewer')) return Promise.resolve();
+  if (modelViewerLoadPromise) return modelViewerLoadPromise;
+
+  modelViewerLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js';
+    script.onload = () => resolve();
+    script.onerror = () => {
+      modelViewerLoadPromise = null;
+      reject(new Error('Failed to load model-viewer'));
+    };
+    document.head.appendChild(script);
+  });
+
+  return modelViewerLoadPromise;
+};
+
 window.loadPage = (page) => {
   if (page === 'meetOurExperts') {
     window.location.replace('/people/experts');
@@ -1622,6 +1637,7 @@ window.loadPage = (page) => {
                 initMobileNewsSlider();
                 break;
               case 'aboutUs':
+                ensureModelViewerLoaded().catch(() => {});
                 initHomeTextSlider();
                 AboutUsBackgroundVideoManager.bindToggleUI();
                 AboutUsBackgroundVideoManager.init();
@@ -1630,6 +1646,7 @@ window.loadPage = (page) => {
                 initPostMethod();
                 break;
               case 'ourWork':
+                ensureModelViewerLoaded().catch(() => {});
                 initializeCarousel();
                 break;
               case 'pastProjects':
