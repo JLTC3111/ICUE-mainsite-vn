@@ -45,9 +45,12 @@ export default function MainSiteNav() {
   const activePageRef = useRef(initialPage);
 
   const applyPageState = useCallback((page) => {
-    const visibility = getPageVisibility(page);
-    activePageRef.current = page;
-    setActivePage(page);
+    const hashPage = getPageFromHash();
+    const hasExplicitHash = Boolean(window.location.hash && window.location.hash.startsWith('#/'));
+    const resolvedPage = hasExplicitHash ? hashPage : page;
+    const visibility = getPageVisibility(resolvedPage);
+    activePageRef.current = resolvedPage;
+    setActivePage(resolvedPage);
     setShowContactLink(visibility.showContactLink);
     setShowHomeVideoToggle(visibility.showHomeVideoToggle);
     setShowAboutUsVideoToggle(visibility.showAboutUsVideoToggle);

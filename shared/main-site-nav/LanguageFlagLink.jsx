@@ -7,12 +7,14 @@ export default function LanguageFlagLink() {
   const refresh = () => setTarget(buildLanguageSwitchTarget());
 
   useEffect(() => {
-    const onHashChange = () => refresh();
-    window.addEventListener('hashchange', onHashChange);
-    window.addEventListener('popstate', onHashChange);
+    const onNavigate = () => refresh();
+    window.addEventListener('hashchange', onNavigate);
+    window.addEventListener('popstate', onNavigate);
+    window.addEventListener('pageshow', onNavigate);
     return () => {
-      window.removeEventListener('hashchange', onHashChange);
-      window.removeEventListener('popstate', onHashChange);
+      window.removeEventListener('hashchange', onNavigate);
+      window.removeEventListener('popstate', onNavigate);
+      window.removeEventListener('pageshow', onNavigate);
     };
   }, []);
 
@@ -23,25 +25,30 @@ export default function LanguageFlagLink() {
     };
   }, []);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    const fresh = buildLanguageSwitchTarget();
+
     try {
-      localStorage.setItem('preferredLanguage', target.targetSite.language);
-      localStorage.setItem('lastVisitedPage', target.targetPageName);
-    } catch (e) {
+      localStorage.setItem('preferredLanguage', fresh.targetSite.language);
+      localStorage.setItem('lastVisitedPage', fresh.targetPageName);
+    } catch (err) {
       // ignore
     }
 
     if (
       ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'].includes(
-        target.targetPageName
+        fresh.targetPageName
       )
     ) {
       try {
-        sessionStorage.setItem('language_switch_to_static', target.targetPageName);
-      } catch (e) {
+        sessionStorage.setItem('language_switch_to_static', fresh.targetPageName);
+      } catch (err) {
         // ignore
       }
     }
+
+    window.location.assign(fresh.targetUrl);
   };
 
   return (

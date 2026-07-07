@@ -37,20 +37,45 @@ const STATIC_PAGES = [
   'faqs', 'cookies', 'notableAwards', 'communityActivities',
 ];
 
-function getCurrentPage() {
-  if (typeof window.__mainSiteNav?.getPage === 'function') {
-    const navPage = window.__mainSiteNav.getPage();
-    if (navPage) return navPage;
+function pageFromHash(hash) {
+  if (hash && hash.startsWith('#/')) {
+    const page = hash.substring(2).replace(/\/$/, '');
+    return page || 'Home';
+  }
+  return null;
+}
+
+function pageFromPathname(pathname) {
+  if (!pathname || pathname === '/') return null;
+
+  const pathSegments = pathname.split('/').filter(Boolean);
+  if (pathSegments.length === 0) return null;
+
+  if (pathSegments[0] === 'people') {
+    if (pathSegments.includes('core-team')) return 'coreTeam';
+    if (pathSegments.includes('experts')) return 'meetOurExperts';
   }
 
+  let pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
+  if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
+    return pathPage;
+  }
+  return pathPage;
+}
+
+export function getCurrentPage() {
   const { hash, pathname } = window.location;
 
-  if (hash && hash.startsWith('#/')) {
-    return hash.substring(2);
-  }
+  const hashPage = pageFromHash(hash);
+  if (hashPage) return hashPage;
 
   if (typeof window.currentPage !== 'undefined' && window.currentPage) {
     return window.currentPage;
+  }
+
+  if (typeof window.__mainSiteNav?.getPage === 'function') {
+    const navPage = window.__mainSiteNav.getPage();
+    if (navPage) return navPage;
   }
 
   const activeNavLink = document.querySelector(
@@ -61,18 +86,18 @@ function getCurrentPage() {
     if (dataPage) return dataPage;
   }
 
-  if (pathname && pathname !== '/') {
-    const pathSegments = pathname.split('/').filter(Boolean);
-    if (pathSegments.length > 0) {
-      let pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
-      if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
-        return pathPage;
-      }
-      return pathPage;
-    }
-  }
+  const pathPage = pageFromPathname(pathname);
+  if (pathPage) return pathPage;
 
   return 'Home';
+}
+
+export function syncHashForPage(page) {
+  if (!page || page === 'meetOurExperts' || page === 'coreTeam') return;
+  const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
+  if (window.location.hash === targetHash) return;
+  const url = `${window.location.pathname}${window.location.search}${targetHash}`;
+  history.replaceState(null, '', url);
 }
 
 function mapPageName(pageName, fromLang, toLang) {
