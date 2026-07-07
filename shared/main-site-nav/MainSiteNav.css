@@ -16,7 +16,7 @@
   align-items: center;
   gap: 0.75rem;
   min-height: var(--nav-bar-height);
-  padding: 1rem;
+  padding: 1rem var(--site-rail-inset, clamp(0.75rem, 1.5vw, 1.25rem)) 1rem 1rem;
   background: var(--nav-bg, transparent);
   color: var(--nav-text, #000);
   box-sizing: border-box;
@@ -52,7 +52,7 @@
   align-items: center;
   gap: 0.75rem;
   margin-left: auto;
-  padding-right: var(--site-rail-inset, clamp(0.75rem, 1.5vw, 1.25rem));
+  padding-right: 0;
   flex-shrink: 0;
 }
 
@@ -608,7 +608,7 @@
 
   .main-site-nav__right {
     justify-content: flex-end;
-    padding-right: var(--site-rail-inset, 1.75%);
+    padding-right: 0;
   }
 
   .main-site-nav .language-switcher {

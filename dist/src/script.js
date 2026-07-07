@@ -672,6 +672,17 @@ const HomeBackgroundVideoManager = (() => {
     }
   };
 
+  const enforceVideoNonInteractive = (el) => {
+    if (!el) return;
+    el.controls = false;
+    el.disablePictureInPicture = true;
+    el.setAttribute('tabindex', '-1');
+    el.setAttribute('aria-hidden', 'true');
+    el.style.pointerEvents = 'none';
+    el.style.touchAction = 'none';
+    el.style.userSelect = 'none';
+  };
+
   const ensureVideoElement = () => {
     videoEl = document.getElementById('bgVideo');
     if (!videoEl) {
@@ -680,7 +691,7 @@ const HomeBackgroundVideoManager = (() => {
             videoEl = document.createElement('video');
             videoEl.id = 'bgVideo';
             videoEl.className = 'video-bg';
-            videoEl.style.pointerEvents = 'none';
+            enforceVideoNonInteractive(videoEl);
             const overlay = mediaContainer.querySelector('.home-hero__overlay');
             if (overlay) {
                 mediaContainer.insertBefore(videoEl, overlay);
@@ -698,6 +709,7 @@ const HomeBackgroundVideoManager = (() => {
       videoEl.setAttribute('playsinline', '');
       videoEl.setAttribute('autoplay', '');
       videoEl.setAttribute('webkit-playsinline', '');
+      enforceVideoNonInteractive(videoEl);
     }
     return videoEl;
   };
@@ -786,7 +798,8 @@ const HomeBackgroundVideoManager = (() => {
 
   const activateVideo = (meta) => {
     if (!videoEl || !meta) return;
-    
+    enforceVideoNonInteractive(videoEl);
+
     const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
     const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!chosenSrc) return;
@@ -1375,8 +1388,17 @@ const ensureModelViewerLoaded = () => {
   return modelViewerLoadPromise;
 };
 
+function syncHashForPage(page) {
+  if (!page || page === 'meetOurExperts' || page === 'coreTeam') return;
+  const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
+  if (window.location.hash === targetHash) return;
+  const url = `${window.location.pathname}${window.location.search}${targetHash}`;
+  history.replaceState(null, '', url);
+}
+
 window.loadPage = (page) => {
   window.currentPage = page;
+  syncHashForPage(page);
 
   if (page === 'meetOurExperts') {
     window.location.replace('/people/experts');
@@ -1426,7 +1448,18 @@ window.loadPage = (page) => {
     });
   };
 
+  const clearNavToggleInlineStyles = () => {
+    const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
+    [...homeVideoToggleContainers, ...aboutUsVideoToggleContainers].forEach((container) => {
+      container.hidden = false;
+      container.style.removeProperty('display');
+    });
+    if (contactLink) contactLink.style.removeProperty('display');
+  };
+
   const hideAllNavVideoToggles = () => {
+    if (window.__mainSiteNav?.setPage) return;
+
     const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
     showContainers(homeVideoToggleContainers, false);
     showContainers(aboutUsVideoToggleContainers, false);
@@ -1435,6 +1468,7 @@ window.loadPage = (page) => {
 
   const updateNavVideoToggleVisibility = () => {
     if (window.__mainSiteNav?.setPage) {
+      clearNavToggleInlineStyles();
       window.__mainSiteNav.setPage(page);
       return;
     }

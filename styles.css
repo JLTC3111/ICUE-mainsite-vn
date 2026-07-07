@@ -791,17 +791,29 @@ h3:hover {
   }
 }
 
+@keyframes modelHomeCenterIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px);
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+}
+
 .model-home {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40%;
-  height: 325px;
-  top: 12.5%;
-  right: 5.25% !important;
-  z-index: 11;
-  animation: slideInFromRight 3.5s ease-in-out;
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: min(100%, clamp(220px, 58vw, 420px));
+  height: clamp(160px, 32vw, 280px);
+  margin: clamp(0.75rem, 2.5vw, 1.5rem) auto;
+  z-index: 2;
+  animation: modelHomeCenterIn 3s ease-in-out;
 }
 
 .model-crane{
@@ -1303,16 +1315,26 @@ h3:hover {
 .about-legacy-hero__content {
   max-width: 960px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .about-legacy-hero .cursive-default {
   color: #000000;
+  width: 100%;
+  margin: 0 0 0.5rem;
 }
 
-@media (min-width: 1025px) {
-  .about-legacy-hero .cursive-default {
-    margin-left: 25%;
-  }
+.about-legacy-hero .sub-text {
+  margin: 0 0 0.35rem;
+}
+
+.about-legacy-hero .model-home {
+  flex-shrink: 0;
+  width: min(100%, clamp(220px, 58vw, 420px));
+  height: clamp(160px, 32vw, 280px);
+  margin: clamp(0.75rem, 2.5vw, 1.25rem) auto;
 }
 
 .about-legacy-hero .hero-body {
@@ -1324,7 +1346,13 @@ h3:hover {
 }
 
 .about-legacy-hero__slider {
-  margin-top: 1.5rem;
+  margin-top: 0;
+  width: 100%;
+}
+
+.about-legacy-hero .home-text-slider {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -1993,14 +2021,6 @@ body.loaded #app {
     margin: 1.75rem 0 auto;
   }
 
-  .model-home{
-    top: 15%;
-    right: -7.5%;
-    z-index:2;
-    height: 250px;
-    animation: slideInFromRight 3.5s ease-in-out;
-  }
-
   .workPageContainer {
     margin: 12.5% auto auto 2.5%;
   }
@@ -2127,7 +2147,10 @@ body.loaded #app {
 
   .sub-text {
     font-size: clamp(16px, 5vw, 24px);
-    margin: 14.5rem 0 -1.5rem 0;
+  }
+
+  .about-legacy-hero .sub-text {
+    margin: 0 0 0.35rem;
   }
 
   .hero-body {
@@ -2138,6 +2161,10 @@ body.loaded #app {
     font-size: clamp(16px, 2vw, 22px);
     line-height: 1.5;
     margin: 10% auto;
+  }
+
+  .about-legacy-hero .cursive-default {
+    margin: 0 0 0.5rem;
   }
 
   .lets-talk {
@@ -2181,14 +2208,6 @@ body.loaded #app {
     font-size: 20px !important;
     transform: translateX(-15px) !important;
     margin-left: 60px;
-  }
-
-  .model-home {
-    top: 17.5%;
-    right: 25%;
-    height: 200px;
-    animation: slideInFromRight 7.5s ease-in-out;
-    z-index: 1;
   }
 
   .model-crane{
@@ -2499,8 +2518,14 @@ button:hover {
   .home-text-slider{
     margin-top:-3.5rem;
   }
+  .about-legacy-hero .home-text-slider {
+    margin-top: 0;
+  }
   .slider-dots{
     margin-top: -3rem;
+  }
+  .about-legacy-hero .slider-dots {
+    margin-top: 0;
   }
 }
 
@@ -2518,6 +2543,9 @@ button:hover {
 @media (max-width: 768px) and (min-aspect-ratio: .79/1) {
   .home-text-slider{
     margin-top: -4rem;
+  }
+  .about-legacy-hero .home-text-slider {
+    margin-top: 0;
   }
 }
 
@@ -2561,14 +2589,10 @@ button:hover {
   }
 }
 
-@media (min-width: 499px) and (max-width: 1024px) 
-{
-   .model-home {
-    top: 17.5%;
-    right: 37.5%;
-    height: 240px;
-    width: 240px;
-    animation: slideDownFromTop 3s ease-in-out;
+@media (min-width: 499px) and (max-width: 1024px) {
+  .about-legacy-hero .model-home {
+    width: min(100%, clamp(240px, 52vw, 360px));
+    height: clamp(180px, 30vw, 260px);
   }
 }
 
