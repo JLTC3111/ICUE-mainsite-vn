@@ -2008,9 +2008,6 @@ window.initHomeTextSlider = () => {
           typeHTMLString(textElement, message, typingSpeed, () => {
             isTyping = false;
             console.debug('[slider] typing complete', { index, time: Date.now() });
-            const speedStats = calculateSpeeds(typingSpeed);
-            console.log('✨ Home slider typing session completed. Speed stats:', speedStats);
-            
             gsap.fromTo(textElement, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
           });
         }
@@ -5644,7 +5641,7 @@ function initAudioVisualizer(
   }
 
   function updateHamburgerIcon(page) {
-    const darkBackgroundPages = ['communityActivities', 'aboutUs'];
+    const darkBackgroundPages = ['communityActivities'];
     const useLightNav = darkBackgroundPages.includes(page);
     if (typeof window.setNavLinkContrast === 'function') {
       window.setNavLinkContrast(useLightNav);

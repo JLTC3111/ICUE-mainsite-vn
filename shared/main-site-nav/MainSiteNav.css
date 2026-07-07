@@ -125,7 +125,7 @@
   justify-content: center;
   cursor: pointer;
   z-index: 9;
-  color: inherit;
+  color: #111111;
   background: transparent;
   border: none;
   padding: 0.35rem;
@@ -192,6 +192,10 @@
 .main-site-nav.nav-on-dark .menu-toggle,
 .main-site-nav .menu-bar.nav-on-dark .menu-toggle {
   color: inherit;
+}
+
+.main-site-nav[data-active-page="aboutUs"] .menu-toggle {
+  color: #111111;
 }
 
 .main-site-nav.nav-on-dark .flag-link,

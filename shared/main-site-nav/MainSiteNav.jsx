@@ -9,7 +9,7 @@ import MainSiteDrawer from './MainSiteDrawer';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
-const DARK_NAV_PAGES = ['communityActivities', 'aboutUs'];
+const DARK_NAV_PAGES = ['communityActivities'];
 
 function getPageFromHash() {
   const hash = window.location.hash || '#/Home';
@@ -213,7 +213,7 @@ export default function MainSiteNav() {
     .join(' ');
 
   return (
-    <div className={navClass} ref={navRootRef}>
+    <div className={navClass} ref={navRootRef} data-active-page={activePage}>
       <nav className={barClass} aria-label="Site">
         <MainSiteHeader
           drawerOpen={drawerOpen}
