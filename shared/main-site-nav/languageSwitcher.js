@@ -38,6 +38,11 @@ const STATIC_PAGES = [
 ];
 
 function getCurrentPage() {
+  if (typeof window.__mainSiteNav?.getPage === 'function') {
+    const navPage = window.__mainSiteNav.getPage();
+    if (navPage) return navPage;
+  }
+
   const { hash, pathname } = window.location;
 
   if (hash && hash.startsWith('#/')) {

@@ -6,12 +6,7 @@ function navigateDrawerLink(link, onClose) {
   onClose();
 
   if (link.href.startsWith('#/')) {
-    const page = link.href.replace('#/', '');
-    if (typeof window.loadPage === 'function') {
-      window.loadPage(page);
-    } else {
-      window.location.hash = link.href;
-    }
+    window.location.hash = link.href;
     return;
   }
 

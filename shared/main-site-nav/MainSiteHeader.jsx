@@ -46,23 +46,6 @@ export default function MainSiteHeader({
           showLabel={false}
           visible={showAboutUsVideoToggle}
         />
-
-        <VideoToggle
-          id="homeVideoToggleContainerDesktop"
-          inputId="homeVideoToggleDesktop"
-          variant="nav"
-          showLabel={false}
-          visible={showHomeVideoToggle}
-        />
-
-        <VideoToggle
-          id="aboutUsVideoToggleContainerDesktop"
-          inputId="aboutUsVideoToggleDesktop"
-          variant="nav"
-          label="Bật/tắt video nền (Giới thiệu)"
-          showLabel={false}
-          visible={showAboutUsVideoToggle}
-        />
       </div>
 
       <div className="main-site-nav__center">
@@ -82,8 +65,6 @@ export default function MainSiteHeader({
             ref={menuIconRef}
             id="menuIcon"
             className={drawerOpen ? 'is-open' : ''}
-            width="60px"
-            height="60px"
             viewBox="0 -0.5 25 25"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -106,9 +87,7 @@ export default function MainSiteHeader({
             id="contactLink"
             onClick={(e) => {
               e.preventDefault();
-              if (typeof window.loadPage === 'function') {
-                window.loadPage('aboutUs');
-              }
+              window.location.hash = '#/aboutUs';
               if (typeof window.closeDrawerMenu === 'function') {
                 window.closeDrawerMenu();
               }
@@ -119,6 +98,23 @@ export default function MainSiteHeader({
         )}
 
         <div className="language-switcher" ref={flagLinkRef}>
+          <VideoToggle
+            id="homeVideoToggleContainerDesktop"
+            inputId="homeVideoToggleDesktop"
+            variant="nav"
+            showLabel={false}
+            visible={showHomeVideoToggle}
+          />
+
+          <VideoToggle
+            id="aboutUsVideoToggleContainerDesktop"
+            inputId="aboutUsVideoToggleDesktop"
+            variant="nav"
+            label="Bật/tắt video nền (Giới thiệu)"
+            showLabel={false}
+            visible={showAboutUsVideoToggle}
+          />
+
           <LanguageFlagLink />
         </div>
       </div>

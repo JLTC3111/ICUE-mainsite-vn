@@ -1,32 +1,41 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Keyboard, Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
 import './MediaGallery.css'
 
+function useMobileGallery() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 680px)')
+    const sync = () => setIsMobile(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  return isMobile
+}
+
 // Renders an article's images + videos with a responsive layout and an
-// accessible image lightbox (keyboard + click navigation).
+// accessible image lightbox (touch swipe, keyboard + click navigation).
 export default function MediaGallery({ images = [], videos = [] }) {
   const { t } = useTranslation()
-  const [index, setIndex] = useState(null) // active lightbox image index
+  const [index, setIndex] = useState(null)
+  const lightboxSwiperRef = useRef(null)
+  const isMobile = useMobileGallery()
 
   const open = useCallback((i) => setIndex(i), [])
   const close = useCallback(() => setIndex(null), [])
-  const next = useCallback(
-    (e) => { e?.stopPropagation(); setIndex((i) => (i === null ? i : (i + 1) % images.length)) },
-    [images.length],
-  )
-  const prev = useCallback(
-    (e) => { e?.stopPropagation(); setIndex((i) => (i === null ? i : (i - 1 + images.length) % images.length)) },
-    [images.length],
-  )
 
-  // Keyboard navigation + body scroll lock while the lightbox is open.
   useEffect(() => {
-    if (index === null) return
+    if (index === null) return undefined
     const onKey = (e) => {
       if (e.key === 'Escape') close()
-      else if (e.key === 'ArrowRight') next()
-      else if (e.key === 'ArrowLeft') prev()
     }
     window.addEventListener('keydown', onKey)
     const prevOverflow = document.body.style.overflow
@@ -35,11 +44,12 @@ export default function MediaGallery({ images = [], videos = [] }) {
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [index, close, next, prev])
+  }, [index, close])
 
   if (images.length === 0 && videos.length === 0) return null
 
   const imgCountClass = `media-gallery__grid--${Math.min(images.length, 4)}`
+  const showMobileCarousel = isMobile && images.length > 1
 
   return (
     <section className="media-gallery icue-readw">
@@ -62,7 +72,35 @@ export default function MediaGallery({ images = [], videos = [] }) {
         </div>
       )}
 
-      {images.length > 0 && (
+      {images.length > 0 && showMobileCarousel && (
+        <Swiper
+          className="media-gallery__mobile-swiper"
+          modules={[Pagination]}
+          spaceBetween={12}
+          slidesPerView={1.06}
+          centeredSlides
+          pagination={{ clickable: true }}
+          grabCursor
+        >
+          {images.map((img, i) => (
+            <SwiperSlide key={img.id}>
+              <button
+                type="button"
+                className="media-gallery__item media-gallery__item--mobile"
+                onClick={() => open(i)}
+                aria-label={t('article.viewImage', { n: i + 1 })}
+              >
+                <img src={img.url} alt="" loading="lazy" decoding="async" />
+                <span className="media-gallery__zoom" aria-hidden>
+                  <Maximize2 size={15} strokeWidth={2} />
+                </span>
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+
+      {images.length > 0 && !showMobileCarousel && (
         <div className={`media-gallery__grid ${imgCountClass}`}>
           {images.map((img, i) => (
             <button
@@ -82,28 +120,67 @@ export default function MediaGallery({ images = [], videos = [] }) {
       )}
 
       {index !== null && images[index] && (
-        <div className="lightbox" onClick={close} role="dialog" aria-modal="true">
-          <button className="lightbox__close" onClick={close} aria-label={t('common.cancel')}>
+        <div
+          className="lightbox"
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('article.gallery')}
+        >
+          <button className="lightbox__close" onClick={close} aria-label={t('common.close')}>
             <X size={22} strokeWidth={2} />
           </button>
+
+          <div className="lightbox__stage" onClick={(e) => e.stopPropagation()}>
+            <Swiper
+              className="lightbox__swiper"
+              modules={[Keyboard, Pagination]}
+              initialSlide={index}
+              keyboard={{ enabled: true }}
+              pagination={images.length > 1 ? { clickable: true } : false}
+              grabCursor
+              resistanceRatio={0.72}
+              threshold={8}
+              longSwipesRatio={0.18}
+              onSwiper={(swiper) => {
+                lightboxSwiperRef.current = swiper
+              }}
+              onSlideChange={(swiper) => setIndex(swiper.activeIndex)}
+            >
+              {images.map((img) => (
+                <SwiperSlide key={img.id} className="lightbox__slide">
+                  <img className="lightbox__img" src={img.url} alt="" />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
           {images.length > 1 && (
-            <button className="lightbox__nav lightbox__prev" onClick={prev} aria-label="Previous">
-              <ChevronLeft size={28} strokeWidth={2} />
-            </button>
-          )}
-          <img
-            className="lightbox__img"
-            src={images[index].url}
-            alt=""
-            onClick={(e) => e.stopPropagation()}
-          />
-          {images.length > 1 && (
-            <button className="lightbox__nav lightbox__next" onClick={next} aria-label="Next">
-              <ChevronRight size={28} strokeWidth={2} />
-            </button>
-          )}
-          {images.length > 1 && (
-            <span className="lightbox__count">{index + 1} / {images.length}</span>
+            <>
+              <button
+                type="button"
+                className="lightbox__nav lightbox__prev"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  lightboxSwiperRef.current?.slidePrev()
+                }}
+                aria-label={t('article.prevImage')}
+              >
+                <ChevronLeft size={28} strokeWidth={2} />
+              </button>
+              <button
+                type="button"
+                className="lightbox__nav lightbox__next"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  lightboxSwiperRef.current?.slideNext()
+                }}
+                aria-label={t('article.nextImage')}
+              >
+                <ChevronRight size={28} strokeWidth={2} />
+              </button>
+              <span className="lightbox__count">{index + 1} / {images.length}</span>
+            </>
           )}
         </div>
       )}

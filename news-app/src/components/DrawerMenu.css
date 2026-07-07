@@ -48,9 +48,9 @@
 .nav-drawer__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 12, 0.55);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(2, 6, 12, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -72,9 +72,9 @@
   flex-direction: column;
   justify-content: center;
   padding: 6rem 2rem;
-  background: radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.12), #05080d 60%);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.18), #05080d 72%);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   box-shadow: 4px 0 28px rgba(0, 0, 0, 0.55);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   transform: translateX(-100%);
@@ -175,4 +175,18 @@
 .nav-drawer__submenu > a .nav-drawer__icon {
   width: 18px;
   height: 18px;
+}
+
+@media (max-width: 640px) {
+  .nav-drawer__overlay {
+    background: rgba(2, 6, 12, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .nav-drawer {
+    background: radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.22), #05080d 78%);
+    backdrop-filter: blur(48px);
+    -webkit-backdrop-filter: blur(48px);
+  }
 }

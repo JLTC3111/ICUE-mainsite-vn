@@ -1041,6 +1041,14 @@ h3:hover {
   background: #11151c;
 }
 
+.home-hero .video-bg,
+.home-hero__media .video-bg,
+.home-hero__media video,
+#bgVideo {
+  pointer-events: none;
+  touch-action: pan-y;
+}
+
 .home-hero .video-bg {
   position: absolute;
   inset: 0;

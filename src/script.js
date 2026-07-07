@@ -680,6 +680,7 @@ const HomeBackgroundVideoManager = (() => {
             videoEl = document.createElement('video');
             videoEl.id = 'bgVideo';
             videoEl.className = 'video-bg';
+            videoEl.style.pointerEvents = 'none';
             const overlay = mediaContainer.querySelector('.home-hero__overlay');
             if (overlay) {
                 mediaContainer.insertBefore(videoEl, overlay);
@@ -1375,6 +1376,8 @@ const ensureModelViewerLoaded = () => {
 };
 
 window.loadPage = (page) => {
+  window.currentPage = page;
+
   if (page === 'meetOurExperts') {
     window.location.replace('/people/experts');
     return;
@@ -2128,6 +2131,7 @@ function router() {
   
   // Update state and load the page
   currentPage = page;
+  window.currentPage = page;
   isInitialLoad = false;
   window.loadPage(page);
 }

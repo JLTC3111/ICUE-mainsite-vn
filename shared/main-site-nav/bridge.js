@@ -8,6 +8,7 @@ export function registerMainSiteNavBridge(nextHandlers) {
     getDrawerOpen: () => handlers?.getDrawerOpen?.() ?? false,
     setDarkNav: (dark) => handlers?.setDarkNav?.(dark),
     setPage: (page) => handlers?.setPage?.(page),
+    getPage: () => handlers?.getPage?.() ?? null,
     playEntranceAnimation: (isFirstLoad) =>
       handlers?.playEntranceAnimation?.(isFirstLoad),
     refreshLanguageSwitcher: () => handlers?.refreshLanguageSwitcher?.(),

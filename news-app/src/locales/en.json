@@ -128,7 +128,9 @@
   },
   "article": {
     "gallery": "Image & video gallery",
-    "viewImage": "View image {{n}}"
+    "viewImage": "View image {{n}}",
+    "prevImage": "Previous image",
+    "nextImage": "Next image"
   },
   "engagement": {
     "like": "Leave a heart",

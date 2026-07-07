@@ -51,7 +51,9 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-left: auto;
   padding-right: clamp(2rem, 5vw, 4.5rem);
+  flex-shrink: 0;
 }
 
 .main-site-nav .logo-content {
@@ -66,9 +68,12 @@
   top: auto;
   right: auto;
   transform: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 9px;
+  margin-left: auto;
+  flex-shrink: 0;
   z-index: 60;
   pointer-events: auto;
   isolation: isolate;
@@ -123,14 +128,18 @@
   color: inherit;
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 0.35rem;
   border-radius: 50px;
   transition: color 200ms ease, background 200ms ease;
   animation: msn-dropDownCenter 2.5s ease-in-out forwards;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .main-site-nav .menu-toggle svg {
   display: block;
+  width: clamp(38px, 10vw, 56px);
+  height: clamp(38px, 10vw, 56px);
 }
 
 .main-site-nav .menu-toggle svg rect,
@@ -573,25 +582,30 @@
   }
 
   .main-site-nav__right {
-    padding-right: clamp(1.25rem, 4vw, 2.5rem);
+    justify-content: flex-end;
+    padding-right: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .main-site-nav .language-switcher {
+    margin-left: auto;
   }
 
   .main-site-nav .contact-link {
-    margin-right: auto;
+    margin-right: 0;
     font-size: clamp(14px, 3vw, 18px);
     padding: 0.5rem 1.5rem;
   }
 
   .main-site-nav .flag-link {
-    width: 26px;
-    height: 26px;
-    background-color: #ffffff;
+    width: clamp(30px, 8vw, 36px);
+    height: clamp(30px, 8vw, 36px);
+    background-color: transparent;
     margin-top: 0;
   }
 
   .main-site-nav .flag-icon {
-    width: 24px;
-    height: 24px;
+    width: clamp(28px, 7.5vw, 34px);
+    height: clamp(28px, 7.5vw, 34px);
   }
 }
 
@@ -624,6 +638,7 @@
 
   .main-site-nav__right {
     grid-area: right;
+    justify-content: flex-end;
   }
 
   .main-site-nav__center {
@@ -636,8 +651,11 @@
   }
 
   .main-site-nav .menu-toggle {
-    width: 44px;
-    height: 44px;
+    width: clamp(48px, 12vw, 56px);
+    height: clamp(48px, 12vw, 56px);
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0.25rem;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -660,8 +678,8 @@
   }
 
   .main-site-nav .menu-toggle svg {
-    width: 26px !important;
-    height: 26px !important;
+    width: clamp(36px, 9.5vw, 44px) !important;
+    height: clamp(36px, 9.5vw, 44px) !important;
   }
 
   .main-site-nav .menu-toggle svg rect,

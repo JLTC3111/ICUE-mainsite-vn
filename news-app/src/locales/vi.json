@@ -128,7 +128,9 @@
   },
   "article": {
     "gallery": "Thư viện hình ảnh & video",
-    "viewImage": "Xem hình {{n}}"
+    "viewImage": "Xem hình {{n}}",
+    "prevImage": "Ảnh trước",
+    "nextImage": "Ảnh sau"
   },
   "engagement": {
     "like": "Thả tim",

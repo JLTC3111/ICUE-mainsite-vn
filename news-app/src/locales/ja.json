@@ -128,7 +128,9 @@
   },
   "article": {
     "gallery": "画像・動画ギャラリー",
-    "viewImage": "画像 {{n}} を表示"
+    "viewImage": "画像 {{n}} を表示",
+    "prevImage": "前の画像",
+    "nextImage": "次の画像"
   },
   "engagement": {
     "like": "ハートを送る",

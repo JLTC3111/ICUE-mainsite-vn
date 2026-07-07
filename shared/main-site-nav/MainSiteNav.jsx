@@ -42,9 +42,11 @@ export default function MainSiteNav() {
   const contactLinkRef = useRef(null);
   const flagLinkRef = useRef(null);
   const navRootRef = useRef(null);
+  const activePageRef = useRef(initialPage);
 
   const applyPageState = useCallback((page) => {
     const visibility = getPageVisibility(page);
+    activePageRef.current = page;
     setActivePage(page);
     setShowContactLink(visibility.showContactLink);
     setShowHomeVideoToggle(visibility.showHomeVideoToggle);
@@ -143,6 +145,7 @@ export default function MainSiteNav() {
       getDrawerOpen: () => drawerOpenRef.current,
       setDarkNav,
       setPage: applyPageState,
+      getPage: () => activePageRef.current,
       playEntranceAnimation,
       refreshLanguageSwitcher: () => window.__mainSiteNavRefreshLanguage?.(),
     });
