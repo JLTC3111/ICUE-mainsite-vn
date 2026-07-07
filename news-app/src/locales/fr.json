@@ -143,7 +143,9 @@
     "posting": "Publication…",
     "empty": "Soyez le premier à commenter.",
     "anon": "Anonyme",
-    "error": "Une erreur s'est produite. Veuillez réessayer."
+    "error": "Une erreur s'est produite. Veuillez réessayer.",
+    "views": "{{count}} vues",
+    "viewsLabel": "vues"
   },
   "categories": {
     "label": "Catégories",

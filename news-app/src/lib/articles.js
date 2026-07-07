@@ -5,7 +5,7 @@ import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
   status, language, category, article_date, article_time, read_minutes, published_at,
-  created_at, updated_at, author_id, author_name,
+  view_count, created_at, updated_at, author_id, author_name,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `

@@ -143,7 +143,9 @@
     "posting": "Wird gesendet…",
     "empty": "Sei der Erste, der kommentiert.",
     "anon": "Anonym",
-    "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "views": "{{count}} Aufrufe",
+    "viewsLabel": "Aufrufe"
   },
   "categories": {
     "label": "Kategorien",

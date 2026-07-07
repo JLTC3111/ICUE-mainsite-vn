@@ -143,7 +143,9 @@
     "posting": "Posting…",
     "empty": "Be the first to comment.",
     "anon": "Anonymous",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "views": "{{count}} views",
+    "viewsLabel": "views"
   },
   "categories": {
     "label": "Categories",

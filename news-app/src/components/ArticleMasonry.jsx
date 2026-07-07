@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Masonry from './Masonry'
+import ArticleViewCounter from './ArticleViewCounter'
 import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import './ArticleMasonry.css'
@@ -51,6 +52,7 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
           title,
           category: isCategory(article.category) && article.category !== 'general' ? article.category : null,
           date: article.published_at || article.article_date || '',
+          viewCount: article.view_count ?? 0,
         }
       }),
     [articles],
@@ -95,6 +97,7 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
                     {formatDate(item.date, i18n.resolvedLanguage)}
                   </time>
                 )}
+                <ArticleViewCounter count={item.viewCount} compact tone="dark" />
               </div>
               <h2 className="article-masonry__title">{item.title}</h2>
             </div>

@@ -3,12 +3,14 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
+import { recordArticleView } from '../lib/engagement'
 import { formatDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
 import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
+import ArticleViewCounter from '../components/ArticleViewCounter'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
@@ -20,6 +22,7 @@ export default function ArticleDetail() {
 
   const [article, setArticle] = useState(null)
   const [state, setState] = useState('loading')
+  const [viewCount, setViewCount] = useState(0)
   const [translation, setTranslation] = useState(null)
   const [translatedLang, setTranslatedLang] = useState(null)
 
@@ -36,8 +39,14 @@ export default function ArticleDetail() {
         if (!active) return
         if (!data) return setState('error')
         setArticle(data)
+        setViewCount(data.view_count ?? 0)
         setState('ready')
         document.title = `${data.title} · ICUE News`
+        if (data.status === 'published') {
+          recordArticleView(data.id)
+            .then((result) => active && setViewCount(result.count))
+            .catch(() => {})
+        }
       })
       .catch(() => active && setState('error'))
     return () => { active = false }
@@ -105,6 +114,12 @@ export default function ArticleDetail() {
               {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
               {article.article_time ? ` · ${article.article_time.slice(0, 5)}` : ''}
               {' · '}{article.read_minutes || 1} {t('news.minRead')}
+              {article.status === 'published' && (
+                <>
+                  {' · '}
+                  <ArticleViewCounter count={viewCount} />
+                </>
+              )}
             </span>
           </div>
 

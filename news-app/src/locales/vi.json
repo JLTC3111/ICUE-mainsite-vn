@@ -143,7 +143,9 @@
     "posting": "Đang gửi…",
     "empty": "Hãy là người bình luận đầu tiên.",
     "anon": "Ẩn danh",
-    "error": "Đã có lỗi xảy ra. Vui lòng thử lại."
+    "error": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+    "views": "{{count}} lượt xem",
+    "viewsLabel": "lượt xem"
   },
   "categories": {
     "label": "Chuyên mục",

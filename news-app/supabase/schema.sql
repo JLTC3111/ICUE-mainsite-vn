@@ -77,6 +77,9 @@ alter table public.articles add column if not exists author_name text;
 alter table public.articles add column if not exists category text not null default 'general';
 create index if not exists articles_category_idx on public.articles (category);
 
+-- Denormalized pageview counter (incremented on each article detail load).
+alter table public.articles add column if not exists view_count int not null default 0;
+
 -- ----------------------------------------------------------------------------
 -- article_media: up to 10 images + 2 videos enforced at app + trigger level
 -- ----------------------------------------------------------------------------
@@ -386,6 +389,24 @@ begin
   return v_row;
 end $$;
 
+-- Increment the view counter for a published article (every page load counts).
+create or replace function public.record_article_view(p_article uuid)
+returns json language plpgsql security definer set search_path = public as $$
+declare
+  v_count int;
+begin
+  update public.articles
+    set view_count = view_count + 1
+    where id = p_article and status = 'published'
+    returning view_count into v_count;
+
+  if v_count is null then
+    raise exception 'article not available';
+  end if;
+
+  return json_build_object('count', v_count);
+end $$;
+
 -- RLS: writes only via the SECURITY DEFINER RPCs above. Comments are publicly
 -- readable for published articles; reactions are only read via get_hearts.
 alter table public.article_reactions enable row level security;
@@ -402,6 +423,7 @@ create policy comments_select_public on public.article_comments for select
 grant execute on function public.get_hearts(uuid)            to anon, authenticated;
 grant execute on function public.toggle_heart(uuid)          to anon, authenticated;
 grant execute on function public.add_comment(uuid, text, text) to anon, authenticated;
+grant execute on function public.record_article_view(uuid)   to anon, authenticated;
 
 -- =============================================================================
 -- After running: in Authentication -> Providers/Settings disable "Enable signups"

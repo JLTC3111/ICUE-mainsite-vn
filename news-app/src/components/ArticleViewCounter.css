@@ -1,0 +1,28 @@
+.article-view-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  white-space: nowrap;
+}
+
+.article-view-counter__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.article-view-counter--compact {
+  gap: 0.25em;
+}
+
+.article-view-counter--compact .article-view-counter__label {
+  font-size: 11px;
+}
+
+.article-view-counter--dark {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.article-view-counter--dark .article-view-counter__label {
+  color: rgba(255, 255, 255, 0.75);
+}

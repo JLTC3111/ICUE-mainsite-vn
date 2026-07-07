@@ -34,3 +34,9 @@ export async function addComment(articleId, body, name) {
   if (error) throw error
   return data
 }
+
+export async function recordArticleView(articleId) {
+  const { data, error } = await supabase.rpc('record_article_view', { p_article: articleId })
+  if (error) throw error
+  return { count: data?.count ?? 0 }
+}
