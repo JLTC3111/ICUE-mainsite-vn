@@ -2,6 +2,7 @@ import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
+import { useAdaptiveIconColor } from './useAdaptiveIconColor'
 import './ContactSidebar.css'
 
 function CalendarSvg({ month, day, time }) {
@@ -91,6 +92,7 @@ function MessengerIcon() {
 function ContactSidebar() {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
+  const musicColor = useAdaptiveIconColor(musicRef)
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)
 
@@ -105,14 +107,17 @@ function ContactSidebar() {
           aria-label="Toggle background music"
         >
           <svg
-            fill="#000000"
             width="30"
             height="30"
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
+            style={{ color: musicColor }}
           >
-            <path d="M42.7,486.7h42.7v-256H42.7V486.7z M469.3,17.3h-42.7v256h42.7V17.3z M85.3,17.3H42.7V60h42.7V17.3z M277.3,17.3h-42.7 v149.3h42.7V17.3z M0,188h128v-85.3H0V188z M21.3,124h85.3v42.7H21.3V124z M234.7,486.7h42.7V337.3h-42.7V486.7z M426.7,486.7h42.7 V444h-42.7V486.7z M384,316v85.3h128V316H384z M490.7,380h-85.3v-42.7h85.3V380z M192,294.7h128v-85.3H192V294.7z M213.3,230.7h85.3 v42.7h-85.3V230.7z" />
+            <path
+              fill="currentColor"
+              d="M42.7,486.7h42.7v-256H42.7V486.7z M469.3,17.3h-42.7v256h42.7V17.3z M85.3,17.3H42.7V60h42.7V17.3z M277.3,17.3h-42.7 v149.3h42.7V17.3z M0,188h128v-85.3H0V188z M21.3,124h85.3v42.7H21.3V124z M234.7,486.7h42.7V337.3h-42.7V486.7z M426.7,486.7h42.7 V444h-42.7V486.7z M384,316v85.3h128V316H384z M490.7,380h-85.3v-42.7h85.3V380z M192,294.7h128v-85.3H192V294.7z M213.3,230.7h85.3 v42.7h-85.3V230.7z"
+            />
           </svg>
         </button>
 

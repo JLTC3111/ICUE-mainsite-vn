@@ -78,11 +78,10 @@
 .contact-sidebar__music svg {
   width: 30px;
   height: 30px;
-  color: #000;
 }
 
 .contact-sidebar__music svg path {
-  fill: #000;
+  fill: currentColor;
 }
 
 .contact-sidebar__divider {

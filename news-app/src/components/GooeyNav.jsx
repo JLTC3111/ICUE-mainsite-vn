@@ -10,6 +10,8 @@ export default function GooeyNav({
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
+  activateOnHover = false,
+  showTextEffect = true,
   className = '',
   ariaLabel,
 }) {
@@ -81,8 +83,20 @@ export default function GooeyNav({
     }
   }
 
+  const hideEffects = () => {
+    if (filterRef.current) {
+      filterRef.current.style.width = '0'
+      filterRef.current.style.height = '0'
+      filterRef.current.classList.remove('active')
+      filterRef.current.querySelectorAll('.particle').forEach((p) => p.remove())
+    }
+    if (textRef.current) {
+      textRef.current.classList.remove('active')
+    }
+  }
+
   const updateEffectPosition = (element, label) => {
-    if (!containerRef.current || !filterRef.current || !textRef.current) return
+    if (!containerRef.current || !filterRef.current) return
     const containerRect = containerRef.current.getBoundingClientRect()
     const pos = element.getBoundingClientRect()
 
@@ -93,15 +107,18 @@ export default function GooeyNav({
       height: `${pos.height}px`,
     }
     Object.assign(filterRef.current.style, styles)
-    Object.assign(textRef.current.style, styles)
-    textRef.current.innerText = label
+
+    if (showTextEffect && textRef.current) {
+      Object.assign(textRef.current.style, styles)
+      textRef.current.innerText = label
+    }
   }
 
-  const activateItem = (liEl, index) => {
-    if (activeIndex === index) return
+  const applyVisual = (liEl, index, { animateParticles = true } = {}) => {
+    if (index < 0 || !liEl) return
 
     setActiveIndex(index)
-    updateEffectPosition(liEl, items[index].label)
+    updateEffectPosition(liEl, items[index]?.label || '')
 
     if (filterRef.current) {
       filterRef.current.querySelectorAll('.particle').forEach((p) => p.remove())
@@ -109,12 +126,15 @@ export default function GooeyNav({
 
     if (textRef.current) {
       textRef.current.classList.remove('active')
-      void textRef.current.offsetWidth
-      textRef.current.classList.add('active')
+      if (showTextEffect) {
+        void textRef.current.offsetWidth
+        textRef.current.classList.add('active')
+      }
     }
 
     if (filterRef.current) {
-      makeParticles(filterRef.current)
+      filterRef.current.classList.add('active')
+      if (animateParticles) makeParticles(filterRef.current)
     }
   }
 
@@ -123,46 +143,74 @@ export default function GooeyNav({
     item.onClick?.(e)
 
     const liEl = e.currentTarget.closest('li')
-    if (liEl) activateItem(liEl, index)
+    if (liEl) applyVisual(liEl, index)
+  }
+
+  const handleMouseEnter = (e, index) => {
+    if (!activateOnHover) return
+    applyVisual(e.currentTarget, index)
+  }
+
+  const handleMouseLeave = () => {
+    if (!activateOnHover) return
+    setActiveIndex(-1)
+    hideEffects()
   }
 
   const handleKeyDown = (e, index) => {
     if (e.key !== 'Enter' && e.key !== ' ') return
     e.preventDefault()
     const liEl = e.currentTarget.closest('li')
-    if (liEl) activateItem(liEl, index)
+    if (liEl) applyVisual(liEl, index)
     e.currentTarget.click()
   }
 
   useEffect(() => {
+    if (activateOnHover || initialActiveIndex < 0) return undefined
     if (!navRef.current || !containerRef.current) return undefined
-    const activeLi = navRef.current.querySelectorAll('li')[activeIndex]
+    const activeLi = navRef.current.querySelectorAll('li')[initialActiveIndex]
     if (activeLi) {
-      updateEffectPosition(activeLi, items[activeIndex]?.label || '')
-      textRef.current?.classList.add('active')
+      applyVisual(activeLi, initialActiveIndex, { animateParticles: false })
     }
 
     const resizeObserver = new ResizeObserver(() => {
       const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex]
-      if (currentActiveLi) {
+      if (currentActiveLi && activeIndex >= 0) {
         updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
       }
     })
 
     resizeObserver.observe(containerRef.current)
     return () => resizeObserver.disconnect()
-  }, [activeIndex, items])
+  }, [activateOnHover, initialActiveIndex])
+
+  useEffect(() => {
+    if (activeIndex < 0) return
+    const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex]
+    if (currentActiveLi) {
+      updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
+    }
+  }, [activeIndex, items, showTextEffect])
 
   return (
-    <div className={`gooey-nav-container ${className}`.trim()} ref={containerRef}>
+    <div
+      className={`gooey-nav-container ${className}`.trim()}
+      ref={containerRef}
+      onMouseLeave={handleMouseLeave}
+    >
       <nav aria-label={ariaLabel}>
         <ul ref={navRef}>
           {items.map((item, index) => (
-            <li key={item.href || item.label || index} className={activeIndex === index ? 'active' : ''}>
+            <li
+              key={item.href || item.label || index}
+              className={activeIndex === index ? 'active' : ''}
+              onMouseEnter={(e) => handleMouseEnter(e, index)}
+            >
               <a
                 href={item.href || '#'}
                 target={item.target}
                 rel={item.rel}
+                aria-label={item.ariaLabel || item.label}
                 onClick={(e) => handleClick(e, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
               >
@@ -173,7 +221,7 @@ export default function GooeyNav({
         </ul>
       </nav>
       <span className="effect filter" ref={filterRef} aria-hidden="true" />
-      <span className="effect text" ref={textRef} aria-hidden="true" />
+      {showTextEffect && <span className="effect text" ref={textRef} aria-hidden="true" />}
     </div>
   )
 }
