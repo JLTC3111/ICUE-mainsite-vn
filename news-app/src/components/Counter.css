@@ -12,6 +12,8 @@
 .counter-digit {
   position: relative;
   width: 1ch;
+  min-width: 0.6em;
+  overflow: hidden;
   font-variant-numeric: tabular-nums;
 }
 

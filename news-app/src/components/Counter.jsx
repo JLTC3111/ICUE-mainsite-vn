@@ -1,11 +1,11 @@
 import { motion, useSpring, useTransform } from 'motion/react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import './Counter.css'
 
-function Number({ mv, number, height }) {
+function CounterRoll({ mv, digit, height }) {
   const y = useTransform(mv, (latest) => {
     const placeValue = latest % 10
-    let offset = (10 + number - placeValue) % 10
+    let offset = (10 + digit - placeValue) % 10
     let memo = offset * height
     if (offset > 5) memo -= 10 * height
     return memo
@@ -13,7 +13,7 @@ function Number({ mv, number, height }) {
 
   return (
     <motion.span className="counter-number" style={{ y }}>
-      {number}
+      {digit}
     </motion.span>
   )
 }
@@ -35,9 +35,9 @@ function Digit({ place, value, height, digitStyle }) {
   }, [animatedValue, valueRoundedToPlace])
 
   return (
-    <span className="counter-digit" style={{ height, ...digitStyle }}>
+    <span className="counter-digit" style={{ height, lineHeight: `${height}px`, ...digitStyle }}>
       {Array.from({ length: 10 }, (_, i) => (
-        <Number key={i} mv={animatedValue} number={i} height={height} />
+        <CounterRoll key={i} mv={animatedValue} digit={i} height={height} />
       ))}
     </span>
   )
@@ -64,7 +64,7 @@ export default function Counter({
   value,
   fontSize = 100,
   padding = 0,
-  places = buildPlaces(value),
+  places: placesProp,
   gap = 8,
   borderRadius = 4,
   horizontalPadding = 8,
@@ -78,7 +78,13 @@ export default function Counter({
   gradientTo = 'transparent',
   topGradientStyle,
   bottomGradientStyle,
+  showGradient = true,
 }) {
+  const numericValue = Number.isFinite(value) ? value : 0
+  const places = useMemo(
+    () => placesProp ?? buildPlaces(numericValue),
+    [placesProp, numericValue],
+  )
   const height = fontSize + padding
   const defaultCounterStyle = {
     fontSize,
@@ -88,6 +94,8 @@ export default function Counter({
     paddingRight: horizontalPadding,
     color: textColor,
     fontWeight,
+    height,
+    lineHeight: `${height}px`,
   }
   const defaultTopGradientStyle = {
     height: gradientHeight,
@@ -101,20 +109,22 @@ export default function Counter({
   return (
     <span className="counter-container" style={containerStyle}>
       <span className="counter-counter" style={{ ...defaultCounterStyle, ...counterStyle }}>
-        {places.map((place) => (
+        {places.map((place, index) => (
           <Digit
-            key={place}
+            key={`${place}-${index}`}
             place={place}
-            value={value}
+            value={numericValue}
             height={height}
             digitStyle={digitStyle}
           />
         ))}
       </span>
-      <span className="gradient-container" aria-hidden="true">
-        <span className="top-gradient" style={topGradientStyle ?? defaultTopGradientStyle} />
-        <span className="bottom-gradient" style={bottomGradientStyle ?? defaultBottomGradientStyle} />
-      </span>
+      {showGradient && (
+        <span className="gradient-container" aria-hidden="true">
+          <span className="top-gradient" style={topGradientStyle ?? defaultTopGradientStyle} />
+          <span className="bottom-gradient" style={bottomGradientStyle ?? defaultBottomGradientStyle} />
+        </span>
+      )}
     </span>
   )
 }

@@ -1,28 +1,53 @@
 .article-view-counter {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.35em;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  font-size: 15px;
+  font-weight: 700;
   white-space: nowrap;
+  line-height: 1;
+}
+
+.article-view-counter__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  stroke-width: 2;
 }
 
 .article-view-counter__label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
   color: inherit;
 }
 
 .article-view-counter--compact {
-  gap: 0.25em;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.article-view-counter--compact .article-view-counter__icon {
+  width: 13px;
+  height: 13px;
 }
 
 .article-view-counter--compact .article-view-counter__label {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .article-view-counter--dark {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .article-view-counter--dark .article-view-counter__label {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.88);
 }

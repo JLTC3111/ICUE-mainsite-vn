@@ -10,12 +10,36 @@ const ARTICLE_SELECT = `
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
 
+const ARTICLE_SELECT_LEGACY = `
+  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  status, language, category, article_date, article_time, read_minutes, published_at,
+  created_at, updated_at, author_id, author_name,
+  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
+  media:article_media ( id, kind, url, storage_path, poster_url, position )
+`
+
+function isMissingViewCount(error) {
+  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
+  return error?.code === '42703' || msg.includes('view_count')
+}
+
+async function runArticleSelect(runQuery) {
+  let { data, error } = await runQuery(ARTICLE_SELECT)
+  if (error && isMissingViewCount(error)) {
+    ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY))
+  }
+  if (error) throw error
+  return data
+}
+
 function normalizeArticle(article) {
   if (!article) return article
   const normalized = normalizeDeep(article)
   if (normalized.content_html) {
     normalized.content_html = normalizeHtmlUnicode(normalized.content_html)
   }
+  const views = Number(normalized.view_count)
+  normalized.view_count = Number.isFinite(views) ? Math.max(0, Math.floor(views)) : 0
   return normalized
 }
 
@@ -38,45 +62,41 @@ export async function uploadAvatar(userId, file) {
 }
 
 export async function fetchPublishedArticles({ limit = 24, language } = {}) {
-  let q = supabase
-    .from('articles')
-    .select(ARTICLE_SELECT)
-    .eq('status', 'published')
-    .order('published_at', { ascending: false, nullsFirst: false })
-    .limit(limit)
-  if (language) q = q.eq('language', language)
-  const { data, error } = await q
-  if (error) throw error
+  const data = await runArticleSelect((select) => {
+    let q = supabase
+      .from('articles')
+      .select(select)
+      .eq('status', 'published')
+      .order('published_at', { ascending: false, nullsFirst: false })
+      .limit(limit)
+    if (language) q = q.eq('language', language)
+    return q
+  })
   return (data ?? []).map(normalizeArticle)
 }
 
 export async function fetchMyArticles(userId) {
-  const { data, error } = await supabase
-    .from('articles')
-    .select(ARTICLE_SELECT)
-    .eq('author_id', userId)
-    .order('updated_at', { ascending: false })
-  if (error) throw error
+  const data = await runArticleSelect((select) =>
+    supabase
+      .from('articles')
+      .select(select)
+      .eq('author_id', userId)
+      .order('updated_at', { ascending: false }),
+  )
   return (data ?? []).map(normalizeArticle)
 }
 
 export async function fetchArticleBySlug(slug) {
-  const { data, error } = await supabase
-    .from('articles')
-    .select(ARTICLE_SELECT)
-    .eq('slug', slug)
-    .maybeSingle()
-  if (error) throw error
+  const data = await runArticleSelect((select) =>
+    supabase.from('articles').select(select).eq('slug', slug).maybeSingle(),
+  )
   return normalizeArticle(data)
 }
 
 export async function fetchArticleById(id) {
-  const { data, error } = await supabase
-    .from('articles')
-    .select(ARTICLE_SELECT)
-    .eq('id', id)
-    .maybeSingle()
-  if (error) throw error
+  const data = await runArticleSelect((select) =>
+    supabase.from('articles').select(select).eq('id', id).maybeSingle(),
+  )
   return normalizeArticle(data)
 }
 

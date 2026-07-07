@@ -114,12 +114,6 @@ export default function ArticleDetail() {
               {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
               {article.article_time ? ` · ${article.article_time.slice(0, 5)}` : ''}
               {' · '}{article.read_minutes || 1} {t('news.minRead')}
-              {article.status === 'published' && (
-                <>
-                  {' · '}
-                  <ArticleViewCounter count={viewCount} />
-                </>
-              )}
             </span>
           </div>
 
@@ -154,7 +148,12 @@ export default function ArticleDetail() {
 
       <div className="article-detail__foot icue-readw">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>
-        {article.status === 'published' && <HeartButton articleId={article.id} />}
+        {article.status === 'published' && (
+          <div className="article-detail__engagement">
+            <ArticleViewCounter count={viewCount} />
+            <HeartButton articleId={article.id} />
+          </div>
+        )}
       </div>
 
       {article.status === 'published' && <CommentSection articleId={article.id} />}
