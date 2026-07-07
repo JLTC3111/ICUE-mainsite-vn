@@ -186,6 +186,24 @@ export default function MainSiteNav() {
     }
   }, [showHomeVideoToggle, showAboutUsVideoToggle]);
 
+  useEffect(() => {
+    const ids = [
+      'homeVideoToggleContainerDesktop',
+      'homeVideoToggleContainerMobile',
+      'aboutUsVideoToggleContainerDesktop',
+      'aboutUsVideoToggleContainerMobile',
+      'contactLink',
+    ];
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.hidden = false;
+      el.style.removeProperty('display');
+      el.classList.remove('pre-hidden');
+    });
+  }, [showContactLink, showHomeVideoToggle, showAboutUsVideoToggle]);
+
   const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '', drawerOpen ? 'drawer-open' : '']
     .filter(Boolean)
     .join(' ');

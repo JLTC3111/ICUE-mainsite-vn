@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
 import ArticleMasonry from '../components/ArticleMasonry'
-import SocialLogoLoop from '../components/SocialLogoLoop'
+import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
 import { fetchPublishedArticles } from '../lib/articles'
 import { isCategory } from '../lib/categories'
@@ -69,7 +69,7 @@ export default function NewsGrid() {
             </h1>
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
-          <SocialLogoLoop />
+          <SocialGooeyNav reduceMotion={reduceMotion} />
         </div>
       </header>
 

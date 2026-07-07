@@ -54,7 +54,6 @@ export default defineConfig(({ mode }) => {
             if (id.includes('@supabase')) return 'supabase'
             if (id.includes('i18next') || id.includes('react-i18next')) return 'i18n'
             if (id.includes('motion') || id.includes('framer-motion')) return 'motion'
-            if (id.includes('/ogl') || id.includes('node_modules/ogl')) return 'ogl'
             if (id.includes('react') || id.includes('scheduler')) return 'react'
             return 'vendor'
           },
