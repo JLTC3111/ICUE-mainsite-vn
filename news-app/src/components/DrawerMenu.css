@@ -33,6 +33,15 @@
   transform-origin: center;
 }
 
+.nav-drawer__toggle.is-open {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-drawer__toggle.is-open span {
+  background: rgba(255, 255, 255, 0.92);
+}
+
 .nav-drawer__toggle.is-open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
