@@ -27,14 +27,16 @@
   },
   "scripts": {
     "dev": "node scripts/restore-dev-index.mjs && vite",
-    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app",
-    "build": "npm run install:apps && node scripts/prebuild-index.mjs && vite build && npm run build:newsroom && npm run build:people && node scripts/postbuild.mjs",
+    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app",
+    "build": "npm run install:apps && node scripts/prebuild-index.mjs && vite build && npm run build:newsroom && npm run build:people && npm run build:structure && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
     "build:newsroom": "npm run build --prefix news-app",
     "dev:newsroom": "npm run dev --prefix news-app",
     "build:people": "npm run build --prefix people-app",
-    "dev:people": "npm run dev --prefix people-app"
+    "dev:people": "npm run dev --prefix people-app",
+    "build:structure": "npm run build --prefix structure-app",
+    "dev:structure": "npm run dev --prefix structure-app"
   }
 }

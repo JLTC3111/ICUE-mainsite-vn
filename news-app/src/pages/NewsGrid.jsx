@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
 import RetroGrid from '../components/RetroGrid'
+import AnimatedShinyText from '../components/AnimatedShinyText'
 import ArticleMasonry from '../components/ArticleMasonry'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
@@ -63,7 +64,9 @@ export default function NewsGrid() {
         <div className="icue-container news-hero__inner">
           <div className="news-hero__text">
             <h1 className="news-hero__eyebrow">
-              <span className="news-hero__institute">{t('instituteName')}</span>
+              <AnimatedShinyText className="news-hero__institute" shimmerWidth={140}>
+                {t('instituteName')}
+              </AnimatedShinyText>
               <RotatingText
                 texts={rotatingTags}
                 mainClassName="news-hero__rotating"

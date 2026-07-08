@@ -131,7 +131,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           </button>
           <button className="btn btn-accent btn-sm" disabled={!!busy} onClick={() => submit('published')}>
             {busy === 'publish' || busy === 'update' ? (
-              <><span className="spin" style={{ borderColor: 'rgba(10,10,10,.3)', borderTopColor: '#0a0a0a' }} />{t('editor.publishing')}</>
+              <><span className="spin" style={{ borderColor: 'rgba(255,255,255,.35)', borderTopColor: '#fff' }} />{t('editor.publishing')}</>
             ) : mode === 'edit' ? t('editor.update') : t('editor.publish')}
           </button>
         </div>

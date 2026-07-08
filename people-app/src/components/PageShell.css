@@ -111,6 +111,29 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
+.page-shell--interactive-bg .shiny-button {
+  --primary: #ffffff;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.page-shell--interactive-bg .shiny-button:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.page-shell--interactive-bg .shiny-button__label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.page-shell--interactive-bg .shiny-button__shine {
+  background-image: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.12) calc(var(--x) + 20%),
+    rgba(255, 255, 255, 0.55) calc(var(--x) + 25%),
+    rgba(255, 255, 255, 0.12) calc(var(--x) + 100%)
+  );
+}
+
 .page-shell--interactive-bg .profile-nav__thumb--active {
   border-color: #fff;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);

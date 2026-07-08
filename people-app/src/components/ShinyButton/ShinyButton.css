@@ -1,0 +1,80 @@
+.shiny-button {
+  --primary: #ffffff;
+  --x: 100%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  text-decoration: none;
+  color: var(--icue-ink);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  border-color: #000;
+}
+
+.shiny-button:hover {
+  border-color: #000;
+  box-shadow: none;
+}
+
+.shiny-button__label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  letter-spacing: 0.04em;
+  color: rgba(15, 23, 42, 0.88);
+  mask-image: linear-gradient(
+    -75deg,
+    var(--primary) calc(var(--x) + 20%),
+    transparent calc(var(--x) + 30%),
+    var(--primary) calc(var(--x) + 100%)
+  );
+  -webkit-mask-image: linear-gradient(
+    -75deg,
+    var(--primary) calc(var(--x) + 20%),
+    transparent calc(var(--x) + 30%),
+    var(--primary) calc(var(--x) + 100%)
+  );
+}
+
+.shiny-button__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mask: linear-gradient(#000, #000) content-box exclude, linear-gradient(#000, #000);
+  -webkit-mask: linear-gradient(#000, #000) content-box exclude, linear-gradient(#000, #000);
+  background-image: linear-gradient(
+    -75deg,
+    rgba(54, 138, 223, 0.12) calc(var(--x) + 20%),
+    rgba(54, 138, 223, 0.55) calc(var(--x) + 25%),
+    rgba(54, 138, 223, 0.12) calc(var(--x) + 100%)
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-button__label {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .shiny-button__shine {
+    display: none;
+  }
+}

@@ -53,9 +53,11 @@
   color: #fff;
 }
 
+.login__lang .lang-switcher select:focus,
 .login__lang .lang-switcher select:focus-visible {
-  outline: 2px solid rgba(200, 255, 0, 0.75);
-  outline-offset: 2px;
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: none;
 }
 
 .login__lang .lang-switcher select option {

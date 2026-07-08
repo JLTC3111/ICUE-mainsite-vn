@@ -33,7 +33,7 @@
 }
 .news-hero__institute {
   display: block;
-  color: var(--icue-accent);
+  max-width: 100%;
 }
 .news-hero__rotating {
   display: block;

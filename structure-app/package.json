@@ -1,0 +1,23 @@
+{
+  "name": "structure-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "sync-assets": "node scripts/sync-assets.mjs",
+    "dev": "vite",
+    "predev": "npm run sync-assets",
+    "build": "vite build",
+    "prebuild": "npm run sync-assets",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.12"
+  }
+}

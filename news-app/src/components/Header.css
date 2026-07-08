@@ -28,8 +28,8 @@
 .icue-header__tag {
   font-size: 13px;
   font-weight: 700;
-  color: var(--icue-accent-ink);
-  background: var(--icue-gradient-accent);
+  color: #fff;
+  background: var(--icue-gradient-pill);
   padding: 2px 8px;
   border-radius: 999px;
 }
@@ -104,6 +104,13 @@
 .lang-switcher select:hover {
   border-color: var(--icue-text-faint);
   background: var(--icue-surface-2);
+}
+
+.lang-switcher select:focus,
+.lang-switcher select:focus-visible {
+  outline: none;
+  border-color: var(--icue-border);
+  box-shadow: none;
 }
 
 .icue-header__avatar-btn {

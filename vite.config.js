@@ -80,6 +80,7 @@ export default {
     marketApiPlugin(),
     spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom' }),
     spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people' }),
+    spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure' }),
   ],
   resolve: {
     alias: {

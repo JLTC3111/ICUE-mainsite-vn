@@ -45,6 +45,7 @@ copyDir(path.join(root, 'src/pages'), path.join(dist, 'src/pages'));
 copyFile(path.join(root, '_redirects'), path.join(dist, '_redirects'));
 copyDir(path.join(root, 'newsroom'), path.join(dist, 'newsroom'));
 copyDir(path.join(root, 'people'), path.join(dist, 'people'));
+copyDir(path.join(root, 'structure'), path.join(dist, 'structure'));
 copyDir(path.join(root, 'public'), path.join(dist, 'public'));
 
 const builtIndex = path.join(dist, 'index.html');

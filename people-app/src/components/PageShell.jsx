@@ -5,6 +5,7 @@ import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackground
 import Header from './Header'
 import Footer from './Footer'
 import InteractiveBackground from './InteractiveBackground/InteractiveBackground'
+import ShinyButton from './ShinyButton/ShinyButton'
 import './PageShell.css'
 
 export default function PageShell({
@@ -64,14 +65,13 @@ export default function PageShell({
 
           {showHrLink && (
             <div className="page-shell__footer-actions">
-              <a
+              <ShinyButton
                 href="https://hr.icue.vn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-accent"
               >
                 {t('hrLink')}
-              </a>
+              </ShinyButton>
             </div>
           )}
         </main>
