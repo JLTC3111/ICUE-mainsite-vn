@@ -11,6 +11,7 @@ import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import ArticleViewCounter from '../components/ArticleViewCounter'
+import HyperText from '../components/HyperText'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
@@ -103,7 +104,15 @@ export default function ArticleDetail() {
     <article className="article-detail">
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
-        <h1 className="article-detail__title">{displayTitle}</h1>
+        <HyperText
+          as="h1"
+          className="article-detail__title"
+          animateOnHover={false}
+          duration={1200}
+          delay={120}
+        >
+          {displayTitle}
+        </HyperText>
         {displaySubtitle && <p className="article-detail__subtitle">{displaySubtitle}</p>}
 
         <div className="article-detail__byline">

@@ -185,8 +185,9 @@
     "showing": "Kết quả cho “{{query}}”"
   },
   "gallery": {
-    "ariaLabel": "Danh sách bài viết. Duyệt lưới masonry và nhấp vào bài để mở.",
-    "hint": "Nhấp vào bài để đọc"
+    "ariaLabel": "Danh sách bài viết. Duyệt lưới bento và nhấp vào bài để mở.",
+    "hint": "Nhấp vào bài để đọc",
+    "readArticle": "Đọc bài"
   },
   "market": {
     "label": "Chỉ số thị trường",

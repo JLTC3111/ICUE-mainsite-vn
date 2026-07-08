@@ -1,0 +1,12 @@
+.hyper-text {
+  display: inline;
+  overflow: hidden;
+}
+
+.hyper-text__char {
+  display: inline-block;
+}
+
+.hyper-text__char--space {
+  width: 0.3em;
+}

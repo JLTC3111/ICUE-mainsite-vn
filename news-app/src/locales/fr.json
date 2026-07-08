@@ -185,8 +185,9 @@
     "showing": "Résultats pour « {{query}} »"
   },
   "gallery": {
-    "ariaLabel": "Articles. Parcourez la grille masonry et cliquez sur un article pour l'ouvrir.",
-    "hint": "Cliquez sur un article pour lire"
+    "ariaLabel": "Articles. Parcourez la grille bento et cliquez sur un article pour l'ouvrir.",
+    "hint": "Cliquez sur un article pour lire",
+    "readArticle": "Lire l'article"
   },
   "market": {
     "label": "Indices boursiers",

@@ -185,8 +185,9 @@
     "showing": "Showing results for “{{query}}”"
   },
   "gallery": {
-    "ariaLabel": "News articles. Browse the masonry grid and click an article to open it.",
-    "hint": "Click an article to read"
+    "ariaLabel": "News articles. Browse the bento grid and click an article to open it.",
+    "hint": "Click an article to read",
+    "readArticle": "Read article"
   },
   "market": {
     "label": "Market indices",

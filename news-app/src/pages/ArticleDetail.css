@@ -14,6 +14,7 @@
   font-family: var(--icue-serif);
   font-size: clamp(30px, 5vw, 46px);
   font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
+  display: block;
 }
 
 html:lang(vi) .article-detail__title,
