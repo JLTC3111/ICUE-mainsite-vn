@@ -459,6 +459,28 @@
   pointer-events: none;
 }
 
+/* Logo + ICUE VideoText stay above the open drawer (bar stacking context was below drawer). */
+.main-site-nav.drawer-open .main-site-nav__bar,
+.main-site-nav:has(#drawerMenu.open) .main-site-nav__bar {
+  z-index: 120;
+}
+
+.main-site-nav.drawer-open .main-site-nav__left.logo-banner,
+.main-site-nav:has(#drawerMenu.open) .main-site-nav__left.logo-banner {
+  position: relative;
+  z-index: 121;
+}
+
+.main-site-nav.drawer-open .logo-link,
+.main-site-nav.drawer-open .logo-mark,
+.main-site-nav.drawer-open .logo-wordmark,
+.main-site-nav:has(#drawerMenu.open) .logo-link,
+.main-site-nav:has(#drawerMenu.open) .logo-mark,
+.main-site-nav:has(#drawerMenu.open) .logo-wordmark {
+  position: relative;
+  z-index: 1;
+}
+
 .main-site-nav .drawer-resize-handle {
   position: absolute;
   top: 0;
@@ -536,6 +558,32 @@
   padding-left: 0.5rem;
   color: #000;
   box-shadow: -4px -6px 8px rgba(255, 255, 255, 1);
+}
+
+.main-site-nav #drawerMenu a.active,
+.main-site-nav .has-submenu.active {
+  transform: none;
+  font-weight: 700;
+  background-color: #e4eaf5;
+  border-left: 2.5px solid rgba(254, 254, 254, 0.95);
+  padding-left: 0.5rem;
+  color: #0d1117;
+  box-shadow: -3px -5px 10px rgba(255, 255, 255, 0.92);
+}
+
+.main-site-nav #drawerMenu a.active svg,
+.main-site-nav #drawerMenu a.active svg path,
+.main-site-nav #drawerMenu a.active svg circle,
+.main-site-nav .has-submenu.active svg,
+.main-site-nav .has-submenu.active svg path {
+  color: #0d1117;
+  fill: #0d1117;
+  stroke: #0d1117;
+}
+
+.main-site-nav #drawerMenu a.active:hover,
+.main-site-nav .has-submenu.active:hover {
+  transform: none;
 }
 
 .main-site-nav .has-submenu {
@@ -625,6 +673,22 @@
 .main-site-nav #drawerMenu .core-subMenu:hover {
   text-decoration: none;
   background-color: rgba(255, 255, 255, 0.1);
+  color: #9afc93;
+}
+
+.main-site-nav #drawerMenu .submenu a.active {
+  transform: none;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+}
+
+.main-site-nav #drawerMenu .moe-subMenu.active {
+  color: #ffff03;
+}
+
+.main-site-nav #drawerMenu .core-subMenu.active {
   color: #9afc93;
 }
 
@@ -944,6 +1008,26 @@
     transform: none;
     border-left: 0;
     padding-left: 1rem;
+  }
+
+  .main-site-nav #drawerMenu a.active,
+  .main-site-nav .has-submenu.active {
+    transform: none;
+    border-left: 0;
+    padding-left: 1rem;
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+  }
+
+  .main-site-nav #drawerMenu a.active svg,
+  .main-site-nav #drawerMenu a.active svg path,
+  .main-site-nav #drawerMenu a.active svg circle,
+  .main-site-nav .has-submenu.active svg,
+  .main-site-nav .has-submenu.active svg path {
+    color: #fff;
+    fill: #fff;
+    stroke: #fff;
   }
 
   .main-site-nav #drawerMenu .submenu {

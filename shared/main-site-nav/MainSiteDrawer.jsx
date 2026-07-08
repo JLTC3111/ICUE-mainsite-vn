@@ -13,7 +13,9 @@ function navigateDrawerLink(link, onClose) {
   window.location.href = link.href;
 }
 
-export default function MainSiteDrawer({ open, onClose }) {
+const PEOPLE_PAGES = new Set(['ourPeople', 'meetOurExperts', 'coreTeam']);
+
+export default function MainSiteDrawer({ open, onClose, activePage }) {
   const drawerRef = useRef(null);
   const handleRef = useRef(null);
   const [peopleOpen, setPeopleOpen] = useState(false);
@@ -108,11 +110,14 @@ export default function MainSiteDrawer({ open, onClose }) {
 
       {DRAWER_LINKS.map((link) => {
         const Icon = link.icon;
+        const isActive = link.page === activePage;
         return (
           <a
             key={link.page}
             href={link.href}
             data-page={link.page}
+            className={isActive ? 'active' : undefined}
+            aria-current={isActive ? 'page' : undefined}
             onClick={(e) => {
               e.preventDefault();
               navigateDrawerLink(link, handleClose);
@@ -126,8 +131,9 @@ export default function MainSiteDrawer({ open, onClose }) {
 
       <a
         href="#"
-        className="has-submenu"
+        className={['has-submenu', PEOPLE_PAGES.has(activePage) ? 'active' : ''].filter(Boolean).join(' ')}
         data-page={PEOPLE_SUBMENU.page}
+        aria-current={PEOPLE_PAGES.has(activePage) ? 'page' : undefined}
         onClick={togglePeople}
       >
         <PEOPLE_SUBMENU.icon />
@@ -137,12 +143,14 @@ export default function MainSiteDrawer({ open, onClose }) {
       <div id="ourPeopleSubmenu" className={submenuClass}>
         {PEOPLE_SUBMENU.items.map((item) => {
           const Icon = item.icon;
+          const isActive = item.page === activePage;
           return (
             <a
               key={item.page}
               href={item.href}
               data-page={item.page}
-              className={item.className}
+              className={[item.className, isActive ? 'active' : ''].filter(Boolean).join(' ')}
+              aria-current={isActive ? 'page' : undefined}
               onClick={(e) => {
                 e.preventDefault();
                 navigateDrawerLink(item, handleClose);

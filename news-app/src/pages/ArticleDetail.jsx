@@ -13,14 +13,35 @@ import ArticleTranslator from '../components/ArticleTranslator'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
+import Lens from '../components/Lens'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
+
+function useFinePointerLens() {
+  const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setEnabled(fine.matches && !motion.matches)
+    sync()
+    fine.addEventListener('change', sync)
+    motion.addEventListener('change', sync)
+    return () => {
+      fine.removeEventListener('change', sync)
+      motion.removeEventListener('change', sync)
+    }
+  }, [])
+
+  return enabled
+}
 
 export default function ArticleDetail() {
   const { slug } = useParams()
   const { t, i18n } = useTranslation()
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
+  const lensEnabled = useFinePointerLens()
 
   const [article, setArticle] = useState(null)
   const [state, setState] = useState('loading')
@@ -145,7 +166,14 @@ export default function ArticleDetail() {
 
       {article.cover_image_url && (
         <figure className="article-detail__cover">
-          <img src={article.cover_image_url} alt="" decoding="async" />
+          <Lens
+            className="article-detail__cover-lens"
+            zoomFactor={1.4}
+            lensSize={180}
+            disabled={!lensEnabled}
+          >
+            <img src={article.cover_image_url} alt="" decoding="async" />
+          </Lens>
         </figure>
       )}
 
@@ -155,7 +183,7 @@ export default function ArticleDetail() {
         finishBy={0.4}
       />
 
-      <MediaGallery images={images} videos={videos} />
+      <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
 
       <div className="article-detail__foot icue-readw">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>

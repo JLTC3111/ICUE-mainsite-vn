@@ -1,0 +1,120 @@
+.shim-button {
+  --spread: 90deg;
+  --shimmer-color: #ffffff;
+  --radius: 100px;
+  --speed: 3s;
+  --cut: 0.05em;
+  --bg: rgba(0, 0, 0, 1);
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--bg);
+  transform: translateZ(0);
+  transition: transform 0.3s ease;
+}
+
+.shim-button:active {
+  transform: translateY(1px);
+}
+
+.shim-button__spark {
+  position: absolute;
+  inset: 0;
+  z-index: -30;
+  overflow: visible;
+  filter: blur(2px);
+  container-type: size;
+}
+
+.shim-button__spark-slide {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: 1;
+  height: 100cqh;
+  border-radius: 0;
+  animation: shim-slide var(--speed) ease infinite;
+}
+
+.shim-button__spark-spin {
+  position: absolute;
+  inset: -100%;
+  width: auto;
+  translate: 0 0;
+  rotate: 0deg;
+  background: conic-gradient(
+    from calc(270deg - (var(--spread) * 0.5)),
+    transparent 0,
+    var(--shimmer-color) var(--spread),
+    transparent var(--spread)
+  );
+  animation: shim-spin calc(var(--speed) * 2) linear infinite;
+}
+
+.shim-button__label {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.shim-button__highlight {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 -8px 10px rgba(255, 255, 255, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.shim-button:hover .shim-button__highlight {
+  box-shadow: inset 0 -6px 10px rgba(255, 255, 255, 0.25);
+}
+
+.shim-button:active .shim-button__highlight {
+  box-shadow: inset 0 -10px 10px rgba(255, 255, 255, 0.25);
+}
+
+.shim-button__backdrop {
+  position: absolute;
+  inset: var(--cut);
+  z-index: -20;
+  border-radius: var(--radius);
+  background: var(--bg);
+  pointer-events: none;
+}
+
+@keyframes shim-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+
+@keyframes shim-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shim-button__spark,
+  .shim-button__highlight {
+    display: none;
+  }
+}

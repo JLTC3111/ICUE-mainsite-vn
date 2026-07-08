@@ -39,7 +39,17 @@ html:lang(vi) .article-detail__content {
 .article-detail__owner-actions { margin-left: auto; display: flex; gap: 8px; }
 
 .article-detail__cover { margin: 32px auto; max-width: 980px; padding: 0 24px; }
-.article-detail__cover img { width: 100%; border-radius: var(--icue-radius); box-shadow: var(--icue-shadow-md); }
+.article-detail__cover-lens {
+  border-radius: var(--icue-radius);
+  box-shadow: var(--icue-shadow-md);
+  height: auto;
+  aspect-ratio: auto;
+}
+.article-detail__cover img {
+  width: 100%;
+  display: block;
+  border-radius: var(--icue-radius);
+}
 
 .article-detail__content {
   margin-top: 36px;
