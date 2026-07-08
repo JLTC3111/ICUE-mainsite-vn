@@ -63,15 +63,22 @@ function measureWidths(el, texts) {
 /**
  * Magic UI Dia Text Reveal
  * @see https://magicui.design/docs/components/dia-text-reveal
+ *
+ * @param {number} duration - Seconds for the color band to sweep across the text.
+ * @param {number} delay - Seconds to wait before the band starts moving.
+ * @param {boolean} repeat - Re-run the sweep after each pass (loops single text or cycles multi-text).
+ * @param {boolean} loop - Alias for `repeat`.
+ * @param {number} repeatDelay - Seconds to pause after a sweep finishes before the next one.
  */
 export function DiaTextReveal({
   text,
   colors = DEFAULT_COLORS,
   textColor = '#0f172a',
-  duration = 1.5,
-  delay = 0,
+  duration = 2.5,
+  delay = 0.35,
   repeat = false,
-  repeatDelay = 0.5,
+  loop = false,
+  repeatDelay = 4,
   startOnView = true,
   once = true,
   className = '',
@@ -80,6 +87,7 @@ export function DiaTextReveal({
 }) {
   const texts = Array.isArray(text) ? text : [text]
   const isMulti = texts.length > 1
+  const shouldRepeat = repeat || loop
   const textKey = Array.isArray(text) ? text.join('\0') : text
   const prefersReducedMotion = useReducedMotion()
 
@@ -89,7 +97,7 @@ export function DiaTextReveal({
     textColor,
     duration,
     delay,
-    repeat,
+    repeat: shouldRepeat,
     repeatDelay,
     texts,
   })
@@ -98,7 +106,7 @@ export function DiaTextReveal({
     textColor,
     duration,
     delay,
-    repeat,
+    repeat: shouldRepeat,
     repeatDelay,
     texts,
   }
@@ -137,9 +145,11 @@ export function DiaTextReveal({
       onComplete() {
         if (!opts.repeat) return
         timerRef.current = setTimeout(() => {
-          const next = (indexRef.current + 1) % opts.texts.length
-          indexRef.current = next
-          setActiveIndex(next)
+          if (opts.texts.length > 1) {
+            const next = (indexRef.current + 1) % opts.texts.length
+            indexRef.current = next
+            setActiveIndex(next)
+          }
           playRef.current()
         }, opts.repeatDelay * 1000)
       },

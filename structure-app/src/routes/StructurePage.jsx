@@ -84,8 +84,10 @@ export default function StructurePage() {
                   text={t('instituteName')}
                   textColor="#0f172a"
                   colors={['#368adf', '#2821a8', '#8ec5ff', '#c679c4', '#0358f7']}
-                  duration={1.8}
-                  delay={0.15}
+                  duration={3}
+                  delay={0.5}
+                  loop
+                  repeatDelay={5}
                   className="structure-header__reveal"
                 />
               </h1>
