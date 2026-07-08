@@ -1,0 +1,100 @@
+{
+  "brandBadge": "組織",
+  "instituteName": "建設経済・都市計画研究所",
+  "tagline": "未来のためのテクノロジー",
+  "meta": {
+    "title": "ICUE — 組織構造",
+    "description": "ICUE — 組織図、部署、法務ドキュメント"
+  },
+  "nav": {
+    "home": "ホーム",
+    "people": "人材",
+    "mainAria": "ICUE — ホームへ",
+    "mainNav": "メインナビゲーション"
+  },
+  "drawer": {
+    "menu": "メニュー",
+    "home": "ホーム",
+    "org": "組織構造",
+    "work": "私たちの仕事",
+    "projects": "研究・プロジェクト",
+    "newsEvents": "ニュース・イベント",
+    "about": "私たちについて",
+    "people": "人材",
+    "experts": "専門家",
+    "coreTeam": "コアスタッフ"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "受賞歴",
+    "community": "コミュニティ活動",
+    "news": "ニュース",
+    "archive": "アーカイブ",
+    "faqs": "FAQ",
+    "recruitment": "採用",
+    "donations": "寄付",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "パートナーになる",
+    "rights": "著作権はICUEに帰属します。"
+  },
+  "tabs": {
+    "groupAria": "構造セクション",
+    "orgChart": "組織図",
+    "departments": "部署",
+    "documents": "法務ドキュメント"
+  },
+  "orgChart": {
+    "title": "組織図"
+  },
+  "departments": {
+    "title": "部署",
+    "head": "部門長",
+    "contact": "連絡先",
+    "items": {
+      "digital": {
+        "name": "デジタル技術・国際協力",
+        "description": "革新的なソフトウェアソリューションを構築し、技術インフラを維持します。"
+      },
+      "architecture": {
+        "name": "建築・計画・都市開発センター",
+        "description": "クライアントのアイデアを精密な技術図面に落とし込み、納品まで伴走します。"
+      },
+      "planning": {
+        "name": "企画・入札",
+        "description": "顧客関係を築き、収益成長を推進します。"
+      },
+      "finance": {
+        "name": "財務・会計",
+        "description": "財務計画、分析、コンプライアンスを管理します。"
+      },
+      "hr": {
+        "name": "人事",
+        "description": "採用、育成、従業員関係を通じてチームを支えます。"
+      },
+      "office": {
+        "name": "総務",
+        "description": "日常業務を管理し、ワークフローを最適化します。"
+      }
+    }
+  },
+  "documents": {
+    "title": "コンプライアンス・法務・福利厚生",
+    "searchPlaceholder": "ドキュメントを検索...",
+    "searchAria": "ドキュメントを検索",
+    "empty": "一致するドキュメントがありません。",
+    "categories": {
+      "policies": "内部規程",
+      "legal": "法的証明書",
+      "benefits": "福利厚生・報酬",
+      "compliance": "コンプライアンス"
+    }
+  },
+  "modal": {
+    "close": "閉じる"
+  },
+  "language": "言語"
+}

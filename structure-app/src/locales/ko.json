@@ -1,0 +1,100 @@
+{
+  "brandBadge": "조직",
+  "instituteName": "건설경제·도시계획연구소",
+  "tagline": "미래를 위한 기술",
+  "meta": {
+    "title": "ICUE — 조직 구조",
+    "description": "ICUE — 조직도, 부서 및 법적 문서"
+  },
+  "nav": {
+    "home": "홈",
+    "people": "인력",
+    "mainAria": "ICUE — 홈으로",
+    "mainNav": "주요 탐색"
+  },
+  "drawer": {
+    "menu": "메뉴",
+    "home": "홈",
+    "org": "조직 구조",
+    "work": "업무",
+    "projects": "연구·프로젝트",
+    "newsEvents": "뉴스·이벤트",
+    "about": "소개",
+    "people": "인력",
+    "experts": "전문가",
+    "coreTeam": "핵심 인력"
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "기타 페이지",
+    "awards": "수상 실적",
+    "community": "커뮤니티 활동",
+    "news": "뉴스",
+    "archive": "뉴스 아카이브",
+    "faqs": "FAQ",
+    "recruitment": "채용",
+    "donations": "기부",
+    "privacy": "개인정보",
+    "terms": "약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "파트너십 문의",
+    "rights": "저작권은 ICUE에 있습니다."
+  },
+  "tabs": {
+    "groupAria": "구조 섹션",
+    "orgChart": "조직도",
+    "departments": "부서",
+    "documents": "법적 문서"
+  },
+  "orgChart": {
+    "title": "조직도"
+  },
+  "departments": {
+    "title": "부서",
+    "head": "부서장",
+    "contact": "문의",
+    "items": {
+      "digital": {
+        "name": "디지털 기술 및 국제 협력",
+        "description": "혁신적인 소프트웨어 솔루션을 구축하고 기술 인프라를 유지합니다."
+      },
+      "architecture": {
+        "name": "건축·계획 및 도시개발 센터",
+        "description": "고객의 아이디어를 정확한 기술 도면으로 구현하고 전달까지 함께합니다."
+      },
+      "planning": {
+        "name": "기획 및 입찰",
+        "description": "고객 관계를 구축하고 매출 성장을 촉진합니다."
+      },
+      "finance": {
+        "name": "재무·회계",
+        "description": "재무 계획, 분석 및 컴플라이언스를 관리합니다."
+      },
+      "hr": {
+        "name": "인사",
+        "description": "채용, 육성 및 직원 관계를 통해 팀을 지원합니다."
+      },
+      "office": {
+        "name": "사무 행정",
+        "description": "일상 운영을 관리하고 업무 흐름을 최적화합니다."
+      }
+    }
+  },
+  "documents": {
+    "title": "컴플라이언스·법무·복리후생",
+    "searchPlaceholder": "문서 검색...",
+    "searchAria": "문서 검색",
+    "empty": "일치하는 문서가 없습니다.",
+    "categories": {
+      "policies": "내부 규정",
+      "legal": "법적 증서",
+      "benefits": "복리후생 및 보상",
+      "compliance": "컴플라이언스"
+    }
+  },
+  "modal": {
+    "close": "닫기"
+  },
+  "language": "언어"
+}

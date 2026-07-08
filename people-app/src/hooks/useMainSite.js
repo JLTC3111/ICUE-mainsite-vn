@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { getMainSiteBase, mainSiteLink, newsroomLink } from '../lib/siteOrigin'
+import { getMainSiteBase, mainSiteLink, newsroomLink, structureSiteLink } from '../lib/siteOrigin'
 
 export function useMainSite() {
   const { i18n } = useTranslation()
@@ -10,5 +10,6 @@ export function useMainSite() {
     base,
     hashLink: (page) => mainSiteLink(page, lang),
     newsroomHref: newsroomLink(lang),
+    structureLink: (path = '') => structureSiteLink(path),
   }
 }

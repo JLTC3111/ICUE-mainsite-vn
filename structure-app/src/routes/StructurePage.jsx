@@ -1,23 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { orgProfiles, orgChartLevels, findProfile } from '../data/orgProfiles'
 import { departments } from '../data/departments'
 import { documentCategories, downloadDocument } from '../data/documents'
+import PageShell from '../components/PageShell'
 import OrgChart from '../components/OrgChart'
 import DepartmentsGrid from '../components/DepartmentsGrid'
 import LegalDocuments from '../components/LegalDocuments'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
 
-const TABS = [
-  { id: 'org-chart', label: 'Cơ Cấu' },
-  { id: 'departments', label: 'Phòng Ban' },
-  { id: 'documents', label: 'Tài Liệu Pháp Lý' },
+const TAB_IDS = [
+  { id: 'org-chart', labelKey: 'tabs.orgChart' },
+  { id: 'departments', labelKey: 'tabs.departments' },
+  { id: 'documents', labelKey: 'tabs.documents' },
 ]
 
 export default function StructurePage() {
+  const { t, i18n } = useTranslation()
   const [activeTab, setActiveTab] = useState('org-chart')
   const [selectedProfile, setSelectedProfile] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    document.title = t('meta.title')
+  }, [t, i18n.language])
 
   const profileById = useMemo(() => {
     const map = new Map()
@@ -49,62 +56,62 @@ export default function StructurePage() {
   }
 
   return (
-    <div className="structure-page">
-      <div className="structure-container">
-        <header className="structure-header">
-          <h1>Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị</h1>
-          <h3>Công Nghệ cho Tương Lai</h3>
-        </header>
+    <PageShell>
+      <div className="structure-page">
+        <div className="structure-container">
+          <header className="structure-header">
+            <h1>{t('instituteName')}</h1>
+            <h3>{t('tagline')}</h3>
+          </header>
 
-        <div className="structure-content-wrapper">
-          <div className="structure-tabs" role="tablist">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={activeTab === tab.id}
-                className={`structure-tab${activeTab === tab.id ? ' active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
+          <div className="structure-content-wrapper">
+            <div className="structure-tabs" role="tablist" aria-label={t('tabs.groupAria')}>
+              {TAB_IDS.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === tab.id}
+                  className={`structure-tab${activeTab === tab.id ? ' active' : ''}`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {t(tab.labelKey)}
+                </button>
+              ))}
+            </div>
+
+            {activeTab === 'org-chart' && (
+              <section className="structure-tab-content active" role="tabpanel">
+                <h2 className="structure-section-title structure-section-title--underline">
+                  {t('orgChart.title')}
+                </h2>
+                <OrgChart levels={levels} onSelectPerson={openProfile} />
+              </section>
+            )}
+
+            {activeTab === 'departments' && (
+              <section className="structure-tab-content active" role="tabpanel">
+                <h2 className="structure-section-title">{t('departments.title')}</h2>
+                <DepartmentsGrid departments={departmentCards} />
+              </section>
+            )}
+
+            {activeTab === 'documents' && (
+              <section className="structure-tab-content active" role="tabpanel">
+                <h2 className="structure-section-title">{t('documents.title')}</h2>
+                <LegalDocuments
+                  categories={documentCategories}
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
+                  onDownload={downloadDocument}
+                />
+              </section>
+            )}
           </div>
-
-          {activeTab === 'org-chart' && (
-            <section className="structure-tab-content active" role="tabpanel">
-              <h2 className="structure-section-title structure-section-title--underline">
-                Sơ Đồ Nhân Sự
-              </h2>
-              <OrgChart levels={levels} onSelectPerson={openProfile} />
-            </section>
-          )}
-
-          {activeTab === 'departments' && (
-            <section className="structure-tab-content active" role="tabpanel">
-              <h2 className="structure-section-title">Các Phòng Ban</h2>
-              <DepartmentsGrid departments={departmentCards} />
-            </section>
-          )}
-
-          {activeTab === 'documents' && (
-            <section className="structure-tab-content active" role="tabpanel">
-              <h2 className="structure-section-title">
-                Tuân Thủ, Pháp Lý & Cơ Chế, Phúc Lợi
-              </h2>
-              <LegalDocuments
-                categories={documentCategories}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                onDownload={downloadDocument}
-              />
-            </section>
-          )}
         </div>
-      </div>
 
-      <ProfileModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
-    </div>
+        <ProfileModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
+      </div>
+    </PageShell>
   )
 }

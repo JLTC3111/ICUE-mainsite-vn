@@ -22,7 +22,7 @@ export default function useDrawerResize(drawerRef, handleRef, enabled = true) {
     if (!drawer || !handle || !enabled) return;
 
     const path = window.location.pathname || '';
-    if (path.startsWith('/newsroom') || path.startsWith('/people')) return;
+    if (path.startsWith('/newsroom') || path.startsWith('/people') || path.startsWith('/structure')) return;
 
     const desktopQuery = window.matchMedia('(min-width: 1441px)');
 

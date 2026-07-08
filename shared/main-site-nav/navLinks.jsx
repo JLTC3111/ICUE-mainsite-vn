@@ -52,7 +52,7 @@ const IconArrow = () => (
 
 export const DRAWER_LINKS = [
   { page: 'Home', href: '#/Home', label: 'Trang Chủ', icon: IconHome, closeOnly: true },
-  { page: 'orgStructure', href: '#/orgStructure', label: 'Cơ Cấu & Tổ Chức', icon: IconOrg, closeOnly: true },
+  { page: 'orgStructure', href: '/structure/', label: 'Cơ Cấu & Tổ Chức', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '#/ourWork', label: 'Công Việc', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '#/pastProjects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },

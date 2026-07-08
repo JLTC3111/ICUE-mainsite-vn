@@ -55,6 +55,7 @@ function pageFromPathname(pathname) {
     if (pathSegments.includes('core-team')) return 'coreTeam';
     if (pathSegments.includes('experts')) return 'meetOurExperts';
   }
+  if (pathSegments[0] === 'structure') return 'orgStructure';
 
   let pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
   if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
@@ -93,7 +94,7 @@ export function getCurrentPage() {
 }
 
 export function syncHashForPage(page) {
-  if (!page || page === 'meetOurExperts' || page === 'coreTeam') return;
+  if (!page || page === 'meetOurExperts' || page === 'coreTeam' || page === 'orgStructure') return;
   const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
   if (window.location.hash === targetHash) return;
   const url = `${window.location.pathname}${window.location.search}${targetHash}`;
@@ -147,6 +148,8 @@ export function buildLanguageSwitchTarget() {
     targetPath = '/people/experts';
   } else if (targetPageName === 'coreTeam') {
     targetPath = '/people/core-team';
+  } else if (targetPageName === 'orgStructure') {
+    targetPath = '/structure/';
   } else if (STATIC_PAGES.includes(targetPageName)) {
     targetPath = `#/${targetPageName}`;
   } else {

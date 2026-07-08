@@ -67,6 +67,12 @@ export function peopleSiteLink(path) {
   return `${SITES.vi}/people/${path}`
 }
 
+/** Structure app lives only on icue.vn — not on en.icue.vn. */
+export function structureSiteLink(path = '') {
+  const suffix = path ? `/${String(path).replace(/^\//, '')}` : '/'
+  return `${SITES.vi}/structure${suffix === '/' ? '/' : suffix}`
+}
+
 export function newsroomLink(siteLang) {
   return siteLang === 'vi' ? '/newsroom/' : '/newsroom/?from=en-news'
 }

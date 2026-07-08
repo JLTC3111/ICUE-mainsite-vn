@@ -1,5 +1,7 @@
 .shiny-button {
-  --primary: #ffffff;
+  --primary: #7ec8ff;
+  --shine-soft: rgba(126, 200, 255, 0.22);
+  --shine-peak: rgba(29, 183, 255, 0.7);
   --x: 100%;
   position: relative;
   display: inline-flex;
@@ -62,9 +64,9 @@
   -webkit-mask: linear-gradient(#000, #000) content-box exclude, linear-gradient(#000, #000);
   background-image: linear-gradient(
     -75deg,
-    rgba(54, 138, 223, 0.12) calc(var(--x) + 20%),
-    rgba(54, 138, 223, 0.55) calc(var(--x) + 25%),
-    rgba(54, 138, 223, 0.12) calc(var(--x) + 100%)
+    var(--shine-soft) calc(var(--x) + 20%),
+    var(--shine-peak) calc(var(--x) + 25%),
+    var(--shine-soft) calc(var(--x) + 100%)
   );
 }
 

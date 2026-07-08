@@ -1398,7 +1398,7 @@ const ensureModelViewerLoaded = () => {
 };
 
 function syncHashForPage(page) {
-  if (!page || page === 'meetOurExperts' || page === 'coreTeam') return;
+  if (!page || page === 'meetOurExperts' || page === 'coreTeam' || page === 'orgStructure') return;
   const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
   if (window.location.hash === targetHash) return;
   const url = `${window.location.pathname}${window.location.search}${targetHash}`;
@@ -1415,6 +1415,10 @@ window.loadPage = (page) => {
   }
   if (page === 'coreTeam') {
     window.location.replace('/people/core-team');
+    return;
+  }
+  if (page === 'orgStructure') {
+    window.location.replace('/structure/');
     return;
   }
 
@@ -2284,7 +2288,7 @@ window.initMainDrawerResize = () => {
   if (!drawer || !handle) return;
 
   const path = window.location.pathname || '';
-  if (path.startsWith('/newsroom') || path.startsWith('/people')) return;
+  if (path.startsWith('/newsroom') || path.startsWith('/people') || path.startsWith('/structure')) return;
 
   const STORAGE_KEY = 'icue_main_drawer_width';
   const MIN_WIDTH = 140;
@@ -4981,6 +4985,12 @@ document.addEventListener("DOMContentLoaded", function() {
       if (currentPath && currentPath !== '/') {
         const pathSegments = currentPath.split('/').filter(segment => segment);
         if (pathSegments.length > 0) {
+          if (pathSegments[0] === 'people') {
+            if (pathSegments.includes('core-team')) return 'coreTeam';
+            if (pathSegments.includes('experts')) return 'meetOurExperts';
+          }
+          if (pathSegments[0] === 'structure') return 'orgStructure';
+
           let pathPage = pathSegments[pathSegments.length - 1];
           // Remove .html extension if present
           pathPage = pathPage.replace('.html', '');
@@ -5121,6 +5131,9 @@ document.addEventListener("DOMContentLoaded", function() {
     } else if (targetPageName === 'coreTeam') {
       targetPath = '/people/core-team';
       console.log('🔧 [DEBUG] People core team page - path:', targetPath);
+    } else if (targetPageName === 'orgStructure') {
+      targetPath = '/structure/';
+      console.log('🔧 [DEBUG] Structure page - path:', targetPath);
     } else if (staticPages.includes(targetPageName)) {
       // Use hash-based routing for static pages too
       targetPath = `#/${targetPageName}`;

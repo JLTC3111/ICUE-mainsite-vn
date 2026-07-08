@@ -1,0 +1,100 @@
+{
+  "brandBadge": "Cơ Cấu",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "tagline": "Công Nghệ cho Tương Lai",
+  "meta": {
+    "title": "ICUE — Cơ Cấu Tổ Chức",
+    "description": "ICUE — Cơ cấu tổ chức, phòng ban và tài liệu pháp lý"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "people": "Nhân lực",
+    "mainAria": "ICUE — về trang chủ",
+    "mainNav": "Điều hướng chính"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Trang Chủ",
+    "org": "Cơ Cấu & Tổ Chức",
+    "work": "Công Việc",
+    "projects": "Đề Tài, Dự Án",
+    "newsEvents": "Tin Tức & Sự Kiện",
+    "about": "Về Chúng Tôi",
+    "people": "Nhân Lực",
+    "experts": "Chuyên Gia",
+    "coreTeam": "Cán Bộ"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "community": "Hoạt Động Cộng Đồng",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "donations": "Quyên Góp",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  },
+  "tabs": {
+    "groupAria": "Các phần cơ cấu",
+    "orgChart": "Cơ Cấu",
+    "departments": "Phòng Ban",
+    "documents": "Tài Liệu Pháp Lý"
+  },
+  "orgChart": {
+    "title": "Sơ Đồ Nhân Sự"
+  },
+  "departments": {
+    "title": "Các Phòng Ban",
+    "head": "Trưởng Phòng",
+    "contact": "Liên Hệ",
+    "items": {
+      "digital": {
+        "name": "Phòng Công Nghệ Số & Hợp Tác Quốc Tế",
+        "description": "Xây dựng các giải pháp phần mềm đổi mới và duy trì cơ sở hạ tầng công nghệ."
+      },
+      "architecture": {
+        "name": "Trung Tâm Tư Vấn, Quy Hoạch Kiến Trúc và PTĐT",
+        "description": "Biến ý tưởng của khách thành bản vẽ kỹ thuật chuẩn chỉnh, đảm bảo trên giấy đúng như mong muốn – và giữ liên lạc đến với khách hàng."
+      },
+      "planning": {
+        "name": "Phòng Kế Hoạch & Đấu Thầu",
+        "description": "Xây dựng mối quan hệ với khách hàng và thúc đẩy tăng trưởng doanh thu."
+      },
+      "finance": {
+        "name": "Phòng Tài Chính Kế Toán",
+        "description": "Quản lý lập kế hoạch, phân tích tài chính và tuân thủ."
+      },
+      "hr": {
+        "name": "Nhân Sự",
+        "description": "Hỗ trợ đội ngũ, phụ trách việc tuyển dụng, phát triển và quan hệ nhân viên."
+      },
+      "office": {
+        "name": "Khối Văn Phòng",
+        "description": "Quản lý hoạt động công việc hàng ngày và tối ưu hóa quy trình."
+      }
+    }
+  },
+  "documents": {
+    "title": "Tuân Thủ, Pháp Lý & Cơ Chế, Phúc Lợi",
+    "searchPlaceholder": "Tìm Kiếm Văn Bản...",
+    "searchAria": "Tìm kiếm văn bản",
+    "empty": "Không tìm thấy văn bản phù hợp.",
+    "categories": {
+      "policies": "Quy Chế Nội Bộ",
+      "legal": "Chứng Chỉ Pháp Lý",
+      "benefits": "Phúc Lợi & Bồi Thường",
+      "compliance": "Tuân Thủ"
+    }
+  },
+  "modal": {
+    "close": "Đóng"
+  },
+  "language": "Ngôn ngữ"
+}

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { getMainSiteBase, mainSiteLink, peopleSiteLink } from '../lib/siteOrigin'
+import { getMainSiteBase, mainSiteLink, peopleSiteLink, structureSiteLink } from '../lib/siteOrigin'
 
 /** Map UI language to the Vietnamese or English main-site origin. */
 function siteLangFromUi(uiLang) {
@@ -17,6 +17,7 @@ export function useMainSite() {
     siteLang,
     hashLink: (page) => mainSiteLink(page, siteLang),
     peopleLink: (path) => peopleSiteLink(path),
+    structureLink: (path = '') => structureSiteLink(path),
     archiveLink: () => `${base}/#/News`,
   }
 }

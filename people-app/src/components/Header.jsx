@@ -7,7 +7,7 @@ import './Header.css'
 
 function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
   const { t } = useTranslation()
-  const { base, hashLink } = useMainSite()
+  const { base, hashLink, structureLink } = useMainSite()
 
   return (
     <header className="people-header">
@@ -21,7 +21,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle })
 
         <nav className="people-header__nav" aria-label={t('nav.mainNav')}>
           <a href={hashLink('Home')} className="people-header__link">{t('nav.home')}</a>
-          <a href={hashLink('orgStructure')} className="people-header__link">{t('nav.org')}</a>
+          <a href={structureLink()} className="people-header__link">{t('nav.org')}</a>
           <LanguageSwitcher />
           {showBackgroundToggle && (
             <button

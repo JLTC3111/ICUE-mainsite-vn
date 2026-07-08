@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export default function LegalDocuments({
   categories,
@@ -6,10 +7,21 @@ export default function LegalDocuments({
   onSearchChange,
   onDownload,
 }) {
+  const { t } = useTranslation()
+
+  const localized = useMemo(
+    () =>
+      categories.map((category) => ({
+        ...category,
+        title: t(`documents.categories.${category.id}`),
+      })),
+    [categories, t],
+  )
+
   const filtered = useMemo(() => {
     const q = searchTerm.trim().toLowerCase()
-    if (!q) return categories
-    return categories
+    if (!q) return localized
+    return localized
       .map((category) => ({
         ...category,
         documents: category.documents.filter((doc) =>
@@ -17,17 +29,17 @@ export default function LegalDocuments({
         ),
       }))
       .filter((category) => category.documents.length > 0)
-  }, [categories, searchTerm])
+  }, [localized, searchTerm])
 
   return (
     <>
       <input
         type="search"
         className="search-bar"
-        placeholder="Tìm Kiếm Văn Bản..."
+        placeholder={t('documents.searchPlaceholder')}
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
-        aria-label="Tìm kiếm văn bản"
+        aria-label={t('documents.searchAria')}
       />
       <div className="documents-section">
         {filtered.map((category) => (
@@ -50,7 +62,7 @@ export default function LegalDocuments({
           </div>
         ))}
         {filtered.length === 0 && (
-          <p className="documents-empty">Không tìm thấy văn bản phù hợp.</p>
+          <p className="documents-empty">{t('documents.empty')}</p>
         )}
       </div>
     </>

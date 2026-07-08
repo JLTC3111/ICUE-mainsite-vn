@@ -1,0 +1,11 @@
+.animated-beam {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateZ(0);
+}
+
+.animated-beam__gradient {
+  transform: translateZ(0);
+}

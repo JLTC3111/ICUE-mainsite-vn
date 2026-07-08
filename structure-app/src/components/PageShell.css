@@ -1,0 +1,25 @@
+.page-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-shell__main {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+}
+
+.page-shell__site-footer {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.page-shell .contact-sidebar__music svg,
+.page-shell .contact-sidebar__music svg path {
+  fill: #000;
+  color: #000;
+}

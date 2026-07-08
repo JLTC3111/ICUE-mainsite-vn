@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export default function ProfileModal({ profile, onClose }) {
+  const { t } = useTranslation()
+
   useEffect(() => {
     if (!profile) return undefined
     function onKey(e) {
@@ -31,7 +34,7 @@ export default function ProfileModal({ profile, onClose }) {
           type="button"
           className="profile-modal-close"
           onClick={onClose}
-          aria-label="Đóng"
+          aria-label={t('modal.close')}
         >
           &times;
         </button>

@@ -1,39 +1,16 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body,
-#root {
-  min-height: 100%;
-}
-
-body {
-  font-family: Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #0f172a;
-}
-
 .structure-page {
-  min-height: 100vh;
+  width: 100%;
 }
 
 .structure-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 20px 48px;
 }
 
 .structure-header {
   text-align: center;
-  margin: 90px 0 40px;
+  margin: 24px 0 40px;
   padding: 40px 20px;
   background: transparent;
   border-radius: 20px;
@@ -130,13 +107,17 @@ body {
 }
 
 .org-chart {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  overflow: visible;
 }
 
 .org-level {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   gap: 30px;
@@ -144,7 +125,9 @@ body {
 }
 
 .person-card {
-  background: transparent;
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);
   color: rgb(0, 0, 0);
   padding: 30px 25px;
   border-radius: 20px;
@@ -155,6 +138,13 @@ body {
   cursor: pointer;
   border: 0.5px solid #6f6f6f;
   font-family: inherit;
+}
+
+.person-card--hub {
+  border-color: #368adf;
+  box-shadow:
+    0 0 0 2px rgba(54, 138, 223, 0.25),
+    0 12px 28px -8px rgba(54, 138, 223, 0.45);
 }
 
 .person-card:hover {
@@ -439,8 +429,7 @@ body {
 
 @media (max-width: 768px) {
   .structure-container {
-    margin-top: 40px;
-    padding: 15px;
+    padding: 16px 15px 40px;
   }
 
   .structure-tabs {
@@ -452,8 +441,8 @@ body {
   }
 
   .structure-header {
-    margin: 20px 0 30px;
-    padding: 30px 20px;
+    margin: 12px 0 24px;
+    padding: 28px 16px;
     box-shadow: none;
   }
 

@@ -1,0 +1,100 @@
+{
+  "brandBadge": "Struktur",
+  "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "tagline": "Technologie für die Zukunft",
+  "meta": {
+    "title": "ICUE — Organisation & Struktur",
+    "description": "ICUE — Organigramm, Abteilungen und Rechtsdokumente"
+  },
+  "nav": {
+    "home": "Startseite",
+    "people": "Unser Team",
+    "mainAria": "ICUE — zur Startseite",
+    "mainNav": "Hauptnavigation"
+  },
+  "drawer": {
+    "menu": "Menü",
+    "home": "Startseite",
+    "org": "Organisation & Struktur",
+    "work": "Unsere Arbeit",
+    "projects": "Forschung & Projekte",
+    "newsEvents": "News & Veranstaltungen",
+    "about": "Über uns",
+    "people": "Unser Team",
+    "experts": "Unsere Experten",
+    "coreTeam": "Kernteam"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "community": "Gemeinschaftsaktivitäten",
+    "news": "Aktuelles",
+    "archive": "Archiv",
+    "faqs": "FAQ",
+    "recruitment": "Karriere",
+    "donations": "Spenden",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Partner werden",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  },
+  "tabs": {
+    "groupAria": "Strukturbereiche",
+    "orgChart": "Organigramm",
+    "departments": "Abteilungen",
+    "documents": "Rechtsdokumente"
+  },
+  "orgChart": {
+    "title": "Organigramm"
+  },
+  "departments": {
+    "title": "Abteilungen",
+    "head": "Abteilungsleitung",
+    "contact": "Kontakt",
+    "items": {
+      "digital": {
+        "name": "Digitale Technologie & Internationale Kooperation",
+        "description": "Entwicklung innovativer Softwarelösungen und Wartung der Technologieinfrastruktur."
+      },
+      "architecture": {
+        "name": "Zentrum für Architektur, Planung & Stadtentwicklung",
+        "description": "Kundenideen in präzise technische Zeichnungen verwandeln — und nah am Auftrag bleiben."
+      },
+      "planning": {
+        "name": "Planung & Ausschreibung",
+        "description": "Kundenbeziehungen aufbauen und Umsatzwachstum fördern."
+      },
+      "finance": {
+        "name": "Finanzen & Buchhaltung",
+        "description": "Finanzplanung, Analyse und Compliance steuern."
+      },
+      "hr": {
+        "name": "Personalwesen",
+        "description": "Unterstützung des Teams bei Einstellung, Entwicklung und Mitarbeiterbeziehungen."
+      },
+      "office": {
+        "name": "Büroorganisation",
+        "description": "Tägliche Abläufe verwalten und Prozesse optimieren."
+      }
+    }
+  },
+  "documents": {
+    "title": "Compliance, Recht & Leistungen",
+    "searchPlaceholder": "Dokumente suchen...",
+    "searchAria": "Dokumente suchen",
+    "empty": "Keine passenden Dokumente gefunden.",
+    "categories": {
+      "policies": "Interne Richtlinien",
+      "legal": "Rechtszertifikate",
+      "benefits": "Leistungen & Vergütung",
+      "compliance": "Compliance"
+    }
+  },
+  "modal": {
+    "close": "Schließen"
+  },
+  "language": "Sprache"
+}

@@ -1,0 +1,100 @@
+{
+  "brandBadge": "Structure",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "tagline": "Technology for the Future",
+  "meta": {
+    "title": "ICUE — Organization & Structure",
+    "description": "ICUE — Organization chart, departments, and legal documents"
+  },
+  "nav": {
+    "home": "Home",
+    "people": "Our People",
+    "mainAria": "ICUE — back to home",
+    "mainNav": "Main navigation"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "home": "Home",
+    "org": "Organization & Structure",
+    "work": "Our Work",
+    "projects": "Research & Projects",
+    "newsEvents": "News & Events",
+    "about": "About Us",
+    "people": "Our People",
+    "experts": "Our Experts",
+    "coreTeam": "Core Team"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "community": "Community Activities",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "donations": "Donations",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
+  },
+  "tabs": {
+    "groupAria": "Structure sections",
+    "orgChart": "Org Chart",
+    "departments": "Departments",
+    "documents": "Legal Documents"
+  },
+  "orgChart": {
+    "title": "Organizational Chart"
+  },
+  "departments": {
+    "title": "Departments",
+    "head": "Department Head",
+    "contact": "Contact",
+    "items": {
+      "digital": {
+        "name": "Digital Technology & International Cooperation",
+        "description": "Building innovative software solutions and maintaining technology infrastructure."
+      },
+      "architecture": {
+        "name": "Architecture, Planning & Urban Development Center",
+        "description": "Turning client ideas into precise technical drawings — and staying close through delivery."
+      },
+      "planning": {
+        "name": "Planning & Bidding",
+        "description": "Building client relationships and driving revenue growth."
+      },
+      "finance": {
+        "name": "Finance & Accounting",
+        "description": "Managing financial planning, analysis, and compliance."
+      },
+      "hr": {
+        "name": "Human Resources",
+        "description": "Supporting the team through recruitment, development, and employee relations."
+      },
+      "office": {
+        "name": "Office Administration",
+        "description": "Managing day-to-day operations and optimizing workflows."
+      }
+    }
+  },
+  "documents": {
+    "title": "Compliance, Legal & Benefits",
+    "searchPlaceholder": "Search documents...",
+    "searchAria": "Search documents",
+    "empty": "No matching documents found.",
+    "categories": {
+      "policies": "Internal Policies",
+      "legal": "Legal Certificates",
+      "benefits": "Benefits & Compensation",
+      "compliance": "Compliance"
+    }
+  },
+  "modal": {
+    "close": "Close"
+  },
+  "language": "Language"
+}
