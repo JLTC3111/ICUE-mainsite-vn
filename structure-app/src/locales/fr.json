@@ -14,6 +14,7 @@
   },
   "drawer": {
     "menu": "Menu",
+    "close": "Fermer le menu",
     "home": "Accueil",
     "org": "Organisation & Structure",
     "work": "Notre travail",
