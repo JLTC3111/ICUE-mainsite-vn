@@ -78,7 +78,7 @@ export default function PageShell({
           <Footer />
         </div>
 
-        <ContactSidebar />
+        <ContactSidebar musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'} />
       </div>
     </InteractiveBackgroundProvider>
   )

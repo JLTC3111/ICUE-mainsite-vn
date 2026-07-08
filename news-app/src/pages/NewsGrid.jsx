@@ -60,9 +60,9 @@ export default function NewsGrid() {
               <RotatingText
                 texts={rotatingTags}
                 mainClassName="news-hero__rotating"
-                splitBy="characters"
-                rotationInterval={2800}
-                staggerDuration={0.025}
+                splitBy="words"
+                rotationInterval={3200}
+                staggerDuration={0.07}
                 staggerFrom="first"
                 auto={!reduceMotion}
               />

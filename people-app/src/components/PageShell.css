@@ -126,6 +126,12 @@
   color: #fff;
 }
 
+.page-shell:not(.page-shell--interactive-bg) .contact-sidebar__music svg,
+.page-shell:not(.page-shell--interactive-bg) .contact-sidebar__music svg path {
+  fill: #000;
+  color: #000;
+}
+
 @media (max-width: 640px) {
   .page-shell__main {
     padding: 24px 16px 48px;

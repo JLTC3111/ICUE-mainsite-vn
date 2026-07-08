@@ -27,15 +27,16 @@ function readBackground(el) {
 
 function pickIconColor(bgRgb) {
   const lum = luminance(bgRgb)
-  if (lum < 0.42) return '#c8ff00'
-  if (lum > 0.82) return '#111316'
-  return lum < 0.58 ? '#ffffff' : '#111316'
+  if (lum < 0.42) return '#ffffff'
+  if (lum > 0.82) return '#000000'
+  return lum < 0.58 ? '#ffffff' : '#000000'
 }
 
-export function useAdaptiveIconColor(ref) {
-  const [color, setColor] = useState('#111316')
+export function useAdaptiveIconColor(ref, enabled = true) {
+  const [color, setColor] = useState('#000000')
 
   const sample = useCallback(() => {
+    if (!enabled) return
     const el = ref.current
     if (!el) return
 
@@ -51,9 +52,10 @@ export function useAdaptiveIconColor(ref) {
 
     if (!target) return
     setColor(pickIconColor(readBackground(target)))
-  }, [ref])
+  }, [enabled, ref])
 
   useEffect(() => {
+    if (!enabled) return undefined
     sample()
     window.addEventListener('scroll', sample, { passive: true })
     window.addEventListener('resize', sample)
@@ -63,7 +65,7 @@ export function useAdaptiveIconColor(ref) {
       window.removeEventListener('resize', sample)
       window.clearInterval(id)
     }
-  }, [sample])
+  }, [enabled, sample])
 
   return color
 }

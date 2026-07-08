@@ -23,13 +23,19 @@
   overflow: hidden;
   font-size: clamp(18px, 3.2vw, 30px);
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #fff;
   min-height: 1.25em;
+  flex-wrap: wrap;
+  gap: 0.28em 0.42em;
 }
 .news-hero__rotating .text-rotate-word {
   overflow: hidden;
+  display: inline-flex;
+}
+.news-hero__rotating .text-rotate-element {
+  display: inline-block;
 }
 
 .news-hero__inner {
