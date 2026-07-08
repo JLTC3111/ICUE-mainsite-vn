@@ -2,7 +2,6 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow: hidden;
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -11,6 +10,7 @@
 
 .structure-site-header__rays {
   z-index: 0;
+  border-radius: inherit;
 }
 
 .structure-site-header__inner {
@@ -140,4 +140,8 @@
   .structure-site-header__tag {
     display: none;
   }
+}
+
+body.nav-drawer-open .structure-site-header {
+  z-index: 1220;
 }

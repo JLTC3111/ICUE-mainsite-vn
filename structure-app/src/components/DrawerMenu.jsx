@@ -1,4 +1,5 @@
 import { memo, useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useMainSite } from '../hooks/useMainSite'
 import './DrawerMenu.css'
@@ -35,8 +36,10 @@ function DrawerMenu() {
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
+    document.body.classList.toggle('nav-drawer-open', open)
     return () => {
       document.body.style.overflow = ''
+      document.body.classList.remove('nav-drawer-open')
     }
   }, [open])
 
@@ -52,14 +55,16 @@ function DrawerMenu() {
         <span /><span /><span />
       </button>
 
-      <div
-        className={`nav-drawer__overlay ${open ? 'is-open' : ''}`}
-        onClick={close}
-        aria-hidden="true"
-      />
+      {createPortal(
+        <>
+          <div
+            className={`nav-drawer__overlay ${open ? 'is-open' : ''}`}
+            onClick={close}
+            aria-hidden="true"
+          />
 
-      <aside className={`nav-drawer ${open ? 'is-open' : ''}`} aria-hidden={!open}>
-        <nav className="nav-drawer__links" aria-label="Site">
+          <aside className={`nav-drawer ${open ? 'is-open' : ''}`} aria-hidden={!open}>
+            <nav className="nav-drawer__links" aria-label="Site">
           <a href={hashLink('Home')} onClick={close}>
             <Icon><path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" /></Icon>
             {t('drawer.home')}
@@ -116,8 +121,11 @@ function DrawerMenu() {
               {t('drawer.coreTeam')}
             </a>
           </div>
-        </nav>
-      </aside>
+            </nav>
+          </aside>
+        </>,
+        document.body,
+      )}
     </>
   )
 }
