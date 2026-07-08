@@ -12,6 +12,7 @@ import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
+import ArticleTextReveal from '../components/TextReveal'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
@@ -148,9 +149,10 @@ export default function ArticleDetail() {
         </figure>
       )}
 
-      <div
+      <ArticleTextReveal
+        html={displayContent}
         className="article-detail__content icue-readw"
-        dangerouslySetInnerHTML={{ __html: displayContent }}
+        finishBy={0.4}
       />
 
       <MediaGallery images={images} videos={videos} />

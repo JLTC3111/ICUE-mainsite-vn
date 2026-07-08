@@ -1,0 +1,42 @@
+.text-reveal {
+  position: relative;
+  z-index: 0;
+  min-height: 200vh;
+}
+
+.text-reveal__sticky {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  min-height: 50vh;
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 5rem 1rem;
+}
+
+.text-reveal__copy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.28em;
+  margin: 0;
+  font-size: clamp(1.5rem, 2.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.text-reveal-content {
+  position: relative;
+}
+
+.text-reveal__word {
+  display: inline;
+  white-space: pre-wrap;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal__word {
+    opacity: 1 !important;
+  }
+}
