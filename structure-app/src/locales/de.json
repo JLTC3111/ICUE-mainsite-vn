@@ -166,5 +166,10 @@
   "modal": {
     "close": "Schließen"
   },
-  "language": "Sprache"
+  "language": "Sprache",
+  "taglines": [
+    "Technologie für die Zukunft",
+    "Shaping the Next Generation",
+    "Innovating Without Limits"
+  ]
 }

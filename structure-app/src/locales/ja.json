@@ -166,5 +166,10 @@
   "modal": {
     "close": "閉じる"
   },
-  "language": "言語"
+  "language": "言語",
+  "taglines": [
+    "未来のためのテクノロジー",
+    "Shaping the Next Generation",
+    "Innovating Without Limits"
+  ]
 }

@@ -166,5 +166,10 @@
   "modal": {
     "close": "닫기"
   },
-  "language": "언어"
+  "language": "언어",
+  "taglines": [
+    "미래를 위한 기술",
+    "Shaping the Next Generation",
+    "Innovating Without Limits"
+  ]
 }

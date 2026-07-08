@@ -1,7 +1,7 @@
 {
   "brandBadge": "Structure",
   "instituteName": "Institut d'économie de la construction et d'urbanisme",
-  "tagline": "La technologie pour l'avenir",
+  "tagline": "La technologie pour l’avenir",
   "meta": {
     "title": "ICUE — Organisation & Structure",
     "description": "ICUE — Organigramme, départements et documents juridiques"
@@ -166,5 +166,10 @@
   "modal": {
     "close": "Fermer"
   },
-  "language": "Langue"
+  "language": "Langue",
+  "taglines": [
+    "La technologie pour l’avenir",
+    "Shaping the Next Generation",
+    "Innovating Without Limits"
+  ]
 }

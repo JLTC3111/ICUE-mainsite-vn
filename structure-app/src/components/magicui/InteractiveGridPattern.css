@@ -1,0 +1,28 @@
+.interactive-grid-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  pointer-events: auto;
+}
+
+.interactive-grid-pattern__square {
+  stroke: rgba(148, 163, 184, 0.28);
+  fill: transparent;
+  transition: fill 1s ease-in-out;
+}
+
+.interactive-grid-pattern__square.is-hovered {
+  fill: rgba(54, 138, 223, 0.35);
+  transition-duration: 100ms;
+}
+
+.interactive-grid-pattern--hero {
+  inset: -20% 0 -30%;
+  height: 160%;
+  width: 100%;
+  transform: skewY(8deg);
+  mask-image: radial-gradient(420px circle at center, white, transparent);
+  -webkit-mask-image: radial-gradient(420px circle at center, white, transparent);
+}

@@ -1,0 +1,13 @@
+.word-rotate {
+  overflow: hidden;
+  padding: 0.35rem 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.word-rotate__word {
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+}

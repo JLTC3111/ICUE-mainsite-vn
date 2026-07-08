@@ -9,6 +9,9 @@ import DepartmentsGrid from '../components/DepartmentsGrid'
 import LegalDocuments from '../components/LegalDocuments'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
+import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
+import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
+import { WordRotate } from '../components/magicui/WordRotate'
 
 const TAB_IDS = [
   { id: 'org-chart', labelKey: 'tabs.orgChart' },
@@ -50,6 +53,11 @@ export default function StructurePage() {
     [],
   )
 
+  const taglines = useMemo(() => {
+    const words = t('taglines', { returnObjects: true })
+    return Array.isArray(words) ? words : [t('tagline')]
+  }, [t, i18n.language])
+
   function openProfile(query) {
     const profile = typeof query === 'object' ? query : findProfile(query)
     if (profile) setSelectedProfile(profile)
@@ -60,8 +68,30 @@ export default function StructurePage() {
       <div className="structure-page">
         <div className="structure-container">
           <header className="structure-header">
-            <h1>{t('instituteName')}</h1>
-            <h3>{t('tagline')}</h3>
+            <InteractiveGridPattern
+              className="interactive-grid-pattern--hero"
+              width={28}
+              height={28}
+              squares={[36, 22]}
+            />
+            <div className="structure-header__content">
+              <h1 className="structure-header__title">
+                <DiaTextReveal
+                  text={t('instituteName')}
+                  textColor="#0f172a"
+                  colors={['#368adf', '#2821a8', '#8ec5ff', '#c679c4', '#0358f7']}
+                  duration={1.8}
+                  delay={0.15}
+                  className="structure-header__reveal"
+                />
+              </h1>
+              <WordRotate
+                as="h3"
+                className="structure-header__subtitle"
+                duration={2800}
+                words={taglines}
+              />
+            </div>
           </header>
 
           <div className="structure-content-wrapper">

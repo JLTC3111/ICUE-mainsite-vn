@@ -166,5 +166,10 @@
   "modal": {
     "close": "Đóng"
   },
-  "language": "Ngôn ngữ"
+  "language": "Ngôn ngữ",
+  "taglines": [
+    "Công Nghệ cho Tương Lai",
+    "Shaping the Next Generation",
+    "Innovating Without Limits"
+  ]
 }
