@@ -61,12 +61,22 @@
 
 .media-gallery__item--lens:hover img { transform: none; }
 
+.media-gallery__item--lens {
+  cursor: zoom-in;
+}
+
 .media-gallery__lens {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border-radius: inherit;
+}
+
+.media-gallery__item--mobile {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  cursor: zoom-in;
 }
 
 .media-gallery__zoom {
@@ -98,11 +108,6 @@
 .media-gallery__mobile-swiper .swiper-pagination-bullet-active {
   background: var(--icue-ink);
   opacity: 1;
-}
-
-.media-gallery__item--mobile {
-  width: 100%;
-  aspect-ratio: 16 / 10;
 }
 
 /* Lightbox ------------------------------------------------------------ */

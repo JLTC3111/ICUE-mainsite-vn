@@ -45,10 +45,16 @@ html:lang(vi) .article-detail__content {
   height: auto;
   aspect-ratio: auto;
 }
+
+.article-detail__cover-lens.lens--disabled {
+  cursor: default;
+}
+
 .article-detail__cover img {
   width: 100%;
   display: block;
   border-radius: var(--icue-radius);
+  pointer-events: none;
 }
 
 .article-detail__content {

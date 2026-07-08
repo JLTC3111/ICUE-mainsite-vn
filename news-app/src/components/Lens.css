@@ -6,6 +6,10 @@
   height: 100%;
 }
 
+.lens:not(.lens--disabled) {
+  cursor: zoom-in;
+}
+
 .lens--disabled {
   overflow: visible;
 }
