@@ -1,0 +1,63 @@
+@keyframes retro-grid-scroll {
+  from {
+    transform: translateY(-50%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.retro-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: var(--retro-grid-opacity, 0.45);
+}
+
+.retro-grid__perspective {
+  position: absolute;
+  inset: 0;
+  perspective: 200px;
+}
+
+.retro-grid__plane {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(var(--retro-grid-angle, 65deg));
+}
+
+.retro-grid__scroll {
+  position: absolute;
+  inset: 0 0 0 0;
+  margin-left: -200%;
+  width: 600vw;
+  height: 300vh;
+  transform: translateY(-50%);
+  transform-origin: 100% 0 0;
+  background-image:
+    linear-gradient(to right, var(--retro-grid-line, rgba(255, 255, 255, 0.22)) 1px, transparent 0),
+    linear-gradient(to bottom, var(--retro-grid-line, rgba(255, 255, 255, 0.22)) 1px, transparent 0);
+  background-size: var(--retro-grid-cell, 60px) var(--retro-grid-cell, 60px);
+  background-repeat: repeat;
+  animation: retro-grid-scroll 15s linear infinite;
+}
+
+.retro-grid__scroll--static {
+  animation: none;
+  transform: translateY(-50%);
+}
+
+.retro-grid__fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #0a0a0a 0%, transparent 90%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-grid__scroll {
+    animation: none;
+    transform: translateY(-50%);
+  }
+}

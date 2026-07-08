@@ -106,6 +106,7 @@ function ContactSidebar({ musicIconColor }) {
           ref={musicRef}
           onClick={toggleMusic}
           aria-label="Toggle background music"
+          style={{ color: musicColor }}
         >
           <svg
             width="30"
@@ -113,7 +114,6 @@ function ContactSidebar({ musicIconColor }) {
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
-            style={{ color: musicColor }}
           >
             <path
               fill="currentColor"

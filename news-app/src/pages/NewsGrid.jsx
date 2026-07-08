@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
+import RetroGrid from '../components/RetroGrid'
 import ArticleMasonry from '../components/ArticleMasonry'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
@@ -53,6 +54,12 @@ export default function NewsGrid() {
   return (
     <div className="news-page">
       <header className="news-hero">
+        <RetroGrid
+          className="news-hero__grid"
+          lineColor="rgba(255, 255, 255, 0.2)"
+          opacity={0.5}
+          reduceMotion={reduceMotion}
+        />
         <div className="icue-container news-hero__inner">
           <div className="news-hero__text">
             <h1 className="news-hero__eyebrow">

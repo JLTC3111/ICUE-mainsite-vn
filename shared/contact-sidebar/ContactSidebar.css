@@ -67,7 +67,8 @@
   background-color: transparent;
   border: none;
   padding: 0;
-  transition: transform 0.12s ease;
+  color: #ffffff;
+  transition: transform 0.12s ease, color 0.2s ease;
 }
 
 .contact-sidebar__music:hover svg {
