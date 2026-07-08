@@ -19,6 +19,10 @@
 /people              /people/index.html   200
 /people/*            /people/index.html   200
 
+# Structure React app (history routing) lives at /structure.
+/structure           /structure/index.html   200
+/structure/*         /structure/index.html   200
+
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
 
