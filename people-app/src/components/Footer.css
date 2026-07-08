@@ -45,7 +45,7 @@
 .icue-footer__circular-text {
   width: 88px;
   height: 88px;
-  margin-top: 12px;
+  margin-bottom: 4px;
   flex-shrink: 0;
   color: var(--icue-accent-light);
 }
@@ -94,7 +94,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
   .icue-footer__institute { text-align: center; max-width: 90%; }
-  .icue-footer__circular-text { margin-top: 10px; }
+  .icue-footer__circular-text { margin-bottom: 2px; }
   .icue-footer__bottom {
     flex-direction: column;
     text-align: center;

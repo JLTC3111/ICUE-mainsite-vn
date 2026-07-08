@@ -48,7 +48,59 @@
     "documents": "Tài Liệu Pháp Lý"
   },
   "orgChart": {
-    "title": "Sơ Đồ Nhân Sự"
+    "title": "Sơ Đồ Nhân Sự",
+    "people": {
+      "hanh": {
+        "displayName": "Tiến Sỹ. Nguyễn Hồng Hạnh",
+        "title": "Viện Trưởng",
+        "bio": "Tiến Sỹ Nguyễn Hồng Hạnh — Viện trưởng Viện Nghiên cứu Kinh tế Xây Dựng và Đô thị. Chuyên gia tư vấn quy hoạch, phát triển đô thị và quản lý xây dựng."
+      },
+      "lan-anh": {
+        "displayName": "TS. KTS Trần Thị Lan Anh",
+        "title": "Phó Viện Trưởng",
+        "bio": "TS.KTS Trần Thị Lan Anh — Chuyên gia quy hoạch và phát triển đô thị. Tiến Sỹ từ Đại học Tokyo."
+      },
+      "toan": {
+        "displayName": "KS. Trần Quốc Toản",
+        "title": "Phó Viện Trưởng",
+        "bio": "KS. Trần Quốc Toản — Kinh nghiệm trong lĩnh vực Hạ tầng kỹ thuật giao thông."
+      },
+      "tam": {
+        "displayName": "Kiến Trúc Sư. Nguyễn Thanh Tâm",
+        "title": "Giám Đốc Vận Hành",
+        "bio": "KTS. Nguyễn Thanh Tâm — Công tác trong lĩnh vực quy hoạch đô thị."
+      },
+      "long": {
+        "displayName": "Thạc Sỹ. Đỗ Bảo Long",
+        "title": "Giám Đốc Công Nghệ",
+        "bio": "Đỗ Bảo Long — Thạc sỹ Quản Lý Dự Án từ Đại học Salford, Vương quốc Anh."
+      },
+      "hien": {
+        "displayName": "Cử Nhân. Phan Thị Hiến",
+        "title": "Kế Toán Trưởng",
+        "bio": "Phan Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán."
+      },
+      "tinh": {
+        "displayName": "Trịnh Thị Tình",
+        "title": "Trưởng Phòng Hành Chính",
+        "bio": "Trịnh Thị Tình — Trưởng phòng Hành chính với nhiều năm kinh nghiệm trong lĩnh vực quản lý nhân sự và hành chính."
+      },
+      "quynh-ly": {
+        "displayName": "Nguyễn Quỳnh Ly",
+        "title": "Quản Lý Hồ Sơ Dự Án",
+        "bio": "Nguyễn Quỳnh Ly — Quản lý hồ sơ dự án với nhiều năm kinh nghiệm trong lĩnh vực đấu thầu."
+      },
+      "thi-ly": {
+        "displayName": "Nguyễn Thị Ly",
+        "title": "Trưởng Phòng CSKH",
+        "bio": "Nguyễn Thị Ly — Hỗ trợ dự án với các kĩ năng quản lý và phối hợp."
+      },
+      "duong": {
+        "displayName": "Đinh Tùng Dương",
+        "title": "Cán Bộ Nghiên Cứu",
+        "bio": "Đinh Tùng Dương — Cán bộ dự án với các kĩ năng quản lý và phối hợp."
+      }
+    }
   },
   "departments": {
     "title": "Các Phòng Ban",
@@ -91,6 +143,24 @@
       "legal": "Chứng Chỉ Pháp Lý",
       "benefits": "Phúc Lợi & Bồi Thường",
       "compliance": "Tuân Thủ"
+    },
+    "items": {
+      "so_tay_nhan_vien": "Sổ Tay Nhân Viên (PDF, 170KB)",
+      "quy_tac_ung_xu": "Quy Tắc Ứng Xử (PDF, 137KB)",
+      "lam_viec_tu_xa": "Làm Việc Từ Xa (PDF, 140KB)",
+      "nghi_phep": "Chính Sách Nghỉ Phép (PDF, 163KB)",
+      "dang_ki_khcn": "Giấy Chứng Nhận Đăng Ký Hoạt Động Khoa Học & Công Nghệ (PDF, 3.4MB)",
+      "bao_mat": "Chính Sách Bảo Mật (PDF, 138KB)",
+      "dieu_khoan": "Điều Khoản Dịch Vụ (PDF, 164KB)",
+      "bao_ve_du_lieu": "Chính Sách Bảo Vệ Dữ Liệu (PDF, 157KB)",
+      "huong_dan_phuc_loi": "Hướng Dẫn Phúc Lợi (PDF, 152KB)",
+      "ke_hoach_huu_tri": "Kế Hoạch Hưu Trí (PDF, 172KB)",
+      "bao_hiem_y_te": "Lựa Chọn Bảo Hiểm Y Tế (PDF, 134KB)",
+      "co_phieu": "Kế Hoạch Tùy Chọn Cổ Phiếu (PDF, 173KB)",
+      "so_tay_an_toan": "Sổ Tay An Toàn (PDF, 126KB)",
+      "tieu_chuan_chat_luong": "Tiêu Chuẩn Chất Lượng (PDF, 138KB)",
+      "bao_cao_kiem_toan": "Báo Cáo Kiểm Toán Hàng Năm (PDF, 129KB)",
+      "danh_sach_tuan_thu": "Danh Sách Kiểm Tra Tuân Thủ (PDF, 152KB)"
     }
   },
   "modal": {

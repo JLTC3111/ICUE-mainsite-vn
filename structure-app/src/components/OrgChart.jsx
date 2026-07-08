@@ -1,4 +1,5 @@
 import { forwardRef, useId, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AnimatedBeam } from './magicui/AnimatedBeam'
 
 /**
@@ -12,6 +13,10 @@ const PersonCard = forwardRef(function PersonCard(
   { person, onSelectPerson, isHub },
   ref,
 ) {
+  const { t } = useTranslation()
+  const displayName = t(`orgChart.people.${person.id}.displayName`)
+  const title = t(`orgChart.people.${person.id}.title`)
+
   return (
     <button
       ref={ref}
@@ -19,8 +24,8 @@ const PersonCard = forwardRef(function PersonCard(
       className={`person-card${isHub ? ' person-card--hub' : ''}`}
       onClick={() => onSelectPerson(person)}
     >
-      <h3>{person.displayName}</h3>
-      <div className="title">{person.title}</div>
+      <h3>{displayName}</h3>
+      <div className="title">{title}</div>
     </button>
   )
 })
@@ -28,7 +33,6 @@ const PersonCard = forwardRef(function PersonCard(
 export default function OrgChart({ levels, onSelectPerson }) {
   const containerRef = useRef(null)
 
-  // Stable refs keyed by profile id (Multiple Inputs pattern).
   const lanAnhRef = useRef(null)
   const hanhRef = useRef(null)
   const toanRef = useRef(null)
@@ -53,7 +57,6 @@ export default function OrgChart({ levels, onSelectPerson }) {
     duong: duongRef,
   }
 
-  // Inputs → hub (same topology as Magic UI Multiple Inputs).
   const beams = [
     { from: 'lan-anh', curvature: 40 },
     { from: 'toan', curvature: -40 },
@@ -96,10 +99,10 @@ export default function OrgChart({ levels, onSelectPerson }) {
           curvature={beam.curvature}
           duration={4 + (index % 3) * 0.35}
           delay={index * 0.1}
-          pathColor="#94a3b8"
-          pathOpacity={0.28}
+          pathColor="rgba(148, 163, 184, 0.45)"
+          pathOpacity={0.35}
           gradientStartColor="#368adf"
-          gradientStopColor="#2821a8"
+          gradientStopColor="#8ec5ff"
         />
       ))}
     </div>

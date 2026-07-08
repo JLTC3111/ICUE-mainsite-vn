@@ -48,7 +48,59 @@
     "documents": "Documents juridiques"
   },
   "orgChart": {
-    "title": "Organigramme"
+    "title": "Organigramme",
+    "people": {
+      "hanh": {
+        "displayName": "Dr. Nguyễn Hồng Hạnh",
+        "title": "Directrice",
+        "bio": "Dr. Nguyễn Hồng Hạnh — Directrice de l’Institut d’économie de la construction et d’urbanisme. Experte en planification urbaine et gestion de la construction."
+      },
+      "lan-anh": {
+        "displayName": "Dr. Arch. Trần Thị Lan Anh",
+        "title": "Directrice adjointe",
+        "bio": "Dr. Arch. Trần Thị Lan Anh — Experte en urbanisme. Doctorat de l’Université de Tokyo."
+      },
+      "toan": {
+        "displayName": "Ing. Trần Quốc Toản",
+        "title": "Directeur adjoint",
+        "bio": "Ing. Trần Quốc Toản — Expérience en infrastructures de transport."
+      },
+      "tam": {
+        "displayName": "Architecte Nguyễn Thanh Tâm",
+        "title": "Directrice des opérations",
+        "bio": "Architecte Nguyễn Thanh Tâm — Travaille dans l’urbanisme."
+      },
+      "long": {
+        "displayName": "M.Sc. Đỗ Bảo Long",
+        "title": "Directeur technologique",
+        "bio": "Đỗ Bảo Long — M.Sc. en gestion de projet, University of Salford, Royaume-Uni."
+      },
+      "hien": {
+        "displayName": "B.A. Phan Thị Hiến",
+        "title": "Cheffe comptable",
+        "bio": "Phan Thị Hiến — Cheffe comptable avec de nombreuses années d’expérience en finance."
+      },
+      "tinh": {
+        "displayName": "Trịnh Thị Tình",
+        "title": "Responsable administrative",
+        "bio": "Trịnh Thị Tình — Responsable administrative expérimentée en RH et gestion de bureau."
+      },
+      "quynh-ly": {
+        "displayName": "Nguyễn Quỳnh Ly",
+        "title": "Responsable dossiers projets",
+        "bio": "Nguyễn Quỳnh Ly — Gestion des dossiers projets et appels d’offres."
+      },
+      "thi-ly": {
+        "displayName": "Nguyễn Thị Ly",
+        "title": "Responsable relation client",
+        "bio": "Nguyễn Thị Ly — Support projet avec compétences de coordination et de management."
+      },
+      "duong": {
+        "displayName": "Đinh Tùng Dương",
+        "title": "Chargé de recherche",
+        "bio": "Đinh Tùng Dương — Chargé de projet avec compétences de coordination et de management."
+      }
+    }
   },
   "departments": {
     "title": "Départements",
@@ -91,6 +143,24 @@
       "legal": "Certificats juridiques",
       "benefits": "Avantages & rémunération",
       "compliance": "Conformité"
+    },
+    "items": {
+      "so_tay_nhan_vien": "Manuel de l’employé (PDF, 170KB)",
+      "quy_tac_ung_xu": "Code de conduite (PDF, 137KB)",
+      "lam_viec_tu_xa": "Politique de télétravail (PDF, 140KB)",
+      "nghi_phep": "Politique de congés (PDF, 163KB)",
+      "dang_ki_khcn": "Certificat d’enregistrement d’activités scientifiques & technologiques (PDF, 3,4MB)",
+      "bao_mat": "Politique de confidentialité (PDF, 138KB)",
+      "dieu_khoan": "Conditions d’utilisation (PDF, 164KB)",
+      "bao_ve_du_lieu": "Politique de protection des données (PDF, 157KB)",
+      "huong_dan_phuc_loi": "Guide des avantages (PDF, 152KB)",
+      "ke_hoach_huu_tri": "Plan de retraite (PDF, 172KB)",
+      "bao_hiem_y_te": "Options d’assurance maladie (PDF, 134KB)",
+      "co_phieu": "Plan d’options d’achat d’actions employés (PDF, 173KB)",
+      "so_tay_an_toan": "Manuel de sécurité (PDF, 126KB)",
+      "tieu_chuan_chat_luong": "Normes de qualité (PDF, 138KB)",
+      "bao_cao_kiem_toan": "Rapport d’audit annuel (PDF, 129KB)",
+      "danh_sach_tuan_thu": "Liste de contrôle de conformité (PDF, 152KB)"
     }
   },
   "modal": {

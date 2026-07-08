@@ -82,6 +82,10 @@
   animation: structureFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.structure-tab-content--bento {
+  background: linear-gradient(160deg, #0a1020 0%, #15233d 48%, #0d1628 100%);
+}
+
 .structure-section-title {
   text-align: center;
   margin-bottom: 40px;
@@ -93,6 +97,10 @@
 
 .structure-section-title--underline {
   text-decoration: underline;
+}
+
+.structure-section-title--on-dark {
+  color: #eef4fd;
 }
 
 @keyframes structureFadeIn {
@@ -127,200 +135,182 @@
 .person-card {
   position: relative;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.92);
-  color: rgb(0, 0, 0);
+  background: #0b1220;
+  color: #eef4fd;
   padding: 30px 25px;
   border-radius: 20px;
   text-align: center;
   min-width: 220px;
-  box-shadow: 0 10px 10px -5px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.55);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: 0.5px solid #6f6f6f;
+  border: 1px solid #2a3a55;
   font-family: inherit;
 }
 
 .person-card--hub {
   border-color: #368adf;
   box-shadow:
-    0 0 0 2px rgba(54, 138, 223, 0.25),
+    0 0 0 2px rgba(54, 138, 223, 0.28),
     0 12px 28px -8px rgba(54, 138, 223, 0.45);
 }
 
 .person-card:hover {
-  transform: translateY(8px) scale(1.02);
-  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 1);
-  border-top: 12.5px solid #828282;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-bottom-width: 0;
+  transform: translateY(-4px) scale(1.015);
+  border-color: rgba(54, 138, 223, 0.7);
+  box-shadow:
+    0 16px 32px -12px rgba(0, 0, 0, 0.65),
+    0 0 28px rgba(54, 138, 223, 0.22);
 }
 
 .person-card:hover h3,
 .person-card:hover .title {
-  color: rgb(0, 0, 0);
+  color: #ffffff;
 }
 
 .person-card h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 8px;
   letter-spacing: -0.25px;
+  color: #ffffff;
 }
 
 .person-card .title {
-  font-size: 0.95rem;
-  opacity: 0.9;
+  font-size: 0.92rem;
+  opacity: 0.88;
   font-weight: 500;
+  color: rgba(238, 244, 253, 0.82);
 }
 
-.departments-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
+.card-grid--departments,
+.card-grid--documents {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 0.85rem;
 }
 
-.department-card {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 20px;
-  padding: 35px 30px;
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.08),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
+.card-grid--documents .magic-bento-card {
+  aspect-ratio: auto;
+  min-height: 280px;
+}
+
+.card-grid--departments .magic-bento-card {
+  aspect-ratio: auto;
+  min-height: 260px;
+}
+
+.magic-bento-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 100%;
   position: relative;
-  overflow: hidden;
+  z-index: 2;
 }
 
-.department-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(135deg, #868ba0 0%, #26266e 100%);
+.magic-bento-body__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.department-card:hover {
-  transform: translateY(-5px);
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 20px 20px -5px rgba(0, 0, 0, 0.1);
-  border-color: rgba(102, 126, 234, 0.3);
-}
-
-.department-card h3 {
-  color: #1e293b;
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  letter-spacing: -0.25px;
+.magic-bento-body__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  background: rgba(54, 138, 223, 0.12);
+  box-shadow: 0 8px 20px rgba(54, 138, 223, 0.2);
+  color: #8ec5ff;
 }
 
-.department-card p {
-  font-size: 1rem;
-  line-height: 1.7;
-  margin: 20px 0;
-  color: #475569;
+.magic-bento-body__icon svg {
+  width: 28px;
+  height: 28px;
 }
 
-.department-card strong {
-  color: #334155;
+.magic-bento-body__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: rgba(238, 244, 253, 0.82);
+  line-height: 1.45;
+}
+
+.magic-bento-body__meta strong {
+  color: #ffffff;
   font-weight: 600;
 }
 
-.department-card a {
-  color: #334155;
+.magic-bento-body__meta a {
+  color: #8ec5ff;
   text-decoration: none;
 }
 
-.department-card a:hover {
-  color: #667eea;
+.magic-bento-body__meta a:hover {
   text-decoration: underline;
 }
 
-.dept-icon {
-  width: 70px;
-  height: 70px;
-  background: transparent;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  box-shadow: 0 10px 25px rgba(24, 46, 141, 0.3);
+.card-grid--departments .magic-bento-card__title,
+.card-grid--documents .magic-bento-card__title {
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.documents-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
-  gap: 30px;
-  align-items: start;
+.card-grid--departments .magic-bento-card__description {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  opacity: 0.88;
 }
 
-.document-category {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 20px;
-  padding: 35px 30px;
-  border-bottom: 1.5px solid #6d7288;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-}
-
-.document-category:hover {
-  border-left: 2.5px solid #6d7288;
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-}
-
-.document-category h3 {
-  color: #020823;
-  margin-bottom: 25px;
-  font-size: clamp(1.15rem, 2vw, 1.45rem);
-  font-weight: 700;
-  letter-spacing: -0.25px;
-}
-
-.document-list {
+.magic-bento-doc-list {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
-.document-list li {
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+.magic-bento-doc-list li {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
 }
 
-.document-list li:last-child {
+.magic-bento-doc-list li:last-child {
   border-bottom: none;
 }
 
-.document-link {
+.magic-bento-doc-link {
   width: 100%;
-  padding: 15px 5px;
+  padding: 0.7rem 0.15rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: #475569;
+  transition: all 0.25s ease;
+  color: rgba(226, 232, 240, 0.9);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   display: flex;
-  align-items: center;
-  gap: 7.5px;
+  align-items: flex-start;
+  gap: 0.5rem;
   background: none;
   border: none;
   text-align: left;
   font-family: inherit;
+  line-height: 1.4;
 }
 
-.document-link:hover {
-  color: #667eea;
-  transform: translateX(8px);
-  padding-left: 10px;
+.magic-bento-doc-link:hover {
+  color: #8ec5ff;
+  transform: translateX(6px);
+  padding-left: 0.35rem;
 }
 
 .documents-empty {
@@ -328,6 +318,25 @@
   text-align: center;
   grid-column: 1 / -1;
   padding: 2rem;
+}
+
+.documents-empty--on-dark {
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.search-bar--on-dark {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #e2e8f0;
+}
+
+.search-bar--on-dark::placeholder {
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.search-bar--on-dark:focus {
+  border-color: rgba(54, 138, 223, 0.8);
+  box-shadow: 0 0 0 3px rgba(54, 138, 223, 0.2);
 }
 
 .search-bar {
@@ -362,69 +371,57 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(5, 10, 22, 0.72);
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 24px 16px;
+  backdrop-filter: blur(6px);
 }
 
 .profile-modal-content {
-  background: white;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
+  background: transparent;
+  border-radius: 0;
+  max-width: 400px;
+  width: min(92vw, 400px);
+  max-height: 90vh;
+  overflow: visible;
   position: relative;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 
 .profile-modal-close {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 32px;
+  top: -8px;
+  right: -8px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  font-size: 24px;
   cursor: pointer;
-  color: #333;
+  color: #e2e8f0;
   line-height: 1;
+  display: grid;
+  place-items: center;
 }
 
 .profile-modal-close:hover {
-  color: #667eea;
+  color: #ffffff;
+  border-color: rgba(54, 138, 223, 0.8);
 }
 
-.profile-modal-body {
-  padding: 40px 30px;
-  text-align: center;
-}
-
-.profile-modal-body img {
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-bottom: 20px;
-}
-
-.profile-modal-body h2 {
-  font-size: 1.35rem;
-  margin-bottom: 4px;
-}
-
-.profile-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #0066cc;
-  margin: 10px 0;
-}
-
-.profile-bio {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #555;
-  margin-top: 15px;
+.profile-modal .pc-status {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 180px;
+  white-space: normal;
+  line-height: 1.35;
+  font-size: 0.72rem;
 }
 
 @media (max-width: 768px) {
@@ -459,23 +456,15 @@
     align-items: center;
   }
 
-  .departments-grid,
-  .documents-section {
+  .card-grid--departments,
+  .card-grid--documents {
     grid-template-columns: 1fr;
-    gap: 20px;
+    width: 100%;
   }
 
   .profile-modal-content {
     max-width: 95%;
-  }
-
-  .profile-modal-body {
-    padding: 30px 20px;
-  }
-
-  .profile-modal-body img {
-    width: 150px;
-    height: 150px;
+    width: min(94vw, 360px);
   }
 }
 
@@ -485,8 +474,9 @@
     padding: 25px 20px;
   }
 
-  .department-card,
-  .document-category {
-    padding: 25px 20px;
+  .card-grid--departments .magic-bento-card,
+  .card-grid--documents .magic-bento-card {
+    min-height: 220px;
+    padding: 1.1em;
   }
 }

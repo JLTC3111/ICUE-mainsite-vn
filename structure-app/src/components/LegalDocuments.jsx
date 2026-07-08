@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import MagicBento from './MagicBento/MagicBento'
+
+const CARD_COLORS = ['#0b1220', '#101a2e', '#0d1830', '#122038']
 
 export default function LegalDocuments({
   categories,
@@ -14,6 +17,10 @@ export default function LegalDocuments({
       categories.map((category) => ({
         ...category,
         title: t(`documents.categories.${category.id}`),
+        documents: category.documents.map((doc) => ({
+          ...doc,
+          label: t(`documents.items.${doc.id}`),
+        })),
       })),
     [categories, t],
   )
@@ -31,26 +38,27 @@ export default function LegalDocuments({
       .filter((category) => category.documents.length > 0)
   }, [localized, searchTerm])
 
-  return (
-    <>
-      <input
-        type="search"
-        className="search-bar"
-        placeholder={t('documents.searchPlaceholder')}
-        value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
-        aria-label={t('documents.searchAria')}
-      />
-      <div className="documents-section">
-        {filtered.map((category) => (
-          <div key={category.id} className="document-category">
-            <h3>{category.title}</h3>
-            <ul className="document-list">
+  const cards = useMemo(
+    () =>
+      filtered.map((category, index) => ({
+        id: category.id,
+        color: CARD_COLORS[index % CARD_COLORS.length],
+        content: (
+          <div className="magic-bento-body">
+            <div className="magic-bento-card__header">
+              <span className="magic-bento-card__label">
+                {t('documents.title')}
+              </span>
+            </div>
+            <div className="magic-bento-card__content">
+              <h3 className="magic-bento-card__title">{category.title}</h3>
+            </div>
+            <ul className="magic-bento-doc-list">
               {category.documents.map((doc) => (
                 <li key={doc.path}>
                   <button
                     type="button"
-                    className="document-link"
+                    className="magic-bento-doc-link"
                     onClick={() => onDownload(doc.path)}
                   >
                     <DocIcon />
@@ -60,11 +68,41 @@ export default function LegalDocuments({
               ))}
             </ul>
           </div>
-        ))}
-        {filtered.length === 0 && (
-          <p className="documents-empty">{t('documents.empty')}</p>
-        )}
-      </div>
+        ),
+      })),
+    [filtered, onDownload, t],
+  )
+
+  return (
+    <>
+      <input
+        type="search"
+        className="search-bar search-bar--on-dark"
+        placeholder={t('documents.searchPlaceholder')}
+        value={searchTerm}
+        onChange={(e) => onSearchChange(e.target.value)}
+        aria-label={t('documents.searchAria')}
+      />
+      {cards.length > 0 ? (
+        <MagicBento
+          cards={cards}
+          className="card-grid--documents"
+          textAutoHide={false}
+          enableStars
+          enableSpotlight
+          enableBorderGlow
+          enableTilt={false}
+          enableMagnetism
+          clickEffect
+          glowColor="54, 138, 223"
+          particleCount={10}
+          spotlightRadius={320}
+        />
+      ) : (
+        <p className="documents-empty documents-empty--on-dark">
+          {t('documents.empty')}
+        </p>
+      )}
     </>
   )
 }

@@ -81,8 +81,11 @@ export default function StructurePage() {
             </div>
 
             {activeTab === 'org-chart' && (
-              <section className="structure-tab-content active" role="tabpanel">
-                <h2 className="structure-section-title structure-section-title--underline">
+              <section
+                className="structure-tab-content structure-tab-content--bento active"
+                role="tabpanel"
+              >
+                <h2 className="structure-section-title structure-section-title--on-dark structure-section-title--underline">
                   {t('orgChart.title')}
                 </h2>
                 <OrgChart levels={levels} onSelectPerson={openProfile} />
@@ -90,15 +93,25 @@ export default function StructurePage() {
             )}
 
             {activeTab === 'departments' && (
-              <section className="structure-tab-content active" role="tabpanel">
-                <h2 className="structure-section-title">{t('departments.title')}</h2>
+              <section
+                className="structure-tab-content structure-tab-content--bento active"
+                role="tabpanel"
+              >
+                <h2 className="structure-section-title structure-section-title--on-dark">
+                  {t('departments.title')}
+                </h2>
                 <DepartmentsGrid departments={departmentCards} />
               </section>
             )}
 
             {activeTab === 'documents' && (
-              <section className="structure-tab-content active" role="tabpanel">
-                <h2 className="structure-section-title">{t('documents.title')}</h2>
+              <section
+                className="structure-tab-content structure-tab-content--bento active"
+                role="tabpanel"
+              >
+                <h2 className="structure-section-title structure-section-title--on-dark">
+                  {t('documents.title')}
+                </h2>
                 <LegalDocuments
                   categories={documentCategories}
                   searchTerm={searchTerm}

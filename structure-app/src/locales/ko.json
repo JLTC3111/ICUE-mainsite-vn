@@ -48,7 +48,59 @@
     "documents": "법적 문서"
   },
   "orgChart": {
-    "title": "조직도"
+    "title": "조직도",
+    "people": {
+      "hanh": {
+        "displayName": "박사 Nguyễn Hồng Hạnh",
+        "title": "원장",
+        "bio": "박사 Nguyễn Hồng Hạnh — 건설경제 및 도시계획 연구소 원장. 도시계획·도시개발·건설관리 전문가."
+      },
+      "lan-anh": {
+        "displayName": "박사 건축사 Trần Thị Lan Anh",
+        "title": "부원장",
+        "bio": "박사 건축사 Trần Thị Lan Anh — 도시계획 및 개발 전문가. 도쿄대학교 박사."
+      },
+      "toan": {
+        "displayName": "기사 Trần Quốc Toản",
+        "title": "부원장",
+        "bio": "기사 Trần Quốc Toản — 교통 인프라 분야 경험."
+      },
+      "tam": {
+        "displayName": "건축사 Nguyễn Thanh Tâm",
+        "title": "운영 이사",
+        "bio": "건축사 Nguyễn Thanh Tâm — 도시계획 분야 근무."
+      },
+      "long": {
+        "displayName": "석사 Đỗ Bảo Long",
+        "title": "기술 이사",
+        "bio": "Đỗ Bảo Long — 영국 살퍼드대학교 프로젝트 관리 석사."
+      },
+      "hien": {
+        "displayName": "학사 Phan Thị Hiến",
+        "title": "수석 회계",
+        "bio": "Phan Thị Hiến — 재무·회계 경력이 풍부한 수석 회계."
+      },
+      "tinh": {
+        "displayName": "Trịnh Thị Tình",
+        "title": "행정실장",
+        "bio": "Trịnh Thị Tình — 인사·행정 관리 경험이 풍부한 행정실장."
+      },
+      "quynh-ly": {
+        "displayName": "Nguyễn Quỳnh Ly",
+        "title": "프로젝트 기록 관리자",
+        "bio": "Nguyễn Quỳnh Ly — 입찰 경험이 풍부한 프로젝트 기록 관리자."
+      },
+      "thi-ly": {
+        "displayName": "Nguyễn Thị Ly",
+        "title": "고객관리 팀장",
+        "bio": "Nguyễn Thị Ly — 조정·관리 역량을 갖춘 프로젝트 지원."
+      },
+      "duong": {
+        "displayName": "Đinh Tùng Dương",
+        "title": "연구원",
+        "bio": "Đinh Tùng Dương — 조정·관리 역량을 갖춘 프로젝트 담당."
+      }
+    }
   },
   "departments": {
     "title": "부서",
@@ -91,6 +143,24 @@
       "legal": "법적 증서",
       "benefits": "복리후생 및 보상",
       "compliance": "컴플라이언스"
+    },
+    "items": {
+      "so_tay_nhan_vien": "직원 핸드북 (PDF, 170KB)",
+      "quy_tac_ung_xu": "행동 강령 (PDF, 137KB)",
+      "lam_viec_tu_xa": "원격 근무 정책 (PDF, 140KB)",
+      "nghi_phep": "휴가 정책 (PDF, 163KB)",
+      "dang_ki_khcn": "과학기술 활동 등록 증명서 (PDF, 3.4MB)",
+      "bao_mat": "개인정보 보호정책 (PDF, 138KB)",
+      "dieu_khoan": "이용 약관 (PDF, 164KB)",
+      "bao_ve_du_lieu": "데이터 보호 정책 (PDF, 157KB)",
+      "huong_dan_phuc_loi": "복리후생 안내 (PDF, 152KB)",
+      "ke_hoach_huu_tri": "퇴직 계획 (PDF, 172KB)",
+      "bao_hiem_y_te": "건강보험 옵션 (PDF, 134KB)",
+      "co_phieu": "직원 주식매수선택권 계획 (PDF, 173KB)",
+      "so_tay_an_toan": "안전 핸드북 (PDF, 126KB)",
+      "tieu_chuan_chat_luong": "품질 표준 (PDF, 138KB)",
+      "bao_cao_kiem_toan": "연간 감사 보고서 (PDF, 129KB)",
+      "danh_sach_tuan_thu": "컴플라이언스 점검표 (PDF, 152KB)"
     }
   },
   "modal": {

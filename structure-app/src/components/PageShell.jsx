@@ -13,7 +13,7 @@ export default function PageShell({ children }) {
         <div className="page-shell__site-footer">
           <Footer />
         </div>
-        <ContactSidebar musicIconColor="#000000" />
+        <ContactSidebar />
       </div>
     </InteractiveBackgroundProvider>
   )
