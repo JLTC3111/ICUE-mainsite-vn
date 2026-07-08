@@ -37,6 +37,7 @@
   animation: msn-slideInFromLeft 3.5s ease-in-out forwards;
   z-index: 99;
   flex-shrink: 0;
+  overflow: visible;
 }
 
 .main-site-nav__center {
@@ -53,6 +54,33 @@
   gap: 0.75rem;
   margin-left: auto;
   padding-right: 0;
+  flex-shrink: 0;
+}
+
+.main-site-nav .logo-link {
+  --logo-wordmark-size: 2rem;
+  --logo-mark-size: calc(var(--logo-wordmark-size) * 0.88);
+  --logo-wordmark-ratio: 3.3;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.12rem, 0.25vw, 0.28rem);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.main-site-nav .logo-mark {
+  width: var(--logo-mark-size);
+  height: var(--logo-mark-size);
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.main-site-nav .logo-wordmark {
+  display: block;
+  position: relative;
+  height: var(--logo-wordmark-size);
+  width: calc(var(--logo-wordmark-size) * var(--logo-wordmark-ratio));
   flex-shrink: 0;
 }
 
@@ -605,9 +633,20 @@
     margin-left: 1px;
   }
 
+  .main-site-nav .logo-link {
+    --logo-wordmark-size: clamp(1.65rem, 4.2vw, 2.05rem);
+    --logo-mark-size: clamp(1.4rem, 3.5vw, 1.75rem);
+    --logo-wordmark-ratio: 3.25;
+  }
+
+  .main-site-nav__left.logo-banner img.logo-mark {
+    width: var(--logo-mark-size);
+    height: var(--logo-mark-size);
+  }
+
   .main-site-nav__left.logo-banner img {
-    width: auto;
-    height: 25px;
+    width: var(--logo-mark-size);
+    height: var(--logo-mark-size);
   }
 
   .main-site-nav__right {
@@ -649,6 +688,12 @@
 
   .main-site-nav__left.logo-banner {
     max-width: none;
+  }
+
+  .main-site-nav .logo-link {
+    --logo-wordmark-size: clamp(2.35rem, 0.35rem + 3.5vw, 7.5rem);
+    --logo-mark-size: clamp(1.95rem, 0.2rem + 2.85vw, 6.2rem);
+    --logo-wordmark-ratio: 3.35;
   }
 }
 

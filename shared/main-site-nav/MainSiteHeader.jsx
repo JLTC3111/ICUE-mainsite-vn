@@ -1,5 +1,8 @@
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
+import VideoText from '@icue/ui/VideoText';
+
+const LOGO_VIDEO_SRC = 'public/bgVideos/video-text-football.mp4';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -20,13 +23,26 @@ export default function MainSiteHeader({
           ref={logoLinkRef}
           href="https://icue.vn"
           id="logo-link"
+          className="logo-link"
           aria-label="Go to homepage"
         >
           <img
-            className="logo-content"
-            src="public/logoIcons/logo.png"
-            alt="Company Logo"
+            className="logo-mark"
+            src="public/logoIcons/favicon.png"
+            alt=""
+            aria-hidden="true"
+            decoding="async"
           />
+          <VideoText
+            className="logo-wordmark"
+            src={LOGO_VIDEO_SRC}
+            fontSize="72"
+            fontWeight="700"
+            fontFamily="Poppins, system-ui, sans-serif"
+            as="span"
+          >
+            ICUE
+          </VideoText>
         </a>
 
         <VideoToggle

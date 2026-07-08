@@ -72,7 +72,8 @@ export default function MainSiteNav() {
 
     const targets = [
       { el: menuToggleRef.current, delay: 0 },
-      { el: logoLinkRef.current, delay: -0.3 },
+      { el: logoLinkRef.current?.querySelector('.logo-mark'), delay: -0.3 },
+      { el: logoLinkRef.current?.querySelector('.logo-wordmark'), delay: -0.25 },
       { el: flagLinkRef.current?.querySelector('.flag-link'), delay: -0.3 },
       { el: contactLinkRef.current, delay: -0.3 },
     ].filter((item) => item.el);
