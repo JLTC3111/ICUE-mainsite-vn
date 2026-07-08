@@ -17,9 +17,3 @@
   z-index: 2;
   flex-shrink: 0;
 }
-
-.page-shell .contact-sidebar__music svg,
-.page-shell .contact-sidebar__music svg path {
-  fill: #000;
-  color: #000;
-}

@@ -95,15 +95,25 @@ export function useAdaptiveIconColor(ref, enabled = true) {
     const rect = el.getBoundingClientRect()
     if (rect.width <= 0 || rect.height <= 0) return
 
+    const viewport = window.visualViewport
+    const viewWidth = viewport?.width ?? window.innerWidth
+    const viewHeight = viewport?.height ?? window.innerHeight
+    const offsetX = viewport?.offsetLeft ?? 0
+    const offsetY = viewport?.offsetTop ?? 0
+    const inset = viewWidth < 768 ? 48 : 28
+
     const points = [
-      [Math.max(8, rect.left - 16), rect.top + rect.height * 0.35],
-      [Math.max(8, rect.left - 16), rect.top + rect.height * 0.65],
-      [Math.max(8, rect.left - 28), rect.top + rect.height * 0.5],
+      [rect.left - inset, rect.top + rect.height * 0.35],
+      [rect.left - inset, rect.top + rect.height * 0.65],
+      [rect.left - Math.round(inset * 0.65), rect.top + rect.height * 0.5],
+      [rect.left - inset, rect.top + rect.height * 0.5],
     ]
 
     const samples = points
       .map(([x, y]) => {
-        if (x <= 0 || y <= 0 || x >= window.innerWidth || y >= window.innerHeight) return null
+        const vx = x - offsetX
+        const vy = y - offsetY
+        if (vx <= 0 || vy <= 0 || vx >= viewWidth || vy >= viewHeight) return null
         const target = sampleTargetAt(x, y, el)
         if (!target) return null
         return readBackground(target)
@@ -117,12 +127,17 @@ export function useAdaptiveIconColor(ref, enabled = true) {
   useEffect(() => {
     if (!enabled) return undefined
     sample()
-    window.addEventListener('scroll', sample, { passive: true })
+    window.addEventListener('scroll', sample, { passive: true, capture: true })
     window.addEventListener('resize', sample)
+    const viewport = window.visualViewport
+    viewport?.addEventListener('resize', sample)
+    viewport?.addEventListener('scroll', sample)
     const id = window.setInterval(sample, 800)
     return () => {
-      window.removeEventListener('scroll', sample)
+      window.removeEventListener('scroll', sample, true)
       window.removeEventListener('resize', sample)
+      viewport?.removeEventListener('resize', sample)
+      viewport?.removeEventListener('scroll', sample)
       window.clearInterval(id)
     }
   }, [enabled, sample])

@@ -122,16 +122,30 @@ export default function MediaGallery({ images = [], videos = [] }) {
       {index !== null && images[index] && (
         <div
           className="lightbox"
-          onClick={close}
           role="dialog"
           aria-modal="true"
           aria-label={t('article.gallery')}
         >
-          <button className="lightbox__close" onClick={close} aria-label={t('common.close')}>
+          <button
+            type="button"
+            className="lightbox__backdrop"
+            onClick={close}
+            aria-label={t('common.close')}
+          />
+
+          <button
+            type="button"
+            className="lightbox__close"
+            onClick={(e) => {
+              e.stopPropagation()
+              close()
+            }}
+            aria-label={t('common.close')}
+          >
             <X size={22} strokeWidth={2} />
           </button>
 
-          <div className="lightbox__stage" onClick={(e) => e.stopPropagation()}>
+          <div className="lightbox__stage">
             <Swiper
               className="lightbox__swiper"
               modules={[Keyboard, Pagination]}
@@ -148,8 +162,17 @@ export default function MediaGallery({ images = [], videos = [] }) {
               onSlideChange={(swiper) => setIndex(swiper.activeIndex)}
             >
               {images.map((img) => (
-                <SwiperSlide key={img.id} className="lightbox__slide">
-                  <img className="lightbox__img" src={img.url} alt="" />
+                <SwiperSlide
+                  key={img.id}
+                  className="lightbox__slide"
+                  onClick={close}
+                >
+                  <img
+                    className="lightbox__img"
+                    src={img.url}
+                    alt=""
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>

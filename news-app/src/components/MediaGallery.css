@@ -96,7 +96,6 @@
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(8, 8, 10, 0.92);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,25 +103,42 @@
   padding: 40px;
   animation: lightbox-in 0.18s ease both;
 }
+
+.lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(8, 8, 10, 0.92);
+  cursor: zoom-out;
+}
+
 @keyframes lightbox-in { from { opacity: 0; } to { opacity: 1; } }
 
 .lightbox__stage {
+  position: relative;
+  z-index: 1;
   width: min(1100px, 92vw);
   height: 86vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .lightbox__swiper {
   width: 100%;
   height: 100%;
+  pointer-events: auto;
 }
 
 .lightbox__slide {
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 
 .lightbox__img {
@@ -135,6 +151,8 @@
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
   user-select: none;
   -webkit-user-drag: none;
+  pointer-events: auto;
+  touch-action: pan-y pinch-zoom;
 }
 
 .lightbox__swiper .swiper-pagination-bullet {
@@ -152,6 +170,7 @@
 .lightbox__close,
 .lightbox__nav {
   position: absolute;
+  z-index: 3;
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   border: 0;
@@ -159,6 +178,8 @@
   display: grid;
   place-items: center;
   transition: background 0.18s ease, transform 0.1s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .lightbox__close { top: 20px; right: 24px; width: 44px; height: 44px; }
 .lightbox__nav { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; }
@@ -169,11 +190,13 @@
 .lightbox__nav:active { transform: translateY(-50%) scale(0.92); }
 .lightbox__count {
   position: absolute;
+  z-index: 3;
   bottom: 24px; left: 50%;
   transform: translateX(-50%);
   color: #fff; font-size: 14px; font-weight: 600;
   background: rgba(255, 255, 255, 0.12);
   padding: 6px 14px; border-radius: 999px;
+  pointer-events: none;
 }
 
 @media (max-width: 680px) {
@@ -185,6 +208,12 @@
   .media-gallery__grid--4 .media-gallery__item:first-child { grid-column: span 2; }
   .media-gallery__videos.is-multi { grid-template-columns: 1fr; }
   .lightbox { padding: 12px 0 28px; }
+  .lightbox__close {
+    top: max(12px, env(safe-area-inset-top, 12px));
+    right: 12px;
+    width: 48px;
+    height: 48px;
+  }
   .lightbox__stage {
     width: 100%;
     height: calc(100vh - 96px);
