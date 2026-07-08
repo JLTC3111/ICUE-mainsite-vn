@@ -1,8 +1,10 @@
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
+import MetallicMenuIcon from './MetallicMenuIcon';
 
 const LOGO_VIDEO_SRC = 'public/bgVideos/video-text-football.mp4';
+const CONTACT_VIDEO_SRC = 'public/bgVideos/blueflow.mp4';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -10,6 +12,12 @@ export default function MainSiteHeader({
   showContactLink,
   showHomeVideoToggle,
   showAboutUsVideoToggle,
+  homeVideoEnabled,
+  homeVideoToggleDisabled,
+  onHomeVideoToggle,
+  aboutUsVideoEnabled,
+  aboutUsVideoToggleDisabled,
+  onAboutUsVideoToggle,
   menuIconRef,
   menuToggleRef,
   logoLinkRef,
@@ -52,6 +60,10 @@ export default function MainSiteHeader({
           label="Bật/tắt video nền"
           showLabel={false}
           visible={showHomeVideoToggle}
+          animated
+          checked={homeVideoEnabled}
+          onCheckedChange={onHomeVideoToggle}
+          disabled={homeVideoToggleDisabled}
         />
 
         <VideoToggle
@@ -61,6 +73,10 @@ export default function MainSiteHeader({
           label="Bật/tắt video nền (Giới thiệu)"
           showLabel={false}
           visible={showAboutUsVideoToggle}
+          animated
+          checked={aboutUsVideoEnabled}
+          onCheckedChange={onAboutUsVideoToggle}
+          disabled={aboutUsVideoToggleDisabled}
         />
       </div>
 
@@ -77,19 +93,7 @@ export default function MainSiteHeader({
             onToggleDrawer();
           }}
         >
-          <svg
-            ref={menuIconRef}
-            id="menuIcon"
-            className={drawerOpen ? 'is-open' : ''}
-            viewBox="0 -0.5 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect id="top-bar" x="7.834" y="7.75" width="9.333" height="1.5" fill="currentColor" />
-            <rect id="middle-bar" x="5.5" y="11.75" width="14" height="1.5" fill="currentColor" />
-            <rect id="bottom-bar" x="7.834" y="15.75" width="9.333" height="1.5" fill="currentColor" />
-          </svg>
+          <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
         </button>
       </div>
 
@@ -109,7 +113,17 @@ export default function MainSiteHeader({
               }
             }}
           >
-            GIỚI THIỆU
+            <VideoText
+              className="contact-link-wordmark"
+              src={CONTACT_VIDEO_SRC}
+              fontSize="64"
+              fontWeight="700"
+              fontFamily="Poppins, system-ui, sans-serif"
+              viewBox="0 0 920 120"
+              as="span"
+            >
+              GIỚI THIỆU
+            </VideoText>
           </a>
         )}
 
@@ -120,6 +134,10 @@ export default function MainSiteHeader({
             variant="nav"
             showLabel={false}
             visible={showHomeVideoToggle}
+            animated
+            checked={homeVideoEnabled}
+            onCheckedChange={onHomeVideoToggle}
+            disabled={homeVideoToggleDisabled}
           />
 
           <VideoToggle
@@ -129,6 +147,10 @@ export default function MainSiteHeader({
             label="Bật/tắt video nền (Giới thiệu)"
             showLabel={false}
             visible={showAboutUsVideoToggle}
+            animated
+            checked={aboutUsVideoEnabled}
+            onCheckedChange={onAboutUsVideoToggle}
+            disabled={aboutUsVideoToggleDisabled}
           />
 
           <LanguageFlagLink />

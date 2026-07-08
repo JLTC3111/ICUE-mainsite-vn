@@ -35,6 +35,10 @@ export default function MainSiteNav() {
   const [showContactLink, setShowContactLink] = useState(initialVisibility.showContactLink);
   const [showHomeVideoToggle, setShowHomeVideoToggle] = useState(initialVisibility.showHomeVideoToggle);
   const [showAboutUsVideoToggle, setShowAboutUsVideoToggle] = useState(initialVisibility.showAboutUsVideoToggle);
+  const [homeVideoEnabled, setHomeVideoEnabled] = useState(true);
+  const [homeVideoToggleDisabled, setHomeVideoToggleDisabled] = useState(false);
+  const [aboutUsVideoEnabled, setAboutUsVideoEnabled] = useState(true);
+  const [aboutUsVideoToggleDisabled, setAboutUsVideoToggleDisabled] = useState(false);
 
   const menuIconRef = useRef(null);
   const menuToggleRef = useRef(null);
@@ -56,6 +60,28 @@ export default function MainSiteNav() {
     setShowAboutUsVideoToggle(visibility.showAboutUsVideoToggle);
     setDarkNav(visibility.darkNav);
     window.__mainSiteNavRefreshLanguage?.();
+  }, []);
+
+  const handleHomeVideoToggle = useCallback((enabled) => {
+    window.HomeBackgroundVideoManager?.setEnabled?.(enabled);
+  }, []);
+
+  const syncHomeVideoToggleState = useCallback(() => {
+    const manager = window.HomeBackgroundVideoManager;
+    if (!manager) return;
+    setHomeVideoEnabled(!!manager.isEnabled?.());
+    setHomeVideoToggleDisabled(!manager.canToggleVideos?.());
+  }, []);
+
+  const handleAboutUsVideoToggle = useCallback((enabled) => {
+    window.AboutUsBackgroundVideoManager?.setEnabled?.(enabled);
+  }, []);
+
+  const syncAboutUsVideoToggleState = useCallback(() => {
+    const manager = window.AboutUsBackgroundVideoManager;
+    if (!manager) return;
+    setAboutUsVideoEnabled(!!manager.isEnabled?.());
+    setAboutUsVideoToggleDisabled(!manager.canToggleVideos?.());
   }, []);
 
   const playEntranceAnimation = useCallback((isFirstLoad = true) => {
@@ -179,13 +205,32 @@ export default function MainSiteNav() {
   }, [playEntranceAnimation]);
 
   useEffect(() => {
-    if (showHomeVideoToggle) {
-      window.HomeBackgroundVideoManager?.bindToggleUI?.();
-    }
-    if (showAboutUsVideoToggle) {
-      window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
-    }
-  }, [showHomeVideoToggle, showAboutUsVideoToggle]);
+    if (!showHomeVideoToggle) return undefined;
+
+    syncHomeVideoToggleState();
+    window.HomeBackgroundVideoManager?.bindToggleUI?.();
+
+    const onHomeVideoEnabled = () => syncHomeVideoToggleState();
+    window.addEventListener('icue:homeVideoEnabled', onHomeVideoEnabled);
+
+    return () => {
+      window.removeEventListener('icue:homeVideoEnabled', onHomeVideoEnabled);
+    };
+  }, [showHomeVideoToggle, syncHomeVideoToggleState]);
+
+  useEffect(() => {
+    if (!showAboutUsVideoToggle) return undefined;
+
+    syncAboutUsVideoToggleState();
+    window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
+
+    const onAboutUsVideoEnabled = () => syncAboutUsVideoToggleState();
+    window.addEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+
+    return () => {
+      window.removeEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+    };
+  }, [showAboutUsVideoToggle, syncAboutUsVideoToggleState]);
 
   useEffect(() => {
     const ids = [
@@ -222,6 +267,12 @@ export default function MainSiteNav() {
           showContactLink={showContactLink}
           showHomeVideoToggle={showHomeVideoToggle}
           showAboutUsVideoToggle={showAboutUsVideoToggle}
+          homeVideoEnabled={homeVideoEnabled}
+          homeVideoToggleDisabled={homeVideoToggleDisabled}
+          onHomeVideoToggle={handleHomeVideoToggle}
+          aboutUsVideoEnabled={aboutUsVideoEnabled}
+          aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
+          onAboutUsVideoToggle={handleAboutUsVideoToggle}
           menuIconRef={menuIconRef}
           menuToggleRef={menuToggleRef}
           logoLinkRef={logoLinkRef}

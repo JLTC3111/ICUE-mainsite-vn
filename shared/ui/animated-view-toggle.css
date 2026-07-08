@@ -1,0 +1,59 @@
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-group(root) {
+  animation-duration: var(--icue-view-toggle-vt-duration, 400ms);
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
+  clip-path: var(--icue-view-toggle-vt-clip-from, circle(0px at 50% 50%));
+}
+
+.animated-view-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.24);
+  color: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+  flex-shrink: 0;
+}
+
+.animated-view-toggle:hover:not(:disabled) {
+  transform: scale(1.06);
+  background: rgba(0, 0, 0, 0.34);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+
+.animated-view-toggle:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.animated-view-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
+.animated-view-toggle__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

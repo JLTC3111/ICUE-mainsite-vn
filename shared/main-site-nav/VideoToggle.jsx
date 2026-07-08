@@ -1,3 +1,5 @@
+import AnimatedViewToggle from '@icue/ui/AnimatedViewToggle';
+
 export default function VideoToggle({
   id,
   inputId,
@@ -5,11 +7,35 @@ export default function VideoToggle({
   label = 'Bật/tắt video nền',
   showLabel = true,
   visible = true,
+  animated = false,
+  checked = false,
+  onCheckedChange,
+  disabled = false,
 }) {
   if (!visible) return null;
 
   const variantClass =
     variant === 'navbar' ? 'home-video-toggle--navbar' : 'home-video-toggle--nav';
+
+  if (animated) {
+    return (
+      <div
+        className={`home-video-toggle ${variantClass} home-video-toggle--animated`}
+        id={id}
+        aria-label={label}
+      >
+        <AnimatedViewToggle
+          className="home-video-toggle__animated"
+          checked={checked}
+          onCheckedChange={onCheckedChange}
+          disabled={disabled}
+          ariaLabel={label}
+          duration={450}
+          variant="circle"
+        />
+      </div>
+    );
+  }
 
   return (
     <div

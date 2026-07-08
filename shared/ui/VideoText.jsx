@@ -8,11 +8,12 @@ function buildSvgMask({
   textAnchor,
   dominantBaseline,
   fontFamily,
+  viewBox,
 }) {
   const responsiveFontSize =
     typeof fontSize === 'number' ? `${fontSize}vw` : fontSize;
 
-  return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 120' preserveAspectRatio='xMidYMid meet' width='100%' height='100%'><text x='50%' y='52%' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'>${content}</text></svg>`;
+  return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}' preserveAspectRatio='xMidYMid meet' width='100%' height='100%'><text x='50%' y='52%' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'>${content}</text></svg>`;
 }
 
 /**
@@ -32,6 +33,7 @@ export default function VideoText({
   textAnchor = 'middle',
   dominantBaseline = 'middle',
   fontFamily = 'sans-serif',
+  viewBox = '0 0 500 120',
   as: Component = 'div',
 }) {
   const content = Children.toArray(children).join('');
@@ -45,8 +47,9 @@ export default function VideoText({
       textAnchor,
       dominantBaseline,
       fontFamily,
+      viewBox,
     }),
-    [content, viewportFontSize, fontWeight, textAnchor, dominantBaseline, fontFamily],
+    [content, viewportFontSize, fontWeight, textAnchor, dominantBaseline, fontFamily, viewBox],
   );
 
   const svgMask = useMemo(() => buildSvgMask(maskOptions), [maskOptions]);
