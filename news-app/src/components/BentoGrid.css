@@ -57,6 +57,17 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+}
+
+.bento-card--lens .bento-card__background {
+  pointer-events: auto;
+}
+
+.bento-card__lens {
+  border-radius: inherit;
+}
+
+.bento-card--lens .bento-card__body {
   pointer-events: none;
 }
 

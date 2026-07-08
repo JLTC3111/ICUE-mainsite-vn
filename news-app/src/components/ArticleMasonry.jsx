@@ -81,6 +81,7 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
             spanRows={item.spanRows}
             animate={!reduceMotion}
             animationDelay={reduceMotion ? 0 : index * 60}
+            lens={!reduceMotion && item.img !== PLACEHOLDER_COVER}
             cta={t('gallery.readArticle')}
             onClick={() => handleItemClick(item)}
             description={(

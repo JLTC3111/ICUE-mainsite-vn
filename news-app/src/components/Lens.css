@@ -1,0 +1,29 @@
+.lens {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.lens--disabled {
+  overflow: visible;
+}
+
+.lens__zoom {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.lens__zoom-inner {
+  position: absolute;
+  inset: 0;
+}
+
+.lens__zoom-inner > * {
+  width: 100%;
+  height: 100%;
+}
