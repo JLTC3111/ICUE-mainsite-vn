@@ -79,14 +79,17 @@
   flex: 1;
   padding: 20px 16px;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   background: none;
   font-size: clamp(0.75rem, 2vw, 1.15rem);
   font-weight: 600;
   color: #eef4fd;
   font-family: inherit;
+  border-radius: 0;
 }
 
 .structure-tab:hover {

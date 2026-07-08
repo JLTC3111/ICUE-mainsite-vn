@@ -12,6 +12,7 @@ import DeptIcon from '../components/DeptIcon'
 import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
 import { WordRotate } from '../components/magicui/WordRotate'
+import { RippleButton } from '../components/magicui/RippleButton'
 
 const TAB_IDS = [
   { id: 'org-chart', labelKey: 'tabs.orgChart' },
@@ -103,16 +104,17 @@ export default function StructurePage() {
           <div className="structure-content-wrapper">
             <div className="structure-tabs" role="tablist" aria-label={t('tabs.groupAria')}>
               {TAB_IDS.map((tab) => (
-                <button
+                <RippleButton
                   key={tab.id}
-                  type="button"
                   role="tab"
                   aria-selected={activeTab === tab.id}
                   className={`structure-tab${activeTab === tab.id ? ' active' : ''}`}
+                  rippleColor="rgba(255, 255, 255, 0.65)"
+                  duration="700ms"
                   onClick={() => setActiveTab(tab.id)}
                 >
                   {t(tab.labelKey)}
-                </button>
+                </RippleButton>
               ))}
             </div>
 

@@ -1,0 +1,35 @@
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ripple-button__label {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.ripple-button__ripples {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.ripple-button__ripple {
+  position: absolute;
+  border-radius: 9999px;
+  opacity: 0.35;
+  transform: scale(0);
+  animation: ripple-button-ripple var(--ripple-duration, 600ms) ease-out forwards;
+}
+
+@keyframes ripple-button-ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
