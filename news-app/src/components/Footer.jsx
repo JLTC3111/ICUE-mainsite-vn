@@ -27,20 +27,22 @@ function Footer() {
           <a href={`${MAIN}#/donations`}>{t('footer.donations')}</a>
         </div>
         <div className="icue-footer__brand">
-          <span className="icue-footer__logo">ICUE</span>
+          <div className="icue-footer__logo-wrap">
+            <span className="icue-footer__logo">ICUE</span>
+            <CircularText
+              text={CIRCULAR_TEXT}
+              className="icue-footer__circular-text"
+              spinDuration={24}
+              onHover="pause"
+              lightColor="#ffffff"
+              darkColor="#ffffff"
+              tintColor="#ffffff"
+              brightness={1.22}
+              contrast={0.5}
+            />
+          </div>
           <p className="icue-footer__institute">{t('instituteName')}</p>
           <p className="icue-footer__rights">© {year} {t('footer.rights')}</p>
-          <CircularText
-            text={CIRCULAR_TEXT}
-            className="icue-footer__circular-text"
-            spinDuration={24}
-            onHover="pause"
-            lightColor="#ffffff"
-            darkColor="#ffffff"
-            tintColor="#ffffff"
-            brightness={1.22}
-            contrast={0.5}
-          />
         </div>
       </div>
 

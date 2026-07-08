@@ -11,6 +11,7 @@ export default function ArticleSearch() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(params.get('q') || '')
   const inputRef = useRef(null)
+  const rootRef = useRef(null)
 
   useEffect(() => {
     setValue(params.get('q') || '')
@@ -48,8 +49,19 @@ export default function ArticleSearch() {
     return () => document.removeEventListener('keydown', onKey)
   }, [open])
 
+  useEffect(() => {
+    if (!open) return undefined
+    const onPointerDown = (event) => {
+      if (rootRef.current && !rootRef.current.contains(event.target)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [open])
+
   return (
-    <div className={`article-search${open ? ' is-open' : ''}`}>
+    <div ref={rootRef} className={`article-search${open ? ' is-open' : ''}`}>
       <button
         type="button"
         className="article-search__toggle"
