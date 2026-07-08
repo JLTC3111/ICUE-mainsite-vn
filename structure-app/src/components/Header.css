@@ -70,8 +70,8 @@
 }
 
 .structure-site-header__link:hover {
-  color: var(--icue-accent);
-  background: var(--icue-accent-muted);
+  color: #f8fafc;
+  background: rgba(10, 12, 18, 0.92);
 }
 
 .lang-switcher {

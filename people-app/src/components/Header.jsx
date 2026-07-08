@@ -1,18 +1,30 @@
 import { memo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import DrawerMenu from './DrawerMenu'
+import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 
 function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
   const { t } = useTranslation()
+  const { pathname } = useLocation()
   const { base, hashLink, structureLink } = useMainSite()
+  const currentPage = pathname.includes('/experts')
+    ? 'experts'
+    : pathname.includes('/core-team')
+      ? 'core-team'
+      : undefined
 
   return (
     <header className="people-header">
       <div className="people-header__inner icue-container">
-        <DrawerMenu />
+        <DrawerMenu
+          hashLink={hashLink}
+          peopleLink={(path) => `/people/${path}`}
+          orgHref={structureLink()}
+          currentPage={currentPage}
+        />
 
         <a href={base} className="people-header__brand" aria-label={t('nav.mainAria')}>
           <span className="people-header__logo">ICUE</span>

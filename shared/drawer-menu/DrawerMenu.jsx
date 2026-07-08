@@ -1,11 +1,7 @@
-import { memo, useState, useEffect, useCallback, useRef } from 'react'
+import { memo, useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
-import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useMainSite } from '../hooks/useMainSite'
 import './DrawerMenu.css'
-
-const peopleLink = (path) => `/people/${path}`
 
 const Icon = ({ children }) => (
   <svg
@@ -20,36 +16,34 @@ const Icon = ({ children }) => (
   </svg>
 )
 
-function DrawerMenu() {
+function CloseIcon() {
+  return (
+    <svg
+      className="nav-drawer__close-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#f8fafc"
+      strokeWidth={2.25}
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  )
+}
+
+function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage }) {
   const { t } = useTranslation()
-  const { hashLink, structureLink } = useMainSite()
-  const { pathname } = useLocation()
-  const onPeoplePage = pathname.includes('/experts') || pathname.includes('/core-team')
   const [open, setOpen] = useState(false)
-  const [peopleOpen, setPeopleOpen] = useState(onPeoplePage)
-  const [toggleAnchor, setToggleAnchor] = useState(null)
-  const toggleRef = useRef(null)
+  const [peopleOpen, setPeopleOpen] = useState(false)
 
   const close = useCallback(() => {
     setOpen(false)
-    setPeopleOpen(onPeoplePage)
-    setToggleAnchor(null)
-  }, [onPeoplePage])
+    setPeopleOpen(false)
+  }, [])
 
   const toggle = useCallback(() => {
-    setOpen((wasOpen) => {
-      if (!wasOpen && toggleRef.current) {
-        const rect = toggleRef.current.getBoundingClientRect()
-        setToggleAnchor({
-          top: rect.top,
-          left: rect.left,
-          width: rect.width,
-          height: rect.height,
-        })
-      }
-      if (wasOpen) setToggleAnchor(null)
-      return !wasOpen
-    })
+    setOpen((wasOpen) => !wasOpen)
   }, [])
 
   useEffect(() => {
@@ -67,15 +61,12 @@ function DrawerMenu() {
     }
   }, [open])
 
-  useEffect(() => {
-    if (onPeoplePage) setPeopleOpen(true)
-  }, [onPeoplePage])
-
   return (
     <>
-      {!open ? (
+      {open ? (
+        <span className="nav-drawer__toggle-placeholder" aria-hidden="true" />
+      ) : (
         <button
-          ref={toggleRef}
           type="button"
           className="nav-drawer__toggle"
           aria-label={t('drawer.menu')}
@@ -84,24 +75,18 @@ function DrawerMenu() {
         >
           <span /><span /><span />
         </button>
-      ) : null}
+      )}
 
-      {open && toggleAnchor
+      {open
         ? createPortal(
             <button
               type="button"
               className="nav-drawer__toggle is-open nav-drawer__toggle--floating"
-              style={{
-                top: toggleAnchor.top,
-                left: toggleAnchor.left,
-                width: toggleAnchor.width,
-                height: toggleAnchor.height,
-              }}
               aria-label={t('drawer.close')}
               aria-expanded
               onClick={toggle}
             >
-              <span /><span /><span />
+              <CloseIcon />
             </button>,
             document.body,
           )
@@ -122,7 +107,12 @@ function DrawerMenu() {
                 {t('drawer.home')}
               </a>
 
-              <a href={structureLink()} onClick={close}>
+              <a
+                href={orgHref}
+                className={currentPage === 'org' ? 'is-current' : undefined}
+                aria-current={currentPage === 'org' ? 'page' : undefined}
+                onClick={close}
+              >
                 <Icon><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></Icon>
                 {t('drawer.org')}
               </a>
@@ -156,9 +146,9 @@ function DrawerMenu() {
                 aria-expanded={peopleOpen}
                 onClick={() => setPeopleOpen((v) => !v)}
               >
-                <Icon><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></Icon>
+                <Icon><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.21a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></Icon>
                 <span>{t('drawer.people')}</span>
-                <svg className="nav-drawer__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <svg className="nav-drawer__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>
@@ -166,8 +156,8 @@ function DrawerMenu() {
               <div className={`nav-drawer__submenu ${peopleOpen ? 'is-open' : ''}`}>
                 <a
                   href={peopleLink('experts')}
-                  className={pathname.includes('/experts') ? 'is-current' : ''}
-                  aria-current={pathname.includes('/experts') ? 'page' : undefined}
+                  className={currentPage === 'experts' ? 'is-current' : undefined}
+                  aria-current={currentPage === 'experts' ? 'page' : undefined}
                   onClick={close}
                 >
                   <Icon><path strokeLinecap="round" strokeLinejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" /></Icon>
@@ -175,8 +165,8 @@ function DrawerMenu() {
                 </a>
                 <a
                   href={peopleLink('core-team')}
-                  className={pathname.includes('/core-team') ? 'is-current' : ''}
-                  aria-current={pathname.includes('/core-team') ? 'page' : undefined}
+                  className={currentPage === 'core-team' ? 'is-current' : undefined}
+                  aria-current={currentPage === 'core-team' ? 'page' : undefined}
                   onClick={close}
                 >
                   <Icon><path strokeLinecap="round" strokeLinejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" /></Icon>

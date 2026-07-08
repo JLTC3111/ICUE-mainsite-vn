@@ -17,6 +17,7 @@
   },
   "drawer": {
     "menu": "Menü",
+    "close": "Menü schließen",
     "home": "Startseite",
     "org": "Organisation & Struktur",
     "work": "Unsere Arbeit",

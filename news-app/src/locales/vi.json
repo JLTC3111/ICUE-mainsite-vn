@@ -17,6 +17,7 @@
   },
   "drawer": {
     "menu": "Menu",
+    "close": "Đóng menu",
     "home": "Trang Chủ",
     "org": "Cơ Cấu & Tổ Chức",
     "work": "Công Việc",

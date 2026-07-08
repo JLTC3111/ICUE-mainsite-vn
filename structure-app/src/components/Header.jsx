@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
-import DrawerMenu from './DrawerMenu'
+import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageSwitcher from './LanguageSwitcher'
 import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
@@ -21,7 +21,12 @@ function Header() {
         length="120px"
       />
       <div className="structure-site-header__inner icue-container">
-        <DrawerMenu />
+        <DrawerMenu
+          hashLink={hashLink}
+          peopleLink={peopleLink}
+          orgHref="/structure/"
+          currentPage="org"
+        />
 
         <a href={base} className="structure-site-header__brand" aria-label={t('nav.mainAria')}>
           <span className="structure-site-header__logo">ICUE</span>

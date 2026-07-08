@@ -12,9 +12,11 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
     alias: {
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
+      '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),
       '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
+      'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'),
     },
   },
   build: {

@@ -5,13 +5,13 @@ import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
-import DrawerMenu from './DrawerMenu'
+import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
 import './Header.css'
 
 function Header() {
   const { t } = useTranslation()
-  const { base, archiveLink } = useMainSite()
+  const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -26,7 +26,11 @@ function Header() {
   return (
     <header className="icue-header">
       <div className="icue-header__inner icue-container">
-        <DrawerMenu />
+        <DrawerMenu
+          hashLink={hashLink}
+          peopleLink={peopleLink}
+          orgHref={structureLink()}
+        />
         <ArticleSearch />
 
         <a href={base} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
