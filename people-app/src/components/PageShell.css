@@ -132,6 +132,12 @@
   color: #000;
 }
 
+@media (max-width: 900px) {
+  .page-shell__header {
+    margin-bottom: 28px;
+  }
+}
+
 @media (max-width: 640px) {
   .page-shell__main {
     padding: 24px 16px 48px;

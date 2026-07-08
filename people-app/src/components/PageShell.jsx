@@ -52,9 +52,11 @@ export default function PageShell({
               </NavLink>
             </nav>
 
-            <div className="page-shell__titles">
-              <h1 className="page-shell__title">{t(`${pageKey}.title`)}</h1>
-              <p className="page-shell__subtitle">{t(`${pageKey}.subtitle`)}</p>
+            <div className="page-shell__intro">
+              <div className="page-shell__titles">
+                <h1 className="page-shell__title">{t(`${pageKey}.title`)}</h1>
+                <p className="page-shell__subtitle">{t(`${pageKey}.subtitle`)}</p>
+              </div>
             </div>
           </div>
 

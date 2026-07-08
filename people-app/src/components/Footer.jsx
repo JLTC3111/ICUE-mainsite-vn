@@ -1,7 +1,10 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMainSite } from '../hooks/useMainSite'
+import CircularText from './CircularText/CircularText'
 import './Footer.css'
+
+const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
 function Footer() {
   const { t } = useTranslation()
@@ -28,6 +31,12 @@ function Footer() {
           <span className="icue-footer__logo">ICUE</span>
           <p className="icue-footer__institute">{t('instituteName')}</p>
           <p className="icue-footer__rights">© {year} {t('footer.rights')}</p>
+          <CircularText
+            text={CIRCULAR_TEXT}
+            className="icue-footer__circular-text"
+            spinDuration={24}
+            onHover="pause"
+          />
         </div>
       </div>
 
