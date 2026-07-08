@@ -2,13 +2,20 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.88);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--icue-border);
 }
 
+.structure-site-header__rays {
+  z-index: 0;
+}
+
 .structure-site-header__inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   height: var(--icue-header-h);

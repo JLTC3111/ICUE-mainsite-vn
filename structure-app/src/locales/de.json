@@ -167,9 +167,8 @@
     "close": "Schließen"
   },
   "language": "Sprache",
-  "taglines": [
-    "Technologie für die Zukunft",
-    "Shaping the Next Generation",
-    "Innovating Without Limits"
-  ]
+  "taglines": {
+    "shapingNextGeneration": "Die nächste Generation gestalten",
+    "innovatingWithoutLimits": "Grenzenlos innovieren"
+  }
 }

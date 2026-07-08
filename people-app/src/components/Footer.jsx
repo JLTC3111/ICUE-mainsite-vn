@@ -28,13 +28,15 @@ function Footer() {
           <a href={hashLink('donations')}>{t('footer.donations')}</a>
         </div>
         <div className="icue-footer__brand">
-          <CircularText
-            text={CIRCULAR_TEXT}
-            className="icue-footer__circular-text"
-            spinDuration={24}
-            onHover="pause"
-          />
-          <span className="icue-footer__logo">ICUE</span>
+          <div className="icue-footer__logo-wrap">
+            <span className="icue-footer__logo">ICUE</span>
+            <CircularText
+              text={CIRCULAR_TEXT}
+              className="icue-footer__circular-text"
+              spinDuration={24}
+              onHover="pause"
+            />
+          </div>
           <p className="icue-footer__institute">{t('instituteName')}</p>
           <p className="icue-footer__rights">© {year} {t('footer.rights')}</p>
         </div>

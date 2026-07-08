@@ -167,6 +167,14 @@
   if (navigator.userAgent.includes('Headless')) {
     document.body.innerHTML = '<img src="public/preview.jpg" style="width:100vw;height:100vh;object-fit:cover;" />';
   }</script>
+<script>
+  (function () {
+    var hash = window.location.hash || '';
+    if (hash === '#/orgStructure' || hash === '#/orgStructure/') {
+      window.location.replace('/structure/');
+    }
+  })();
+</script>
 <script defer src="./zalo-link.js"></script>
 <script src="src/script.js?v=20250712" defer></script>
 </body>

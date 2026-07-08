@@ -45,11 +45,6 @@ export default function LegalDocuments({
         color: CARD_COLORS[index % CARD_COLORS.length],
         content: (
           <div className="magic-bento-body">
-            <div className="magic-bento-card__header">
-              <span className="magic-bento-card__label">
-                {t('documents.title')}
-              </span>
-            </div>
             <div className="magic-bento-card__content">
               <h3 className="magic-bento-card__title">{category.title}</h3>
             </div>
@@ -70,7 +65,7 @@ export default function LegalDocuments({
           </div>
         ),
       })),
-    [filtered, onDownload, t],
+    [filtered, onDownload],
   )
 
   return (

@@ -53,10 +53,14 @@ export default function StructurePage() {
     [],
   )
 
-  const taglines = useMemo(() => {
-    const words = t('taglines', { returnObjects: true })
-    return Array.isArray(words) ? words : [t('tagline')]
-  }, [t, i18n.language])
+  const taglines = useMemo(
+    () => [
+      t('tagline'),
+      t('taglines.shapingNextGeneration'),
+      t('taglines.innovatingWithoutLimits'),
+    ],
+    [t, i18n.language],
+  )
 
   function openProfile(query) {
     const profile = typeof query === 'object' ? query : findProfile(query)

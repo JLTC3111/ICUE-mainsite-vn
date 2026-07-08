@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import ProfileCard from './ProfileCard/ProfileCard'
 
@@ -24,7 +25,7 @@ export default function ProfileModal({ profile, onClose }) {
   const title = t(`orgChart.people.${profile.id}.title`)
   const bio = t(`orgChart.people.${profile.id}.bio`)
 
-  return (
+  return createPortal(
     <div
       className="profile-modal"
       role="dialog"
@@ -51,7 +52,7 @@ export default function ProfileModal({ profile, onClose }) {
           name={displayName}
           title={title}
           handle={profile.handle || profile.id}
-          status={bio}
+          status="ICUE"
           contactText={t('modal.close')}
           showUserInfo
           enableTilt
@@ -61,7 +62,11 @@ export default function ProfileModal({ profile, onClose }) {
           innerGradient="linear-gradient(145deg, rgba(40,33,168,0.55) 0%, rgba(54,138,223,0.35) 100%)"
           onContactClick={onClose}
         />
+        {bio ? (
+          <p className="profile-modal-bio">{bio}</p>
+        ) : null}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

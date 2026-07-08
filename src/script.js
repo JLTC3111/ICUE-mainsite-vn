@@ -2167,6 +2167,11 @@ window.addEventListener('hashchange', router);
 function router() {
   const hash = window.location.hash || '#/Home';
   const page = hash.replace('#/', '') || 'Home';
+
+  if (page === 'orgStructure') {
+    window.location.replace('/structure/');
+    return;
+  }
   
   // If we are already on the target page and this isn't the first load, do nothing
   if (page === currentPage && !isInitialLoad) {

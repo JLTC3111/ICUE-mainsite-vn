@@ -1,0 +1,55 @@
+.light-rays {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.light-rays__inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.light-rays__glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+}
+
+.light-rays__glow--left {
+  background: radial-gradient(
+    circle at 20% 15%,
+    color-mix(in srgb, var(--light-rays-color) 45%, transparent),
+    transparent 70%
+  );
+}
+
+.light-rays__glow--right {
+  background: radial-gradient(
+    circle at 80% 10%,
+    color-mix(in srgb, var(--light-rays-color) 35%, transparent),
+    transparent 75%
+  );
+}
+
+.light-rays__ray {
+  pointer-events: none;
+  position: absolute;
+  top: -12%;
+  left: var(--ray-left);
+  width: var(--ray-width);
+  height: var(--light-rays-length);
+  transform: translateX(-50%);
+  transform-origin: top center;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--light-rays-color) 70%, transparent),
+    transparent
+  );
+  mix-blend-mode: screen;
+  filter: blur(var(--light-rays-blur));
+  opacity: 0;
+}

@@ -570,7 +570,7 @@
 
 .profile-modal .pc-card {
   height: auto;
-  max-height: min(72vh, 520px);
+  max-height: none;
   width: 100%;
 }
 

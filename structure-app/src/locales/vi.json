@@ -167,9 +167,8 @@
     "close": "Đóng"
   },
   "language": "Ngôn ngữ",
-  "taglines": [
-    "Công Nghệ cho Tương Lai",
-    "Shaping the Next Generation",
-    "Innovating Without Limits"
-  ]
+  "taglines": {
+    "shapingNextGeneration": "Định Hình Thế Hệ Kế Tiếp",
+    "innovatingWithoutLimits": "Đổi Mới Không Giới Hạn"
+  }
 }

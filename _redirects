@@ -23,6 +23,9 @@
 /structure           /structure/index.html   200
 /structure/*         /structure/index.html   200
 
+# Legacy org structure hash page and HTML stub → new Structure app.
+/src/pages/orgStructure.html  /structure/  301
+
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
 

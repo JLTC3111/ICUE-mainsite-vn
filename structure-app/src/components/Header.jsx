@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import DrawerMenu from './DrawerMenu'
 import LanguageSwitcher from './LanguageSwitcher'
+import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 
@@ -11,6 +12,14 @@ function Header() {
 
   return (
     <header className="structure-site-header">
+      <LightRays
+        className="structure-site-header__rays"
+        count={6}
+        color="rgba(54, 138, 223, 0.42)"
+        blur={28}
+        speed={16}
+        length="120px"
+      />
       <div className="structure-site-header__inner icue-container">
         <DrawerMenu />
 

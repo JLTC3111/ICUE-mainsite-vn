@@ -167,9 +167,8 @@
     "close": "닫기"
   },
   "language": "언어",
-  "taglines": [
-    "미래를 위한 기술",
-    "Shaping the Next Generation",
-    "Innovating Without Limits"
-  ]
+  "taglines": {
+    "shapingNextGeneration": "다음 세대를 만들어 가다",
+    "innovatingWithoutLimits": "한계 없는 혁신"
+  }
 }

@@ -392,33 +392,36 @@
 
 .profile-modal {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   background: rgba(5, 10, 22, 0.72);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 24px 16px;
+  z-index: 10000;
+  padding: clamp(16px, 3vh, 40px) 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   backdrop-filter: blur(6px);
 }
 
 .profile-modal-content {
   background: transparent;
   border-radius: 0;
-  max-width: 400px;
-  width: min(92vw, 400px);
-  max-height: 90vh;
-  overflow: visible;
+  max-width: 440px;
+  width: min(92vw, 440px);
+  margin: auto;
   position: relative;
   box-shadow: none;
+  flex-shrink: 0;
 }
 
 .profile-modal-close {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: 0;
+  right: 0;
   z-index: 5;
   width: 36px;
   height: 36px;
@@ -438,15 +441,16 @@
   border-color: rgba(54, 138, 223, 0.8);
 }
 
-.profile-modal .pc-status {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  max-width: 180px;
-  white-space: normal;
-  line-height: 1.35;
-  font-size: 0.72rem;
+.profile-modal-bio {
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
