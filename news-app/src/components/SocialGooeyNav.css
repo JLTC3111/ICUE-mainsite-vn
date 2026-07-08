@@ -1,10 +1,10 @@
 .news-social-gooey {
   flex: 0 0 auto;
   isolation: isolate;
-  --color-1: #ff0000;
-  --color-2: #1877f2;
-  --color-3: #0068ff;
-  --color-4: #c8ff00;
+  --color-1: #ffffff;
+  --color-2: #ffffff;
+  --color-3: #ffffff;
+  --color-4: #ffffff;
 }
 
 .news-social-gooey .effect {

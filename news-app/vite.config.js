@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => {
         '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
         '@icue/text': path.resolve(__dirname, '../shared/text'),
         '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
+        '@icue/ui': path.resolve(__dirname, '../shared/ui'),
       },
     },
     build: {
