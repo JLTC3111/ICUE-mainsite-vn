@@ -59,6 +59,16 @@ export const DRAWER_LINKS = [
   { page: 'aboutUs', href: '#/aboutUs', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
 ];
 
+/** Path-based drawer links for the standalone home React app. */
+export const STANDALONE_DRAWER_LINKS = [
+  { page: 'Home', href: '/', label: 'Trang Chủ', icon: IconHome, closeOnly: true },
+  { page: 'orgStructure', href: '/structure/', label: 'Cơ Cấu & Tổ Chức', icon: IconOrg, closeOnly: true },
+  { page: 'ourWork', href: '/our-work', label: 'Công Việc', icon: IconWork, closeOnly: true },
+  { page: 'pastProjects', href: '/past-projects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
+  { page: 'News', href: '/newsroom/', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
+  { page: 'aboutUs', href: '/about-us', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
+];
+
 export const PEOPLE_SUBMENU = {
   page: 'ourPeople',
   label: 'Nhân Lực',
@@ -81,8 +91,13 @@ export const PEOPLE_SUBMENU = {
   ],
 };
 
-export function DrawerLinkIcon({ icon: Icon }) {
-  return Icon ? <Icon /> : null;
-}
-
-export { Fragment };
+export {
+  IconHome,
+  IconOrg,
+  IconWork,
+  IconProjects,
+  IconNews,
+  IconAbout,
+  IconPeople,
+  IconArrow,
+};

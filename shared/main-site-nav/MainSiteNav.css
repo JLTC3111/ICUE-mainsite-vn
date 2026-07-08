@@ -557,7 +557,7 @@
   border-left: 12.5px solid #737373;
   padding-left: 0.5rem;
   color: #000;
-  box-shadow: -4px -6px 8px rgba(255, 255, 255, 1);
+  box-shadow: -4px 6px 12px rgba(29, 183, 255, 0.55);
 }
 
 .main-site-nav #drawerMenu a.active,
@@ -613,7 +613,7 @@
   border-left: 12.5px solid #737373;
   padding-left: 0.5rem;
   color: #000;
-  box-shadow: -4px -6px 8px rgba(255, 255, 255, 1);
+  box-shadow: -4px 6px 12px rgba(29, 183, 255, 0.55);
 }
 
 .main-site-nav .submenu {

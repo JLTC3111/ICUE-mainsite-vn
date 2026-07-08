@@ -37,6 +37,24 @@ const STATIC_PAGES = [
   'faqs', 'cookies', 'notableAwards', 'communityActivities',
 ];
 
+/** Path routes for migrated main-site pages (no hash). */
+export const MIGRATED_PAGE_PATHS = {
+  Home: '/',
+  Contact: '/contact',
+  aboutUs: '/about-us',
+  ourWork: '/our-work',
+  pastProjects: '/past-projects',
+  recruitment: '/recruitment',
+  News: '/newsroom/',
+  meetOurExperts: '/people/experts',
+  coreTeam: '/people/core-team',
+  orgStructure: '/structure/',
+};
+
+const PATH_TO_PAGE = Object.fromEntries(
+  Object.entries(MIGRATED_PAGE_PATHS).map(([page, path]) => [path, page]),
+);
+
 function pageFromHash(hash) {
   if (hash && hash.startsWith('#/')) {
     const page = hash.substring(2).replace(/\/$/, '');
@@ -45,19 +63,22 @@ function pageFromHash(hash) {
   return null;
 }
 
-function pageFromPathname(pathname) {
-  if (!pathname || pathname === '/') return null;
+export function pageFromPathname(pathname) {
+  if (!pathname) return 'Home';
+  if (PATH_TO_PAGE[pathname]) return PATH_TO_PAGE[pathname];
+  if (pathname === '/') return 'Home';
 
   const pathSegments = pathname.split('/').filter(Boolean);
-  if (pathSegments.length === 0) return null;
+  if (pathSegments.length === 0) return 'Home';
 
   if (pathSegments[0] === 'people') {
     if (pathSegments.includes('core-team')) return 'coreTeam';
     if (pathSegments.includes('experts')) return 'meetOurExperts';
   }
   if (pathSegments[0] === 'structure') return 'orgStructure';
+  if (pathSegments[0] === 'newsroom') return 'News';
 
-  let pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
+  const pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
   if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
     return pathPage;
   }
@@ -87,14 +108,21 @@ export function getCurrentPage() {
     if (dataPage) return dataPage;
   }
 
-  const pathPage = pageFromPathname(pathname);
-  if (pathPage) return pathPage;
-
-  return 'Home';
+  return pageFromPathname(pathname);
 }
 
 export function syncHashForPage(page) {
   if (!page || page === 'meetOurExperts' || page === 'coreTeam' || page === 'orgStructure') return;
+
+  const migratedPath = MIGRATED_PAGE_PATHS[page];
+  if (migratedPath && !window.location.hash) {
+    const url = `${migratedPath}${window.location.search}`;
+    if (window.location.pathname !== migratedPath) {
+      history.replaceState(null, '', url);
+    }
+    return;
+  }
+
   const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
   if (window.location.hash === targetHash) return;
   const url = `${window.location.pathname}${window.location.search}${targetHash}`;
@@ -106,12 +134,21 @@ function mapPageName(pageName, fromLang, toLang) {
   return PAGE_MAPPING[pageName] || pageName;
 }
 
+function buildTargetPath(targetPageName) {
+  if (MIGRATED_PAGE_PATHS[targetPageName]) {
+    return MIGRATED_PAGE_PATHS[targetPageName];
+  }
+  if (STATIC_PAGES.includes(targetPageName)) {
+    return `#/${targetPageName}`;
+  }
+  return targetPageName === 'Home' ? '#/Home' : `#/${targetPageName}`;
+}
+
 export function buildLanguageSwitchTarget() {
   let currentHost = window.location.host;
-  const currentPath = window.location.pathname;
-  const currentHash = window.location.hash;
   const currentSearch = window.location.search;
   const currentProtocol = window.location.protocol;
+  const currentHash = window.location.hash;
 
   if (currentHost.includes('localhost') || currentHost.includes('127.0.0.1')) {
     const isEnglishSite =
@@ -141,21 +178,7 @@ export function buildLanguageSwitchTarget() {
     targetSite.language
   );
 
-  let targetPath = '';
-  if (targetPageName === 'Home') {
-    targetPath = '#/Home';
-  } else if (targetPageName === 'meetOurExperts') {
-    targetPath = '/people/experts';
-  } else if (targetPageName === 'coreTeam') {
-    targetPath = '/people/core-team';
-  } else if (targetPageName === 'orgStructure') {
-    targetPath = '/structure/';
-  } else if (STATIC_PAGES.includes(targetPageName)) {
-    targetPath = `#/${targetPageName}`;
-  } else {
-    targetPath = `#/${targetPageName}`;
-  }
-
+  const targetPath = buildTargetPath(targetPageName);
   const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
 
   return {

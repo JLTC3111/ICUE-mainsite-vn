@@ -1,0 +1,64 @@
+/** Path routes for migrated main-site pages. */
+export const ROUTE_PATHS = {
+  home: '/',
+  contact: '/contact',
+  aboutUs: '/about-us',
+  ourWork: '/our-work',
+  pastProjects: '/past-projects',
+  recruitment: '/recruitment',
+}
+
+/** Maps React path -> legacy page id used by script.js init + nav state. */
+export const PATH_TO_PAGE = {
+  [ROUTE_PATHS.home]: 'Home',
+  [ROUTE_PATHS.contact]: 'Contact',
+  [ROUTE_PATHS.aboutUs]: 'aboutUs',
+  [ROUTE_PATHS.ourWork]: 'ourWork',
+  [ROUTE_PATHS.pastProjects]: 'pastProjects',
+  [ROUTE_PATHS.recruitment]: 'recruitment',
+}
+
+export const PAGE_TO_PATH = Object.fromEntries(
+  Object.entries(PATH_TO_PAGE).map(([path, page]) => [page, path]),
+)
+
+export const LEGACY_PAGE_FILES = {
+  Contact: 'Contact.html',
+  aboutUs: 'aboutUs.html',
+  ourWork: 'ourWork.html',
+  pastProjects: 'pastProjects.html',
+  recruitment: 'recruitment.html',
+}
+
+export function pageFromPathname(pathname) {
+  return PATH_TO_PAGE[pathname] || null
+}
+
+export function pathFromPage(page) {
+  return PAGE_TO_PATH[page] || ROUTE_PATHS.home
+}
+
+/** Rewrite legacy hash links and public/ asset paths inside injected HTML. */
+export function prepareLegacyHtml(rawHtml) {
+  const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
+  const styles = [...doc.querySelectorAll('style')].map((el) => el.outerHTML).join('\n')
+  let bodyHtml = doc.body?.innerHTML || rawHtml
+
+  const hashToPath = {
+    '#/Home': ROUTE_PATHS.home,
+    '#/Contact': ROUTE_PATHS.contact,
+    '#/aboutUs': ROUTE_PATHS.aboutUs,
+    '#/ourWork': ROUTE_PATHS.ourWork,
+    '#/pastProjects': ROUTE_PATHS.pastProjects,
+    '#/recruitment': ROUTE_PATHS.recruitment,
+    '#/News': '/newsroom/',
+  }
+
+  bodyHtml = bodyHtml.replace(/\bpublic\//g, '/')
+  for (const [hash, path] of Object.entries(hashToPath)) {
+    bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)
+  }
+
+  return `${styles}${bodyHtml}`
+}

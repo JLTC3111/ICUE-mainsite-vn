@@ -19,6 +19,9 @@ const MIME = {
   '.ico': 'image/x-icon',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.glb': 'model/gltf-binary',
 };
 
 // In dev, Vite's SPA fallback serves the main index.html for any extensionless
@@ -73,6 +76,66 @@ function spaDevFallback({ name, basePath, outDirName }) {
   };
 }
 
+function homeDevFallback() {
+  const root = process.cwd();
+  const appDir = path.resolve(root, 'dist-home');
+  const siblingPrefixes = ['/newsroom', '/people', '/structure'];
+  const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
+
+  return {
+    name: 'home-dev-fallback',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const urlPath = (req.url || '').split('?')[0];
+
+        if (urlPath.startsWith('/newsroom/api/')) return next();
+        if (siblingPrefixes.some((prefix) => urlPath === prefix || urlPath.startsWith(`${prefix}/`))) {
+          return next();
+        }
+        if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
+
+        const rel = urlPath.replace(/^\//, '');
+        const filePath = path.join(appDir, rel);
+        const hasExtension = Boolean(rel && path.extname(rel));
+
+        if (hasExtension) {
+          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
+            res.end(fs.readFileSync(filePath));
+            return;
+          }
+
+          // Netlify serves /public/* from repo root; map to dist-home copies when present.
+          if (urlPath.startsWith('/public/')) {
+            const publicPath = path.join(appDir, rel.replace(/^public\//, ''));
+            if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
+              res.statusCode = 200;
+              res.setHeader('Content-Type', MIME[path.extname(publicPath).toLowerCase()] || 'application/octet-stream');
+              res.end(fs.readFileSync(publicPath));
+              return;
+            }
+          }
+
+          return next();
+        }
+
+        const indexPath = path.join(appDir, 'index.html');
+        if (!fs.existsSync(indexPath)) {
+          res.statusCode = 503;
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          res.end('Home app not built. Run npm run build:home first (or npm run dev, which builds it automatically).');
+          return;
+        }
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(fs.readFileSync(indexPath, 'utf-8'));
+      });
+    },
+  };
+}
+
 export default {
   base: '', // Use '' or './' to keep all paths relative after build
   plugins: [
@@ -81,6 +144,7 @@ export default {
     spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom' }),
     spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people' }),
     spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure' }),
+    homeDevFallback(),
   ],
   resolve: {
     alias: {

@@ -1,3 +1,10 @@
+# Home React app (history routing) — migrated from hash SPA.
+/contact           /index.html   200
+/about-us          /index.html   200
+/our-work          /index.html   200
+/past-projects     /index.html   200
+/recruitment       /index.html   200
+
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.
 # SPA fallback applies only to extensionless routes (not missing .js/.css files).

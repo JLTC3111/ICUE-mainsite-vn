@@ -5,6 +5,7 @@ import {
   useState,
 } from 'react';
 import { registerMainSiteNavBridge } from './bridge';
+import { pageFromPathname } from './languageSwitcher';
 import MainSiteDrawer from './MainSiteDrawer';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
@@ -25,8 +26,14 @@ function getPageVisibility(page) {
   };
 }
 
-export default function MainSiteNav() {
-  const initialPage = getPageFromHash();
+export default function MainSiteNav({
+  variant = 'hash',
+  drawerLinks,
+  homeHref = 'https://icue.vn',
+  contactHref = '#/aboutUs',
+}) {
+  const isStandalone = variant === 'standalone';
+  const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
   const initialVisibility = getPageVisibility(initialPage);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,6 +56,19 @@ export default function MainSiteNav() {
   const activePageRef = useRef(initialPage);
 
   const applyPageState = useCallback((page) => {
+    if (isStandalone) {
+      const resolvedPage = page || pageFromPathname(window.location.pathname) || 'Home';
+      const visibility = getPageVisibility(resolvedPage);
+      activePageRef.current = resolvedPage;
+      setActivePage(resolvedPage);
+      setShowContactLink(visibility.showContactLink);
+      setShowHomeVideoToggle(visibility.showHomeVideoToggle);
+      setShowAboutUsVideoToggle(visibility.showAboutUsVideoToggle);
+      setDarkNav(visibility.darkNav);
+      window.__mainSiteNavRefreshLanguage?.();
+      return;
+    }
+
     const hashPage = getPageFromHash();
     const hasExplicitHash = Boolean(window.location.hash && window.location.hash.startsWith('#/'));
     const resolvedPage = hasExplicitHash ? hashPage : page;
@@ -60,7 +80,7 @@ export default function MainSiteNav() {
     setShowAboutUsVideoToggle(visibility.showAboutUsVideoToggle);
     setDarkNav(visibility.darkNav);
     window.__mainSiteNavRefreshLanguage?.();
-  }, []);
+  }, [isStandalone]);
 
   const handleHomeVideoToggle = useCallback((enabled) => {
     window.HomeBackgroundVideoManager?.setEnabled?.(enabled);
@@ -194,10 +214,11 @@ export default function MainSiteNav() {
   }, []);
 
   useEffect(() => {
+    if (isStandalone) return undefined;
     const onHashChange = () => applyPageState(getPageFromHash());
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
-  }, [applyPageState]);
+  }, [applyPageState, isStandalone]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => playEntranceAnimation(true), 50);
@@ -267,6 +288,10 @@ export default function MainSiteNav() {
           showContactLink={showContactLink}
           showHomeVideoToggle={showHomeVideoToggle}
           showAboutUsVideoToggle={showAboutUsVideoToggle}
+          homeHref={homeHref}
+          contactHref={contactHref}
+          isStandalone={isStandalone}
+          assetPrefix={isStandalone ? '/' : 'public/'}
           homeVideoEnabled={homeVideoEnabled}
           homeVideoToggleDisabled={homeVideoToggleDisabled}
           onHomeVideoToggle={handleHomeVideoToggle}
@@ -285,6 +310,7 @@ export default function MainSiteNav() {
         open={drawerOpen}
         onClose={handleCloseDrawer}
         activePage={activePage}
+        links={drawerLinks}
       />
     </div>
   );

@@ -10,12 +10,18 @@ function navigateDrawerLink(link, onClose) {
     return;
   }
 
-  window.location.href = link.href;
+  window.location.assign(link.href);
 }
 
 const PEOPLE_PAGES = new Set(['ourPeople', 'meetOurExperts', 'coreTeam']);
 
-export default function MainSiteDrawer({ open, onClose, activePage }) {
+export default function MainSiteDrawer({
+  open,
+  onClose,
+  activePage,
+  links = DRAWER_LINKS,
+  peopleSubmenu = PEOPLE_SUBMENU,
+}) {
   const drawerRef = useRef(null);
   const handleRef = useRef(null);
   const [peopleOpen, setPeopleOpen] = useState(false);
@@ -91,6 +97,8 @@ export default function MainSiteDrawer({ open, onClose, activePage }) {
     .filter(Boolean)
     .join(' ');
 
+  const PeopleIcon = peopleSubmenu.icon;
+
   return (
     <div
       ref={drawerRef}
@@ -108,7 +116,7 @@ export default function MainSiteDrawer({ open, onClose, activePage }) {
         title="Drag to resize menu"
       />
 
-      {DRAWER_LINKS.map((link) => {
+      {links.map((link) => {
         const Icon = link.icon;
         const isActive = link.page === activePage;
         return (
@@ -132,16 +140,16 @@ export default function MainSiteDrawer({ open, onClose, activePage }) {
       <a
         href="#"
         className={['has-submenu', PEOPLE_PAGES.has(activePage) ? 'active' : ''].filter(Boolean).join(' ')}
-        data-page={PEOPLE_SUBMENU.page}
+        data-page={peopleSubmenu.page}
         aria-current={PEOPLE_PAGES.has(activePage) ? 'page' : undefined}
         onClick={togglePeople}
       >
-        <PEOPLE_SUBMENU.icon />
-        {PEOPLE_SUBMENU.label}
+        <PeopleIcon />
+        {peopleSubmenu.label}
       </a>
 
       <div id="ourPeopleSubmenu" className={submenuClass}>
-        {PEOPLE_SUBMENU.items.map((item) => {
+        {peopleSubmenu.items.map((item) => {
           const Icon = item.icon;
           const isActive = item.page === activePage;
           return (

@@ -3,15 +3,16 @@ import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
 import MetallicMenuIcon from './MetallicMenuIcon';
 
-const LOGO_VIDEO_SRC = 'public/bgVideos/video-text-football.mp4';
-const CONTACT_VIDEO_SRC = 'public/bgVideos/blueflow.mp4';
-
 export default function MainSiteHeader({
   drawerOpen,
   onToggleDrawer,
   showContactLink,
   showHomeVideoToggle,
   showAboutUsVideoToggle,
+  homeHref = 'https://icue.vn',
+  contactHref = '#/aboutUs',
+  isStandalone = false,
+  assetPrefix = 'public/',
   homeVideoEnabled,
   homeVideoToggleDisabled,
   onHomeVideoToggle,
@@ -24,26 +25,30 @@ export default function MainSiteHeader({
   contactLinkRef,
   flagLinkRef,
 }) {
+  const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
+  const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
+  const logoMarkSrc = `${assetPrefix}logoIcons/favicon.png`;
+
   return (
     <>
       <div className="main-site-nav__left logo-banner">
         <a
           ref={logoLinkRef}
-          href="https://icue.vn"
+          href={homeHref}
           id="logo-link"
           className="logo-link"
           aria-label="Go to homepage"
         >
           <img
             className="logo-mark"
-            src="public/logoIcons/favicon.png"
+            src={logoMarkSrc}
             alt=""
             aria-hidden="true"
             decoding="async"
           />
           <VideoText
             className="logo-wordmark"
-            src={LOGO_VIDEO_SRC}
+            src={logoVideoSrc}
             fontSize="72"
             fontWeight="700"
             fontFamily="Poppins, system-ui, sans-serif"
@@ -101,13 +106,15 @@ export default function MainSiteHeader({
         {showContactLink && (
           <a
             ref={contactLinkRef}
-            href="#/aboutUs"
+            href={contactHref}
             data-page="aboutUs"
             className="contact-link"
             id="contactLink"
             onClick={(e) => {
-              e.preventDefault();
-              window.location.hash = '#/aboutUs';
+              if (!isStandalone) {
+                e.preventDefault();
+                window.location.hash = '#/aboutUs';
+              }
               if (typeof window.closeDrawerMenu === 'function') {
                 window.closeDrawerMenu();
               }
@@ -115,7 +122,7 @@ export default function MainSiteHeader({
           >
             <VideoText
               className="contact-link-wordmark"
-              src={CONTACT_VIDEO_SRC}
+              src={contactVideoSrc}
               fontSize="64"
               fontWeight="700"
               fontFamily="Poppins, system-ui, sans-serif"
