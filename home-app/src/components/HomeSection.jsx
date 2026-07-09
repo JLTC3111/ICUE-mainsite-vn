@@ -10,6 +10,7 @@ export default function HomeSection({
   cards,
   beamRef,
   cardBeamRefs = [],
+  enableCardGlow = false,
 }) {
   const sectionClass = ['home-section', alt ? 'home-section--alt' : ''].filter(Boolean).join(' ')
 
@@ -28,6 +29,7 @@ export default function HomeSection({
             key={`${id}-${card.title}`}
             {...card}
             beamRef={cardBeamRefs[cardIndex]}
+            enableGlow={enableCardGlow}
           />
         ))}
       </div>

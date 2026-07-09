@@ -43,6 +43,7 @@ function createBeamBalancer() {
 }
 
 export default function HomeBeamNetwork({
+  enabled = false,
   containerRef,
   heroRef,
   sectionRefs,
@@ -102,7 +103,7 @@ export default function HomeBeamNetwork({
     return pairs
   }, [heroRef, sectionRefs, cardRefs])
 
-  if (!ready || !allowMotion) return null
+  if (!ready || !allowMotion || !enabled) return null
 
   return (
     <div className="home-beam-layer" aria-hidden="true">

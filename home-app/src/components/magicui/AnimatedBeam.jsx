@@ -1,6 +1,33 @@
-import { useEffect, useId, useLayoutEffect, useState } from 'react'
+import { useId, useLayoutEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import './AnimatedBeam.css'
+
+const PATH_PADDING = 16
+
+function buildBeamLayout({
+  startX,
+  startY,
+  endX,
+  endY,
+  curvature,
+  pathWidth,
+}) {
+  const controlX = (startX + endX) / 2 + curvature
+  const controlY = (startY + endY) / 2
+  const padding = Math.max(PATH_PADDING, pathWidth * 4, Math.abs(curvature) * 0.35)
+
+  const minX = Math.min(startX, endX, controlX) - padding
+  const minY = Math.min(startY, endY, controlY) - padding
+  const maxX = Math.max(startX, endX, controlX) + padding
+  const maxY = Math.max(startY, endY, controlY) + padding
+
+  const width = Math.max(1, maxX - minX)
+  const height = Math.max(1, maxY - minY)
+
+  const pathD = `M ${startX - minX},${startY - minY} Q ${controlX - minX},${controlY - minY} ${endX - minX},${endY - minY}`
+
+  return { pathD, x: minX, y: minY, width, height }
+}
 
 export default function AnimatedBeam({
   className = '',
@@ -25,8 +52,7 @@ export default function AnimatedBeam({
   endYOffset = 0,
 }) {
   const id = useId().replace(/:/g, '')
-  const [pathD, setPathD] = useState('')
-  const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 })
+  const [layout, setLayout] = useState(null)
 
   const gradientCoordinates = reverse
     ? {
@@ -47,7 +73,7 @@ export default function AnimatedBeam({
     let rafId = 0
     const observed = new Set()
 
-    const observeNode = (node) => {
+    const observeNode = (node, resizeObserver) => {
       if (!node || observed.has(node)) return
       observed.add(node)
       resizeObserver.observe(node)
@@ -64,23 +90,19 @@ export default function AnimatedBeam({
 
       if (containerRect.width === 0 || containerRect.height === 0) return false
 
-      observeNode(containerRef.current)
-      observeNode(fromRef.current)
-      observeNode(toRef.current)
-
-      const svgWidth = containerRect.width
-      const svgHeight = containerRect.height
-
       const startX = rectA.left - containerRect.left + rectA.width / 2 + startXOffset
       const startY = rectA.top - containerRect.top + rectA.height / 2 + startYOffset
       const endX = rectB.left - containerRect.left + rectB.width / 2 + endXOffset
       const endY = rectB.top - containerRect.top + rectB.height / 2 + endYOffset
 
-      const controlX = (startX + endX) / 2 + curvature
-      const controlY = (startY + endY) / 2
-
-      setSvgDimensions({ width: svgWidth, height: svgHeight })
-      setPathD(`M ${startX},${startY} Q ${controlX},${controlY} ${endX},${endY}`)
+      setLayout(buildBeamLayout({
+        startX,
+        startY,
+        endX,
+        endY,
+        curvature,
+        pathWidth,
+      }))
       return true
     }
 
@@ -88,43 +110,51 @@ export default function AnimatedBeam({
 
     const retryUntilReady = () => {
       if (cancelled) return
+      if (containerRef.current && fromRef.current && toRef.current) {
+        observeNode(containerRef.current, resizeObserver)
+        observeNode(fromRef.current, resizeObserver)
+        observeNode(toRef.current, resizeObserver)
+      }
       const ok = updatePath()
       if (!ok) rafId = requestAnimationFrame(retryUntilReady)
     }
 
     retryUntilReady()
 
-    window.addEventListener('scroll', updatePath, { passive: true })
-    window.addEventListener('resize', updatePath)
+    const onViewportChange = () => updatePath()
+    window.addEventListener('scroll', onViewportChange, { passive: true })
+    window.addEventListener('resize', onViewportChange)
 
     return () => {
       cancelled = true
       cancelAnimationFrame(rafId)
       resizeObserver.disconnect()
-      window.removeEventListener('scroll', updatePath)
-      window.removeEventListener('resize', updatePath)
+      window.removeEventListener('scroll', onViewportChange)
+      window.removeEventListener('resize', onViewportChange)
     }
   }, [
     containerRef,
     fromRef,
     toRef,
     curvature,
+    pathWidth,
     startXOffset,
     startYOffset,
     endXOffset,
     endYOffset,
   ])
 
-  if (!pathD || svgDimensions.width === 0) return null
+  if (!layout) return null
 
   return (
     <svg
       fill="none"
-      width={svgDimensions.width}
-      height={svgDimensions.height}
+      width={layout.width}
+      height={layout.height}
       xmlns="http://www.w3.org/2000/svg"
       className={`animated-beam ${className}`.trim()}
-      viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
+      viewBox={`0 0 ${layout.width} ${layout.height}`}
+      style={{ left: `${layout.x}px`, top: `${layout.y}px` }}
     >
       <defs>
         <motion.linearGradient
@@ -154,14 +184,14 @@ export default function AnimatedBeam({
         </motion.linearGradient>
       </defs>
       <path
-        d={pathD}
+        d={layout.pathD}
         stroke={pathColor}
         strokeWidth={pathWidth}
         strokeOpacity={pathOpacity}
         strokeLinecap="round"
       />
       <path
-        d={pathD}
+        d={layout.pathD}
         strokeWidth={pathWidth}
         stroke={`url(#${id})`}
         strokeOpacity="1"

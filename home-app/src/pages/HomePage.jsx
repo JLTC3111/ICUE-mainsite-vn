@@ -3,12 +3,15 @@ import { HERO, HOME_SECTIONS } from '../data/homeContent'
 import HomeHero from '../components/HomeHero'
 import HomeSection from '../components/HomeSection'
 import HomeBeamNetwork from '../components/HomeBeamNetwork'
+import ErrorBoundary from '../components/ErrorBoundary'
 import { useHomeBackgroundVideo } from '../hooks/useHomeBackgroundVideo'
 import { useHomeScrollReveal } from '../hooks/useScrollReveal'
+import { useHeavyVisualEffects } from '../hooks/useHeavyVisualEffects'
 
 export default function HomePage() {
   useHomeBackgroundVideo()
   useHomeScrollReveal()
+  const enableVisualEffects = useHeavyVisualEffects()
 
   const containerRef = useRef(null)
   const heroRef = useRef(null)
@@ -32,14 +35,18 @@ export default function HomePage() {
           {...section}
           beamRef={sectionRefs[sectionIndex]}
           cardBeamRefs={cardRefs[sectionIndex]}
+          enableCardGlow={enableVisualEffects}
         />
       ))}
-      <HomeBeamNetwork
-        containerRef={containerRef}
-        heroRef={heroRef}
-        sectionRefs={sectionRefs}
-        cardRefs={cardRefs}
-      />
+      <ErrorBoundary fallback={null}>
+        <HomeBeamNetwork
+          enabled={enableVisualEffects}
+          containerRef={containerRef}
+          heroRef={heroRef}
+          sectionRefs={sectionRefs}
+          cardRefs={cardRefs}
+        />
+      </ErrorBoundary>
     </div>
   )
 }

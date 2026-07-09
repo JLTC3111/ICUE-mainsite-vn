@@ -1151,9 +1151,9 @@ h3:hover {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 18px;
   overflow: hidden;
-  border: none;
-  box-shadow: none;
-  transition: background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.3s ease;
 }
 
 .home-card__glow.border-glow-card {
@@ -1169,6 +1169,11 @@ h3:hover {
 }
 
 .home-card:hover .home-card__glow.border-glow-card {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.home-card:hover .home-card__surface {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
   cursor: pointer;
 }

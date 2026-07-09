@@ -44,7 +44,11 @@ export default function CircularText({
   const [imageSrc, setImageSrc] = useState(null)
 
   useEffect(() => {
+    if (prefersReducedMotion()) return undefined
+    if (window.matchMedia('(pointer: coarse)').matches) return undefined
+    if (window.matchMedia('(max-width: 768px)').matches) return undefined
     setImageSrc(renderCircularTextImage(text))
+    return undefined
   }, [text])
 
   useEffect(() => {
