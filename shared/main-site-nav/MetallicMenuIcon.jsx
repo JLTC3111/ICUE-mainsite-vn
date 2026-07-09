@@ -23,19 +23,14 @@ const METALLIC_PROPS = {
 
 export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
   const [menuImageSrc, setMenuImageSrc] = useState(null);
-  const [closeImageSrc, setCloseImageSrc] = useState(null);
   const reducedMotion = prefersReducedMotion();
 
   useEffect(() => {
     let cancelled = false;
 
-    Promise.all([
-      renderLucideIconImage(Menu, 512, 2.25),
-      renderLucideIconImage(X, 512, 2.25),
-    ]).then(([menuSrc, closeSrc]) => {
+    renderLucideIconImage(Menu, 512, 2.25).then((menuSrc) => {
       if (cancelled) return;
       setMenuImageSrc(menuSrc);
-      setCloseImageSrc(closeSrc);
     });
 
     return () => {
@@ -63,14 +58,13 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
         ) : null}
       </span>
       <span className="menu-icon-metallic__layer menu-icon-metallic__layer--close">
-        {closeImageSrc ? (
-          <MetallicPaint
-            className="menu-icon-metallic__paint"
-            imageSrc={closeImageSrc}
-            speed={speed}
-            {...METALLIC_PROPS}
-          />
-        ) : null}
+        <X
+          className="menu-icon-metallic__lucide-close"
+          strokeWidth={2.5}
+          size="100%"
+          color="#80ecff"
+          aria-hidden="true"
+        />
       </span>
     </span>
   );

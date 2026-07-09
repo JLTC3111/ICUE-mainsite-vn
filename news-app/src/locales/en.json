@@ -131,7 +131,10 @@
     "gallery": "Image & video gallery",
     "viewImage": "View image {{n}}",
     "prevImage": "Previous image",
-    "nextImage": "Next image"
+    "nextImage": "Next image",
+    "lensToggle": "Magnifying lens",
+    "lensOn": "On",
+    "lensOff": "Off"
   },
   "engagement": {
     "like": "Leave a heart",

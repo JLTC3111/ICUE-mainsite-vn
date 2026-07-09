@@ -131,7 +131,10 @@
     "gallery": "Thư viện hình ảnh & video",
     "viewImage": "Xem hình {{n}}",
     "prevImage": "Ảnh trước",
-    "nextImage": "Ảnh sau"
+    "nextImage": "Ảnh sau",
+    "lensToggle": "Kính lúp",
+    "lensOn": "Bật",
+    "lensOff": "Tắt"
   },
   "engagement": {
     "like": "Thả tim",

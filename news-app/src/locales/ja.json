@@ -131,7 +131,10 @@
     "gallery": "画像・動画ギャラリー",
     "viewImage": "画像 {{n}} を表示",
     "prevImage": "前の画像",
-    "nextImage": "次の画像"
+    "nextImage": "次の画像",
+    "lensToggle": "拡大レンズ",
+    "lensOn": "オン",
+    "lensOff": "オフ"
   },
   "engagement": {
     "like": "ハートを送る",

@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
 
 export function renderLucideIconImage(Icon, size = 512, strokeWidth = 2.25) {
   return new Promise((resolve) => {
@@ -8,11 +9,6 @@ export function renderLucideIconImage(Icon, size = 512, strokeWidth = 2.25) {
     document.body.appendChild(container);
 
     const root = createRoot(container);
-    root.render(createElement(Icon, {
-      size,
-      strokeWidth,
-      color: '#000000',
-    }));
 
     const cleanup = () => {
       root.unmount();
@@ -56,8 +52,31 @@ export function renderLucideIconImage(Icon, size = 512, strokeWidth = 2.25) {
       img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgData)}`;
     };
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(rasterize);
-    });
+    const waitForSvg = (attempt = 0) => {
+      flushSync(() => {
+        root.render(createElement(Icon, {
+          size,
+          strokeWidth,
+          color: '#000000',
+        }));
+      });
+
+      const svg = container.querySelector('svg');
+      if (!svg) {
+        if (attempt < 30) {
+          requestAnimationFrame(() => waitForSvg(attempt + 1));
+          return;
+        }
+        cleanup();
+        resolve(null);
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(rasterize);
+      });
+    };
+
+    waitForSvg();
   });
 }

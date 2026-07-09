@@ -38,6 +38,53 @@ html:lang(vi) .article-detail__content {
 .article-detail__meta { font-size: 13px; color: var(--icue-text-faint); }
 .article-detail__owner-actions { margin-left: auto; display: flex; gap: 8px; }
 
+.article-detail__lens-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 18px auto 0;
+}
+
+.article-detail__lens-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--icue-text-soft);
+  background: var(--icue-surface);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.article-detail__lens-toggle:hover {
+  border-color: var(--icue-blue, #368adf);
+  color: var(--icue-text);
+  background: var(--icue-surface-2);
+}
+
+.article-detail__lens-toggle.is-on {
+  border-color: rgba(54, 138, 223, 0.45);
+  color: var(--icue-blue, #368adf);
+  background: rgba(54, 138, 223, 0.08);
+  box-shadow: 0 0 0 1px rgba(54, 138, 223, 0.12);
+}
+
+.article-detail__lens-state {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
+
+.article-detail__lens-toggle.is-on .article-detail__lens-state {
+  color: var(--icue-blue, #368adf);
+}
+
 .article-detail__cover { margin: 32px auto; max-width: 980px; padding: 0 24px; }
 .article-detail__cover-lens {
   border-radius: var(--icue-radius);

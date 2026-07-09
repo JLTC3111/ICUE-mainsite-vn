@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { ScanSearch } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
@@ -17,13 +18,15 @@ import Lens from '../components/Lens'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
-function useFinePointerLens() {
-  const [enabled, setEnabled] = useState(false)
+const LENS_PREF_KEY = 'icue-article-lens-enabled'
+
+function useLensCapable() {
+  const [capable, setCapable] = useState(false)
 
   useEffect(() => {
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setEnabled(fine.matches && !motion.matches)
+    const sync = () => setCapable(fine.matches && !motion.matches)
     sync()
     fine.addEventListener('change', sync)
     motion.addEventListener('change', sync)
@@ -33,7 +36,24 @@ function useFinePointerLens() {
     }
   }, [])
 
-  return enabled
+  return capable
+}
+
+function readLensPreference() {
+  try {
+    const stored = localStorage.getItem(LENS_PREF_KEY)
+    return stored === null ? true : stored === 'true'
+  } catch {
+    return true
+  }
+}
+
+function writeLensPreference(enabled) {
+  try {
+    localStorage.setItem(LENS_PREF_KEY, String(enabled))
+  } catch {
+    // ignore storage errors
+  }
 }
 
 export default function ArticleDetail() {
@@ -41,7 +61,8 @@ export default function ArticleDetail() {
   const { t, i18n } = useTranslation()
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
-  const lensEnabled = useFinePointerLens()
+  const lensCapable = useLensCapable()
+  const [lensOn, setLensOn] = useState(readLensPreference)
 
   const [article, setArticle] = useState(null)
   const [state, setState] = useState('loading')
@@ -88,6 +109,14 @@ export default function ArticleDetail() {
     return normalizeHtmlUnicode(embedVideosInHtml(raw || ''))
   }, [translation, article?.content_html])
 
+  const toggleLens = useCallback(() => {
+    setLensOn((prev) => {
+      const next = !prev
+      writeLensPreference(next)
+      return next
+    })
+  }, [])
+
   if (state === 'loading') {
     return <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
   }
@@ -121,6 +150,9 @@ export default function ArticleDetail() {
     setTranslation(null)
     setTranslatedLang(null)
   }
+
+  const lensEnabled = lensCapable && lensOn
+  const hasLensPhotos = Boolean(article.cover_image_url) || images.length > 0
 
   return (
     <article className="article-detail">
@@ -163,6 +195,23 @@ export default function ArticleDetail() {
         onApply={applyTranslation}
         onReset={resetTranslation}
       />
+
+      {lensCapable && hasLensPhotos && (
+        <div className="article-detail__lens-bar icue-readw">
+          <button
+            type="button"
+            className={`article-detail__lens-toggle${lensOn ? ' is-on' : ''}`}
+            onClick={toggleLens}
+            aria-pressed={lensOn}
+          >
+            <ScanSearch size={16} strokeWidth={2} aria-hidden />
+            <span>{t('article.lensToggle')}</span>
+            <span className="article-detail__lens-state">
+              {lensOn ? t('article.lensOn') : t('article.lensOff')}
+            </span>
+          </button>
+        </div>
+      )}
 
       {article.cover_image_url && (
         <figure className="article-detail__cover">
