@@ -11,6 +11,16 @@ import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
 const DARK_NAV_PAGES = ['communityActivities'];
+const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
+const DESKTOP_DOCK_MQ = '(min-width: 1025px)';
+
+function isDesktopDockViewport() {
+  return typeof window !== 'undefined' && window.matchMedia(DESKTOP_DOCK_MQ).matches;
+}
+
+function shouldExpandDock(scrollY = 0) {
+  return isDesktopDockViewport() && scrollY <= DOCK_EXPAND_SCROLL_THRESHOLD;
+}
 
 function getPageFromHash() {
   const hash = window.location.hash || '#/Home';
@@ -46,6 +56,7 @@ export default function MainSiteNav({
   const [homeVideoToggleDisabled, setHomeVideoToggleDisabled] = useState(false);
   const [aboutUsVideoEnabled, setAboutUsVideoEnabled] = useState(true);
   const [aboutUsVideoToggleDisabled, setAboutUsVideoToggleDisabled] = useState(false);
+  const [dockExpanded, setDockExpanded] = useState(() => shouldExpandDock());
 
   const menuIconRef = useRef(null);
   const menuToggleRef = useRef(null);
@@ -221,6 +232,23 @@ export default function MainSiteNav({
   }, [applyPageState, isStandalone]);
 
   useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_DOCK_MQ);
+
+    const syncDockExpansion = () => {
+      setDockExpanded(shouldExpandDock(window.scrollY));
+    };
+
+    syncDockExpansion();
+    window.addEventListener('scroll', syncDockExpansion, { passive: true });
+    mq.addEventListener('change', syncDockExpansion);
+
+    return () => {
+      window.removeEventListener('scroll', syncDockExpansion);
+      mq.removeEventListener('change', syncDockExpansion);
+    };
+  }, []);
+
+  useEffect(() => {
     const timer = window.setTimeout(() => playEntranceAnimation(true), 50);
     return () => window.clearTimeout(timer);
   }, [playEntranceAnimation]);
@@ -271,7 +299,12 @@ export default function MainSiteNav({
     });
   }, [showContactLink, showHomeVideoToggle, showAboutUsVideoToggle]);
 
-  const navClass = ['main-site-nav', darkNav ? 'nav-on-dark' : '', drawerOpen ? 'drawer-open' : '']
+  const navClass = [
+    'main-site-nav',
+    dockExpanded ? 'main-site-nav--dock-expanded' : 'main-site-nav--dock-contracted',
+    darkNav ? 'nav-on-dark' : '',
+    drawerOpen ? 'drawer-open' : '',
+  ]
     .filter(Boolean)
     .join(' ');
 
