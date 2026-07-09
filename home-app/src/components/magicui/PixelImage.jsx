@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import './PixelImage.css'
 
 const DEFAULT_GRIDS = {
@@ -6,26 +6,14 @@ const DEFAULT_GRIDS = {
   '8x8': { rows: 8, cols: 8 },
 }
 
-function prefersReducedMotion() {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
 export default function PixelImage({
   src,
   alt = '',
   grid = '6x4',
   customGrid,
-  grayscaleAnimation = true,
-  pixelFadeInDuration = 700,
   maxAnimationDelay = 600,
-  colorRevealDelay = 700,
   className = '',
 }) {
-  const staticMode = prefersReducedMotion()
-  const [hovering, setHovering] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
-  const [showColor, setShowColor] = useState(false)
-
   const { rows, cols } = useMemo(() => {
     if (customGrid?.rows >= 1 && customGrid?.cols >= 1) return customGrid
     return DEFAULT_GRIDS[grid] || DEFAULT_GRIDS['6x4']
@@ -49,39 +37,10 @@ export default function PixelImage({
     })
   }, [rows, cols, maxAnimationDelay])
 
-  const startHoverEffect = () => {
-    if (staticMode) return
-    setHovering(true)
-    setShowColor(false)
-    setIsVisible(false)
-    requestAnimationFrame(() => {
-      setIsVisible(true)
-      if (grayscaleAnimation) {
-        window.setTimeout(() => setShowColor(true), colorRevealDelay)
-      } else {
-        setShowColor(true)
-      }
-    })
-  }
-
-  const endHoverEffect = () => {
-    if (staticMode) return
-    setHovering(false)
-    setIsVisible(false)
-    setShowColor(false)
-  }
-
   return (
     <div
-      className={[
-        'pixel-image',
-        hovering ? 'pixel-image--active' : '',
-        className,
-      ].filter(Boolean).join(' ')}
-      onMouseEnter={startHoverEffect}
-      onMouseLeave={endHoverEffect}
-      onFocus={startHoverEffect}
-      onBlur={endHoverEffect}
+      className={`pixel-image ${className}`.trim()}
+      style={{ '--pixel-src': `url("${src}")` }}
     >
       <img
         src={src}
@@ -95,19 +54,12 @@ export default function PixelImage({
         {pieces.map((piece, index) => (
           <div
             key={index}
-            className={[
-              'pixel-image__piece',
-              isVisible ? 'pixel-image__piece--visible' : '',
-              showColor ? 'pixel-image__piece--color' : '',
-            ].filter(Boolean).join(' ')}
+            className="pixel-image__piece"
             style={{
               clipPath: piece.clipPath,
-              transitionDelay: `${piece.delay}ms`,
-              transitionDuration: `${pixelFadeInDuration}ms`,
+              '--piece-delay': `${piece.delay}ms`,
             }}
-          >
-            <img src={src} alt="" decoding="async" draggable={false} />
-          </div>
+          />
         ))}
       </div>
     </div>

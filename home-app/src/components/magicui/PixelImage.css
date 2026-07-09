@@ -5,6 +5,8 @@
   overflow: hidden;
   display: block;
   user-select: none;
+  contain: layout paint;
+  isolation: isolate;
 }
 
 .pixel-image__static {
@@ -14,54 +16,55 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: opacity 0.2s ease;
-}
-
-.pixel-image--active .pixel-image__static {
-  opacity: 0;
 }
 
 .pixel-image__grid {
   position: absolute;
   inset: 0;
-  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-
-.pixel-image--active .pixel-image__grid {
-  opacity: 1;
 }
 
 .pixel-image__piece {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition-property: opacity;
-  transition-timing-function: ease-out;
-}
-
-.pixel-image__piece--visible {
-  opacity: 1;
-}
-
-.pixel-image__piece img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  background-image: var(--pixel-src);
+  background-size: cover;
+  background-position: center;
   filter: grayscale(1);
-  transition: filter 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.pixel-image__piece--color img {
-  filter: grayscale(0);
+.pixel-image:hover .pixel-image__static {
+  opacity: 0;
+}
+
+.pixel-image:hover .pixel-image__grid {
+  visibility: visible;
+}
+
+.pixel-image:hover .pixel-image__piece {
+  animation:
+    pixel-piece-in 0.65s ease var(--piece-delay) forwards,
+    pixel-piece-color 0.65s ease calc(var(--piece-delay) + 650ms) forwards;
+}
+
+@keyframes pixel-piece-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pixel-piece-color {
+  from { filter: grayscale(1); }
+  to { filter: grayscale(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pixel-image__grid {
     display: none;
+  }
+
+  .pixel-image:hover .pixel-image__static {
+    opacity: 1;
   }
 }

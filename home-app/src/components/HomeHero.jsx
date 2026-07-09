@@ -2,12 +2,12 @@ import { useRef } from 'react'
 import { useRainText } from '../hooks/useRainText'
 import RainbowButton from './magicui/RainbowButton'
 
-export default function HomeHero({ hero }) {
+export default function HomeHero({ hero, beamRef }) {
   const subtitleRef = useRef(null)
   useRainText(subtitleRef, hero.subtitle)
 
   return (
-    <section className="home-hero" aria-label="Home hero">
+    <section className="home-hero" aria-label="Home hero" ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
         <div className="home-hero__overlay" />
       </div>
