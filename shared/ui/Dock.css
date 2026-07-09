@@ -1,0 +1,55 @@
+/* Magic UI Dock — explicit layout (no Tailwind in this bundle) */
+
+.icue-dock {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+  height: auto;
+  min-height: 2.75rem;
+  gap: 0.25rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 14, 20, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22);
+}
+
+.icue-dock__icon {
+  display: flex;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 9999px;
+}
+
+.icue-dock__icon--static {
+  transition: color 200ms ease, background-color 200ms ease;
+}
+
+.icue-dock__divider {
+  display: block;
+  width: 1px;
+  align-self: stretch;
+  min-height: 1.5rem;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.icue-dock__icon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}

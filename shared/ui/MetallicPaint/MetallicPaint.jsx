@@ -275,6 +275,7 @@ export default function MetallicPaint({
   contour = 0.2,
   tintColor = '#feb3ff',
   className = '',
+  paused = false,
 }) {
   const canvasRef = useRef(null);
   const glRef = useRef(null);
@@ -479,7 +480,13 @@ export default function MetallicPaint({
   ]);
 
   useEffect(() => {
-    if (!ready || !textureReady) return;
+    if (!ready || !textureReady || paused) {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      return undefined;
+    }
 
     const gl = glRef.current;
     const u = uniformsRef.current;
@@ -519,7 +526,7 @@ export default function MetallicPaint({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       canvas.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [ready, textureReady]);
+  }, [ready, textureReady, paused]);
 
   return <canvas ref={canvasRef} className={`paint-container ${className}`.trim()} />;
 }

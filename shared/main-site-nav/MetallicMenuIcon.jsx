@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import MetallicPaint from '@icue/ui/MetallicPaint/MetallicPaint';
-import { renderLucideIconImage } from './renderLucideIconImage';
+import { renderCloseIconFallback, renderLucideIconImage } from './renderLucideIconImage';
 
 function prefersReducedMotion() {
   return typeof window !== 'undefined'
@@ -21,16 +21,40 @@ const METALLIC_PROPS = {
   angle: 180,
 };
 
+/** Static SVG fallback when MetallicPaint close texture is not ready. */
+function CloseIconFallback() {
+  return (
+    <svg
+      className="menu-icon-metallic__fallback-close"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 6l12 12M18 6L6 18"
+        fill="none"
+        stroke="#80ecff"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
   const [menuImageSrc, setMenuImageSrc] = useState(null);
+  const [closeImageSrc, setCloseImageSrc] = useState(null);
   const reducedMotion = prefersReducedMotion();
 
   useEffect(() => {
     let cancelled = false;
 
-    renderLucideIconImage(Menu, 512, 2.25).then((menuSrc) => {
+    Promise.all([
+      renderLucideIconImage(Menu, 512, 2.25),
+      renderLucideIconImage(X, 512, 4),
+    ]).then(([menuSrc, closeSrc]) => {
       if (cancelled) return;
       setMenuImageSrc(menuSrc);
+      setCloseImageSrc(closeSrc || renderCloseIconFallback());
     });
 
     return () => {
@@ -53,18 +77,23 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             className="menu-icon-metallic__paint"
             imageSrc={menuImageSrc}
             speed={speed}
+            paused={isOpen}
             {...METALLIC_PROPS}
           />
         ) : null}
       </span>
       <span className="menu-icon-metallic__layer menu-icon-metallic__layer--close">
-        <X
-          className="menu-icon-metallic__lucide-close"
-          strokeWidth={2.5}
-          size="100%"
-          color="#80ecff"
-          aria-hidden="true"
-        />
+        {closeImageSrc ? (
+          <MetallicPaint
+            className="menu-icon-metallic__paint"
+            imageSrc={closeImageSrc}
+            speed={speed}
+            paused={!isOpen}
+            {...METALLIC_PROPS}
+          />
+        ) : (
+          <CloseIconFallback />
+        )}
       </span>
     </span>
   );
