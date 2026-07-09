@@ -18,6 +18,6 @@ export function useMainSite() {
     hashLink: (page) => mainSiteLink(page, siteLang),
     peopleLink: (path) => peopleSiteLink(path),
     structureLink: (path = '') => structureSiteLink(path),
-    archiveLink: () => resolveMainSiteLink('News', siteLang, base),
+    archiveLink: () => mainSiteLink('News', siteLang),
   }
 }

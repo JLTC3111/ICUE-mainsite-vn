@@ -1,6 +1,45 @@
-/*    /index.html   200
-/contact    /index.html   200
-/about-us   /index.html   200
-/our-work   /index.html   200
-/past-projects    /index.html   200
-/recruitment      /index.html   200
+# Home React app (history routing) — migrated from hash SPA.
+/contact           /index.html   200
+/about-us          /index.html   200
+/our-work          /index.html   200
+/past-projects     /index.html   200
+/recruitment       /index.html   200
+
+# Newsroom React app (history routing) lives at /newsroom.
+# Static files under /newsroom/assets/* are served as-is when present.
+# SPA fallback applies only to extensionless routes (not missing .js/.css files).
+
+# Market ticker API — must be before the /newsroom/* SPA catch-all.
+/newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
+/newsroom/api/market-quotes-vn  /.netlify/functions/market-quotes?scope=vn  200
+/newsroom/api/auth-forgot-password  /.netlify/functions/auth-forgot-password  200
+
+/newsroom            /newsroom/index.html   200
+/newsroom/login      /newsroom/index.html   200
+/newsroom/write      /newsroom/index.html   200
+/newsroom/edit/*     /newsroom/index.html   200
+/newsroom/dashboard  /newsroom/index.html   200
+/newsroom/profile    /newsroom/index.html   200
+/newsroom/article/*  /newsroom/index.html   200
+
+# People React app (history routing) lives at /people.
+/people              /people/index.html   200
+/people/*            /people/index.html   200
+
+# Structure React app (history routing) lives at /structure.
+/structure           /structure/index.html   200
+/structure/*         /structure/index.html   200
+
+# Legacy org structure hash page and HTML stub → new Structure app.
+/src/pages/orgStructure.html  /structure/  301
+
+# Silence the browser's default /favicon.ico probe.
+/favicon.ico         /public/logoIcons/favicon.png   200
+
+# Static assets live under /public in the repo root deploy layout.
+/zalo-link.js        /public/zalo-link.js            200
+/profilePhotos/*     /public/profilePhotos/:splat    200
+/flags/*             /public/flags/:splat            200
+
+# Vite copies public/ to dist root; keep /public/* URLs working in production.
+/public/*            /:splat                         200

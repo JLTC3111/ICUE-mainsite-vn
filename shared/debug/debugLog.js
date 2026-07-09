@@ -10,6 +10,19 @@ function isDebugOverlayEnabled() {
   }
 }
 
+function isLocalDevHost() {
+  try {
+    const host = window.location.hostname
+    return host === 'localhost' || host === '127.0.0.1'
+  } catch {
+    return false
+  }
+}
+
+function shouldSendToIngest() {
+  return isDebugOverlayEnabled() && isLocalDevHost()
+}
+
 function pushToBuffer(entry) {
   try {
     const buffer = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]')
@@ -48,6 +61,8 @@ function renderDebugOverlay(entry) {
 }
 
 export function debugLog(location, message, data = {}, hypothesisId = '') {
+  if (!isDebugOverlayEnabled()) return
+
   const entry = {
     sessionId: DEBUG_SESSION,
     runId: data.runId || 'pre-fix',
@@ -61,19 +76,22 @@ export function debugLog(location, message, data = {}, hypothesisId = '') {
   pushToBuffer(entry)
   renderDebugOverlay(entry)
 
+  if (shouldSendToIngest()) {
   // #region agent log
-  fetch(DEBUG_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Debug-Session-Id': DEBUG_SESSION,
-    },
-    body: JSON.stringify(entry),
-  }).catch(() => {})
+    fetch(DEBUG_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Debug-Session-Id': DEBUG_SESSION,
+      },
+      body: JSON.stringify(entry),
+    }).catch(() => {})
   // #endregion
+  }
 }
 
 export function installGlobalDebugHandlers() {
+  if (!isDebugOverlayEnabled()) return
   if (window.__ICUE_DEBUG_INSTALLED__) return
   window.__ICUE_DEBUG_INSTALLED__ = true
 
