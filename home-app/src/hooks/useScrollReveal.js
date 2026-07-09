@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-const HEADER_OPTIONS = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
 const CARD_OPTIONS = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
 
 function observeElements(selector, inClass, outClass, options) {
@@ -20,12 +19,6 @@ function observeElements(selector, inClass, outClass, options) {
 
 export function useHomeScrollReveal() {
   useEffect(() => {
-    const cleanHeaders = observeElements(
-      '.home-section__header',
-      'animate-in',
-      'animate-out',
-      HEADER_OPTIONS,
-    )
     const cleanCards = observeElements(
       '.home-card',
       'animate-in-card',
@@ -34,7 +27,6 @@ export function useHomeScrollReveal() {
     )
 
     return () => {
-      cleanHeaders()
       cleanCards()
     }
   }, [])
