@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import gsap from 'gsap'
 import App from './App.jsx'
 import '../../styles.css'
+import './styles/footer-theme.css'
 
 window.gsap = gsap
 

@@ -1,0 +1,6 @@
+/* Theme tokens for the shared newsroom-style footer on the home app. */
+:root {
+  --icue-accent: #c8ff00;
+  --icue-gradient-dark: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  --icue-maxw: 1200px;
+}

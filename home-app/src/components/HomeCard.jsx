@@ -1,3 +1,5 @@
+import PixelImage from './magicui/PixelImage'
+
 export default function HomeCard({
   image,
   imageAlt,
@@ -10,10 +12,10 @@ export default function HomeCard({
     <article className="home-card">
       <div className="home-card__surface">
         {imageOnly ? (
-          <img src={image} alt={imageAlt} decoding="async" />
+          <PixelImage src={image} alt={imageAlt} customGrid={{ rows: 4, cols: 6 }} />
         ) : (
-          <a href={href} aria-label={title}>
-            <img src={image} alt={imageAlt} decoding="async" />
+          <a href={href} aria-label={title} className="home-card__media">
+            <PixelImage src={image} alt={imageAlt} customGrid={{ rows: 4, cols: 6 }} />
           </a>
         )}
         <a className="home-card__body" href={href} aria-label={title}>

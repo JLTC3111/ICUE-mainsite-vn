@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { useEffect } from 'react'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
+import Footer from '@icue/site-footer/Footer'
 import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>
+      <Footer linkMode="standalone" />
     </BrowserRouter>
   )
 }
