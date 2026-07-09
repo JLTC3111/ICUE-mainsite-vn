@@ -28,13 +28,11 @@ const PAGE_INIT = {
     window.initPostMethod?.()
   },
   aboutUs: async () => {
-    window.ensureModelViewerLoaded?.().catch?.(() => {})
     window.initHomeTextSlider?.()
     window.AboutUsBackgroundVideoManager?.bindToggleUI?.()
     window.AboutUsBackgroundVideoManager?.init?.()
   },
   ourWork: async () => {
-    window.ensureModelViewerLoaded?.().catch?.(() => {})
     window.initializeCarousel?.()
   },
   pastProjects: async () => {

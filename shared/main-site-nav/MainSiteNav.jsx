@@ -29,7 +29,7 @@ function getPageFromHash() {
 
 function getPageVisibility(page) {
   return {
-    showContactLink: page === 'Home',
+    showContactLink: true,
     showHomeVideoToggle: page === 'Home',
     showAboutUsVideoToggle: page === 'aboutUs',
     darkNav: DARK_NAV_PAGES.includes(page),

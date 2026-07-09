@@ -66,7 +66,7 @@ export function prepareLegacyHtml(rawHtml) {
     '#/cookies': staticPage('cookies'),
   }
 
-  bodyHtml = bodyHtml.replace(/\bpublic\//g, '/')
+  bodyHtml = bodyHtml.replace(/\bpublic\//g, '/public/')
   for (const [hash, path] of Object.entries(hashToPath)) {
     bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
     bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)

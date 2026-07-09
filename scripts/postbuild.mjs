@@ -58,10 +58,12 @@ removeDir(path.join(root, 'assets'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
 const rootDirsFromHome = [
+  'aboutUs',
   'bgVideos',
   'flags',
   'legacy',
   'logoIcons',
+  'models',
   'news',
   'pastProjects',
   'recruitment',

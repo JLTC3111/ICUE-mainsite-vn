@@ -1397,6 +1397,19 @@ const ensureModelViewerLoaded = () => {
   return modelViewerLoadPromise;
 };
 
+const activateModelViewers = (root) => {
+  if (!root) return;
+  ensureModelViewerLoaded()
+    .then(() => {
+      root.querySelectorAll('model-viewer').forEach((el) => {
+        window.customElements.upgrade(el);
+      });
+    })
+    .catch(() => {});
+};
+
+window.ensureModelViewerLoaded = ensureModelViewerLoaded;
+
 function syncHashForPage(page) {
   if (!page || page === 'meetOurExperts' || page === 'coreTeam' || page === 'orgStructure') return;
   const targetHash = page === 'Home' ? '#/Home' : `#/${page}`;
@@ -1476,7 +1489,7 @@ window.loadPage = (page) => {
     const { homeVideoToggleContainers, aboutUsVideoToggleContainers, contactLink } = getNavToggleEls();
     showContainers(homeVideoToggleContainers, false);
     showContainers(aboutUsVideoToggleContainers, false);
-    if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   const updateNavVideoToggleVisibility = () => {
@@ -1491,16 +1504,15 @@ window.loadPage = (page) => {
     if (page === 'Home') {
       showContainers(homeVideoToggleContainers, true);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.removeProperty('display');
     } else if (page === 'aboutUs') {
       showContainers(homeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, true);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     } else {
       showContainers(homeVideoToggleContainers, false);
       showContainers(aboutUsVideoToggleContainers, false);
-      if (contactLink) contactLink.style.setProperty('display', 'none', 'important');
     }
+
+    if (contactLink) contactLink.style.removeProperty('display');
   };
 
   // Hide all per-page toggles while loading so they don't flash.
@@ -1686,7 +1698,7 @@ window.loadPage = (page) => {
                 initMobileNewsSlider();
                 break;
               case 'aboutUs':
-                ensureModelViewerLoaded().catch(() => {});
+                activateModelViewers(content);
                 initHomeTextSlider();
                 AboutUsBackgroundVideoManager.bindToggleUI();
                 AboutUsBackgroundVideoManager.init();
@@ -1695,7 +1707,7 @@ window.loadPage = (page) => {
                 initPostMethod();
                 break;
               case 'ourWork':
-                ensureModelViewerLoaded().catch(() => {});
+                activateModelViewers(content);
                 initializeCarousel();
                 break;
               case 'pastProjects':

@@ -29,7 +29,7 @@ if (!fs.existsSync(homeDist)) {
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
-for (const dir of ['bgVideos', 'flags', 'legacy', 'logoIcons', 'news', 'pastProjects', 'recruitment', 'work']) {
+for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'logoIcons', 'models', 'news', 'pastProjects', 'recruitment', 'work']) {
   copyDir(path.join(homeDist, dir), path.join(root, dir));
 }
 

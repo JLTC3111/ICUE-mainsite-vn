@@ -29,7 +29,9 @@ function copyDir(src, dest) {
 }
 
 const ASSET_DIRS = [
+  'aboutUs',
   'bgVideos',
+  'models',
   'pastProjects',
   'work',
   'news/articles',
