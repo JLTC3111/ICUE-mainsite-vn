@@ -934,11 +934,11 @@
   }
 
   .main-site-nav .menu-toggle {
-    width: clamp(48px, 12vw, 56px);
-    height: clamp(48px, 12vw, 56px);
-    min-width: 48px;
-    min-height: 48px;
-    padding: 0.25rem;
+    width: clamp(42px, 10.5vw, 50px);
+    height: clamp(42px, 10.5vw, 50px);
+    min-width: 42px;
+    min-height: 42px;
+    padding: 0.2rem;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -961,8 +961,33 @@
   }
 
   .main-site-nav .menu-toggle svg {
-    width: clamp(36px, 9.5vw, 44px) !important;
-    height: clamp(36px, 9.5vw, 44px) !important;
+    width: clamp(32px, 8.5vw, 40px) !important;
+    height: clamp(32px, 8.5vw, 40px) !important;
+  }
+
+  .main-site-nav #menuIcon,
+  .main-site-nav .menu-icon-metallic {
+    width: clamp(32px, 8.5vw, 40px);
+    height: clamp(32px, 8.5vw, 40px);
+  }
+
+  .main-site-nav .logo-link {
+    --logo-wordmark-size: clamp(1.82rem, 4.65vw, 2.28rem);
+    --logo-mark-size: clamp(1.55rem, 3.9vw, 1.92rem);
+  }
+
+  .main-site-nav .contact-link-wordmark {
+    --contact-wordmark-height: clamp(1.28rem, 3.15vw, 1.62rem);
+  }
+
+  .main-site-nav .flag-link {
+    width: clamp(27px, 7vw, 32px);
+    height: clamp(27px, 7vw, 32px);
+  }
+
+  .main-site-nav .flag-icon {
+    width: clamp(25px, 6.5vw, 30px);
+    height: clamp(25px, 6.5vw, 30px);
   }
 
   .main-site-nav .menu-toggle svg:not(.menu-icon-metallic__lucide-close) rect,
