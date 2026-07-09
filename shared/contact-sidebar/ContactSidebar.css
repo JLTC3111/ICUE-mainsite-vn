@@ -1,4 +1,4 @@
-.contact-sidebar {
+aside.contact-sidebar {
   position: fixed;
   right: 1.5%;
   top: 0;
@@ -11,11 +11,27 @@
   gap: 12.5px;
   z-index: 140;
   background: transparent;
-  border-radius: 12px;
+  border-radius: 0;
   padding: 0;
   width: fit-content;
   box-shadow: none;
+  transform: none;
   animation: contactSidebarFadeIn 4.5s ease-in-out;
+}
+
+/* Legacy styles.css sets a global blue gradient on all <button> elements. */
+aside.contact-sidebar button {
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+aside.contact-sidebar button:hover {
+  background: transparent;
 }
 
 @keyframes contactSidebarFadeIn {
@@ -38,12 +54,13 @@
   align-items: center;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  box-shadow: none;
 }
 
 .contact-sidebar__item svg {
@@ -64,10 +81,11 @@
   cursor: pointer;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: transparent;
   border: none;
   padding: 0;
   color: #ffffff;
+  box-shadow: none;
   transition: transform 0.12s ease, color 0.2s ease;
 }
 
@@ -143,7 +161,7 @@
 }
 
 @media (max-width: 768px) {
-  .contact-sidebar {
+  aside.contact-sidebar {
     right: 1.75%;
     max-height: calc(100dvh - 24px);
   }

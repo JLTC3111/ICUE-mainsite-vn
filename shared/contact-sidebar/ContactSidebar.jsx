@@ -72,7 +72,7 @@ function MessengerIcon() {
       role="img"
       viewBox="0 0 512 512"
     >
-      <rect width="512" height="512" rx="15%" fill="#fff" />
+      <rect width="30" height="30" rx="15%" fill="#fff" />
       <linearGradient id={gradId} x1="256" x2="256" y1="78.2" y2="441.2" gradientUnits="userSpaceOnUse">
         <stop offset="0" stopColor="#00B2FF" />
         <stop offset="1" stopColor="#006AFF" />

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
 import Footer from '@icue/site-footer/Footer'
+import ContactSidebar from '@icue/contact-sidebar'
 import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
@@ -58,6 +59,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
+      <ContactSidebar />
     </BrowserRouter>
   )
 }
