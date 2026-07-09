@@ -3,12 +3,7 @@
   top: 0;
   left: 0;
   pointer-events: none;
-  transform: translateZ(0);
   overflow: visible;
-}
-
-.animated-beam__gradient {
-  transform: translateZ(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

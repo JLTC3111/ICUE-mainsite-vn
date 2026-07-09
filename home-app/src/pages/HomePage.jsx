@@ -36,15 +36,6 @@ export default function HomePage() {
   return (
     <div className="home-page" ref={containerRef}>
       <HomeHero hero={HERO} beamRef={heroRef} />
-      {HOME_SECTIONS.map((section, sectionIndex) => (
-        <HomeSection
-          key={section.id}
-          {...section}
-          beamRef={sectionRefs[sectionIndex]}
-          cardBeamRefs={cardRefs[sectionIndex]}
-          enableCardGlow={effectsTier === 'full'}
-        />
-      ))}
       <ErrorBoundary fallback={null}>
         <HomeBeamNetwork
           tier={effectsTier}
@@ -54,6 +45,15 @@ export default function HomePage() {
           cardRefs={cardRefs}
         />
       </ErrorBoundary>
+      {HOME_SECTIONS.map((section, sectionIndex) => (
+        <HomeSection
+          key={section.id}
+          {...section}
+          beamRef={sectionRefs[sectionIndex]}
+          cardBeamRefs={cardRefs[sectionIndex]}
+          enableCardGlow={effectsTier === 'full'}
+        />
+      ))}
     </div>
   )
 }
