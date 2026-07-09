@@ -34,9 +34,7 @@ export default function MainSiteHeader({
 
   return (
     <div className="main-site-nav__dock-wrap">
-      <div className="main-site-nav__dock-frost-shell">
-        <span className="main-site-nav__dock-frost" aria-hidden="true" />
-        <Dock className="main-site-nav__dock main-site-nav__dock--unified" iconSize={44} iconMagnification={50}>
+      <Dock className="main-site-nav__dock main-site-nav__dock--unified" iconSize={44} iconMagnification={50}>
         <div className="main-site-nav__dock-zone main-site-nav__dock-zone--leading">
           <div className="main-site-nav__dock-slot main-site-nav__dock-slot--brand">
             <a
@@ -197,7 +195,6 @@ export default function MainSiteHeader({
           </DockIcon>
         </div>
       </Dock>
-      </div>
     </div>
   );
 }
