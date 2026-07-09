@@ -44,6 +44,8 @@ export function prepareLegacyHtml(rawHtml) {
   const styles = [...doc.querySelectorAll('style')].map((el) => el.outerHTML).join('\n')
   let bodyHtml = doc.body?.innerHTML || rawHtml
 
+  const staticPage = (file) => `/src/pages/${file}.html`
+
   const hashToPath = {
     '#/Home': ROUTE_PATHS.home,
     '#/Contact': ROUTE_PATHS.contact,
@@ -52,12 +54,24 @@ export function prepareLegacyHtml(rawHtml) {
     '#/pastProjects': ROUTE_PATHS.pastProjects,
     '#/recruitment': ROUTE_PATHS.recruitment,
     '#/News': '/newsroom/',
+    '#/orgStructure': '/structure/',
+    '#/notableAwards': staticPage('notableAwards'),
+    '#/communityActivities': staticPage('communityActivities'),
+    '#/FAQs': staticPage('FAQs'),
+    '#/faqs': staticPage('FAQs'),
+    '#/donations': staticPage('donations'),
+    '#/privacy': staticPage('privacy'),
+    '#/terms': staticPage('terms'),
+    '#/gdpr': staticPage('gdpr'),
+    '#/cookies': staticPage('cookies'),
   }
 
   bodyHtml = bodyHtml.replace(/\bpublic\//g, '/')
   for (const [hash, path] of Object.entries(hashToPath)) {
     bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
     bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)
+    bodyHtml = bodyHtml.replaceAll(`href="/${hash.slice(1)}"`, `href="${path}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${path}'`)
   }
 
   return `${styles}${bodyHtml}`

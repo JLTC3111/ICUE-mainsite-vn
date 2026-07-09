@@ -353,8 +353,8 @@ footer {
                         Công Ty
                     </div>
                     <div class="collapsible">
-                        <a href="#/notableAwards">Giải Thưởng Nổi Bật</a>
-                        <a href="#/communityActivities">Hoạt Động Cộng Đồng</a>
+                        <a href="/src/pages/notableAwards.html">Giải Thưởng Nổi Bật</a>
+                        <a href="/src/pages/communityActivities.html">Hoạt Động Cộng Đồng</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -362,9 +362,9 @@ footer {
                         Các Trang Khác
                     </div>
                     <div class="collapsible">
-                        <a href="#/FAQs">Câu Hỏi Thường Gặp</a>
-                        <a href="#/recruitment">Tuyển Dụng</a>
-                        <a href="#/donations">Quyên Góp</a>
+                        <a href="/src/pages/FAQs.html">Câu Hỏi Thường Gặp</a>
+                        <a href="/recruitment">Tuyển Dụng</a>
+                        <a href="/src/pages/donations.html">Quyên Góp</a>
                     </div>
                 </div>
                 <div class="footer-brand">
@@ -398,16 +398,16 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="#/privacy">Bảo Mật</a>
+                    <a href="/src/pages/privacy.html">Bảo Mật</a>
                     <span>|</span>
-                    <a href="#/terms">Điều Khoản</a>
+                    <a href="/src/pages/terms.html">Điều Khoản</a>
                     <span>|</span>
-                    <a href="#/gdpr">GDPR</a>
+                    <a href="/src/pages/gdpr.html">GDPR</a>
                     <span>|</span>
-                    <a href="#/cookies">Cookies</a>
+                    <a href="/src/pages/cookies.html">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
-                    <a href="#/Contact" class="company-deck">
+                    <a href="/contact" class="company-deck">
                         Hợp Tác Cùng Chúng Tôi
                         <svg fill="currentColor" viewBox="0 0 24 24">
                             <path d="M7 14l5-5 5 5z"/>
@@ -456,6 +456,11 @@ footer {
      function autoInjectFooter() {
         
         const injectIfMissing = () => {
+            // React home app renders Footer.jsx (icue-footer)
+            if (document.querySelector('.icue-footer') || document.getElementById('root')) {
+                return;
+            }
+
             const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities', '#/pastProjects'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);

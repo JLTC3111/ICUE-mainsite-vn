@@ -1,3 +1,5 @@
+import { resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+
 export const SITES = {
   vi: 'https://icue.vn',
   en: 'https://en.icue.vn',
@@ -59,7 +61,7 @@ export function getMainSiteBase(siteLang) {
 }
 
 export function mainSiteLink(page, siteLang) {
-  return `${getMainSiteBase(siteLang)}/#/${page}`
+  return resolveMainSiteLink(page, siteLang, getMainSiteBase(siteLang))
 }
 
 /** People app lives only on icue.vn — not on en.icue.vn. */

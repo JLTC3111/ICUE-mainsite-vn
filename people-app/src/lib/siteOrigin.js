@@ -1,3 +1,5 @@
+import { resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+
 export const SITES = {
   vi: 'https://icue.vn',
   en: 'https://en.icue.vn',
@@ -54,7 +56,7 @@ export function getMainSiteBase(lang) {
 }
 
 export function mainSiteLink(page, lang) {
-  return `${getMainSiteBase(lang)}/#/${page}`
+  return resolveMainSiteLink(page, lang, getMainSiteBase(lang))
 }
 
 /** Structure app lives only on icue.vn. */
