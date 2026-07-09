@@ -1,4 +1,4 @@
-import { createRef, useMemo, useRef } from 'react'
+import { createRef, useEffect, useMemo, useRef } from 'react'
 import { HERO, HOME_SECTIONS } from '../data/homeContent'
 import HomeHero from '../components/HomeHero'
 import HomeSection from '../components/HomeSection'
@@ -6,12 +6,19 @@ import HomeBeamNetwork from '../components/HomeBeamNetwork'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { useHomeBackgroundVideo } from '../hooks/useHomeBackgroundVideo'
 import { useHomeScrollReveal } from '../hooks/useScrollReveal'
-import { useHeavyVisualEffects } from '../hooks/useHeavyVisualEffects'
+import { useVisualEffectsTier } from '../hooks/useHeavyVisualEffects'
+import { debugLog } from '../lib/debugLog'
 
 export default function HomePage() {
   useHomeBackgroundVideo()
   useHomeScrollReveal()
-  const enableVisualEffects = useHeavyVisualEffects()
+  const effectsTier = useVisualEffectsTier()
+
+  useEffect(() => {
+    // #region agent log
+    debugLog('HomePage.jsx:mount', 'HomePage mounted', { effectsTier }, 'C')
+    // #endregion
+  }, [effectsTier])
 
   const containerRef = useRef(null)
   const heroRef = useRef(null)
@@ -35,12 +42,12 @@ export default function HomePage() {
           {...section}
           beamRef={sectionRefs[sectionIndex]}
           cardBeamRefs={cardRefs[sectionIndex]}
-          enableCardGlow={enableVisualEffects}
+          enableCardGlow={effectsTier === 'full'}
         />
       ))}
       <ErrorBoundary fallback={null}>
         <HomeBeamNetwork
-          enabled={enableVisualEffects}
+          tier={effectsTier}
           containerRef={containerRef}
           heroRef={heroRef}
           sectionRefs={sectionRefs}

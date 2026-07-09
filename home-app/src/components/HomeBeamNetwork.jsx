@@ -1,7 +1,9 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import AnimatedBeam from './magicui/AnimatedBeam'
+import { debugLog } from '../lib/debugLog'
 
 const BEAM_BEND = 72
+const MOBILE_BEAM_SECTION_INDICES = [0, 2]
 
 function createBeamBalancer() {
   let left = 0
@@ -43,7 +45,7 @@ function createBeamBalancer() {
 }
 
 export default function HomeBeamNetwork({
-  enabled = false,
+  tier = 'none',
   containerRef,
   heroRef,
   sectionRefs,
@@ -82,6 +84,7 @@ export default function HomeBeamNetwork({
         reverse: heroCurvature > 0,
         delay: sectionIndex * 0.35,
         startYOffset: 24,
+        mobileAllowed: MOBILE_BEAM_SECTION_INDICES.includes(sectionIndex),
       })
 
       const cards = cardRefs[sectionIndex] || []
@@ -96,6 +99,7 @@ export default function HomeBeamNetwork({
           reverse: cardCurvature > 0,
           delay: sectionIndex * 0.2 + cardIndex * 0.18,
           endYOffset: -20,
+          mobileAllowed: false,
         })
       })
     })
@@ -103,11 +107,28 @@ export default function HomeBeamNetwork({
     return pairs
   }, [heroRef, sectionRefs, cardRefs])
 
-  if (!ready || !allowMotion || !enabled) return null
+  const visibleConnections = useMemo(() => {
+    if (tier === 'none') return []
+    if (tier === 'light') return connections.filter((connection) => connection.mobileAllowed)
+    return connections
+  }, [connections, tier])
+
+  useEffect(() => {
+    if (!ready || !allowMotion || tier === 'none') return
+    // #region agent log
+    debugLog('HomeBeamNetwork.jsx:render', 'beam network active', {
+      tier,
+      totalConnections: connections.length,
+      visibleConnections: visibleConnections.length,
+    }, 'D')
+    // #endregion
+  }, [ready, allowMotion, tier, connections.length, visibleConnections.length])
+
+  if (!ready || !allowMotion || tier === 'none') return null
 
   return (
     <div className="home-beam-layer" aria-hidden="true">
-      {connections.map((connection) => (
+      {visibleConnections.map((connection) => (
         <AnimatedBeam
           key={connection.key}
           containerRef={containerRef}

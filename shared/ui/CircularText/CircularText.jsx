@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useAnimation, useMotionValue } from 'motion/react'
 import MetallicPaint from '../MetallicPaint/MetallicPaint'
 import { renderCircularTextImage } from './renderCircularTextImage'
+import { debugLog } from '../../debug/debugLog.js'
 import './CircularText.css'
 
 const getRotationTransition = (duration, from, loop = true) => ({
@@ -45,9 +46,29 @@ export default function CircularText({
 
   useEffect(() => {
     if (prefersReducedMotion()) return undefined
-    if (window.matchMedia('(pointer: coarse)').matches) return undefined
-    if (window.matchMedia('(max-width: 768px)').matches) return undefined
-    setImageSrc(renderCircularTextImage(text))
+
+    const isCompact = window.matchMedia('(max-width: 768px)').matches
+      || window.matchMedia('(pointer: coarse)').matches
+    const imageSize = isCompact ? 224 : 512
+
+    try {
+      const src = renderCircularTextImage(text, imageSize)
+      setImageSrc(src)
+      // #region agent log
+      debugLog('CircularText.jsx:image', 'metallic image ready', {
+        isCompact,
+        imageSize,
+        hasSrc: !!src,
+      }, 'E')
+      // #endregion
+    } catch (error) {
+      // #region agent log
+      debugLog('CircularText.jsx:image', 'metallic image failed', {
+        error: String(error),
+      }, 'E')
+      // #endregion
+    }
+
     return undefined
   }, [text])
 

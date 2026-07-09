@@ -7,6 +7,7 @@ import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
+import { debugLog } from './lib/debugLog'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -28,6 +29,12 @@ function NavSync() {
 }
 
 export default function App() {
+  useEffect(() => {
+    // #region agent log
+    debugLog('App.jsx:mount', 'App mounted', { pathname: window.location.pathname }, 'B')
+    // #endregion
+  }, [])
+
   return (
     <BrowserRouter>
       <ScrollToTop />

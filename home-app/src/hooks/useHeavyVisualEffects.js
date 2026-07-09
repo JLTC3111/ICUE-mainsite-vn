@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
+import { debugLog } from '../lib/debugLog'
 
-function canUseHeavyVisualEffects() {
-  if (typeof window === 'undefined') return false
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-  if (window.matchMedia('(max-width: 768px)').matches) return false
-  if (window.matchMedia('(pointer: coarse)').matches) return false
-  return true
+/** @returns {'full' | 'light' | 'none'} */
+export function getVisualEffectsTier() {
+  if (typeof window === 'undefined') return 'none'
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 'none'
+  if (window.matchMedia('(max-width: 768px)').matches) return 'light'
+  if (window.matchMedia('(pointer: coarse)').matches) return 'light'
+  return 'full'
 }
 
-export function useHeavyVisualEffects() {
-  const [enabled, setEnabled] = useState(false)
+export function useVisualEffectsTier() {
+  const [tier, setTier] = useState('none')
 
   useEffect(() => {
     const queries = [
@@ -18,12 +20,28 @@ export function useHeavyVisualEffects() {
       window.matchMedia('(pointer: coarse)'),
     ]
 
-    const update = () => setEnabled(canUseHeavyVisualEffects())
-    update()
+    const update = () => {
+      const next = getVisualEffectsTier()
+      setTier(next)
+      // #region agent log
+      debugLog('useHeavyVisualEffects.js:update', 'visual effects tier', {
+        tier: next,
+        width: window.innerWidth,
+        coarse: window.matchMedia('(pointer: coarse)').matches,
+      }, 'C')
+      // #endregion
+    }
 
+    update()
     queries.forEach((query) => query.addEventListener('change', update))
     return () => queries.forEach((query) => query.removeEventListener('change', update))
   }, [])
 
-  return enabled
+  return tier
+}
+
+/** @deprecated use useVisualEffectsTier */
+export function useHeavyVisualEffects() {
+  const tier = useVisualEffectsTier()
+  return tier === 'full'
 }
