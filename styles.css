@@ -973,7 +973,10 @@ h3:hover {
   color: rgba(255, 255, 255, 0.85);
   margin: 0 auto 2rem;
   max-width: 760px;
+  width: 100%;
   line-height: 1.6;
+  letter-spacing: normal;
+  text-align: center;
   text-shadow: 0 4px 14px rgba(255, 255, 255, 0.75);
 }
 
@@ -1306,6 +1309,13 @@ h3:hover {
   display: block;
   padding: 0;
   margin: 0;
+  transition: transform 4.25s ease-in-out;
+  will-change: transform;
+}
+
+.home-card:hover .pixel-image,
+.home-card:hover .pixel-image__static {
+  transform: scale(1.25);
 }
 
 .home-card__body h3 {
