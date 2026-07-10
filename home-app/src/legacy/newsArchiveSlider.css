@@ -131,6 +131,17 @@
   padding: 0 !important;
   transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
   transform: none !important;
+  color: #000000;
+}
+
+.legacy-page .news-cards-swiper .card-info,
+.legacy-page .news-cards-swiper .card-info h3,
+.legacy-page .news-cards-swiper .card-info p,
+.legacy-page .news-cards-swiper .card-info .description,
+.legacy-page .news-cards-swiper .card-info .location,
+.legacy-page .news-cards-swiper .card-info .year,
+.legacy-page .news-cards-swiper .card-info .date {
+  color: #000000 !important;
 }
 
 .legacy-page .news-cards-swiper .card.image-card img {

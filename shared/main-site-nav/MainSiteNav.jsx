@@ -198,6 +198,10 @@ export default function MainSiteNav({
     const icon = document.getElementById('menuIcon');
     if (toggle) toggle.setAttribute('aria-expanded', String(drawerOpen));
     if (icon) icon.classList.toggle('is-open', drawerOpen);
+    document.body.classList.toggle('nav-drawer-open', drawerOpen);
+    return () => {
+      document.body.classList.remove('nav-drawer-open');
+    };
   }, [drawerOpen]);
 
   useEffect(() => {

@@ -45,7 +45,19 @@ export function pathFromPage(page) {
 /** Rewrite legacy hash links and public/ asset paths inside injected HTML. */
 export function prepareLegacyHtml(rawHtml) {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
-  const styles = [...doc.querySelectorAll('style')].map((el) => el.outerHTML).join('\n')
+  // Scope document-level selectors so injected page CSS cannot clip fixed nav/footer
+  // (mobile WebKit clips position:fixed when html/body have overflow-x:hidden).
+  const styles = [...doc.querySelectorAll('style')]
+    .map((el) => {
+      let css = el.textContent || ''
+      css = css
+        .replace(/(^|[,}\s])html(\s*[,{])/g, '$1:root$2')
+        .replace(/(^|[,}\s])body(\s*[,{])/g, '$1.legacy-page$2')
+        // Only rewrite a bare universal reset (`* {`), not descendant `svg *` etc.
+        .replace(/(^|})\s*\*\s*\{/g, '$1.legacy-page, .legacy-page * {')
+      return `<style>${css}</style>`
+    })
+    .join('\n')
   let bodyHtml = doc.body?.innerHTML || rawHtml
 
   const staticPage = (file) => `/src/pages/${file}.html`

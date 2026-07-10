@@ -8,17 +8,15 @@
   <meta name="description" content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Đô Thị, Trung Tâm Sáng Tạo, Đổi Mới. Khám phá các dự án, hoạt động cộng đồng, tin tức và thông tin liên hệ." />
   <link rel="stylesheet" href="/styles.css">
 <style> 
-* {
+/* Scope to .legacy-page so embedded News does not clip fixed MainSiteNav/footer
+   (unscoped html/body overflow-x:hidden breaks position:fixed on mobile WebKit). */
+.legacy-page,
+.legacy-page * {
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-body {
+.legacy-page {
   font-family: sans-serif;
   background: #ffffff;
   padding: 5%;
@@ -303,6 +301,7 @@ main.grid.news-cards-swiper-active {
   text-align: left;
   padding: 10px;
   transition: 0.15s ease-in-out;
+  color: #000000;
 }
 
 .card-info h3 {
@@ -326,7 +325,8 @@ main.grid.news-cards-swiper-active {
 .card-info p,
 .card-info .description,
 .card-info .location,
-.card-info .year {
+.card-info .year,
+.card-info .date {
   font-size: clamp(0.75rem, 2.5vw, 1rem);
   color: #000000;
   margin-bottom: 15px;

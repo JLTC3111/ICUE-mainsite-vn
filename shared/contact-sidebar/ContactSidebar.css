@@ -171,4 +171,11 @@ aside.contact-sidebar button:hover {
     width: 25px;
     height: 25px;
   }
+
+  /* Hide while the mobile drawer menu covers the viewport. */
+  body.nav-drawer-open aside.contact-sidebar {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
