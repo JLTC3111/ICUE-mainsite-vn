@@ -17,21 +17,28 @@ function isViHost(hostname) {
   return host === 'icue.vn' || host === 'www.icue.vn'
 }
 
-/** Infer vi/en main site from document.referrer. */
+/** Paths on icue.vn that are apps, not the VI marketing site. */
+function isInternalAppPath(pathname) {
+  return /^\/(newsroom|people|structure)(\/|$)/i.test(pathname || '')
+}
+
+/** Infer vi/en main site from document.referrer (ignores in-app navigations). */
 export function referrerSiteHint() {
   try {
     const ref = document.referrer
     if (!ref) return null
-    const host = new URL(ref).hostname
-    if (isEnHost(host)) return 'en'
-    if (isViHost(host)) return 'vi'
+    const url = new URL(ref)
+    // Refresh / in-app links on newsroom must not force VI language.
+    if (isInternalAppPath(url.pathname)) return null
+    if (isEnHost(url.hostname)) return 'en'
+    if (isViHost(url.hostname)) return 'vi'
   } catch {
     // ignore malformed referrer
   }
   return null
 }
 
-/** Capture entry-site hint once per session (referrer / ?site= / ?from=en-news). */
+/** Capture entry-site hint once per session (referrer / ?site= / ?from=). */
 export function detectEntrySite() {
   const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
   if (cached === 'en' || cached === 'vi') return cached
@@ -44,6 +51,14 @@ export function detectEntrySite() {
   ) {
     sessionStorage.setItem(ENTRY_SITE_KEY, 'en')
     return 'en'
+  }
+  if (
+    params.get('site') === 'vi'
+    || params.get('from') === 'vi-news'
+    || params.get('lang') === 'vi'
+  ) {
+    sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
+    return 'vi'
   }
 
   const fromReferrer = referrerSiteHint()
@@ -76,13 +91,15 @@ export function structureSiteLink(path = '') {
 }
 
 export function newsroomLink(siteLang) {
-  return siteLang === 'vi' ? '/newsroom/' : '/newsroom/?from=en-news'
+  return siteLang === 'vi' ? '/newsroom/?from=vi-news' : '/newsroom/?from=en-news'
 }
 
 export function cleanSiteParams() {
   const params = new URLSearchParams(window.location.search)
-  if (!params.has('site')) return
+  if (!params.has('site') && !params.has('from') && !params.has('lang')) return
   params.delete('site')
+  params.delete('from')
+  params.delete('lang')
   const qs = params.toString()
   const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
   window.history.replaceState({}, '', next)

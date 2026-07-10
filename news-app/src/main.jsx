@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { detectEntrySite, cleanSiteParams } from './lib/siteOrigin'
+import { cleanSiteParams } from './lib/siteOrigin'
 import { initSupabase } from './lib/supabase'
 import './lib/i18n'
 import './styles/theme.css'
@@ -8,7 +8,7 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 
-detectEntrySite()
+// Strip entry hints after i18n + detectEntrySite have read them.
 cleanSiteParams()
 
 async function bootstrap() {

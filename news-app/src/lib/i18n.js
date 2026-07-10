@@ -2,6 +2,7 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
+import { detectEntrySite } from './siteOrigin'
 import { detectInitialLanguage } from './referrerLang'
 
 import en from '../locales/en.json'
@@ -10,6 +11,10 @@ import de from '../locales/de.json'
 import fr from '../locales/fr.json'
 import ko from '../locales/ko.json'
 import ja from '../locales/ja.json'
+
+// Capture entry site while ?from= / ?lang= / ?site= are still on the URL,
+// before language init (and before main cleans those params).
+detectEntrySite()
 
 // Add more languages by dropping a JSON file in src/locales and registering it here.
 // `code` is the BCP-47 / ISO-639 code used for both the UI and machine translation.
@@ -42,9 +47,9 @@ i18n
       ja: { translation: normalizeDeep(ja) },
     },
     fallbackLng: 'vi',
-    // Default to Vietnamese on first load. We only read a previously saved
-    // choice from localStorage — without one we fall through to fallbackLng (vi),
-    // ignoring the browser language so the Newsroom always opens in VI by default.
+    // Prefer main-site referrer / ?from= over a saved choice; otherwise localStorage
+    // or Vietnamese. Browser language is ignored so Newsroom never opens in a
+    // random locale on first visit.
     lng: detectInitialLanguage(),
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     postProcess: ['normalizeUnicode'],

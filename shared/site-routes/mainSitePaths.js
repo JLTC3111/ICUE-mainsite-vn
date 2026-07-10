@@ -13,7 +13,7 @@ export const MAIN_SITE_PAGE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  News: '/newsroom/',
+  News: '/newsroom/?from=vi-news',
   notableAwards: staticPage('notableAwards'),
   communityActivities: staticPage('communityActivities'),
   FAQs: staticPage('FAQs'),
@@ -30,6 +30,12 @@ export const MAIN_SITE_PAGE_PATHS = {
 const EN_CROSS_SITE_PAGES = new Set(['News', 'orgStructure'])
 
 export function resolveMainSiteLink(page, lang, base) {
+  if (page === 'News') {
+    return lang === 'en'
+      ? `${SITES.vi}/newsroom/?from=en-news`
+      : '/newsroom/?from=vi-news'
+  }
+
   const path = MAIN_SITE_PAGE_PATHS[page]
   if (!path) {
     return `${String(base).replace(/\/$/, '')}/#/${page}`

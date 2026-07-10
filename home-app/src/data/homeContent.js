@@ -3,7 +3,7 @@ import { ROUTE_PATHS } from '../lib/routes'
 
 export const HERO = {
   bannerLabel: 'Tin tức mới nhất',
-  bannerHref: '/newsroom/',
+  bannerHref: '/newsroom/?from=vi-news',
   title: 'Viện Nghiên Cứu Kinh Tế, Xây Dựng và Đô Thị',
   subtitle:
     'Sáng kiến cộng đồng và các giải pháp thực tiễn vì một tương lai tốt đẹp hơn.',
@@ -96,7 +96,7 @@ export const HOME_SECTIONS = [
     title: 'Tin tức mới nhất',
     description: 'Thông báo, sự kiện và góc nhìn từ iCUE Vietnam.',
     linkLabel: 'Đọc tất cả tin tức →',
-    linkHref: '/newsroom/',
+    linkHref: '/newsroom/?from=vi-news',
     cards: [
       {
         image: '/news/articles/Card_1.jpg',

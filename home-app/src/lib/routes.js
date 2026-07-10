@@ -69,7 +69,7 @@ export function prepareLegacyHtml(rawHtml) {
     '#/ourWork': ROUTE_PATHS.ourWork,
     '#/pastProjects': ROUTE_PATHS.pastProjects,
     '#/recruitment': ROUTE_PATHS.recruitment,
-    '#/News': '/newsroom/',
+    '#/News': '/newsroom/?from=vi-news',
     '#/orgStructure': '/structure/',
     '#/notableAwards': staticPage('notableAwards'),
     '#/communityActivities': staticPage('communityActivities'),

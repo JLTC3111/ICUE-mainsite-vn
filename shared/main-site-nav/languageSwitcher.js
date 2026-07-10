@@ -45,7 +45,7 @@ export const MIGRATED_PAGE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  News: '/newsroom/',
+  News: '/newsroom/?from=vi-news',
   newsArchive: '/src/pages/News.html',
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',

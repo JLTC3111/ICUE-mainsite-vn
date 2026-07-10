@@ -65,7 +65,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'orgStructure', href: '/structure/', label: 'Cơ Cấu & Tổ Chức', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '/our-work', label: 'Công Việc', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '/past-projects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
-  { page: 'News', href: '/newsroom/', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
+  { page: 'News', href: '/newsroom/?from=vi-news', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
 ];
 

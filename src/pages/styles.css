@@ -508,10 +508,11 @@ h3:hover {
   line-height: 1.6;
 }
 
-/* Chrome iOS often fails background-clip on nested spans; keep rain text solid. */
+/* Chrome iOS often fails background-clip on nested spans; keep rain text solid.
+   Exclude home hero subtitle — it reuses #rainText for the rain animation. */
 .sub-text,
 .cursive-default .sub-text,
-#rainText {
+#rainText:not(.home-hero__subtitle) {
   color: #111111;
   -webkit-text-fill-color: #111111;
   background: none;
@@ -985,7 +986,7 @@ h3:hover {
 
 .home-hero__subtitle {
   font-size: clamp(1rem, 2.4vw, 1.35rem);
-  color: rgba(255, 255, 255, 0.85);
+  color: #ffffff;
   margin: 0 auto 2rem;
   max-width: 760px;
   width: 100%;
