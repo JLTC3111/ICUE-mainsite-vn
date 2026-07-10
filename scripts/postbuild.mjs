@@ -110,4 +110,35 @@ if (fs.existsSync(cardJs)) {
   console.warn('[postbuild] Missing card.js — past project card pages may break.');
 }
 
+// Legacy article template loads /src/article.js (restored for archive news).
+const articleJs = path.join(root, 'src/article.js');
+const publicArticleJs = path.join(root, 'public/article.js');
+if (fs.existsSync(articleJs)) {
+  copyFile(articleJs, path.join(homeDist, 'src/article.js'));
+  copyFile(articleJs, publicArticleJs);
+  copyFile(articleJs, path.join(homeDist, 'public/article.js'));
+} else if (fs.existsSync(publicArticleJs)) {
+  copyFile(publicArticleJs, path.join(homeDist, 'src/article.js'));
+  copyFile(publicArticleJs, path.join(homeDist, 'public/article.js'));
+  copyFile(publicArticleJs, articleJs);
+} else {
+  console.warn('[postbuild] Missing article.js — legacy article_template.html may break.');
+}
+
+// Static pages under /src/pages/*.html request relative styles.css → /src/pages/styles.css.
+const rootStyles = path.join(root, 'styles.css');
+if (fs.existsSync(rootStyles)) {
+  copyFile(rootStyles, path.join(root, 'src/pages/styles.css'));
+  copyFile(rootStyles, path.join(homeDist, 'src/pages/styles.css'));
+  copyFile(rootStyles, path.join(homeDist, 'styles.css'));
+}
+
+// Ensure legacy news logos/photos are present at both /public/news and /news.
+const newsSrc = path.join(root, 'public/news');
+if (fs.existsSync(newsSrc)) {
+  copyDir(newsSrc, path.join(homeDist, 'public/news'));
+  copyDir(newsSrc, path.join(homeDist, 'news'));
+  copyDir(newsSrc, path.join(root, 'news'));
+}
+
 console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');

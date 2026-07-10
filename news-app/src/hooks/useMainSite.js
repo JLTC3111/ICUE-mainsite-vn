@@ -12,9 +12,10 @@ function siteLangFromUi(uiLang) {
   return uiLang === 'vi' ? 'vi' : 'en'
 }
 
-/** Legacy static news grid (pre-newsroom archive). Always on icue.vn. */
-function legacyNewsArchiveLink() {
-  return `${SITES.vi}/src/pages/News.html`
+/** Legacy static news grid (pre-newsroom archive). EN UI → en.icue.vn. */
+function legacyNewsArchiveLink(siteLang) {
+  const base = siteLang === 'vi' ? SITES.vi : SITES.en
+  return `${base}/news-archive`
 }
 
 export function useMainSite() {
@@ -29,6 +30,6 @@ export function useMainSite() {
     hashLink: (page) => mainSiteLink(page, siteLang),
     peopleLink: (path) => peopleSiteLink(path),
     structureLink: (path = '') => structureSiteLink(path),
-    archiveLink: legacyNewsArchiveLink,
+    archiveLink: () => legacyNewsArchiveLink(siteLang),
   }
 }

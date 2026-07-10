@@ -1,6 +1,8 @@
 let runtimePromise = null
 let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
+let newsArchiveSliderApi = null
+let newsArchiveSliderPromise = null
 
 function getPastProjectsSlider() {
   if (!pastProjectsSliderPromise) {
@@ -10,6 +12,16 @@ function getPastProjectsSlider() {
     })
   }
   return pastProjectsSliderPromise
+}
+
+function getNewsArchiveSlider() {
+  if (!newsArchiveSliderPromise) {
+    newsArchiveSliderPromise = import('./newsArchiveSlider').then((api) => {
+      newsArchiveSliderApi = api
+      return api
+    })
+  }
+  return newsArchiveSliderPromise
 }
 
 function loadLegacyRuntime() {
@@ -53,6 +65,11 @@ const PAGE_INIT = {
     const api = await getPastProjectsSlider()
     await api.initPastProjectsSlider()
   },
+  newsArchive: async () => {
+    // Skip legacy/script.js logo + mobile card sliders — use Swiper modules.
+    const api = await getNewsArchiveSlider()
+    await api.initNewsArchiveSlider()
+  },
   recruitment: async () => {
     window.JobBoard?.init?.()
   },
@@ -70,6 +87,13 @@ const PAGE_CLEANUP = {
       return
     }
     void getPastProjectsSlider().then((api) => api.destroyPastProjectsSlider())
+  },
+  newsArchive: () => {
+    if (newsArchiveSliderApi) {
+      newsArchiveSliderApi.destroyNewsArchiveSlider()
+      return
+    }
+    void getNewsArchiveSlider().then((api) => api.destroyNewsArchiveSlider())
   },
 }
 

@@ -4,6 +4,10 @@
 /our-work          /index.html   200
 /past-projects     /index.html   200
 /recruitment       /index.html   200
+/news-archive      /index.html   200
+
+# Legacy static News.html → React shell (MainSiteNav + Swiper).
+/src/pages/News.html  /news-archive  301
 
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.
@@ -39,10 +43,16 @@
 # Static assets live under /public in the repo root deploy layout.
 /zalo-link.js        /public/zalo-link.js            200
 /src/card.js         /public/card.js                 200
+/src/article.js      /public/article.js              200
 /profilePhotos/*     /public/profilePhotos/:splat    200
 /flags/*             /public/flags/:splat            200
 /models/*            /public/models/:splat           200
 /aboutUs/*           /public/aboutUs/:splat          200
+
+# Legacy News.html / static pages used relative paths from /src/pages/*.
+/src/pages/styles.css        /styles.css              200
+/src/pages/public/*          /public/:splat           200
+/src/pages/src/pages/*       /src/pages/:splat        200
 
 # Vite copies public/ to dist root; keep /public/* URLs working in production.
 /public/*            /:splat                         200

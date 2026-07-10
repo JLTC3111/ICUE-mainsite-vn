@@ -6,6 +6,7 @@ export const ROUTE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
+  newsArchive: '/news-archive',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */
@@ -16,6 +17,7 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.ourWork]: 'ourWork',
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
   [ROUTE_PATHS.recruitment]: 'recruitment',
+  [ROUTE_PATHS.newsArchive]: 'newsArchive',
 }
 
 export const PAGE_TO_PATH = Object.fromEntries(
@@ -28,6 +30,7 @@ export const LEGACY_PAGE_FILES = {
   ourWork: 'ourWork.html',
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
+  newsArchive: 'News.html',
 }
 
 export function pageFromPathname(pathname) {

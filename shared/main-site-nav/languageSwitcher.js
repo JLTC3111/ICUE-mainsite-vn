@@ -46,6 +46,7 @@ export const MIGRATED_PAGE_PATHS = {
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   News: '/newsroom/',
+  newsArchive: '/news-archive',
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',
   orgStructure: '/structure/',
@@ -77,8 +78,10 @@ export function pageFromPathname(pathname) {
   }
   if (pathSegments[0] === 'structure') return 'orgStructure';
   if (pathSegments[0] === 'newsroom') return 'News';
+  if (pathSegments[0] === 'news-archive') return 'newsArchive';
 
   const pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
+  if (pathPage === 'News') return 'newsArchive';
   if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
     return pathPage;
   }

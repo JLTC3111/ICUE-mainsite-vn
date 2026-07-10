@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en" class="cursor-symbol">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">Loading...</title>
+  <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.6/css/flag-icon.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Serif&family=Roboto&family=Rubik&display=swap" rel="stylesheet">
+  <script src="/src/article.js"></script>
+</head>
+<body>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: linear-gradient(to bottom right, #e0e0e0, #b9b9b9);
+    overflow-x: hidden;
+  }
+
+  nav {
+  position: relative;
+  background-color: #333333;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 4.5vw, 3.5rem);
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  top: 0;
+  z-index: 1;
+}
+
+nav::before {
+  filter: blur(2.5rem);
+}
+
+nav::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+       green,
+       teal,
+       darkorange,
+       green
+    );
+  padding: 15px;
+  border-radius: 50%;
+  opacity: 0.1; /* Optional: adjust visibility */
+  z-index: -3; /* Places the gradient behind nav content */
+  pointer-events: none; /* Ensures it doesn't block clicks */
+  animation: rotateRing 5s linear infinite; 
+}
+
+@keyframes rotateRing {
+    0% {
+        transform: translate(-50%, -50%) rotate(-5deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(5deg);
+    }
+    100% {
+       transform: translate(-50%, -50%) rotate(-5deg);
+    }
+}
+
+nav a {
+  font-size: clamp(0.5rem, 2.5vw, 1.25rem);
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  will-change: transform, color, background;
+}
+
+nav a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  transition: all 0.3s ease;
+  color: #007acc;
+  transform: scale(1.1);
+}
+
+nav a:active {
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.article-container {
+    max-width: 900px;
+    margin: 10px auto;
+    padding: 20px;
+    color: #333;
+    background: linear-gradient(to bottom right, #fffff5, #b3b4a8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+}
+
+.article-title {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+}
+
+.dlbtn-container {
+    display:flex;
+    justify-content: center;
+}
+
+.lead {
+    text-align: center;
+    font-size: clamp(0.75rem, 2.5vw, 1rem);
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.meta {
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+    color: #888;
+    margin-bottom: 1.5rem;
+}
+
+.featured-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.5rem;
+}
+
+.featured-image figcaption {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+}
+
+.article-body {
+    letter-spacing: 0.25px;
+    line-height: 1.7;
+    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+}
+
+.article-body h2 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.75rem;
+}
+
+.article-body p {
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+blockquote {
+    text-align: center;
+    margin: 0 auto;
+    padding: 1rem;
+    background: transparent !important;
+    border-left: 2px solid #ccc;
+    font-style: italic;
+    color: #555;
+}
+
+.download-btn {
+  position: relative;
+  left: 0;
+  bottom: 10%;
+  display: inline-block;
+  padding: 8px;
+  font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #443a3a, #553aff);
+  border: none;
+  margin: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+  color: #000000;
+  background: linear-gradient(to right, #ffd7d7, #dbffdc);
+  will-change: transform, color, background;
+}
+
+.language-switcher {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.flag-link {
+  margin-left: -1rem;
+  font-size: clamp (0.65rem, 2.75vw, 1.25rem);
+  transition: all 0.3s ease-in-out;
+}
+
+.flag-link:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.75);
+ }
+
+ .news-nav {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.news-nav button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 8px;
+  font-size: clamp(0.65rem, 2.25vw, 1rem);
+  cursor: pointer;
+  background: #373e4b;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.arrow-center {
+  margin-bottom:2px;
+}
+
+.btn-hover-effect {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(3, 74, 228, 0.15);
+}
+
+.btn-hover-effect:hover::before {
+  left: 100%;
+}
+
+@media (max-width: 768px) {
+  nav {
+    margin-right: -1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+.footer {
+  background-color: #1a202c;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
+  margin: 1rem 0;
+  padding: 0 3rem;
+  font-family: sans-serif;
+}
+
+.footer-container {
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0.5rem 3.5rem;
+  justify-items: center; /* centers items horizontally inside each column */
+  align-items: start;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;   /* centers horizontally */
+  text-align: center;    /* centers text content */
+  padding: 0 1.5rem;
+}
+
+.footer-heading {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.footer-toggle {
+  all: unset; /* Nukes all inherited browser styles */
+  color: #ffffff;
+  background-color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.footer-text {
+  font-size: 0.875rem;
+  color: #d1d5db;
+  margin-top: 0.5rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0.25rem;
+  margin: 0;
+}
+
+.footer-link {
+  display: block;
+  font-size: 0.875rem;
+  color: #d1d5db;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  filter: brightness(1.2);
+}
+
+.footer-toggle .arrow {
+  display:none;
+  pointer-events: none;;
+}
+
+.underline-hover {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+}
+
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%; /* start at 25% */
+  width: 50%; /* span only the middle */
+  height: 1px;
+  background-color: #ffffff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.underline-hover:hover::after {
+  transform: scaleX(1);
+}
+/* 📱 Footer Mobile */
+@media (max-width: 768px) {
+  .footer-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-section {
+    min-width: none;
+    width: 100%;
+  }
+  .footer-link {
+    margin-right: 1.5rem;
+  }
+  .footer-section .collapsible {
+    display: none;
+    flex-direction: column;
+    transform-origin: bottom;
+    animation: slide-up 0.3s ease-out forwards;
+  }
+  .footer-toggle {
+    padding: 0;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+  }
+  .footer-section.open .collapsible {
+    display: flex;
+  }
+  .footer-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .footer-section.open .arrow {
+    transform: rotate(180deg) translateY(2.5px);
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Optional: collapse padding/margin to reduce vertical space */
+  .footer-section:not(.open) .collapsible * {
+    margin: 0;
+    padding: 0;
+  }
+}
+</style>
+  <header>
+    <nav>
+      <a href="/">Trang Chủ</a>
+      <a href="/our-work">Công Việc</a>
+      <a href="/past-projects">Đề Tài</a>
+      <a href="/newsroom/">Tin Tức</a>
+      <a href="/about-us">Chúng Tôi</a>
+      <a href="/contact">Liên Hệ</a>
+      <div class="language-switcher">
+        <a id="lang-switch" href="https://en.icue/vn" class="flag-link">
+          <span class="flag-icon flag-icon-gb"></span>    
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content" class="article-container">
+    <article>
+      <h1 id="article-title" class="article-title"></h1>
+      <p id="article-lead" class="lead"></p>
+      <div class="meta">
+        <span id="article-author"></span>
+        <time id="article-date" datetime=""></time>
+      </div>
+      <figure class="featured-image" id="article-image-container">
+        <img id="article-image" src="" alt="Featured image">
+        <figcaption id="article-caption"></figcaption>
+      </figure>
+      <section id="article-body" class="article-body">
+        <p></p>
+      </section>
+    <div class="news-nav">
+      <button class="btn-hover-effect" id="prev-card"><span class="arrow-center">←</span>Trước</button>
+      <button class="btn-hover-effect" id="next-card">Xem Tiếp<span class="arrow-center">→</span></button>
+    </div>
+    <div class="dlbtn-container">
+      <a id="article-download" href="#" download class="download-btn" style="display: none;"></a>
+    </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-section open">
+         <button class="footer-heading footer-toggle underline-hover" aria-expanded="true">
+          Tham Gia <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+        </svg></span>
+        </button>
+        <ul class="footer-links collapsible">
+          <li><a href="/youtube" class="footer-link"><svg width="18" height="18" viewBox="0 -7 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                  </defs>
+                      <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <g id="Color-" transform="translate(-200.000000, -368.000000)" fill="#CE1312">
+                              <path d="M219.044,391.269916 L219.0425,377.687742 L232.0115,384.502244 L219.044,391.269916 Z M247.52,375.334163 C247.52,375.334163 247.0505,372.003199 245.612,370.536366 C243.7865,368.610299 241.7405,368.601235 240.803,368.489448 C234.086,368 224.0105,368 224.0105,368 L223.9895,368 C223.9895,368 213.914,368 207.197,368.489448 C206.258,368.601235 204.2135,368.610299 202.3865,370.536366 C200.948,372.003199 200.48,375.334163 200.48,375.334163 C200.48,375.334163 200,379.246723 200,383.157773 L200,386.82561 C200,390.73817 200.48,394.64922 200.48,394.64922 C200.48,394.64922 200.948,397.980184 202.3865,399.447016 C204.2135,401.373084 206.612,401.312658 207.68,401.513574 C211.52,401.885191 224,402 224,402 C224,402 234.086,401.984894 240.803,401.495446 C241.7405,401.382148 243.7865,401.373084 245.612,399.447016 C247.0505,397.980184 247.52,394.64922 247.52,394.64922 C247.52,394.64922 248,390.73817 248,386.82561 L248,383.157773 C248,379.246723 247.52,375.334163 247.52,375.334163 L247.52,375.334163 Z" id="Youtube">
+                  </path>
+                  </g>
+              </g>
+          </svg></a></li>
+          <li><a href="https://zalo.me/904540661" target="_blank" class="footer-link">
+              <svg width="18" height="18" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M22.782 0.166016H27.199C33.2653 0.166016 36.8103 1.05701 39.9572 2.74421C43.1041 4.4314 45.5875 6.89585 47.2557 10.0428C48.9429 13.1897 49.8339 16.7347 49.8339 22.801V27.1991C49.8339 33.2654 48.9429 36.8104 47.2557 39.9573C45.5685 43.1042 43.1041 45.5877 39.9572 47.2559C36.8103 48.9431 33.2653 49.8341 27.199 49.8341H22.8009C16.7346 49.8341 13.1896 48.9431 10.0427 47.2559C6.89583 45.5687 4.41243 43.1042 2.7442 39.9573C1.057 36.8104 0.166016 33.2654 0.166016 27.1991V22.801C0.166016 16.7347 1.057 13.1897 2.7442 10.0428C4.43139 6.89585 6.89583 4.41245 10.0427 2.74421C13.1707 1.05701 16.7346 0.166016 22.782 0.166016Z" fill="#0068FF"/>
+              <path opacity="0.12" fill-rule="evenodd" clip-rule="evenodd" d="M49.8336 26.4736V27.1994C49.8336 33.2657 48.9427 36.8107 47.2555 39.9576C45.5683 43.1045 43.1038 45.5879 39.9569 47.2562C36.81 48.9434 33.265 49.8344 27.1987 49.8344H22.8007C17.8369 49.8344 14.5612 49.2378 11.8104 48.0966L7.27539 43.4267L49.8336 26.4736Z" fill="#001A33"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.779 43.5892C10.1019 43.846 13.0061 43.1836 15.0682 42.1825C24.0225 47.1318 38.0197 46.8954 46.4923 41.4732C46.8209 40.9803 47.1279 40.4677 47.4128 39.9363C49.1062 36.7779 50.0004 33.22 50.0004 27.1316V22.7175C50.0004 16.629 49.1062 13.0711 47.4128 9.91273C45.7385 6.75436 43.2461 4.28093 40.0877 2.58758C36.9293 0.894239 33.3714 0 27.283 0H22.8499C17.6644 0 14.2982 0.652754 11.4699 1.89893C11.3153 2.03737 11.1636 2.17818 11.0151 2.32135C2.71734 10.3203 2.08658 27.6593 9.12279 37.0782C9.13064 37.0921 9.13933 37.1061 9.14889 37.1203C10.2334 38.7185 9.18694 41.5154 7.55068 43.1516C7.28431 43.399 7.37944 43.5512 7.779 43.5892Z" fill="white"/>
+              <path d="M20.5632 17H10.8382V19.0853H17.5869L10.9329 27.3317C10.7244 27.635 10.5728 27.9194 10.5728 28.5639V29.0947H19.748C20.203 29.0947 20.5822 28.7156 20.5822 28.2606V27.1421H13.4922L19.748 19.2938C19.8428 19.1801 20.0134 18.9716 20.0893 18.8768L20.1272 18.8199C20.4874 18.2891 20.5632 17.8341 20.5632 17.2844V17Z" fill="#0068FF"/>
+              <path d="M32.9416 29.0947H34.3255V17H32.2402V28.3933C32.2402 28.7725 32.5435 29.0947 32.9416 29.0947Z" fill="#0068FF"/>
+              <path d="M25.814 19.6924C23.1979 19.6924 21.0747 21.8156 21.0747 24.4317C21.0747 27.0478 23.1979 29.171 25.814 29.171C28.4301 29.171 30.5533 27.0478 30.5533 24.4317C30.5723 21.8156 28.4491 19.6924 25.814 19.6924ZM25.814 27.2184C24.2785 27.2184 23.0273 25.9672 23.0273 24.4317C23.0273 22.8962 24.2785 21.645 25.814 21.645C27.3495 21.645 28.6007 22.8962 28.6007 24.4317C28.6007 25.9672 27.3685 27.2184 25.814 27.2184Z" fill="#0068FF"/>
+              <path d="M40.4867 19.6162C37.8516 19.6162 35.7095 21.7584 35.7095 24.3934C35.7095 27.0285 37.8516 29.1707 40.4867 29.1707C43.1217 29.1707 45.2639 27.0285 45.2639 24.3934C45.2639 21.7584 43.1217 19.6162 40.4867 19.6162ZM40.4867 27.2181C38.9322 27.2181 37.681 25.9669 37.681 24.4124C37.681 22.8579 38.9322 21.6067 40.4867 21.6067C42.0412 21.6067 43.2924 22.8579 43.2924 24.4124C43.2924 25.9669 42.0412 27.2181 40.4867 27.2181Z" fill="#0068FF"/>
+              <path d="M29.4562 29.0944H30.5747V19.957H28.6221V28.2793C28.6221 28.7153 29.0012 29.0944 29.4562 29.0944Z" fill="#0068FF"/>
+              </svg>
+          </a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=100075982245583" target="_blank" class="footer-link">
+              <svg width="18px" height="18px" viewBox="-1 0 226 226" xmlns="http://www.w3.org/2000/svg" version="1.1">
+              <defs>
+                <linearGradient id="a" y1="6.76%" x2="50%" x1="50%" y2="95.6%">
+                <stop stop-color="#00C6FF" offset="0"/>
+                <stop stop-color="#0068FF" offset="1"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#a)" d="m41.255 185.52v40.2l37.589-21.37c10.478 3.02 21.616 4.65 33.156 4.65 61.86 0 112-46.79 112-104.5 0-57.714-50.14-104.5-112-104.5-61.856 0-112 46.786-112 104.5 0 32.68 16.078 61.86 41.255 81.02z"/>
+              <path fill="#ffffff" d="m100.04 75.878l-60.401 63.952 54.97-30.16 28.721 30.16 60.06-63.952-54.36 29.632-28.99-29.632z"/>
+              </svg>
+          </a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section open">
+        <button class="footer-heading footer-toggle underline-hover" aria-expanded="true">
+          Các Trang Khác <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+        </svg></span>
+        </button>
+        <ul class="footer-links collapsible">
+          <li><a href="/" class="footer-link"></a></li>
+          <li><a href="/structure/" class="footer-link">Cơ Cấu</a></li>
+          <li><a href="/people/experts" class="footer-link">Chuyên Gia</a></li>
+          <li><a href="/people/core-team" class="footer-link">Cán Bộ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section open">
+        <button class="footer-heading footer-toggle underline-hover" aria-expanded="true">
+          Liên Hệ <span class="arrow"><svg width="15px" height="15px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+        </svg></span>
+        </button>
+        <ul class="footer-links collapsible">
+          <a href="https://www.google.com/maps?q=21.010758110472064,105.80686021983787" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <svg style="transform:translateY(2.5px)" width="14px" height="14px" viewBox="-4 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>location</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set" sketch:type="MSLayerGroup" transform="translate(-104.000000, -411.000000)" fill="#ffffff"> <path d="M116,426 C114.343,426 113,424.657 113,423 C113,421.343 114.343,420 116,420 C117.657,420 119,421.343 119,423 C119,424.657 117.657,426 116,426 L116,426 Z M116,418 C113.239,418 111,420.238 111,423 C111,425.762 113.239,428 116,428 C118.761,428 121,425.762 121,423 C121,420.238 118.761,418 116,418 L116,418 Z M116,440 C114.337,440.009 106,427.181 106,423 C106,417.478 110.477,413 116,413 C121.523,413 126,417.478 126,423 C126,427.125 117.637,440.009 116,440 L116,440 Z M116,411 C109.373,411 104,416.373 104,423 C104,428.018 114.005,443.011 116,443 C117.964,443.011 128,427.95 128,423 C128,416.373 122.627,411 116,411 L116,411 Z" id="location" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg> Hà Nội, Việt Nam
+          </a>
+          <a href="mailto:info@icue.vn" class="footer-link"><svg style="transform:translate(-2.5px, 2.5px)" width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 12.0001V10.0001H18V12.0001M3.02832 10.0002L10.2246 14.8168C10.8661 15.2444 11.1869 15.4583 11.5336 15.5414C11.8399 15.6148 12.1593 15.6148 12.4657 15.5414C12.8124 15.4583 13.1332 15.2444 13.7747 14.8168L20.9709 10.0001M10.2981 4.06892L4.49814 7.71139C3.95121 8.05487 3.67775 8.2266 3.4794 8.45876C3.30385 8.66424 3.17176 8.90317 3.09111 9.16112C3 9.45256 3 9.77548 3 10.4213V16.8001C3 17.9202 3 18.4803 3.21799 18.9081C3.40973 19.2844 3.71569 19.5904 4.09202 19.7821C4.51984 20.0001 5.07989 20.0001 6.2 20.0001H17.8C18.9201 20.0001 19.4802 20.0001 19.908 19.7821C20.2843 19.5904 20.5903 19.2844 20.782 18.9081C21 18.4803 21 17.9202 21 16.8001V10.4213C21 9.77548 21 9.45256 20.9089 9.16112C20.8282 8.90317 20.6962 8.66424 20.5206 8.45876C20.3223 8.2266 20.0488 8.05487 19.5019 7.71139L13.7019 4.06891C13.0846 3.68129 12.776 3.48747 12.4449 3.41192C12.152 3.34512 11.848 3.34512 11.5551 3.41192C11.224 3.48747 10.9154 3.68129 10.2981 4.06892Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> info@icue.vn</a>
+          <a href="tel:+842437728485" target="_blank" class="footer-link"><svg style="transform:translateY(5px)" width="18px" height="18px" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 5.5C3 14.0604 9.93959 21 18.5 21C18.8862 21 19.2691 20.9859 19.6483 20.9581C20.0834 20.9262 20.3009 20.9103 20.499 20.7963C20.663 20.7019 20.8185 20.5345 20.9007 20.364C21 20.1582 21 19.9181 21 19.438V16.6207C21 16.2169 21 16.015 20.9335 15.842C20.8749 15.6891 20.7795 15.553 20.6559 15.4456C20.516 15.324 20.3262 15.255 19.9468 15.117L16.74 13.9509C16.2985 13.7904 16.0777 13.7101 15.8683 13.7237C15.6836 13.7357 15.5059 13.7988 15.3549 13.9058C15.1837 14.0271 15.0629 14.2285 14.8212 14.6314L14 16C11.3501 14.7999 9.2019 12.6489 8 10L9.36863 9.17882C9.77145 8.93713 9.97286 8.81628 10.0942 8.64506C10.2012 8.49408 10.2643 8.31637 10.2763 8.1317C10.2899 7.92227 10.2096 7.70153 10.0491 7.26005L8.88299 4.05321C8.745 3.67376 8.67601 3.48403 8.55442 3.3441C8.44701 3.22049 8.31089 3.12515 8.15802 3.06645C7.98496 3 7.78308 3 7.37932 3H4.56201C4.08188 3 3.84181 3 3.63598 3.09925C3.4655 3.18146 3.29814 3.33701 3.2037 3.50103C3.08968 3.69907 3.07375 3.91662 3.04189 4.35173C3.01413 4.73086 3 5.11378 3 5.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> +84 (24) 3772 8485</a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  // Enhanced language switcher for article template
+  function setupArticleLanguageSwitcher() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleId = urlParams.get("id");  
+    const langSwitch = document.getElementById("lang-switch");
+    
+    if (!langSwitch || !articleId) return;
+
+    // Get current URL components
+    let currentHost = window.location.host;
+    const currentProtocol = window.location.protocol;
+    const currentSearch = window.location.search;
+
+    // Configuration for language switching
+    const siteConfig = {
+      vietnamese: {
+        domain: "icue.vn",
+        flagClass: "flag-icon-vn",
+        language: "vi"
+      },
+      english: {
+        domain: "en.icue.vn", 
+        flagClass: "flag-icon-gb",
+        language: "en"
+      }
+    };
+
+    // Handle localhost/development environment
+    if (currentHost.includes("localhost") || currentHost.includes("127.0.0.1")) {
+      const isEnglishSite = currentHost.includes("en") || 
+                           document.documentElement.lang === "en" ||
+                           document.querySelector('meta[name="language"]')?.content === "en";
+      
+      currentHost = isEnglishSite ? siteConfig.english.domain : siteConfig.vietnamese.domain;
+    }
+
+    // Determine current site and target site
+    let currentSite, targetSite;
+    
+    if (currentHost.startsWith("en.") || currentHost === siteConfig.english.domain) {
+      // Currently on English site, switch to Vietnamese
+      currentSite = siteConfig.english;
+      targetSite = siteConfig.vietnamese;
+    } else {
+      // Currently on Vietnamese site, switch to English  
+      currentSite = siteConfig.vietnamese;
+      targetSite = siteConfig.english;
+    }
+
+    // Build target URL for article template with preserved article ID
+    const targetUrl = `${currentProtocol}//${targetSite.domain}/src/pages/article_template.html?id=${articleId}`;
+    
+    console.log('[Article Language Switcher] Current site:', currentSite.language);
+    console.log('[Article Language Switcher] Target site:', targetSite.language);
+    console.log('[Article Language Switcher] Article ID:', articleId);
+    console.log('[Article Language Switcher] Target URL:', targetUrl);
+
+    // Update the language switcher elements
+    const flagIcon = langSwitch.querySelector('.flag-icon');
+    if (flagIcon) {
+      flagIcon.className = `flag-icon ${targetSite.flagClass}`;
+    }
+    langSwitch.href = targetUrl;
+    
+    // Add aria-label for accessibility
+    langSwitch.setAttribute('aria-label', `Switch to ${targetSite.language === 'en' ? 'English' : 'Vietnamese'} version`);
+    
+    // Add data attributes for debugging
+    langSwitch.setAttribute('data-current-lang', currentSite.language);
+    langSwitch.setAttribute('data-target-lang', targetSite.language);
+    langSwitch.setAttribute('data-article-id', articleId);
+
+    // Add click event for analytics
+    langSwitch.addEventListener('click', function(e) {
+      // Optional: Add analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'language_switch_article', {
+          'from_language': currentSite.language,
+          'to_language': targetSite.language,
+          'article_id': articleId,
+          'target_url': targetUrl
+        });
+      }
+      
+      // Optional: Store language preference
+      try {
+        localStorage.setItem('preferredLanguage', targetSite.language);
+        localStorage.setItem('lastArticleId', articleId);
+      } catch (error) {
+        console.warn('Could not save language preference:', error);
+      }
+      
+      // Allow normal navigation to proceed
+      return true;
+    });
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    setupArticleLanguageSwitcher();
+    
+    // Set up observer for URL parameter changes (for article navigation)
+    let currentArticleId = new URLSearchParams(window.location.search).get("id");
+    
+    // Function to check for article ID changes
+    function checkForArticleChange() {
+      const newArticleId = new URLSearchParams(window.location.search).get("id");
+      if (newArticleId && newArticleId !== currentArticleId) {
+        console.log('[Article Language Switcher] Article ID changed from', currentArticleId, 'to', newArticleId);
+        currentArticleId = newArticleId;
+        setupArticleLanguageSwitcher();
+      }
+    }
+    
+    // Check for URL changes every 500ms (for article navigation via buttons)
+    setInterval(checkForArticleChange, 500);
+    
+    // Also check when the window gains focus (in case of external URL changes)
+    window.addEventListener('focus', () => {
+      setTimeout(checkForArticleChange, 100);
+    });
+    
+    // Override the native history.replaceState to trigger our update
+    const originalReplaceState = history.replaceState;
+    history.replaceState = function() {
+      originalReplaceState.apply(history, arguments);
+      setTimeout(() => {
+        console.log('[Article Language Switcher] History replaceState detected');
+        setupArticleLanguageSwitcher();
+      }, 50);
+    };
+    
+    // Footer toggle functionality
+    const toggles = document.querySelectorAll(".footer-toggle");
+
+    toggles.forEach(toggle => {
+      toggle.addEventListener("click", () => {
+        const section = toggle.closest(".footer-section");
+        section.classList.toggle("open");
+
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", !expanded);
+      });
+    });
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script defer src="/zalo-link.js"></script>
+  
+</body>
+</html>

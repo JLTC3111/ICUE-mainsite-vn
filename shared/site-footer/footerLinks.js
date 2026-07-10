@@ -6,7 +6,7 @@ function buildFooterLinks() {
     notableAwards: p.notableAwards,
     communityActivities: p.communityActivities,
     news: p.News,
-    archive: '/src/pages/News.html',
+    archive: '/news-archive',
     faqs: p.FAQs,
     recruitment: p.recruitment,
     donations: p.donations,

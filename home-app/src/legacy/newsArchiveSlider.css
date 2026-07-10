@@ -1,0 +1,152 @@
+/* Partner logo Swiper — keep height to slide content */
+.legacy-page .news-logo-swiper-wrap {
+  position: relative;
+  width: min(92vw, 1100px);
+  margin: 1.25rem auto 1rem;
+  z-index: 7;
+  height: auto;
+}
+
+.legacy-page .news-logo-swiper {
+  width: 100%;
+  height: auto !important;
+  overflow: hidden;
+  padding: 4px 0 1.75rem;
+  mask-image: linear-gradient(to right, transparent, #000 8% 92%, transparent);
+}
+
+.legacy-page .news-logo-swiper .swiper-wrapper {
+  height: auto !important;
+  align-items: center;
+}
+
+.legacy-page .news-logo-swiper .swiper-slide {
+  width: 160px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.legacy-page .news-logo-swiper .swiper-slide a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.legacy-page .news-logo-swiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.legacy-page .news-logo-swiper .swiper-slide img:hover {
+  filter: grayscale(0);
+  transform: scale(1.12);
+}
+
+.legacy-page .news-logo-swiper .swiper-pagination {
+  bottom: 0 !important;
+  position: relative !important;
+  margin-top: 0.5rem;
+}
+
+.legacy-page .news-logo-swiper .swiper-pagination-bullet {
+  background: #94a3b8;
+  opacity: 0.45;
+}
+
+.legacy-page .news-logo-swiper .swiper-pagination-bullet-active {
+  background: #60a5fa;
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .legacy-page .news-logo-swiper-wrap {
+    margin-top: 1.5rem;
+  }
+  .legacy-page .news-logo-swiper .swiper-slide {
+    width: 125px;
+    height: 65px;
+  }
+  .legacy-page .news-logo-swiper .swiper-slide img {
+    filter: grayscale(0);
+  }
+}
+
+@media (max-width: 550px) {
+  .legacy-page .news-logo-swiper-wrap {
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .legacy-page .news-logo-swiper {
+    padding-bottom: 1.5rem;
+  }
+  .legacy-page .news-logo-swiper .swiper-slide {
+    width: 100px;
+    height: 50px;
+  }
+}
+
+/* Mobile article-card Swiper (desktop keeps CSS grid) */
+.legacy-page main.grid.news-cards-swiper-active {
+  display: block;
+  margin-top: 5%;
+  padding: 12px 0 24px;
+  gap: 0;
+}
+
+.legacy-page .news-cards-swiper {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 2.25rem;
+}
+
+.legacy-page .news-cards-swiper .swiper-slide {
+  height: auto;
+  box-sizing: border-box;
+}
+
+.legacy-page .news-cards-swiper .card.image-card {
+  width: 100%;
+  max-width: 100%;
+  filter: none !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  transform: none !important;
+}
+
+.legacy-page .news-cards-swiper .card.image-card img {
+  transition: filter 0.3s ease !important;
+  transform: none !important;
+  filter: grayscale(0%) !important;
+}
+
+.legacy-page .news-cards-swiper .swiper-pagination-bullet {
+  background: #94a3b8;
+  opacity: 0.45;
+}
+
+.legacy-page .news-cards-swiper .swiper-pagination-bullet-active {
+  background: #60a5fa;
+  opacity: 1;
+}
+
+@media (max-width: 550px) {
+  .legacy-page main.grid.news-cards-swiper-active {
+    margin-top: 8px;
+  }
+  .legacy-page .news-cards-swiper .image-card img {
+    height: min(55vh, 420px) !important;
+  }
+}

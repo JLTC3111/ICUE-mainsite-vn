@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import CircularText from './CircularText/CircularText'
 import { getFooterLinks } from '../../../shared/site-footer/footerLinks.js'
+import { useMainSite } from '../hooks/useMainSite'
 import './Footer.css'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
@@ -9,6 +10,7 @@ const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 function Footer() {
   const { t } = useTranslation()
   const links = getFooterLinks('standalone')
+  const { archiveLink } = useMainSite()
   const year = new Date().getFullYear()
 
   return (
@@ -19,7 +21,7 @@ function Footer() {
           <a href={links.notableAwards}>{t('footer.awards')}</a>
           <a href={links.communityActivities}>{t('footer.community')}</a>
           <a href={links.news}>{t('footer.news')}</a>
-          <a href={links.archive}>{t('nav.archive')}</a>
+          <a href={archiveLink()}>{t('nav.archive')}</a>
         </div>
         <div className="icue-footer__col">
           <h4>{t('footer.otherPages')}</h4>

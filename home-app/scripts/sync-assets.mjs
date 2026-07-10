@@ -34,7 +34,8 @@ const ASSET_DIRS = [
   'models',
   'pastProjects',
   'work',
-  'news/articles',
+  // Full news tree: article photos + partner logos used by legacy News.html
+  'news',
   'recruitment',
   'logoIcons',
   'flags',
@@ -46,6 +47,7 @@ const LEGACY_PAGES = [
   'ourWork.html',
   'pastProjects.html',
   'recruitment.html',
+  'News.html',
 ]
 
 for (const rel of ASSET_DIRS) {
