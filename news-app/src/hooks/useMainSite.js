@@ -1,9 +1,20 @@
 import { useTranslation } from 'react-i18next'
-import { getMainSiteBase, mainSiteLink, peopleSiteLink, structureSiteLink } from '../lib/siteOrigin'
+import {
+  SITES,
+  getMainSiteBase,
+  mainSiteLink,
+  peopleSiteLink,
+  structureSiteLink,
+} from '../lib/siteOrigin'
 
 /** Map UI language to the Vietnamese or English main-site origin. */
 function siteLangFromUi(uiLang) {
   return uiLang === 'vi' ? 'vi' : 'en'
+}
+
+/** Legacy static news grid (pre-newsroom archive). Always on icue.vn. */
+function legacyNewsArchiveLink() {
+  return `${SITES.vi}/src/pages/News.html`
 }
 
 export function useMainSite() {
@@ -18,6 +29,6 @@ export function useMainSite() {
     hashLink: (page) => mainSiteLink(page, siteLang),
     peopleLink: (path) => peopleSiteLink(path),
     structureLink: (path = '') => structureSiteLink(path),
-    archiveLink: () => mainSiteLink('News', siteLang),
+    archiveLink: legacyNewsArchiveLink,
   }
 }
