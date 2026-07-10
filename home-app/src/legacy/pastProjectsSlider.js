@@ -61,6 +61,7 @@ function enableSwiper() {
     slidesPerView: 1,
     spaceBetween: 20,
     speed: 280,
+    autoHeight: true,
     resistanceRatio: 0.55,
     threshold: 8,
     grabCursor: true,
