@@ -14,6 +14,7 @@ const state = {
   cards: [],
   mq: null,
   onMqChange: null,
+  generation: 0,
 }
 
 function readInitialIndex(cardCount) {
@@ -102,9 +103,10 @@ function syncMode() {
  */
 export async function initPastProjectsSlider() {
   destroyPastProjectsSlider()
+  const generation = ++state.generation
 
   const grid = findGrid()
-  if (!grid) return
+  if (!grid || generation !== state.generation) return
 
   const cards = Array.from(grid.querySelectorAll('a.card.image-card'))
   if (!cards.length) return
@@ -112,13 +114,19 @@ export async function initPastProjectsSlider() {
   state.grid = grid
   state.cards = cards
   state.mq = window.matchMedia(MOBILE_QUERY)
-  state.onMqChange = () => syncMode()
+  state.onMqChange = () => {
+    if (generation === state.generation) syncMode()
+  }
+
+  if (generation !== state.generation) return
 
   syncMode()
   state.mq.addEventListener('change', state.onMqChange)
 }
 
 export function destroyPastProjectsSlider() {
+  state.generation += 1
+
   if (state.mq && state.onMqChange) {
     state.mq.removeEventListener('change', state.onMqChange)
   }

@@ -84,12 +84,30 @@ for (const dir of rootDirsFromHome) {
 copyDir(path.join(homeDist, 'src/pages'), path.join(root, 'src/pages'));
 copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
 
-// Past-project detail pages load card data from /src/card.js.
+// Ensure past-project card galleries are present in both /pastProjects and /public/pastProjects.
+const cardGalleriesSrc = path.join(root, 'src/pages/public/pastProjects');
+if (fs.existsSync(cardGalleriesSrc)) {
+  for (const entry of fs.readdirSync(cardGalleriesSrc, { withFileTypes: true })) {
+    if (!entry.isDirectory() || !entry.name.startsWith('project_')) continue;
+    const from = path.join(cardGalleriesSrc, entry.name);
+    copyDir(from, path.join(root, 'public/pastProjects', entry.name));
+    copyDir(from, path.join(root, 'pastProjects', entry.name));
+    copyDir(from, path.join(homeDist, 'pastProjects', entry.name));
+    copyDir(from, path.join(homeDist, 'public/pastProjects', entry.name));
+  }
+}
+
+// Past-project detail pages may still request /src/card.js; keep a public fallback.
 const cardJs = path.join(root, 'src/card.js');
+const publicCardJs = path.join(root, 'public/card.js');
 if (fs.existsSync(cardJs)) {
   copyFile(cardJs, path.join(homeDist, 'src/card.js'));
+  copyFile(cardJs, publicCardJs);
+  copyFile(cardJs, path.join(homeDist, 'public/card.js'));
+} else if (fs.existsSync(publicCardJs)) {
+  copyFile(publicCardJs, path.join(homeDist, 'public/card.js'));
 } else {
-  console.warn('[postbuild] Missing src/card.js — past project card pages will break.');
+  console.warn('[postbuild] Missing card.js — past project card pages may break.');
 }
 
 console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');

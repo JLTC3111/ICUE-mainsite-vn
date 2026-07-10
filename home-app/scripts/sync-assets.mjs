@@ -52,6 +52,19 @@ for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
 
+// Card detail galleries live under src/pages/public/pastProjects/project_*.
+// Merge them into public/pastProjects so /public/pastProjects/project_N/* resolves in production.
+const cardGalleriesSrc = path.join(siteRoot, 'src/pages/public/pastProjects')
+const cardGalleriesDest = path.join(siteRoot, 'public/pastProjects')
+const cardGalleriesAppDest = path.join(appRoot, 'public/pastProjects')
+if (fs.existsSync(cardGalleriesSrc)) {
+  for (const entry of fs.readdirSync(cardGalleriesSrc, { withFileTypes: true })) {
+    if (!entry.isDirectory() || !entry.name.startsWith('project_')) continue
+    copyDir(path.join(cardGalleriesSrc, entry.name), path.join(cardGalleriesDest, entry.name))
+    copyDir(path.join(cardGalleriesSrc, entry.name), path.join(cardGalleriesAppDest, entry.name))
+  }
+}
+
 for (const file of LEGACY_PAGES) {
   copyFile(
     path.join(siteRoot, 'src/pages', file),
@@ -65,4 +78,4 @@ copyFile(
   path.join(appRoot, 'public/logoIcons/favicon.png'),
 )
 
-console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, legacy pages, script.js`)
+console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, card galleries, legacy pages, script.js`)
