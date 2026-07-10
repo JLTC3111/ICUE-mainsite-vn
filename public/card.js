@@ -125,3 +125,30 @@ const cards = [
     location: "Thị trấn Xuân An, huyện Nghi Xuân, tỉnh Hà Tĩnh"
   },
 ];
+
+if (!location.pathname.endsWith('/card.html')) {
+// Fetch and render card.html for each card
+cards.forEach(card => {
+  fetch('../card.html')
+    .then(response => response.text())
+    .then(template => {
+      // Create image HTML from array
+      const imagesHTML = card.images
+        .map(src => `<img src="${getAbsolutePath(src)}" alt="${card.title}" style="width:100%; margin-bottom: 10px;">`)
+        .join('');
+        
+      // Helper to normalize path
+      function getAbsolutePath(src) {
+        // Remove leading slash if there is one, then prefix with root "/"
+        return '/' + src.replace(/^\/+/, '');
+      }
+      const cardHTML = template
+        .replace(/{{title}}/g, card.title)
+        .replace(/{{description}}/g, card.description)
+        .replace(/{{images}}/g, card.images)
+        .replace(/{{year}}/g, card.year)
+        .replace(/{{location}}/g, card.location);
+      document.getElementById('card-container').innerHTML += cardHTML;
+    });
+});
+}

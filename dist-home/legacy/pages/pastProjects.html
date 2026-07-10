@@ -28,8 +28,8 @@ html {
 body,
 .legacy-page {
   font-family: sans-serif;
-  /* Dark blue-gray equivalent of Tailwind gray-800 (#1f2937) */
-  background: linear-gradient(165deg, #0f172a 0%, #1e293b 48%, #1f2937 100%);
+  /* Match site footer near-black gradient */
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   background-attachment: fixed;
   min-height: 100vh;
   padding: 5%;
@@ -66,13 +66,15 @@ body,
 }
 
 .card {
-  background: #c4c4c4;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   overflow: hidden;
-  padding: 1.5px;
+  padding: 0;
   text-align: center;
-  transition: all 0.75s ease-in-out;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  outline: none;
 }
 
 .card:hover {
@@ -152,7 +154,7 @@ body,
 .card-info .location,
 .card-info .year {
   font-size: clamp(0.65rem, 2.5vw, 1rem);
-  color: #000000;
+  color: #ffffff;
   margin-bottom: 4px;
   font-weight: 400;
   line-height: 1.5;
@@ -164,7 +166,7 @@ body,
 
 .card-info .description {
   color: #ffffff;
-  background: #000000;
+  background: transparent;
 }
 
 /* Initial (hidden) state */

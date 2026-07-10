@@ -29,8 +29,24 @@ main.grid.past-projects-swiper-active {
   /* Avoid AOS / hover transitions fighting the swipe gesture */
   filter: none !important;
   opacity: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
   transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
   transform: none !important;
+}
+
+.past-projects-swiper .card-info p,
+.past-projects-swiper .card-info .description,
+.past-projects-swiper .card-info .location,
+.past-projects-swiper .card-info .year {
+  color: #ffffff !important;
+}
+
+.past-projects-swiper .card-info .description {
+  background: transparent !important;
 }
 
 .past-projects-swiper .card.image-card img {

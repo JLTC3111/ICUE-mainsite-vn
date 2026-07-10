@@ -25,14 +25,19 @@ html {
   transition-duration: 0.85s;
 }
 
-body {
+body,
+.legacy-page {
   font-family: sans-serif;
-  background: #ffffff;
+  /* Match site footer near-black gradient */
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
   padding: 5%;
+  box-sizing: border-box;
 }
 
 .grid {
-  margin-top: 5%;
+  margin-top: 10%;
   display: grid;
   gap: 25px;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
@@ -49,7 +54,7 @@ body {
 /* Responsive stacking layout for small screens */
 @media (max-width: 550px) {
   .grid {
-    margin-top: 15%;
+    margin-top: 22%;
     grid-template-columns: 1fr;
   }
 }
@@ -61,13 +66,15 @@ body {
 }
 
 .card {
-  background: #c4c4c4;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   overflow: hidden;
-  padding: 1.5px;
+  padding: 0;
   text-align: center;
-  transition: all 0.75s ease-in-out;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+  outline: none;
 }
 
 .card:hover {
@@ -147,7 +154,7 @@ body {
 .card-info .location,
 .card-info .year {
   font-size: clamp(0.65rem, 2.5vw, 1rem);
-  color: #000000;
+  color: #ffffff;
   margin-bottom: 4px;
   font-weight: 400;
   line-height: 1.5;
@@ -159,7 +166,7 @@ body {
 
 .card-info .description {
   color: #ffffff;
-  background: #000000;
+  background: transparent;
 }
 
 /* Initial (hidden) state */
