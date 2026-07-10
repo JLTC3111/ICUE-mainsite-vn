@@ -368,12 +368,29 @@ window.makeItRainText = () => {
   const text = el.textContent.trim();
   el.textContent = "";
 
+  const reduceMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (typeof gsap === "undefined" || reduceMotion) {
+    el.textContent = text;
+    el.style.opacity = "1";
+    el.style.visibility = "visible";
+    el.style.webkitTextFillColor = "#111111";
+    el.style.color = "#111111";
+    return;
+  }
+
+  const spans = [];
   text.split("").forEach((char, i) => {
     const span = document.createElement("span");
     span.textContent = char === " " ? "\u00A0" : char;
     span.style.display = "inline-block";
     span.style.opacity = 0;
+    span.style.color = "#111111";
+    span.style.webkitTextFillColor = "#111111";
     el.appendChild(span);
+    spans.push(span);
 
     gsap.fromTo(
       span,
@@ -383,10 +400,18 @@ window.makeItRainText = () => {
         opacity: 1,
         delay: i * 0.05,
         duration: 0.75,
-        ease: "bounce.out"
+        ease: "bounce.out",
       }
     );
   });
+
+  // Chrome iOS can drop GSAP completion; force-visible after the longest delay.
+  window.setTimeout(() => {
+    spans.forEach((span) => {
+      span.style.opacity = "1";
+      span.style.transform = "none";
+    });
+  }, Math.ceil(text.length * 50 + 1000));
 };
 
 window.addEventListener("DOMContentLoaded", () => {

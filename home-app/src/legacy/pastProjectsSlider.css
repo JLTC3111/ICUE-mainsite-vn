@@ -1,17 +1,24 @@
 /* Mobile Swiper layout for past projects (desktop keeps CSS grid) */
 
-/* Don't force full-viewport height — that left a large empty gap above the footer. */
+/*
+ * Collapse the legacy page shell so it does not stretch to 100vh and leave a
+ * large empty band between the swiper and the site footer.
+ */
+.legacy-page:has(.past-projects-swiper),
 .legacy-page:has(main.grid.past-projects-swiper-active) {
   min-height: 0 !important;
-  padding-bottom: 0.75rem !important;
+  height: auto !important;
+  padding-bottom: 0.5rem !important;
 }
 
 main.grid.past-projects-swiper-active {
   display: block;
   margin-top: 10%;
   margin-bottom: 0;
-  padding: 12px 0 8px;
+  padding: 12px 0 0;
   gap: 0;
+  min-height: 0;
+  height: auto;
 }
 
 @media (max-width: 550px) {
@@ -22,9 +29,11 @@ main.grid.past-projects-swiper-active {
 
 .past-projects-swiper {
   width: 100%;
+  height: auto !important;
   overflow: hidden;
-  /* Room between card text and pagination bullets */
-  padding-bottom: 3.75rem;
+  /* Space reserved under the card for pagination bullets */
+  padding-bottom: 4.5rem !important;
+  box-sizing: border-box;
 }
 
 .past-projects-swiper .swiper-wrapper {
@@ -32,16 +41,23 @@ main.grid.past-projects-swiper-active {
 }
 
 .past-projects-swiper .swiper-slide {
-  height: auto;
+  height: auto !important;
   box-sizing: border-box;
 }
 
 .past-projects-swiper .swiper-pagination {
-  bottom: 0.35rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.75rem !important;
+  top: auto !important;
+  width: 100%;
+  margin-top: 0;
 }
 
 .past-projects-swiper .card-info {
-  padding-bottom: 1.75rem !important;
+  /* Extra space between last text line and the pagination row */
+  padding-bottom: 2.25rem !important;
 }
 
 .past-projects-swiper .card.image-card {

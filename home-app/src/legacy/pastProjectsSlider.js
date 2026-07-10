@@ -62,6 +62,8 @@ function enableSwiper() {
     spaceBetween: 20,
     speed: 280,
     autoHeight: true,
+    observer: true,
+    observeParents: true,
     resistanceRatio: 0.55,
     threshold: 8,
     grabCursor: true,

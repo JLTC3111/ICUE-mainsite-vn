@@ -8,17 +8,15 @@
   <meta name="description" content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Đô Thị, Trung Tâm Sáng Tạo, Đổi Mới. Khám phá các dự án, hoạt động cộng đồng, tin tức và thông tin liên hệ." />
   <link rel="stylesheet" href="/styles.css">
 <style> 
-* {
+/* Scope to .legacy-page so embedded News does not clip fixed MainSiteNav/footer
+   (unscoped html/body overflow-x:hidden breaks position:fixed on mobile WebKit). */
+.legacy-page,
+.legacy-page * {
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-body {
+.legacy-page {
   font-family: sans-serif;
   background: #ffffff;
   padding: 5%;

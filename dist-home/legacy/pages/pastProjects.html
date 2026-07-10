@@ -31,8 +31,11 @@ body,
   /* Match site footer near-black gradient */
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   background-attachment: fixed;
-  min-height: 100vh;
+  /* Content-sized height so the site footer sits directly under the grid/swiper */
+  min-height: 0;
+  height: auto;
   padding: 5%;
+  padding-bottom: 0.75rem;
   box-sizing: border-box;
 }
 
