@@ -116,12 +116,27 @@ export default function MainSiteNav({
   }, []);
 
   const playEntranceAnimation = useCallback((isFirstLoad = true) => {
-    if (typeof window.gsap === 'undefined') {
+    const reveal = (el) => {
+      if (!el) return;
+      el.classList.remove('pre-hidden');
+      el.style.opacity = '';
+      el.style.visibility = '';
+      el.style.transform = '';
+    };
+
+    const reduceMotion =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (typeof window.gsap === 'undefined' || reduceMotion) {
       [menuToggleRef, logoLinkRef, flagLinkRef, contactLinkRef].forEach((ref) => {
-        if (ref.current) {
-          ref.current.classList.remove('pre-hidden');
-          ref.current.style.opacity = '';
-          ref.current.style.visibility = '';
+        reveal(ref.current);
+        if (ref === logoLinkRef) {
+          reveal(ref.current?.querySelector('.logo-mark'));
+          reveal(ref.current?.querySelector('.logo-wordmark'));
+        }
+        if (ref === flagLinkRef) {
+          reveal(ref.current?.querySelector('.flag-link'));
         }
       });
       return;
@@ -150,14 +165,20 @@ export default function MainSiteNav({
           y: 0,
           opacity: 1,
           onStart: () => {
-            el.classList.remove('pre-hidden');
-            el.style.opacity = '';
-            el.style.visibility = '';
+            reveal(el);
+          },
+          onComplete: () => {
+            reveal(el);
           },
         },
         delay
       );
     });
+
+    // Safety net for flaky mobile WebKit / Chrome iOS animation completion.
+    window.setTimeout(() => {
+      targets.forEach(({ el }) => reveal(el));
+    }, 2500);
 
     const langIcon = flagLinkRef.current?.querySelector('#langSwitcher');
     if (langIcon) {

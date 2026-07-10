@@ -1495,6 +1495,21 @@
   }
 }
 
+/* iOS Chrome / Reduce Motion: entrance keyframes can leave opacity:0 forever. */
+@media (prefers-reduced-motion: reduce) {
+  .main-site-nav__dock-wrap,
+  .main-site-nav .menu-toggle,
+  .main-site-nav__dock,
+  .main-site-nav .language-switcher,
+  .main-site-nav .contact-link,
+  .main-site-nav .logo-link {
+    animation: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
+
 body.loading .main-site-nav .language-switcher,
 body.loading .main-site-nav .menu-toggle,
 body.loading .main-site-nav #drawerMenu {

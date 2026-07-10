@@ -179,3 +179,11 @@ aside.contact-sidebar button:hover {
     pointer-events: none;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  aside.contact-sidebar {
+    animation: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
