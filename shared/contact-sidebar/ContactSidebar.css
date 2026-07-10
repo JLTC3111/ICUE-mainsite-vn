@@ -16,7 +16,10 @@ aside.contact-sidebar {
   width: fit-content;
   box-shadow: none;
   transform: none;
-  animation: contactSidebarFadeIn 4.5s ease-in-out;
+  /* No opacity entrance — Chrome iOS can freeze animation-fill-mode at 0%. */
+  animation: none;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Legacy styles.css sets a global blue gradient on all <button> elements. */

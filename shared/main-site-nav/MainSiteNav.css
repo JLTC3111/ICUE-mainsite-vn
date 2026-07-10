@@ -30,7 +30,11 @@
   justify-content: center;
   width: 100%;
   max-width: 100%;
-  animation: msn-dropDownCenter 2.5s ease-in-out forwards;
+  /* Avoid opacity/visibility entrance on the dock itself — Chrome iOS can
+     leave animation-fill-mode:forwards stuck at the 0% keyframe forever. */
+  animation: none;
+  opacity: 1;
+  visibility: visible;
 }
 
 .main-site-nav__dock--unified::-webkit-scrollbar {
@@ -143,7 +147,9 @@
   z-index: 60;
   pointer-events: auto;
   isolation: isolate;
-  animation: msn-slideInFromRight 4.5s ease-in-out forwards;
+  animation: none;
+  opacity: 1;
+  visibility: visible;
 }
 
 .main-site-nav__dock {
@@ -392,7 +398,9 @@
   padding: 0.35rem;
   border-radius: 50px;
   transition: color 200ms ease, background 200ms ease;
-  animation: msn-dropDownCenter 2.5s ease-in-out forwards;
+  animation: none;
+  opacity: 1;
+  visibility: visible;
   min-width: 48px;
   min-height: 48px;
 }
@@ -1161,7 +1169,9 @@
   }
 
   .main-site-nav__dock-wrap {
-    animation: msn-dropDown 2.5s ease-in-out forwards;
+    animation: none;
+    opacity: 1;
+    visibility: visible;
   }
 
   .main-site-nav__dock--unified {
@@ -1196,7 +1206,9 @@
     border: none;
     box-shadow: none;
     color: inherit;
-    animation: msn-dropDown 2.5s ease-in-out forwards;
+    animation: none;
+    opacity: 1;
+    visibility: visible;
   }
 
   .main-site-nav.nav-on-dark .menu-toggle,
@@ -1506,6 +1518,32 @@
     animation: none !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+  }
+}
+
+
+/* Chrome iOS: never leave critical chrome at opacity:0 from entrance keyframes. */
+@media (max-width: 1024px) {
+  .main-site-nav__bar.menu-bar,
+  .main-site-nav__dock-wrap,
+  .main-site-nav__dock--unified,
+  .main-site-nav .menu-toggle,
+  .main-site-nav .logo-link,
+  .main-site-nav .logo-mark,
+  .main-site-nav .logo-wordmark,
+  .main-site-nav .contact-link,
+  .main-site-nav .language-switcher,
+  .main-site-nav .flag-link,
+  .main-site-nav__right {
+    animation: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .main-site-nav__dock-wrap,
+  .main-site-nav .menu-toggle,
+  .main-site-nav__right {
     transform: none !important;
   }
 }
