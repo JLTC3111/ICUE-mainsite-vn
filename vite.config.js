@@ -98,6 +98,17 @@ function homeDevFallback() {
         const filePath = path.join(appDir, rel);
         const hasExtension = Boolean(rel && path.extname(rel));
 
+        // Serve React shell for legacy News archive (same URL as the static file).
+        if (urlPath === '/src/pages/News.html') {
+          const indexPath = path.join(appDir, 'index.html');
+          if (fs.existsSync(indexPath)) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.end(fs.readFileSync(indexPath, 'utf-8'));
+            return;
+          }
+        }
+
         if (hasExtension) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;

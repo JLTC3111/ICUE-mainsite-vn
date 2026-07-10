@@ -22,6 +22,7 @@ body {
   font-family: sans-serif;
   background: #ffffff;
   padding: 5%;
+  padding-top: max(5%, 5.5rem);
   overflow-x: hidden;
   max-width: 100vw;
   box-sizing: border-box;
@@ -50,12 +51,14 @@ body {
 }
 
 .news-logo-swiper .swiper-slide {
-  width: 160px;
-  height: 80px;
+  /* Uniform slot so every logo reads at roughly the same visual size */
+  width: 220px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .news-logo-swiper .swiper-slide a {
@@ -64,19 +67,24 @@ body {
   justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 0.35rem;
+  box-sizing: border-box;
 }
 
 .news-logo-swiper .swiper-slide img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
+  object-position: center;
   filter: grayscale(100%);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .news-logo-swiper .swiper-slide img:hover {
   filter: grayscale(0);
-  transform: scale(1.12);
+  transform: scale(1.08);
 }
 
 .news-logo-swiper .swiper-pagination {
@@ -100,8 +108,8 @@ body {
     margin-top: 1.5rem;
   }
   .news-logo-swiper .swiper-slide {
-    width: 125px;
-    height: 65px;
+    width: 160px;
+    height: 80px;
   }
   .news-logo-swiper .swiper-slide img {
     filter: grayscale(0);
@@ -117,8 +125,8 @@ body {
     padding-bottom: 1.5rem;
   }
   .news-logo-swiper .swiper-slide {
-    width: 100px;
-    height: 50px;
+    width: 130px;
+    height: 65px;
   }
 }
 
@@ -467,6 +475,16 @@ main.grid.news-cards-swiper-active {
   }
 }
 
+
+/* Clear fixed MainSiteNav when News.html is embedded in the React shell */
+.legacy-page .news-logo-swiper-wrap {
+  margin-top: max(1.25rem, 5.5rem);
+}
+@media (max-width: 1024px) {
+  .legacy-page .news-logo-swiper-wrap {
+    margin-top: max(1.5rem, 5.5rem);
+  }
+}
 </style>
 <body>
   <div class="news-logo-swiper-wrap">
@@ -634,10 +652,15 @@ main.grid.news-cards-swiper-active {
   
   </main>
 
+<!-- Swiper is initialized by home-app when served at /news-archive.
+     Keep a CDN fallback for direct HTML opens / pre-redirect loads. -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function () {
+  // Skip when embedded in the React legacy shell (module owns Swiper lifecycle).
+  if (document.querySelector('.legacy-page') || window.__icueLegacyRuntimeLoaded) return;
+
   const STORAGE_KEY = 'newsSliderIndex';
   const MOBILE_QUERY = '(max-width: 1024px)';
 
@@ -671,11 +694,9 @@ main.grid.news-cards-swiper-active {
 
   const cardsState = {
     swiper: null,
-    swiperEl: null,
     grid: null,
     cards: [],
     mq: null,
-    onMqChange: null,
   };
 
   function readInitialIndex(count) {
@@ -686,43 +707,30 @@ main.grid.news-cards-swiper-active {
 
   function enableCardsSwiper() {
     if (cardsState.swiper || !cardsState.grid || !cardsState.cards.length) return;
-
     const swiperEl = document.createElement('div');
     swiperEl.className = 'swiper news-cards-swiper';
-
     const wrapper = document.createElement('div');
     wrapper.className = 'swiper-wrapper';
-
     cardsState.cards.forEach((card) => {
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
       slide.appendChild(card);
       wrapper.appendChild(slide);
     });
-
     const pagination = document.createElement('div');
     pagination.className = 'swiper-pagination';
-
     swiperEl.appendChild(wrapper);
     swiperEl.appendChild(pagination);
-
     cardsState.grid.replaceChildren(swiperEl);
     cardsState.grid.classList.add('news-cards-swiper-active');
-    cardsState.swiperEl = swiperEl;
-
     cardsState.swiper = new Swiper(swiperEl, {
       slidesPerView: 1,
       spaceBetween: 20,
       speed: 280,
-      resistanceRatio: 0.55,
-      threshold: 8,
       grabCursor: true,
       watchOverflow: true,
       initialSlide: readInitialIndex(cardsState.cards.length),
-      pagination: {
-        el: pagination,
-        clickable: true,
-      },
+      pagination: { el: pagination, clickable: true },
       on: {
         slideChange(swiper) {
           localStorage.setItem(STORAGE_KEY, String(swiper.activeIndex));
@@ -739,7 +747,6 @@ main.grid.news-cards-swiper-active {
     }
     cardsState.grid.classList.remove('news-cards-swiper-active');
     cardsState.grid.replaceChildren(...cardsState.cards);
-    cardsState.swiperEl = null;
   }
 
   function syncCardsMode() {
@@ -753,13 +760,11 @@ main.grid.news-cards-swiper-active {
     if (!grid || typeof Swiper === 'undefined') return;
     const cards = Array.from(grid.querySelectorAll('a.card.image-card'));
     if (!cards.length) return;
-
     cardsState.grid = grid;
     cardsState.cards = cards;
     cardsState.mq = window.matchMedia(MOBILE_QUERY);
-    cardsState.onMqChange = syncCardsMode;
     syncCardsMode();
-    cardsState.mq.addEventListener('change', cardsState.onMqChange);
+    cardsState.mq.addEventListener('change', syncCardsMode);
   }
 
   function boot() {
@@ -767,11 +772,8 @@ main.grid.news-cards-swiper-active {
     initCardsSwiper();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();
 </script>
 

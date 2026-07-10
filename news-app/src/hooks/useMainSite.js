@@ -15,7 +15,7 @@ function siteLangFromUi(uiLang) {
 /** Legacy static news grid (pre-newsroom archive). EN UI → en.icue.vn. */
 function legacyNewsArchiveLink(siteLang) {
   const base = siteLang === 'vi' ? SITES.vi : SITES.en
-  return `${base}/news-archive`
+  return `${base}/src/pages/News.html`
 }
 
 export function useMainSite() {

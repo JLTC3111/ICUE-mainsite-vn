@@ -7,7 +7,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   base: '/',
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'legacy-news-spa',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const urlPath = (req.url || '').split('?')[0]
+          if (urlPath !== '/src/pages/News.html') return next()
+          req.url = '/index.html'
+          next()
+        })
+      },
+    },
+  ],
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {

@@ -4,10 +4,10 @@
 /our-work          /index.html   200
 /past-projects     /index.html   200
 /recruitment       /index.html   200
-/news-archive      /index.html   200
 
-# Legacy static News.html → React shell (MainSiteNav + Swiper).
-/src/pages/News.html  /news-archive  301
+# Legacy News archive: force React shell (MainSiteNav + footer) over the static HTML file.
+/src/pages/News.html  /index.html  200!
+/news-archive         /src/pages/News.html  301
 
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.

@@ -6,7 +6,8 @@ export const ROUTE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  newsArchive: '/news-archive',
+  /** Legacy news archive — same URL as the static file, served via React shell. */
+  newsArchive: '/src/pages/News.html',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */
@@ -69,7 +70,11 @@ export function prepareLegacyHtml(rawHtml) {
     '#/cookies': staticPage('cookies'),
   }
 
-  bodyHtml = bodyHtml.replace(/\bpublic\//g, '/public/')
+  // Only rewrite relative `public/...` paths. Absolute `/public/...` must stay intact
+  // (a naive `\bpublic/` replace turns `/public/` into protocol-relative `//public/`).
+  bodyHtml = bodyHtml
+    .replace(/(["'(=\s])public\//g, '$1/public/')
+    .replace(/(^|[^:/])\/{2,}public\//g, '$1/public/')
   for (const [hash, path] of Object.entries(hashToPath)) {
     bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
     bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)

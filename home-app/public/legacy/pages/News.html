@@ -51,12 +51,14 @@ body {
 }
 
 .news-logo-swiper .swiper-slide {
-  width: 160px;
-  height: 80px;
+  /* Uniform slot so every logo reads at roughly the same visual size */
+  width: 220px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .news-logo-swiper .swiper-slide a {
@@ -65,19 +67,24 @@ body {
   justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 0.35rem;
+  box-sizing: border-box;
 }
 
 .news-logo-swiper .swiper-slide img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
+  object-position: center;
   filter: grayscale(100%);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .news-logo-swiper .swiper-slide img:hover {
   filter: grayscale(0);
-  transform: scale(1.12);
+  transform: scale(1.08);
 }
 
 .news-logo-swiper .swiper-pagination {
@@ -101,8 +108,8 @@ body {
     margin-top: 1.5rem;
   }
   .news-logo-swiper .swiper-slide {
-    width: 125px;
-    height: 65px;
+    width: 160px;
+    height: 80px;
   }
   .news-logo-swiper .swiper-slide img {
     filter: grayscale(0);
@@ -118,8 +125,8 @@ body {
     padding-bottom: 1.5rem;
   }
   .news-logo-swiper .swiper-slide {
-    width: 100px;
-    height: 50px;
+    width: 130px;
+    height: 65px;
   }
 }
 
@@ -645,8 +652,8 @@ main.grid.news-cards-swiper-active {
   
   </main>
 
-<!-- Swiper is initialized by home-app when served at /news-archive.
-     Keep a CDN fallback for direct HTML opens / pre-redirect loads. -->
+<!-- Swiper is initialized by home-app when this URL is rewritten to the React shell.
+     Keep a CDN fallback only if the static HTML is opened without the shell. -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
