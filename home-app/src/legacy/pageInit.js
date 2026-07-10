@@ -1,4 +1,12 @@
 let runtimePromise = null
+let pastProjectsSliderApi = null
+
+async function getPastProjectsSlider() {
+  if (!pastProjectsSliderApi) {
+    pastProjectsSliderApi = await import('./pastProjectsSlider')
+  }
+  return pastProjectsSliderApi
+}
 
 function loadLegacyRuntime() {
   if (window.__icueLegacyRuntimeLoaded) {
@@ -36,8 +44,10 @@ const PAGE_INIT = {
     window.initializeCarousel?.()
   },
   pastProjects: async () => {
-    window.initMobileProjectsSlider?.()
-    window.handleAOSByScreenSize?.()
+    // Skip the sluggish custom touch slider in legacy/script.js —
+    // Swiper is initialized from LegacyHtmlPage after HTML is painted.
+    const { initPastProjectsSlider } = await getPastProjectsSlider()
+    await initPastProjectsSlider()
   },
   recruitment: async () => {
     window.JobBoard?.init?.()
@@ -47,6 +57,9 @@ const PAGE_INIT = {
 const PAGE_CLEANUP = {
   aboutUs: () => {
     window.AboutUsBackgroundVideoManager?.destroy?.()
+  },
+  pastProjects: () => {
+    pastProjectsSliderApi?.destroyPastProjectsSlider?.()
   },
 }
 

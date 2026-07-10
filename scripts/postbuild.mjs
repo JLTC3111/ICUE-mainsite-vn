@@ -84,4 +84,12 @@ for (const dir of rootDirsFromHome) {
 copyDir(path.join(homeDist, 'src/pages'), path.join(root, 'src/pages'));
 copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
 
+// Past-project detail pages load card data from /src/card.js.
+const cardJs = path.join(root, 'src/card.js');
+if (fs.existsSync(cardJs)) {
+  copyFile(cardJs, path.join(homeDist, 'src/card.js'));
+} else {
+  console.warn('[postbuild] Missing src/card.js — past project card pages will break.');
+}
+
 console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');

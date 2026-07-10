@@ -89,10 +89,10 @@ function MessengerIcon() {
   )
 }
 
-function ContactSidebar({ musicIconColor }) {
+function ContactSidebar({ musicIconColor, contentKey = '' }) {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
-  const adaptiveColor = useAdaptiveIconColor(musicRef, musicIconColor == null)
+  const adaptiveColor = useAdaptiveIconColor(musicRef, musicIconColor == null, contentKey)
   const musicColor = musicIconColor ?? adaptiveColor
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)

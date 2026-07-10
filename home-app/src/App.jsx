@@ -29,7 +29,9 @@ function NavSync() {
   return null
 }
 
-export default function App() {
+function AppShell() {
+  const { pathname } = useLocation()
+
   useEffect(() => {
     // #region agent log
     debugLog('App.jsx:mount', 'App mounted', { pathname: window.location.pathname }, 'B')
@@ -37,7 +39,7 @@ export default function App() {
   }, [])
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <NavSync />
       <MainSiteNav
@@ -59,7 +61,15 @@ export default function App() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar />
+      <ContactSidebar contentKey={pathname} />
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   )
 }

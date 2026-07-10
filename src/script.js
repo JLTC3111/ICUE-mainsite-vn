@@ -2751,6 +2751,9 @@ window.OrgStructure = {
     window.searchDocuments = window.OrgStructure.searchDocuments;
 
   window.initMobileProjectsSlider = () => {
+      // SPA path uses Swiper via home-app/src/legacy/pastProjectsSlider.js
+      if (window.__ICUE_SKIP_HASH_ROUTER__) return;
+
       const cards = document.querySelectorAll(".card.image-card");
       const gridContainer = document.querySelector("main.grid");
       if (!cards.length || !gridContainer) return;

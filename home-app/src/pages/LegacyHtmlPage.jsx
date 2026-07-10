@@ -14,6 +14,11 @@ export default function LegacyHtmlPage() {
   const [html, setHtml] = useState('')
   const [error, setError] = useState(null)
   const legacyRootRef = useRef(null)
+  const pageNameRef = useRef(pageName)
+
+  useEffect(() => {
+    pageNameRef.current = pageName
+  }, [pageName])
 
   useEffect(() => {
     if (!pageName) return undefined
@@ -36,8 +41,8 @@ export default function LegacyHtmlPage() {
           await loadModelViewer()
         }
 
+        // Only set HTML here — page init runs after paint so querySelectors work.
         setHtml(prepareLegacyHtml(raw))
-        await initLegacyPage(pageName)
       } catch (err) {
         if (cancelled || err.name === 'AbortError') return
         setError(err.message || 'Failed to load page')
@@ -56,6 +61,29 @@ export default function LegacyHtmlPage() {
   useLayoutEffect(() => {
     if (!html || !pageUsesModelViewer(pageName)) return
     upgradeModelViewers(legacyRootRef.current)
+  }, [html, pageName])
+
+  // Init after HTML is committed to the DOM (fixes empty querySelector race).
+  useLayoutEffect(() => {
+    if (!html || !pageName) return undefined
+
+    let cancelled = false
+    const frameId = requestAnimationFrame(() => {
+      if (cancelled) return
+      window.dispatchEvent(
+        new CustomEvent('icue:legacy-page-ready', { detail: { pageName } }),
+      )
+      void initLegacyPage(pageName).catch((err) => {
+        if (!cancelled && pageNameRef.current === pageName) {
+          console.error('Legacy page init failed:', err)
+        }
+      })
+    })
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frameId)
+    }
   }, [html, pageName])
 
   if (!pageName) {
