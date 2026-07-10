@@ -25,14 +25,19 @@ html {
   transition-duration: 0.85s;
 }
 
-body {
+body,
+.legacy-page {
   font-family: sans-serif;
-  background: #ffffff;
+  /* Dark blue-gray equivalent of Tailwind gray-800 (#1f2937) */
+  background: linear-gradient(165deg, #0f172a 0%, #1e293b 48%, #1f2937 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
   padding: 5%;
+  box-sizing: border-box;
 }
 
 .grid {
-  margin-top: 5%;
+  margin-top: 10%;
   display: grid;
   gap: 25px;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
@@ -49,7 +54,7 @@ body {
 /* Responsive stacking layout for small screens */
 @media (max-width: 550px) {
   .grid {
-    margin-top: 15%;
+    margin-top: 22%;
     grid-template-columns: 1fr;
   }
 }

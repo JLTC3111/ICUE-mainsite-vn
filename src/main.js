@@ -348,8 +348,8 @@ footer {
       const html = `
         <footer>
             <div class="footer-container">
-                <div class="footer-section">
-                    <div class="footer-toggle underline-hover" aria-expanded="false">
+                <div class="footer-section open">
+                    <div class="footer-toggle underline-hover" aria-expanded="true">
                         Công Ty
                     </div>
                     <div class="collapsible">
@@ -357,8 +357,8 @@ footer {
                         <a href="/src/pages/communityActivities.html">Hoạt Động Cộng Đồng</a>
                     </div>
                 </div>
-                <div class="footer-section">
-                    <div class="footer-toggle underline-hover" aria-expanded="false">
+                <div class="footer-section open">
+                    <div class="footer-toggle underline-hover" aria-expanded="true">
                         Các Trang Khác
                     </div>
                     <div class="collapsible">

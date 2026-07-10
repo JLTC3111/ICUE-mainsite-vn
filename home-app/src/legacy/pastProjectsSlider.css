@@ -1,9 +1,15 @@
 /* Mobile Swiper layout for past projects (desktop keeps CSS grid) */
 main.grid.past-projects-swiper-active {
   display: block;
-  margin-top: 5%;
+  margin-top: 10%;
   padding: 12px 0 24px;
   gap: 0;
+}
+
+@media (max-width: 550px) {
+  main.grid.past-projects-swiper-active {
+    margin-top: 22%;
+  }
 }
 
 .past-projects-swiper {
@@ -33,12 +39,12 @@ main.grid.past-projects-swiper-active {
 }
 
 .past-projects-swiper .swiper-pagination-bullet {
-  background: #000;
-  opacity: 0.25;
+  background: #94a3b8;
+  opacity: 0.45;
 }
 
 .past-projects-swiper .swiper-pagination-bullet-active {
-  background: #3310ff;
+  background: #60a5fa;
   opacity: 1;
 }
 
