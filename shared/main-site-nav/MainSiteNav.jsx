@@ -135,8 +135,11 @@ export default function MainSiteNav({
     const reduceMotion =
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobileNav =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 1024px)').matches;
 
-    if (typeof window.gsap === 'undefined' || reduceMotion) {
+    if (typeof window.gsap === 'undefined' || reduceMotion || isMobileNav) {
       [menuToggleRef, logoLinkRef, flagLinkRef, contactLinkRef].forEach((ref) => {
         reveal(ref.current);
         if (ref === logoLinkRef) {

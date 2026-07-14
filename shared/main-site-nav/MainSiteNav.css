@@ -191,12 +191,27 @@
 
 .main-site-nav__dock-icon--flag {
   overflow: visible;
-  padding: 0 0.15rem 0 0.05rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-site-nav__dock-icon--flag .language-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .main-site-nav__dock-icon--flag .flag-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: clamp(28px, 7vw, 34px);
   height: clamp(28px, 7vw, 34px);
+  margin: 0;
 }
 
 .main-site-nav__dock-icon--flag .flag-icon {
@@ -1169,6 +1184,13 @@
     height: clamp(20px, 5.5vw, 24px);
   }
 
+  .main-site-nav .flag-link,
+  .main-site-nav #langSwitcher,
+  .main-site-nav__dock-icon--flag,
+  .main-site-nav__dock-icon--flag .language-switcher {
+    transform: none !important;
+  }
+
   .main-site-nav .menu-toggle {
     min-width: 36px;
     min-height: 36px;
@@ -1395,7 +1417,11 @@
 
   .main-site-nav__dock-wrap,
   .main-site-nav .menu-toggle,
-  .main-site-nav__right {
+  .main-site-nav__right,
+  .main-site-nav .flag-link,
+  .main-site-nav #langSwitcher,
+  .main-site-nav__dock-icon--flag,
+  .main-site-nav__dock-icon--flag .language-switcher {
     transform: none !important;
   }
 }
