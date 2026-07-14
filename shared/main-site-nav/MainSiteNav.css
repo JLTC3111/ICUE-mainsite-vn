@@ -290,6 +290,11 @@
     display: none;
   }
 
+  .main-site-nav__bar.menu-bar {
+    padding-inline: max(var(--site-rail-inset, 0.75rem), env(safe-area-inset-left, 0px))
+      max(var(--site-rail-inset, 0.75rem), env(safe-area-inset-right, 0px));
+  }
+
   .main-site-nav__dock-wrap {
     width: 100%;
   }
@@ -297,11 +302,27 @@
   /* Instagram-style capsule: neutral charcoal pill, soft blur, even spacing */
   .main-site-nav__dock--unified {
     width: 100%;
-    max-width: min(100%, calc(100vw - 0.85rem));
+    max-width: min(
+      100%,
+      calc(100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px) - 0.85rem)
+    );
     gap: clamp(0.25rem, 1.6vw, 0.6rem);
     padding: 0.4rem clamp(0.45rem, 2vw, 0.7rem);
     overflow: visible;
     justify-content: space-between;
+  }
+
+  /* Dock icons default to 44px via JS; cap size on tablet/phone so the flag
+     and contact link are not pushed past the viewport edge. */
+  .main-site-nav__dock--unified .icue-dock__icon {
+    width: clamp(34px, 9vw, 42px) !important;
+    height: clamp(34px, 9vw, 42px) !important;
+    padding: 3px !important;
+  }
+
+  .main-site-nav__dock-contact {
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .main-site-nav--dock-contracted .main-site-nav__dock--unified.icue-dock,
@@ -326,9 +347,14 @@
   .main-site-nav__dock-slot--brand {
     flex: 0 1 auto;
     min-width: 0;
+    max-width: 46%;
     padding: 0.3rem clamp(0.55rem, 2.6vw, 0.85rem) 0.3rem clamp(0.4rem, 2vw, 0.6rem);
     background: rgba(255, 255, 255, 0.13);
     border-radius: 9999px;
+  }
+
+  .main-site-nav__dock-slot--brand .logo-wordmark {
+    max-width: 100%;
   }
 
   .main-site-nav__dock-slot--brand .logo-link {
@@ -1004,8 +1030,9 @@
   }
 
   .main-site-nav__dock--unified {
-    --dock-gap: clamp(0.2rem, 1.2vw, 0.45rem);
-    padding: 0.4rem clamp(0.4rem, 1.8vw, 0.6rem);
+    --dock-gap: clamp(0.15rem, 1vw, 0.35rem);
+    gap: var(--dock-gap);
+    padding: 0.35rem clamp(0.35rem, 1.5vw, 0.55rem);
   }
 
   .main-site-nav__dock-slot--brand .logo-link {
@@ -1013,8 +1040,8 @@
   }
 
   .main-site-nav__dock-contact .contact-link-wordmark {
-    --contact-wordmark-ratio: 5.25;
-    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
+    --contact-wordmark-ratio: 5.15;
+    --contact-wordmark-height: clamp(0.76rem, 2.35vw, 0.94rem);
   }
 
   .main-site-nav__dock--unified .menu-toggle {
@@ -1066,28 +1093,93 @@
   }
 
   .main-site-nav .logo-link {
-    --logo-wordmark-size: clamp(1.82rem, 4.65vw, 2.28rem);
-    --logo-mark-size: clamp(1.55rem, 3.9vw, 1.92rem);
+    --logo-wordmark-size: clamp(1.5rem, 3.9vw, 1.85rem);
+    --logo-mark-size: clamp(1.28rem, 3.3vw, 1.58rem);
   }
 
   .main-site-nav .contact-link-wordmark {
-    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
+    --contact-wordmark-height: clamp(0.76rem, 2.35vw, 0.94rem);
   }
 
   .main-site-nav .flag-link {
-    width: clamp(27px, 7vw, 32px);
-    height: clamp(27px, 7vw, 32px);
+    width: clamp(26px, 6.8vw, 30px);
+    height: clamp(26px, 6.8vw, 30px);
   }
 
   .main-site-nav .flag-icon {
-    width: clamp(25px, 6.5vw, 30px);
-    height: clamp(25px, 6.5vw, 30px);
+    width: clamp(24px, 6.2vw, 28px);
+    height: clamp(24px, 6.2vw, 28px);
   }
 
   .main-site-nav .menu-toggle svg:not(.menu-icon-metallic__lucide-close):not(.menu-icon-metallic__fallback-close) rect,
   .main-site-nav #menuIcon rect {
     fill: currentColor !important;
     stroke: currentColor !important;
+  }
+}
+
+/* iPhone-class widths (e.g. 11 Pro @ 375px): five dock items must fit without
+   clipping the language flag off the right edge. */
+@media (max-width: 390px) {
+  .main-site-nav__dock--unified {
+    gap: clamp(0.1rem, 0.7vw, 0.25rem);
+    padding: 0.32rem clamp(0.28rem, 1.1vw, 0.42rem);
+  }
+
+  .main-site-nav__dock--unified .icue-dock__icon {
+    width: clamp(30px, 8vw, 34px) !important;
+    height: clamp(30px, 8vw, 34px) !important;
+    padding: 2px !important;
+  }
+
+  .main-site-nav__dock-slot--brand {
+    max-width: 36%;
+    padding: 0.24rem 0.38rem 0.24rem 0.32rem;
+  }
+
+  .main-site-nav .logo-link {
+    --logo-wordmark-size: clamp(1.28rem, 3.4vw, 1.5rem);
+    --logo-mark-size: clamp(1.08rem, 2.9vw, 1.28rem);
+    --logo-wordmark-ratio: 2;
+  }
+
+  .main-site-nav__dock-contact .contact-link-wordmark {
+    --contact-wordmark-ratio: 4.95;
+    --contact-wordmark-height: clamp(0.64rem, 2.6vw, 0.78rem);
+    max-width: 3.85rem;
+  }
+
+  .main-site-nav .contact-link-wordmark {
+    --contact-wordmark-height: clamp(0.64rem, 2.6vw, 0.78rem);
+  }
+
+  .main-site-nav__dock-icon--flag {
+    flex-shrink: 0;
+    padding-inline-end: max(0.05rem, env(safe-area-inset-right, 0px));
+  }
+
+  .main-site-nav .flag-link,
+  .main-site-nav__dock-icon--flag .flag-link {
+    width: clamp(22px, 6vw, 26px);
+    height: clamp(22px, 6vw, 26px);
+  }
+
+  .main-site-nav .flag-icon,
+  .main-site-nav__dock-icon--flag .flag-icon {
+    width: clamp(20px, 5.5vw, 24px);
+    height: clamp(20px, 5.5vw, 24px);
+  }
+
+  .main-site-nav .menu-toggle {
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .main-site-nav .menu-toggle svg,
+  .main-site-nav #menuIcon,
+  .main-site-nav .menu-icon-metallic {
+    width: clamp(26px, 7vw, 32px) !important;
+    height: clamp(26px, 7vw, 32px) !important;
   }
 }
 
