@@ -5,13 +5,11 @@ import HomeSection from '../components/HomeSection'
 import HomeBeamNetwork from '../components/HomeBeamNetwork'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { useHomeBackgroundVideo } from '../hooks/useHomeBackgroundVideo'
-import { useHomeScrollReveal } from '../hooks/useScrollReveal'
 import { useVisualEffectsTier } from '../hooks/useHeavyVisualEffects'
 import { debugLog } from '../lib/debugLog'
 
 export default function HomePage() {
   useHomeBackgroundVideo()
-  useHomeScrollReveal()
   const effectsTier = useVisualEffectsTier()
 
   useEffect(() => {
