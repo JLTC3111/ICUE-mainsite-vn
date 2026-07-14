@@ -139,6 +139,7 @@
   /* Room for the LineSidebar ruler markers on the left */
   padding-left: 40px;
   --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
+  --nav-hover: var(--nav-accent);
   --marker-length: 32px;
   --marker-scale-min: 0.35;
   --marker-scale-max: 1.65;
@@ -156,15 +157,38 @@
   width: 100%;
   padding: 0.85rem 0.5rem;
   padding-left: calc(0.6rem + var(--effect, 0) * 12px);
-  color: color-mix(in srgb, var(--nav-accent) calc(var(--effect, 0) * 100%), #fff);
+  color: #fff;
   font-size: clamp(0.95rem, 2.8vh, 1.15rem);
   font-weight: 500;
   text-decoration: none;
   text-align: left;
-  background-color: rgba(255, 255, 255, calc(var(--effect, 0) * 0.06));
+  /* Shorthand on purpose: legacy `button` styles apply a gradient
+     background-image that background-color alone would not clear. */
+  background: transparent;
   border: 0;
   border-radius: 6px;
   cursor: pointer;
+  box-shadow: none;
+}
+
+/* Pointer proximity: lighter blue preview on non-active top-level links */
+.nav-drawer__links > a:not(.is-current) {
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
+  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
+}
+
+/* Submenu toggle: open state is neutral; blue only on pointer proximity */
+.nav-drawer__submenu-toggle,
+.nav-drawer__submenu-toggle:hover {
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+}
+
+.nav-drawer__submenu-toggle:not(.is-current),
+.nav-drawer__submenu-toggle:not(.is-current):hover {
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
+  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
 }
 
 .nav-drawer__label {
@@ -175,26 +199,40 @@
   overflow-wrap: anywhere;
 }
 
+.nav-drawer__label-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.nav-drawer__label-group .nav-drawer__label {
+  flex: 0 1 auto;
+}
+
 .nav-drawer__icon {
   margin-top: 0.15em;
 }
 
-/* Active page: always accent, stronger marker, subtle glow pill */
+/* Active page: static blue pill — not driven by proximity */
 .nav-drawer__links > a.is-current,
-.nav-drawer__submenu > a.is-current {
+.nav-drawer__submenu-inner > a.is-current {
   color: var(--nav-accent);
   font-weight: 600;
-  background-color: rgba(54, 138, 223, calc(0.1 + var(--effect, 0) * 0.06));
+  background-color: rgba(54, 138, 223, 0.16);
   box-shadow: inset 3px 0 0 var(--nav-accent);
+  padding-left: 0.6rem;
 }
 
 .nav-drawer__links > a.is-current .nav-drawer__index,
-.nav-drawer__submenu > a.is-current .nav-drawer__index {
+.nav-drawer__submenu-inner > a.is-current .nav-drawer__index {
   opacity: 1;
+  color: var(--nav-accent);
 }
 
-/* Ruler marker: grows noticeably with proximity (--marker-scale-min → max) */
-.nav-drawer__links > a::before,
+/* Ruler marker: purple on proximity for non-active top-level items */
+.nav-drawer__links > a:not(.is-current)::before,
 .nav-drawer__submenu-toggle::before {
   content: '';
   position: absolute;
@@ -204,7 +242,7 @@
   height: 1px;
   background-color: color-mix(
     in srgb,
-    var(--nav-accent) calc(var(--effect, 0) * 100%),
+    var(--nav-hover) calc(var(--effect, 0) * 100%),
     rgba(255, 255, 255, 0.32)
   );
   transform-origin: left center;
@@ -213,15 +251,13 @@
   ));
 }
 
-/* Active item marker: thicker, longer, glowing */
+/* Active item marker: always-on blue glow (independent of --effect) */
 .nav-drawer__links > a.is-current::before,
-.nav-drawer__submenu > a.is-current::before {
+.nav-drawer__submenu-inner > a.is-current::before {
   height: 2px;
   background-color: var(--nav-accent);
   box-shadow: 0 0 10px rgba(54, 138, 223, 0.75);
-  transform: translateY(-50%) scaleX(calc(
-    1 + var(--active, 0) * 0.15 + var(--effect, 0) * 0.35
-  ));
+  transform: translateY(-50%) scaleX(calc(1 + var(--effect, 0) * 0.25));
 }
 
 /* Short static tick centered between two items (none after the last one) */
@@ -242,6 +278,10 @@
   font-size: 0.72em;
   letter-spacing: 0.06em;
   opacity: calc(0.45 + var(--effect, 0) * 0.55);
+}
+
+.nav-drawer__links > a.is-current .nav-drawer__index {
+  opacity: 1;
 }
 
 .nav-drawer__icon-wrap {
@@ -268,6 +308,7 @@
 
 .nav-drawer__submenu-toggle {
   align-items: center;
+  padding-right: 0.75rem;
 }
 
 .nav-drawer__submenu-toggle .nav-drawer__icon {
@@ -276,10 +317,11 @@
 
 .nav-drawer__submenu-toggle .nav-drawer__chevron {
   align-self: center;
+  flex-shrink: 0;
 }
 
 .nav-drawer__submenu-toggle .nav-drawer__label {
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .nav-drawer__chevron {
@@ -296,8 +338,9 @@
 .nav-drawer__submenu {
   display: grid;
   grid-template-rows: 0fr;
-  padding-left: 1.4rem;
+  padding-left: 1rem;
   opacity: 0;
+  overflow: hidden;
   transition: grid-template-rows 0.35s ease, opacity 0.35s ease;
 }
 
@@ -306,31 +349,53 @@
   opacity: 1;
 }
 
-.nav-drawer__submenu > a {
+.nav-drawer__submenu-inner {
+  min-height: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-drawer__submenu-inner > a {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  min-height: 0;
-  overflow: hidden;
+  align-items: center;
+  gap: 0.35rem;
   padding: 0.6rem 0.5rem;
-  padding-left: calc(0.5rem + var(--effect, 0) * 10px);
-  color: color-mix(
-    in srgb,
-    var(--nav-accent) calc(var(--effect, 0) * 100%),
-    rgba(255, 255, 255, 0.82)
-  );
+  padding-left: calc(0.35rem + var(--effect, 0) * 6px);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 0.95rem;
   text-decoration: none;
   border-radius: 4px;
+  background-color: transparent;
+  box-shadow: none;
 }
 
-/* Submenu entries keep overflow:hidden for the collapse animation, so they
-   get the proximity color/shift effect but no ruler marker (it would clip). */
+/* Submenu links: purple only on pointer proximity */
+.nav-drawer__submenu-inner > a:not(.is-current) {
+  color: color-mix(
+    in srgb,
+    var(--nav-hover) calc(var(--effect, 0) * 100%),
+    rgba(255, 255, 255, 0.82)
+  );
+  background-color: rgba(54, 138, 223, calc(var(--effect, 0) * 0.12));
+}
 
-.nav-drawer__submenu > a .nav-drawer__icon {
-  width: 18px;
-  height: 18px;
+.nav-drawer__submenu-inner > a .nav-drawer__icon-wrap {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.nav-drawer__submenu-inner > a .nav-drawer__icon-wrap svg {
+  width: 14px;
+  height: 14px;
+}
+
+.nav-drawer__submenu-inner > a .nav-drawer__icon {
+  width: 14px;
+  height: 14px;
+  margin-top: 0;
 }
 
 @media (max-width: 768px) {

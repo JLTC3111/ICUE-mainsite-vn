@@ -106,7 +106,7 @@ export function getCurrentPage() {
   }
 
   const activeNavLink = document.querySelector(
-    '.drawer-menu a.active, [data-page].active, #drawerMenu a.active'
+    '.nav-drawer__links a.is-current, .nav-drawer__submenu a.is-current, .drawer-menu a.active, [data-page].active, #drawerMenu a.active'
   );
   if (activeNavLink) {
     const dataPage = activeNavLink.getAttribute('data-page');

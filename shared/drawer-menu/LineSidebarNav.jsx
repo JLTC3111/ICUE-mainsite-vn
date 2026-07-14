@@ -56,33 +56,37 @@ function LineSidebarNav({
           >
             <NavIcon icon={people.icon} />
             {people.index != null && <IndexNo n={people.index} />}
-            <span className="nav-drawer__label">{people.label}</span>
-            <svg
-              className="nav-drawer__chevron"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
+            <span className="nav-drawer__label-group">
+              <span className="nav-drawer__label">{people.label}</span>
+              <svg
+                className="nav-drawer__chevron"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>
+            </span>
           </button>
 
           <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`}>
-            {people.items.map((item) => (
-              <a
-                key={item.key || item.href}
-                href={item.href}
-                className={[item.className, item.isCurrent ? 'is-current' : ''].filter(Boolean).join(' ') || undefined}
-                aria-current={item.isCurrent ? 'page' : undefined}
-                data-page={item.page}
-                onClick={item.onClick}
-              >
-                <NavIcon icon={item.icon} />
-                <span className="nav-drawer__label">{item.label}</span>
-              </a>
-            ))}
+            <div className="nav-drawer__submenu-inner">
+              {people.items.map((item) => (
+                <a
+                  key={item.key || item.href}
+                  href={item.href}
+                  className={[item.className, item.isCurrent ? 'is-current' : ''].filter(Boolean).join(' ') || undefined}
+                  aria-current={item.isCurrent ? 'page' : undefined}
+                  data-page={item.page}
+                  onClick={item.onClick}
+                >
+                  <NavIcon icon={item.icon} />
+                  <span className="nav-drawer__label">{item.label}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </>
       )}

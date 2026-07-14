@@ -44,9 +44,9 @@ const IconPeople = () => (
   </svg>
 );
 
-const IconArrow = () => (
-  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-    <path strokeLinecap="round" strokeLinejoin="round" d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499" />
+const IconSubmenuArrow = () => (
+  <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" strokeWidth="2" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
   </svg>
 );
 
@@ -79,14 +79,14 @@ export const PEOPLE_SUBMENU = {
       href: '/people/experts',
       label: 'Chuyên Gia',
       className: 'moe-subMenu',
-      icon: IconArrow,
+      icon: IconSubmenuArrow,
     },
     {
       page: 'coreTeam',
       href: '/people/core-team',
       label: 'Cán Bộ',
       className: 'core-subMenu',
-      icon: IconArrow,
+      icon: IconSubmenuArrow,
     },
   ],
 };
@@ -99,5 +99,5 @@ export {
   IconNews,
   IconAbout,
   IconPeople,
-  IconArrow,
+  IconSubmenuArrow,
 };

@@ -21,7 +21,7 @@ export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
       const el = els[i]
       if (!el) continue
       const pinned = el.classList.contains('is-current') ? 1 : 0
-      const target = Math.max(targets[i] || 0, pinned)
+      const target = targets[i] || 0
       const cur = current[i] || 0
       const next = cur + (target - cur) * k
       const settled = Math.abs(target - next) < 0.0015
@@ -75,8 +75,16 @@ export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
   useEffect(() => {
     if (!enabled) {
       fxRef.current.targets = []
+      fxRef.current.current = []
       return
     }
+    const els = collectItems()
+    fxRef.current.targets = els.map(() => 0)
+    fxRef.current.current = els.map(() => 0)
+    els.forEach((el) => {
+      el.style.setProperty('--effect', '0')
+      el.style.setProperty('--active', el.classList.contains('is-current') ? '1' : '0')
+    })
     collectItems()
     startLoop()
     // eslint-disable-next-line react-hooks/exhaustive-deps

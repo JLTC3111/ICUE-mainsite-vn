@@ -1,9 +1,6 @@
-import { memo, useState, useEffect, useCallback } from 'react'
-import { createPortal } from 'react-dom'
+import { memo, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import LineSidebarNav from './LineSidebarNav'
-import { useLineSidebarProximity } from './useLineSidebarProximity'
-import './DrawerMenu.css'
+import DrawerMenuPanel from './DrawerMenuPanel'
 
 const Icon = ({ children }) => (
   <svg
@@ -18,56 +15,8 @@ const Icon = ({ children }) => (
   </svg>
 )
 
-function CloseIcon() {
-  return (
-    <svg
-      className="nav-drawer__close-icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#f8fafc"
-      strokeWidth={2.25}
-      strokeLinecap="round"
-      aria-hidden="true"
-    >
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
-  )
-}
-
-function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage }) {
-  const { t } = useTranslation()
-  const [open, setOpen] = useState(false)
-  const [peopleOpen, setPeopleOpen] = useState(true)
-
-  const close = useCallback(() => {
-    setOpen(false)
-  }, [])
-
-  const toggle = useCallback(() => {
-    setOpen((wasOpen) => !wasOpen)
-  }, [])
-
-  const { navRef, handlePointerMove, handlePointerLeave } = useLineSidebarProximity({
-    enabled: open,
-    deps: [peopleOpen, currentPage],
-  })
-
-  useEffect(() => {
-    const onKey = (e) => e.key === 'Escape' && close()
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [close])
-
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    document.body.classList.toggle('nav-drawer-open', open)
-    return () => {
-      document.body.style.overflow = ''
-      document.body.classList.remove('nav-drawer-open')
-    }
-  }, [open])
-
-  const links = [
+function buildSubAppLinks({ hashLink, orgHref, currentPage, close, t }) {
+  return [
     {
       key: 'home',
       href: hashLink('Home'),
@@ -133,8 +82,10 @@ function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage }) {
       ),
     },
   ]
+}
 
-  const people = {
+function buildSubAppPeople({ peopleLink, currentPage, close, t, peopleOpen, setPeopleOpen }) {
+  return {
     open: peopleOpen,
     onToggle: () => setPeopleOpen((v) => !v),
     label: t('drawer.people'),
@@ -165,59 +116,30 @@ function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage }) {
       },
     ],
   }
+}
+
+function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage, ...panelProps }) {
+  const { t } = useTranslation()
+  const [peopleOpen, setPeopleOpen] = useState(true)
+  const [open, setOpen] = useState(false)
+
+  const close = useCallback(() => {
+    setOpen(false)
+  }, [])
+
+  const links = buildSubAppLinks({ hashLink, orgHref, currentPage, close, t })
+  const people = buildSubAppPeople({ peopleLink, currentPage, close, t, peopleOpen, setPeopleOpen })
 
   return (
-    <>
-      {open ? (
-        <span className="nav-drawer__toggle-placeholder" aria-hidden="true" />
-      ) : (
-        <button
-          type="button"
-          className="nav-drawer__toggle"
-          aria-label={t('drawer.menu')}
-          aria-expanded={false}
-          onClick={toggle}
-        >
-          <span /><span /><span />
-        </button>
-      )}
-
-      {open
-        ? createPortal(
-            <button
-              type="button"
-              className="nav-drawer__toggle is-open nav-drawer__toggle--floating"
-              aria-label={t('drawer.close')}
-              aria-expanded
-              onClick={toggle}
-            >
-              <CloseIcon />
-            </button>,
-            document.body,
-          )
-        : null}
-
-      {createPortal(
-        <>
-          <div
-            className={`nav-drawer__overlay ${open ? 'is-open' : ''}`}
-            onClick={close}
-            aria-hidden="true"
-          />
-
-          <aside className={`nav-drawer ${open ? 'is-open' : ''}`} aria-hidden={!open}>
-            <LineSidebarNav
-              links={links}
-              people={people}
-              navRef={navRef}
-              onPointerMove={handlePointerMove}
-              onPointerLeave={handlePointerLeave}
-            />
-          </aside>
-        </>,
-        document.body,
-      )}
-    </>
+    <DrawerMenuPanel
+      {...panelProps}
+      links={links}
+      people={people}
+      open={open}
+      onOpenChange={setOpen}
+      menuLabel={t('drawer.menu')}
+      closeLabel={t('drawer.close')}
+    />
   )
 }
 

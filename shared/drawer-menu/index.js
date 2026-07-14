@@ -1,3 +1,6 @@
 export { default as DrawerMenu } from './DrawerMenu.jsx'
+export { default as DrawerMenuPanel } from './DrawerMenuPanel.jsx'
+export { default as DrawerMenuToggle, DrawerMenuCloseIcon } from './DrawerMenuToggle.jsx'
 export { default as LineSidebarNav } from './LineSidebarNav.jsx'
 export { useLineSidebarProximity } from './useLineSidebarProximity.js'
+export { default as useDrawerResize } from './useDrawerResize.js'

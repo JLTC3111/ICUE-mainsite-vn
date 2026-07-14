@@ -1,12 +1,19 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
+import DrawerMenuPanel from '@icue/drawer-menu/DrawerMenuPanel.jsx';
+import DrawerMenuToggle from '@icue/drawer-menu/DrawerMenuToggle.jsx';
 import { registerMainSiteNavBridge } from './bridge';
 import { pageFromPathname } from './languageSwitcher';
-import MainSiteDrawer from './MainSiteDrawer';
+import {
+  buildMainSiteDrawerNav,
+  DRAWER_LINKS,
+  STANDALONE_DRAWER_LINKS,
+} from './buildDrawerNav';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
@@ -47,6 +54,7 @@ export default function MainSiteNav({
   const initialVisibility = getPageVisibility(initialPage);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(true);
   const [activePage, setActivePage] = useState(initialPage);
   const [darkNav, setDarkNav] = useState(initialVisibility.darkNav);
   const [showContactLink, setShowContactLink] = useState(initialVisibility.showContactLink);
@@ -211,14 +219,23 @@ export default function MainSiteNav({
     setDrawerOpen(false);
   }, []);
 
+  const drawerLinkConfig = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
+
+  const { navLinks, people } = useMemo(
+    () => buildMainSiteDrawerNav({
+      activePage,
+      onClose: handleCloseDrawer,
+      links: drawerLinkConfig,
+      peopleOpen,
+      onPeopleToggle: () => setPeopleOpen((open) => !open),
+    }),
+    [activePage, drawerLinkConfig, handleCloseDrawer, peopleOpen],
+  );
+
   const drawerOpenRef = useRef(drawerOpen);
   drawerOpenRef.current = drawerOpen;
 
   useEffect(() => {
-    const toggle = document.getElementById('menuToggle');
-    const icon = document.getElementById('menuIcon');
-    if (toggle) toggle.setAttribute('aria-expanded', String(drawerOpen));
-    if (icon) icon.classList.toggle('is-open', drawerOpen);
     document.body.classList.toggle('nav-drawer-open', drawerOpen);
     document.body.style.overflow = drawerOpen ? 'hidden' : '';
     return () => {
@@ -366,11 +383,21 @@ export default function MainSiteNav({
         />
       </nav>
 
-      <MainSiteDrawer
+      <DrawerMenuPanel
+        links={navLinks}
+        people={people}
         open={drawerOpen}
-        onClose={handleCloseDrawer}
-        activePage={activePage}
-        links={drawerLinks}
+        onOpenChange={setDrawerOpen}
+        showToggle={false}
+        showFloatingClose={false}
+        portal={false}
+        resizable
+        drawerId="drawerMenu"
+        overlayId="mainSiteDrawerOverlay"
+        menuToggleId="menuToggle"
+        drawerClassName="main-site-drawer"
+        menuLabel="Toggle navigation menu"
+        closeLabel="Close navigation menu"
       />
     </div>
   );
