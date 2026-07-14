@@ -710,41 +710,58 @@
   border-color: rgba(29, 183, 255, 0.75);
 }
 
-/* Drawer */
-.main-site-nav #drawerMenu {
+/* Drawer — Line Sidebar (shared with sub-app drawer-menu) */
+.main-site-nav .nav-drawer__overlay {
+  z-index: 1200;
+}
+
+.main-site-nav #drawerMenu.main-site-drawer {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  width: var(--drawer-width, 180px);
-  background: transparent;
+  height: 100dvh;
+  width: var(--drawer-width, 340px);
+  min-width: min(380px, 90vw);
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2.5rem 1.25rem;
+  padding: 6rem 1.5rem 2rem;
   transform: translateX(-100%);
-  transition: transform 0.5s ease-in-out, width 0.5s ease-in-out;
-  z-index: 25;
-  box-shadow: none;
-  overflow-x: hidden;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.5s ease-in-out;
+  z-index: 1210;
+  overflow-x: visible;
   overflow-y: auto;
 }
 
 .main-site-nav #drawerMenu.is-resizing {
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.main-site-nav #drawerMenu.open {
+.main-site-nav #drawerMenu.open,
+.main-site-nav #drawerMenu.is-open {
   transform: translateX(0);
   pointer-events: auto;
 }
 
-/* Closed drawer must not intercept page scroll/touch (especially full-screen mobile drawer). */
 .main-site-nav #drawerMenu:not(.open) {
   pointer-events: none;
 }
 
-/* Logo + ICUE VideoText stay above the open drawer (bar stacking context was below drawer). */
+.main-site-nav #drawerMenu .nav-drawer__links {
+  width: 100%;
+}
+
+.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg,
+.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg path,
+.main-site-nav #drawerMenu .nav-drawer__icon-wrap svg circle {
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* Logo + dock stay above the open drawer overlay */
 .main-site-nav.drawer-open .main-site-nav__bar,
 .main-site-nav:has(#drawerMenu.open) .main-site-nav__bar {
   z-index: 120;
@@ -808,194 +825,6 @@
 .main-site-nav .drawer-resize-handle:focus-visible {
   outline: 2px solid #1db7ff;
   outline-offset: -2px;
-}
-
-.main-site-nav .drawer-blur-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.16), #000 60%);
-  backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
-  pointer-events: none;
-  z-index: -2;
-}
-
-.main-site-nav #drawerMenu a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  animation: none !important;
-  color: #ffffff;
-  padding: 1rem 0;
-  font-size: clamp(0.85rem, 3vh, 1.15rem);
-  text-decoration: none;
-  border-left: 5px solid transparent;
-  transition: all 0.75s ease, border-color 0.2s ease, color 0.75s ease, background-color 0.75s ease, box-shadow 0.75s ease, transform 0.75s ease;
-}
-
-.main-site-nav #drawerMenu a svg,
-.main-site-nav #drawerMenu a svg path,
-.main-site-nav #drawerMenu a svg circle {
-  color: inherit;
-  fill: currentColor;
-  stroke: currentColor;
-  transition: color 0.75s ease, fill 0.75s ease, stroke 0.75s ease;
-}
-
-.main-site-nav #drawerMenu a:hover {
-  transform: translateX(20px);
-  background-color: rgba(29, 183, 255, 0.16);
-  border-left: 12.5px solid #1db7ff;
-  padding-left: 0.5rem;
-  color: #1db7ff;
-  box-shadow: none;
-}
-
-.main-site-nav #drawerMenu a:hover svg,
-.main-site-nav #drawerMenu a:hover svg path,
-.main-site-nav #drawerMenu a:hover svg circle {
-  color: #1db7ff;
-  fill: #1db7ff;
-  stroke: #1db7ff;
-}
-
-.main-site-nav #drawerMenu a.active,
-.main-site-nav .has-submenu.active {
-  transform: none;
-  font-weight: 700;
-  background-color: #e4eaf5;
-  border-left: 2.5px solid rgba(254, 254, 254, 0.95);
-  padding-left: 0.5rem;
-  color: #0d1117;
-  box-shadow: none;
-}
-
-.main-site-nav #drawerMenu a.active svg,
-.main-site-nav #drawerMenu a.active svg path,
-.main-site-nav #drawerMenu a.active svg circle,
-.main-site-nav .has-submenu.active svg,
-.main-site-nav .has-submenu.active svg path {
-  color: #0d1117;
-  fill: #0d1117;
-  stroke: #0d1117;
-}
-
-.main-site-nav #drawerMenu a.active:hover,
-.main-site-nav .has-submenu.active:hover {
-  transform: none;
-}
-
-.main-site-nav .has-submenu {
-  cursor: pointer;
-  padding: 1rem 0;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  border-left: 5px solid transparent;
-  font-size: clamp(0.85rem, 3vh, 1.15rem);
-  transition: all 0.75s ease, border-color 0.2s ease, color 0.75s ease, background-color 0.75s ease, box-shadow 0.75s ease, transform 0.75s ease;
-}
-
-.main-site-nav .has-submenu svg,
-.main-site-nav .has-submenu svg path {
-  color: inherit;
-  fill: currentColor;
-  stroke: currentColor;
-  transition: color 0.75s ease, fill 0.75s ease, stroke 0.75s ease;
-}
-
-.main-site-nav .has-submenu:hover {
-  transform: translateX(20px);
-  background-color: rgba(29, 183, 255, 0.16);
-  border-left: 12.5px solid #1db7ff;
-  padding-left: 0.5rem;
-  color: #1db7ff;
-  box-shadow: none;
-}
-
-.main-site-nav .has-submenu:hover svg,
-.main-site-nav .has-submenu:hover svg path {
-  color: #1db7ff;
-  fill: #1db7ff;
-  stroke: #1db7ff;
-}
-
-.main-site-nav .submenu {
-  transform: translateX(-100%) translateY(0);
-  opacity: 0;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-left: 1.5rem;
-  pointer-events: none;
-  max-height: 0;
-  overflow: hidden;
-  margin: 0;
-}
-
-.main-site-nav .submenu.open {
-  transform: translateX(0) translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-  max-height: 12rem;
-}
-
-.main-site-nav .submenu.closing {
-  transform: translateX(0) translateY(50px);
-  opacity: 0;
-  pointer-events: none;
-  max-height: 12rem;
-}
-
-.main-site-nav #drawerMenu .submenu a {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 1rem;
-  text-decoration: underline;
-  color: #ffffff;
-  padding-top: 0.75rem;
-  padding-left: 0.75rem;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.main-site-nav #drawerMenu .submenu a:hover {
-  transform: none;
-  border-left: 5px solid transparent;
-  padding-left: 0.75rem;
-  box-shadow: none;
-}
-
-.main-site-nav #drawerMenu .moe-subMenu:hover {
-  text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffff03;
-}
-
-.main-site-nav #drawerMenu .core-subMenu:hover {
-  text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #9afc93;
-}
-
-.main-site-nav #drawerMenu .submenu a.active {
-  transform: none;
-  font-weight: 700;
-  text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.12);
-  box-shadow: none;
-}
-
-.main-site-nav #drawerMenu .moe-subMenu.active {
-  color: #ffff03;
-}
-
-.main-site-nav #drawerMenu .core-subMenu.active {
-  color: #9afc93;
 }
 
 .main-site-nav #menuIcon rect {
@@ -1307,106 +1136,23 @@
     box-shadow: none;
   }
 
-  .main-site-nav #drawerMenu {
-    height: 100dvh;
-    width: 100vw !important;
-    --drawer-width: 100vw;
-    gap: 0.25rem;
-    align-items: center;
+  .main-site-nav #drawerMenu.main-site-drawer {
+    width: min(var(--drawer-width, 340px), 92vw) !important;
+    min-width: min(300px, 88vw);
+    max-width: 92vw;
+    padding: calc(env(safe-area-inset-top, 0px) + 4.5rem) 1.25rem 2rem;
+    transform: translateX(-100%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    align-items: stretch;
     justify-content: center;
-    padding: 3.5rem 1rem;
-    transform: translateY(-100%);
-    transition: transform 0.5s ease-in-out;
-    contain: layout;
-    box-sizing: border-box;
   }
 
-  .main-site-nav #drawerMenu.open {
-    transform: translateY(0);
-  }
-
-  .main-site-nav #drawerMenu a,
-  .main-site-nav .has-submenu {
-    margin-left: 0;
-    margin-inline: auto;
-    width: fit-content;
-    min-width: min(280px, 82vw);
-    max-width: 100%;
-    justify-content: center;
-    padding: 1rem;
-    font-size: clamp(1.15rem, 3vw, 1.75rem);
-    text-decoration: none;
-    border-left: 0;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-  }
-
-  .main-site-nav #drawerMenu a:hover,
-  .main-site-nav .has-submenu:hover {
-    transform: none;
-    border-left: 0;
-    padding-left: 1rem;
-    background-color: rgba(29, 183, 255, 0.16);
-    color: #1db7ff;
-    box-shadow: none;
-  }
-
-  .main-site-nav #drawerMenu a:hover svg,
-  .main-site-nav #drawerMenu a:hover svg path,
-  .main-site-nav #drawerMenu a:hover svg circle,
-  .main-site-nav .has-submenu:hover svg,
-  .main-site-nav .has-submenu:hover svg path {
-    color: #1db7ff;
-    fill: #1db7ff;
-    stroke: #1db7ff;
-  }
-
-  .main-site-nav #drawerMenu a.active,
-  .main-site-nav .has-submenu.active {
-    transform: none;
-    border-left: 0;
-    padding-left: 1rem;
-    background-color: rgba(255, 255, 255, 0.14);
-    color: #fff;
-    box-shadow: none;
-  }
-
-  .main-site-nav #drawerMenu a.active svg,
-  .main-site-nav #drawerMenu a.active svg path,
-  .main-site-nav #drawerMenu a.active svg circle,
-  .main-site-nav .has-submenu.active svg,
-  .main-site-nav .has-submenu.active svg path {
-    color: #fff;
-    fill: #fff;
-    stroke: #fff;
-  }
-
-  .main-site-nav #drawerMenu .submenu {
-    padding-left: 0;
-    align-items: center;
-    width: 100%;
-  }
-
-  .main-site-nav #drawerMenu .submenu a {
-    font-size: clamp(0.95rem, 2.5vw, 1.25rem);
-    padding: 0.5rem 1rem;
-    padding-top: 0.15rem;
-    left: 0;
-    margin-inline: auto;
-    justify-content: center;
-    position: relative;
-    transition: all 1.5s ease;
-  }
-
-  .main-site-nav .drawer-blur-overlay {
-    background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.16), #000 60%);
+  .main-site-nav #drawerMenu.open,
+  .main-site-nav #drawerMenu.is-open {
+    transform: translateX(0);
   }
 
   .main-site-nav .drawer-resize-handle {
-    display: none;
-  }
-
-  .main-site-nav #drawerMenu .submenu a svg {
     display: none;
   }
 }

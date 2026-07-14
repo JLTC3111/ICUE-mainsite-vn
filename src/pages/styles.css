@@ -986,7 +986,8 @@ h3:hover {
 
 .home-hero__subtitle {
   font-size: clamp(1rem, 2.4vw, 1.35rem);
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.85);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.85);
   margin: 0 auto 2rem;
   max-width: 760px;
   width: 100%;

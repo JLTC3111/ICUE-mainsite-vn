@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 const STORAGE_KEY = 'icue_main_drawer_width';
-const MIN_WIDTH = 140;
-const MAX_WIDTH = 280;
-const DEFAULT_WIDTH = 180;
+const MIN_WIDTH = 280;
+const MAX_WIDTH = 420;
+const DEFAULT_WIDTH = 340;
 
 function clampWidth(width) {
   return Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, width));

@@ -220,8 +220,10 @@ export default function MainSiteNav({
     if (toggle) toggle.setAttribute('aria-expanded', String(drawerOpen));
     if (icon) icon.classList.toggle('is-open', drawerOpen);
     document.body.classList.toggle('nav-drawer-open', drawerOpen);
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
     return () => {
       document.body.classList.remove('nav-drawer-open');
+      document.body.style.overflow = '';
     };
   }, [drawerOpen]);
 
