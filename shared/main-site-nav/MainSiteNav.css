@@ -2,6 +2,9 @@
 
 .main-site-nav {
   --nav-bar-height: 4.5rem;
+  /* Slow, smooth (non-bouncy) ease for the dock expand/contract transition. */
+  --dock-transition-duration: 1.2s;
+  --dock-transition-ease: cubic-bezier(0.65, 0, 0.35, 1);
   position: relative;
   z-index: 19;
 }
@@ -56,15 +59,18 @@
 }
 
 .main-site-nav__dock--unified.icue-dock {
+  /* Slow, smooth glide — no overshoot/bounce — for expand/contract. */
   transition:
-    width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    gap 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    width var(--dock-transition-duration) var(--dock-transition-ease),
+    max-width var(--dock-transition-duration) var(--dock-transition-ease),
+    border-radius var(--dock-transition-duration) var(--dock-transition-ease),
+    padding var(--dock-transition-duration) var(--dock-transition-ease),
+    gap var(--dock-transition-duration) var(--dock-transition-ease),
+    margin var(--dock-transition-duration) var(--dock-transition-ease),
+    justify-content var(--dock-transition-duration) var(--dock-transition-ease),
+    background 0.8s ease,
+    border-color 0.8s ease,
+    box-shadow 0.8s ease;
 }
 
 .main-site-nav--dock-contracted .main-site-nav__dock--unified.icue-dock {
@@ -85,7 +91,10 @@
 }
 
 .main-site-nav__dock-wrap {
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    width var(--dock-transition-duration) var(--dock-transition-ease),
+    max-width var(--dock-transition-duration) var(--dock-transition-ease),
+    justify-content var(--dock-transition-duration) var(--dock-transition-ease);
 }
 
 .main-site-nav__dock-slot--brand {
@@ -93,10 +102,6 @@
   align-items: center;
   flex-shrink: 0;
   padding: 0 0.05rem 0 0.2rem;
-}
-
-.main-site-nav__dock--unified .icue-dock__divider {
-  margin: 0;
 }
 
 .main-site-nav .logo-link {
@@ -1438,9 +1443,24 @@
     position: relative;
   }
 
-  .main-site-nav--dock-expanded .main-site-nav__dock-zone {
+  .main-site-nav__dock-zone {
     display: flex;
     align-items: center;
+    transition:
+      flex-basis var(--dock-transition-duration) var(--dock-transition-ease),
+      max-width var(--dock-transition-duration) var(--dock-transition-ease),
+      gap var(--dock-transition-duration) var(--dock-transition-ease),
+      padding-inline var(--dock-transition-duration) var(--dock-transition-ease);
+  }
+
+  .main-site-nav__dock-icon--menu {
+    transition:
+      left var(--dock-transition-duration) var(--dock-transition-ease),
+      top var(--dock-transition-duration) var(--dock-transition-ease),
+      transform var(--dock-transition-duration) var(--dock-transition-ease);
+  }
+
+  .main-site-nav--dock-expanded .main-site-nav__dock-zone {
     gap: var(--dock-gap);
   }
 
@@ -1467,8 +1487,6 @@
   }
 
   .main-site-nav--dock-contracted .main-site-nav__dock-zone {
-    display: flex;
-    align-items: center;
     min-width: 0;
   }
 
@@ -1502,7 +1520,9 @@
 
 @media (min-width: 1025px) and (prefers-reduced-motion: reduce) {
   .main-site-nav__dock--unified.icue-dock,
-  .main-site-nav__dock-wrap {
+  .main-site-nav__dock-wrap,
+  .main-site-nav__dock-zone,
+  .main-site-nav__dock-icon--menu {
     transition: none;
   }
 }
