@@ -1040,8 +1040,8 @@
   }
 
   .main-site-nav__dock-contact .contact-link-wordmark {
-    --contact-wordmark-ratio: 5.15;
-    --contact-wordmark-height: clamp(0.76rem, 2.35vw, 0.94rem);
+    --contact-wordmark-ratio: 5.25;
+    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
   }
 
   .main-site-nav__dock--unified .menu-toggle {
@@ -1098,7 +1098,7 @@
   }
 
   .main-site-nav .contact-link-wordmark {
-    --contact-wordmark-height: clamp(0.76rem, 2.35vw, 0.94rem);
+    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
   }
 
   .main-site-nav .flag-link {
@@ -1144,13 +1144,12 @@
   }
 
   .main-site-nav__dock-contact .contact-link-wordmark {
-    --contact-wordmark-ratio: 4.95;
-    --contact-wordmark-height: clamp(0.64rem, 2.6vw, 0.78rem);
-    max-width: 3.85rem;
+    --contact-wordmark-ratio: 5.25;
+    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
   }
 
   .main-site-nav .contact-link-wordmark {
-    --contact-wordmark-height: clamp(0.64rem, 2.6vw, 0.78rem);
+    --contact-wordmark-height: clamp(1.25rem, 4.5vw, 1.65rem);
   }
 
   .main-site-nav__dock-icon--flag {
