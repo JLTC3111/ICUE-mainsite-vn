@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useLayoutEffect, useRef } from 'react'
 
 const IndexNo = ({ n }) => (
   <span className="nav-drawer__index" aria-hidden="true">
@@ -23,6 +23,31 @@ function LineSidebarNav({
   onPointerLeave,
   ariaLabel = 'Site',
 }) {
+  const peopleLabelRef = useRef(null)
+  const submenuRowRef = useRef(null)
+
+  useLayoutEffect(() => {
+    const label = peopleLabelRef.current
+    const row = submenuRowRef.current
+    if (!label || !row) return undefined
+
+    const syncLabelWidth = () => {
+      row.style.setProperty('--people-label-width', `${label.getBoundingClientRect().width}px`)
+    }
+
+    syncLabelWidth()
+    window.addEventListener('resize', syncLabelWidth)
+    const observer = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(syncLabelWidth)
+      : null
+    observer?.observe(label)
+
+    return () => {
+      window.removeEventListener('resize', syncLabelWidth)
+      observer?.disconnect()
+    }
+  }, [people?.label, people?.open])
+
   return (
     <nav
       className="nav-drawer__links"
@@ -57,7 +82,7 @@ function LineSidebarNav({
             <NavIcon icon={people.icon} />
             {people.index != null && <IndexNo n={people.index} />}
             <span className="nav-drawer__label-group">
-              <span className="nav-drawer__label">{people.label}</span>
+              <span className="nav-drawer__label" ref={peopleLabelRef}>{people.label}</span>
               <svg
                 className="nav-drawer__chevron"
                 viewBox="0 0 24 24"
@@ -71,21 +96,28 @@ function LineSidebarNav({
             </span>
           </button>
 
-          <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`}>
-            <div className="nav-drawer__submenu-inner">
-              {people.items.map((item) => (
-                <a
-                  key={item.key || item.href}
-                  href={item.href}
-                  className={[item.className, item.isCurrent ? 'is-current' : ''].filter(Boolean).join(' ') || undefined}
-                  aria-current={item.isCurrent ? 'page' : undefined}
-                  data-page={item.page}
-                  onClick={item.onClick}
-                >
-                  <NavIcon icon={item.icon} />
-                  <span className="nav-drawer__label">{item.label}</span>
-                </a>
-              ))}
+          <div className="nav-drawer__submenu-row" ref={submenuRowRef}>
+            <span className="nav-drawer__submenu-gutter" aria-hidden="true" />
+            <div className="nav-drawer__submenu-wrap">
+              <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`}>
+                <div className="nav-drawer__submenu-inner">
+                  {people.items.map((item) => (
+                    <a
+                      key={item.key || item.href}
+                      href={item.href}
+                      className={[item.className, item.isCurrent ? 'is-current' : ''].filter(Boolean).join(' ') || undefined}
+                      aria-current={item.isCurrent ? 'page' : undefined}
+                      data-page={item.page}
+                      onClick={item.onClick}
+                    >
+                      <span className="nav-drawer__submenu-link">
+                        <NavIcon icon={item.icon} />
+                        <span className="nav-drawer__label">{item.label}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </>

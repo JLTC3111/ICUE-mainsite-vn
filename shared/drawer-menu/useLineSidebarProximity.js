@@ -32,6 +32,16 @@ export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
       if (!settled) moving = true
     }
 
+    const nav = navRef.current
+    if (nav) {
+      nav.querySelectorAll('.nav-drawer__submenu-toggle').forEach((toggle) => {
+        const row = toggle.nextElementSibling
+        if (row?.classList?.contains('nav-drawer__submenu-row')) {
+          row.style.setProperty('--effect', toggle.style.getPropertyValue('--effect') || '0')
+        }
+      })
+    }
+
     rafRef.current = moving ? requestAnimationFrame(runFrame) : null
   }, [])
 
