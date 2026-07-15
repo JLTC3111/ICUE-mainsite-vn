@@ -1,6 +1,7 @@
-import { forwardRef, useId, useRef } from 'react'
+import { forwardRef, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AnimatedBeam } from './magicui/AnimatedBeam'
+import { TextShimmerWave } from './motion-primitives/TextShimmerWave'
 
 /**
  * Magic UI “Multiple Inputs” pattern on the org chart:
@@ -14,6 +15,7 @@ const PersonCard = forwardRef(function PersonCard(
   ref,
 ) {
   const { t } = useTranslation()
+  const [hovered, setHovered] = useState(false)
   const displayName = t(`orgChart.people.${person.id}.displayName`)
   const title = t(`orgChart.people.${person.id}.title`)
 
@@ -23,9 +25,31 @@ const PersonCard = forwardRef(function PersonCard(
       type="button"
       className={`person-card${isHub ? ' person-card--hub' : ''}`}
       onClick={() => onSelectPerson(person)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
     >
-      <h3>{displayName}</h3>
-      <div className="title">{title}</div>
+      <TextShimmerWave
+        as="h3"
+        className="person-card__name"
+        duration={1}
+        spread={1.2}
+        active={hovered}
+      >
+        {displayName}
+      </TextShimmerWave>
+      <TextShimmerWave
+        as="div"
+        className="title"
+        duration={1.1}
+        spread={1}
+        zDistance={6}
+        scaleDistance={1.05}
+        active={hovered}
+      >
+        {title}
+      </TextShimmerWave>
     </button>
   )
 })

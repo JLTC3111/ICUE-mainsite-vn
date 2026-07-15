@@ -1,0 +1,30 @@
+/* motion-primitives Text Shimmer Basic
+ * @see https://motion-primitives.com/docs/text-shimmer
+ */
+.text-shimmer {
+  --base-color: #a1a1aa;
+  --base-gradient-color: #000000;
+  --bg: linear-gradient(
+    90deg,
+    #0000 calc(50% - var(--spread, 20px)),
+    var(--base-gradient-color),
+    #0000 calc(50% + var(--spread, 20px))
+  );
+
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image: var(--bg), linear-gradient(var(--base-color), var(--base-color));
+  background-size: 250% 100%, auto;
+  background-repeat: no-repeat, padding-box;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-position: 100% center;
+}
+
+.text-shimmer:not(.text-shimmer--active) {
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+  background-image: none;
+}

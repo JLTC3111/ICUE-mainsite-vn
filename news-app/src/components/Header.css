@@ -82,32 +82,9 @@
   margin-left: 4px;
 }
 
-.lang-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
+/* Language switcher layout/styles come from @icue/i18n/LanguageSwitcher.css */
 
-.lang-switcher select {
-  appearance: none;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--icue-text);
-  background: var(--icue-surface);
-  cursor: pointer;
-  transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-
-.lang-switcher select:hover {
-  border-color: var(--icue-text-faint);
-  background: var(--icue-surface-2);
-}
-
-.lang-switcher select:focus,
-.lang-switcher select:focus-visible {
+.lang-switcher__field:focus-within {
   outline: none;
   border-color: var(--icue-border);
   box-shadow: none;
@@ -214,13 +191,16 @@
     gap: 10px;
   }
   .lang-switcher,
-  .lang-switcher select {
+  .lang-switcher__field {
     width: 100%;
   }
-  .lang-switcher select {
+  .lang-switcher__field {
+    border-radius: 12px;
+  }
+  .lang-switcher__text,
+  .lang-switcher__select {
     padding: 12px 14px;
     font-size: 15px;
-    border-radius: 12px;
     text-align: left;
   }
   .icue-header__right > .btn {

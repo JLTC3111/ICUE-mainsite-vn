@@ -282,12 +282,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: calc(max(0px, var(--card-radius) - var(--ui-inset) + var(--ui-radius-bias)));
   padding: 12px 14px;
   pointer-events: auto;
+  perspective: 600px;
+  transform-style: preserve-3d;
 }
 
 .pc-user-details {
@@ -370,6 +373,15 @@
   top: 3em;
   display: flex;
   flex-direction: column;
+  perspective: 700px;
+  transform-style: preserve-3d;
+}
+
+.pc-details > *,
+.pc-user-info > *,
+.pc-user-text > * {
+  transform-style: preserve-3d;
+  transform-origin: center top;
 }
 
 .pc-details h3 {

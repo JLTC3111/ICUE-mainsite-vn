@@ -1,0 +1,16 @@
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 60;
+  height: 3px;
+  transform-origin: left;
+  pointer-events: none;
+  background: var(--icue-gradient-pill);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    transition: none;
+  }
+}

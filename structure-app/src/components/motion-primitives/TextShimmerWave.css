@@ -1,0 +1,37 @@
+/* motion-primitives Text Shimmer Wave
+ * @see https://motion-primitives.com/docs/text-shimmer-wave
+ */
+.text-shimmer-wave {
+  --base-color: #eef4fd;
+  --base-gradient-color: #8ec5ff;
+
+  position: relative;
+  display: inline-block;
+  perspective: 500px;
+  color: inherit;
+}
+
+.text-shimmer-wave--active {
+  color: var(--base-color);
+}
+
+.text-shimmer-wave__char {
+  display: inline-block;
+  white-space: pre;
+  transform-style: preserve-3d;
+}
+
+.person-card .text-shimmer-wave {
+  --base-color: #eef4fd;
+  --base-gradient-color: #ffffff;
+}
+
+.person-card--hub .text-shimmer-wave {
+  --base-color: #cfe5ff;
+  --base-gradient-color: #ffffff;
+}
+
+.person-card .title.text-shimmer-wave {
+  --base-color: rgba(238, 244, 253, 0.82);
+  --base-gradient-color: #8ec5ff;
+}

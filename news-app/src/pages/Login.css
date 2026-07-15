@@ -28,39 +28,24 @@
 
 .login__lang { position: absolute; top: 20px; right: 20px; z-index: 2; }
 
-.login__lang .lang-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.login__lang .lang-switcher select {
-  appearance: none;
+.login__lang .lang-switcher__field {
   border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
   background: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
   transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
 }
 
-.login__lang .lang-switcher select:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.42);
+.login__lang .lang-switcher__text,
+.login__lang .lang-switcher__scramble {
   color: #fff;
 }
 
-.login__lang .lang-switcher select:focus,
-.login__lang .lang-switcher select:focus-visible {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: none;
+.login__lang .lang-switcher__field:hover,
+.login__lang .lang-switcher:focus-within .lang-switcher__field {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.42);
 }
 
-.login__lang .lang-switcher select option {
+.login__lang .lang-switcher__select option {
   color: var(--icue-text);
   background: var(--icue-surface);
 }

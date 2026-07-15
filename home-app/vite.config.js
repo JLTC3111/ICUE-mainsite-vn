@@ -24,6 +24,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
+      '@': path.resolve(__dirname, '..'),
       '@icue/main-site-nav': path.resolve(__dirname, '../shared/main-site-nav'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/home-layout': path.resolve(__dirname, '../shared/home-layout'),

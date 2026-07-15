@@ -7,17 +7,20 @@
     "@google/model-viewer": "^4.1.0",
     "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
+    "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "gsap": "^3.15.0",
-    "lucide-react": "^1.23.0",
+    "lucide-react": "^1.24.0",
+    "motion": "^12.42.2",
     "normalize.css": "^8.0.1",
     "ogl": "^1.0.11",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "stripe": "^12.0.0",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",

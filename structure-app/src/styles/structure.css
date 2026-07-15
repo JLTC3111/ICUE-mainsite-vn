@@ -191,15 +191,15 @@
     0 0 28px rgba(54, 138, 223, 0.22);
 }
 
-.person-card:hover h3,
-.person-card:hover .title {
+.person-card:hover h3:not(.text-shimmer-wave--active),
+.person-card:hover .title:not(.text-shimmer-wave--active) {
   color: #ffffff;
 }
 
 .person-card h3 {
   font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
   letter-spacing: -0.25px;
   color: #ffffff;
 }
@@ -209,6 +209,15 @@
   opacity: 0.88;
   font-weight: 500;
   color: rgba(238, 244, 253, 0.82);
+}
+
+.person-card .text-shimmer-wave {
+  display: block;
+  width: 100%;
+}
+
+.person-card .title.text-shimmer-wave--active {
+  opacity: 1;
 }
 
 .card-grid--departments,
@@ -421,11 +430,21 @@
   flex-shrink: 0;
 }
 
+.profile-modal-animated {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.profile-modal-animated > * {
+  transform-style: preserve-3d;
+  transform-origin: center top;
+}
+
 .profile-modal-close {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 5;
+  z-index: 50;
   width: 36px;
   height: 36px;
   border-radius: 999px;
@@ -437,6 +456,7 @@
   line-height: 1;
   display: grid;
   place-items: center;
+  pointer-events: auto;
 }
 
 .profile-modal-close:hover {

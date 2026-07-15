@@ -2,6 +2,10 @@ import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import ProfileCard from './ProfileCard/ProfileCard'
+import {
+  AnimatedGroup,
+  animatedGroupCustomVariants2,
+} from './motion-primitives/AnimatedGroup'
 
 export default function ProfileModal({ profile, onClose }) {
   const { t } = useTranslation()
@@ -39,32 +43,46 @@ export default function ProfileModal({ profile, onClose }) {
         <button
           type="button"
           className="profile-modal-close"
-          onClick={onClose}
+          onClick={(e) => {
+            e.stopPropagation()
+            onClose()
+          }}
           aria-label={t('modal.close')}
         >
           &times;
         </button>
-        <ProfileCard
-          avatarUrl={profile.img}
-          miniAvatarUrl={profile.img}
-          iconUrl={`${import.meta.env.BASE_URL}profile-card/iconpattern.png`}
-          grainUrl={`${import.meta.env.BASE_URL}profile-card/noise.png`}
-          name={displayName}
-          title={title}
-          handle={profile.handle || profile.id}
-          status="ICUE"
-          contactText={t('modal.close')}
-          showUserInfo
-          enableTilt
-          enableMobileTilt={false}
-          behindGlowEnabled
-          behindGlowColor="rgba(54, 138, 223, 0.55)"
-          innerGradient="linear-gradient(145deg, rgba(40,33,168,0.55) 0%, rgba(54,138,223,0.35) 100%)"
-          onContactClick={onClose}
-        />
-        {bio ? (
-          <p className="profile-modal-bio">{bio}</p>
-        ) : null}
+
+        <AnimatedGroup
+          key={profile.id}
+          className="profile-modal-animated"
+          variants={animatedGroupCustomVariants2}
+        >
+          <ProfileCard
+            avatarUrl={profile.img}
+            miniAvatarUrl={profile.img}
+            iconUrl={`${import.meta.env.BASE_URL}profile-card/iconpattern.png`}
+            grainUrl={`${import.meta.env.BASE_URL}profile-card/noise.png`}
+            name={displayName}
+            title={title}
+            handle={profile.handle || profile.id}
+            status="ICUE"
+            contactText={t('modal.close')}
+            showUserInfo
+            enableTilt
+            enableMobileTilt={false}
+            behindGlowEnabled
+            behindGlowColor="rgba(54, 138, 223, 0.55)"
+            innerGradient="linear-gradient(145deg, rgba(40,33,168,0.55) 0%, rgba(54,138,223,0.35) 100%)"
+            onContactClick={onClose}
+            animateEntrance
+          />
+
+          {bio ? (
+            <p key="bio" className="profile-modal-bio">
+              {bio}
+            </p>
+          ) : null}
+        </AnimatedGroup>
       </div>
     </div>,
     document.body,

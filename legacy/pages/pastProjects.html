@@ -69,21 +69,22 @@ body,
 }
 
 .card {
-  background: transparent;
-  border: none;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   overflow: hidden;
   padding: 0;
   text-align: center;
   /* Avoid transitioning layout/filter on resize — only cheap hover props */
-  transition: transform 0.22s ease, background-color 0.22s ease;
-  box-shadow: none;
+  transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
   outline: none;
   contain: layout paint;
 }
 
 .card:hover {
   background-color: #3310ff;
+  border-color: rgba(255, 255, 255, 0.28);
   transform: translateY(-4px);
 }
 

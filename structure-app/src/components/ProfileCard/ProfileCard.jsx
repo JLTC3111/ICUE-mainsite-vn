@@ -1,7 +1,80 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  AnimatedGroup,
+  animatedGroupCustomVariants2,
+} from '../motion-primitives/AnimatedGroup';
 import './ProfileCard.css';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
+
+function UserInfoBlock({
+  animateEntrance,
+  miniAvatarUrl,
+  avatarUrl,
+  name,
+  handle,
+  status,
+  contactText,
+  onContactClick,
+}) {
+  const textBlock = animateEntrance ? (
+    <AnimatedGroup className="pc-user-text" variants={animatedGroupCustomVariants2}>
+      <div className="pc-handle">@{handle}</div>
+      <div className="pc-status">{status}</div>
+    </AnimatedGroup>
+  ) : (
+    <div className="pc-user-text">
+      <div className="pc-handle">@{handle}</div>
+      <div className="pc-status">{status}</div>
+    </div>
+  )
+
+  const details = (
+    <div className="pc-user-details">
+      <div className="pc-mini-avatar">
+        <img
+          src={miniAvatarUrl || avatarUrl}
+          alt={`${name || 'User'} mini avatar`}
+          loading="lazy"
+          onError={e => {
+            const t = e.target;
+            t.style.opacity = '0.5';
+            t.src = avatarUrl;
+          }}
+        />
+      </div>
+      {textBlock}
+    </div>
+  )
+
+  const contactBtn = (
+    <button
+      className="pc-contact-btn"
+      onClick={onContactClick}
+      style={{ pointerEvents: 'auto' }}
+      type="button"
+      aria-label={`Contact ${name || 'user'}`}
+    >
+      {contactText}
+    </button>
+  )
+
+  if (animateEntrance) {
+    return (
+      <AnimatedGroup className="pc-user-info" variants={animatedGroupCustomVariants2}>
+        {details}
+        {contactBtn}
+      </AnimatedGroup>
+    )
+  }
+
+  return (
+    <div className="pc-user-info">
+      {details}
+      {contactBtn}
+    </div>
+  )
+}
 
 const ANIMATION_CONFIG = {
   INITIAL_DURATION: 1200,
@@ -34,7 +107,8 @@ const ProfileCardComponent = ({
   status = 'Online',
   contactText = 'Contact',
   showUserInfo = true,
-  onContactClick
+  onContactClick,
+  animateEntrance = false,
 }) => {
   const wrapRef = useRef(null);
   const shellRef = useRef(null);
@@ -324,42 +398,33 @@ const ProfileCardComponent = ({
                 }}
               />
               {showUserInfo && (
-                <div className="pc-user-info">
-                  <div className="pc-user-details">
-                    <div className="pc-mini-avatar">
-                      <img
-                        src={miniAvatarUrl || avatarUrl}
-                        alt={`${name || 'User'} mini avatar`}
-                        loading="lazy"
-                        onError={e => {
-                          const t = e.target;
-                          t.style.opacity = '0.5';
-                          t.src = avatarUrl;
-                        }}
-                      />
-                    </div>
-                    <div className="pc-user-text">
-                      <div className="pc-handle">@{handle}</div>
-                      <div className="pc-status">{status}</div>
-                    </div>
-                  </div>
-                  <button
-                    className="pc-contact-btn"
-                    onClick={handleContactClick}
-                    style={{ pointerEvents: 'auto' }}
-                    type="button"
-                    aria-label={`Contact ${name || 'user'}`}
-                  >
-                    {contactText}
-                  </button>
-                </div>
+                <UserInfoBlock
+                  animateEntrance={animateEntrance}
+                  miniAvatarUrl={miniAvatarUrl}
+                  avatarUrl={avatarUrl}
+                  name={name}
+                  handle={handle}
+                  status={status}
+                  contactText={contactText}
+                  onContactClick={handleContactClick}
+                />
               )}
             </div>
             <div className="pc-content">
-              <div className="pc-details">
-                <h3>{name}</h3>
-                <p>{title}</p>
-              </div>
+              {animateEntrance ? (
+                <AnimatedGroup
+                  className="pc-details"
+                  variants={animatedGroupCustomVariants2}
+                >
+                  <h3>{name}</h3>
+                  <p>{title}</p>
+                </AnimatedGroup>
+              ) : (
+                <div className="pc-details">
+                  <h3>{name}</h3>
+                  <p>{title}</p>
+                </div>
+              )}
             </div>
           </div>
         </section>

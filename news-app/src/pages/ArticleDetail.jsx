@@ -15,6 +15,7 @@ import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
 import Lens from '../components/Lens'
+import ScrollProgress from '../components/ScrollProgress'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import './ArticleDetail.css'
 
@@ -156,6 +157,7 @@ export default function ArticleDetail() {
 
   return (
     <article className="article-detail">
+      <ScrollProgress />
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
         <HyperText

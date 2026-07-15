@@ -89,29 +89,7 @@
   background: var(--icue-accent-muted);
 }
 
-.lang-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.lang-switcher select {
-  appearance: none;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--icue-text);
-  background: var(--icue-surface);
-  cursor: pointer;
-  transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-
-.lang-switcher select:hover {
-  border-color: var(--icue-text-faint);
-  background: var(--icue-surface-2);
-}
+/* Language switcher layout/styles come from @icue/i18n/LanguageSwitcher.css */
 
 @media (max-width: 768px) {
   .people-header__inner {
@@ -139,8 +117,8 @@
     padding: 5px 8px;
   }
 
-  .lang-switcher select {
-    max-width: 108px;
+  .lang-switcher__text,
+  .lang-switcher__select {
     font-size: 11px;
     padding: 5px 8px;
   }
