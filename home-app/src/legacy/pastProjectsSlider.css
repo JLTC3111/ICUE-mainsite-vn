@@ -66,12 +66,12 @@ main.grid.past-projects-swiper-active {
   /* Avoid AOS / hover transitions fighting the swipe gesture */
   filter: none !important;
   opacity: 1 !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background: #141414 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) !important;
   outline: none !important;
   padding: 0 !important;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+  transition: background-color 0.22s ease, border-color 0.22s ease !important;
   transform: none !important;
 }
 
@@ -87,8 +87,9 @@ main.grid.past-projects-swiper-active {
 }
 
 .past-projects-swiper .card.image-card img {
-  transition: filter 0.3s ease !important;
+  transition: none !important;
   transform: none !important;
+  filter: none !important;
 }
 
 .past-projects-swiper .swiper-pagination-bullet {

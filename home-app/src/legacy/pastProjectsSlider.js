@@ -14,6 +14,7 @@ const state = {
   cards: [],
   mq: null,
   onMqChange: null,
+  mqTimer: null,
   generation: 0,
 }
 
@@ -62,8 +63,6 @@ function enableSwiper() {
     spaceBetween: 20,
     speed: 280,
     autoHeight: true,
-    observer: true,
-    observeParents: true,
     resistanceRatio: 0.55,
     threshold: 8,
     grabCursor: true,
@@ -82,13 +81,10 @@ function enableSwiper() {
 }
 
 function disableSwiper() {
-  if (!state.grid) return
+  if (!state.grid || !state.swiper) return
 
-  if (state.swiper) {
-    state.swiper.destroy(true, true)
-    state.swiper = null
-  }
-
+  state.swiper.destroy(true, true)
+  state.swiper = null
   state.grid.classList.remove('past-projects-swiper-active')
   state.grid.replaceChildren(...state.cards)
   state.swiperEl = null
@@ -118,7 +114,10 @@ export async function initPastProjectsSlider() {
   state.cards = cards
   state.mq = window.matchMedia(MOBILE_QUERY)
   state.onMqChange = () => {
-    if (generation === state.generation) syncMode()
+    clearTimeout(state.mqTimer)
+    state.mqTimer = setTimeout(() => {
+      if (generation === state.generation) syncMode()
+    }, 120)
   }
 
   if (generation !== state.generation) return
@@ -129,6 +128,8 @@ export async function initPastProjectsSlider() {
 
 export function destroyPastProjectsSlider() {
   state.generation += 1
+  clearTimeout(state.mqTimer)
+  state.mqTimer = null
 
   if (state.mq && state.onMqChange) {
     state.mq.removeEventListener('change', state.onMqChange)

@@ -19,18 +19,11 @@ html {
   scroll-behavior: smooth;
 }
 
-[data-aos] {
-  will-change: transform, opacity;
-  transition-property: opacity, transform;
-  transition-duration: 0.85s;
-}
-
 body,
 .legacy-page {
   font-family: sans-serif;
   /* Match site footer near-black gradient */
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  background-attachment: fixed;
   /* Content-sized height so the site footer sits directly under the grid/swiper */
   min-height: 0;
   height: auto;
@@ -43,18 +36,17 @@ body,
   margin-top: 10%;
   display: grid;
   gap: 25px;
-  grid-template-columns: repeat(3, minmax(200px, 1fr));
-  grid-template-rows: minmax(300px, auto) auto;
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  align-items: start;
   justify-content: center;
   padding: 20px;
 }
 
-.grid a{
+.grid a {
   text-decoration: none;
 }
 
-/* Responsive stacking layout for small screens */
 @media (max-width: 550px) {
   .grid {
     margin-top: 22%;
@@ -64,37 +56,43 @@ body,
 
 @media (min-width: 551px) and (max-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .image-card img,
+  .card.image-card {
+    transition: none !important;
   }
 }
 
 .card {
-  background: transparent;
-  border: none;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   overflow: hidden;
   padding: 0;
   text-align: center;
-  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: none;
+  /* Avoid transitioning layout/filter on resize — only cheap hover props */
+  transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
   outline: none;
+  contain: layout paint;
 }
 
 .card:hover {
   background-color: #3310ff;
-  transform: scale(1.025);
-  will-change: transform; 
-  transform: translateY(-5px)
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-4px);
 }
 
 .card:hover .description {
   background-color: transparent;
 }
 
-.card:hover .location {
-  color: #ffffff;
-}
-
+.card:hover .location,
 .card:hover .year {
   color: #ffffff;
 }
@@ -115,24 +113,21 @@ body,
 }
 
 .image-card img {
-  filter: grayscale(25%);
   width: 100%;
-  height: 550px; 
+  height: auto;
+  aspect-ratio: 4 / 5;
+  max-height: 550px;
   object-fit: cover;
   display: block;
   border-radius: 4px;
-  transition: all 0.75s ease-in-out;
+  /* No CSS filters — grayscale/blur force expensive repaints on resize */
+  transition: transform 0.22s ease;
 }
 
 .image-card:hover img {
-  filter: grayscale(0%);
-  filter: brightness(1.05);
-  transform: translateY (-2px);
-  transform: scale(1.025);
-  will-change: transform;
+  transform: scale(1.02);
 }
 
-/* Tall card spans 2 rows on desktop */
 .tall {
   grid-row: span 2;
 }
@@ -172,24 +167,36 @@ body,
   background: transparent;
 }
 
-/* Initial (hidden) state */
+/* Mobile / touch layouts: always visible (no entrance anim) */
 .card.image-card {
-  filter: blur(8px);
-  opacity: 0;
-  transition: all 0.85s ease-in-out;
+  opacity: 1;
 }
 
-/* When AOS activates */
-.card.image-card.aos-animate {
-  filter: blur(0);
-  opacity: 1;
-  transition: all 0.85s ease-in-out;
+/*
+ * Desktop-only entrance: opacity + short translateY (no blur / 3D flip).
+ * JS (pastProjectsAos) toggles .aos-animate via IntersectionObserver.
+ */
+@media (min-width: 1025px) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card.image-card[data-aos] {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      transition:
+        opacity 0.4s ease var(--pp-aos-delay, 0ms),
+        transform 0.4s ease var(--pp-aos-delay, 0ms);
+    }
+
+    .card.image-card[data-aos].aos-animate {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
 }
 
 </style>
 <body>
   <main class="grid">
-    <a href="src/pages/card.html?id=1" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=1" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_1.jpg" loading="lazy">
       </div>
@@ -201,7 +208,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=2" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=2" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_2.jpg" loading="lazy">
       </div>
@@ -213,7 +220,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=3" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=3" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_3.jpg" loading="lazy">
       </div>
@@ -225,7 +232,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=4" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=4" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_4.jpg" loading="lazy">
       </div>
@@ -237,7 +244,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=5" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=5" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_5.jpg" loading="lazy">
       </div>
@@ -249,7 +256,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=6" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=6" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_6.jpg" loading="lazy">
       </div>
@@ -261,7 +268,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=7" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=7" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_7.jpg" loading="lazy">
       </div>
@@ -273,7 +280,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=8" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=8" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_8.jpg" loading="lazy">
       </div>
@@ -285,7 +292,7 @@ body,
       </div>
     </a>
 
-    <a href="src/pages/card.html?id=9" class="card image-card aos-animate" data-aos="flip-down">
+    <a href="src/pages/card.html?id=9" class="card image-card" data-aos="fade-up">
       <div class="image-wrapper">
       <img src="public/pastProjects/pp_9.jpg" loading="lazy">
       </div>
