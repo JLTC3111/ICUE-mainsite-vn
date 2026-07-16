@@ -5,17 +5,59 @@ import react from '@vitejs/plugin-react'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+const LEGACY_SHELL_SRC_PAGES = new Set([
+  '/src/pages/News.html',
+  '/src/pages/notableAwards.html',
+  '/src/pages/communityActivities.html',
+  '/src/pages/FAQs.html',
+  '/src/pages/donations.html',
+  '/src/pages/privacy.html',
+  '/src/pages/terms.html',
+  '/src/pages/gdpr.html',
+  '/src/pages/cookies.html',
+])
+
+const LEGACY_PAGE_REDIRECTS = {
+  '/legacy/pages/News.html': '/src/pages/News.html',
+  '/legacy/pages/notableAwards.html': '/notable-awards',
+  '/legacy/pages/communityActivities.html': '/community-activities',
+  '/legacy/pages/FAQs.html': '/faqs',
+  '/legacy/pages/donations.html': '/donations',
+  '/legacy/pages/privacy.html': '/privacy',
+  '/legacy/pages/terms.html': '/terms',
+  '/legacy/pages/gdpr.html': '/gdpr',
+  '/legacy/pages/cookies.html': '/cookies',
+}
+
 export default defineConfig({
   base: '/',
   plugins: [
     react(),
     {
-      name: 'legacy-news-spa',
+      name: 'legacy-pages-spa',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0]
-          if (urlPath !== '/src/pages/News.html') return next()
-          req.url = '/index.html'
+
+          if (LEGACY_SHELL_SRC_PAGES.has(urlPath)) {
+            req.url = '/index.html'
+            return next()
+          }
+
+          if (LEGACY_PAGE_REDIRECTS[urlPath]) {
+            const wantsEmbed =
+              req.headers['x-icue-legacy-embed'] === '1' ||
+              req.headers['sec-fetch-dest'] === 'empty' ||
+              req.headers['sec-fetch-mode'] === 'cors'
+
+            if (!wantsEmbed) {
+              res.statusCode = 302
+              res.setHeader('Location', LEGACY_PAGE_REDIRECTS[urlPath])
+              res.end()
+              return
+            }
+          }
+
           next()
         })
       },

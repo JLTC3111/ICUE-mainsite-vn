@@ -53,6 +53,24 @@
   outline-offset: 2px;
 }
 
+.bento-card .border-beam {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+@media (min-width: 1025px) {
+  .bento-card:hover .border-beam,
+  .bento-card:focus-visible .border-beam {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card .border-beam {
+    display: none;
+  }
+}
+
 .bento-card__background {
   position: absolute;
   inset: 0;

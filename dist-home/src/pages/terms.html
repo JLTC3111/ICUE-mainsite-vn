@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Điều Khoản Sử Dụng - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            margin-top: 7.5%;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header div {
+            font-size: clamp(0.9rem, 2.75vw, 1.2rem);
+            color: white;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .content-section {
+            font-size: clamp(0.9rem, 2.75vw, 1.1rem);
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 600;
+            color: #7c3aed;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content h3 {
+            font-size: clamp(1rem, 2.25vw, 1.4rem);
+        }
+
+        .section-content div {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            margin-bottom: 16px;
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            color: #475569;
+        }
+
+        .section-content ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #f3f4f6;
+            border-left: 4px solid #7c3aed;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .warning-box {
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 20px 0;
+            color: #000 !important;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #991b1b;
+        }
+
+        .contact-info {
+            letter-spacing: 0.5px;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: clamp(0.95rem, 2.5vw, 1.5rem);
+            margin-bottom: 15px;
+        }
+
+        .contact-info div {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .terms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .terms-table th,
+        .terms-table td {
+            font-size: clamp(0.65rem, 2vw, 1rem);
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .terms-table th {
+            background-color: #fef3c7;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .terms-table tr:nth-child(even) {
+            background-color: #fefcf3;
+        }
+
+        .liability-section {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+        }
+
+        .liability-section .section-title {
+            color: white;
+        }
+
+        .liability-section .section-content div,
+        .liability-section .section-content li {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 15px 40px;
+                margin-top: 15%;
+            }
+
+            .header h1 {
+                font-size: clamp(1.25rem, 2.75vw, 2rem);
+            }
+
+            .terms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+
+            /* important to enforce column widths */
+            table-layout: fixed;
+        }
+
+        .terms-table th,
+        .terms-table td {
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+
+            /* prevent text from overflowing */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Example: control each column */
+            .terms-table th:nth-child(1),
+            .terms-table td:nth-child(1) {
+            max-width: 140px;
+            }
+
+            .terms-table th:nth-child(2),
+            .terms-table td:nth-child(2) {
+            max-width: 140px;
+        }
+
+            .terms-table th:nth-child(3),
+            .terms-table td:nth-child(3) {
+            max-width: 140px;
+        }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: clamp(1.1rem, 2.25vw, 1.35rem);
+            }
+
+            .contact-info {
+                font-size: clamp(0.7rem, 3.5vw, 1rem);
+            }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <div class="header">
+        <h1>Điều Khoản Sử Dụng</h1>
+        <div>Quy định và điều khoản áp dụng khi sử dụng dịch vụ của ICUE</div>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">Chấp Nhận Điều Khoản</h2>
+            <div class="section-content">
+                <div>Khi truy cập và sử dụng website hoặc dịch vụ của Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng (ICUE), bạn đồng ý tuân thủ và bị ràng buộc bởi các điều khoản và điều kiện sau đây.</div>
+                
+                <div class="highlight-box">
+                    <div>📋 Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng không sử dụng dịch vụ của chúng tôi.</div>
+                </div>
+
+                <div>Các điều khoản này có thể được cập nhật theo thời gian mà không cần thông báo trước. Việc tiếp tục sử dụng dịch vụ sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận điều khoản mới.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Dịch Vụ và Phạm Vi</h2>
+            <div class="section-content">
+                <div>ICUE cung cấp các dịch vụ sau:</div>
+                <ul>
+                    <li><strong>Nghiên cứu và Tư vấn:</strong> Kinh tế, phát triển đô thị, xây dựng và bền vững</li>
+                    <li><strong>Đào tạo:</strong> Các khóa học và chương trình nâng cao năng lực</li>
+                    <li><strong>Thông tin:</strong> Báo cáo, nghiên cứu và dữ liệu chuyên ngành</li>
+                    <li><strong>Sự kiện:</strong> Hội thảo, tọa đàm và hoạt động chuyên môn</li>
+                    <li><strong>Website:</strong> Nền tảng thông tin và tương tác trực tuyến</li>
+                </ul>
+
+                <table class="terms-table">
+                    <thead>
+                        <tr>
+                            <th>Loại Dịch Vụ</th>
+                            <th>Điều Kiện Sử Dụng</th>
+                            <th>Thời Hạn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tư vấn chuyên nghiệp</td>
+                            <td>Dựa trên hợp đồng đã ký</td>
+                            <td>Theo thỏa thuận</td>
+                        </tr>
+                        <tr>
+                            <td>Đào tạo</td>
+                            <td>Yêu cầu đăng ký và đóng học phí</td>
+                            <td>Thời gian khóa học</td>
+                        </tr>
+                        <tr>
+                            <td>Truy cập website</td>
+                            <td>Tuân thủ điều khoản sử dụng</td>
+                            <td>Không giới hạn</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Quyền và Trách Nhiệm Người Dùng</h2>
+            <div class="section-content">
+                <h3 style="color: #7c3aed; margin-bottom: 15px;">Quyền lợi của bạn:</h3>
+                <ul>
+                    <li>Truy cập và sử dụng dịch vụ đúng mục đích</li>
+                    <li>Nhận dịch vụ chất lượng như cam kết</li>
+                    <li>Được bảo vệ dữ liệu cá nhân theo chính sách bảo mật</li>
+                    <li>Được quyền khiếu nại và giải quyết tranh chấp</li>
+                    <li>Hủy dịch vụ theo quy định</li>
+                </ul>
+
+                <h3 style="color: #7c3aed; margin: 25px 0 15px;">Trách nhiệm của bạn:</h3>
+                <ol>
+                    <li><strong>Cung cấp thông tin chính xác:</strong> Đảm bảo mọi thông tin gửi đều trung thực</li>
+                    <li><strong>Tuân thủ pháp luật:</strong> Không sử dụng dịch vụ cho mục đích bất hợp pháp</li>
+                    <li><strong>Bảo mật tài khoản:</strong> Giữ an toàn thông tin đăng nhập và mật khẩu</li>
+                    <li><strong>Thanh toán đúng hạn:</strong> Thực hiện nghĩa vụ tài chính theo thỏa thuận</li>
+                    <li><strong>Sử dụng hợp lý:</strong> Không lạm dụng hay sử dụng sai mục đích dịch vụ</li>
+                    <li><strong>Tôn trọng quyền sở hữu trí tuệ:</strong> Không xâm phạm bản quyền hoặc quyền SHTT</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Hành Vi Bị Cấm</h2>
+            <div class="section-content">
+                <div>Khi sử dụng dịch vụ của ICUE, bạn không được:</div>
+                <ul>
+                    <li>Sử dụng dịch vụ cho mục đích trái phép hoặc không được cho phép</li>
+                    <li>Vi phạm bất kỳ luật pháp địa phương, quốc gia hoặc quốc tế</li>
+                    <li>Phát tán virus, mã độc hoặc phần mềm gây hại</li>
+                    <li>Truy cập trái phép hệ thống hoặc mạng lưới</li>
+                    <li>Sao chép, chỉnh sửa hoặc phân phối nội dung khi chưa được phép</li>
+                    <li>Quấy rối, đe dọa hoặc gây hại cho người dùng khác</li>
+                    <li>Đăng tải nội dung phỉ báng, thù ghét hoặc phân biệt đối xử</li>
+                    <li>Thu thập thông tin cá nhân khi chưa có sự đồng ý</li>
+                    <li>Sử dụng robot, bot hoặc công cụ tự động để truy cập dịch vụ</li>
+                    <li>Cản trở hoặc phá hoại hoạt động của dịch vụ</li>
+                </ul>
+
+                <div class="warning-box">
+                    <div>⚠️ Vi phạm có thể dẫn đến đình chỉ hoặc chấm dứt quyền truy cập mà không cần thông báo trước.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Thanh Toán và Hoàn Tiền</h2>
+            <div class="section-content">
+                <h3 style="color: #7c3aed; margin-bottom: 15px;">Chính sách thanh toán:</h3>
+                <ul>
+                    <li>Thanh toán phải hoàn tất trước khi sử dụng dịch vụ</li>
+                    <li>Hình thức thanh toán chấp nhận: chuyển khoản, tiền mặt, thẻ tín dụng</li>
+                    <li>Tất cả phí tính bằng VND trừ khi có thỏa thuận khác</li>
+                    <li>Hóa đơn sẽ được cung cấp theo quy định pháp luật</li>
+                </ul>
+
+                <h3 style="color: #7c3aed; margin: 25px 0 15px;">Chính sách hoàn tiền:</h3>
+                <ul>
+                    <li>Dịch vụ tư vấn: Hoàn tiền trong 7 ngày nếu chưa bắt đầu</li>
+                    <li>Khóa học đào tạo: Hoàn 50% nếu hủy 48h trước khi bắt đầu, không hoàn sau khi đã học</li>
+                    <li>Báo cáo và tài liệu: Không hoàn sau khi đã tải xuống hoặc truy cập</li>
+                    <li>Sự kiện: Hoàn tiền theo chính sách riêng của từng sự kiện</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Quyền Sở Hữu Trí Tuệ</h2>
+            <div class="section-content">
+                <div>Tất cả nội dung trên website và dịch vụ của ICUE đều được bảo vệ bởi luật sở hữu trí tuệ:</div>
+                
+                <h3 style="color: #7c3aed; margin: 25px 0 15px;">Quyền sở hữu của ICUE:</h3>
+                <ul>
+                    <li>Logo, thương hiệu và tên ICUE</li>
+                    <li>Thiết kế website và giao diện người dùng</li>
+                    <li>Báo cáo nghiên cứu và tài liệu chuyên môn</li>
+                    <li>Phương pháp và quy trình tư vấn độc quyền</li>
+                    <li>Cơ sở dữ liệu và thông tin tích lũy</li>
+                </ul>
+
+                <h3 style="color: #7c3aed; margin: 25px 0 15px;">Quyền sử dụng của bạn:</h3>
+                <ul>
+                    <li>Xem và sử dụng nội dung cho mục đích cá nhân</li>
+                    <li>Tải về tài liệu được cấp phép</li>
+                    <li>Chia sẻ liên kết website (không chia sẻ trực tiếp nội dung)</li>
+                    <li>Trích dẫn với ghi nguồn hợp lệ trong giới hạn hợp lý</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div>📄 Việc sử dụng trái phép nội dung có bản quyền có thể dẫn đến hậu quả pháp lý nghiêm trọng.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section liability-section">
+            <h2 class="section-title">Giới Hạn Trách Nhiệm</h2>
+            <div class="section-content">
+                <div>ICUE cung cấp dịch vụ dựa trên nỗ lực tốt nhất, nhưng không chịu trách nhiệm cho:</div>
+                
+                <ul>
+                    <li><strong>Thiệt hại gián tiếp:</strong> Mất lợi nhuận, cơ hội kinh doanh, tổn thất tinh thần</li>
+                    <li><strong>Gián đoạn dịch vụ:</strong> Do sự cố kỹ thuật, bảo trì hoặc sự kiện bất khả kháng</li>
+                    <li><strong>Thông tin bên thứ ba:</strong> Độ chính xác của dữ liệu từ nguồn bên ngoài</li>
+                    <li><strong>Quyết định kinh doanh:</strong> Kết quả từ quyết định dựa trên tư vấn</li>
+                    <li><strong>Rủi ro an ninh:</strong> Từ việc chia sẻ thông tin qua internet</li>
+                    <li><strong>Nội dung người dùng:</strong> Thông tin do người dùng tạo hoặc chia sẻ</li>
+                </ul>
+
+                <div class="warning-box">
+                    <div>⚠️ Tổng trách nhiệm của ICUE trong mọi trường hợp sẽ không vượt quá giá trị dịch vụ đã thanh toán.</div>
+                </div>
+
+                <div>Giới hạn này không áp dụng trong trường hợp ICUE cố ý vi phạm hoặc có hành vi cẩu thả nghiêm trọng.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Chấm Dứt Dịch Vụ</h2>
+            <div class="section-content">
+                <h3 style="color: #7c3aed; margin-bottom: 15px;">ICUE có thể chấm dứt dịch vụ nếu:</h3>
+                <ul>
+                    <li>Người dùng vi phạm điều khoản sử dụng</li>
+                    <li>Không thanh toán đúng hạn</li>
+                    <li>Sử dụng dịch vụ cho mục đích bất hợp pháp</li>
+                    <li>Người dùng gây thiệt hại cho ICUE hoặc bên khác</li>
+                    <li>Cung cấp thông tin sai lệch hoặc gian lận</li>
+                </ul>
+
+                <h3 style="color: #7c3aed; margin: 25px 0 15px;">Người dùng có thể chấm dứt nếu:</h3>
+                <ul>
+                    <li>Không còn nhu cầu sử dụng dịch vụ</li>
+                    <li>ICUE vi phạm nghiêm trọng điều khoản</li>
+                    <li>Dịch vụ không đạt cam kết chất lượng</li>
+                </ul>
+
+                <div>Việc chấm dứt có hiệu lực ngay lập tức trừ khi có thỏa thuận khác. Các nghĩa vụ tài chính phát sinh trước đó vẫn phải hoàn thành.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Luật Áp Dụng và Giải Quyết Tranh Chấp</h2>
+            <div class="section-content">
+                <div>Các điều khoản này được điều chỉnh bởi luật pháp Việt Nam. Mọi tranh chấp sẽ được giải quyết như sau:</div>
+                
+                <ol>
+                    <li><strong>Thương lượng trực tiếp:</strong> Các bên thiện chí giải quyết</li>
+                    <li><strong>Hòa giải:</strong> Thông qua tổ chức hòa giải có thẩm quyền</li>
+                    <li><strong>Trọng tài:</strong> Đệ trình lên Trung tâm Trọng tài Quốc tế Việt Nam (VIAC)</li>
+                    <li><strong>Tòa án:</strong> Tòa án có thẩm quyền tại Hà Nội nếu trọng tài thất bại</li>
+                </ol>
+
+                <div class="highlight-box">
+                    <div>🏛️ Phương thức giải quyết tranh chấp phụ thuộc vào thỏa thuận cụ thể trong từng hợp đồng dịch vụ.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Điều Khoản Khác</h2>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Hiệu lực:</strong> Nếu một phần điều khoản vô hiệu, phần còn lại vẫn có hiệu lực</li>
+                    <li><strong>Ngôn ngữ:</strong> Phiên bản tiếng Việt là chính thức, bản dịch chỉ mang tính tham khảo</li>
+                    <li><strong>Sửa đổi:</strong> ICUE có thể cập nhật điều khoản bất kỳ lúc nào</li>
+                    <li><strong>Thông báo:</strong> Thông báo chính thức sẽ được gửi qua email hoặc đăng trên website</li>
+                    <li><strong>Điều khoản riêng:</strong> Hợp đồng cụ thể có thể có điều khoản bổ sung hoặc khác biệt</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>Liên Hệ Pháp Lý</h3>
+            <div>Nếu bạn có thắc mắc về các điều khoản sử dụng này:</div>
+            <div><strong>Email:</strong> <a href="mailto:info@icue.vn">info@icue.vn</a></div>
+            <div><strong>Điện thoại:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
+            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng, 124 Hoàng Ngân, Cầu Giấy, Hà Nội</div>
+            <div>Chúng tôi sẽ phản hồi trong vòng 5 ngày làm việc.</div>
+        </div>
+
+        <div class="last-updated">
+            <div>Cập nhật lần cuối: <strong>18/08/2025</strong></div>
+            <div>Phiên bản: 2.1 | Có hiệu lực từ ngày cập nhật</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

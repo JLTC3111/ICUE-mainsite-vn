@@ -158,22 +158,19 @@
 
 .article-coverflow__cta {
   flex: 0 0 auto;
-  padding: 11px 20px;
-  border: 0;
   border-radius: 999px;
-  background: var(--icue-accent);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.92rem;
-  cursor: pointer;
+  border-color: rgba(0, 0, 0, 0.1);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f6f8 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
-  box-shadow: 0 8px 24px rgba(54, 138, 223, 0.35);
-  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.article-coverflow__cta:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
+.article-coverflow__cta .shiny-button__label {
+  color: #16181d;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .article-coverflow__swiper .swiper-pagination {

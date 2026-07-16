@@ -3,8 +3,6 @@ export const SITES = {
   en: 'https://en.icue.vn',
 }
 
-const staticPage = (file) => `/src/pages/${file}.html`
-
 /** Path routes keyed by legacy page id. */
 export const MAIN_SITE_PAGE_PATHS = {
   Home: '/',
@@ -14,15 +12,15 @@ export const MAIN_SITE_PAGE_PATHS = {
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
   News: '/newsroom/?from=vi-news',
-  notableAwards: staticPage('notableAwards'),
-  communityActivities: staticPage('communityActivities'),
-  FAQs: staticPage('FAQs'),
-  faqs: staticPage('FAQs'),
-  donations: staticPage('donations'),
-  privacy: staticPage('privacy'),
-  terms: staticPage('terms'),
-  gdpr: staticPage('gdpr'),
-  cookies: staticPage('cookies'),
+  notableAwards: '/notable-awards',
+  communityActivities: '/community-activities',
+  FAQs: '/faqs',
+  faqs: '/faqs',
+  donations: '/donations',
+  privacy: '/privacy',
+  terms: '/terms',
+  gdpr: '/gdpr',
+  cookies: '/cookies',
   orgStructure: '/structure/',
 }
 

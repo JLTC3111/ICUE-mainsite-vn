@@ -1,0 +1,36 @@
+.shiny-button {
+  --primary: rgb(0, 0, 0);
+  position: relative;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.shiny-button:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.shiny-button__label {
+  position: relative;
+  display: block;
+  width: 100%;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.shiny-button__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: block;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+}

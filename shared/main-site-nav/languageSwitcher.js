@@ -50,6 +50,14 @@ export const MIGRATED_PAGE_PATHS = {
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',
   orgStructure: '/structure/',
+  notableAwards: '/notable-awards',
+  communityActivities: '/community-activities',
+  FAQs: '/faqs',
+  donations: '/donations',
+  privacy: '/privacy',
+  terms: '/terms',
+  gdpr: '/gdpr',
+  cookies: '/cookies',
 };
 
 const PATH_TO_PAGE = Object.fromEntries(

@@ -8,6 +8,14 @@ export const ROUTE_PATHS = {
   recruitment: '/recruitment',
   /** Legacy news archive — same URL as the static file, served via React shell. */
   newsArchive: '/src/pages/News.html',
+  notableAwards: '/notable-awards',
+  communityActivities: '/community-activities',
+  faqs: '/faqs',
+  donations: '/donations',
+  privacy: '/privacy',
+  terms: '/terms',
+  gdpr: '/gdpr',
+  cookies: '/cookies',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */
@@ -19,6 +27,14 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
   [ROUTE_PATHS.recruitment]: 'recruitment',
   [ROUTE_PATHS.newsArchive]: 'newsArchive',
+  [ROUTE_PATHS.notableAwards]: 'notableAwards',
+  [ROUTE_PATHS.communityActivities]: 'communityActivities',
+  [ROUTE_PATHS.faqs]: 'FAQs',
+  [ROUTE_PATHS.donations]: 'donations',
+  [ROUTE_PATHS.privacy]: 'privacy',
+  [ROUTE_PATHS.terms]: 'terms',
+  [ROUTE_PATHS.gdpr]: 'gdpr',
+  [ROUTE_PATHS.cookies]: 'cookies',
 }
 
 export const PAGE_TO_PATH = Object.fromEntries(
@@ -32,6 +48,14 @@ export const LEGACY_PAGE_FILES = {
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
   newsArchive: 'News.html',
+  notableAwards: 'notableAwards.html',
+  communityActivities: 'communityActivities.html',
+  FAQs: 'FAQs.html',
+  donations: 'donations.html',
+  privacy: 'privacy.html',
+  terms: 'terms.html',
+  gdpr: 'gdpr.html',
+  cookies: 'cookies.html',
 }
 
 export function pageFromPathname(pathname) {
@@ -63,8 +87,6 @@ export function prepareLegacyHtml(rawHtml) {
   bodyHtml = bodyHtml.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
   bodyHtml = bodyHtml.replace(/<link[^>]+swiper-bundle\.min\.css[^>]*>/gi, '')
 
-  const staticPage = (file) => `/src/pages/${file}.html`
-
   const hashToPath = {
     '#/Home': ROUTE_PATHS.home,
     '#/Contact': ROUTE_PATHS.contact,
@@ -74,15 +96,15 @@ export function prepareLegacyHtml(rawHtml) {
     '#/recruitment': ROUTE_PATHS.recruitment,
     '#/News': '/newsroom/?from=vi-news',
     '#/orgStructure': '/structure/',
-    '#/notableAwards': staticPage('notableAwards'),
-    '#/communityActivities': staticPage('communityActivities'),
-    '#/FAQs': staticPage('FAQs'),
-    '#/faqs': staticPage('FAQs'),
-    '#/donations': staticPage('donations'),
-    '#/privacy': staticPage('privacy'),
-    '#/terms': staticPage('terms'),
-    '#/gdpr': staticPage('gdpr'),
-    '#/cookies': staticPage('cookies'),
+    '#/notableAwards': ROUTE_PATHS.notableAwards,
+    '#/communityActivities': ROUTE_PATHS.communityActivities,
+    '#/FAQs': ROUTE_PATHS.faqs,
+    '#/faqs': ROUTE_PATHS.faqs,
+    '#/donations': ROUTE_PATHS.donations,
+    '#/privacy': ROUTE_PATHS.privacy,
+    '#/terms': ROUTE_PATHS.terms,
+    '#/gdpr': ROUTE_PATHS.gdpr,
+    '#/cookies': ROUTE_PATHS.cookies,
   }
 
   // Only rewrite relative `public/...` paths. Absolute `/public/...` must stay intact
@@ -95,6 +117,13 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)
     bodyHtml = bodyHtml.replaceAll(`href="/${hash.slice(1)}"`, `href="${path}"`)
     bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${path}'`)
+  }
+
+  for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
+    const route = PAGE_TO_PATH[pageId]
+    if (!route) continue
+    bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${route}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${route}'`)
   }
 
   return `${styles}${bodyHtml}`

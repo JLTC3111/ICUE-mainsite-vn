@@ -1,5 +1,6 @@
 import './BentoGrid.css'
 import Lens from './Lens'
+import { BorderBeam } from './magicui/BorderBeam'
 
 function cn(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -50,6 +51,7 @@ export function BentoCard({
       onClick={onClick}
       {...props}
     >
+      <BorderBeam />
       <div className="bento-card__background">{backgroundNode}</div>
       <div className="bento-card__body">
         {description ? <div className="bento-card__meta">{description}</div> : null}

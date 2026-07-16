@@ -6,6 +6,7 @@ import { EffectCoverflow, Pagination } from 'swiper/modules'
 import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import ArticleViewCounter from './ArticleViewCounter'
+import { ShinyButton } from './magicui/ShinyButton'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
@@ -186,13 +187,13 @@ export default function ArticleCoverflow({ articles, reduceMotion = false }) {
                 <ArticleViewCounter count={activeItem.viewCount} compact tone="light" />
               </p>
             </div>
-            <button
+            <ShinyButton
               type="button"
               className="article-coverflow__cta"
               onClick={() => openArticle(activeItem.slug)}
             >
               {t('gallery.readArticle')}
-            </button>
+            </ShinyButton>
           </div>
         )}
       </div>

@@ -48,6 +48,14 @@ const LEGACY_PAGES = [
   'pastProjects.html',
   'recruitment.html',
   'News.html',
+  'notableAwards.html',
+  'communityActivities.html',
+  'FAQs.html',
+  'donations.html',
+  'privacy.html',
+  'terms.html',
+  'gdpr.html',
+  'cookies.html',
 ]
 
 for (const rel of ASSET_DIRS) {

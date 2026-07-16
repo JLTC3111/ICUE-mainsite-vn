@@ -4,10 +4,28 @@
 /our-work          /index.html   200
 /past-projects     /index.html   200
 /recruitment       /index.html   200
+/notable-awards    /index.html   200
+/community-activities  /index.html   200
+/faqs              /index.html   200
+/donations         /index.html   200
+/privacy           /index.html   200
+/terms             /index.html   200
+/gdpr              /index.html   200
+/cookies           /index.html   200
 
 # Legacy News archive: force React shell (MainSiteNav + footer) over the static HTML file.
 /src/pages/News.html  /index.html  200!
 /news-archive         /src/pages/News.html  301
+
+# Redirect old static footer pages to React shell routes.
+/src/pages/notableAwards.html       /notable-awards         301
+/src/pages/communityActivities.html /community-activities   301
+/src/pages/FAQs.html                /faqs                   301
+/src/pages/donations.html           /donations              301
+/src/pages/privacy.html             /privacy                301
+/src/pages/terms.html               /terms                  301
+/src/pages/gdpr.html                /gdpr                   301
+/src/pages/cookies.html             /cookies                301
 
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.

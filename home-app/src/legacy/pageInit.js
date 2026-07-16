@@ -88,6 +88,18 @@ const PAGE_INIT = {
   recruitment: async () => {
     window.JobBoard?.init?.()
   },
+  FAQs: async () => {
+    window.initFrequentlyAskedQuestions?.()
+  },
+  donations: async () => {
+    window.DonationForm?.init?.()
+  },
+  notableAwards: async () => {
+    window.AwardsPage?.init?.()
+  },
+  communityActivities: async () => {
+    window.CommunityPage?.init?.()
+  },
 }
 
 const PAGE_CLEANUP = {

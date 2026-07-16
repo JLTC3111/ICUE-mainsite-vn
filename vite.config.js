@@ -82,6 +82,41 @@ function homeDevFallback() {
   const siblingPrefixes = ['/newsroom', '/people', '/structure'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
+  const legacyShellSrcPages = new Set([
+    '/src/pages/News.html',
+    '/src/pages/notableAwards.html',
+    '/src/pages/communityActivities.html',
+    '/src/pages/FAQs.html',
+    '/src/pages/donations.html',
+    '/src/pages/privacy.html',
+    '/src/pages/terms.html',
+    '/src/pages/gdpr.html',
+    '/src/pages/cookies.html',
+  ]);
+
+  const legacyPageRedirects = {
+    '/legacy/pages/News.html': '/src/pages/News.html',
+    '/legacy/pages/notableAwards.html': '/notable-awards',
+    '/legacy/pages/communityActivities.html': '/community-activities',
+    '/legacy/pages/FAQs.html': '/faqs',
+    '/legacy/pages/donations.html': '/donations',
+    '/legacy/pages/privacy.html': '/privacy',
+    '/legacy/pages/terms.html': '/terms',
+    '/legacy/pages/gdpr.html': '/gdpr',
+    '/legacy/pages/cookies.html': '/cookies',
+  };
+
+  const staticSrcRedirects = {
+    '/src/pages/notableAwards.html': '/notable-awards',
+    '/src/pages/communityActivities.html': '/community-activities',
+    '/src/pages/FAQs.html': '/faqs',
+    '/src/pages/donations.html': '/donations',
+    '/src/pages/privacy.html': '/privacy',
+    '/src/pages/terms.html': '/terms',
+    '/src/pages/gdpr.html': '/gdpr',
+    '/src/pages/cookies.html': '/cookies',
+  };
+
   return {
     name: 'home-dev-fallback',
     configureServer(server) {
@@ -98,8 +133,8 @@ function homeDevFallback() {
         const filePath = path.join(appDir, rel);
         const hasExtension = Boolean(rel && path.extname(rel));
 
-        // Serve React shell for legacy News archive (same URL as the static file).
-        if (urlPath === '/src/pages/News.html') {
+        // Serve React shell for migrated static pages (nav + footer).
+        if (legacyShellSrcPages.has(urlPath)) {
           const indexPath = path.join(appDir, 'index.html');
           if (fs.existsSync(indexPath)) {
             res.statusCode = 200;
@@ -109,27 +144,34 @@ function homeDevFallback() {
           }
         }
 
-        // Direct browser visits to static legacy News lack nav/footer — redirect to shell.
-        // LegacyHtmlPage fetches this URL to embed body HTML; serve the file instead.
-        if (urlPath === '/legacy/pages/News.html') {
+        if (staticSrcRedirects[urlPath]) {
+          res.statusCode = 302;
+          res.setHeader('Location', staticSrcRedirects[urlPath]);
+          res.end();
+          return;
+        }
+
+        // Direct browser visits to legacy embed files lack nav/footer — redirect to shell.
+        // LegacyHtmlPage fetches these URLs to embed body HTML; serve the file instead.
+        if (legacyPageRedirects[urlPath]) {
           const wantsEmbed =
             req.headers['x-icue-legacy-embed'] === '1' ||
             req.headers['sec-fetch-dest'] === 'empty' ||
-            req.headers['sec-fetch-mode'] === 'cors'
+            req.headers['sec-fetch-mode'] === 'cors';
 
           if (!wantsEmbed) {
-            res.statusCode = 302
-            res.setHeader('Location', '/src/pages/News.html')
-            res.end()
-            return
+            res.statusCode = 302;
+            res.setHeader('Location', legacyPageRedirects[urlPath]);
+            res.end();
+            return;
           }
 
-          const legacyPath = path.join(appDir, 'legacy/pages/News.html')
+          const legacyPath = path.join(appDir, urlPath.slice(1));
           if (fs.existsSync(legacyPath)) {
-            res.statusCode = 200
-            res.setHeader('Content-Type', 'text/html; charset=utf-8')
-            res.end(fs.readFileSync(legacyPath, 'utf-8'))
-            return
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.end(fs.readFileSync(legacyPath, 'utf-8'));
+            return;
           }
         }
 
