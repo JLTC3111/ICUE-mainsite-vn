@@ -3659,13 +3659,18 @@ window.AwardsPage = (function () {
         observer = new IntersectionObserver(handleIntersect, observerOptions);
       }
 
-      // Observe award cards
-      const cards = document.querySelectorAll('.award-card, .cert-card, .timeline-item');
+      const cards = document.querySelectorAll('.award-card, .cert-card');
       cards.forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px)';
         card.style.transition = `all 0.6s ease ${index * 0.1}s`;
         observer.observe(card);
+      });
+
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      timelineItems.forEach((item, index) => {
+        item.style.transitionDelay = `${index * 0.1}s`;
+        observer.observe(item);
       });
 
       console.log('Awards page loaded successfully');
@@ -3674,8 +3679,12 @@ window.AwardsPage = (function () {
     function handleIntersect(entries) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+          if (entry.target.classList.contains('timeline-item')) {
+            entry.target.classList.add('animate');
+          } else {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
         }
       });
     }

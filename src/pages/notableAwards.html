@@ -389,7 +389,8 @@
         }
 
         .timeline-content {
-            flex: 1;
+            flex: 0 0 calc(50% - 70px);
+            max-width: calc(50% - 70px);
             background: #fff;
             padding: 35px;
             border-radius: 20px;
@@ -640,6 +641,8 @@
             
             .timeline-content,
             .timeline-item:nth-child(odd) .timeline-content {
+                flex: 1 1 auto;
+                max-width: none;
                 margin-left: 80px;
                 margin-right: 0;
                 text-align: left;
