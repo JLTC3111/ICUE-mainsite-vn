@@ -80,6 +80,8 @@
     "empty": "No articles yet.",
     "readMore": "Read more",
     "loading": "Loading articles…",
+    "loadMore": "Load more articles",
+    "showingCount": "Showing {{shown}} of {{total}} articles",
     "by": "by",
     "minRead": "min read"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "News articles. Browse the bento grid and click an article to open it.",
+    "coverflowAriaLabel": "News articles carousel. Swipe through stories and tap to read.",
     "hint": "Click an article to read",
     "readArticle": "Read article"
   },

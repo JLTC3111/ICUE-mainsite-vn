@@ -80,6 +80,8 @@
     "empty": "Chưa có bài viết nào.",
     "readMore": "Đọc tiếp",
     "loading": "Đang tải bài viết…",
+    "loadMore": "Xem thêm bài viết",
+    "showingCount": "Đang hiển thị {{shown}} / {{total}} bài viết",
     "by": "bởi",
     "minRead": "phút đọc"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "Danh sách bài viết. Duyệt lưới bento và nhấp vào bài để mở.",
+    "coverflowAriaLabel": "Carousel bài viết. Vuốt để xem và nhấn để đọc.",
     "hint": "Nhấp vào bài để đọc",
     "readArticle": "Đọc bài"
   },

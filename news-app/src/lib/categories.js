@@ -22,6 +22,7 @@ export const CATEGORIES = [
 
 export const CATEGORY_SLUGS = CATEGORIES.map((c) => c.slug)
 export const DEFAULT_CATEGORY = 'general'
+export const NEWSROOM_DEFAULT_CATEGORY = 'urban'
 
 const BY_SLUG = Object.fromEntries(CATEGORIES.map((c) => [c.slug, c]))
 

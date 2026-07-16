@@ -80,6 +80,8 @@
     "empty": "Noch keine Artikel.",
     "readMore": "Weiterlesen",
     "loading": "Artikel werden geladen…",
+    "loadMore": "Weitere Artikel laden",
+    "showingCount": "{{shown}} von {{total}} Artikeln angezeigt",
     "by": "von",
     "minRead": "Min. Lesezeit"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "Nachrichtenartikel. Durchsuchen Sie das Bento-Raster und klicken Sie auf einen Artikel, um ihn zu öffnen.",
+    "coverflowAriaLabel": "Nachrichten-Karussell. Wischen Sie durch die Artikel und tippen Sie zum Lesen.",
     "hint": "Artikel anklicken zum Lesen",
     "readArticle": "Artikel lesen"
   },

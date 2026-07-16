@@ -80,6 +80,8 @@
     "empty": "아직 기사가 없습니다.",
     "readMore": "더 보기",
     "loading": "기사를 불러오는 중…",
+    "loadMore": "기사 더 보기",
+    "showingCount": "{{total}}개 중 {{shown}}개 표시",
     "by": "작성",
     "minRead": "분 소요"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "뉴스 기사. 벤토 그리드를 탐색하고 기사를 클릭하여 엽니다.",
+    "coverflowAriaLabel": "기사 캐러셀. 스와이프하여 탐색하고 탭하여 읽습니다.",
     "hint": "기사를 클릭하여 읽기",
     "readArticle": "기사 읽기"
   },

@@ -80,6 +80,8 @@
     "empty": "Aucun article pour le moment.",
     "readMore": "Lire la suite",
     "loading": "Chargement des articles…",
+    "loadMore": "Charger plus d'articles",
+    "showingCount": "{{shown}} sur {{total}} articles affichés",
     "by": "par",
     "minRead": "min de lecture"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "Articles. Parcourez la grille bento et cliquez sur un article pour l'ouvrir.",
+    "coverflowAriaLabel": "Carrousel d'articles. Faites défiler et appuyez pour lire.",
     "hint": "Cliquez sur un article pour lire",
     "readArticle": "Lire l'article"
   },

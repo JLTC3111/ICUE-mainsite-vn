@@ -5,10 +5,18 @@ import RotatingText from '../components/RotatingText'
 import RetroGrid from '../components/RetroGrid'
 import AnimatedShinyText from '../components/AnimatedShinyText'
 import ArticleMasonry from '../components/ArticleMasonry'
+import ArticleCoverflow from '../components/ArticleCoverflow'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
+import useMediaQuery from '../hooks/useMediaQuery'
 import { fetchPublishedArticles } from '../lib/articles'
 import { isCategory } from '../lib/categories'
+import {
+  NEWSROOM_COMPACT_QUERY,
+  NEWSROOM_DEFAULT_CATEGORY,
+  NEWSROOM_INITIAL_VISIBLE,
+  NEWSROOM_LOAD_MORE_STEP,
+} from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
 import './NewsGrid.css'
 
@@ -21,7 +29,9 @@ export default function NewsGrid() {
   const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
-  const [activeCat, setActiveCat] = useState('all')
+  const [activeCat, setActiveCat] = useState(NEWSROOM_DEFAULT_CATEGORY)
+  const [visibleCount, setVisibleCount] = useState(NEWSROOM_INITIAL_VISIBLE)
+  const isCompactLayout = useMediaQuery(NEWSROOM_COMPACT_QUERY)
 
   useEffect(() => {
     let active = true
@@ -51,6 +61,17 @@ export default function NewsGrid() {
     }
     return searchArticles(list, searchQuery)
   }, [articles, activeCat, searchQuery])
+
+  useEffect(() => {
+    setVisibleCount(NEWSROOM_INITIAL_VISIBLE)
+  }, [activeCat, searchQuery])
+
+  const visibleArticles = useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount],
+  )
+
+  const hasMoreArticles = filtered.length > visibleArticles.length
 
   return (
     <div className="news-page">
@@ -97,8 +118,30 @@ export default function NewsGrid() {
         )}
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
-        {state === 'ready' && filtered.length > 0 && (
-          <ArticleMasonry articles={filtered} reduceMotion={reduceMotion} />
+        {state === 'ready' && visibleArticles.length > 0 && (
+          isCompactLayout ? (
+            <ArticleCoverflow articles={visibleArticles} reduceMotion={reduceMotion} />
+          ) : (
+            <ArticleMasonry articles={visibleArticles} reduceMotion={reduceMotion} />
+          )
+        )}
+
+        {state === 'ready' && hasMoreArticles && (
+          <div className="news-load-more">
+            <p className="news-load-more__count">
+              {t('news.showingCount', {
+                shown: visibleArticles.length,
+                total: filtered.length,
+              })}
+            </p>
+            <button
+              type="button"
+              className="news-load-more__btn"
+              onClick={() => setVisibleCount((count) => count + NEWSROOM_LOAD_MORE_STEP)}
+            >
+              {t('news.loadMore')}
+            </button>
+          </div>
         )}
       </div>
     </div>

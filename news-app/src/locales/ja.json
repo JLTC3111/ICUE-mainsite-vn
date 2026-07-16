@@ -80,6 +80,8 @@
     "empty": "まだ記事がありません。",
     "readMore": "続きを読む",
     "loading": "記事を読み込み中…",
+    "loadMore": "さらに記事を表示",
+    "showingCount": "{{total}}件中{{shown}}件を表示",
     "by": "投稿者",
     "minRead": "分で読了"
   },
@@ -192,6 +194,7 @@
   },
   "gallery": {
     "ariaLabel": "ニュース記事。ベントグリッドを閲覧し、記事をクリックして開きます。",
+    "coverflowAriaLabel": "記事カルーセル。スワイプして記事を選び、タップして読みます。",
     "hint": "記事をクリックして読む",
     "readArticle": "記事を読む"
   },
