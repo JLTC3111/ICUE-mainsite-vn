@@ -1,5 +1,5 @@
 import Swiper from 'swiper'
-import { Autoplay, EffectCoverflow, Keyboard, Pagination } from 'swiper/modules'
+import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
@@ -18,6 +18,7 @@ const cardsState = {
   swiperEl: null,
   wrapEl: null,
   infoEl: null,
+  cardMeta: null,
   grid: null,
   cards: [],
   mode: null,
@@ -58,6 +59,19 @@ function readLabel() {
   return cardsState.grid?.dataset?.readLabel || 'Read article →'
 }
 
+function buildCardMeta(cards) {
+  return cards.map((card) => {
+    const dateEl = card.querySelector('.card-info .date')
+    const locationEl = card.querySelector('.card-info .location')
+    const parts = [dateEl?.textContent?.trim(), locationEl?.textContent?.trim()].filter(Boolean)
+    return {
+      title: cardTitleText(card),
+      meta: parts.join('  ·  '),
+      href: card.href || '#',
+    }
+  })
+}
+
 function buildRankBadge(index) {
   const rank = document.createElement('span')
   rank.className = 'news-coverflow-rank'
@@ -67,27 +81,20 @@ function buildRankBadge(index) {
 }
 
 function updateCoverflowInfo(swiper) {
-  if (!cardsState.infoEl) return
+  if (!cardsState.infoEl || !cardsState.cardMeta?.length) return
 
   const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
-  const card = cardsState.cards[index]
-  if (!card) return
+  const meta = cardsState.cardMeta[index]
+  if (!meta) return
 
-  const dateEl = card.querySelector('.card-info .date')
-  const locationEl = card.querySelector('.card-info .location')
   const infoTitle = cardsState.infoEl.querySelector('.news-coverflow-info__title')
   const infoMeta = cardsState.infoEl.querySelector('.news-coverflow-info__meta')
   const infoBtn = cardsState.infoEl.querySelector('.news-coverflow-info__btn')
 
-  if (infoTitle) infoTitle.textContent = cardTitleText(card)
-
-  if (infoMeta) {
-    const parts = [dateEl?.textContent?.trim(), locationEl?.textContent?.trim()].filter(Boolean)
-    infoMeta.textContent = parts.join('  ·  ')
-  }
-
+  if (infoTitle) infoTitle.textContent = meta.title
+  if (infoMeta) infoMeta.textContent = meta.meta
   if (infoBtn) {
-    infoBtn.href = card.href || '#'
+    infoBtn.href = meta.href
     infoBtn.textContent = readLabel()
   }
 }
@@ -156,7 +163,7 @@ function enableMobileCardsSwiper() {
   cardsState.swiperEl = swiperEl
 
   cardsState.swiper = new Swiper(swiperEl, {
-    modules: [Pagination, Keyboard],
+    modules: [Pagination],
     slidesPerView: 1,
     spaceBetween: 20,
     speed: 280,
@@ -165,11 +172,6 @@ function enableMobileCardsSwiper() {
     grabCursor: true,
     watchOverflow: true,
     initialSlide: readInitialIndex(cardsState.cards.length),
-    keyboard: {
-      enabled: true,
-      onlyInViewport: true,
-      pageUpDown: false,
-    },
     pagination: {
       el: pagination,
       clickable: true,
@@ -248,27 +250,26 @@ function enableDesktopCoverflow() {
   cardsState.wrapEl = wrap
   cardsState.swiperEl = swiperEl
   cardsState.infoEl = info
+  cardsState.cardMeta = buildCardMeta(cardsState.cards)
 
   const slideCount = cardsState.cards.length
   const initialIndex = readInitialIndex(slideCount)
   const useLoop = slideCount > 2
 
   cardsState.swiper = new Swiper(swiperEl, {
-    modules: [EffectCoverflow, Pagination, Keyboard],
+    modules: [EffectCoverflow, Pagination],
     effect: 'coverflow',
     grabCursor: true,
     centeredSlides: true,
     slidesPerView: 'auto',
-    speed: 520,
+    speed: 320,
+    resistanceRatio: 0.72,
+    threshold: 6,
+    longSwipesMs: 260,
     loop: useLoop,
     loopAdditionalSlides: 3,
     watchSlidesProgress: true,
     initialSlide: useLoop ? 0 : initialIndex,
-    keyboard: {
-      enabled: true,
-      onlyInViewport: true,
-      pageUpDown: false,
-    },
     coverflowEffect: {
       rotate: 42,
       stretch: -22,
@@ -291,10 +292,9 @@ function enableDesktopCoverflow() {
       slideChange(swiper) {
         const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
         localStorage.setItem(STORAGE_KEY, String(index))
-        updateCoverflowInfo(swiper)
       },
       slideChangeTransitionEnd(swiper) {
-        swiper.loopFix()
+        updateCoverflowInfo(swiper)
       },
     },
   })
@@ -318,6 +318,7 @@ function disableDesktopCoverflow() {
   cardsState.wrapEl = null
   cardsState.swiperEl = null
   cardsState.infoEl = null
+  cardsState.cardMeta = null
   cardsState.mode = null
 }
 

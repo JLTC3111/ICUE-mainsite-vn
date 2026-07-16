@@ -128,7 +128,7 @@
   }
 }
 
-/* Mobile article-card Swiper (desktop keeps CSS grid) */
+/* Mobile article-card Swiper (desktop uses Swiper Coverflow) */
 main.grid.news-cards-swiper-active {
   display: block;
   margin-top: 5%;
@@ -184,6 +184,169 @@ main.grid.news-cards-swiper-active {
   .news-cards-swiper .image-card img {
     height: min(55vh, 420px) !important;
   }
+}
+
+/* Desktop Coverflow carousel (Swiper.js) */
+main.grid.news-coverflow-active {
+  display: block;
+  margin-top: 3%;
+  padding: 0;
+  gap: 0;
+}
+
+.news-coverflow-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 52px 28px 36px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #16181d;
+}
+
+.news-coverflow-swiper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 12px 0 28px;
+  overflow: visible;
+}
+
+.news-coverflow-swiper .swiper-wrapper {
+  transform-style: preserve-3d;
+}
+
+.news-coverflow-swiper .swiper-slide {
+  width: clamp(280px, 34vw, 420px);
+  position: relative;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.news-coverflow-swiper .card.image-card {
+  filter: none !important;
+  opacity: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+}
+
+.news-coverflow-swiper .card.image-card:hover {
+  transform: none !important;
+  background: transparent !important;
+}
+
+.news-coverflow-swiper .swiper-slide-active .card.image-card {
+  pointer-events: auto;
+}
+
+.news-coverflow-swiper .card-info {
+  display: none;
+}
+
+.news-coverflow-swiper .image-card img {
+  width: 100%;
+  height: clamp(320px, 52vh, 520px) !important;
+  object-fit: cover;
+  border-radius: 16px;
+  filter: grayscale(0%) !important;
+  transition: none !important;
+  will-change: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+
+.news-coverflow-swiper .swiper-slide-active .image-card img {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.news-coverflow-rank {
+  position: absolute;
+  left: 10px;
+  bottom: 6px;
+  z-index: 3;
+  font-size: clamp(4.5rem, 12vw, 7.5rem);
+  font-weight: 200;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: rgba(255, 255, 255, 0.94);
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.32);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  user-select: none;
+}
+
+.news-coverflow-info {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 6px 8px 0;
+  margin-top: 2px;
+}
+
+.news-coverflow-info__title {
+  margin: 0 0 6px;
+  font-size: clamp(1.05rem, 2.1vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: #16181d;
+}
+
+.news-coverflow-info__meta {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.35vw, 1rem);
+  color: #6b7077;
+  line-height: 1.45;
+}
+
+.news-coverflow-info__btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #e50914;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.35);
+}
+
+.news-coverflow-swiper .swiper-pagination {
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: 18px;
+}
+
+.news-coverflow-swiper .swiper-pagination-bullet {
+  width: 28px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(22, 24, 29, 0.2);
+  opacity: 1;
+}
+
+.news-coverflow-swiper .swiper-pagination-bullet-active {
+  background: #16181d;
+  width: 40px;
 }
 
 .grid {
@@ -549,7 +712,7 @@ main.grid.news-cards-swiper-active {
     <span class="new-news-cta__btn">Xem bản tin mới →</span>
   </a>
 
-  <main class="grid">
+  <main class="grid" data-read-label="Đọc bài viết →">
     <a href="/src/pages/article_template.html?id=4" class="card image-card aos-animate" data-aos="fade-up">
       <div class="image-wrapper">
         <img src="/public/news/articles/Card_4.jpg" loading="lazy">
@@ -696,7 +859,10 @@ main.grid.news-cards-swiper-active {
     swiper: null,
     grid: null,
     cards: [],
+    mode: null,
     mq: null,
+    infoEl: null,
+    cardMeta: null,
   };
 
   function readInitialIndex(count) {
@@ -705,7 +871,49 @@ main.grid.news-cards-swiper-active {
     return Math.max(0, Math.min(count - 1, raw));
   }
 
-  function enableCardsSwiper() {
+  function cardTitleText(card) {
+    const h3 = card.querySelector('.card-info h3');
+    if (!h3) return '';
+    const clone = h3.cloneNode(true);
+    clone.querySelectorAll('svg').forEach((el) => el.remove());
+    return clone.textContent.trim();
+  }
+
+  function activeIndex(swiper) {
+    return typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex;
+  }
+
+  function buildCardMeta(cards) {
+    return cards.map((card) => {
+      const dateEl = card.querySelector('.card-info .date');
+      const locationEl = card.querySelector('.card-info .location');
+      const parts = [dateEl?.textContent?.trim(), locationEl?.textContent?.trim()].filter(Boolean);
+      return {
+        title: cardTitleText(card),
+        meta: parts.join('  ·  '),
+        href: card.href || '#',
+      };
+    });
+  }
+
+  function updateCoverflowInfo(swiper) {
+    if (!cardsState.infoEl || !cardsState.cardMeta?.length) return;
+    const meta = cardsState.cardMeta[activeIndex(swiper)];
+    if (!meta) return;
+    const infoTitle = cardsState.infoEl.querySelector('.news-coverflow-info__title');
+    const infoMeta = cardsState.infoEl.querySelector('.news-coverflow-info__meta');
+    const infoBtn = cardsState.infoEl.querySelector('.news-coverflow-info__btn');
+    if (infoTitle) infoTitle.textContent = meta.title;
+    if (infoMeta) infoMeta.textContent = meta.meta;
+    if (infoBtn) {
+      infoBtn.href = meta.href;
+      infoBtn.textContent = cardsState.grid?.dataset?.readLabel || 'Read article →';
+    }
+  }
+
+  function enableMobileCardsSwiper() {
+    if (cardsState.mode === 'mobile') return;
+    if (cardsState.mode === 'desktop') disableDesktopCoverflow();
     if (cardsState.swiper || !cardsState.grid || !cardsState.cards.length) return;
     const swiperEl = document.createElement('div');
     swiperEl.className = 'swiper news-cards-swiper';
@@ -737,22 +945,119 @@ main.grid.news-cards-swiper-active {
         },
       },
     });
+    cardsState.mode = 'mobile';
   }
 
-  function disableCardsSwiper() {
-    if (!cardsState.grid) return;
+  function disableMobileCardsSwiper() {
+    if (cardsState.mode !== 'mobile') return;
     if (cardsState.swiper) {
       cardsState.swiper.destroy(true, true);
       cardsState.swiper = null;
     }
-    cardsState.grid.classList.remove('news-cards-swiper-active');
-    cardsState.grid.replaceChildren(...cardsState.cards);
+    if (cardsState.grid && cardsState.cards.length) {
+      cardsState.grid.classList.remove('news-cards-swiper-active');
+      cardsState.grid.replaceChildren(...cardsState.cards);
+    }
+    cardsState.mode = null;
+  }
+
+  function enableDesktopCoverflow() {
+    if (cardsState.mode === 'desktop') return;
+    if (cardsState.mode === 'mobile') disableMobileCardsSwiper();
+    if (cardsState.swiper || !cardsState.grid || !cardsState.cards.length) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'news-coverflow-wrap';
+    const swiperEl = document.createElement('div');
+    swiperEl.className = 'swiper news-coverflow-swiper';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'swiper-wrapper';
+    cardsState.cards.forEach((card, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'swiper-slide';
+      slide.appendChild(card);
+      const rank = document.createElement('span');
+      rank.className = 'news-coverflow-rank';
+      rank.textContent = String(index + 1);
+      rank.setAttribute('aria-hidden', 'true');
+      slide.appendChild(rank);
+      wrapper.appendChild(slide);
+    });
+    const pagination = document.createElement('div');
+    pagination.className = 'swiper-pagination';
+    swiperEl.appendChild(wrapper);
+    swiperEl.appendChild(pagination);
+    const info = document.createElement('div');
+    info.className = 'news-coverflow-info';
+    info.setAttribute('aria-live', 'polite');
+    info.innerHTML = '<div class="news-coverflow-info__text"><h2 class="news-coverflow-info__title"></h2><p class="news-coverflow-info__meta"></p></div><a class="news-coverflow-info__btn" href="#"></a>';
+    wrap.appendChild(swiperEl);
+    wrap.appendChild(info);
+    cardsState.grid.replaceChildren(wrap);
+    cardsState.grid.classList.add('news-coverflow-active');
+    cardsState.infoEl = info;
+    cardsState.cardMeta = buildCardMeta(cardsState.cards);
+
+    const slideCount = cardsState.cards.length;
+    const initialIndex = readInitialIndex(slideCount);
+    const useLoop = slideCount > 2;
+    cardsState.swiper = new Swiper(swiperEl, {
+      effect: 'coverflow',
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      speed: 320,
+      resistanceRatio: 0.72,
+      threshold: 6,
+      longSwipesMs: 260,
+      loop: useLoop,
+      loopAdditionalSlides: 3,
+      watchSlidesProgress: true,
+      initialSlide: useLoop ? 0 : initialIndex,
+      coverflowEffect: {
+        rotate: 42,
+        stretch: -22,
+        depth: 170,
+        modifier: 1.08,
+        slideShadows: false,
+      },
+      pagination: { el: pagination, clickable: true },
+      on: {
+        init(swiper) {
+          if (useLoop && initialIndex > 0) swiper.slideToLoop(initialIndex, 0, false);
+          swiper.loopFix();
+          updateCoverflowInfo(swiper);
+        },
+        slideChange(swiper) {
+          localStorage.setItem(STORAGE_KEY, String(activeIndex(swiper)));
+        },
+        slideChangeTransitionEnd(swiper) {
+          updateCoverflowInfo(swiper);
+        },
+      },
+    });
+    cardsState.mode = 'desktop';
+  }
+
+  function disableDesktopCoverflow() {
+    if (cardsState.mode !== 'desktop') return;
+    if (cardsState.swiper) {
+      cardsState.swiper.destroy(true, true);
+      cardsState.swiper = null;
+    }
+    if (cardsState.grid && cardsState.cards.length) {
+      cardsState.grid.classList.remove('news-coverflow-active');
+      cardsState.grid.replaceChildren(...cardsState.cards);
+    }
+    cardsState.infoEl = null;
+    cardsState.cardMeta = null;
+    cardsState.mode = null;
   }
 
   function syncCardsMode() {
     if (!cardsState.mq) return;
-    if (cardsState.mq.matches) enableCardsSwiper();
-    else disableCardsSwiper();
+    if (cardsState.mq.matches) enableMobileCardsSwiper();
+    else enableDesktopCoverflow();
   }
 
   function initCardsSwiper() {
