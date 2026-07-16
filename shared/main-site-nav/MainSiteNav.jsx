@@ -102,14 +102,38 @@ export default function MainSiteNav({
   }, [isStandalone]);
 
   const handleHomeVideoToggle = useCallback((enabled) => {
-    window.HomeBackgroundVideoManager?.setEnabled?.(enabled);
+    if (window.HomeBackgroundVideoManager?.setEnabled) {
+      window.HomeBackgroundVideoManager.setEnabled(enabled);
+      return;
+    }
+
+    try {
+      localStorage.setItem('home_bg_video_enabled', enabled ? '1' : '0');
+    } catch {
+      // ignore
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('icue:homeVideoEnabled', {
+        detail: { enabled: !!enabled },
+      }),
+    );
   }, []);
 
   const syncHomeVideoToggleState = useCallback(() => {
     const manager = window.HomeBackgroundVideoManager;
-    if (!manager) return;
-    setHomeVideoEnabled(!!manager.isEnabled?.());
-    setHomeVideoToggleDisabled(!manager.canToggleVideos?.());
+    if (manager?.isEnabled) {
+      setHomeVideoEnabled(!!manager.isEnabled());
+      setHomeVideoToggleDisabled(!manager.canToggleVideos?.());
+      return;
+    }
+
+    try {
+      const raw = localStorage.getItem('home_bg_video_enabled');
+      setHomeVideoEnabled(raw === null ? true : raw === '1' || raw === 'true' || raw === 'on');
+    } catch {
+      setHomeVideoEnabled(true);
+    }
   }, []);
 
   const handleAboutUsVideoToggle = useCallback((enabled) => {

@@ -87,7 +87,7 @@ export default function AnimatedViewToggle({
     if (disabled) return;
 
     const button = buttonRef.current;
-    if (!button) return;
+    if (!button || button.dataset.transitioning === 'true') return;
 
     const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
     const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
@@ -117,6 +117,8 @@ export default function AnimatedViewToggle({
       return;
     }
 
+    button.dataset.transitioning = 'true';
+
     const clipPath = getTransitionClipPaths(
       variant,
       x,
@@ -132,6 +134,7 @@ export default function AnimatedViewToggle({
     root.style.setProperty('--icue-view-toggle-vt-clip-from', clipPath[0]);
 
     const cleanup = () => {
+      delete button.dataset.transitioning;
       delete root.dataset.icueViewToggleVt;
       root.style.removeProperty('--icue-view-toggle-vt-duration');
       root.style.removeProperty('--icue-view-toggle-vt-clip-from');

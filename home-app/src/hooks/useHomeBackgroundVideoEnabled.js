@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
+import HomeBackgroundVideoManager, {
+  readHomeBackgroundVideoEnabledState,
+} from '../lib/homeBackgroundVideo'
 
-function readHomeBackgroundVideoEnabled() {
-  return !!window.HomeBackgroundVideoManager?.isEnabled?.()
+if (typeof window !== 'undefined' && !window.HomeBackgroundVideoManager) {
+  window.HomeBackgroundVideoManager = HomeBackgroundVideoManager
 }
 
 export function useHomeBackgroundVideoEnabled() {
-  const [enabled, setEnabled] = useState(readHomeBackgroundVideoEnabled)
+  const [enabled, setEnabled] = useState(readHomeBackgroundVideoEnabledState)
 
   useEffect(() => {
-    setEnabled(readHomeBackgroundVideoEnabled())
+    setEnabled(readHomeBackgroundVideoEnabledState())
 
     const onToggle = (event) => {
       setEnabled(!!event.detail?.enabled)

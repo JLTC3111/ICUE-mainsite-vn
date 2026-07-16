@@ -1,16 +1,28 @@
+export const HOME_BG_VIDEO_STORAGE_KEY = 'home_bg_video_enabled';
+
+export function readHomeBackgroundVideoEnabledPreference() {
+  try {
+    const raw = localStorage.getItem(HOME_BG_VIDEO_STORAGE_KEY);
+    if (raw === null) return true;
+    return raw === '1' || raw === 'true' || raw === 'on';
+  } catch {
+    return true;
+  }
+}
+
+export function readHomeBackgroundVideoEnabledState() {
+  if (typeof window !== 'undefined' && window.HomeBackgroundVideoManager?.isEnabled) {
+    return !!window.HomeBackgroundVideoManager.isEnabled();
+  }
+  return readHomeBackgroundVideoEnabledPreference();
+}
+
 const HomeBackgroundVideoManager = (() => {
-  const STORAGE_KEY_ENABLED = 'home_bg_video_enabled';
+  const STORAGE_KEY_ENABLED = HOME_BG_VIDEO_STORAGE_KEY;
   let _enabled = true; // In-memory state
 
   const initEnabledState = () => {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
-        // Default ON when user has never set a preference.
-        if (raw === null) _enabled = true;
-        else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
-      } catch (e) {
-        _enabled = true;
-      }
+    _enabled = readHomeBackgroundVideoEnabledPreference();
   };
 
   const getUserEnabled = () => _enabled;
