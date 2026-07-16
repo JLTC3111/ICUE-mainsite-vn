@@ -3,6 +3,8 @@
 // (`categories.<slug>`), and `color` drives the accent dot/pill in the UI.
 export const CATEGORIES = [
   { slug: 'general', color: '#6b7280' },
+  { slug: 'world', color: '#2563eb' },
+  { slug: 'politics', color: '#b91c1c' },
   { slug: 'economics', color: '#0e9f6e' },
   { slug: 'urban', color: '#0ea5e9' },
   { slug: 'projects', color: '#3b82f6' },

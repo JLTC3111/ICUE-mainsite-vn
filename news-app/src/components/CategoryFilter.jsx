@@ -6,7 +6,7 @@ import './CategoryFilter.css'
 // Desktop: scrollable primary tabs + separate "More" control (dropdown must sit
 // outside the overflow scroll container or it gets clipped).
 const PRIMARY_SLUGS = [
-  'economics', 'urban', 'technology', 'projects', 'social', 'health', 'sport',
+  'world', 'politics', 'economics', 'urban', 'technology', 'projects', 'social', 'health',
 ]
 const OVERFLOW_SLUGS = CATEGORY_SLUGS.filter((s) => !PRIMARY_SLUGS.includes(s))
 

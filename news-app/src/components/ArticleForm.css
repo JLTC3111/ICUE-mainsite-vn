@@ -34,11 +34,25 @@
 .article-form__meta { display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
 .article-form__meta-field { flex: 0 0 auto; }
 .article-form__meta-field--author { flex: 1 1 220px; min-width: 200px; }
-.article-form__meta-field--category { flex: 1 1 100%; }
+.article-form__meta-field--category {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
 .article-form__meta-field--category .input--category {
+  width: auto;
+  min-width: 11rem;
+  max-width: 100%;
+  field-sizing: content;
   font-weight: 600;
   border-color: #cdd1c8;
-  background: var(--icue-surface-2);
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.35rem;
+  background-color: var(--icue-surface-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235b6068' d='M1.4.7 6 5.3 10.6.7 12 2.1l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 12px 8px;
 }
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 
