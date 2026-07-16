@@ -1,0 +1,18 @@
+.dia-text-reveal {
+  line-height: inherit;
+  text-decoration: inherit;
+  /* Filters and text-shadow break background-clip:text — keep the rainbow band crisp */
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.dia-text-reveal--hover {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dia-text-reveal {
+    background: none !important;
+    -webkit-text-fill-color: inherit;
+  }
+}

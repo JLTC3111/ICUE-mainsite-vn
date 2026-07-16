@@ -29,7 +29,7 @@
     "vite": "^6.3.2"
   },
   "scripts": {
-    "dev": "npm run build:home && node scripts/sync-home-dev.mjs && vite",
+    "dev": "npm run build:home && npm run build:newsroom && node scripts/sync-home-dev.mjs && vite",
     "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix home-app",
     "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && node scripts/postbuild.mjs",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",

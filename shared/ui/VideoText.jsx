@@ -1,6 +1,21 @@
 import { Children, useLayoutEffect, useMemo, useState } from 'react';
 import './video-text.css';
 
+function getVideoMimeType(src) {
+  if (src.endsWith('.webm')) return 'video/webm';
+  if (src.endsWith('.mp4')) return 'video/mp4';
+  return undefined;
+}
+
+function escapeXml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 function buildSvgMask({
   content,
   fontSize,
@@ -14,7 +29,27 @@ function buildSvgMask({
   const responsiveFontSize =
     typeof fontSize === 'number' ? `${fontSize}vw` : fontSize;
 
-  return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}' preserveAspectRatio='xMidYMid meet' width='100%' height='100%'><text x='${textX}' y='52%' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'>${content}</text></svg>`;
+  const svgAttrs = viewBox
+    ? `viewBox='${viewBox}' preserveAspectRatio='xMidYMid meet' width='100%' height='100%'`
+    : `width='100%' height='100%'`;
+
+  const x = textX ?? '50%';
+  const lines = content.split('\n');
+  const isMultiLine = lines.length > 1;
+  const y = isMultiLine ? '42%' : viewBox ? '52%' : '50%';
+
+  const textBody = isMultiLine
+    ? lines
+        .map((line, index) => {
+          const escaped = escapeXml(line);
+          return index === 0
+            ? `<tspan x='${x}' dy='0'>${escaped}</tspan>`
+            : `<tspan x='${x}' dy='1.15em'>${escaped}</tspan>`;
+        })
+        .join('')
+    : escapeXml(content);
+
+  return `<svg xmlns='http://www.w3.org/2000/svg' ${svgAttrs}><text x='${x}' y='${y}' font-size='${responsiveFontSize}' font-weight='${fontWeight}' text-anchor='${textAnchor}' dominant-baseline='${dominantBaseline}' font-family='${fontFamily}'>${textBody}</text></svg>`;
 }
 
 /**
@@ -32,10 +67,10 @@ export default function VideoText({
   fontSize = 20,
   fontWeight = 'bold',
   textAnchor = 'middle',
-  textX = '50%',
+  textX,
   dominantBaseline = 'middle',
   fontFamily = 'sans-serif',
-  viewBox = '0 0 500 120',
+  viewBox,
   as: Component = 'div',
 }) {
   const content = Children.toArray(children).join('');
@@ -70,6 +105,7 @@ export default function VideoText({
   const dataUrlMask = `url("data:image/svg+xml,${encodeURIComponent(svgMask)}")`;
 
   const maskPosition = textAnchor === 'start' ? 'left center' : 'center';
+  const videoType = getVideoMimeType(src);
 
   return (
     <Component className={['video-text', className].filter(Boolean).join(' ')}>
@@ -87,6 +123,7 @@ export default function VideoText({
         }}
       >
         <video
+          className="video-text__video"
           autoPlay={autoPlay}
           muted={muted}
           loop={loop}
@@ -96,7 +133,7 @@ export default function VideoText({
           tabIndex={-1}
           aria-hidden="true"
         >
-          <source src={src} type="video/mp4" />
+          <source src={src} {...(videoType ? { type: videoType } : {})} />
         </video>
       </div>
       <span className="video-text__sr-only">{content}</span>

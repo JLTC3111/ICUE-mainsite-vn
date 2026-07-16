@@ -572,16 +572,16 @@ window.setNavLinkContrast = (useLightLinks = false) => {
 
 const HomeBackgroundVideoManager = (() => {
   const STORAGE_KEY_ENABLED = 'home_bg_video_enabled';
-  let _enabled = false; // In-memory state
+  let _enabled = true; // In-memory state
 
   const initEnabledState = () => {
       try {
         const raw = localStorage.getItem(STORAGE_KEY_ENABLED);
-        // Default OFF when user has never set a preference.
-        if (raw === null) _enabled = false;
+        // Default ON when user has never set a preference.
+        if (raw === null) _enabled = true;
         else _enabled = (raw === '1' || raw === 'true' || raw === 'on');
       } catch (e) {
-        _enabled = false;
+        _enabled = true;
       }
   };
 

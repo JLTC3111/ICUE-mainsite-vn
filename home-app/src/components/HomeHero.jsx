@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useRainText } from '../hooks/useRainText'
 import RainbowButton from './magicui/RainbowButton'
+import HeroVideoTitle from './HeroVideoTitle'
 
 export default function HomeHero({ hero, beamRef }) {
   const subtitleRef = useRef(null)
@@ -16,7 +17,7 @@ export default function HomeHero({ hero, beamRef }) {
         <div className="home-banner">
           <RainbowButton href={hero.bannerHref}>{hero.bannerLabel}</RainbowButton>
         </div>
-        <h1 className="home-hero__title">{hero.title}</h1>
+        <HeroVideoTitle text={hero.title} />
         <p className="home-hero__subtitle" id="rainText" ref={subtitleRef}>
           {hero.subtitle}
         </p>
