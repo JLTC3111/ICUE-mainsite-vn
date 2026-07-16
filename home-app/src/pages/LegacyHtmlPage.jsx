@@ -32,7 +32,10 @@ export default function LegacyHtmlPage() {
       setHtml('')
 
       try {
-        const response = await fetch(`/legacy/pages/${file}`, { signal: controller.signal })
+        const response = await fetch(`/legacy/pages/${file}`, {
+          signal: controller.signal,
+          headers: { 'X-ICUE-Legacy-Embed': '1' },
+        })
         if (!response.ok) throw new Error(`Failed to load ${file}`)
         const raw = await response.text()
         if (cancelled) return

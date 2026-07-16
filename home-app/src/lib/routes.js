@@ -59,6 +59,9 @@ export function prepareLegacyHtml(rawHtml) {
     })
     .join('\n')
   let bodyHtml = doc.body?.innerHTML || rawHtml
+  // Scripts in injected legacy HTML are handled by pageInit modules — drop CDN fallbacks.
+  bodyHtml = bodyHtml.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+  bodyHtml = bodyHtml.replace(/<link[^>]+swiper-bundle\.min\.css[^>]*>/gi, '')
 
   const staticPage = (file) => `/src/pages/${file}.html`
 

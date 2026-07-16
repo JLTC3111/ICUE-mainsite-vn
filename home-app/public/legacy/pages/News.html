@@ -190,8 +190,11 @@ main.grid.news-cards-swiper-active {
 main.grid.news-coverflow-active {
   display: block;
   margin-top: 3%;
+  margin-bottom: 0;
   padding: 0;
   gap: 0;
+  min-height: 0;
+  height: auto;
 }
 
 .news-coverflow-wrap {
@@ -204,23 +207,34 @@ main.grid.news-coverflow-active {
   overflow: hidden;
   background: #ffffff;
   color: #16181d;
+  outline: none;
+}
+
+.news-coverflow-wrap:focus-visible {
+  box-shadow: 0 0 0 3px rgba(54, 138, 223, 0.35);
 }
 
 .news-coverflow-swiper {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: auto !important;
   padding: 12px 0 28px;
-  overflow: visible;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .news-coverflow-swiper .swiper-wrapper {
+  height: auto !important;
+  align-items: center;
   transform-style: preserve-3d;
 }
 
 .news-coverflow-swiper .swiper-slide {
   width: clamp(280px, 34vw, 420px);
+  height: auto !important;
   position: relative;
+  box-sizing: border-box;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -239,6 +253,11 @@ main.grid.news-coverflow-active {
   will-change: auto;
   display: block;
   width: 100%;
+  height: auto !important;
+  max-width: none !important;
+  position: relative;
+  border-radius: 16px;
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -251,6 +270,19 @@ main.grid.news-coverflow-active {
   pointer-events: auto;
 }
 
+.news-coverflow-swiper .swiper-slide-active .card.image-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow:
+    0 0 0 2px rgba(54, 138, 223, 0.75),
+    0 0 22px rgba(54, 138, 223, 0.42),
+    0 0 48px rgba(54, 138, 223, 0.18);
+}
+
 .news-coverflow-swiper .card-info {
   display: none;
 }
@@ -260,21 +292,35 @@ main.grid.news-coverflow-active {
   height: clamp(320px, 52vh, 520px) !important;
   object-fit: cover;
   border-radius: 16px;
-  filter: grayscale(0%) !important;
-  transition: none !important;
-  will-change: auto;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  filter: blur(2px) brightness(0.9) saturate(0.92) !important;
+  opacity: 0.78;
+  transition: filter 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease !important;
+  will-change: filter, opacity;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 .news-coverflow-swiper .swiper-slide-active .image-card img {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  filter: none !important;
+  opacity: 1;
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.22),
+    0 0 36px rgba(54, 138, 223, 0.14);
+}
+
+.news-coverflow-swiper .swiper-slide:not(.swiper-slide-active) .news-coverflow-rank {
+  opacity: 0.55;
+  transition: opacity 0.28s ease;
+}
+
+.news-coverflow-swiper .swiper-slide-active .news-coverflow-rank {
+  opacity: 1;
 }
 
 .news-coverflow-rank {
   position: absolute;
   left: 10px;
   bottom: 6px;
-  z-index: 3;
+  z-index: 4;
   font-size: clamp(4.5rem, 12vw, 7.5rem);
   font-weight: 200;
   line-height: 0.85;
@@ -858,11 +904,13 @@ main.grid.news-coverflow-active {
   const cardsState = {
     swiper: null,
     grid: null,
+    wrapEl: null,
     cards: [],
     mode: null,
     mq: null,
     infoEl: null,
     cardMeta: null,
+    onKeydown: null,
   };
 
   function readInitialIndex(count) {
@@ -909,6 +957,63 @@ main.grid.news-coverflow-active {
       infoBtn.href = meta.href;
       infoBtn.textContent = cardsState.grid?.dataset?.readLabel || 'Read article →';
     }
+  }
+
+  function refreshCoverflowLoop(swiper) {
+    if (!swiper?.params?.loop) return;
+    swiper.loopFix();
+    swiper.updateSlidesClasses();
+    swiper.updateProgress();
+    swiper.update();
+  }
+
+  function finalizeCoverflowInit(swiper, initialIndex, useLoop) {
+    if (useLoop && initialIndex > 0) swiper.slideToLoop(initialIndex, 0, false);
+    refreshCoverflowLoop(swiper);
+    updateCoverflowInfo(swiper);
+    requestAnimationFrame(() => refreshCoverflowLoop(swiper));
+  }
+
+  function isEditableTarget(target) {
+    if (!target || !(target instanceof Element)) return false;
+    return Boolean(target.closest('input, textarea, select, option, [contenteditable="true"]'));
+  }
+
+  function handleCoverflowKeydown(event) {
+    if (cardsState.mode !== 'desktop' || !cardsState.swiper || cardsState.swiper.destroyed) return;
+    if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+    if (isEditableTarget(event.target)) return;
+    const wrap = cardsState.wrapEl;
+    if (!wrap) return;
+    const rect = wrap.getBoundingClientRect();
+    if (rect.top >= window.innerHeight || rect.bottom <= 0) return;
+    const swiper = cardsState.swiper;
+    const slideCount = cardsState.cards.length;
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      swiper.slidePrev();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      swiper.slideNext();
+    } else if (event.key === 'Home' && slideCount > 0) {
+      event.preventDefault();
+      swiper.slideToLoop(0);
+    } else if (event.key === 'End' && slideCount > 0) {
+      event.preventDefault();
+      swiper.slideToLoop(slideCount - 1);
+    }
+  }
+
+  function attachCoverflowKeyboard() {
+    if (cardsState.onKeydown) return;
+    cardsState.onKeydown = handleCoverflowKeydown;
+    document.addEventListener('keydown', cardsState.onKeydown);
+  }
+
+  function detachCoverflowKeyboard() {
+    if (!cardsState.onKeydown) return;
+    document.removeEventListener('keydown', cardsState.onKeydown);
+    cardsState.onKeydown = null;
   }
 
   function enableMobileCardsSwiper() {
@@ -975,12 +1080,12 @@ main.grid.news-coverflow-active {
     cardsState.cards.forEach((card, index) => {
       const slide = document.createElement('div');
       slide.className = 'swiper-slide';
-      slide.appendChild(card);
       const rank = document.createElement('span');
       rank.className = 'news-coverflow-rank';
       rank.textContent = String(index + 1);
       rank.setAttribute('aria-hidden', 'true');
-      slide.appendChild(rank);
+      card.appendChild(rank);
+      slide.appendChild(card);
       wrapper.appendChild(slide);
     });
     const pagination = document.createElement('div');
@@ -993,14 +1098,21 @@ main.grid.news-coverflow-active {
     info.innerHTML = '<div class="news-coverflow-info__text"><h2 class="news-coverflow-info__title"></h2><p class="news-coverflow-info__meta"></p></div><a class="news-coverflow-info__btn" href="#"></a>';
     wrap.appendChild(swiperEl);
     wrap.appendChild(info);
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-roledescription', 'carousel');
+    wrap.setAttribute('aria-label', 'News articles');
+    wrap.setAttribute('tabindex', '0');
+    swiperEl.setAttribute('aria-live', 'polite');
     cardsState.grid.replaceChildren(wrap);
     cardsState.grid.classList.add('news-coverflow-active');
+    cardsState.wrapEl = wrap;
     cardsState.infoEl = info;
     cardsState.cardMeta = buildCardMeta(cardsState.cards);
 
     const slideCount = cardsState.cards.length;
     const initialIndex = readInitialIndex(slideCount);
     const useLoop = slideCount > 2;
+    const loopBuffer = useLoop ? Math.min(4, Math.max(2, slideCount - 2)) : 0;
     cardsState.swiper = new Swiper(swiperEl, {
       effect: 'coverflow',
       grabCursor: true,
@@ -1011,7 +1123,8 @@ main.grid.news-coverflow-active {
       threshold: 6,
       longSwipesMs: 260,
       loop: useLoop,
-      loopAdditionalSlides: 3,
+      loopAdditionalSlides: loopBuffer,
+      loopAddBlankSlides: true,
       watchSlidesProgress: true,
       initialSlide: useLoop ? 0 : initialIndex,
       coverflowEffect: {
@@ -1024,31 +1137,38 @@ main.grid.news-coverflow-active {
       pagination: { el: pagination, clickable: true },
       on: {
         init(swiper) {
-          if (useLoop && initialIndex > 0) swiper.slideToLoop(initialIndex, 0, false);
-          swiper.loopFix();
-          updateCoverflowInfo(swiper);
+          finalizeCoverflowInit(swiper, initialIndex, useLoop);
         },
         slideChange(swiper) {
           localStorage.setItem(STORAGE_KEY, String(activeIndex(swiper)));
         },
         slideChangeTransitionEnd(swiper) {
           updateCoverflowInfo(swiper);
+          const index = activeIndex(swiper);
+          const last = cardsState.cards.length - 1;
+          if (index === 0 || index === last) refreshCoverflowLoop(swiper);
         },
       },
     });
+    attachCoverflowKeyboard();
     cardsState.mode = 'desktop';
   }
 
   function disableDesktopCoverflow() {
     if (cardsState.mode !== 'desktop') return;
+    detachCoverflowKeyboard();
     if (cardsState.swiper) {
       cardsState.swiper.destroy(true, true);
       cardsState.swiper = null;
     }
     if (cardsState.grid && cardsState.cards.length) {
+      cardsState.cards.forEach((card) => {
+        card.querySelectorAll('.news-coverflow-rank').forEach((rank) => rank.remove());
+      });
       cardsState.grid.classList.remove('news-coverflow-active');
       cardsState.grid.replaceChildren(...cardsState.cards);
     }
+    cardsState.wrapEl = null;
     cardsState.infoEl = null;
     cardsState.cardMeta = null;
     cardsState.mode = null;

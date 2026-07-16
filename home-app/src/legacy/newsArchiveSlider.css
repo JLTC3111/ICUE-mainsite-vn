@@ -170,11 +170,25 @@
 }
 
 /* Desktop Coverflow carousel */
+/*
+ * Collapse the legacy page shell so it does not stretch to 100vh and leave a
+ * large empty band (or push the site footer far below the fold).
+ */
+.legacy-page:has(.news-coverflow-wrap),
+.legacy-page:has(main.grid.news-coverflow-active) {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-bottom: 0.5rem !important;
+}
+
 .legacy-page main.grid.news-coverflow-active {
   display: block;
   margin-top: 3%;
+  margin-bottom: 0;
   padding: 0;
   gap: 0;
+  min-height: 0;
+  height: auto;
 }
 
 .legacy-page .news-coverflow-wrap {
@@ -187,23 +201,34 @@
   overflow: hidden;
   background: #ffffff;
   color: #16181d;
+  outline: none;
+}
+
+.legacy-page .news-coverflow-wrap:focus-visible {
+  box-shadow: 0 0 0 3px rgba(54, 138, 223, 0.35);
 }
 
 .legacy-page .news-coverflow-swiper {
   position: relative;
   z-index: 1;
   width: 100%;
+  height: auto !important;
   padding: 12px 0 28px;
-  overflow: visible;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .legacy-page .news-coverflow-swiper .swiper-wrapper {
+  height: auto !important;
+  align-items: center;
   transform-style: preserve-3d;
 }
 
 .legacy-page .news-coverflow-swiper .swiper-slide {
   width: clamp(280px, 34vw, 420px);
+  height: auto !important;
   position: relative;
+  box-sizing: border-box;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -222,8 +247,11 @@
   will-change: auto;
   display: block;
   width: 100%;
+  height: auto !important;
+  max-width: none !important;
   position: relative;
   border-radius: 16px;
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -286,7 +314,7 @@
   position: absolute;
   left: 10px;
   bottom: 6px;
-  z-index: 3;
+  z-index: 4;
   font-size: clamp(4.5rem, 12vw, 7.5rem);
   font-weight: 200;
   line-height: 0.85;

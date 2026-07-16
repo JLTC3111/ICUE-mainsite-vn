@@ -24,6 +24,7 @@ const cardsState = {
   mode: null,
   mq: null,
   onMqChange: null,
+  onKeydown: null,
   generation: 0,
 }
 
@@ -97,6 +98,72 @@ function updateCoverflowInfo(swiper) {
     infoBtn.href = meta.href
     infoBtn.textContent = readLabel()
   }
+}
+
+function refreshCoverflowLoop(swiper) {
+  if (!swiper?.params?.loop) return
+  swiper.loopFix()
+  swiper.updateSlidesClasses()
+  swiper.updateProgress()
+  swiper.update()
+}
+
+function finalizeCoverflowInit(swiper, initialIndex, useLoop) {
+  if (useLoop && initialIndex > 0) {
+    swiper.slideToLoop(initialIndex, 0, false)
+  }
+  refreshCoverflowLoop(swiper)
+  updateCoverflowInfo(swiper)
+  requestAnimationFrame(() => {
+    refreshCoverflowLoop(swiper)
+  })
+}
+
+function isEditableTarget(target) {
+  if (!target || !(target instanceof Element)) return false
+  return Boolean(target.closest('input, textarea, select, option, [contenteditable="true"]'))
+}
+
+function handleCoverflowKeydown(event) {
+  if (cardsState.mode !== 'desktop' || !cardsState.swiper || cardsState.swiper.destroyed) return
+  if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return
+  if (isEditableTarget(event.target)) return
+
+  const wrap = cardsState.wrapEl
+  if (!wrap) return
+
+  const rect = wrap.getBoundingClientRect()
+  const inView = rect.top < window.innerHeight && rect.bottom > 0
+  if (!inView) return
+
+  const swiper = cardsState.swiper
+  const slideCount = cardsState.cards.length
+
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault()
+    swiper.slidePrev()
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault()
+    swiper.slideNext()
+  } else if (event.key === 'Home' && slideCount > 0) {
+    event.preventDefault()
+    swiper.slideToLoop(0)
+  } else if (event.key === 'End' && slideCount > 0) {
+    event.preventDefault()
+    swiper.slideToLoop(slideCount - 1)
+  }
+}
+
+function attachCoverflowKeyboard() {
+  if (cardsState.onKeydown) return
+  cardsState.onKeydown = handleCoverflowKeydown
+  document.addEventListener('keydown', cardsState.onKeydown)
+}
+
+function detachCoverflowKeyboard() {
+  if (!cardsState.onKeydown) return
+  document.removeEventListener('keydown', cardsState.onKeydown)
+  cardsState.onKeydown = null
 }
 
 function initLogoSwiper(generation) {
@@ -220,8 +287,8 @@ function enableDesktopCoverflow() {
   cardsState.cards.forEach((card, index) => {
     const slide = document.createElement('div')
     slide.className = 'swiper-slide'
+    card.appendChild(buildRankBadge(index))
     slide.appendChild(card)
-    slide.appendChild(buildRankBadge(index))
     wrapper.appendChild(slide)
   })
 
@@ -245,6 +312,12 @@ function enableDesktopCoverflow() {
   wrap.appendChild(swiperEl)
   wrap.appendChild(info)
 
+  wrap.setAttribute('role', 'region')
+  wrap.setAttribute('aria-roledescription', 'carousel')
+  wrap.setAttribute('aria-label', 'News articles')
+  wrap.setAttribute('tabindex', '0')
+  swiperEl.setAttribute('aria-live', 'polite')
+
   cardsState.grid.replaceChildren(wrap)
   cardsState.grid.classList.add('news-coverflow-active')
   cardsState.wrapEl = wrap
@@ -255,6 +328,7 @@ function enableDesktopCoverflow() {
   const slideCount = cardsState.cards.length
   const initialIndex = readInitialIndex(slideCount)
   const useLoop = slideCount > 2
+  const loopBuffer = useLoop ? Math.min(4, Math.max(2, slideCount - 2)) : 0
 
   cardsState.swiper = new Swiper(swiperEl, {
     modules: [EffectCoverflow, Pagination],
@@ -267,7 +341,8 @@ function enableDesktopCoverflow() {
     threshold: 6,
     longSwipesMs: 260,
     loop: useLoop,
-    loopAdditionalSlides: 3,
+    loopAdditionalSlides: loopBuffer,
+    loopAddBlankSlides: true,
     watchSlidesProgress: true,
     initialSlide: useLoop ? 0 : initialIndex,
     coverflowEffect: {
@@ -283,11 +358,7 @@ function enableDesktopCoverflow() {
     },
     on: {
       init(swiper) {
-        if (useLoop && initialIndex > 0) {
-          swiper.slideToLoop(initialIndex, 0, false)
-        }
-        swiper.loopFix()
-        updateCoverflowInfo(swiper)
+        finalizeCoverflowInit(swiper, initialIndex, useLoop)
       },
       slideChange(swiper) {
         const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
@@ -295,15 +366,23 @@ function enableDesktopCoverflow() {
       },
       slideChangeTransitionEnd(swiper) {
         updateCoverflowInfo(swiper)
+        const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
+        const last = cardsState.cards.length - 1
+        if (index === 0 || index === last) {
+          refreshCoverflowLoop(swiper)
+        }
       },
     },
   })
 
+  attachCoverflowKeyboard()
   cardsState.mode = 'desktop'
 }
 
 function disableDesktopCoverflow() {
   if (cardsState.mode !== 'desktop') return
+
+  detachCoverflowKeyboard()
 
   if (cardsState.swiper) {
     cardsState.swiper.destroy(true, true)
@@ -311,6 +390,9 @@ function disableDesktopCoverflow() {
   }
 
   if (cardsState.grid && cardsState.cards.length) {
+    cardsState.cards.forEach((card) => {
+      card.querySelectorAll('.news-coverflow-rank').forEach((rank) => rank.remove())
+    })
     cardsState.grid.classList.remove('news-coverflow-active')
     cardsState.grid.replaceChildren(...cardsState.cards)
   }

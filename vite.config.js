@@ -109,6 +109,30 @@ function homeDevFallback() {
           }
         }
 
+        // Direct browser visits to static legacy News lack nav/footer — redirect to shell.
+        // LegacyHtmlPage fetches this URL to embed body HTML; serve the file instead.
+        if (urlPath === '/legacy/pages/News.html') {
+          const wantsEmbed =
+            req.headers['x-icue-legacy-embed'] === '1' ||
+            req.headers['sec-fetch-dest'] === 'empty' ||
+            req.headers['sec-fetch-mode'] === 'cors'
+
+          if (!wantsEmbed) {
+            res.statusCode = 302
+            res.setHeader('Location', '/src/pages/News.html')
+            res.end()
+            return
+          }
+
+          const legacyPath = path.join(appDir, 'legacy/pages/News.html')
+          if (fs.existsSync(legacyPath)) {
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'text/html; charset=utf-8')
+            res.end(fs.readFileSync(legacyPath, 'utf-8'))
+            return
+          }
+        }
+
         if (hasExtension) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;
