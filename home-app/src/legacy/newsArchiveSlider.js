@@ -1,5 +1,5 @@
 import Swiper from 'swiper'
-import { Autoplay, EffectCoverflow, Pagination } from 'swiper/modules'
+import { Autoplay, EffectCoverflow, Keyboard, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
@@ -156,7 +156,7 @@ function enableMobileCardsSwiper() {
   cardsState.swiperEl = swiperEl
 
   cardsState.swiper = new Swiper(swiperEl, {
-    modules: [Pagination],
+    modules: [Pagination, Keyboard],
     slidesPerView: 1,
     spaceBetween: 20,
     speed: 280,
@@ -165,6 +165,11 @@ function enableMobileCardsSwiper() {
     grabCursor: true,
     watchOverflow: true,
     initialSlide: readInitialIndex(cardsState.cards.length),
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+      pageUpDown: false,
+    },
     pagination: {
       el: pagination,
       clickable: true,
@@ -249,7 +254,7 @@ function enableDesktopCoverflow() {
   const useLoop = slideCount > 2
 
   cardsState.swiper = new Swiper(swiperEl, {
-    modules: [EffectCoverflow, Pagination],
+    modules: [EffectCoverflow, Pagination, Keyboard],
     effect: 'coverflow',
     grabCursor: true,
     centeredSlides: true,
@@ -259,6 +264,11 @@ function enableDesktopCoverflow() {
     loopAdditionalSlides: 3,
     watchSlidesProgress: true,
     initialSlide: useLoop ? 0 : initialIndex,
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+      pageUpDown: false,
+    },
     coverflowEffect: {
       rotate: 42,
       stretch: -22,

@@ -913,6 +913,7 @@ main.grid.news-coverflow-active {
       grabCursor: true,
       watchOverflow: true,
       initialSlide: readInitialIndex(cardsState.cards.length),
+      keyboard: { enabled: true, onlyInViewport: true, pageUpDown: false },
       pagination: { el: pagination, clickable: true },
       on: {
         slideChange(swiper) {
@@ -985,6 +986,7 @@ main.grid.news-coverflow-active {
       loopAdditionalSlides: 3,
       watchSlidesProgress: true,
       initialSlide: useLoop ? 0 : initialIndex,
+      keyboard: { enabled: true, onlyInViewport: true, pageUpDown: false },
       coverflowEffect: {
         rotate: 42,
         stretch: -22,
