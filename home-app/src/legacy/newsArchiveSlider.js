@@ -18,7 +18,6 @@ const cardsState = {
   swiperEl: null,
   wrapEl: null,
   infoEl: null,
-  bgEl: null,
   grid: null,
   cards: [],
   mode: null,
@@ -68,9 +67,10 @@ function buildRankBadge(index) {
 }
 
 function updateCoverflowInfo(swiper) {
-  if (!cardsState.infoEl || !cardsState.bgEl) return
+  if (!cardsState.infoEl) return
 
-  const card = cardsState.cards[swiper.activeIndex]
+  const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
+  const card = cardsState.cards[index]
   if (!card) return
 
   const dateEl = card.querySelector('.card-info .date')
@@ -89,11 +89,6 @@ function updateCoverflowInfo(swiper) {
   if (infoBtn) {
     infoBtn.href = card.href || '#'
     infoBtn.textContent = readLabel()
-  }
-
-  const img = card.querySelector('img')
-  if (img?.src) {
-    cardsState.bgEl.style.backgroundImage = `url("${img.src}")`
   }
 }
 
@@ -209,10 +204,6 @@ function enableDesktopCoverflow() {
   const wrap = document.createElement('div')
   wrap.className = 'news-coverflow-wrap'
 
-  const bg = document.createElement('div')
-  bg.className = 'news-coverflow-bg'
-  bg.setAttribute('aria-hidden', 'true')
-
   const swiperEl = document.createElement('div')
   swiperEl.className = 'swiper news-coverflow-swiper'
 
@@ -244,7 +235,6 @@ function enableDesktopCoverflow() {
     <a class="news-coverflow-info__btn" href="#"></a>
   `
 
-  wrap.appendChild(bg)
   wrap.appendChild(swiperEl)
   wrap.appendChild(info)
 
@@ -253,9 +243,10 @@ function enableDesktopCoverflow() {
   cardsState.wrapEl = wrap
   cardsState.swiperEl = swiperEl
   cardsState.infoEl = info
-  cardsState.bgEl = bg
 
-  const initialIndex = readInitialIndex(cardsState.cards.length)
+  const slideCount = cardsState.cards.length
+  const initialIndex = readInitialIndex(slideCount)
+  const useLoop = slideCount > 2
 
   cardsState.swiper = new Swiper(swiperEl, {
     modules: [EffectCoverflow, Pagination],
@@ -264,7 +255,10 @@ function enableDesktopCoverflow() {
     centeredSlides: true,
     slidesPerView: 'auto',
     speed: 520,
-    initialSlide: initialIndex,
+    loop: useLoop,
+    loopAdditionalSlides: 3,
+    watchSlidesProgress: true,
+    initialSlide: useLoop ? 0 : initialIndex,
     coverflowEffect: {
       rotate: 42,
       stretch: -22,
@@ -278,11 +272,19 @@ function enableDesktopCoverflow() {
     },
     on: {
       init(swiper) {
+        if (useLoop && initialIndex > 0) {
+          swiper.slideToLoop(initialIndex, 0, false)
+        }
+        swiper.loopFix()
         updateCoverflowInfo(swiper)
       },
       slideChange(swiper) {
-        localStorage.setItem(STORAGE_KEY, String(swiper.activeIndex))
+        const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
+        localStorage.setItem(STORAGE_KEY, String(index))
         updateCoverflowInfo(swiper)
+      },
+      slideChangeTransitionEnd(swiper) {
+        swiper.loopFix()
       },
     },
   })
@@ -306,7 +308,6 @@ function disableDesktopCoverflow() {
   cardsState.wrapEl = null
   cardsState.swiperEl = null
   cardsState.infoEl = null
-  cardsState.bgEl = null
   cardsState.mode = null
 }
 
