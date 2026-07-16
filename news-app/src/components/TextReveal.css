@@ -30,8 +30,9 @@
 }
 
 .text-reveal__word {
-  display: inline;
-  white-space: pre-wrap;
+  /* Keep each token (incl. Vietnamese syllables) on one line — wrap only at spaces. */
+  display: inline-block;
+  white-space: nowrap;
   will-change: opacity;
 }
 

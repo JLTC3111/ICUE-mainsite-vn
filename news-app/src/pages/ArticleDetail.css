@@ -15,6 +15,10 @@
   font-size: clamp(30px, 5vw, 46px);
   font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
   display: block;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-break: auto;
+  hyphens: none;
 }
 
 html:lang(vi) .article-detail__title,
@@ -28,6 +32,10 @@ html:lang(vi) .article-detail__content {
   font-family: var(--icue-serif);
   font-size: clamp(18px, 2.6vw, 23px);
   color: var(--icue-text-soft); line-height: 1.4;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-break: auto;
+  hyphens: none;
 }
 
 .article-detail__byline { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--icue-border); border-bottom: 1px solid var(--icue-border); }
@@ -110,6 +118,17 @@ html:lang(vi) .article-detail__content {
   font-size: 20px;
   line-height: 1.78;
   color: #1f2226;
+  /* Wrap on spaces / soft breaks only — never mid-syllable (critical for vi). */
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-break: auto;
+  hyphens: none;
+}
+
+.article-detail__content :where(p, h2, h3, li, blockquote, td, th, a, span) {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 .article-detail__content > :first-child { margin-top: 0; }
 .article-detail__content p { margin: 0 0 1.4em; }

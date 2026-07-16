@@ -27,10 +27,32 @@ function cn(...classes) {
 
 function splitIntoCharacters(text) {
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
-    const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' })
-    return Array.from(segmenter.segment(text), (segment) => segment.segment)
+    // Grapheme clusters so Vietnamese base+tone marks stay one unit.
+    const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+    return Array.from(segmenter.segment(String(text ?? '')), (segment) => segment.segment)
   }
-  return Array.from(text)
+  return Array.from(String(text ?? ''))
+}
+
+/** Group graphemes into words so line wraps never split mid-word. */
+function groupCharactersIntoWords(chars) {
+  const groups = []
+  let current = []
+
+  for (const char of chars) {
+    if (/\s/.test(char)) {
+      if (current.length) {
+        groups.push({ type: 'word', chars: current })
+        current = []
+      }
+      groups.push({ type: 'space', char })
+      continue
+    }
+    current.push(char)
+  }
+
+  if (current.length) groups.push({ type: 'word', chars: current })
+  return groups
 }
 
 function getRandomInt(max) {
@@ -39,7 +61,7 @@ function getRandomInt(max) {
 
 function scrambleText(text, characterSet) {
   return splitIntoCharacters(text).map((letter) =>
-    letter === ' ' ? letter : characterSet[getRandomInt(characterSet.length)]
+    /\s/.test(letter) ? letter : characterSet[getRandomInt(characterSet.length)]
   )
 }
 
@@ -120,7 +142,7 @@ export default function HyperText({
 
       setDisplayText(
         letters.map((letter, index) =>
-          letter === ' '
+          /\s/.test(letter)
             ? letter
             : index <= iterationCount.current
               ? letter
@@ -144,6 +166,9 @@ export default function HyperText({
     }
   }, [duration, isAnimating, characterSet])
 
+  const wordGroups = groupCharactersIntoWords(displayText)
+  let charIndex = 0
+
   return (
     <MotionComponent
       ref={elementRef}
@@ -152,14 +177,36 @@ export default function HyperText({
       {...props}
     >
       <AnimatePresence>
-        {displayText.map((letter, index) => (
-          <motion.span
-            key={index}
-            className={cn('hyper-text__char', letter === ' ' && 'hyper-text__char--space')}
-          >
-            {letter}
-          </motion.span>
-        ))}
+        {wordGroups.map((group, groupIndex) => {
+          if (group.type === 'space') {
+            const index = charIndex
+            charIndex += 1
+            return (
+              <motion.span
+                key={`space-${groupIndex}-${index}`}
+                className="hyper-text__char hyper-text__char--space"
+              >
+                {group.char}
+              </motion.span>
+            )
+          }
+
+          const startIndex = charIndex
+          charIndex += group.chars.length
+
+          return (
+            <span key={`word-${groupIndex}-${startIndex}`} className="hyper-text__word">
+              {group.chars.map((letter, offset) => (
+                <motion.span
+                  key={`${startIndex + offset}`}
+                  className="hyper-text__char"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
+          )
+        })}
       </AnimatePresence>
     </MotionComponent>
   )

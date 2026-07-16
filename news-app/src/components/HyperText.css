@@ -3,6 +3,12 @@
   overflow: hidden;
 }
 
+/* Atomic wrap unit so title syllables/words never split across lines. */
+.hyper-text__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .hyper-text__char {
   display: inline-block;
 }
