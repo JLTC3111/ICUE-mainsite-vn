@@ -31,6 +31,7 @@ function NavSync() {
 
 function AppShell() {
   const { pathname } = useLocation()
+  const isHomePage = pageFromPathname(pathname) === 'Home'
 
   useEffect(() => {
     // #region agent log
@@ -70,7 +71,7 @@ function AppShell() {
         </Routes>
       </main>
       <Footer linkMode="standalone" />
-      <ContactSidebar contentKey={pathname} />
+      <ContactSidebar contentKey={pathname} musicIconColor={isHomePage ? '#0a1a3a' : undefined} />
     </>
   )
 }

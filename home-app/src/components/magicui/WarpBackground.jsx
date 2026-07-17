@@ -35,7 +35,8 @@ export default function WarpBackground({
   beamDelayMax = 3,
   beamDelayMin = 0,
   beamDuration = 3,
-  gridColor = 'rgba(10, 26, 58, 0.1)',
+  gridColor = 'rgba(10, 26, 58, 0.08)',
+  background = 'linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%)',
   ...props
 }) {
   const generateBeams = useCallback(() => {
@@ -62,6 +63,7 @@ export default function WarpBackground({
     '--warp-perspective': `${perspective}px`,
     '--warp-grid-color': gridColor,
     '--warp-beam-size': `${beamSize}%`,
+    '--warp-background': background,
   }
 
   const renderSide = (side, beams) => (

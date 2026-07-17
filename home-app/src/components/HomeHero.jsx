@@ -13,9 +13,7 @@ export default function HomeHero({ hero, beamRef }) {
   return (
     <section className="home-hero" aria-label="Home hero" ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
-        {!bgVideoEnabled ? (
-          <WarpBackground className="home-hero__warp" gridColor="rgba(10, 26, 58, 0.08)" />
-        ) : null}
+        {!bgVideoEnabled ? <WarpBackground className="home-hero__warp" /> : null}
         <div className="home-hero__overlay" />
       </div>
 

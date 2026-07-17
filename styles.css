@@ -1079,6 +1079,10 @@ h3:hover {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+[data-home-bg-video="off"] body:has(.home-hero) {
+  background-color: #f8fafc;
+}
+
 [data-home-bg-video="off"] .home-hero .video-bg {
   display: none !important;
 }

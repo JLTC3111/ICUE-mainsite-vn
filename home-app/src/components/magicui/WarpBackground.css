@@ -1,7 +1,7 @@
 .warp-background {
   position: relative;
   overflow: hidden;
-  background: #f8fafc;
+  background: var(--warp-background, linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%));
 }
 
 .warp-background__stage {
