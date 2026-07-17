@@ -1,15 +1,21 @@
 import { useRef } from 'react'
 import { useRainText } from '../hooks/useRainText'
+import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
 import RainbowButton from './magicui/RainbowButton'
 import HeroVideoTitle from './HeroVideoTitle'
+import WarpBackground from './magicui/WarpBackground'
 
 export default function HomeHero({ hero, beamRef }) {
   const subtitleRef = useRef(null)
+  const bgVideoEnabled = useHomeBackgroundVideoEnabled()
   useRainText(subtitleRef, hero.subtitle)
 
   return (
     <section className="home-hero" aria-label="Home hero" ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
+        {!bgVideoEnabled ? (
+          <WarpBackground className="home-hero__warp" gridColor="rgba(10, 26, 58, 0.08)" />
+        ) : null}
         <div className="home-hero__overlay" />
       </div>
 

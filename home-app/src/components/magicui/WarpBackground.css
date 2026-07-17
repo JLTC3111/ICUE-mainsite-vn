@@ -1,0 +1,81 @@
+.warp-background {
+  position: relative;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.warp-background__stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+  perspective: var(--warp-perspective, 100px);
+  transform-style: preserve-3d;
+  clip-path: inset(0);
+}
+
+.warp-background__side {
+  position: absolute;
+  container-type: size;
+  transform-style: preserve-3d;
+  background-image:
+    linear-gradient(var(--warp-grid-color) 0 1px, transparent 1px var(--warp-beam-size)),
+    linear-gradient(90deg, var(--warp-grid-color) 0 1px, transparent 1px var(--warp-beam-size));
+  background-size: var(--warp-beam-size) var(--warp-beam-size);
+  background-position: 50% -0.5px, 50% 50%;
+}
+
+.warp-background__side--top {
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100cqi;
+  height: 100cqmax;
+  transform-origin: 50% 0%;
+  transform: rotateX(-90deg);
+}
+
+.warp-background__side--bottom {
+  top: 100%;
+  left: 0;
+  width: 100cqi;
+  height: 100cqmax;
+  transform-origin: 50% 0%;
+  transform: rotateX(-90deg);
+}
+
+.warp-background__side--left {
+  top: 0;
+  left: 0;
+  width: 100cqh;
+  height: 100cqmax;
+  transform-origin: 0 0;
+  transform: rotate(90deg) rotateX(-90deg);
+}
+
+.warp-background__side--right {
+  top: 0;
+  right: 0;
+  width: 100cqh;
+  height: 100cqmax;
+  transform-origin: 100% 0%;
+  transform: rotate(-90deg) rotateX(-90deg);
+}
+
+.warp-background__beam {
+  position: absolute;
+  top: 0;
+  left: var(--warp-x);
+  width: var(--warp-width);
+  aspect-ratio: 1 / var(--warp-aspect-ratio);
+  background: var(--warp-beam-bg);
+}
+
+.home-hero__warp {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  border-radius: 0;
+}

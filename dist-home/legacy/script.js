@@ -363,7 +363,7 @@ const destroyHomeMobileCardObserver = () => {
 
 window.makeItRainText = () => {
   const el = document.querySelector("#rainText");
-  if (!el) return;
+  if (!el || el.closest('.about-legacy-hero')) return;
 
   const text = el.textContent.trim();
   el.textContent = "";
@@ -376,8 +376,6 @@ window.makeItRainText = () => {
     el.textContent = text;
     el.style.opacity = "1";
     el.style.visibility = "visible";
-    el.style.webkitTextFillColor = "#111111";
-    el.style.color = "#111111";
     return;
   }
 
@@ -387,8 +385,8 @@ window.makeItRainText = () => {
     span.textContent = char === " " ? "\u00A0" : char;
     span.style.display = "inline-block";
     span.style.opacity = 0;
-    span.style.color = "#111111";
-    span.style.webkitTextFillColor = "#111111";
+    span.style.color = "inherit";
+    span.style.webkitTextFillColor = "inherit";
     el.appendChild(span);
     spans.push(span);
 
@@ -916,8 +914,7 @@ const HomeBackgroundVideoManager = (() => {
 
     if (shouldKeepStatic()) {
       clearVideoSources();
-      // Static hero background is dark; keep navigation readable.
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
       return;
     }
 
@@ -1120,8 +1117,7 @@ const HomeBackgroundVideoManager = (() => {
       HomeBackgroundVideoManager.init();
     } else {
       HomeBackgroundVideoManager.destroy();
-      // Static hero background is dark; keep navigation readable.
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
     }
 
     window.dispatchEvent(new CustomEvent('icue:homeVideoEnabled', {

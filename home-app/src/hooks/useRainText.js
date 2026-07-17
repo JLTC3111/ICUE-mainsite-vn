@@ -16,8 +16,6 @@ export function useRainText(textRef, text) {
       el.textContent = text
       el.style.opacity = '1'
       el.style.visibility = 'visible'
-      el.style.color = '#ffffff'
-      el.style.webkitTextFillColor = '#ffffff'
       return undefined
     }
 

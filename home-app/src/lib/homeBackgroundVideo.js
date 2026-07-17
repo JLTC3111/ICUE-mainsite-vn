@@ -356,8 +356,7 @@ const HomeBackgroundVideoManager = (() => {
 
     if (shouldKeepStatic()) {
       clearVideoSources();
-      // Static hero background is dark; keep navigation readable.
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
       return;
     }
 
@@ -560,8 +559,7 @@ const HomeBackgroundVideoManager = (() => {
       HomeBackgroundVideoManager.init();
     } else {
       HomeBackgroundVideoManager.destroy();
-      // Static hero background is dark; keep navigation readable.
-      applyNavTheme({ prefersLightNav: true });
+      applyNavTheme({ prefersLightNav: false });
     }
 
     window.dispatchEvent(new CustomEvent('icue:homeVideoEnabled', {
