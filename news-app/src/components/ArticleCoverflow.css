@@ -210,6 +210,90 @@
   }
 }
 
+@media (max-width: 430px) {
+  .article-coverflow {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .article-coverflow__wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 16px 0 20px;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .article-coverflow__swiper {
+    padding: 4px 0 22px;
+  }
+
+  .article-coverflow__swiper .swiper-slide {
+    width: min(74vw, 292px);
+  }
+
+  .article-coverflow__img,
+  .article-coverflow__placeholder {
+    height: clamp(210px, 40vh, 340px);
+  }
+
+  .article-coverflow__swiper .swiper-slide:not(.swiper-slide-active) .article-coverflow__img,
+  .article-coverflow__swiper .swiper-slide:not(.swiper-slide-active) .article-coverflow__placeholder {
+    filter: blur(0.5px) brightness(0.94) saturate(0.96);
+    opacity: 0.92;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+  }
+
+  .article-coverflow__swiper .swiper-slide-prev .article-coverflow__img,
+  .article-coverflow__swiper .swiper-slide-next .article-coverflow__img,
+  .article-coverflow__swiper .swiper-slide-prev .article-coverflow__placeholder,
+  .article-coverflow__swiper .swiper-slide-next .article-coverflow__placeholder {
+    filter: none;
+    opacity: 0.96;
+  }
+
+  .article-coverflow__swiper .swiper-slide:not(.swiper-slide-active) .article-coverflow__rank {
+    opacity: 0.72;
+  }
+
+  .article-coverflow__info {
+    padding: 8px 16px 0;
+    gap: 12px;
+  }
+
+  .article-coverflow__title {
+    color: var(--icue-text);
+  }
+
+  .article-coverflow__meta {
+    color: var(--icue-text-soft);
+  }
+
+  .article-coverflow__swiper .swiper-pagination-bullet {
+    background: rgba(22, 24, 29, 0.18);
+  }
+
+  .article-coverflow__swiper .swiper-pagination-bullet-active {
+    background: var(--icue-text);
+  }
+
+  .article-coverflow__cta {
+    --primary: rgb(255, 255, 255);
+    border-color: #0a0a0a;
+    background: #0a0a0a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .article-coverflow__cta .shiny-button__label {
+    color: #ffffff;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .article-coverflow__img,
   .article-coverflow__placeholder {

@@ -1,3 +1,9 @@
+import {
+  SITES,
+  newsroomUrl,
+  resolveMainSiteLink,
+} from '../site-routes/mainSitePaths.js';
+
 const SITE_CONFIG = {
   vietnamese: {
     domain: 'icue.vn',
@@ -45,7 +51,7 @@ export const MIGRATED_PAGE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  News: '/newsroom/?from=vi-news',
+  News: newsroomUrl('vi'),
   newsArchive: '/src/pages/News.html',
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',
@@ -147,9 +153,26 @@ function mapPageName(pageName, fromLang, toLang) {
   return PAGE_MAPPING[pageName] || pageName;
 }
 
-function buildTargetPath(targetPageName) {
+function mainSiteBase(siteLang) {
+  return siteLang === 'vi' ? SITES.vi : SITES.en;
+}
+
+function buildTargetPath(targetPageName, targetSite) {
+  if (targetPageName === 'newsArchive') {
+    return `${mainSiteBase(targetSite.language)}/src/pages/News.html`;
+  }
+
+  const resolved = resolveMainSiteLink(
+    targetPageName,
+    targetSite.language,
+    mainSiteBase(targetSite.language),
+  );
+  if (resolved.startsWith('http')) {
+    return resolved;
+  }
+
   if (MIGRATED_PAGE_PATHS[targetPageName]) {
-    return MIGRATED_PAGE_PATHS[targetPageName];
+    return resolved;
   }
   if (STATIC_PAGES.includes(targetPageName)) {
     return `#/${targetPageName}`;
@@ -191,8 +214,10 @@ export function buildLanguageSwitchTarget() {
     targetSite.language
   );
 
-  const targetPath = buildTargetPath(targetPageName);
-  const targetUrl = `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
+  const targetPath = buildTargetPath(targetPageName, targetSite);
+  const targetUrl = targetPath.startsWith('http')
+    ? targetPath
+    : `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
 
   return {
     currentSite,

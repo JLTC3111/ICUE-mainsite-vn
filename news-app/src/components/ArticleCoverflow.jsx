@@ -7,6 +7,7 @@ import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import ArticleViewCounter from './ArticleViewCounter'
 import { ShinyButton } from './magicui/ShinyButton'
+import useMediaQuery from '../hooks/useMediaQuery'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
@@ -34,6 +35,7 @@ export default function ArticleCoverflow({ articles, reduceMotion = false }) {
   const navigate = useNavigate()
   const swiperRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  const isMobileCoverflow = useMediaQuery('(max-width: 430px)')
 
   const items = useMemo(
     () =>
@@ -106,19 +108,28 @@ export default function ArticleCoverflow({ articles, reduceMotion = false }) {
         resistanceRatio: 0.72,
         threshold: 6,
         longSwipesMs: 260,
-        coverflowEffect: {
-          rotate: 38,
-          stretch: -18,
-          depth: 140,
-          modifier: 1.05,
-          slideShadows: false,
-        },
+        coverflowEffect: isMobileCoverflow
+          ? {
+              rotate: 56,
+              stretch: 4,
+              depth: 200,
+              modifier: 1.2,
+              slideShadows: false,
+            }
+          : {
+              rotate: 38,
+              stretch: -18,
+              depth: 140,
+              modifier: 1.05,
+              slideShadows: false,
+            },
       }
 
   return (
     <section className="article-coverflow" aria-label={t('gallery.coverflowAriaLabel')}>
       <div className="article-coverflow__wrap">
         <Swiper
+          key={isMobileCoverflow ? 'coverflow-mobile' : 'coverflow-default'}
           className="article-coverflow__swiper"
           modules={reduceMotion ? [Pagination] : [EffectCoverflow, Pagination]}
           grabCursor

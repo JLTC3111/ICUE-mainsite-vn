@@ -108,7 +108,7 @@ export default function NewsGrid() {
         <CategoryFilter value={activeCat} onChange={setActiveCat} />
       )}
 
-      <div className="icue-container">
+      <div className={`icue-container${isCompactLayout ? ' icue-container--compact-gallery' : ''}`}>
         {state === 'loading' && (
           <div className="news-gallery-skeleton" aria-hidden />
         )}

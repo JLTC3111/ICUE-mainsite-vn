@@ -1,4 +1,4 @@
-import { resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+import { newsroomUrl, resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
   vi: 'https://icue.vn',
@@ -91,7 +91,7 @@ export function structureSiteLink(path = '') {
 }
 
 export function newsroomLink(siteLang) {
-  return siteLang === 'vi' ? '/newsroom/?from=vi-news' : '/newsroom/?from=en-news'
+  return newsroomUrl(siteLang)
 }
 
 export function cleanSiteParams() {

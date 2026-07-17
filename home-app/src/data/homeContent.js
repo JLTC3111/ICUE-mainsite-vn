@@ -1,9 +1,10 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
+import { newsroomUrl } from '../../../shared/site-routes/mainSitePaths.js'
 
 export const HERO = {
   bannerLabel: 'Tin tức mới nhất',
-  bannerHref: '/newsroom/?from=vi-news',
+  bannerHref: newsroomUrl('vi'),
   title: 'Viện Nghiên Cứu Kinh Tế, Xây Dựng và Đô Thị',
   subtitle:
     'Sáng kiến cộng đồng và các giải pháp thực tiễn vì một tương lai tốt đẹp hơn.',
@@ -96,7 +97,7 @@ export const HOME_SECTIONS = [
     title: 'Tin tức mới nhất',
     description: 'Thông báo, sự kiện và góc nhìn từ iCUE Vietnam.',
     linkLabel: 'Đọc tất cả tin tức →',
-    linkHref: '/newsroom/?from=vi-news',
+    linkHref: newsroomUrl('vi'),
     cards: [
       {
         image: '/news/articles/Card_1.jpg',

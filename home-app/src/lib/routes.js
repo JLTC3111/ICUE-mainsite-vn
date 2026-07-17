@@ -1,4 +1,6 @@
 /** Path routes for migrated main-site pages. */
+import { newsroomUrl } from '../../../shared/site-routes/mainSitePaths.js'
+
 export const ROUTE_PATHS = {
   home: '/',
   contact: '/contact',
@@ -94,7 +96,7 @@ export function prepareLegacyHtml(rawHtml) {
     '#/ourWork': ROUTE_PATHS.ourWork,
     '#/pastProjects': ROUTE_PATHS.pastProjects,
     '#/recruitment': ROUTE_PATHS.recruitment,
-    '#/News': '/newsroom/?from=vi-news',
+    '#/News': newsroomUrl('vi'),
     '#/orgStructure': '/structure/',
     '#/notableAwards': ROUTE_PATHS.notableAwards,
     '#/communityActivities': ROUTE_PATHS.communityActivities,
@@ -125,6 +127,10 @@ export function prepareLegacyHtml(rawHtml) {
     bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${route}"`)
     bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${route}'`)
   }
+
+  // Newsroom lives on icue.vn only — rewrite relative links for en.icue.vn visitors.
+  bodyHtml = bodyHtml.replace(/href="(\/newsroom\/[^"]*)"/g, `href="https://icue.vn$1"`)
+  bodyHtml = bodyHtml.replace(/href='(\/newsroom\/[^']*)'/g, `href='https://icue.vn$1'`)
 
   return `${styles}${bodyHtml}`
 }
