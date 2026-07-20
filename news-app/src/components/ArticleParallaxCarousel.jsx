@@ -64,6 +64,8 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
     align: 'center',
     containScroll: false,
     startIndex: readInitialIndex(slideCount),
+    duration: reduceMotion ? 0 : 18,
+    dragThreshold: 5,
   })
 
   const activeItem = items[selectedIndex] ?? items[0]
@@ -110,6 +112,7 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
       tweenNodesRef,
       tweenFactorRef,
       enabled: true,
+      tweenFactorBase: 0.52,
     })
   }, [emblaApi, useParallax])
 

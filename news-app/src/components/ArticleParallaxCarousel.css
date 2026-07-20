@@ -35,7 +35,6 @@
   flex: 0 0 min(74vw, 292px);
   min-width: 0;
   padding-left: 12px;
-  transition: opacity 0.28s ease;
 }
 
 .article-parallax__card {
@@ -62,17 +61,18 @@
   justify-content: center;
   height: clamp(210px, 40vh, 340px);
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .article-parallax__img,
 .article-parallax__placeholder {
-  flex: 0 0 calc(118% + 2rem);
-  width: calc(118% + 2rem);
+  flex: 0 0 calc(148% + 2.5rem);
+  width: calc(148% + 2.5rem);
   max-width: none;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
-  transition: filter 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease;
+  transition: filter 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
   filter: blur(0.5px) brightness(0.94) saturate(0.96);
   opacity: 0.92;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
@@ -234,6 +234,12 @@
 
   .article-parallax__layer {
     height: clamp(280px, 44vh, 420px);
+  }
+
+  .article-parallax__img,
+  .article-parallax__placeholder {
+    flex-basis: calc(142% + 2.5rem);
+    width: calc(142% + 2.5rem);
   }
 
   .article-parallax__info {
