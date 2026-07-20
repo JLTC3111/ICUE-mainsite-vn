@@ -78,8 +78,8 @@ export default function NewsGrid() {
       <header className="news-hero">
         <RetroGrid
           className="news-hero__grid"
-          lineColor="rgba(255, 255, 255, 0.2)"
-          opacity={0.5}
+          lineColor="rgba(255, 255, 255, 0.38)"
+          opacity={0.78}
           reduceMotion={reduceMotion}
         />
         <div className="icue-container news-hero__inner">

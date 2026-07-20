@@ -62,7 +62,7 @@
 .media-gallery__item--lens:hover img { transform: none; }
 
 .media-gallery__item--lens {
-  cursor: zoom-in;
+  cursor: none;
 }
 
 .media-gallery__lens {

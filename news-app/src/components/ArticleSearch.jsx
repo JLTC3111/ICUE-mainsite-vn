@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import DevIcon218 from './icons/DevIcon218'
 import './ArticleSearch.css'
 
 export default function ArticleSearch() {
@@ -69,10 +70,7 @@ export default function ArticleSearch() {
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="M20 20l-3.5-3.5" strokeLinecap="round" />
-        </svg>
+        <DevIcon218 />
       </button>
 
       {open && (

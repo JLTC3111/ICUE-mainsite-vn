@@ -194,6 +194,11 @@
   },
   "gallery": {
     "ariaLabel": "Danh sách bài viết. Duyệt lưới bento và nhấp vào bài để mở.",
+    "bentoCarouselAriaLabel": "Lưới bento bài viết. Cuộn dọc để xem thêm bài.",
+    "bentoPrevSlide": "Trang bento trước",
+    "bentoNextSlide": "Trang bento sau",
+    "bentoSlideNav": "Các trang lưới bento",
+    "bentoGoToSlide": "Đến trang bento {{n}}",
     "coverflowAriaLabel": "Carousel bài viết. Vuốt để xem và nhấn để đọc.",
     "hint": "Nhấp vào bài để đọc",
     "readArticle": "Đọc bài"

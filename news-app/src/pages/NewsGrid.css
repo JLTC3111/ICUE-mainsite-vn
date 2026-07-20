@@ -11,6 +11,15 @@
   z-index: 0;
 }
 
+.news-hero__grid .retro-grid__fade {
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.72) 0%,
+    rgba(10, 10, 10, 0.18) 42%,
+    transparent 78%
+  );
+}
+
 .news-hero__inner {
   position: relative;
   z-index: 1;

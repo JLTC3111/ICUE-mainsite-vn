@@ -194,6 +194,11 @@
   },
   "gallery": {
     "ariaLabel": "News articles. Browse the bento grid and click an article to open it.",
+    "bentoCarouselAriaLabel": "News bento gallery. Scroll vertically for more articles.",
+    "bentoPrevSlide": "Previous bento page",
+    "bentoNextSlide": "Next bento page",
+    "bentoSlideNav": "Bento gallery pages",
+    "bentoGoToSlide": "Go to bento page {{n}}",
     "coverflowAriaLabel": "News articles carousel. Swipe through stories and tap to read.",
     "hint": "Click an article to read",
     "readArticle": "Read article"

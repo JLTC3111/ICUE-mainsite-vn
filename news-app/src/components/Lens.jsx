@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { ZoomIn } from 'lucide-react'
 import { AnimatePresence, motion, useMotionTemplate } from 'motion/react'
 import './Lens.css'
 
@@ -91,6 +92,15 @@ export default function Lens({
       tabIndex={-1}
     >
       {children}
+      {!disabled && isHovering && (
+        <span
+          className="lens__indicator"
+          aria-hidden
+          style={{ left: x, top: y }}
+        >
+          <ZoomIn size={22} strokeWidth={2} />
+        </span>
+      )}
       {isStatic || defaultPosition ? (
         lensContent
       ) : (

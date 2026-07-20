@@ -119,9 +119,11 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
               >
                 <img src={img.url} alt="" loading="lazy" decoding="async" />
               </Lens>
-              <span className="media-gallery__zoom" aria-hidden>
-                <Maximize2 size={15} strokeWidth={2} />
-              </span>
+              {!lensEnabled && (
+                <span className="media-gallery__zoom" aria-hidden>
+                  <Maximize2 size={15} strokeWidth={2} />
+                </span>
+              )}
             </button>
           ))}
         </div>
