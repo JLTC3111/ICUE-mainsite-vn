@@ -201,8 +201,7 @@
     "bentoPageIndicator": "Trang bento {{current}} / {{total}}",
     "bentoGoToSlide": "Đến trang bento {{n}}",
     "coverflowAriaLabel": "Carousel bài viết. Vuốt để xem và nhấn để đọc.",
-    "iosPickerAriaLabel": "Bộ chọn bài viết. Cuộn để xem và nhấn để đọc.",
-    "iosPickerHint": "Vuốt dọc để duyệt bài viết",
+    "parallaxGoToSlide": "Đến bài viết {{index}}",
     "hint": "Nhấp vào bài để đọc",
     "readArticle": "Đọc bài"
   },

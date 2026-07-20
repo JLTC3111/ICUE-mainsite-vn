@@ -21,11 +21,13 @@ export default function BentoYCarousel({
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const sectionRef = useRef(null)
+  const useLoop = slides.length > 2 && !reduceMotion
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: 'y',
     align: 'start',
-    containScroll: 'trimSnaps',
+    loop: useLoop,
+    containScroll: useLoop ? false : 'trimSnaps',
     watchResize: true,
     watchSlides: true,
     duration: reduceMotion ? 0 : 24,
@@ -73,7 +75,7 @@ export default function BentoYCarousel({
       const index = emblaApi.selectedScrollSnap()
       const atStart = index <= 0
       const atEnd = index >= slides.length - 1
-      const canGo = goingDown ? !atEnd : !atStart
+      const canGo = useLoop || (goingDown ? !atEnd : !atStart)
 
       if (!canGo) return
 
@@ -85,17 +87,16 @@ export default function BentoYCarousel({
 
     section.addEventListener('wheel', onWheel, { passive: false })
     return () => section.removeEventListener('wheel', onWheel)
-  }, [emblaApi, slides.length])
+  }, [emblaApi, slides.length, useLoop])
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
   const scrollTo = useCallback((index) => emblaApi?.scrollTo(index), [emblaApi])
 
-  const canScrollPrev = selectedIndex > 0
-  const canScrollNext = selectedIndex < slides.length - 1
+  const canScrollPrev = useLoop || selectedIndex > 0
+  const canScrollNext = useLoop || selectedIndex < slides.length - 1
   const currentPage = selectedIndex + 1
   const totalPages = slides.length
-  const showPageFraction = totalPages > 1
 
   return (
     <section
@@ -158,12 +159,6 @@ export default function BentoYCarousel({
               spring={SLOW_SPRING}
               reduceMotion={reduceMotion}
             />
-            {showPageFraction && (
-              <>
-                <span className="bento-y-carousel__page-sep" aria-hidden>/</span>
-                <span className="bento-y-carousel__page-total">{totalPages}</span>
-              </>
-            )}
           </div>
 
           <div className="bento-y-carousel__dots" role="tablist" aria-label={t('gallery.bentoSlideNav')}>

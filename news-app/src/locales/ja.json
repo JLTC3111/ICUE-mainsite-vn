@@ -195,8 +195,7 @@
   "gallery": {
     "ariaLabel": "ニュース記事。ベントグリッドを閲覧し、記事をクリックして開きます。",
     "coverflowAriaLabel": "記事カルーセル。スワイプして記事を選び、タップして読みます。",
-    "iosPickerAriaLabel": "記事ピッカー。スクロールして記事を選び、タップして読みます。",
-    "iosPickerHint": "縦にスワイプして記事を閲覧",
+    "parallaxGoToSlide": "記事 {{index}} へ移動",
     "hint": "記事をクリックして読む",
     "readArticle": "記事を読む"
   },

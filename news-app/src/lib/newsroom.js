@@ -7,7 +7,7 @@ export const NEWSROOM_INITIAL_VISIBLE = 18
 /** How many additional articles each "Load more" reveals. */
 export const NEWSROOM_LOAD_MORE_STEP = 12
 
-/** Mobile/tablet breakpoint — coverflow carousel below this width; bento grid above. */
+/** Mobile + tablet breakpoint — horizontal parallax carousel below this width; bento grid above. */
 export const NEWSROOM_COMPACT_QUERY = '(max-width: 1024px)'
 
 /** Desktop bento vertical carousel — first page size and min-width gate. */

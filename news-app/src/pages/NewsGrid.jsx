@@ -5,7 +5,7 @@ import RotatingText from '../components/RotatingText'
 import RetroGrid from '../components/RetroGrid'
 import AnimatedShinyText from '../components/AnimatedShinyText'
 import ArticleMasonry from '../components/ArticleMasonry'
-import ArticleIosPicker from '../components/ArticleIosPicker'
+import ArticleParallaxCarousel from '../components/ArticleParallaxCarousel'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
 import useMediaQuery from '../hooks/useMediaQuery'
@@ -120,7 +120,7 @@ export default function NewsGrid() {
 
         {state === 'ready' && visibleArticles.length > 0 && (
           isCompactLayout ? (
-            <ArticleIosPicker articles={visibleArticles} reduceMotion={reduceMotion} />
+            <ArticleParallaxCarousel articles={visibleArticles} reduceMotion={reduceMotion} />
           ) : (
             <ArticleMasonry articles={visibleArticles} reduceMotion={reduceMotion} />
           )

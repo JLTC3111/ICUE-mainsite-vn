@@ -195,8 +195,7 @@
   "gallery": {
     "ariaLabel": "Nachrichtenartikel. Durchsuchen Sie das Bento-Raster und klicken Sie auf einen Artikel, um ihn zu öffnen.",
     "coverflowAriaLabel": "Nachrichten-Karussell. Wischen Sie durch die Artikel und tippen Sie zum Lesen.",
-    "iosPickerAriaLabel": "Nachrichten-Artikel-Picker. Scrollen Sie durch die Artikel und tippen Sie zum Lesen.",
-    "iosPickerHint": "Vertikal wischen, um Artikel zu durchsuchen",
+    "parallaxGoToSlide": "Zu Artikel {{index}}",
     "hint": "Artikel anklicken zum Lesen",
     "readArticle": "Artikel lesen"
   },
