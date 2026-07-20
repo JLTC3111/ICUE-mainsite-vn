@@ -2,7 +2,7 @@ import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
-import { useAdaptiveIconColor } from './useAdaptiveIconColor'
+import { useMusicBarColor } from './useMusicBarColor'
 import './ContactSidebar.css'
 
 function CalendarSvg({ month, day, time }) {
@@ -92,8 +92,8 @@ function MessengerIcon() {
 function ContactSidebar({ musicIconColor, contentKey = '' }) {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
-  const adaptiveColor = useAdaptiveIconColor(musicRef, musicIconColor == null, contentKey)
-  const musicColor = musicIconColor ?? adaptiveColor
+  const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null, contentKey)
+  const musicColor = musicIconColor ?? sampledMusicColor
   const { month, day, time } = useCalendarClock()
   const [calendarOpen, setCalendarOpen] = useState(false)
 

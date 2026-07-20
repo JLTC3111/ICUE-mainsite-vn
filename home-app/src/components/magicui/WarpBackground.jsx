@@ -81,7 +81,12 @@ export default function WarpBackground({
   )
 
   return (
-    <div className={`warp-background ${className}`.trim()} {...props}>
+    <div
+      className={`warp-background ${className}`.trim()}
+      style={{ '--warp-background': background }}
+      data-warp-background={background}
+      {...props}
+    >
       <div className="warp-background__stage" style={stageStyle}>
         {renderSide('top', topBeams)}
         {renderSide('bottom', bottomBeams)}

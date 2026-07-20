@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import ContactSidebar from '@icue/contact-sidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
 import Header from './Header'
@@ -5,6 +6,8 @@ import Footer from './Footer'
 import './PageShell.css'
 
 export default function PageShell({ children }) {
+  const { pathname } = useLocation()
+
   return (
     <InteractiveBackgroundProvider active={false}>
       <div className="page-shell">
@@ -13,7 +16,7 @@ export default function PageShell({ children }) {
         <div className="page-shell__site-footer">
           <Footer />
         </div>
-        <ContactSidebar />
+        <ContactSidebar contentKey={pathname} />
       </div>
     </InteractiveBackgroundProvider>
   )

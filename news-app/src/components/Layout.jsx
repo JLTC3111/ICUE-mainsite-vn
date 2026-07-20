@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
 import Footer from './Footer'
@@ -7,6 +7,8 @@ import MarketTicker from './MarketTicker'
 import VnMarketTicker from './VnMarketTicker'
 
 function Layout() {
+  const { pathname } = useLocation()
+
   return (
     <div className="icue-app">
       <Header />
@@ -16,7 +18,7 @@ function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <ContactSidebar />
+      <ContactSidebar contentKey={pathname} />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ContactSidebar from '@icue/contact-sidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
@@ -18,6 +18,7 @@ export default function PageShell({
   onBackgroundToggle,
 }) {
   const { t } = useTranslation()
+  const { pathname } = useLocation()
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled
 
   return (
@@ -91,7 +92,10 @@ export default function PageShell({
           <Footer />
         </div>
 
-        <ContactSidebar musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'} />
+        <ContactSidebar
+          contentKey={pathname}
+          musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'}
+        />
       </div>
     </InteractiveBackgroundProvider>
   )
