@@ -201,6 +201,8 @@
     "bentoPageIndicator": "Bento page {{current}} of {{total}}",
     "bentoGoToSlide": "Go to bento page {{n}}",
     "coverflowAriaLabel": "News articles carousel. Swipe through stories and tap to read.",
+    "iosPickerAriaLabel": "News articles picker. Scroll through stories and tap to read.",
+    "iosPickerHint": "Swipe vertically to browse articles",
     "hint": "Click an article to read",
     "readArticle": "Read article"
   },

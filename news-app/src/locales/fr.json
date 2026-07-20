@@ -195,6 +195,8 @@
   "gallery": {
     "ariaLabel": "Articles. Parcourez la grille bento et cliquez sur un article pour l'ouvrir.",
     "coverflowAriaLabel": "Carrousel d'articles. Faites défiler et appuyez pour lire.",
+    "iosPickerAriaLabel": "Sélecteur d'articles. Faites défiler et appuyez pour lire.",
+    "iosPickerHint": "Glissez verticalement pour parcourir les articles",
     "hint": "Cliquez sur un article pour lire",
     "readArticle": "Lire l'article"
   },

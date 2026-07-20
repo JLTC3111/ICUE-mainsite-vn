@@ -125,19 +125,19 @@ export default function BentoYCarousel({
           <div className="bento-y-carousel__nav">
             <button
               type="button"
-              className={`bento-y-carousel__nav-btn${canScrollPrev ? ' is-enabled' : ''}`}
-              onClick={scrollPrev}
-              disabled={!canScrollPrev}
-              aria-label={t('gallery.bentoPrevSlide')}
+              className={`bento-y-carousel__nav-btn${canScrollNext ? ' is-enabled' : ''}`}
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              aria-label={t('gallery.bentoNextSlide')}
             >
               <ChevronUp className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>
             <button
               type="button"
-              className={`bento-y-carousel__nav-btn${canScrollNext ? ' is-enabled' : ''}`}
-              onClick={scrollNext}
-              disabled={!canScrollNext}
-              aria-label={t('gallery.bentoNextSlide')}
+              className={`bento-y-carousel__nav-btn${canScrollPrev ? ' is-enabled' : ''}`}
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              aria-label={t('gallery.bentoPrevSlide')}
             >
               <ChevronDown className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>

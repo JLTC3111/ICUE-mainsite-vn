@@ -195,6 +195,8 @@
   "gallery": {
     "ariaLabel": "뉴스 기사. 벤토 그리드를 탐색하고 기사를 클릭하여 엽니다.",
     "coverflowAriaLabel": "기사 캐러셀. 스와이프하여 탐색하고 탭하여 읽습니다.",
+    "iosPickerAriaLabel": "기사 선택기. 스크롤하여 탐색하고 탭하여 읽습니다.",
+    "iosPickerHint": "세로로 스와이프하여 기사 탐색",
     "hint": "기사를 클릭하여 읽기",
     "readArticle": "기사 읽기"
   },
