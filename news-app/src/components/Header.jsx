@@ -1,5 +1,5 @@
 import { memo, useState, useCallback } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
@@ -7,9 +7,12 @@ import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
+import NewsroomThemeToggle from './NewsroomThemeToggle'
 import './Header.css'
 
 function Header() {
+  const { pathname } = useLocation()
+  const isNewsHome = pathname === '/'
   const { t } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, signOut } = useAuth()
@@ -58,6 +61,9 @@ function Header() {
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
+          {isNewsHome && (
+            <NewsroomThemeToggle className="newsroom-theme-toggle--header icue-header__theme-toggle" />
+          )}
           <a href={base} className="icue-header__link" onClick={close}>
             {t('nav.mainSite')}
           </a>

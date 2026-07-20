@@ -85,6 +85,12 @@
     "by": "by",
     "minRead": "min read"
   },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchToDark": "Switch to dark newsroom",
+    "switchToLight": "Switch to light newsroom"
+  },
   "editor": {
     "writeTitle": "Create Article",
     "editTitle": "Edit Article",

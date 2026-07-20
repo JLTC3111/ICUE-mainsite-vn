@@ -85,6 +85,12 @@
     "by": "bởi",
     "minRead": "phút đọc"
   },
+  "theme": {
+    "dark": "Tối",
+    "light": "Sáng",
+    "switchToDark": "Chuyển sang giao diện tối",
+    "switchToLight": "Chuyển sang giao diện sáng"
+  },
   "editor": {
     "writeTitle": "Tạo Bài Viết",
     "editTitle": "Chỉnh Sửa Bài Viết",

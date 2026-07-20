@@ -85,6 +85,12 @@
     "by": "投稿者",
     "minRead": "分で読了"
   },
+  "theme": {
+    "dark": "ダーク",
+    "light": "ライト",
+    "switchToDark": "ダークニュースルームに切り替え",
+    "switchToLight": "ライトニュースルームに切り替え"
+  },
   "editor": {
     "writeTitle": "記事を作成",
     "editTitle": "記事を編集",

@@ -8,7 +8,9 @@ import ArticleMasonry from '../components/ArticleMasonry'
 import ArticleParallaxCarousel from '../components/ArticleParallaxCarousel'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
+import NewsroomThemeToggle from '../components/NewsroomThemeToggle'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { fetchPublishedArticles } from '../lib/articles'
 import { isCategory } from '../lib/categories'
 import {
@@ -32,6 +34,7 @@ export default function NewsGrid() {
   const [activeCat, setActiveCat] = useState(NEWSROOM_DEFAULT_CATEGORY)
   const [visibleCount, setVisibleCount] = useState(NEWSROOM_INITIAL_VISIBLE)
   const isCompactLayout = useMediaQuery(NEWSROOM_COMPACT_QUERY)
+  const { isDark } = useNewsroomTheme()
 
   useEffect(() => {
     let active = true
@@ -74,7 +77,7 @@ export default function NewsGrid() {
   const hasMoreArticles = filtered.length > visibleArticles.length
 
   return (
-    <div className="news-page">
+    <div className={`news-page${isDark ? ' news-page--dark' : ''}`}>
       <header className="news-hero">
         <RetroGrid
           className="news-hero__grid"
@@ -100,7 +103,10 @@ export default function NewsGrid() {
             </h1>
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
-          <SocialGooeyNav reduceMotion={reduceMotion} />
+          <div className="news-hero__actions">
+            <NewsroomThemeToggle className="news-hero__theme-toggle" />
+            <SocialGooeyNav reduceMotion={reduceMotion} />
+          </div>
         </div>
       </header>
 
@@ -108,7 +114,11 @@ export default function NewsGrid() {
         <CategoryFilter value={activeCat} onChange={setActiveCat} />
       )}
 
-      <div className={`icue-container${isCompactLayout ? ' icue-container--compact-gallery' : ''}`}>
+      <div
+        className={`icue-container${
+          isCompactLayout ? ' icue-container--compact-gallery' : ' icue-container--bento-gallery'
+        }`}
+      >
         {state === 'loading' && (
           <div className="news-gallery-skeleton" aria-hidden />
         )}

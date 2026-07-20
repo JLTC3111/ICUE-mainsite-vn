@@ -69,3 +69,25 @@
   .market-ticker__inner { gap: 14px; }
   .market-ticker__item + .market-ticker__item { padding-left: 14px; }
 }
+
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker {
+  background: rgba(14, 14, 14, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker__name {
+  color: #e7e8e4;
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker__price {
+  color: #9aa0a6;
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker__item + .market-ticker__item {
+  border-left-color: rgba(255, 255, 255, 0.1);
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker__loading,
+.icue-app--news-home.icue-app--news-theme-dark .market-ticker--error .market-ticker__loading {
+  color: #8c929c;
+}

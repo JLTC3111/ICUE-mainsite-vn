@@ -1,0 +1,25 @@
+.magic-globe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.magic-globe__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  contain: layout paint size;
+}
+
+.magic-globe--interactive {
+  pointer-events: auto;
+}
+
+.magic-globe--interactive .magic-globe__canvas {
+  cursor: grab;
+}

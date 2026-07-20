@@ -108,7 +108,7 @@
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--icue-border);
-  background: var(--icue-surface);
+  background: var(--icue-surface-2);
   font-size: 0.95rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -183,4 +183,43 @@
   .bento-y-carousel__dots {
     justify-self: end;
   }
+}
+
+.news-page.news-page--dark .bento-y-carousel__frame {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.42);
+}
+
+.news-page.news-page--dark .bento-y-carousel__page {
+  border-color: #16181d;
+  background: #16181d;
+  color: #fff;
+}
+
+.news-page.news-page--dark .bento-y-carousel__page-current {
+  color: #fff;
+}
+
+.news-page.news-page--dark .bento-y-carousel__nav-btn {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.news-page.news-page--dark .bento-y-carousel__nav-btn:hover:not(:disabled) {
+  border-color: #fff;
+  background: #fff;
+  color: #16181d;
+}
+
+.news-page.news-page--dark .bento-y-carousel__dot {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.news-page.news-page--dark .bento-y-carousel__dot:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.news-page.news-page--dark .bento-y-carousel__dot.is-active:hover {
+  background: var(--bento-y-dot-active);
 }

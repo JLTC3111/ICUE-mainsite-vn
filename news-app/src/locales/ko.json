@@ -85,6 +85,12 @@
     "by": "작성",
     "minRead": "분 소요"
   },
+  "theme": {
+    "dark": "다크",
+    "light": "라이트",
+    "switchToDark": "다크 뉴스룸으로 전환",
+    "switchToLight": "라이트 뉴스룸으로 전환"
+  },
   "editor": {
     "writeTitle": "기사 작성",
     "editTitle": "기사 편집",

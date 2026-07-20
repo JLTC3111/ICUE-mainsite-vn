@@ -185,3 +185,73 @@
 @media (min-width: 721px) {
   .section-nav__mobile { display: none; }
 }
+
+/* Dark newsroom home --------------------------------------------------- */
+.news-page.news-page--dark .section-nav {
+  margin: 0 0 24px;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.news-page.news-page--dark .section-nav__item {
+  color: #9aa0a6;
+}
+
+.news-page.news-page--dark .section-nav__item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom-color: var(--icue-nav-hover-line);
+}
+
+.news-page.news-page--dark .section-nav__item.is-active {
+  color: #fff;
+  border-bottom-color: var(--icue-blue-2);
+}
+
+.news-page.news-page--dark .section-nav__item.is-active:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.news-page.news-page--dark .section-nav__more-wrap {
+  border-left-color: rgba(255, 255, 255, 0.1);
+}
+
+.news-page.news-page--dark .section-nav__menu {
+  background: #16181d;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.news-page.news-page--dark .section-nav__menu-item {
+  color: #e7e8e4;
+}
+
+.news-page.news-page--dark .section-nav__menu-item:hover,
+.news-page.news-page--dark .section-nav__menu-item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.news-page.news-page--dark .section-nav__select {
+  background:
+    linear-gradient(#141414, #141414) padding-box,
+    var(--icue-gradient-pill) border-box;
+  color: #fff;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23aab0b6' d='M1.4.7 6 5.3 10.6.7 12 2.1l-6 6-6-6z'/%3E%3C/svg%3E"),
+    linear-gradient(#141414, #141414),
+    var(--icue-gradient-pill);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-origin: padding-box, padding-box, border-box;
+  background-clip: padding-box, padding-box, border-box;
+  background-position: right 14px center, 0 0, 0 0;
+}
+
+@media (max-width: 720px) {
+  .news-page.news-page--dark .section-nav {
+    margin-top: 0;
+  }
+}

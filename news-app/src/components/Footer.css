@@ -5,6 +5,11 @@
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.icue-app--news-home.icue-app--news-theme-dark .icue-footer {
+  margin-top: 0;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
 .icue-footer__container {
   max-width: var(--icue-maxw);
   margin: 0 auto;

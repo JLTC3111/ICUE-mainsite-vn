@@ -7,6 +7,7 @@ import './styles/theme.css'
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
+import { NewsroomThemeProvider } from './context/NewsroomThemeContext'
 
 // Strip entry hints after i18n + detectEntrySite have read them.
 cleanSiteParams()
@@ -17,7 +18,9 @@ async function bootstrap() {
   createRoot(document.getElementById('root')).render(
     <StrictMode>
       <AuthProvider>
-        <App />
+        <NewsroomThemeProvider>
+          <App />
+        </NewsroomThemeProvider>
       </AuthProvider>
     </StrictMode>,
   )
