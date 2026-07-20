@@ -198,6 +198,7 @@
     "bentoPrevSlide": "Trang bento trước",
     "bentoNextSlide": "Trang bento sau",
     "bentoSlideNav": "Các trang lưới bento",
+    "bentoPageIndicator": "Trang bento {{current}} / {{total}}",
     "bentoGoToSlide": "Đến trang bento {{n}}",
     "coverflowAriaLabel": "Carousel bài viết. Vuốt để xem và nhấn để đọc.",
     "hint": "Nhấp vào bài để đọc",

@@ -44,9 +44,9 @@
 }
 
 .bento-y-carousel__controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   margin-top: 14px;
   padding: 0 4px;
@@ -76,7 +76,14 @@
     border-color 0.18s ease,
     color 0.18s ease,
     background 0.18s ease,
-    opacity 0.18s ease;
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.bento-y-carousel__nav-btn.is-enabled {
+  border-color: #16181d;
+  background: #16181d;
+  color: #fff;
 }
 
 .bento-y-carousel__nav-icon {
@@ -85,20 +92,45 @@
   flex-shrink: 0;
 }
 
-.bento-y-carousel__nav-btn:hover:not(:disabled) {
-  border-color: #16181d;
-  color: #fff;
-  background: #16181d;
-}
-
 .bento-y-carousel__nav-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
+.bento-y-carousel__page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  justify-self: center;
+  min-width: 4.25rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--icue-border);
+  background: var(--icue-surface);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--icue-text);
+  letter-spacing: 0.02em;
+}
+
+.bento-y-carousel__page-current {
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--icue-text);
+}
+
+.bento-y-carousel__page-sep,
+.bento-y-carousel__page-total {
+  color: var(--icue-text-faint);
+  font-weight: 600;
+}
+
 .bento-y-carousel__dots {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -129,5 +161,27 @@
 @media (prefers-reduced-motion: reduce) {
   .bento-y-carousel__viewport {
     scroll-behavior: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-y-carousel__controls {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+  }
+
+  .bento-y-carousel__nav {
+    flex-direction: row;
+    order: 1;
+  }
+
+  .bento-y-carousel__page {
+    order: 0;
+  }
+
+  .bento-y-carousel__dots {
+    order: 2;
+    justify-content: center;
   }
 }

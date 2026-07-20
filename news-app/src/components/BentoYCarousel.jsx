@@ -3,6 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import BentoArticleGrid from './BentoArticleGrid'
+import SlidingNumber, { SLOW_SPRING } from './magicui/SlidingNumber'
 import { chunkBentoItems } from '../lib/bentoArticles'
 import { NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE } from '../lib/newsroom'
 import './BentoYCarousel.css'
@@ -92,6 +93,9 @@ export default function BentoYCarousel({
 
   const canScrollPrev = selectedIndex > 0
   const canScrollNext = selectedIndex < slides.length - 1
+  const currentPage = selectedIndex + 1
+  const totalPages = slides.length
+  const showPageFraction = totalPages > 1
 
   return (
     <section
@@ -121,7 +125,7 @@ export default function BentoYCarousel({
           <div className="bento-y-carousel__nav">
             <button
               type="button"
-              className="bento-y-carousel__nav-btn"
+              className={`bento-y-carousel__nav-btn${canScrollPrev ? ' is-enabled' : ''}`}
               onClick={scrollPrev}
               disabled={!canScrollPrev}
               aria-label={t('gallery.bentoPrevSlide')}
@@ -130,13 +134,36 @@ export default function BentoYCarousel({
             </button>
             <button
               type="button"
-              className="bento-y-carousel__nav-btn"
+              className={`bento-y-carousel__nav-btn${canScrollNext ? ' is-enabled' : ''}`}
               onClick={scrollNext}
               disabled={!canScrollNext}
               aria-label={t('gallery.bentoNextSlide')}
             >
               <ChevronDown className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>
+          </div>
+
+          <div
+            className="bento-y-carousel__page"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-label={t('gallery.bentoPageIndicator', {
+              current: currentPage,
+              total: totalPages,
+            })}
+          >
+            <SlidingNumber
+              className="bento-y-carousel__page-current"
+              value={currentPage}
+              spring={SLOW_SPRING}
+              reduceMotion={reduceMotion}
+            />
+            {showPageFraction && (
+              <>
+                <span className="bento-y-carousel__page-sep" aria-hidden>/</span>
+                <span className="bento-y-carousel__page-total">{totalPages}</span>
+              </>
+            )}
           </div>
 
           <div className="bento-y-carousel__dots" role="tablist" aria-label={t('gallery.bentoSlideNav')}>

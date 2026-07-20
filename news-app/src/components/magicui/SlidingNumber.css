@@ -1,0 +1,35 @@
+.sliding-number {
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.sliding-number__digit {
+  position: relative;
+  display: inline-block;
+  width: 1ch;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: top;
+}
+
+.sliding-number__digit-spacer {
+  visibility: hidden;
+}
+
+.sliding-number__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sliding-number__face--measure {
+  visibility: hidden;
+}
+
+.sliding-number__separator {
+  user-select: none;
+}
