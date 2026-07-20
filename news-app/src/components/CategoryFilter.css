@@ -186,6 +186,12 @@
   .section-nav__mobile { display: none; }
 }
 
+/* Light newsroom home — match gallery backdrop, remove white seams */
+.news-page:not(.news-page--dark) .section-nav {
+  margin: 0 0 24px;
+  background: var(--newsroom-gallery-bg, #f6f7f5);
+}
+
 /* Dark newsroom home --------------------------------------------------- */
 .news-page.news-page--dark .section-nav {
   margin: 0 0 24px;

@@ -59,26 +59,15 @@
   display: none;
 }
 
-.news-page:not(.news-page--dark) .newsroom-theme-toggle {
-  border-color: var(--icue-border);
-  background: var(--icue-surface);
-  color: var(--icue-text);
-}
-
-.news-page:not(.news-page--dark) .newsroom-theme-toggle:hover {
-  border-color: var(--icue-text-faint);
-  background: var(--icue-surface-2);
-}
-
 .icue-header .newsroom-theme-toggle {
   border-color: var(--icue-border);
-  background: var(--icue-surface);
+  background: transparent;
   color: var(--icue-text);
 }
 
 .icue-header .newsroom-theme-toggle:hover {
   border-color: var(--icue-text-faint);
-  background: var(--icue-surface-2);
+  background: rgba(22, 24, 29, 0.05);
 }
 
 .icue-app--news-home.icue-app--news-theme-dark .icue-header .newsroom-theme-toggle {

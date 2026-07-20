@@ -40,33 +40,37 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
 
   return (
     <section className="article-bento" aria-label={t('gallery.ariaLabel')}>
-      <div className="article-bento__backdrop" aria-hidden="true">
-        <div className="article-bento__globe-shell">
-          <Globe
-            key={isDark ? 'dark' : 'light'}
-            className="article-bento__globe"
-            config={globeConfig}
-            reduceMotion={reduceMotion}
-          />
+      <div className="article-bento__gallery">
+        <div className="article-bento__backdrop" aria-hidden="true">
+          <div className="article-bento__globe-shell">
+            <Globe
+              key={isDark ? 'dark' : 'light'}
+              className="article-bento__globe"
+              config={globeConfig}
+              reduceMotion={reduceMotion}
+            />
+          </div>
+          <div className="article-bento__globe-vignette" />
         </div>
-        <div className="article-bento__globe-vignette" />
+
+        <div className="article-bento__content">
+          {useYCarousel ? (
+            <BentoYCarousel
+              items={items}
+              reduceMotion={reduceMotion}
+              onItemClick={handleItemClick}
+            />
+          ) : (
+            <BentoArticleGrid
+              items={items}
+              reduceMotion={reduceMotion}
+              onItemClick={handleItemClick}
+            />
+          )}
+        </div>
       </div>
 
-      <div className="article-bento__content">
-        {useYCarousel ? (
-          <BentoYCarousel
-            items={items}
-            reduceMotion={reduceMotion}
-            onItemClick={handleItemClick}
-          />
-        ) : (
-          <BentoArticleGrid
-            items={items}
-            reduceMotion={reduceMotion}
-            onItemClick={handleItemClick}
-          />
-        )}
-      </div>
+      <div className="article-bento__handoff" aria-hidden="true" />
     </section>
   )
 }
