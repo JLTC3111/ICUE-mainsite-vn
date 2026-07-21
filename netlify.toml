@@ -6,10 +6,12 @@
 #   VITE_SUPABASE_URL  or  SUPABASE_URL
 #   VITE_SUPABASE_ANON_KEY  or  SUPABASE_ANON_KEY
 #
-# translate-article function also needs (Netlify env only — never VITE_*):
-#   SUPABASE_SERVICE_ROLE_KEY
-#   GOOGLE_TRANSLATE_API_KEY
-#   DEEPL_API_KEY  (optional — DeepL is disabled in code until configured)
+# translate-article function needs these Netlify env vars (Functions scope):
+#   GOOGLE_TRANSLATE_API_KEY     — required for machine translation
+#   SUPABASE_SERVICE_ROLE_KEY    — optional but recommended (translation cache writes)
+#
+# Supabase URL + anon key are auto-loaded from newsroom/supabase-config.json when
+# VITE_SUPABASE_* / SUPABASE_* are not set on the function.
 
 [functions]
   directory = "netlify/functions"

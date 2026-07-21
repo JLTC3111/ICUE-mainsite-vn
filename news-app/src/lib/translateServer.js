@@ -1,4 +1,5 @@
 import { normalizeHtmlUnicode, normalizeUnicode } from './normalizeUnicode.js'
+import { resolveServerEnv } from './serverEnv.js'
 import {
   detectSourceLanguage,
   inferSourceLanguage,
@@ -198,6 +199,8 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
 }
 
 export async function handleTranslateArticleRequest(event, env = process.env) {
+  const runtimeEnv = resolveServerEnv(env)
+
   if (event.httpMethod === 'OPTIONS') {
     return jsonResponse(204, '')
   }
@@ -222,10 +225,16 @@ export async function handleTranslateArticleRequest(event, env = process.env) {
       return jsonResponse(422, { error: 'articleIds and target required', code: 'invalid_request' })
     }
     try {
-      const result = await translateArticleTitlesBatch(articleIds, target, env)
+      const result = await translateArticleTitlesBatch(articleIds, target, runtimeEnv)
       return jsonResponse(200, result)
     } catch (err) {
       const code = err?.message || 'translate_failed'
+      if (code === 'supabase_not_configured') {
+        return jsonResponse(503, { error: 'supabase not configured on server', code })
+      }
+      if (code === 'google_not_configured' || code === 'deepl_not_configured') {
+        return jsonResponse(503, { error: 'translation provider not configured', code })
+      }
       return jsonResponse(502, { error: 'translation failed', code })
     }
   }
@@ -235,12 +244,15 @@ export async function handleTranslateArticleRequest(event, env = process.env) {
   }
 
   try {
-    const result = await translateArticleForLocale(articleId, target, env)
+    const result = await translateArticleForLocale(articleId, target, runtimeEnv)
     return jsonResponse(200, result)
   } catch (err) {
     const code = err?.message || 'translate_failed'
     if (code === 'article_not_found') {
       return jsonResponse(404, { error: 'article not found', code })
+    }
+    if (code === 'supabase_not_configured') {
+      return jsonResponse(503, { error: 'supabase not configured on server', code })
     }
     if (code === 'google_not_configured' || code === 'deepl_not_configured') {
       return jsonResponse(503, { error: 'translation provider not configured', code })

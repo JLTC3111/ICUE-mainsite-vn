@@ -1,0 +1,58 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url))
+
+let cachedSupabaseFileConfig
+
+function readJson(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return null
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'))
+  } catch {
+    return null
+  }
+}
+
+function loadSupabaseFileConfig() {
+  if (cachedSupabaseFileConfig !== undefined) {
+    return cachedSupabaseFileConfig
+  }
+
+  const candidates = [
+    path.resolve(moduleDir, '../../public/supabase-config.json'),
+    path.resolve(moduleDir, '../../../newsroom/supabase-config.json'),
+    path.resolve(process.cwd(), 'newsroom/supabase-config.json'),
+    path.resolve(process.cwd(), 'news-app/public/supabase-config.json'),
+  ]
+
+  for (const filePath of candidates) {
+    const json = readJson(filePath)
+    if (json?.url && json?.anonKey) {
+      cachedSupabaseFileConfig = json
+      return json
+    }
+  }
+
+  cachedSupabaseFileConfig = null
+  return null
+}
+
+/** Merge Netlify process.env with committed runtime config files. */
+export function resolveServerEnv(rawEnv = process.env) {
+  const env = { ...rawEnv }
+  const fileConfig = loadSupabaseFileConfig()
+
+  if (fileConfig?.url) {
+    env.SUPABASE_URL ||= fileConfig.url
+    env.VITE_SUPABASE_URL ||= fileConfig.url
+  }
+
+  if (fileConfig?.anonKey) {
+    env.SUPABASE_ANON_KEY ||= fileConfig.anonKey
+    env.VITE_SUPABASE_ANON_KEY ||= fileConfig.anonKey
+  }
+
+  return env
+}
