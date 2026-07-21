@@ -1,5 +1,5 @@
 import { normalizeHtmlUnicode, normalizeUnicode } from './normalizeUnicode.js'
-import { resolveServerEnv } from './serverEnv.js'
+import { resolveServerEnv, supabaseServiceKey } from './serverEnv.js'
 import {
   detectSourceLanguage,
   inferSourceLanguage,
@@ -11,11 +11,11 @@ import {
 const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status'
 
 function supabaseConfig(env) {
+  const serviceKey = supabaseServiceKey(env)
   return {
     url: env.SUPABASE_URL || env.VITE_SUPABASE_URL || '',
     serviceKey:
-      env.SUPABASE_SERVICE_ROLE_KEY
-      || env.SUPABASE_SERVICE_KEY
+      serviceKey
       || env.SUPABASE_ANON_KEY
       || env.VITE_SUPABASE_ANON_KEY
       || '',

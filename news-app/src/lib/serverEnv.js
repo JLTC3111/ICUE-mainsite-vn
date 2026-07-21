@@ -40,9 +40,43 @@ function loadSupabaseFileConfig() {
 }
 
 /** Merge Netlify process.env with committed runtime config files. */
+export function envString(env, keys) {
+  for (const key of keys) {
+    const value = env?.[key]
+    if (value != null && String(value).trim()) return String(value).trim()
+  }
+  return ''
+}
+
+export function googleTranslateKey(env = {}) {
+  return envString(env, [
+    'GOOGLE_TRANSLATE_API_KEY',
+    'GOOGLE_CLOUD_TRANSLATE_API_KEY',
+    'GOOGLE_API_KEY',
+  ])
+}
+
+export function supabaseServiceKey(env = {}) {
+  return envString(env, [
+    'SUPABASE_SERVICE_ROLE_KEY',
+    'SUPABASE_SERVICE_KEY',
+  ])
+}
+
 export function resolveServerEnv(rawEnv = process.env) {
   const env = { ...rawEnv }
   const fileConfig = loadSupabaseFileConfig()
+
+  const googleKey = googleTranslateKey(env)
+  if (googleKey) {
+    env.GOOGLE_TRANSLATE_API_KEY = googleKey
+    env.GOOGLE_CLOUD_TRANSLATE_API_KEY = googleKey
+  }
+
+  const serviceKey = supabaseServiceKey(env)
+  if (serviceKey) {
+    env.SUPABASE_SERVICE_ROLE_KEY = serviceKey
+  }
 
   if (fileConfig?.url) {
     env.SUPABASE_URL ||= fileConfig.url

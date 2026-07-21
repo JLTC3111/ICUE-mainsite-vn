@@ -1,7 +1,9 @@
+const { loadRuntimeEnv } = require('./runtimeEnv')
+
 exports.handler = async (event) => {
   try {
     const { handleTranslateArticleRequest } = await import('../../news-app/src/lib/translateServer.js')
-    return handleTranslateArticleRequest(event, process.env)
+    return handleTranslateArticleRequest(event, loadRuntimeEnv())
   } catch (err) {
     console.error('[translate-article]', err)
     return {

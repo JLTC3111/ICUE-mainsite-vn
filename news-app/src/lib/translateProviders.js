@@ -1,6 +1,7 @@
 /** Server-side translation providers (Google Cloud Translation v2; DeepL optional). */
 
 import { LOCALE_CODE_SET } from './localeCodes.js'
+import { googleTranslateKey } from './serverEnv.js'
 
 const GOOGLE_ENDPOINT = 'https://translation.googleapis.com/language/translate/v2'
 /** Set to true once DEEPL_API_KEY is configured on Netlify. */
@@ -67,7 +68,7 @@ export function pickProvider(targetLocale, sourceLocale) {
 }
 
 export function resolveProvider(targetLocale, sourceLocale, env = {}) {
-  const googleKey = env.GOOGLE_TRANSLATE_API_KEY || env.GOOGLE_CLOUD_TRANSLATE_API_KEY
+  const googleKey = googleTranslateKey(env)
   const deeplKey = env.DEEPL_API_KEY || env.DEEPL_AUTH_KEY
 
   if (googleKey) return 'google'
@@ -189,7 +190,7 @@ async function deeplTranslate(text, target, apiKey, { html = false, source } = {
 }
 
 export async function detectSourceLanguage(sample, env) {
-  const googleKey = env.GOOGLE_TRANSLATE_API_KEY || env.GOOGLE_CLOUD_TRANSLATE_API_KEY
+  const googleKey = googleTranslateKey(env)
   if (googleKey && sample?.trim()) {
     try {
       return await googleDetect(sample, googleKey)
@@ -207,7 +208,7 @@ export async function translateFields(
   env,
 ) {
   const provider = resolveProvider(targetLocale, sourceLocale, env)
-  const googleKey = env.GOOGLE_TRANSLATE_API_KEY || env.GOOGLE_CLOUD_TRANSLATE_API_KEY
+  const googleKey = googleTranslateKey(env)
   const deeplKey = env.DEEPL_API_KEY || env.DEEPL_AUTH_KEY
 
   if (provider === 'deepl') {
