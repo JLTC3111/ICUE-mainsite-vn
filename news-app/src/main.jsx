@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { cleanSiteParams } from './lib/siteOrigin'
-import { logBootstrapContext } from './lib/lazyRoute'
 import { initSupabase } from './lib/supabase'
 import './lib/i18n'
 import './styles/theme.css'
@@ -14,7 +13,6 @@ import { NewsroomThemeProvider } from './context/NewsroomThemeContext'
 cleanSiteParams()
 
 async function bootstrap() {
-  logBootstrapContext()
   await initSupabase()
 
   createRoot(document.getElementById('root')).render(

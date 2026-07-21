@@ -56,14 +56,16 @@ export function BentoCard({
       <BorderBeam />
       <div className="bento-card__background">{backgroundNode}</div>
       <div className="bento-card__body">
-        {description ? <div className="bento-card__meta">{description}</div> : null}
-        {titlePending ? (
-          <TranslationLineSkeleton
-            lines={2}
-            className="translation-skeleton--on-dark bento-card__title-skeleton"
-          />
-        ) : null}
-        {!titlePending && name ? <h2 className="bento-card__title translation-reveal">{name}</h2> : null}
+        <div className="bento-card__copy">
+          {description ? <div className="bento-card__meta">{description}</div> : null}
+          {titlePending ? (
+            <TranslationLineSkeleton
+              lines={2}
+              className="translation-skeleton--on-dark bento-card__title-skeleton"
+            />
+          ) : null}
+          {!titlePending && name ? <h2 className="bento-card__title translation-reveal">{name}</h2> : null}
+        </div>
         {cta ? (
           <span className="bento-card__cta">
             {cta}

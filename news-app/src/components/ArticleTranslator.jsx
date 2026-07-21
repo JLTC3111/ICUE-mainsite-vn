@@ -1,10 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import './ArticleTranslator.css'
-
-const LANG_LABELS = Object.fromEntries(
-  SUPPORTED_LANGUAGES.map((l) => [l.code, l.label]),
-)
 
 export default function ArticleTranslator({
   busy = false,
@@ -38,17 +33,11 @@ export default function ArticleTranslator({
         </div>
       )}
 
-      {!busy && !error && activeLang && !showOriginal && (
+      {!busy && !error && activeLang && !showOriginal && onShowOriginal && (
         <div className="translator__controls">
-          <p className="translator__status">
-            {t('translate.translated', { lang: LANG_LABELS[activeLang] || activeLang })}
-            <span className="translator__note"> · {t('translate.note')}</span>
-          </p>
-          {onShowOriginal && (
-            <button type="button" className="translator__reset" onClick={onShowOriginal}>
-              {t('translate.original')}
-            </button>
-          )}
+          <button type="button" className="translator__reset" onClick={onShowOriginal}>
+            {t('translate.original')}
+          </button>
         </div>
       )}
 

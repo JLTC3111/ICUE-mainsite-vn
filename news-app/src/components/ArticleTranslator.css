@@ -107,7 +107,6 @@
   align-items: center;
   gap: 8px;
 }
-.translator__note { color: var(--icue-text-faint); }
 .translator__status--err { color: var(--icue-danger); }
 
 @media (max-width: 600px) {

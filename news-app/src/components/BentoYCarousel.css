@@ -92,7 +92,7 @@
 .bento-y-carousel__slide .bento-grid {
   height: 100%;
   min-height: 0;
-  grid-auto-rows: minmax(0, calc((100% - 16px) / 2));
+  grid-auto-rows: minmax(0, calc((100% - 18px) / 2));
 }
 
 .bento-y-carousel__controls {
