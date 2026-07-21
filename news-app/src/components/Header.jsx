@@ -61,9 +61,6 @@ function Header() {
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
-          {isNewsHome && (
-            <NewsroomThemeToggle className="newsroom-theme-toggle--header icue-header__theme-toggle" />
-          )}
           <a href={base} className="icue-header__link" onClick={close}>
             {t('nav.mainSite')}
           </a>
@@ -96,6 +93,9 @@ function Header() {
               <Link to="/login" className="btn btn-primary btn-sm" onClick={close}>
                 {t('nav.login')}
               </Link>
+            )}
+            {isNewsHome && (
+              <NewsroomThemeToggle className="animated-theme-toggler--header icue-header__theme-toggle" />
             )}
           </div>
         </nav>

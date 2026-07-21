@@ -5,6 +5,8 @@ import { normalizeDeep } from '@icue/text/normalizeUnicode'
 import { detectEntrySite } from './siteOrigin'
 import { detectInitialLanguage } from './referrerLang'
 
+import { LOCALE_CODES } from './localeCodes'
+
 import en from '../locales/en.json'
 import vi from '../locales/vi.json'
 import de from '../locales/de.json'
@@ -17,7 +19,7 @@ import ja from '../locales/ja.json'
 detectEntrySite()
 
 // Add more languages by dropping a JSON file in src/locales and registering it here.
-// `code` is the BCP-47 / ISO-639 code used for both the UI and machine translation.
+// `code` must also be listed in localeCodes.js — used for UI + machine translation.
 export const SUPPORTED_LANGUAGES = [
   { code: 'vi', label: 'Tiếng Việt' },
   { code: 'en', label: 'English' },
@@ -25,7 +27,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'fr', label: 'Français' },
   { code: 'ko', label: '한국어' },
   { code: 'ja', label: '日本語' },
-]
+].filter(({ code }) => LOCALE_CODES.includes(code))
 
 const normalizePostProcessor = {
   type: 'postProcessor',

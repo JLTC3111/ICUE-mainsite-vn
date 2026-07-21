@@ -8,6 +8,7 @@ import Globe, {
   NEWSROOM_GLOBE_CONFIG_LIGHT,
 } from './magicui/Globe'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { buildBentoItems } from '../lib/bentoArticles'
 import {
@@ -18,15 +19,16 @@ import { normalizeUnicode } from '../lib/helpers'
 import './ArticleMasonry.css'
 
 export default function ArticleMasonry({ articles, reduceMotion = false }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const isDesktopBentoCarousel = useMediaQuery(NEWSROOM_BENTO_CAROUSEL_QUERY)
   const { isDark } = useNewsroomTheme()
   const globeConfig = isDark ? NEWSROOM_GLOBE_CONFIG_DARK : NEWSROOM_GLOBE_CONFIG_LIGHT
+  const { titles, isTitlePending } = useArticleTitleTranslations(articles, i18n.resolvedLanguage)
 
   const items = useMemo(
-    () => buildBentoItems(articles, normalizeUnicode),
-    [articles],
+    () => buildBentoItems(articles, normalizeUnicode, titles, isTitlePending),
+    [articles, titles, isTitlePending],
   )
 
   const handleItemClick = (item) => {

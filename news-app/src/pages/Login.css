@@ -88,10 +88,12 @@
 .login__brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 22px; }
 .login__logo { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--icue-black); }
 .login__pill {
-  font-size: 12px; font-weight: 700;
-  color: var(--icue-accent-ink);
-  background: var(--icue-gradient-accent);
-  padding: 2px 8px; border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--icue-gradient-pill);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 
 .login__title { margin: 0 0 4px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }

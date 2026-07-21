@@ -91,7 +91,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             contentHtml,
             contentJson,
             coverImageUrl: coverUrl || null,
-            language: i18n.resolvedLanguage || 'vi',
+            language: initial?.language || 'vi',
             category,
           },
           items,
@@ -103,7 +103,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, items, coverUrl, onSubmit, mode, t, i18n],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, items, coverUrl, onSubmit, mode, t, initial?.language],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.

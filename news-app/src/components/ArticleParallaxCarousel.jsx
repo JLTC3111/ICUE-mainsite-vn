@@ -12,7 +12,9 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import { bindEmblaParallax } from '../lib/emblaParallax'
+import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import ArticleViewCounter from './ArticleViewCounter'
+import TranslationLineSkeleton from './TranslationSkeleton'
 import { ShinyButton } from './magicui/ShinyButton'
 import './ArticleParallaxCarousel.css'
 
@@ -32,11 +34,15 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const { titles, isTitlePending } = useArticleTitleTranslations(articles, i18n.resolvedLanguage)
 
   const items = useMemo(
     () =>
       articles.map((article, index) => {
-        const title = normalizeUnicode(article.title)
+        const titlePending = isTitlePending(article.id)
+        const title = titlePending
+          ? ''
+          : (titles[article.id] || normalizeUnicode(article.title))
         const category =
           isCategory(article.category) && article.category !== 'general'
             ? article.category
@@ -46,13 +52,14 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
           id: article.slug || article.id || String(index),
           slug: article.slug,
           title,
+          titlePending,
           category,
           date,
           viewCount: article.view_count ?? 0,
           img: article.cover_image_url || PLACEHOLDER_COVER,
         }
       }),
-    [articles],
+    [articles, titles, isTitlePending],
   )
 
   const slideCount = items.length
@@ -169,12 +176,12 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
         </div>
 
         {slideCount > 1 && (
-          <div className="article-parallax__dots">
+          <div className="article-parallax__rail" aria-hidden="false">
             {items.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
-                className={`article-parallax__dot${index === selectedIndex ? ' is-active' : ''}`}
+                className={`article-parallax__bar${index === selectedIndex ? ' is-active' : ''}`}
                 aria-label={t('gallery.parallaxGoToSlide', { index: index + 1 })}
                 aria-current={index === selectedIndex ? 'true' : undefined}
                 onClick={() => scrollTo(index)}
@@ -186,7 +193,16 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
         {activeItem && (
           <div className="article-parallax__info" aria-live="polite">
             <div className="article-parallax__info-text">
-              <h2 className="article-parallax__title">{activeItem.title}</h2>
+              <h2 className="article-parallax__title">
+                {activeItem.titlePending ? (
+                  <TranslationLineSkeleton
+                    lines={2}
+                    className="translation-skeleton--on-dark"
+                  />
+                ) : (
+                  <span className="translation-reveal">{activeItem.title}</span>
+                )}
+              </h2>
               <p className="article-parallax__meta">
                 {activeItem.category && (
                   <span

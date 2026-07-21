@@ -295,14 +295,6 @@
 .icue-header__theme-toggle {
   flex-shrink: 0;
   align-self: center;
-  margin-right: 4px;
-}
-
-@media (min-width: 861px) {
-  .icue-header__nav .icue-header__theme-toggle {
-    order: -1;
-    margin-right: 10px;
-  }
 }
 
 @media (max-width: 860px) {

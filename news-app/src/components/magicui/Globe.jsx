@@ -9,16 +9,6 @@ import './Globe.css'
 
 const MOVEMENT_DAMPING = 1400
 
-const GLOBE_MARKERS = [
-  { location: [21.0285, 105.8542], size: 0.1 },
-  { location: [10.8231, 106.6297], size: 0.08 },
-  { location: [14.5995, 120.9842], size: 0.05 },
-  { location: [39.9042, 116.4074], size: 0.06 },
-  { location: [40.7128, -74.006], size: 0.06 },
-  { location: [51.5074, -0.1278], size: 0.05 },
-  { location: [35.6762, 139.6503], size: 0.05 },
-]
-
 export const NEWSROOM_GLOBE_CONFIG_LIGHT = {
   width: 800,
   height: 800,
@@ -29,11 +19,11 @@ export const NEWSROOM_GLOBE_CONFIG_LIGHT = {
   dark: 0,
   diffuse: 0.55,
   mapSamples: 16000,
-  mapBrightness: 1.42,
+  mapBrightness: 0.88,
   baseColor: newsroomGalleryBgToRgb(NEWSROOM_GALLERY_BG_LIGHT),
-  markerColor: [54 / 255, 138 / 255, 223 / 255],
+  markerColor: newsroomGalleryBgToRgb('#8c929c'),
   glowColor: newsroomGalleryBgToRgb(NEWSROOM_GALLERY_BG_LIGHT),
-  markers: GLOBE_MARKERS,
+  markers: [],
 }
 
 export const NEWSROOM_GLOBE_CONFIG_DARK = {
@@ -46,11 +36,11 @@ export const NEWSROOM_GLOBE_CONFIG_DARK = {
   dark: 1,
   diffuse: 0.9,
   mapSamples: 16000,
-  mapBrightness: 4.8,
+  mapBrightness: 3.85,
   baseColor: [0.12, 0.14, 0.2],
-  markerColor: [54 / 255, 138 / 255, 223 / 255],
+  markerColor: [0.45, 0.48, 0.52],
   glowColor: [0.22, 0.42, 0.88],
-  markers: GLOBE_MARKERS,
+  markers: [],
 }
 
 /** @deprecated Use NEWSROOM_GLOBE_CONFIG_DARK or _LIGHT */

@@ -185,6 +185,8 @@
     "heading": "お好みの言語で読む",
     "translating": "翻訳中…",
     "original": "原文を表示",
+    "showingOriginal": "原文を表示中",
+    "retry": "再試行",
     "translated": "{{lang}} に翻訳しました",
     "error": "翻訳に失敗しました。もう一度お試しください。",
     "note": "機械翻訳"

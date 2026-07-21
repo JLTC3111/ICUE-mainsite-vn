@@ -103,6 +103,9 @@
   margin: 10px 0 0;
   font-size: 13px;
   color: var(--icue-text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .translator__note { color: var(--icue-text-faint); }
 .translator__status--err { color: var(--icue-danger); }

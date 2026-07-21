@@ -185,6 +185,8 @@
     "heading": "Lire dans votre langue",
     "translating": "Traduction en cours…",
     "original": "Afficher l'original",
+    "showingOriginal": "Article original affiché",
+    "retry": "Réessayer",
     "translated": "Traduit en {{lang}}",
     "error": "Échec de la traduction. Veuillez réessayer.",
     "note": "Traduction automatique"

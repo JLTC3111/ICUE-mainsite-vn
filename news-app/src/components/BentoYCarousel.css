@@ -1,18 +1,64 @@
 .bento-y-carousel {
-  --bento-y-slide-height: clamp(480px, 62vh, 760px);
+  --bento-y-slide-height: clamp(400px, 52vh, 640px);
   --bento-y-nav-size: 38px;
   --bento-y-dot-active: var(--icue-blue-2, #1db7ff);
   margin: 0;
   overscroll-behavior: contain;
 }
 
+.bento-y-carousel__body {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
 .bento-y-carousel__frame {
+  flex: 1 1 auto;
+  min-width: 0;
   border-radius: calc(var(--icue-radius) + 6px);
   background: transparent;
   border: 1px solid transparent;
   box-shadow: none;
   overflow: hidden;
   overscroll-behavior: contain;
+}
+
+.bento-y-carousel__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  padding: 8px 2px;
+  align-self: center;
+}
+
+.bento-y-carousel__bar {
+  width: 3px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(22, 24, 29, 0.16);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    height 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.bento-y-carousel__bar.is-active {
+  height: 34px;
+  background: var(--bento-y-dot-active);
+}
+
+.bento-y-carousel__bar:hover {
+  background: rgba(22, 24, 29, 0.32);
+}
+
+.bento-y-carousel__bar.is-active:hover {
+  background: var(--bento-y-dot-active);
 }
 
 @media (min-width: 1025px) {
@@ -51,8 +97,9 @@
 
 .bento-y-carousel__controls {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   margin-top: 14px;
   padding: 0 4px;
@@ -62,7 +109,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  justify-self: center;
 }
 
 .bento-y-carousel__nav-btn {
@@ -109,7 +155,6 @@
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  justify-self: start;
   min-width: 4.25rem;
   padding: 8px 14px;
   border-radius: 999px;
@@ -134,60 +179,13 @@
   font-weight: 600;
 }
 
-.bento-y-carousel__dots {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.bento-y-carousel__dot {
-  width: 28px;
-  height: 3px;
-  padding: 0;
-  border: 0;
-  border-radius: 2px;
-  background: rgba(22, 24, 29, 0.18);
-  cursor: pointer;
-  transition: background 0.2s ease, width 0.2s ease;
-}
-
-.bento-y-carousel__dot.is-active {
-  width: 40px;
-  background: var(--bento-y-dot-active);
-}
-
-.bento-y-carousel__dot:hover {
-  background: rgba(22, 24, 29, 0.35);
-}
-
-.bento-y-carousel__dot.is-active:hover {
-  background: var(--bento-y-dot-active);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bento-y-carousel__viewport {
-    scroll-behavior: auto;
-  }
-}
-
 @media (max-width: 640px) {
+  .bento-y-carousel__body {
+    gap: 8px;
+  }
+
   .bento-y-carousel__controls {
-    grid-template-columns: auto 1fr auto;
     gap: 12px;
-  }
-
-  .bento-y-carousel__nav {
-    flex-direction: column;
-    justify-self: center;
-  }
-
-  .bento-y-carousel__page {
-    justify-self: start;
-  }
-
-  .bento-y-carousel__dots {
-    justify-self: end;
   }
 }
 
@@ -219,18 +217,24 @@
   color: #16181d;
 }
 
-.news-page.news-page--dark .bento-y-carousel__dot {
-  background: rgba(29, 183, 255, 0.22);
+@media (prefers-reduced-motion: reduce) {
+  .bento-y-carousel__viewport {
+    scroll-behavior: auto;
+  }
 }
 
-.news-page.news-page--dark .bento-y-carousel__dot:hover {
-  background: rgba(29, 183, 255, 0.38);
+.news-page.news-page--dark .bento-y-carousel__bar {
+  background: rgba(255, 255, 255, 0.16);
 }
 
-.news-page.news-page--dark .bento-y-carousel__dot.is-active {
+.news-page.news-page--dark .bento-y-carousel__bar:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.news-page.news-page--dark .bento-y-carousel__bar.is-active {
   background: var(--bento-y-dot-active);
 }
 
-.news-page.news-page--dark .bento-y-carousel__dot.is-active:hover {
+.news-page.news-page--dark .bento-y-carousel__bar.is-active:hover {
   background: var(--bento-y-dot-active);
 }

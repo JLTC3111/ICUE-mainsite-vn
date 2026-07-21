@@ -35,6 +35,7 @@
 /newsroom/api/market-quotes  /.netlify/functions/market-quotes  200
 /newsroom/api/market-quotes-vn  /.netlify/functions/market-quotes?scope=vn  200
 /newsroom/api/auth-forgot-password  /.netlify/functions/auth-forgot-password  200
+/newsroom/api/translate-article  /.netlify/functions/translate-article  200
 
 /newsroom            /newsroom/index.html   200
 /newsroom/login      /newsroom/index.html   200

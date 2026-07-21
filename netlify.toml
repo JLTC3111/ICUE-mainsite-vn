@@ -5,6 +5,11 @@
 # Newsroom requires Supabase credentials at build time (Site settings → Environment):
 #   VITE_SUPABASE_URL  or  SUPABASE_URL
 #   VITE_SUPABASE_ANON_KEY  or  SUPABASE_ANON_KEY
+#
+# translate-article function also needs (Netlify env only — never VITE_*):
+#   SUPABASE_SERVICE_ROLE_KEY
+#   GOOGLE_TRANSLATE_API_KEY
+#   DEEPL_API_KEY  (optional — DeepL is disabled in code until configured)
 
 [functions]
   directory = "netlify/functions"

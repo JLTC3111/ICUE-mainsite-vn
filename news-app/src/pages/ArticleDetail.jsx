@@ -11,6 +11,8 @@ import MediaGallery from '../components/MediaGallery'
 import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
+import TranslationLineSkeleton from '../components/TranslationSkeleton'
+import { translateArticleViaApi, shouldTranslateArticle } from '../lib/translate'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
@@ -70,6 +72,10 @@ export default function ArticleDetail() {
   const [viewCount, setViewCount] = useState(0)
   const [translation, setTranslation] = useState(null)
   const [translatedLang, setTranslatedLang] = useState(null)
+  const [translateBusy, setTranslateBusy] = useState(false)
+  const [translateError, setTranslateError] = useState(false)
+  const [showOriginal, setShowOriginal] = useState(false)
+  const [translateAttempt, setTranslateAttempt] = useState(0)
 
   useEffect(() => {
     let active = true
@@ -79,6 +85,10 @@ export default function ArticleDetail() {
     setTranslation(null)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslatedLang(null)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setShowOriginal(false)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslateError(false)
     fetchArticleBySlug(slug)
       .then((data) => {
         if (!active) return
@@ -97,6 +107,62 @@ export default function ArticleDetail() {
     return () => { active = false }
   }, [slug])
 
+  useEffect(() => {
+    setShowOriginal(false)
+    setTranslateError(false)
+  }, [i18n.resolvedLanguage])
+
+  useEffect(() => {
+    if (state !== 'ready' || !article?.id || showOriginal) return undefined
+
+    const uiLang = i18n.resolvedLanguage
+    if (!shouldTranslateArticle(article.language, uiLang, article.title)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTranslation(null)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTranslatedLang(null)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTranslateBusy(false)
+      return undefined
+    }
+
+    let active = true
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslateBusy(true)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslateError(false)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslation(null)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslatedLang(null)
+
+    translateArticleViaApi(article.id, uiLang)
+      .then((result) => {
+        if (!active) return
+        if (result.original) {
+          setTranslation(null)
+          setTranslatedLang(null)
+        } else {
+          setTranslation({
+            title: result.title,
+            subtitle: result.subtitle,
+            content_html: result.content_html,
+          })
+          setTranslatedLang(uiLang)
+        }
+      })
+      .catch(() => active && setTranslateError(true))
+      .finally(() => active && setTranslateBusy(false))
+
+    return () => { active = false }
+  }, [article, state, i18n.resolvedLanguage, showOriginal, translateAttempt])
+
+  const retryTranslation = useCallback(() => {
+    setShowOriginal(false)
+    setTranslateError(false)
+    setTranslateAttempt((attempt) => attempt + 1)
+  }, [])
+
   const { images, videos } = useMemo(() => {
     const media = (article?.media || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
     return {
@@ -106,9 +172,10 @@ export default function ArticleDetail() {
   }, [article])
 
   const displayContent = useMemo(() => {
-    const raw = translation ? translation.content_html : article?.content_html
+    const usingTranslation = translation && !showOriginal
+    const raw = usingTranslation ? translation.content_html : article?.content_html
     return normalizeHtmlUnicode(embedVideosInHtml(raw || ''))
-  }, [translation, article?.content_html])
+  }, [translation, showOriginal, article?.content_html])
 
   const toggleLens = useCallback(() => {
     setLensOn((prev) => {
@@ -140,18 +207,11 @@ export default function ArticleDetail() {
     navigate('/dashboard')
   }
 
-  const displayTitle = normalizeUnicode(translation ? translation.title : article.title)
-  const displaySubtitle = normalizeUnicode(translation ? translation.subtitle : article.subtitle)
-
-  const applyTranslation = (result, code) => {
-    setTranslation(result)
-    setTranslatedLang(code)
-  }
-  const resetTranslation = () => {
-    setTranslation(null)
-    setTranslatedLang(null)
-  }
-
+  const usingTranslation = translation && !showOriginal
+  const needsTranslation = shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title) && !showOriginal
+  const isTranslating = needsTranslation && translateBusy && !usingTranslation
+  const displayTitle = normalizeUnicode(usingTranslation ? translation.title : article.title)
+  const displaySubtitle = normalizeUnicode(usingTranslation ? translation.subtitle : article.subtitle)
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || images.length > 0
 
@@ -160,16 +220,26 @@ export default function ArticleDetail() {
       <ScrollProgress />
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
-        <HyperText
-          as="h1"
-          className="article-detail__title"
-          animateOnHover={false}
-          duration={1200}
-          delay={120}
-        >
-          {displayTitle}
-        </HyperText>
-        {displaySubtitle && <p className="article-detail__subtitle">{displaySubtitle}</p>}
+        {isTranslating ? (
+          <h1 className="article-detail__title">
+            <TranslationLineSkeleton lines={2} className="translation-skeleton--title" />
+          </h1>
+        ) : (
+          <HyperText
+            as="h1"
+            className="article-detail__title translation-reveal"
+            animateOnHover={false}
+            duration={1200}
+            delay={120}
+          >
+            {displayTitle}
+          </HyperText>
+        )}
+        {isTranslating ? (
+          <TranslationLineSkeleton lines={1} className="translation-skeleton--title article-detail__subtitle-skeleton" />
+        ) : (
+          displaySubtitle && <p className="article-detail__subtitle translation-reveal">{displaySubtitle}</p>
+        )}
 
         <div className="article-detail__byline">
           <img src={author.avatar_url || DEFAULT_AVATAR} alt="" className="article-detail__avatar" />
@@ -192,10 +262,12 @@ export default function ArticleDetail() {
       </div>
 
       <ArticleTranslator
-        article={article}
-        activeLang={translatedLang}
-        onApply={applyTranslation}
-        onReset={resetTranslation}
+        busy={translateBusy}
+        error={translateError}
+        activeLang={usingTranslation ? translatedLang : null}
+        showOriginal={showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title))}
+        onShowOriginal={() => setShowOriginal(true)}
+        onRetry={retryTranslation}
       />
 
       {lensCapable && hasLensPhotos && (
@@ -228,11 +300,18 @@ export default function ArticleDetail() {
         </figure>
       )}
 
-      <ArticleTextReveal
-        html={displayContent}
-        className="article-detail__content icue-readw"
-        finishBy={0.4}
-      />
+      {isTranslating ? (
+        <div className="article-detail__content icue-readw article-detail__content--translating">
+          <TranslationLineSkeleton lines={8} className="translation-skeleton--article" />
+        </div>
+      ) : (
+        <ArticleTextReveal
+          key={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
+          html={displayContent}
+          className="article-detail__content icue-readw translation-reveal"
+          finishBy={0.4}
+        />
+      )}
 
       <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
 

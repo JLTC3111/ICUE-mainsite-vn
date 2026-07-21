@@ -18,7 +18,8 @@ export default function BentoArticleGrid({
       {layoutItems.map((item, index) => (
         <BentoCard
           key={item.id}
-          name={item.title}
+          name={item.titlePending ? null : item.title}
+          titlePending={item.titlePending}
           spanCols={item.spanCols}
           spanRows={item.spanRows}
           animate={!reduceMotion}

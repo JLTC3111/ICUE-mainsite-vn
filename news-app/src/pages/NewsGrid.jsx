@@ -104,7 +104,7 @@ export default function NewsGrid() {
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
           <div className="news-hero__actions">
-            <NewsroomThemeToggle className="news-hero__theme-toggle" />
+            <NewsroomThemeToggle className="animated-theme-toggler--hero news-hero__theme-toggle" />
             <SocialGooeyNav reduceMotion={reduceMotion} />
           </div>
         </div>

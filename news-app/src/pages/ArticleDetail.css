@@ -38,6 +38,17 @@ html:lang(vi) .article-detail__content {
   hyphens: none;
 }
 
+.article-detail__subtitle-skeleton {
+  display: block;
+  margin: 0 0 26px;
+  max-width: min(100%, 36rem);
+}
+
+.article-detail__content--translating {
+  min-height: 240px;
+}
+
+
 .article-detail__byline { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--icue-border); border-bottom: 1px solid var(--icue-border); }
 .article-detail__avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; display: grid; place-items: center; }
 .article-detail__avatar--fallback { background: var(--icue-gradient-dark); color: #fff; font-weight: 700; font-size: 18px; }

@@ -1,5 +1,6 @@
 import './BentoGrid.css'
 import Lens from './Lens'
+import TranslationLineSkeleton from './TranslationSkeleton'
 import { BorderBeam } from './magicui/BorderBeam'
 
 function cn(...classes) {
@@ -16,6 +17,7 @@ export function BentoGrid({ children, className = '', ...props }) {
 
 export function BentoCard({
   name,
+  titlePending = false,
   description,
   background,
   cta,
@@ -55,7 +57,13 @@ export function BentoCard({
       <div className="bento-card__background">{backgroundNode}</div>
       <div className="bento-card__body">
         {description ? <div className="bento-card__meta">{description}</div> : null}
-        {name ? <h2 className="bento-card__title">{name}</h2> : null}
+        {titlePending ? (
+          <TranslationLineSkeleton
+            lines={2}
+            className="translation-skeleton--on-dark bento-card__title-skeleton"
+          />
+        ) : null}
+        {!titlePending && name ? <h2 className="bento-card__title translation-reveal">{name}</h2> : null}
         {cta ? (
           <span className="bento-card__cta">
             {cta}

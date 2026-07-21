@@ -1,5 +1,11 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { loadEnv } from 'vite'
 import { fetchYahooQuotes } from './src/lib/marketQuotesFetch.js'
 import { fetchVnMarketQuotes } from './src/lib/vnMarketQuotesFetch.js'
+import { handleTranslateArticleRequest } from './src/lib/translateServer.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const MARKET_PATHS = new Set([
   '/newsroom/api/market-quotes',
@@ -11,6 +17,11 @@ const MARKET_PATHS = new Set([
 const AUTH_FORGOT_PATHS = new Set([
   '/newsroom/api/auth-forgot-password',
   '/api/auth-forgot-password',
+])
+
+const TRANSLATE_PATHS = new Set([
+  '/newsroom/api/translate-article',
+  '/api/translate-article',
 ])
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -52,11 +63,45 @@ async function handleForgotPassword(body, env) {
 
 /** Dev proxy for market quote + auth APIs. */
 export function marketApiPlugin() {
+  let fileEnv = {}
+
   return {
     name: 'icue-market-api',
+    config(_config, { mode }) {
+      fileEnv = loadEnv(mode, __dirname, '')
+    },
     configureServer(server) {
+      const runtimeEnv = () => ({ ...fileEnv, ...process.env })
       server.middlewares.use(async (req, res, next) => {
         const [path, query = ''] = (req.url || '').split('?')
+
+        if (TRANSLATE_PATHS.has(path)) {
+          if (req.method !== 'POST') {
+            res.statusCode = 405
+            res.end(JSON.stringify({ error: 'method not allowed' }))
+            return
+          }
+          let raw = ''
+          req.on('data', (chunk) => { raw += chunk })
+          req.on('end', async () => {
+            try {
+              const response = await handleTranslateArticleRequest(
+                { httpMethod: 'POST', body: raw },
+                runtimeEnv(),
+              )
+              res.statusCode = response.statusCode
+              Object.entries(response.headers || {}).forEach(([key, value]) => {
+                res.setHeader(key, value)
+              })
+              res.end(response.body)
+            } catch (err) {
+              res.statusCode = 502
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: err.message || 'translation failed', code: 'translate_failed' }))
+            }
+          })
+          return
+        }
 
         if (AUTH_FORGOT_PATHS.has(path)) {
           if (req.method !== 'POST') {
@@ -69,7 +114,7 @@ export function marketApiPlugin() {
           req.on('end', async () => {
             try {
               const body = JSON.parse(raw || '{}')
-              const env = process.env
+              const env = runtimeEnv()
               await handleForgotPassword(body, env)
               res.setHeader('Content-Type', 'application/json')
               res.end(JSON.stringify({ ok: true }))

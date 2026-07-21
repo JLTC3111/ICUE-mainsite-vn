@@ -33,14 +33,20 @@ export function bentoLayout(slug, index, total) {
   return BENTO_SPANS[seed % BENTO_SPANS.length]
 }
 
-export function buildBentoItems(articles, normalizeUnicode) {
+export function buildBentoItems(articles, normalizeUnicode, titleTranslations = {}, isTitlePending = () => false) {
   return articles.map((article, index) => {
-    const title = normalizeUnicode(article.title)
+    const titlePending = isTitlePending(article.id)
+    const title = titlePending
+      ? ''
+      : (titleTranslations[article.id] || normalizeUnicode(article.title))
     return {
       id: article.slug || article.id || String(index),
+      articleId: article.id,
       slug: article.slug,
+      language: article.language,
       img: article.cover_image_url || PLACEHOLDER_COVER,
       title,
+      titlePending,
       category:
         isCategory(article.category) && article.category !== 'general'
           ? article.category

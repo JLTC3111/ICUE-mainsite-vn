@@ -104,21 +104,39 @@ export default function BentoYCarousel({
       className="bento-y-carousel"
       aria-label={t('gallery.bentoCarouselAriaLabel')}
     >
-      <div className="bento-y-carousel__frame">
-        <div className="bento-y-carousel__viewport" ref={emblaRef}>
-          <div className="bento-y-carousel__container">
-            {slides.map((slideItems, slideIndex) => (
-              <div key={`slide-${slideIndex}-${slideItems[0]?.id ?? slideIndex}`} className="bento-y-carousel__slide">
-                <BentoArticleGrid
-                  items={slideItems}
-                  reduceMotion={reduceMotion}
-                  animationOffset={slideIndex * NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE}
-                  onItemClick={onItemClick}
-                />
-              </div>
-            ))}
+      <div className="bento-y-carousel__body">
+        <div className="bento-y-carousel__frame">
+          <div className="bento-y-carousel__viewport" ref={emblaRef}>
+            <div className="bento-y-carousel__container">
+              {slides.map((slideItems, slideIndex) => (
+                <div key={`slide-${slideIndex}-${slideItems[0]?.id ?? slideIndex}`} className="bento-y-carousel__slide">
+                  <BentoArticleGrid
+                    items={slideItems}
+                    reduceMotion={reduceMotion}
+                    animationOffset={slideIndex * NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE}
+                    onItemClick={onItemClick}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        {slides.length > 1 && (
+          <div className="bento-y-carousel__rail" role="tablist" aria-label={t('gallery.bentoSlideNav')}>
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                className={`bento-y-carousel__bar${index === selectedIndex ? ' is-active' : ''}`}
+                onClick={() => scrollTo(index)}
+                aria-label={t('gallery.bentoGoToSlide', { n: index + 1 })}
+                aria-selected={index === selectedIndex}
+                role="tab"
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {slides.length > 1 && (
@@ -159,20 +177,6 @@ export default function BentoYCarousel({
             >
               <ChevronDown className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>
-          </div>
-
-          <div className="bento-y-carousel__dots" role="tablist" aria-label={t('gallery.bentoSlideNav')}>
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`bento-y-carousel__dot${index === selectedIndex ? ' is-active' : ''}`}
-                onClick={() => scrollTo(index)}
-                aria-label={t('gallery.bentoGoToSlide', { n: index + 1 })}
-                aria-selected={index === selectedIndex}
-                role="tab"
-              />
-            ))}
           </div>
         </div>
       )}

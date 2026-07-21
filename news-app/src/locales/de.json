@@ -185,6 +185,8 @@
     "heading": "In deiner Sprache lesen",
     "translating": "Wird übersetzt…",
     "original": "Original anzeigen",
+    "showingOriginal": "Originalartikel wird angezeigt",
+    "retry": "Erneut versuchen",
     "translated": "Übersetzt: {{lang}}",
     "error": "Übersetzung fehlgeschlagen. Bitte versuche es erneut.",
     "note": "Maschinelle Übersetzung"
