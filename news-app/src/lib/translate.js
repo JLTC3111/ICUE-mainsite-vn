@@ -1,9 +1,29 @@
 // Client-side article translation via /api/translate-article (Google Cloud).
 // All UI locales in localeCodes.js — including English — are valid translation targets.
 
-import { normalizeLang, shouldTranslateArticle } from './translateProviders.js'
+import {
+  inferSourceLanguage,
+  normalizeLang,
+  shouldTranslateArticle,
+} from './translateUtils.js'
 
-export { normalizeLang, shouldTranslateArticle, inferSourceLanguage } from './translateProviders.js'
+export { inferSourceLanguage, normalizeLang, shouldTranslateArticle } from './translateUtils.js'
+
+// #region agent log
+fetch('http://127.0.0.1:7334/ingest/252f3540-649c-4676-b61f-d6baa3996828', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'f09bf0' },
+  body: JSON.stringify({
+    sessionId: 'f09bf0',
+    runId: 'post-fix',
+    hypothesisId: 'A',
+    location: 'translate.js:module',
+    message: 'client translate module loaded',
+    data: { hasNodeUrl: typeof globalThis?.process?.versions?.node === 'string' },
+    timestamp: Date.now(),
+  }),
+}).catch(() => {})
+// #endregion
 
 const memoryCache = new Map()
 

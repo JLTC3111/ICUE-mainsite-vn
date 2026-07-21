@@ -2,15 +2,13 @@
 
 import { LOCALE_CODE_SET } from './localeCodes.js'
 import { googleTranslateKey } from './serverEnv.js'
+import {
+  inferSourceLanguage,
+  normalizeLang,
+  shouldTranslateArticle,
+} from './translateUtils.js'
 
-const GOOGLE_ENDPOINT = 'https://translation.googleapis.com/language/translate/v2'
-/** Set to true once DEEPL_API_KEY is configured on Netlify. */
-const DEEPL_ENABLED = false
-const DEEPL_LOCALES = new Set(['de', 'fr'])
-
-const MAX_TEXT_CHARS = 4500
-const MAX_HTML_CHARS = 28000
-const VI_CHARS = /[ăâđêôơưàáảãạắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i
+export { inferSourceLanguage, normalizeLang, shouldTranslateArticle } from './translateUtils.js'
 
 function deeplBaseUrl(apiKey) {
   return String(apiKey || '').endsWith(':fx')
@@ -30,31 +28,13 @@ function deeplTarget(code) {
   return map[code] || String(code || '').toUpperCase()
 }
 
-export function normalizeLang(code) {
-  return String(code || '').split('-')[0].toLowerCase()
-}
+const GOOGLE_ENDPOINT = 'https://translation.googleapis.com/language/translate/v2'
+/** Set to true once DEEPL_API_KEY is configured on Netlify. */
+const DEEPL_ENABLED = false
+const DEEPL_LOCALES = new Set(['de', 'fr'])
 
-/** Guess content language from metadata + a short text sample (title/excerpt). */
-export function inferSourceLanguage(articleLanguage, textSample = '') {
-  const declared = normalizeLang(articleLanguage || '')
-  const sample = String(textSample || '').trim()
-
-  if (sample) {
-    if (VI_CHARS.test(sample)) return 'vi'
-    if (/[\uac00-\ud7af]/.test(sample)) return 'ko'
-    if (/[\u3040-\u30ff]/.test(sample)) return 'ja'
-  }
-
-  if (declared) return declared
-  return 'vi'
-}
-
-export function shouldTranslateArticle(articleLanguage, targetLocale, textSample = '') {
-  const target = normalizeLang(targetLocale)
-  if (!target || !LOCALE_CODE_SET.has(target)) return false
-  const source = inferSourceLanguage(articleLanguage, textSample)
-  return source !== target
-}
+const MAX_TEXT_CHARS = 4500
+const MAX_HTML_CHARS = 28000
 
 export function pickProvider(targetLocale, sourceLocale) {
   if (!DEEPL_ENABLED) return 'google'
