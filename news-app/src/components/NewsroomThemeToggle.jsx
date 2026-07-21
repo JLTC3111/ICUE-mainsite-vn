@@ -21,8 +21,7 @@ export default function NewsroomThemeToggle({ className = '' }) {
       className={`newsroom-theme-toggle${className ? ` ${className}` : ''}`}
       theme={isDark ? 'dark' : 'light'}
       onThemeChange={handleThemeChange}
-      duration={320}
-      variant="circle"
+      duration={280}
       aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
       title={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
     />

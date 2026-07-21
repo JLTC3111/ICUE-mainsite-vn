@@ -1,50 +1,42 @@
 import { useCallback, useRef } from 'react'
 import { flushSync } from 'react-dom'
-import { Moon, Sun } from 'lucide-react'
 import './AnimatedThemeToggler.css'
 
 function cn(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function polygonCollapsed(point, vertexCount) {
-  const pairs = Array.from({ length: vertexCount }, () => point).join(', ')
-  return `polygon(${pairs})`
+function SunIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
 }
 
-function getThemeTransitionClipPaths(
-  variant,
-  cx,
-  cy,
-  maxRadius,
-  viewportWidth,
-  viewportHeight,
-) {
-  const toX = (x) => `${(x / viewportWidth) * 100}%`
-  const toY = (y) => `${(y / viewportHeight) * 100}%`
-  const point = (x, y) => `${toX(x)} ${toY(y)}`
-  const toRadius = (r) =>
-    `${(r / (Math.hypot(viewportWidth, viewportHeight) / Math.SQRT2)) * 100}%`
-
-  switch (variant) {
-    case 'circle':
-      return [
-        `circle(0% at ${point(cx, cy)})`,
-        `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
-      ]
-    default:
-      return [
-        `circle(0% at ${point(cx, cy)})`,
-        `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
-      ]
-  }
+function MoonIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M20 14.5A8.5 8.5 0 0 1 9.5 4 7 7 0 1 0 20 14.5Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
 export default function AnimatedThemeToggler({
   className = '',
-  duration = 320,
-  variant = 'circle',
-  fromCenter = false,
+  duration = 280,
   theme = 'light',
   onThemeChange,
   'aria-label': ariaLabel,
@@ -52,101 +44,48 @@ export default function AnimatedThemeToggler({
   ...props
 }) {
   const isDark = theme === 'dark'
-  const buttonRef = useRef(null)
-  const isTransitioningRef = useRef(false)
+  const busyRef = useRef(false)
 
   const toggleTheme = useCallback(() => {
-    const button = buttonRef.current
-    if (
-      !button
-      || isTransitioningRef.current
-      || document.documentElement.dataset.magicuiThemeVt === 'active'
-    ) {
+    if (busyRef.current || document.documentElement.dataset.magicuiThemeVt === 'active') {
       return
     }
-
-    const viewportWidth = window.innerWidth
-    const viewportHeight = window.innerHeight
-
-    let x
-    let y
-    if (fromCenter) {
-      x = viewportWidth / 2
-      y = viewportHeight / 2
-    } else {
-      const { top, left, width, height } = button.getBoundingClientRect()
-      x = left + width / 2
-      y = top + height / 2
-    }
-
-    const maxRadius = Math.hypot(
-      Math.max(x, viewportWidth - x),
-      Math.max(y, viewportHeight - y),
-    )
 
     const applyTheme = () => {
       onThemeChange?.(isDark ? 'light' : 'dark')
     }
 
-    if (typeof document.startViewTransition !== 'function') {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion || typeof document.startViewTransition !== 'function') {
       applyTheme()
       return
     }
 
-    const clipPath = getThemeTransitionClipPaths(
-      variant,
-      x,
-      y,
-      maxRadius,
-      viewportWidth,
-      viewportHeight,
-    )
-
     const root = document.documentElement
+    busyRef.current = true
     root.dataset.magicuiThemeVt = 'active'
     root.style.setProperty('--magicui-theme-toggle-vt-duration', `${duration}ms`)
-    root.style.setProperty('--magicui-theme-vt-clip-from', clipPath[0])
 
     const cleanup = () => {
-      isTransitioningRef.current = false
+      busyRef.current = false
       delete root.dataset.magicuiThemeVt
       root.style.removeProperty('--magicui-theme-toggle-vt-duration')
-      root.style.removeProperty('--magicui-theme-vt-clip-from')
     }
 
-    isTransitioningRef.current = true
     const transition = document.startViewTransition(() => {
       flushSync(applyTheme)
     })
 
-    if (typeof transition?.finished?.finally === 'function') {
-      transition.finished.finally(cleanup).catch(() => {})
+    if (transition?.finished) {
+      transition.finished.finally(cleanup).catch(cleanup)
     } else {
       cleanup()
     }
-
-    const ready = transition?.ready
-    if (ready && typeof ready.then === 'function') {
-      ready
-        .then(() => {
-          document.documentElement.animate(
-            { clipPath },
-            {
-              duration,
-              easing: 'ease-in-out',
-              fill: 'forwards',
-              pseudoElement: '::view-transition-new(root)',
-            },
-          )
-        })
-        .catch(() => {})
-    }
-  }, [duration, fromCenter, isDark, onThemeChange, variant])
+  }, [duration, isDark, onThemeChange])
 
   return (
     <button
       type="button"
-      ref={buttonRef}
       onClick={toggleTheme}
       className={cn('animated-theme-toggler', className)}
       aria-pressed={isDark}
@@ -154,9 +93,7 @@ export default function AnimatedThemeToggler({
       title={title}
       {...props}
     >
-      <span className="animated-theme-toggler__icon" aria-hidden="true">
-        {isDark ? <Sun size={16} strokeWidth={2} /> : <Moon size={16} strokeWidth={2} />}
-      </span>
+      <span className="animated-theme-toggler__icon">{isDark ? <SunIcon /> : <MoonIcon />}</span>
     </button>
   )
 }

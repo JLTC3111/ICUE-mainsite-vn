@@ -1,4 +1,4 @@
-import { normalizeHtmlUnicode, normalizeUnicode } from '../../../shared/text/normalizeUnicode.js'
+import { normalizeHtmlUnicode, normalizeUnicode } from './normalizeUnicode.js'
 import {
   detectSourceLanguage,
   inferSourceLanguage,
