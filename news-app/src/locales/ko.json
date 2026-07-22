@@ -124,7 +124,23 @@
     "uploadError": "업로드 실패",
     "required": "제목과 내용을 입력해 주세요.",
     "needTitle": "위의 '제목' 칸에 제목을 입력해 주세요.",
-    "needContent": "기사 내용을 입력해 주세요."
+    "needContent": "기사 내용을 입력해 주세요.",
+    "sourcesTitle": "출처",
+    "sourcesOptional": "선택 사항 — 라벨과 링크로 참고 자료를 추가하세요.",
+    "sourceLabel": "라벨",
+    "sourceUrl": "URL",
+    "sourcePublisher": "발행처 (선택)",
+    "sourceAccessed": "접속일 (선택)",
+    "addSource": "출처 추가",
+    "removeSource": "삭제",
+    "sourceUrlInvalid": "유효한 http 또는 https URL을 입력하세요.",
+    "comparisonTitle": "전후 비교",
+    "comparisonHint": "Before와 After 이미지를 각각 하나씩 선택하면 기사 페이지에 슬라이더가 표시됩니다.",
+    "comparisonBefore": "이전",
+    "comparisonAfter": "이후",
+    "comparisonClear": "비교 해제",
+    "comparisonNeedTwo": "슬라이더를 설정하려면 위에 이미지를 2장 이상 업로드하세요.",
+    "comparisonPreview": "기사 페이지 미리보기"
   },
   "profile": {
     "displayName": "표시 이름",
@@ -142,7 +158,10 @@
     "nextImage": "다음 이미지",
     "lensToggle": "돋보기 렌즈",
     "lensOn": "켜짐",
-    "lensOff": "꺼짐"
+    "lensOff": "꺼짐",
+    "sourcesTitle": "출처",
+    "comparisonBefore": "이전",
+    "comparisonAfter": "이후"
   },
   "engagement": {
     "like": "하트 남기기",

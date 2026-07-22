@@ -124,7 +124,23 @@
     "uploadError": "Tải lên thất bại",
     "required": "Vui lòng nhập tiêu đề và nội dung.",
     "needTitle": "Vui lòng nhập tiêu đề ở ô “Tiêu đề” phía trên.",
-    "needContent": "Vui lòng nhập nội dung bài viết."
+    "needContent": "Vui lòng nhập nội dung bài viết.",
+    "sourcesTitle": "Nguồn tham khảo",
+    "sourcesOptional": "Tùy chọn — trích dẫn nguồn với nhãn và liên kết.",
+    "sourceLabel": "Nhãn",
+    "sourceUrl": "URL",
+    "sourcePublisher": "Nhà xuất bản (tùy chọn)",
+    "sourceAccessed": "Ngày truy cập (tùy chọn)",
+    "addSource": "Thêm nguồn",
+    "removeSource": "Xóa",
+    "sourceUrlInvalid": "Nhập URL hợp lệ (http hoặc https).",
+    "comparisonTitle": "So sánh trước / sau",
+    "comparisonHint": "Chọn một ảnh Before và một ảnh After để hiển thị thanh trượt trên trang bài viết.",
+    "comparisonBefore": "Trước",
+    "comparisonAfter": "Sau",
+    "comparisonClear": "Xóa so sánh",
+    "comparisonNeedTwo": "Tải lên ít nhất 2 ảnh ở trên để thiết lập thanh trượt trước/sau.",
+    "comparisonPreview": "Xem trước trên trang bài viết"
   },
   "profile": {
     "displayName": "Tên hiển thị",
@@ -142,7 +158,10 @@
     "nextImage": "Ảnh sau",
     "lensToggle": "Kính lúp",
     "lensOn": "Bật",
-    "lensOff": "Tắt"
+    "lensOff": "Tắt",
+    "sourcesTitle": "Nguồn tham khảo",
+    "comparisonBefore": "Trước",
+    "comparisonAfter": "Sau"
   },
   "engagement": {
     "like": "Thả tim",

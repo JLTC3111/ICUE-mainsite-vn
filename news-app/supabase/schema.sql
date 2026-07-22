@@ -62,6 +62,8 @@ create table if not exists public.articles (
   article_time  time,
   read_minutes  int default 1,
   published_at  timestamptz,
+  sources       jsonb not null default '[]'::jsonb,
+  media_comparison jsonb,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
@@ -79,6 +81,10 @@ create index if not exists articles_category_idx on public.articles (category);
 
 -- Denormalized pageview counter (incremented on each article detail load).
 alter table public.articles add column if not exists view_count int not null default 0;
+
+alter table public.articles add column if not exists sources jsonb not null default '[]'::jsonb;
+
+alter table public.articles add column if not exists media_comparison jsonb;
 
 -- ----------------------------------------------------------------------------
 -- article_media: up to 10 images + 2 videos enforced at app + trigger level
@@ -436,6 +442,7 @@ create table if not exists public.article_translations (
   title         text not null default '',
   subtitle      text,
   content_html  text not null default '',
+  sources       jsonb not null default '[]'::jsonb,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now(),
   primary key (article_id, locale)

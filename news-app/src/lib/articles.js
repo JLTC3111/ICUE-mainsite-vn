@@ -1,11 +1,16 @@
 import { supabase, STORAGE_BUCKETS } from './supabase'
 import { fileExt, readMinutes, uniqueSlug } from './helpers'
 import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode'
+import { normalizeSources, sanitizeSourcesForSave } from './articleSources'
+import {
+  normalizeMediaComparison,
+  resolveMediaComparisonForSave,
+} from './mediaComparison'
 
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
   status, language, category, article_date, article_time, read_minutes, published_at,
-  view_count, created_at, updated_at, author_id, author_name,
+  view_count, created_at, updated_at, author_id, author_name, sources, media_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
@@ -13,7 +18,7 @@ const ARTICLE_SELECT = `
 const ARTICLE_SELECT_LEGACY = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
   status, language, category, article_date, article_time, read_minutes, published_at,
-  created_at, updated_at, author_id, author_name,
+  created_at, updated_at, author_id, author_name, sources, media_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
@@ -23,10 +28,67 @@ function isMissingViewCount(error) {
   return error?.code === '42703' || msg.includes('view_count')
 }
 
+function isMissingSources(error) {
+  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
+  return error?.code === '42703' || msg.includes('sources')
+}
+
+function isMissingMediaComparison(error) {
+  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
+  return error?.code === '42703' || msg.includes('media_comparison')
+}
+
+const ARTICLE_SELECT_NO_MEDIA_COMPARISON = `
+  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  status, language, category, article_date, article_time, read_minutes, published_at,
+  view_count, created_at, updated_at, author_id, author_name, sources,
+  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
+  media:article_media ( id, kind, url, storage_path, poster_url, position )
+`
+
+const ARTICLE_SELECT_LEGACY_NO_MEDIA_COMPARISON = `
+  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  status, language, category, article_date, article_time, read_minutes, published_at,
+  created_at, updated_at, author_id, author_name, sources,
+  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
+  media:article_media ( id, kind, url, storage_path, poster_url, position )
+`
+
+const ARTICLE_SELECT_NO_SOURCES = `
+  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  status, language, category, article_date, article_time, read_minutes, published_at,
+  view_count, created_at, updated_at, author_id, author_name,
+  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
+  media:article_media ( id, kind, url, storage_path, poster_url, position )
+`
+
+const ARTICLE_SELECT_LEGACY_NO_SOURCES = `
+  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  status, language, category, article_date, article_time, read_minutes, published_at,
+  created_at, updated_at, author_id, author_name,
+  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
+  media:article_media ( id, kind, url, storage_path, poster_url, position )
+`
+
 async function runArticleSelect(runQuery) {
   let { data, error } = await runQuery(ARTICLE_SELECT)
   if (error && isMissingViewCount(error)) {
     ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY))
+  }
+  if (error && isMissingSources(error)) {
+    ;({ data, error } = await runQuery(ARTICLE_SELECT_NO_SOURCES))
+    if (error && isMissingViewCount(error)) {
+      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_SOURCES))
+    }
+  }
+  if (error && isMissingMediaComparison(error)) {
+    ;({ data, error } = await runQuery(ARTICLE_SELECT_NO_MEDIA_COMPARISON))
+    if (error && isMissingViewCount(error)) {
+      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_MEDIA_COMPARISON))
+    }
+    if (error && isMissingSources(error)) {
+      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_SOURCES))
+    }
   }
   if (error) throw error
   return data
@@ -40,6 +102,8 @@ function normalizeArticle(article) {
   }
   const views = Number(normalized.view_count)
   normalized.view_count = Number.isFinite(views) ? Math.max(0, Math.floor(views)) : 0
+  normalized.sources = normalizeSources(normalized.sources)
+  normalized.media_comparison = normalizeMediaComparison(normalized.media_comparison)
   return normalized
 }
 
@@ -103,6 +167,7 @@ export async function fetchArticleById(id) {
 // Persist media: upload any new files, then reconcile rows for the article.
 async function syncMedia(articleId, userId, items, originalItems = []) {
   const keptIds = new Set(items.filter((m) => !m.isNew && m.dbId).map((m) => m.dbId))
+  const clientToDb = new Map()
   // Delete removed rows (+ their storage objects)
   const toDelete = originalItems.filter((m) => m.dbId && !keptIds.has(m.dbId))
   if (toDelete.length) {
@@ -117,17 +182,35 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
     position += 1
     if (m.isNew && m.file) {
       const { url, path } = await uploadFile(STORAGE_BUCKETS.media, userId, m.file)
-      await supabase.from('article_media').insert({
-        article_id: articleId,
-        kind: m.kind,
-        url,
-        storage_path: path,
-        position,
-      })
+      const { data, error } = await supabase
+        .from('article_media')
+        .insert({
+          article_id: articleId,
+          kind: m.kind,
+          url,
+          storage_path: path,
+          position,
+        })
+        .select('id')
+        .single()
+      if (error) throw error
+      clientToDb.set(m.id, data.id)
     } else if (m.dbId) {
+      clientToDb.set(m.id, m.dbId)
       await supabase.from('article_media').update({ position }).eq('id', m.dbId)
     }
   }
+
+  return clientToDb
+}
+
+async function saveMediaComparison(articleId, comparison, clientToDb) {
+  const resolved = resolveMediaComparisonForSave(comparison, clientToDb)
+  const { error } = await supabase
+    .from('articles')
+    .update({ media_comparison: resolved })
+    .eq('id', articleId)
+  if (error && !isMissingMediaComparison(error)) throw error
 }
 
 // Create a brand-new article (Component 2).
@@ -154,12 +237,14 @@ export async function createArticle({ form, items, coverFile, userId, status }) 
     article_time: form.time || null,
     read_minutes: readMinutes(form.contentHtml),
     published_at: status === 'published' ? new Date().toISOString() : null,
+    sources: sanitizeSourcesForSave(form.sources),
   }
 
   const { data, error } = await supabase.from('articles').insert(payload).select('id, slug').single()
   if (error) throw error
 
-  await syncMedia(data.id, userId, items)
+  const clientToDb = await syncMedia(data.id, userId, items)
+  await saveMediaComparison(data.id, form.mediaComparison, clientToDb)
   return data
 }
 
@@ -183,6 +268,7 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     article_date: form.date || null,
     article_time: form.time || null,
     read_minutes: readMinutes(form.contentHtml),
+    sources: sanitizeSourcesForSave(form.sources),
   }
   if (status) {
     payload.status = status
@@ -197,7 +283,8 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     .single()
   if (error) throw error
 
-  await syncMedia(id, userId, items, originalItems)
+  const clientToDb = await syncMedia(id, userId, items, originalItems)
+  await saveMediaComparison(id, form.mediaComparison, clientToDb)
   return data
 }
 

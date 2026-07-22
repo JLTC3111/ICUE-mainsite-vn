@@ -7,10 +7,12 @@ import {
   shouldTranslateArticle,
   translateFields,
   translatePlainText,
+  translateSources,
 } from './translateProviders.js'
 import { shouldTranslateComment } from './translateUtils.js'
+import { sanitizeSourcesForSave } from './articleSources.js'
 
-const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status'
+const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources'
 
 function supabaseConfig(env) {
   const serviceKey = supabaseServiceKey(env)
@@ -50,7 +52,7 @@ async function fetchCachedTranslation(articleId, locale, env) {
   if (!url || !serviceKey) return null
 
   const res = await fetch(
-    `${url}/rest/v1/article_translations?article_id=eq.${encodeURIComponent(articleId)}&locale=eq.${encodeURIComponent(locale)}&select=title,subtitle,content_html,provider,source_lang`,
+    `${url}/rest/v1/article_translations?article_id=eq.${encodeURIComponent(articleId)}&locale=eq.${encodeURIComponent(locale)}&select=title,subtitle,content_html,sources,provider,source_lang`,
     { headers: restHeaders(serviceKey) },
   )
   if (!res.ok) return null
@@ -70,6 +72,7 @@ async function upsertCachedTranslation(articleId, locale, payload, env) {
     title: payload.title || '',
     subtitle: payload.subtitle || null,
     content_html: payload.content_html || '',
+    sources: payload.sources || [],
     updated_at: new Date().toISOString(),
   }
 
@@ -99,6 +102,8 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   const detected = await detectSourceLanguage(detectSample, env)
   const sourceLang = detected || inferSourceLanguage(declaredSource, detectSample)
 
+  const articleSources = sanitizeSourcesForSave(article.sources)
+
   if (!shouldTranslateArticle(sourceLang, locale, detectSample)) {
     return {
       cached: false,
@@ -108,6 +113,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       title: normalizeUnicode(article.title || ''),
       subtitle: normalizeUnicode(article.subtitle || ''),
       content_html: normalizeHtmlUnicode(article.content_html || ''),
+      sources: articleSources,
       original: true,
     }
   }
@@ -122,6 +128,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       title: normalizeUnicode(cached.title || ''),
       subtitle: normalizeUnicode(cached.subtitle || ''),
       content_html: normalizeHtmlUnicode(cached.content_html || ''),
+      sources: sanitizeSourcesForSave(cached.sources?.length ? cached.sources : articleSources),
       original: false,
     }
   }
@@ -137,6 +144,10 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     env,
   )
 
+  const translatedSources = articleSources.length
+    ? await translateSources(articleSources, locale, sourceLang, env)
+    : []
+
   const result = {
     cached: false,
     provider: translated.provider,
@@ -145,6 +156,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     title: normalizeUnicode(translated.title || ''),
     subtitle: normalizeUnicode(translated.subtitle || ''),
     content_html: normalizeHtmlUnicode(translated.content_html || ''),
+    sources: sanitizeSourcesForSave(translatedSources),
     original: false,
   }
 
@@ -154,6 +166,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     title: result.title,
     subtitle: result.subtitle,
     content_html: result.content_html,
+    sources: result.sources,
   }, env)
 
   return result

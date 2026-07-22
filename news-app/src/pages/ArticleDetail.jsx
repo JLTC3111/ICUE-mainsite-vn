@@ -8,6 +8,7 @@ import { recordArticleView } from '../lib/engagement'
 import { formatDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
+import ArticleSources from '../components/ArticleSources'
 import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
@@ -147,6 +148,7 @@ export default function ArticleDetail() {
             title: result.title,
             subtitle: result.subtitle,
             content_html: result.content_html,
+            sources: result.sources,
           })
           setTranslatedLang(uiLang)
         }
@@ -337,7 +339,17 @@ export default function ArticleDetail() {
         />
       )}
 
-      <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
+      <MediaGallery
+        images={images}
+        videos={videos}
+        comparison={article.media_comparison}
+        lensEnabled={lensEnabled}
+      />
+
+      <ArticleSources
+        sources={article.sources}
+        translatedSources={usingTranslation ? translation?.sources : null}
+      />
 
       <div className="article-detail__foot icue-readw">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>

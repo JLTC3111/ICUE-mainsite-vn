@@ -114,12 +114,12 @@ export async function translateCommentsViaApi(commentIds, targetLocale) {
   return data
 }
 
-/** @deprecated Use translateArticleViaApi */
 export async function translateArticle(article, target) {
   const result = await translateArticleViaApi(article.id, target)
   return {
     title: result.title,
     subtitle: result.subtitle,
     content_html: result.content_html,
+    sources: result.sources,
   }
 }

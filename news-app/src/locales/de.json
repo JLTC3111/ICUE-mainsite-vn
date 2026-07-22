@@ -124,7 +124,23 @@
     "uploadError": "Upload fehlgeschlagen",
     "required": "Bitte Titel und Inhalt eingeben.",
     "needTitle": "Bitte gib im Feld „Titel“ oben einen Titel ein.",
-    "needContent": "Bitte gib einen Inhalt für den Artikel ein."
+    "needContent": "Bitte gib einen Inhalt für den Artikel ein.",
+    "sourcesTitle": "Quellen",
+    "sourcesOptional": "Optional — Referenzen mit Bezeichnung und Link angeben.",
+    "sourceLabel": "Bezeichnung",
+    "sourceUrl": "URL",
+    "sourcePublisher": "Herausgeber (optional)",
+    "sourceAccessed": "Zugriffsdatum (optional)",
+    "addSource": "Quelle hinzufügen",
+    "removeSource": "Entfernen",
+    "sourceUrlInvalid": "Gültige http- oder https-URL eingeben.",
+    "comparisonTitle": "Vorher / Nachher-Vergleich",
+    "comparisonHint": "Wähle ein Vorher- und ein Nachher-Bild für den Schieberegler auf der Artikelseite.",
+    "comparisonBefore": "Vorher",
+    "comparisonAfter": "Nachher",
+    "comparisonClear": "Vergleich entfernen",
+    "comparisonNeedTwo": "Lade mindestens 2 Bilder hoch, um den Vorher/Nachher-Schieberegler einzurichten.",
+    "comparisonPreview": "Vorschau auf der Artikelseite"
   },
   "profile": {
     "displayName": "Anzeigename",
@@ -142,7 +158,10 @@
     "nextImage": "Nächstes Bild",
     "lensToggle": "Vergrößerungslinse",
     "lensOn": "An",
-    "lensOff": "Aus"
+    "lensOff": "Aus",
+    "sourcesTitle": "Quellen",
+    "comparisonBefore": "Vorher",
+    "comparisonAfter": "Nachher"
   },
   "engagement": {
     "like": "Herz hinterlassen",

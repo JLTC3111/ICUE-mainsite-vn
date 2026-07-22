@@ -124,7 +124,23 @@
     "uploadError": "Échec du téléversement",
     "required": "Veuillez saisir un titre et un contenu.",
     "needTitle": "Veuillez saisir un titre dans le champ « Titre » ci-dessus.",
-    "needContent": "Veuillez saisir un contenu pour l'article."
+    "needContent": "Veuillez saisir un contenu pour l'article.",
+    "sourcesTitle": "Sources",
+    "sourcesOptional": "Facultatif — citez vos références avec un libellé et un lien.",
+    "sourceLabel": "Libellé",
+    "sourceUrl": "URL",
+    "sourcePublisher": "Éditeur (facultatif)",
+    "sourceAccessed": "Date de consultation (facultatif)",
+    "addSource": "Ajouter une source",
+    "removeSource": "Supprimer",
+    "sourceUrlInvalid": "Saisissez une URL http ou https valide.",
+    "comparisonTitle": "Comparaison avant / après",
+    "comparisonHint": "Choisissez une image Avant et une image Après pour afficher un curseur sur la page article.",
+    "comparisonBefore": "Avant",
+    "comparisonAfter": "Après",
+    "comparisonClear": "Effacer la comparaison",
+    "comparisonNeedTwo": "Ajoutez au moins 2 images ci-dessus pour configurer le curseur avant/après.",
+    "comparisonPreview": "Aperçu sur la page article"
   },
   "profile": {
     "displayName": "Nom affiché",
@@ -142,7 +158,10 @@
     "nextImage": "Image suivante",
     "lensToggle": "Loupe",
     "lensOn": "Activée",
-    "lensOff": "Désactivée"
+    "lensOff": "Désactivée",
+    "sourcesTitle": "Sources",
+    "comparisonBefore": "Avant",
+    "comparisonAfter": "Après"
   },
   "engagement": {
     "like": "Laisser un cœur",

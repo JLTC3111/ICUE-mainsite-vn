@@ -124,7 +124,23 @@
     "uploadError": "アップロードに失敗しました",
     "required": "タイトルと本文を入力してください。",
     "needTitle": "上の「タイトル」欄にタイトルを入力してください。",
-    "needContent": "記事の本文を入力してください。"
+    "needContent": "記事の本文を入力してください。",
+    "sourcesTitle": "出典",
+    "sourcesOptional": "任意 — ラベルとリンクで参照元を追加できます。",
+    "sourceLabel": "ラベル",
+    "sourceUrl": "URL",
+    "sourcePublisher": "発行元（任意）",
+    "sourceAccessed": "アクセス日（任意）",
+    "addSource": "出典を追加",
+    "removeSource": "削除",
+    "sourceUrlInvalid": "有効な http または https の URL を入力してください。",
+    "comparisonTitle": "ビフォー / アフター比較",
+    "comparisonHint": "Before と After の画像を1枚ずつ選ぶと、記事ページにスライダーが表示されます。",
+    "comparisonBefore": "ビフォー",
+    "comparisonAfter": "アフター",
+    "comparisonClear": "比較を解除",
+    "comparisonNeedTwo": "スライダーを設定するには、上で画像を2枚以上アップロードしてください。",
+    "comparisonPreview": "記事ページのプレビュー"
   },
   "profile": {
     "displayName": "表示名",
@@ -142,7 +158,10 @@
     "nextImage": "次の画像",
     "lensToggle": "拡大レンズ",
     "lensOn": "オン",
-    "lensOff": "オフ"
+    "lensOff": "オフ",
+    "sourcesTitle": "出典",
+    "comparisonBefore": "ビフォー",
+    "comparisonAfter": "アフター"
   },
   "engagement": {
     "like": "ハートを送る",

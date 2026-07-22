@@ -226,6 +226,34 @@ export async function translateFields(
   }
 }
 
+export async function translateSources(sources, targetLocale, sourceLocale, env) {
+  const list = Array.isArray(sources) ? sources : []
+  if (!list.length) return []
+
+  const results = await Promise.all(
+    list.map(async (row) => {
+      const [labelResult, publisherResult] = await Promise.all([
+        row.label
+          ? translatePlainText(row.label, targetLocale, sourceLocale, env)
+          : Promise.resolve({ text: '' }),
+        row.publisher
+          ? translatePlainText(row.publisher, targetLocale, sourceLocale, env)
+          : Promise.resolve({ text: '' }),
+      ])
+
+      return {
+        id: row.id,
+        label: labelResult.text || row.label || '',
+        url: row.url,
+        publisher: publisherResult.text || row.publisher || null,
+        accessed_at: row.accessed_at || null,
+      }
+    }),
+  )
+
+  return results
+}
+
 export async function translatePlainText(text, targetLocale, sourceLocale, env) {
   const sample = String(text || '').trim()
   if (!sample) return { provider: null, text: '' }

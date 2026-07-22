@@ -124,7 +124,23 @@
     "uploadError": "Upload failed",
     "required": "Please enter a title and content.",
     "needTitle": "Please enter a title in the “Title” field above.",
-    "needContent": "Please enter some content for the article."
+    "needContent": "Please enter some content for the article.",
+    "sourcesTitle": "Sources",
+    "sourcesOptional": "Optional — cite references with a label and link.",
+    "sourceLabel": "Label",
+    "sourceUrl": "URL",
+    "sourcePublisher": "Publisher (optional)",
+    "sourceAccessed": "Accessed date (optional)",
+    "addSource": "Add source",
+    "removeSource": "Remove",
+    "sourceUrlInvalid": "Enter a valid http or https URL.",
+    "comparisonTitle": "Before / after comparison",
+    "comparisonHint": "Pick one image as Before and one as After to show a draggable slider on the article page.",
+    "comparisonBefore": "Before",
+    "comparisonAfter": "After",
+    "comparisonClear": "Clear comparison",
+    "comparisonNeedTwo": "Upload at least 2 images above to set up a before/after slider.",
+    "comparisonPreview": "Preview on article page"
   },
   "profile": {
     "displayName": "Display name",
@@ -142,7 +158,10 @@
     "nextImage": "Next image",
     "lensToggle": "Magnifying lens",
     "lensOn": "On",
-    "lensOff": "Off"
+    "lensOff": "Off",
+    "sourcesTitle": "Sources",
+    "comparisonBefore": "Before",
+    "comparisonAfter": "After"
   },
   "engagement": {
     "like": "Leave a heart",

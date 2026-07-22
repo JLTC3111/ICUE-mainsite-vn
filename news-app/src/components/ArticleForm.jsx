@@ -5,8 +5,11 @@ import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import { CATEGORY_SLUGS, DEFAULT_CATEGORY } from '../lib/categories'
 import RichTextEditor from './RichTextEditor'
+import ArticleSourcesEditor from './ArticleSourcesEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
+import { normalizeSources } from '../lib/articleSources'
+import { comparisonToEditorIds } from '../lib/mediaComparison'
 import './ArticleForm.css'
 
 const todayStr = () => new Date().toISOString().slice(0, 10)
@@ -33,7 +36,11 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [category, setCategory] = useState(initial?.category || DEFAULT_CATEGORY)
   const [contentHtml, setContentHtml] = useState(initial?.content_html || '')
   const [contentJson, setContentJson] = useState(initial?.content_json || null)
+  const [sources, setSources] = useState(() => normalizeSources(initial?.sources))
   const [items, setItems] = useState(initial?.items || [])
+  const [mediaComparison, setMediaComparison] = useState(() =>
+    comparisonToEditorIds(initial?.media_comparison, initial?.items || []),
+  )
   const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
   const coverFileRef = useRef(null)
   const [coverPreview, setCoverPreview] = useState(initial?.cover_image_url || '')
@@ -90,6 +97,8 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             time,
             contentHtml,
             contentJson,
+            sources,
+            mediaComparison,
             coverImageUrl: coverUrl || null,
             language: initial?.language || 'vi',
             category,
@@ -103,7 +112,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, items, coverUrl, onSubmit, mode, t, initial?.language],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, mediaComparison, items, coverUrl, onSubmit, mode, t, initial?.language],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -211,7 +220,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           <RichTextEditor value={contentHtml} onChange={onEditorChange} placeholder={t('editor.storyPlaceholder')} />
         </ErrorBoundary>
 
-        <MediaUploader items={items} onChange={setItems} />
+        <ArticleSourcesEditor sources={sources} onChange={setSources} />
+
+        <MediaUploader
+          items={items}
+          onChange={setItems}
+          comparison={mediaComparison}
+          onComparisonChange={setMediaComparison}
+        />
       </div>
     </div>
   )
