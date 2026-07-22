@@ -39,6 +39,7 @@ export default function AnimatedThemeToggler({
   duration = 280,
   theme = 'light',
   onThemeChange,
+  instant = false,
   'aria-label': ariaLabel,
   title,
   ...props
@@ -56,8 +57,8 @@ export default function AnimatedThemeToggler({
     }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reducedMotion || typeof document.startViewTransition !== 'function') {
-      applyTheme()
+    if (reducedMotion || instant || typeof document.startViewTransition !== 'function') {
+      flushSync(applyTheme)
       return
     }
 
@@ -66,11 +67,18 @@ export default function AnimatedThemeToggler({
     root.dataset.magicuiThemeVt = 'active'
     root.style.setProperty('--magicui-theme-toggle-vt-duration', `${duration}ms`)
 
+    let timeoutId = 0
     const cleanup = () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId)
+        timeoutId = 0
+      }
       busyRef.current = false
       delete root.dataset.magicuiThemeVt
       root.style.removeProperty('--magicui-theme-toggle-vt-duration')
     }
+
+    timeoutId = window.setTimeout(cleanup, duration + 120)
 
     const transition = document.startViewTransition(() => {
       flushSync(applyTheme)
@@ -81,7 +89,7 @@ export default function AnimatedThemeToggler({
     } else {
       cleanup()
     }
-  }, [duration, isDark, onThemeChange])
+  }, [duration, instant, isDark, onThemeChange])
 
   return (
     <button

@@ -38,6 +38,7 @@
   --icue-ticker-h: 34px;
   --icue-vn-ticker-h: 30px;
   --icue-nav-hover-line: #f59e0b;
+  --icue-chrome-top: calc(var(--icue-header-h) + var(--icue-ticker-h) + var(--icue-vn-ticker-h));
 }
 
 *,
@@ -50,6 +51,15 @@ html {
   /* Render the app in light mode regardless of OS dark mode, so editable
      areas / inputs never get auto white-on-white text. */
   color-scheme: light;
+}
+
+/* Reader dark mode — synced from Layout via syncNewsroomDocumentTheme(). */
+html.icue-news-theme-dark {
+  color-scheme: dark;
+}
+
+html.icue-news-theme-dark body {
+  background: #0a0a0a;
 }
 
 body {

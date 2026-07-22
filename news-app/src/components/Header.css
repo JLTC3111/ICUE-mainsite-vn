@@ -297,9 +297,19 @@
   align-self: center;
 }
 
+.icue-header__theme-toggle--article-mobile {
+  display: none;
+}
+
 @media (max-width: 860px) {
   .icue-header__theme-toggle {
     display: none;
+  }
+
+  .icue-header__theme-toggle--article-mobile {
+    display: inline-grid;
+    margin-left: auto;
+    margin-right: 8px;
   }
 
   .icue-header__nav.is-open .icue-header__theme-toggle {

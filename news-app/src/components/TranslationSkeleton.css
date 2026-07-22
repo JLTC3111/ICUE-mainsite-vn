@@ -19,7 +19,8 @@
   animation: translation-shimmer 1.15s ease-in-out infinite;
 }
 
-.translation-skeleton--on-dark .translation-skeleton__line {
+.translation-skeleton--on-dark .translation-skeleton__line,
+.icue-app--news-theme-dark .translation-skeleton__line {
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.12) 0%,

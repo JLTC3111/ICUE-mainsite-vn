@@ -225,3 +225,28 @@ export async function translateFields(
     content_html: nextHtml,
   }
 }
+
+export async function translatePlainText(text, targetLocale, sourceLocale, env) {
+  const sample = String(text || '').trim()
+  if (!sample) return { provider: null, text: '' }
+
+  const target = normalizeLang(targetLocale)
+  const source = sourceLocale || inferSourceLanguage('', sample)
+  if (!shouldTranslateArticle(source, target, sample)) {
+    return { provider: null, text: sample, original: true }
+  }
+
+  const provider = resolveProvider(target, source, env)
+  const googleKey = googleTranslateKey(env)
+  const deeplKey = env.DEEPL_API_KEY || env.DEEPL_AUTH_KEY
+
+  if (provider === 'deepl') {
+    if (!DEEPL_ENABLED || !deeplKey) throw new Error('deepl_not_configured')
+    const next = await deeplTranslate(sample, target, deeplKey, { source })
+    return { provider: 'deepl', text: next, original: false }
+  }
+
+  if (!googleKey) throw new Error('google_not_configured')
+  const next = await googleTranslateText(sample, target, googleKey, source || undefined)
+  return { provider: 'google', text: next, original: false }
+}

@@ -185,6 +185,7 @@
     "heading": "In deiner Sprache lesen",
     "translating": "Wird übersetzt…",
     "original": "Original anzeigen",
+    "showTranslation": "{{lang}}-Übersetzung anzeigen",
     "showingOriginal": "Originalartikel wird angezeigt",
     "retry": "Erneut versuchen",
     "translated": "Übersetzt: {{lang}}",

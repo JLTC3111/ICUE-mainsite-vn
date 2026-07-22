@@ -13,7 +13,6 @@ import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import { translateArticleViaApi, shouldTranslateArticle } from '../lib/translate'
-import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
@@ -63,7 +62,6 @@ function writeLensPreference(enabled) {
 export default function ArticleDetail() {
   const { slug } = useParams()
   const { t, i18n } = useTranslation()
-  const { isDark } = useNewsroomTheme()
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
   const lensCapable = useLensCapable()
@@ -189,7 +187,7 @@ export default function ArticleDetail() {
 
   if (state === 'loading') {
     return (
-      <div className={`route-loading${isDark ? ' route-loading--dark' : ''}`}>
+      <div className="route-loading">
         <span className="spin" />
       </div>
     )
@@ -224,12 +222,12 @@ export default function ArticleDetail() {
   const showTranslatorBar =
     translateBusy
     || translateError
-    || Boolean(usingTranslation && translatedLang)
-    || (showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title)))
+    || Boolean(translatedLang && translation)
+    || (showOriginal && Boolean(translatedLang))
   const showToolsBar = showLensToggle || showTranslatorBar
 
   return (
-    <article className={`article-detail${isDark ? ' article-detail--dark' : ''}`}>
+    <article className="article-detail">
       <ScrollProgress />
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
@@ -237,7 +235,7 @@ export default function ArticleDetail() {
           <h1 className="article-detail__title">
             <TranslationLineSkeleton
               lines={2}
-              className={`translation-skeleton--title${isDark ? ' translation-skeleton--on-dark' : ''}`}
+              className="translation-skeleton--title"
             />
           </h1>
         ) : (
@@ -254,7 +252,7 @@ export default function ArticleDetail() {
         {isTranslating ? (
           <TranslationLineSkeleton
             lines={1}
-            className={`translation-skeleton--title article-detail__subtitle-skeleton${isDark ? ' translation-skeleton--on-dark' : ''}`}
+            className="translation-skeleton--title article-detail__subtitle-skeleton"
           />
         ) : (
           displaySubtitle && <p className="article-detail__subtitle translation-reveal">{displaySubtitle}</p>
@@ -286,9 +284,10 @@ export default function ArticleDetail() {
             <ArticleTranslator
               busy={translateBusy}
               error={translateError}
-              activeLang={usingTranslation ? translatedLang : null}
-              showOriginal={showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title))}
+              translationLang={translatedLang}
+              showOriginal={showOriginal}
               onShowOriginal={() => setShowOriginal(true)}
+              onShowTranslation={() => setShowOriginal(false)}
               onRetry={retryTranslation}
             />
           )}
@@ -326,7 +325,7 @@ export default function ArticleDetail() {
         <div className="article-detail__content icue-readw article-detail__content--translating">
           <TranslationLineSkeleton
             lines={8}
-            className={`translation-skeleton--article${isDark ? ' translation-skeleton--on-dark' : ''}`}
+            className="translation-skeleton--article"
           />
         </div>
       ) : (

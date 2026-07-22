@@ -42,6 +42,10 @@ function Header() {
           <span className="icue-header__tag">{t('brandBadge')}</span>
         </a>
 
+        {isReaderRoute && pathname.startsWith('/article/') && (
+          <NewsroomThemeToggle className="animated-theme-toggler--header icue-header__theme-toggle icue-header__theme-toggle--article-mobile" />
+        )}
+
         <button
           className={`icue-header__burger ${open ? 'is-open' : ''}`}
           aria-label={t('nav.news')}

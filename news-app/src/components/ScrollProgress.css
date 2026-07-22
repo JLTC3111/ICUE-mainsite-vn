@@ -1,12 +1,29 @@
-.scroll-progress {
+.scroll-progress-track {
   position: fixed;
   inset-inline: 0;
-  top: 0;
-  z-index: 60;
+  top: var(--icue-chrome-top);
+  z-index: 52;
   height: 3px;
-  transform-origin: left;
   pointer-events: none;
-  background: var(--icue-gradient-pill);
+  background: rgba(22, 24, 29, 0.1);
+  view-transition-name: none;
+}
+
+.scroll-progress {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: rgba(22, 24, 29, 0.52);
+  box-shadow: 0 0 10px rgba(22, 24, 29, 0.12);
+}
+
+.icue-app--news-theme-dark .scroll-progress-track {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.icue-app--news-theme-dark .scroll-progress {
+  background: rgba(231, 232, 228, 0.78);
+  box-shadow: 0 0 12px rgba(231, 232, 228, 0.22);
 }
 
 @media (prefers-reduced-motion: reduce) {

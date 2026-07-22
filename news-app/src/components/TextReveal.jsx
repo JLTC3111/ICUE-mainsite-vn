@@ -1,5 +1,6 @@
 import { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
+import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import './TextReveal.css'
 
 // Tags kept as opaque HTML (not word-split). Must not include void tags —
@@ -105,7 +106,7 @@ function wordRange(index, total, finishBy) {
   return [start, Math.min(end, 1)]
 }
 
-function textToWords(text, progress, counter, key, finishBy) {
+function textToWords(text, progress, counter, key, finishBy, minOpacity) {
   const parts = text.split(/(\s+)/)
 
   return parts.map((part, index) => {
@@ -115,20 +116,20 @@ function textToWords(text, progress, counter, key, finishBy) {
     counter.i += 1
 
     return (
-      <RevealWord key={`${key}-${index}`} progress={progress} range={range}>
+      <RevealWord key={`${key}-${index}`} progress={progress} range={range} minOpacity={minOpacity}>
         {part}
       </RevealWord>
     )
   })
 }
 
-function nodeToReact(node, progress, counter, key, finishBy) {
+function nodeToReact(node, progress, counter, key, finishBy, minOpacity) {
   if (!node) return null
 
   if (node.nodeType === Node.TEXT_NODE) {
     const text = node.textContent ?? ''
     if (!text) return null
-    return textToWords(text, progress, counter, key, finishBy)
+    return textToWords(text, progress, counter, key, finishBy, minOpacity)
   }
 
   if (node.nodeType !== Node.ELEMENT_NODE) return null
@@ -154,13 +155,13 @@ function nodeToReact(node, progress, counter, key, finishBy) {
   }
 
   const children = [...node.childNodes]
-    .map((child, index) => nodeToReact(child, progress, counter, `${key}-${index}`, finishBy))
+    .map((child, index) => nodeToReact(child, progress, counter, `${key}-${index}`, finishBy, minOpacity))
     .filter(Boolean)
 
   return createElement(tag.toLowerCase(), { key, ...attrsFromNode(node) }, ...children)
 }
 
-function buildRevealTree(html, progress, finishBy) {
+function buildRevealTree(html, progress, finishBy, minOpacity) {
   const doc = new DOMParser().parseFromString(html || '', 'text/html')
   const counter = { i: 0, total: 0 }
 
@@ -170,14 +171,14 @@ function buildRevealTree(html, progress, finishBy) {
   counter.i = 0
 
   return [...doc.body.childNodes]
-    .map((node, index) => nodeToReact(node, progress, counter, `root-${index}`, finishBy))
+    .map((node, index) => nodeToReact(node, progress, counter, `root-${index}`, finishBy, minOpacity))
     .filter(Boolean)
 }
 
-function RevealWord({ children, progress, range }) {
+function RevealWord({ children, progress, range, minOpacity = 0.28 }) {
   // Single layer: dim → full. Avoids Magic UI’s stacked ghost/visible which
   // litters serif + Vietnamese diacritics with a readable “shadow”.
-  const opacity = useTransform(progress, range, [0.28, 1])
+  const opacity = useTransform(progress, range, [minOpacity, 1])
 
   return (
     <motion.span className="text-reveal__word" style={{ opacity }}>
@@ -222,7 +223,9 @@ export default function ArticleTextReveal({
   finishBy = 0.5,
 }) {
   const sectionRef = useRef(null)
+  const { isDark } = useNewsroomTheme()
   const [reduceMotion, setReduceMotion] = useState(false)
+  const wordMinOpacity = isDark ? 0.52 : 0.28
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     // Finish reveal while more of the article is still on-screen.
@@ -239,8 +242,8 @@ export default function ArticleTextReveal({
 
   const content = useMemo(() => {
     if (reduceMotion || !html) return null
-    return buildRevealTree(html, scrollYProgress, finishBy)
-  }, [html, reduceMotion, scrollYProgress, finishBy])
+    return buildRevealTree(html, scrollYProgress, finishBy, wordMinOpacity)
+  }, [html, reduceMotion, scrollYProgress, finishBy, wordMinOpacity])
 
   if (reduceMotion || !html) {
     return (

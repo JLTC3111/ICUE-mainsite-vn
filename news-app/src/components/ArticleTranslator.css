@@ -114,7 +114,19 @@
 }
 
 .icue-app--news-theme-dark .translator__reset:hover {
+  color: #8fd4ff;
+}
+
+.icue-app--news-theme-dark .translator__btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--icue-border);
   color: var(--icue-text);
+  box-shadow: none;
+}
+
+.icue-app--news-theme-dark .translator__btn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .icue-app--news-theme-dark .translator__status {

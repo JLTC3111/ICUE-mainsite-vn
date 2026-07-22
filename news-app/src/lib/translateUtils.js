@@ -29,3 +29,13 @@ export function shouldTranslateArticle(articleLanguage, targetLocale, textSample
   const source = inferSourceLanguage(articleLanguage, textSample)
   return source !== target
 }
+
+/** Whether a comment body should be machine-translated for the UI locale. */
+export function shouldTranslateComment(body, targetLocale) {
+  const target = normalizeLang(targetLocale)
+  if (!target || !LOCALE_CODE_SET.has(target)) return false
+  const sample = String(body || '').trim()
+  if (!sample) return false
+  const source = inferSourceLanguage('', sample)
+  return source !== target
+}

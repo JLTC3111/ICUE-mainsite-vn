@@ -185,6 +185,7 @@
     "heading": "Đọc bằng ngôn ngữ của bạn",
     "translating": "Đang dịch…",
     "original": "Xem bản gốc",
+    "showTranslation": "Xem bản dịch {{lang}}",
     "showingOriginal": "Đang hiển thị bản gốc",
     "retry": "Thử lại",
     "translated": "Đã dịch sang {{lang}}",

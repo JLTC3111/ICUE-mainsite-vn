@@ -6,7 +6,9 @@ import {
   normalizeLang,
   shouldTranslateArticle,
   translateFields,
+  translatePlainText,
 } from './translateProviders.js'
+import { shouldTranslateComment } from './translateUtils.js'
 
 const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status'
 
@@ -185,6 +187,133 @@ export async function translateArticleTitlesBatch(articleIds, targetLocale, env 
   return { locale, titles }
 }
 
+async function fetchCommentsByIds(commentIds, env) {
+  const { url, serviceKey } = supabaseConfig(env)
+  if (!url || !serviceKey) throw new Error('supabase_not_configured')
+
+  const ids = [...new Set((commentIds || []).map(String).filter(Boolean))]
+  if (!ids.length) return []
+
+  const filter = ids.map((id) => encodeURIComponent(id)).join(',')
+  const res = await fetch(
+    `${url}/rest/v1/article_comments?id=in.(${filter})&select=id,body,article_id`,
+    { headers: restHeaders(serviceKey) },
+  )
+  if (!res.ok) throw new Error(`comments_fetch_${res.status}`)
+  return (await res.json()) ?? []
+}
+
+async function fetchCachedCommentTranslations(commentIds, locale, env) {
+  const { url, serviceKey } = supabaseConfig(env)
+  if (!url || !serviceKey) return {}
+
+  const ids = [...new Set((commentIds || []).map(String).filter(Boolean))]
+  if (!ids.length) return {}
+
+  const filter = ids.map((id) => encodeURIComponent(id)).join(',')
+  const res = await fetch(
+    `${url}/rest/v1/comment_translations?comment_id=in.(${filter})&locale=eq.${encodeURIComponent(locale)}&select=comment_id,body,provider,source_lang`,
+    { headers: restHeaders(serviceKey) },
+  )
+  if (!res.ok) return {}
+
+  const rows = await res.json()
+  return Object.fromEntries(
+    (rows || []).map((row) => [row.comment_id, row]),
+  )
+}
+
+async function upsertCommentTranslation(commentId, locale, payload, env) {
+  const { url, serviceKey } = supabaseConfig(env)
+  if (!url || !serviceKey) return
+
+  const body = {
+    comment_id: commentId,
+    locale,
+    provider: payload.provider,
+    source_lang: payload.source_lang || null,
+    body: payload.body || '',
+    updated_at: new Date().toISOString(),
+  }
+
+  await fetch(`${url}/rest/v1/comment_translations?on_conflict=comment_id,locale`, {
+    method: 'POST',
+    headers: {
+      ...restHeaders(serviceKey),
+      Prefer: 'resolution=merge-duplicates,return=minimal',
+    },
+    body: JSON.stringify(body),
+  })
+}
+
+async function translateCommentBody(comment, locale, cachedRows, env) {
+  const body = normalizeUnicode(comment.body || '')
+  if (!shouldTranslateComment(body, locale)) {
+    return { id: comment.id, body, original: true, cached: false, provider: null }
+  }
+
+  const cached = cachedRows[comment.id]
+  if (cached?.body) {
+    return {
+      id: comment.id,
+      body: normalizeUnicode(cached.body),
+      original: false,
+      cached: true,
+      provider: cached.provider,
+    }
+  }
+
+  const sourceLang = inferSourceLanguage('', body)
+  const translated = await translatePlainText(body, locale, sourceLang, env)
+  const resultBody = normalizeUnicode(translated.text || body)
+
+  if (!translated.original && translated.provider) {
+    await upsertCommentTranslation(comment.id, locale, {
+      provider: translated.provider,
+      source_lang: sourceLang,
+      body: resultBody,
+    }, env)
+  }
+
+  return {
+    id: comment.id,
+    body: resultBody,
+    original: !!translated.original,
+    cached: false,
+    provider: translated.provider,
+  }
+}
+
+export async function translateCommentsBatch(commentIds, targetLocale, env = process.env) {
+  const locale = normalizeLang(targetLocale)
+  const ids = [...new Set((commentIds || []).map(String).filter(Boolean))]
+  if (!locale || !ids.length) {
+    return { locale, bodies: {} }
+  }
+
+  const comments = await fetchCommentsByIds(ids, env)
+  const cachedRows = await fetchCachedCommentTranslations(comments.map((c) => c.id), locale, env)
+  const bodies = {}
+  let cursor = 0
+  const workers = Math.min(4, comments.length || 1)
+
+  async function worker() {
+    while (cursor < comments.length) {
+      const index = cursor++
+      const comment = comments[index]
+      try {
+        const result = await translateCommentBody(comment, locale, cachedRows, env)
+        if (result?.body) bodies[result.id] = result.body
+      } catch {
+        bodies[comment.id] = normalizeUnicode(comment.body || '')
+      }
+    }
+  }
+
+  await Promise.all(Array.from({ length: workers }, () => worker()))
+  return { locale, bodies }
+}
+
 function jsonResponse(statusCode, body, extraHeaders = {}) {
   return {
     statusCode,
@@ -218,6 +347,27 @@ export async function handleTranslateArticleRequest(event, env = process.env) {
   const articleId = String(payload.articleId || payload.article_id || '').trim()
   const target = normalizeLang(payload.target || payload.locale || payload.lang)
   const batchIds = payload.articleIds || payload.article_ids
+  const commentIds = payload.commentIds || payload.comment_ids
+
+  if (Array.isArray(commentIds)) {
+    const ids = commentIds.map(String).filter(Boolean)
+    if (!ids.length || !target) {
+      return jsonResponse(422, { error: 'commentIds and target required', code: 'invalid_request' })
+    }
+    try {
+      const result = await translateCommentsBatch(ids, target, runtimeEnv)
+      return jsonResponse(200, result)
+    } catch (err) {
+      const code = err?.message || 'translate_failed'
+      if (code === 'supabase_not_configured') {
+        return jsonResponse(503, { error: 'supabase not configured on server', code })
+      }
+      if (code === 'google_not_configured' || code === 'deepl_not_configured') {
+        return jsonResponse(503, { error: 'translation provider not configured', code })
+      }
+      return jsonResponse(502, { error: 'translation failed', code })
+    }
+  }
 
   if (Array.isArray(batchIds)) {
     const articleIds = batchIds.map(String).filter(Boolean)

@@ -2,8 +2,8 @@ import { motion, useScroll, useSpring } from 'motion/react'
 import './ScrollProgress.css'
 
 const DEFAULT_SPRING_OPTIONS = {
-  stiffness: 200,
-  damping: 50,
+  stiffness: 120,
+  damping: 28,
   restDelta: 0.001,
 }
 
@@ -27,10 +27,8 @@ export default function ScrollProgress({ className, springOptions, containerRef 
   })
 
   return (
-    <motion.div
-      className={cn('scroll-progress', className)}
-      style={{ scaleX }}
-      aria-hidden="true"
-    />
+    <div className={cn('scroll-progress-track', className)} aria-hidden="true">
+      <motion.div className="scroll-progress" style={{ scaleX }} />
+    </div>
   )
 }

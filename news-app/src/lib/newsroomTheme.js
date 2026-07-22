@@ -27,3 +27,9 @@ export function writeNewsroomTheme(theme) {
     /* ignore */
   }
 }
+
+/** Keep document-level color-scheme in sync with reader dark mode (useLayoutEffect-safe). */
+export function syncNewsroomDocumentTheme(isDark) {
+  if (typeof document === 'undefined') return
+  document.documentElement.classList.toggle('icue-news-theme-dark', isDark)
+}

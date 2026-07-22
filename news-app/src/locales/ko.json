@@ -185,6 +185,7 @@
     "heading": "원하는 언어로 읽기",
     "translating": "번역 중…",
     "original": "원문 보기",
+    "showTranslation": "{{lang}} 번역 보기",
     "showingOriginal": "원문 표시 중",
     "retry": "다시 시도",
     "translated": "{{lang}}(으)로 번역됨",

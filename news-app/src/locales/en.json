@@ -185,6 +185,7 @@
     "heading": "Read in your language",
     "translating": "Translating…",
     "original": "Show original",
+    "showTranslation": "Show {{lang}} translation",
     "showingOriginal": "Showing original article",
     "retry": "Retry",
     "translated": "Translated to {{lang}}",

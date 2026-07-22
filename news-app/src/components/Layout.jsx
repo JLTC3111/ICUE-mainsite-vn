@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useLayoutEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
@@ -6,13 +6,18 @@ import Footer from './Footer'
 import MarketTicker from './MarketTicker'
 import VnMarketTicker from './VnMarketTicker'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
-import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
+import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'
 
 function Layout() {
   const { pathname } = useLocation()
   const { isDark } = useNewsroomTheme()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
   const isDarkReader = isReaderRoute && isDark
+
+  useLayoutEffect(() => {
+    syncNewsroomDocumentTheme(isDarkReader)
+    return () => syncNewsroomDocumentTheme(false)
+  }, [isDarkReader])
 
   return (
     <div
