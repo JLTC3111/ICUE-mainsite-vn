@@ -289,13 +289,19 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 @supports (initial-letter: 3) {
+  .article-detail--vi .article-detail__content > p.article-dropcap::first-letter,
+  .article-detail[lang="vi"] .article-detail__content > p.article-dropcap::first-letter {
+    font-family: inherit !important;
+  }
+
   .article-detail__content > p.article-dropcap::first-letter {
-    float: none;
+    float: left;
     initial-letter: 3;
     initial-letter-align: auto;
     margin-right: 0.12em;
-    font-size: inherit;
-    line-height: inherit;
+    padding-right: 0.06em;
+    font-size: 3.5em;
+    line-height: 0.78;
   }
 }
 

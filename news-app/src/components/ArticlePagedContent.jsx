@@ -9,10 +9,9 @@ import {
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { useTranslation } from 'react-i18next'
-import ArticleTextReveal from './TextReveal'
 import SlidingNumber from './magicui/SlidingNumber'
 import { paginateArticleHtml } from '../lib/articlePagination'
-import { applyArticleDropCap } from '../lib/articleDropCap'
+import { markDropCapInHtml } from '../lib/articleDropCap'
 import './ArticlePagedContent.css'
 
 function useReducedMotion() {
@@ -64,6 +63,10 @@ export default function ArticlePagedContent({
 }) {
   const { t } = useTranslation()
   const pages = useMemo(() => paginateArticleHtml(html), [html])
+  const renderedPages = useMemo(
+    () => pages.map((pageHtml, index) => markDropCapInHtml(pageHtml, { enabled: index === 0 })),
+    [pages],
+  )
   const reduceMotion = useReducedMotion()
   const rootRef = useRef(null)
   const readerRef = useRef(null)
@@ -175,16 +178,6 @@ export default function ArticlePagedContent({
     })
   }, [contentKey, emblaApi, isMultipage, totalPages])
 
-  useLayoutEffect(() => {
-    if (!rootRef.current) return undefined
-
-    rootRef.current.querySelectorAll('.article-detail__content--paged').forEach((slide, index) => {
-      applyArticleDropCap(slide, { enabled: index === 0 })
-    })
-
-    return undefined
-  }, [contentKey, pages, selectedIndex])
-
   useEffect(() => {
     if (!isMultipage || !rootRef.current) return undefined
 
@@ -232,11 +225,10 @@ export default function ArticlePagedContent({
 
   if (!isMultipage) {
     return (
-      <ArticleTextReveal
+      <div
         key={contentKey}
-        html={html}
         className={className}
-        finishBy={0.4}
+        dangerouslySetInnerHTML={{ __html: renderedPages[0] || '' }}
       />
     )
   }
@@ -250,7 +242,7 @@ export default function ArticlePagedContent({
       <div ref={readerRef} className="article-pages__reader">
         <div className="article-pages__viewport" ref={emblaRef}>
           <div className="article-pages__container">
-            {pages.map((pageHtml, index) => (
+            {renderedPages.map((pageHtml, index) => (
               <article
                 key={`${contentKey}-page-${index}`}
                 className={`article-pages__slide${index === selectedIndex ? ' is-active' : ''}`}

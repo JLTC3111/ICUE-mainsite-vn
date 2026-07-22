@@ -118,12 +118,13 @@
   transition: opacity 0.28s ease;
 }
 
-.article-pages__slide:not(.is-active) {
-  opacity: 0.55;
-}
-
 .article-pages__slide.is-active {
   opacity: 1;
+  overflow: visible;
+}
+
+.article-pages__slide:not(.is-active) {
+  opacity: 0.55;
 }
 
 .article-pages__viewport {

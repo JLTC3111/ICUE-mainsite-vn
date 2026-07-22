@@ -1,7 +1,7 @@
-import { createElement, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
-import { applyArticleDropCap } from '../lib/articleDropCap'
+import { markDropCapInHtml, shouldMarkParagraphAsDropCap } from '../lib/articleDropCap'
 import './TextReveal.css'
 
 // Tags kept as opaque HTML (not word-split). Must not include void tags —
@@ -124,7 +124,7 @@ function textToWords(text, progress, counter, key, finishBy, minOpacity) {
   })
 }
 
-function nodeToReact(node, progress, counter, key, finishBy, minOpacity) {
+function nodeToReact(node, progress, counter, key, finishBy, minOpacity, dropCapState = null) {
   if (!node) return null
 
   if (node.nodeType === Node.TEXT_NODE) {
@@ -136,10 +136,16 @@ function nodeToReact(node, progress, counter, key, finishBy, minOpacity) {
   if (node.nodeType !== Node.ELEMENT_NODE) return null
 
   const tag = node.tagName
+  const props = { key, ...attrsFromNode(node) }
+
+  if (dropCapState && tag === 'P' && !dropCapState.applied && shouldMarkParagraphAsDropCap(node)) {
+    props.className = props.className ? `${props.className} article-dropcap` : 'article-dropcap'
+    dropCapState.applied = true
+  }
 
   // Void elements first — never pass children / innerHTML.
   if (VOID_TAGS.has(tag)) {
-    return createElement(tag.toLowerCase(), { key, ...attrsFromNode(node) })
+    return createElement(tag.toLowerCase(), props)
   }
 
   if (
@@ -149,8 +155,7 @@ function nodeToReact(node, progress, counter, key, finishBy, minOpacity) {
   ) {
     const html = node.innerHTML
     return createElement(tag.toLowerCase(), {
-      key,
-      ...attrsFromNode(node),
+      ...props,
       ...(html ? { dangerouslySetInnerHTML: { __html: html } } : {}),
     })
   }
@@ -159,7 +164,7 @@ function nodeToReact(node, progress, counter, key, finishBy, minOpacity) {
     .map((child, index) => nodeToReact(child, progress, counter, `${key}-${index}`, finishBy, minOpacity))
     .filter(Boolean)
 
-  return createElement(tag.toLowerCase(), { key, ...attrsFromNode(node) }, ...children)
+  return createElement(tag.toLowerCase(), props, ...children)
 }
 
 function buildRevealTree(html, progress, finishBy, minOpacity) {
@@ -170,9 +175,10 @@ function buildRevealTree(html, progress, finishBy, minOpacity) {
   if (counter.total === 0) return null
 
   counter.i = 0
+  const dropCapState = { applied: false }
 
   return [...doc.body.childNodes]
-    .map((node, index) => nodeToReact(node, progress, counter, `root-${index}`, finishBy, minOpacity))
+    .map((node, index) => nodeToReact(node, progress, counter, `root-${index}`, finishBy, minOpacity, dropCapState))
     .filter(Boolean)
 }
 
@@ -242,22 +248,19 @@ export default function ArticleTextReveal({
     return () => mq.removeEventListener('change', sync)
   }, [])
 
+  const markedHtml = useMemo(() => markDropCapInHtml(html), [html])
+
   const content = useMemo(() => {
     if (reduceMotion || !html) return null
     return buildRevealTree(html, scrollYProgress, finishBy, wordMinOpacity)
-  }, [html, reduceMotion, scrollYProgress, finishBy, wordMinOpacity])
-
-  useLayoutEffect(() => {
-    if (!reduceMotion && content) return
-    applyArticleDropCap(contentRef.current)
-  }, [html, reduceMotion, content])
+  }, [html, reduceMotion, finishBy, wordMinOpacity])
 
   if (reduceMotion || !html) {
     return (
       <div
         ref={contentRef}
         className={className}
-        dangerouslySetInnerHTML={{ __html: html || '' }}
+        dangerouslySetInnerHTML={{ __html: markedHtml || '' }}
       />
     )
   }
@@ -267,7 +270,7 @@ export default function ArticleTextReveal({
       <div
         ref={contentRef}
         className={className}
-        dangerouslySetInnerHTML={{ __html: html || '' }}
+        dangerouslySetInnerHTML={{ __html: markedHtml || '' }}
       />
     )
   }
