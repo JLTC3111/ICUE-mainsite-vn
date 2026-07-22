@@ -1,0 +1,44 @@
+.bento-card-comparison {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bento-card-comparison__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bento-card-comparison__before {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 2.4s cubic-bezier(0.45, 0, 0.15, 1);
+  will-change: clip-path;
+}
+
+.bento-card-comparison--reveal .bento-card-comparison__before {
+  clip-path: inset(0 0 0 100%);
+}
+
+.bento-card-comparison--split .bento-card-comparison__before {
+  clip-path: inset(0 50% 0 0);
+  transition-duration: 0.85s;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.bento-card-comparison.is-static .bento-card-comparison__before {
+  clip-path: inset(0 50% 0 0);
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card-comparison__before {
+    transition: none;
+  }
+}

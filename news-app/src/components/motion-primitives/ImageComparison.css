@@ -9,6 +9,10 @@
   cursor: ew-resize;
 }
 
+.image-comparison--hover-only {
+  cursor: crosshair;
+}
+
 .image-comparison--locked {
   cursor: default;
 }

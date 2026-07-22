@@ -69,7 +69,7 @@
 .article-parallax__placeholder,
 .article-parallax__layer .bento-card__img,
 .article-parallax__layer .bento-card__placeholder,
-.article-parallax__layer .bento-card__comparison {
+.article-parallax__layer .bento-card-comparison {
   flex: 0 0 calc(148% + 2.5rem);
   width: calc(148% + 2.5rem);
   max-width: none;
@@ -83,10 +83,6 @@
 
 .article-parallax__layer .bento-card__img {
   object-fit: cover;
-}
-
-.article-parallax__layer .bento-card__comparison .article-image-comparison__frame {
-  border-radius: 16px;
 }
 
 .article-parallax__placeholder,
@@ -104,7 +100,7 @@
 .article-parallax__slide.is-active .article-parallax__placeholder,
 .article-parallax__slide.is-active .article-parallax__layer .bento-card__img,
 .article-parallax__slide.is-active .article-parallax__layer .bento-card__placeholder,
-.article-parallax__slide.is-active .article-parallax__layer .bento-card__comparison {
+.article-parallax__slide.is-active .article-parallax__layer .bento-card-comparison {
   filter: none;
   opacity: 1;
   box-shadow:
@@ -270,7 +266,7 @@
   .article-parallax__placeholder,
   .article-parallax__layer .bento-card__img,
   .article-parallax__layer .bento-card__placeholder,
-  .article-parallax__layer .bento-card__comparison {
+  .article-parallax__layer .bento-card-comparison {
     flex-basis: calc(142% + 2.5rem);
     width: calc(142% + 2.5rem);
   }
@@ -298,7 +294,7 @@
   .article-parallax__placeholder,
   .article-parallax__layer .bento-card__img,
   .article-parallax__layer .bento-card__placeholder,
-  .article-parallax__layer .bento-card__comparison {
+  .article-parallax__layer .bento-card-comparison {
     filter: none !important;
     opacity: 1 !important;
     transition: none;

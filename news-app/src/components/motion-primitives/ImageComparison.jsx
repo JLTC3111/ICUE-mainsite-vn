@@ -22,6 +22,7 @@ export function ImageComparison({
   children,
   className,
   enableHover = false,
+  hoverOnly = false,
   springOptions,
 }) {
   const [isDragging, setIsDragging] = useState(false)
@@ -29,7 +30,7 @@ export function ImageComparison({
   const isLockedRef = useRef(false)
   const motionValue = useMotionValue(50)
   const springPosition = useSpring(motionValue, springOptions ?? DEFAULT_SPRING_OPTIONS)
-  const motionSliderPosition = enableHover ? motionValue : springPosition
+  const motionSliderPosition = (enableHover || hoverOnly) ? motionValue : springPosition
   const [sliderPosition, setSliderPosition] = useState(50)
   const dragMovedRef = useRef(false)
   const pointerActiveRef = useRef(false)
@@ -53,7 +54,16 @@ export function ImageComparison({
   }
 
   const handleDrag = (event) => {
-    if (isLockedRef.current) return
+    if (isLockedRef.current && !hoverOnly) return
+
+    if (hoverOnly) {
+      if (enableHover || pointerActiveRef.current) {
+        dragMovedRef.current = pointerActiveRef.current
+        updatePosition(event)
+      }
+      return
+    }
+
     if (!pointerActiveRef.current && !enableHover) return
     if (!isDragging && !enableHover) return
 
@@ -75,14 +85,27 @@ export function ImageComparison({
     suppressClickRef.current = false
   }
 
-  const handlePointerDown = () => {
-    if (isLockedRef.current) return
+  const handlePointerDown = (event) => {
+    if (isLockedRef.current && !hoverOnly) return
     pointerActiveRef.current = true
     dragMovedRef.current = false
+    if (hoverOnly && !enableHover) {
+      setIsDragging(true)
+      updatePosition(event)
+      return
+    }
     if (!enableHover) setIsDragging(true)
   }
 
   const handlePointerUp = () => {
+    if (hoverOnly) {
+      pointerActiveRef.current = false
+      setIsDragging(false)
+      if (dragMovedRef.current) suppressClickRef.current = true
+      dragMovedRef.current = false
+      return
+    }
+
     if (isLockedRef.current) return
     if (!enableHover) setIsDragging(false)
     pointerActiveRef.current = false
@@ -93,11 +116,32 @@ export function ImageComparison({
   }
 
   const handleMouseEnter = (event) => {
+    if (hoverOnly) {
+      unlockInteraction()
+      if (enableHover) updatePosition(event)
+      return
+    }
+
     if (isLockedRef.current) unlockInteraction()
     if (enableHover) updatePosition(event)
   }
 
+  const handleMouseLeave = () => {
+    if (hoverOnly) {
+      motionValue.jump(50)
+      setSliderPosition(50)
+      pointerActiveRef.current = false
+      setIsDragging(false)
+      dragMovedRef.current = false
+      return
+    }
+
+    if (!enableHover) handlePointerUp()
+  }
+
   const handleClick = () => {
+    if (hoverOnly) return
+
     if (suppressClickRef.current) {
       suppressClickRef.current = false
       return
@@ -123,7 +167,8 @@ export function ImageComparison({
       <div
         className={cn(
           'image-comparison',
-          enableHover && !isLocked && 'image-comparison--hover',
+          (enableHover || hoverOnly) && !isLocked && 'image-comparison--hover',
+          hoverOnly && 'image-comparison--hover-only',
           isLocked && 'image-comparison--locked',
           className,
         )}
@@ -131,9 +176,7 @@ export function ImageComparison({
         onMouseMove={handleDrag}
         onMouseDown={handlePointerDown}
         onMouseUp={handlePointerUp}
-        onMouseLeave={() => {
-          if (!enableHover) handlePointerUp()
-        }}
+        onMouseLeave={handleMouseLeave}
         onTouchMove={handleDrag}
         onTouchStart={handlePointerDown}
         onTouchEnd={handleTouchEnd}

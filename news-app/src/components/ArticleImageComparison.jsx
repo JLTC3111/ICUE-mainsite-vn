@@ -96,6 +96,8 @@ export default function ArticleImageComparison({
   after,
   showCaption = false,
   fitContent = false,
+  hoverOnly = false,
+  hideSlider = false,
 }) {
   const { t } = useTranslation()
   const { reduceMotion, hoverCapable } = useComparisonMotion()
@@ -104,10 +106,13 @@ export default function ArticleImageComparison({
 
   if (!before?.url || !after?.url) return null
 
+  const hoverScrub = hoverOnly || (hoverCapable && !reduceMotion)
+
   const frame = (
     <ImageComparison
       className={`article-image-comparison__frame${fitContent ? ' article-image-comparison__frame--fit' : ''}`}
-      enableHover={hoverCapable && !reduceMotion}
+      enableHover={hoverScrub}
+      hoverOnly={hoverOnly}
       springOptions={reduceMotion ? { bounce: 0, duration: 0 } : { bounce: 0.08, duration: 0.25 }}
     >
       <ImageComparisonImage
@@ -120,7 +125,9 @@ export default function ArticleImageComparison({
         alt={t('article.comparisonAfter')}
         position="right"
       />
-      <ImageComparisonSlider className="article-image-comparison__slider" />
+      {!hideSlider && (
+        <ImageComparisonSlider className="article-image-comparison__slider" />
+      )}
     </ImageComparison>
   )
 

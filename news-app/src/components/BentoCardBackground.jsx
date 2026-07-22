@@ -1,19 +1,13 @@
-import ArticleImageComparison from './ArticleImageComparison'
+import BentoCardComparison from './BentoCardComparison'
 import { PLACEHOLDER_COVER } from '../lib/bentoArticles'
 
 export default function BentoCardBackground({ item }) {
   if (item.comparison) {
     return (
-      <div
-        className="bento-card__comparison"
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(event) => event.stopPropagation()}
-      >
-        <ArticleImageComparison
-          before={item.comparison.before}
-          after={item.comparison.after}
-        />
-      </div>
+      <BentoCardComparison
+        before={item.comparison.before}
+        after={item.comparison.after}
+      />
     )
   }
 
