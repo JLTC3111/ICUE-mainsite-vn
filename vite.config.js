@@ -53,6 +53,7 @@ function spaDevFallback({ name, basePath, outDirName }) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;
             res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
+            res.setHeader('Cache-Control', 'no-store');
             res.end(fs.readFileSync(filePath));
             return;
           }
@@ -67,6 +68,7 @@ function spaDevFallback({ name, basePath, outDirName }) {
         if (fs.existsSync(indexPath)) {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.setHeader('Cache-Control', 'no-store');
           res.end(fs.readFileSync(indexPath, 'utf-8'));
           return;
         }

@@ -13,6 +13,7 @@ import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import { translateArticleViaApi, shouldTranslateArticle } from '../lib/translate'
+import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
@@ -45,9 +46,9 @@ function useLensCapable() {
 function readLensPreference() {
   try {
     const stored = localStorage.getItem(LENS_PREF_KEY)
-    return stored === null ? true : stored === 'true'
+    return stored === null ? false : stored === 'true'
   } catch {
-    return true
+    return false
   }
 }
 
@@ -62,6 +63,7 @@ function writeLensPreference(enabled) {
 export default function ArticleDetail() {
   const { slug } = useParams()
   const { t, i18n } = useTranslation()
+  const { isDark } = useNewsroomTheme()
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
   const lensCapable = useLensCapable()
@@ -186,7 +188,11 @@ export default function ArticleDetail() {
   }, [])
 
   if (state === 'loading') {
-    return <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
+    return (
+      <div className={`route-loading${isDark ? ' route-loading--dark' : ''}`}>
+        <span className="spin" />
+      </div>
+    )
   }
   if (state === 'error') {
     return (
@@ -214,15 +220,25 @@ export default function ArticleDetail() {
   const displaySubtitle = normalizeUnicode(usingTranslation ? translation.subtitle : article.subtitle)
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || images.length > 0
+  const showLensToggle = lensCapable && hasLensPhotos
+  const showTranslatorBar =
+    translateBusy
+    || translateError
+    || Boolean(usingTranslation && translatedLang)
+    || (showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title)))
+  const showToolsBar = showLensToggle || showTranslatorBar
 
   return (
-    <article className="article-detail">
+    <article className={`article-detail${isDark ? ' article-detail--dark' : ''}`}>
       <ScrollProgress />
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
         {isTranslating ? (
           <h1 className="article-detail__title">
-            <TranslationLineSkeleton lines={2} className="translation-skeleton--title" />
+            <TranslationLineSkeleton
+              lines={2}
+              className={`translation-skeleton--title${isDark ? ' translation-skeleton--on-dark' : ''}`}
+            />
           </h1>
         ) : (
           <HyperText
@@ -236,7 +252,10 @@ export default function ArticleDetail() {
           </HyperText>
         )}
         {isTranslating ? (
-          <TranslationLineSkeleton lines={1} className="translation-skeleton--title article-detail__subtitle-skeleton" />
+          <TranslationLineSkeleton
+            lines={1}
+            className={`translation-skeleton--title article-detail__subtitle-skeleton${isDark ? ' translation-skeleton--on-dark' : ''}`}
+          />
         ) : (
           displaySubtitle && <p className="article-detail__subtitle translation-reveal">{displaySubtitle}</p>
         )}
@@ -261,29 +280,32 @@ export default function ArticleDetail() {
         </div>
       </div>
 
-      <ArticleTranslator
-        busy={translateBusy}
-        error={translateError}
-        activeLang={usingTranslation ? translatedLang : null}
-        showOriginal={showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title))}
-        onShowOriginal={() => setShowOriginal(true)}
-        onRetry={retryTranslation}
-      />
-
-      {lensCapable && hasLensPhotos && (
-        <div className="article-detail__lens-bar icue-readw">
-          <button
-            type="button"
-            className={`article-detail__lens-toggle${lensOn ? ' is-on' : ''}`}
-            onClick={toggleLens}
-            aria-pressed={lensOn}
-          >
-            <ScanSearch size={16} strokeWidth={2} aria-hidden />
-            <span>{t('article.lensToggle')}</span>
-            <span className="article-detail__lens-state">
-              {lensOn ? t('article.lensOn') : t('article.lensOff')}
-            </span>
-          </button>
+      {showToolsBar && (
+        <div className="article-detail__tools icue-readw">
+          {showTranslatorBar && (
+            <ArticleTranslator
+              busy={translateBusy}
+              error={translateError}
+              activeLang={usingTranslation ? translatedLang : null}
+              showOriginal={showOriginal && Boolean(translatedLang || shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title))}
+              onShowOriginal={() => setShowOriginal(true)}
+              onRetry={retryTranslation}
+            />
+          )}
+          {showLensToggle && (
+            <button
+              type="button"
+              className={`article-detail__lens-toggle${lensOn ? ' is-on' : ''}`}
+              onClick={toggleLens}
+              aria-pressed={lensOn}
+            >
+              <ScanSearch size={16} strokeWidth={2} aria-hidden />
+              <span>{t('article.lensToggle')}</span>
+              <span className="article-detail__lens-state">
+                {lensOn ? t('article.lensOn') : t('article.lensOff')}
+              </span>
+            </button>
+          )}
         </div>
       )}
 
@@ -302,7 +324,10 @@ export default function ArticleDetail() {
 
       {isTranslating ? (
         <div className="article-detail__content icue-readw article-detail__content--translating">
-          <TranslationLineSkeleton lines={8} className="translation-skeleton--article" />
+          <TranslationLineSkeleton
+            lines={8}
+            className={`translation-skeleton--article${isDark ? ' translation-skeleton--on-dark' : ''}`}
+          />
         </div>
       ) : (
         <ArticleTextReveal

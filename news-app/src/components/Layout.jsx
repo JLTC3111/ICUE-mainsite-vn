@@ -6,18 +6,19 @@ import Footer from './Footer'
 import MarketTicker from './MarketTicker'
 import VnMarketTicker from './VnMarketTicker'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
+import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 
 function Layout() {
   const { pathname } = useLocation()
   const { isDark } = useNewsroomTheme()
-  const isNewsHome = pathname === '/'
-  const isDarkNewsHome = isNewsHome && isDark
+  const isReaderRoute = isNewsroomReaderRoute(pathname)
+  const isDarkReader = isReaderRoute && isDark
 
   return (
     <div
       className={`icue-app${
-        isNewsHome ? ' icue-app--news-home' : ''
-      }${isDarkNewsHome ? ' icue-app--news-theme-dark' : ''}`}
+        isReaderRoute ? ' icue-app--news-home' : ''
+      }${isDarkReader ? ' icue-app--news-theme-dark' : ''}`}
     >
       <Header />
       <MarketTicker />

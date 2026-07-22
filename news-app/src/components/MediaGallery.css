@@ -243,3 +243,20 @@
     bottom: 36px;
   }
 }
+
+.icue-app--news-theme-dark .media-gallery__heading {
+  color: var(--icue-text);
+  border-color: var(--icue-border);
+}
+
+.icue-app--news-theme-dark .media-gallery__item {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.icue-app--news-theme-dark .media-gallery__mobile-swiper .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.icue-app--news-theme-dark .media-gallery__mobile-swiper .swiper-pagination-bullet-active {
+  background: #e7e8e4;
+}

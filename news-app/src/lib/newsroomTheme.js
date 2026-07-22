@@ -3,6 +3,11 @@ export const NEWSROOM_THEME_STORAGE_KEY = 'icue-newsroom-theme'
 export const NEWSROOM_THEME_DARK = 'dark'
 export const NEWSROOM_THEME_LIGHT = 'light'
 
+/** Public reader surfaces that follow the newsroom light/dark preference. */
+export function isNewsroomReaderRoute(pathname = '') {
+  return pathname === '/' || pathname.startsWith('/article/')
+}
+
 export function readNewsroomTheme() {
   try {
     const stored = localStorage.getItem(NEWSROOM_THEME_STORAGE_KEY)

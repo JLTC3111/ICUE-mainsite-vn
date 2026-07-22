@@ -66,3 +66,39 @@
 .comments__author { font-size: 14px; font-weight: 700; color: var(--icue-text); }
 .comments__date { font-size: 12px; color: var(--icue-text-faint); white-space: nowrap; }
 .comments__text { margin: 0; font-size: 15px; line-height: 1.6; color: var(--icue-text-soft); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.icue-app--news-theme-dark .heart-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--icue-border);
+  color: var(--icue-text-soft);
+}
+
+.icue-app--news-theme-dark .comments {
+  border-color: var(--icue-border);
+}
+
+.icue-app--news-theme-dark .comments__title {
+  color: var(--icue-text);
+}
+
+.icue-app--news-theme-dark .comments__item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--icue-border);
+}
+
+.icue-app--news-theme-dark .comments__author {
+  color: var(--icue-text);
+}
+
+.icue-app--news-theme-dark .input,
+.icue-app--news-theme-dark .textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--icue-border);
+  color: var(--icue-text);
+}
+
+.icue-app--news-theme-dark .input:focus,
+.icue-app--news-theme-dark .textarea:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}

@@ -8,11 +8,12 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
+import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 
 function Header() {
   const { pathname } = useLocation()
-  const isNewsHome = pathname === '/'
+  const isReaderRoute = isNewsroomReaderRoute(pathname)
   const { t } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, signOut } = useAuth()
@@ -94,7 +95,7 @@ function Header() {
                 {t('nav.login')}
               </Link>
             )}
-            {isNewsHome && (
+            {isReaderRoute && (
               <NewsroomThemeToggle className="animated-theme-toggler--header icue-header__theme-toggle" />
             )}
           </div>

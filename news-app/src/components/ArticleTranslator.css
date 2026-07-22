@@ -109,6 +109,23 @@
 }
 .translator__status--err { color: var(--icue-danger); }
 
+.icue-app--news-theme-dark .translator__reset {
+  color: var(--icue-text-soft);
+}
+
+.icue-app--news-theme-dark .translator__reset:hover {
+  color: var(--icue-text);
+}
+
+.icue-app--news-theme-dark .translator__status {
+  color: var(--icue-text-soft);
+}
+
+.icue-app--news-theme-dark .translator__spin {
+  border-color: rgba(255, 255, 255, 0.2);
+  border-top-color: var(--icue-text);
+}
+
 @media (max-width: 600px) {
   .translator { padding: 0 18px; }
   .translator__menu { left: 18px; right: 18px; min-width: 0; }

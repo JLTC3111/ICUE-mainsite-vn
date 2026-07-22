@@ -1,18 +1,20 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 
+import { lazyWithRetry } from './lib/lazyWithRetry'
+
 // Public landing path is eager-friendly but still split; author tools (heavy
 // TipTap editor) are lazy so they never load for anonymous readers.
-const NewsGrid = lazy(() => import('./pages/NewsGrid'))
-const ArticleDetail = lazy(() => import('./pages/ArticleDetail'))
-const Login = lazy(() => import('./pages/Login'))
-const Upload = lazy(() => import('./pages/Upload'))
-const Edit = lazy(() => import('./pages/Edit'))
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const Profile = lazy(() => import('./pages/Profile'))
+const NewsGrid = lazyWithRetry(() => import('./pages/NewsGrid'))
+const ArticleDetail = lazyWithRetry(() => import('./pages/ArticleDetail'))
+const Login = lazyWithRetry(() => import('./pages/Login'))
+const Upload = lazyWithRetry(() => import('./pages/Upload'))
+const Edit = lazyWithRetry(() => import('./pages/Edit'))
+const Dashboard = lazyWithRetry(() => import('./pages/Dashboard'))
+const Profile = lazyWithRetry(() => import('./pages/Profile'))
 
 function RouteFallback() {
   return (
