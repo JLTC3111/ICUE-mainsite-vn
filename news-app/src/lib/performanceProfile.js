@@ -1,6 +1,8 @@
 export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v1'
+export const PERF_OVERRIDE_STORAGE_KEY = 'icue:perf-override:v1'
 
 export const PERF_TIERS = ['full', 'reduced', 'minimal']
+export const PERF_OVERRIDES = ['on', 'off']
 
 /**
  * Auto performance tiers for low-end Windows PCs and similar hardware.
@@ -109,6 +111,39 @@ export function storePerformanceTier(tier) {
 
 export function resolvePerformanceTier() {
   return readStoredPerformanceTier() || detectPerformanceTier()
+}
+
+export function readPerformanceOverride() {
+  if (typeof localStorage === 'undefined') return null
+  try {
+    const stored = localStorage.getItem(PERF_OVERRIDE_STORAGE_KEY)
+    return PERF_OVERRIDES.includes(stored) ? stored : null
+  } catch {
+    return null
+  }
+}
+
+export function storePerformanceOverride(value) {
+  if (typeof localStorage === 'undefined') return
+  try {
+    if (PERF_OVERRIDES.includes(value)) {
+      localStorage.setItem(PERF_OVERRIDE_STORAGE_KEY, value)
+    } else {
+      localStorage.removeItem(PERF_OVERRIDE_STORAGE_KEY)
+    }
+  } catch {
+    // ignore storage errors
+  }
+}
+
+export function resolveEffectiveTier({ autoTier, override }) {
+  if (override === 'off') return 'full'
+  if (override === 'on' || override == null) return 'minimal'
+  return PERF_TIERS.includes(autoTier) ? autoTier : 'full'
+}
+
+export function isPerformanceOptimized(tier) {
+  return tier === 'minimal' || tier === 'reduced'
 }
 
 /** Map tier to feature flags consumed by UI components. */

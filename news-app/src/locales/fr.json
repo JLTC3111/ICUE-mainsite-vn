@@ -91,6 +91,12 @@
     "switchToDark": "Passer au newsroom sombre",
     "switchToLight": "Passer au newsroom clair"
   },
+  "performance": {
+    "on": "Léger",
+    "off": "Complet",
+    "switchOn": "Activer le mode performance (réduire les effets visuels)",
+    "switchOff": "Désactiver le mode performance (activer tous les effets visuels)"
+  },
   "editor": {
     "writeTitle": "Créer un article",
     "editTitle": "Modifier l'article",

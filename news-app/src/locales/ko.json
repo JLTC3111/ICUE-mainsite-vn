@@ -91,6 +91,12 @@
     "switchToDark": "다크 뉴스룸으로 전환",
     "switchToLight": "라이트 뉴스룸으로 전환"
   },
+  "performance": {
+    "on": "라이트",
+    "off": "풀",
+    "switchOn": "성능 모드 켜기 (시각 효과 줄이기)",
+    "switchOff": "성능 모드 끄기 (모든 시각 효과 활성화)"
+  },
   "editor": {
     "writeTitle": "기사 작성",
     "editTitle": "기사 편집",

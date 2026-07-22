@@ -91,6 +91,12 @@
     "switchToDark": "Zum dunklen Newsroom wechseln",
     "switchToLight": "Zum hellen Newsroom wechseln"
   },
+  "performance": {
+    "on": "Lite",
+    "off": "Voll",
+    "switchOn": "Leistungsmodus aktivieren (visuelle Effekte reduzieren)",
+    "switchOff": "Leistungsmodus deaktivieren (alle visuellen Effekte aktivieren)"
+  },
   "editor": {
     "writeTitle": "Artikel erstellen",
     "editTitle": "Artikel bearbeiten",

@@ -4,6 +4,8 @@ import {
   detectPerformanceTier,
   tierToProfile,
   applyGlobeQuality,
+  resolveEffectiveTier,
+  isPerformanceOptimized,
   PERF_TIERS,
 } from '../src/lib/performanceProfile.js'
 
@@ -53,5 +55,26 @@ describe('performanceProfile', () => {
   it('detectPerformanceTier returns a valid tier in node', () => {
     const tier = detectPerformanceTier()
     assert.ok(PERF_TIERS.includes(tier))
+  })
+
+  it('resolveEffectiveTier forces minimal when override is on', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'full', override: 'on' }), 'minimal')
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'on' }), 'minimal')
+  })
+
+  it('resolveEffectiveTier forces full when override is off', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: 'off' }), 'full')
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'off' }), 'full')
+  })
+
+  it('resolveEffectiveTier defaults to minimal when no override', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: null }), 'minimal')
+    assert.equal(resolveEffectiveTier({ autoTier: 'full', override: null }), 'minimal')
+  })
+
+  it('isPerformanceOptimized treats reduced and minimal as optimized', () => {
+    assert.equal(isPerformanceOptimized('reduced'), true)
+    assert.equal(isPerformanceOptimized('minimal'), true)
+    assert.equal(isPerformanceOptimized('full'), false)
   })
 })

@@ -91,6 +91,12 @@
     "switchToDark": "ダークニュースルームに切り替え",
     "switchToLight": "ライトニュースルームに切り替え"
   },
+  "performance": {
+    "on": "軽量",
+    "off": "フル",
+    "switchOn": "パフォーマンスモードをオン（視覚効果を削減）",
+    "switchOff": "パフォーマンスモードをオフ（すべての視覚効果を有効化）"
+  },
   "editor": {
     "writeTitle": "記事を作成",
     "editTitle": "記事を編集",

@@ -91,6 +91,12 @@
     "switchToDark": "Chuyển sang giao diện tối",
     "switchToLight": "Chuyển sang giao diện sáng"
   },
+  "performance": {
+    "on": "Nhẹ",
+    "off": "Đầy đủ",
+    "switchOn": "Bật chế độ hiệu năng (giảm hiệu ứng hình ảnh)",
+    "switchOff": "Tắt chế độ hiệu năng (bật đầy đủ hiệu ứng hình ảnh)"
+  },
   "editor": {
     "writeTitle": "Tạo Bài Viết",
     "editTitle": "Chỉnh Sửa Bài Viết",
