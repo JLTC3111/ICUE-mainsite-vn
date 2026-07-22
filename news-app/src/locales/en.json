@@ -92,10 +92,10 @@
     "switchToLight": "Switch to light newsroom"
   },
   "performance": {
-    "on": "Lite",
-    "off": "Full",
-    "switchOn": "Turn on performance mode (reduce visual effects)",
-    "switchOff": "Turn off performance mode (enable full visual effects)"
+    "on": "Full",
+    "off": "Lite",
+    "switchOn": "Turn on full visual effects",
+    "switchOff": "Turn on lite mode (reduce visual effects)"
   },
   "editor": {
     "writeTitle": "Create Article",

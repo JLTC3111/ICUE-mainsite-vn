@@ -254,12 +254,6 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .news-hero__perf-toggle {
-    display: none;
-  }
-}
-
 @media (min-width: 861px) {
   .news-hero__theme-toggle {
     display: none;

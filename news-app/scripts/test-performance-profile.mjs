@@ -57,19 +57,19 @@ describe('performanceProfile', () => {
     assert.ok(PERF_TIERS.includes(tier))
   })
 
-  it('resolveEffectiveTier forces minimal when override is on', () => {
-    assert.equal(resolveEffectiveTier({ autoTier: 'full', override: 'on' }), 'minimal')
-    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'on' }), 'minimal')
+  it('resolveEffectiveTier forces full when override is on', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: 'on' }), 'full')
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'on' }), 'full')
   })
 
-  it('resolveEffectiveTier forces full when override is off', () => {
-    assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: 'off' }), 'full')
-    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'off' }), 'full')
+  it('resolveEffectiveTier forces minimal when override is off', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'full', override: 'off' }), 'minimal')
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: 'off' }), 'minimal')
   })
 
-  it('resolveEffectiveTier defaults to minimal when no override', () => {
-    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: null }), 'minimal')
-    assert.equal(resolveEffectiveTier({ autoTier: 'full', override: null }), 'minimal')
+  it('resolveEffectiveTier defaults to full when no override', () => {
+    assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: null }), 'full')
+    assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: null }), 'full')
   })
 
   it('isPerformanceOptimized treats reduced and minimal as optimized', () => {

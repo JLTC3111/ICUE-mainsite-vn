@@ -92,10 +92,10 @@
     "switchToLight": "Zum hellen Newsroom wechseln"
   },
   "performance": {
-    "on": "Lite",
-    "off": "Voll",
-    "switchOn": "Leistungsmodus aktivieren (visuelle Effekte reduzieren)",
-    "switchOff": "Leistungsmodus deaktivieren (alle visuellen Effekte aktivieren)"
+    "on": "Voll",
+    "off": "Lite",
+    "switchOn": "Alle visuellen Effekte aktivieren",
+    "switchOff": "Lite-Modus aktivieren (visuelle Effekte reduzieren)"
   },
   "editor": {
     "writeTitle": "Artikel erstellen",

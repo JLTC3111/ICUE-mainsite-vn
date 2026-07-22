@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import {
-  isPerformanceOptimized,
   readPerformanceOverride,
   resolveEffectiveTier,
   resolvePerformanceTier,
@@ -10,10 +9,10 @@ import {
 } from '../lib/performanceProfile'
 
 const PerformanceProfileContext = createContext({
-  ...tierToProfile('minimal'),
-  isOptimized: true,
+  ...tierToProfile('full'),
+  isFullEffects: true,
   hasOverride: false,
-  setPerformanceOptimized: () => {},
+  setPerformanceFull: () => {},
 })
 
 export function PerformanceProfileProvider({ children }) {
@@ -29,7 +28,7 @@ export function PerformanceProfileProvider({ children }) {
     [autoTier, override],
   )
 
-  const setPerformanceOptimized = useCallback((next) => {
+  const setPerformanceFull = useCallback((next) => {
     const value = next ? 'on' : 'off'
     storePerformanceOverride(value)
     setOverride(value)
@@ -38,11 +37,11 @@ export function PerformanceProfileProvider({ children }) {
   const profile = useMemo(
     () => ({
       ...tierToProfile(effectiveTier),
-      isOptimized: isPerformanceOptimized(effectiveTier),
+      isFullEffects: effectiveTier === 'full',
       hasOverride: override != null,
-      setPerformanceOptimized,
+      setPerformanceFull,
     }),
-    [effectiveTier, override, setPerformanceOptimized],
+    [effectiveTier, override, setPerformanceFull],
   )
 
   return (

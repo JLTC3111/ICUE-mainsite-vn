@@ -59,13 +59,13 @@ function CpuPerformanceIcon({ fullPower = false }) {
 
 export default function PerformanceModeToggle({ className = '' }) {
   const { t } = useTranslation()
-  const { isOptimized, setPerformanceOptimized } = usePerformanceProfile()
+  const { isFullEffects, setPerformanceFull } = usePerformanceProfile()
 
   const handleToggle = () => {
-    setPerformanceOptimized(!isOptimized)
+    setPerformanceFull(!isFullEffects)
   }
 
-  const ariaLabel = isOptimized ? t('performance.switchOff') : t('performance.switchOn')
+  const ariaLabel = isFullEffects ? t('performance.switchOff') : t('performance.switchOn')
 
   return (
     <button
@@ -73,13 +73,13 @@ export default function PerformanceModeToggle({ className = '' }) {
       onClick={handleToggle}
       className={`performance-mode-toggle${
         className ? ` ${className}` : ''
-      }${isOptimized ? ' performance-mode-toggle--on' : ''}`}
-      aria-pressed={isOptimized}
+      }${isFullEffects ? ' performance-mode-toggle--on' : ''}`}
+      aria-pressed={isFullEffects}
       aria-label={ariaLabel}
       title={ariaLabel}
     >
       <span className="performance-mode-toggle__icon">
-        <CpuPerformanceIcon fullPower={!isOptimized} />
+        <CpuPerformanceIcon fullPower={isFullEffects} />
       </span>
     </button>
   )

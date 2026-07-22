@@ -8,6 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
+import PerformanceModeToggle from './PerformanceModeToggle'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 
@@ -37,10 +38,15 @@ function Header() {
         />
         <ArticleSearch />
 
-        <a href={base} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
-          <span className="icue-header__logo">{t('brand')}</span>
-          <span className="icue-header__tag">{t('brandBadge')}</span>
-        </a>
+        <div className="icue-header__brand-box">
+          {isReaderRoute && (
+            <PerformanceModeToggle className="icue-header__perf-toggle" />
+          )}
+          <a href={base} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
+            <span className="icue-header__logo">{t('brand')}</span>
+            <span className="icue-header__tag">{t('brandBadge')}</span>
+          </a>
+        </div>
 
         {isReaderRoute && pathname.startsWith('/article/') && (
           <NewsroomThemeToggle

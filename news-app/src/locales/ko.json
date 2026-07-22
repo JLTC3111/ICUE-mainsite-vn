@@ -92,10 +92,10 @@
     "switchToLight": "라이트 뉴스룸으로 전환"
   },
   "performance": {
-    "on": "라이트",
-    "off": "풀",
-    "switchOn": "성능 모드 켜기 (시각 효과 줄이기)",
-    "switchOff": "성능 모드 끄기 (모든 시각 효과 활성화)"
+    "on": "풀",
+    "off": "라이트",
+    "switchOn": "모든 시각 효과 켜기",
+    "switchOff": "라이트 모드 켜기 (시각 효과 줄이기)"
   },
   "editor": {
     "writeTitle": "기사 작성",

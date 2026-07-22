@@ -137,8 +137,8 @@ export function storePerformanceOverride(value) {
 }
 
 export function resolveEffectiveTier({ autoTier, override }) {
-  if (override === 'off') return 'full'
-  if (override === 'on' || override == null) return 'minimal'
+  if (override === 'off') return 'minimal'
+  if (override === 'on' || override == null) return 'full'
   return PERF_TIERS.includes(autoTier) ? autoTier : 'full'
 }
 

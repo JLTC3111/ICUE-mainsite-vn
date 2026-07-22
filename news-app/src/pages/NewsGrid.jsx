@@ -9,7 +9,6 @@ import ArticleParallaxCarousel from '../components/ArticleParallaxCarousel'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
 import NewsroomThemeToggle from '../components/NewsroomThemeToggle'
-import PerformanceModeToggle from '../components/PerformanceModeToggle'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
@@ -109,7 +108,6 @@ export default function NewsGrid() {
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
           <div className="news-hero__actions">
-            <PerformanceModeToggle className="news-hero__perf-toggle" />
             <NewsroomThemeToggle
               showCompactLabel
               className="animated-theme-toggler--hero news-hero__theme-toggle"
