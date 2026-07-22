@@ -307,7 +307,7 @@
   }
 
   .icue-header__theme-toggle--article-mobile {
-    display: inline-grid;
+    display: inline-flex;
     margin-left: auto;
     margin-right: 8px;
   }

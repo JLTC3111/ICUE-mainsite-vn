@@ -18,6 +18,8 @@ import {
   NEWSROOM_DEFAULT_CATEGORY,
   NEWSROOM_INITIAL_VISIBLE,
   NEWSROOM_LOAD_MORE_STEP,
+  NEWSROOM_COMPACT_INITIAL_VISIBLE,
+  NEWSROOM_COMPACT_LOAD_MORE_STEP,
 } from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
 import './NewsGrid.css'
@@ -32,8 +34,10 @@ export default function NewsGrid() {
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
   const [activeCat, setActiveCat] = useState(NEWSROOM_DEFAULT_CATEGORY)
-  const [visibleCount, setVisibleCount] = useState(NEWSROOM_INITIAL_VISIBLE)
   const isCompactLayout = useMediaQuery(NEWSROOM_COMPACT_QUERY)
+  const initialVisible = isCompactLayout ? NEWSROOM_COMPACT_INITIAL_VISIBLE : NEWSROOM_INITIAL_VISIBLE
+  const loadMoreStep = isCompactLayout ? NEWSROOM_COMPACT_LOAD_MORE_STEP : NEWSROOM_LOAD_MORE_STEP
+  const [visibleCount, setVisibleCount] = useState(initialVisible)
   const { isDark } = useNewsroomTheme()
 
   useEffect(() => {
@@ -66,8 +70,8 @@ export default function NewsGrid() {
   }, [articles, activeCat, searchQuery])
 
   useEffect(() => {
-    setVisibleCount(NEWSROOM_INITIAL_VISIBLE)
-  }, [activeCat, searchQuery])
+    setVisibleCount(initialVisible)
+  }, [activeCat, searchQuery, initialVisible])
 
   const visibleArticles = useMemo(
     () => filtered.slice(0, visibleCount),
@@ -104,7 +108,10 @@ export default function NewsGrid() {
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
           <div className="news-hero__actions">
-            <NewsroomThemeToggle className="animated-theme-toggler--hero news-hero__theme-toggle" />
+            <NewsroomThemeToggle
+              showCompactLabel
+              className="animated-theme-toggler--hero news-hero__theme-toggle"
+            />
             <SocialGooeyNav reduceMotion={reduceMotion} />
           </div>
         </div>
@@ -147,7 +154,7 @@ export default function NewsGrid() {
             <button
               type="button"
               className="news-load-more__btn"
-              onClick={() => setVisibleCount((count) => count + NEWSROOM_LOAD_MORE_STEP)}
+              onClick={() => setVisibleCount((count) => count + loadMoreStep)}
             >
               {t('news.loadMore')}
             </button>

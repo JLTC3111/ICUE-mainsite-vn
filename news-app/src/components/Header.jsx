@@ -43,7 +43,10 @@ function Header() {
         </a>
 
         {isReaderRoute && pathname.startsWith('/article/') && (
-          <NewsroomThemeToggle className="animated-theme-toggler--header icue-header__theme-toggle icue-header__theme-toggle--article-mobile" />
+          <NewsroomThemeToggle
+            showCompactLabel
+            className="animated-theme-toggler--header icue-header__theme-toggle icue-header__theme-toggle--article-mobile"
+          />
         )}
 
         <button

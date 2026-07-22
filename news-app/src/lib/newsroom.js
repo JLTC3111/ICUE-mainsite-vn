@@ -7,6 +7,12 @@ export const NEWSROOM_INITIAL_VISIBLE = 18
 /** How many additional articles each "Load more" reveals. */
 export const NEWSROOM_LOAD_MORE_STEP = 12
 
+/** Mobile/tablet carousel — fewer cards so the gallery stays scannable. */
+export const NEWSROOM_COMPACT_INITIAL_VISIBLE = 10
+
+/** Additional carousel cards per "Load more" on mobile/tablet. */
+export const NEWSROOM_COMPACT_LOAD_MORE_STEP = 6
+
 /** Mobile + tablet breakpoint — horizontal parallax carousel below this width; bento grid above. */
 export const NEWSROOM_COMPACT_QUERY = '(max-width: 1024px)'
 

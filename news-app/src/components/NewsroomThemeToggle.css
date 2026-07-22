@@ -1,3 +1,73 @@
 .newsroom-theme-toggle {
   flex-shrink: 0;
 }
+
+.animated-theme-toggler__label {
+  display: none;
+}
+
+/* Pill + "Dark" / "Light" label on compact reader layouts only */
+@media (max-width: 1024px) {
+  .newsroom-theme-toggle--compact-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: auto;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .newsroom-theme-toggle--compact-label .animated-theme-toggler__label {
+    display: inline;
+  }
+
+  .newsroom-theme-toggle--compact-label.animated-theme-toggler--hero {
+    width: auto;
+    height: auto;
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .newsroom-theme-toggle--compact-label.animated-theme-toggler--hero:hover {
+    border-color: rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .newsroom-theme-toggle--compact-label.animated-theme-toggler--header {
+    width: auto;
+    height: auto;
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .newsroom-theme-toggle--compact-label .animated-theme-toggler__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.news-page:not(.news-page--dark) .newsroom-theme-toggle--compact-label.animated-theme-toggler--hero {
+  border-color: var(--icue-border);
+  background: var(--icue-surface);
+  color: var(--icue-text);
+}
+
+.news-page:not(.news-page--dark) .newsroom-theme-toggle--compact-label.animated-theme-toggler--hero:hover {
+  border-color: var(--icue-text-faint);
+  background: var(--icue-surface-2);
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .newsroom-theme-toggle--compact-label.animated-theme-toggler--header {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.icue-app--news-home.icue-app--news-theme-dark .newsroom-theme-toggle--compact-label.animated-theme-toggler--header:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.32);
+}

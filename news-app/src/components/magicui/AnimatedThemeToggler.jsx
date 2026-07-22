@@ -40,6 +40,7 @@ export default function AnimatedThemeToggler({
   theme = 'light',
   onThemeChange,
   instant = false,
+  label,
   'aria-label': ariaLabel,
   title,
   ...props
@@ -102,6 +103,7 @@ export default function AnimatedThemeToggler({
       {...props}
     >
       <span className="animated-theme-toggler__icon">{isDark ? <SunIcon /> : <MoonIcon />}</span>
+      {label ? <span className="animated-theme-toggler__label">{label}</span> : null}
     </button>
   )
 }

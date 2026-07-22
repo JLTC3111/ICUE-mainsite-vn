@@ -7,7 +7,7 @@ import {
 import AnimatedThemeToggler from './magicui/AnimatedThemeToggler'
 import './NewsroomThemeToggle.css'
 
-export default function NewsroomThemeToggle({ className = '' }) {
+export default function NewsroomThemeToggle({ className = '', showCompactLabel = false }) {
   const { t } = useTranslation()
   const { theme, setTheme } = useNewsroomTheme()
   const isDark = theme === NEWSROOM_THEME_DARK
@@ -18,9 +18,12 @@ export default function NewsroomThemeToggle({ className = '' }) {
 
   return (
     <AnimatedThemeToggler
-      className={`newsroom-theme-toggle${className ? ` ${className}` : ''}`}
+      className={`newsroom-theme-toggle${
+        showCompactLabel ? ' newsroom-theme-toggle--compact-label' : ''
+      }${className ? ` ${className}` : ''}`}
       theme={isDark ? 'dark' : 'light'}
       onThemeChange={handleThemeChange}
+      label={showCompactLabel ? (isDark ? t('theme.light') : t('theme.dark')) : undefined}
       duration={280}
       aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
       title={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
