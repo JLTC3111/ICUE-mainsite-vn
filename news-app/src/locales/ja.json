@@ -147,6 +147,11 @@
     "coverComparisonTitle": "カバー画像ビフォー / アフター",
     "coverComparisonHint": "カバーとギャラリー画像（またはギャラリー画像2枚）を選ぶと、カバーの代わりにスライダーが表示されます。",
     "coverComparisonNeedSources": "カバー比較を設定するには、カバー画像とギャラリー画像を1枚以上追加してください。",
+    "coverSplitLabel": "グリッドサムネイルの分割",
+    "coverSplitValue": "アフター {{percent}}%",
+    "coverSplitBefore": "ビフォー",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "アフター",
     "coverImageBadge": "カバー"
   },
   "profile": {

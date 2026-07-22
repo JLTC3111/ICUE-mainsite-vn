@@ -152,6 +152,11 @@
     "coverComparisonTitle": "So sánh ảnh bìa trước / sau",
     "coverComparisonHint": "Chọn hai ảnh từ bìa A, bìa B hoặc gallery để hiển thị thanh trượt trên thẻ bài và trang bài viết.",
     "coverComparisonNeedSources": "Thêm hai ảnh bìa, hoặc một ảnh bìa cùng ảnh gallery, để thiết lập so sánh ảnh bìa.",
+    "coverSplitLabel": "Tỷ lệ hiển thị trên lưới tin",
+    "coverSplitValue": "{{percent}}% ảnh sau",
+    "coverSplitBefore": "Trước",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "Sau",
     "coverImageBadge": "Bìa A",
     "coverImageAltBadge": "Bìa B",
     "thumbnailPreview": "Xem trước ảnh thu nhỏ trên thẻ"

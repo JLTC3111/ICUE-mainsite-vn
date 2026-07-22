@@ -8,6 +8,9 @@ function normalizeMediaComparisonPair(raw) {
     after_id: afterId,
     ...(raw.before_url ? { before_url: String(raw.before_url) } : {}),
     ...(raw.after_url ? { after_url: String(raw.after_url) } : {}),
+    ...(raw.split_percent != null || raw.splitPercent != null
+      ? { split_percent: normalizeSplitPercent(raw.split_percent ?? raw.splitPercent) }
+      : {}),
   }
 }
 
@@ -36,6 +39,18 @@ function findClientId(dbId, items = []) {
 export const COVER_COMPARISON_ID = '__cover__'
 export const COVER_COMPARISON_ID_2 = '__cover_2__'
 export const MAX_COVER_COMPARISON_PAIRS = 1
+export const DEFAULT_COVER_SPLIT_PERCENT = 50
+
+export function normalizeSplitPercent(value) {
+  if (value == null || value === '') return DEFAULT_COVER_SPLIT_PERCENT
+  const n = Number(value)
+  if (!Number.isFinite(n)) return DEFAULT_COVER_SPLIT_PERCENT
+  return Math.min(100, Math.max(0, Math.round(n)))
+}
+
+function beforeClipPath(splitPercent) {
+  return `inset(0 ${normalizeSplitPercent(splitPercent)}% 0 0)`
+}
 
 function normalizeComparisonField(raw) {
   const pairs = normalizeMediaComparisons(raw)
@@ -98,10 +113,11 @@ function comparisonIdsToEditor(pair, items = []) {
   return {
     beforeId: toEditorId(pair.before_id),
     afterId: toEditorId(pair.after_id),
+    splitPercent: normalizeSplitPercent(pair.split_percent),
   }
 }
 
-const EMPTY_EDITOR_PAIR = { beforeId: null, afterId: null }
+const EMPTY_EDITOR_PAIR = { beforeId: null, afterId: null, splitPercent: DEFAULT_COVER_SPLIT_PERCENT }
 
 export function coverComparisonToEditorIds(comparison, items = []) {
   const normalized = normalizeMediaComparisons(comparison).slice(0, MAX_COVER_COMPARISON_PAIRS)
@@ -130,6 +146,7 @@ export function pruneEditorComparison(comparison, itemId) {
     pairs: comparison.pairs.map((pair) => ({
       beforeId: pair.beforeId === itemId ? null : pair.beforeId,
       afterId: pair.afterId === itemId ? null : pair.afterId,
+      splitPercent: normalizeSplitPercent(pair.splitPercent),
     })),
   }
 }
@@ -142,11 +159,18 @@ export function resolveCoverComparisonForSave(
 ) {
   const pairs = (comparison?.pairs ?? []).slice(0, MAX_COVER_COMPARISON_PAIRS)
   const resolved = pairs
-    .map((pair) => resolveComparisonIds(pair, clientToDb, {
-      allowCover: true,
-      hasCover,
-      hasCoverAlt,
-    }))
+    .map((pair) => {
+      const ids = resolveComparisonIds(pair, clientToDb, {
+        allowCover: true,
+        hasCover,
+        hasCoverAlt,
+      })
+      if (!ids) return null
+      return {
+        ...ids,
+        split_percent: normalizeSplitPercent(pair.splitPercent),
+      }
+    })
     .filter(Boolean)
 
   if (!resolved.length) return null
@@ -215,7 +239,11 @@ export function findAllCoverComparisonImages(coverUrl, images, comparison, cover
       }
 
       if (!before?.url || !after?.url) return null
-      return { before, after }
+      return {
+        before,
+        after,
+        splitPercent: normalizeSplitPercent(pair.split_percent),
+      }
     })
     .filter(Boolean)
 }
@@ -311,3 +339,5 @@ export function normalizeCoverComparisonField(raw) {
 export function normalizeMediaComparisonField(raw) {
   return normalizeComparisonField(raw)
 }
+
+export { beforeClipPath }

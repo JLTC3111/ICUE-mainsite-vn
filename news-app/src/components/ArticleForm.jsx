@@ -142,6 +142,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       pairs: (prev.pairs ?? []).map((pair) => ({
         beforeId: pair.beforeId === COVER_COMPARISON_ID ? null : pair.beforeId,
         afterId: pair.afterId === COVER_COMPARISON_ID ? null : pair.afterId,
+        splitPercent: pair.splitPercent,
       })),
     }))
   }, [])
@@ -158,6 +159,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       pairs: (prev.pairs ?? []).map((pair) => ({
         beforeId: pair.beforeId === COVER_COMPARISON_ID_2 ? null : pair.beforeId,
         afterId: pair.afterId === COVER_COMPARISON_ID_2 ? null : pair.afterId,
+        splitPercent: pair.splitPercent,
       })),
     }))
   }, [])

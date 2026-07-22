@@ -7,6 +7,7 @@ export default function BentoCardBackground({ item }) {
       <BentoCardComparison
         before={item.comparison.before}
         after={item.comparison.after}
+        splitPercent={item.comparison.splitPercent}
       />
     )
   }

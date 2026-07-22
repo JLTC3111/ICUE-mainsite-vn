@@ -147,6 +147,11 @@
     "coverComparisonTitle": "커버 이미지 전후 비교",
     "coverComparisonHint": "커버와 갤러리 이미지(또는 갤러리 이미지 2장)를 선택하면 커버 대신 슬라이더가 표시됩니다.",
     "coverComparisonNeedSources": "커버 비교를 설정하려면 커버 이미지와 갤러리 이미지를 1장 이상 추가하세요.",
+    "coverSplitLabel": "그리드 썸네일 분할",
+    "coverSplitValue": "이후 {{percent}}%",
+    "coverSplitBefore": "이전",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "이후",
     "coverImageBadge": "커버"
   },
   "profile": {

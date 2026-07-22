@@ -147,6 +147,11 @@
     "coverComparisonTitle": "Titelbild Vorher / Nachher",
     "coverComparisonHint": "Wähle das Titelbild und ein Galeriebild (oder zwei Galeriebilder) für den Schieberegler anstelle des Titelbilds.",
     "coverComparisonNeedSources": "Füge ein Titelbild und mindestens ein Galeriebild hinzu, um den Titelbild-Vergleich einzurichten.",
+    "coverSplitLabel": "Raster-Vorschaubild-Aufteilung",
+    "coverSplitValue": "{{percent}}% Nachher",
+    "coverSplitBefore": "Vorher",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "Nachher",
     "coverImageBadge": "Titel"
   },
   "profile": {

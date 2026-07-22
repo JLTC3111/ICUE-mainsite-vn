@@ -147,6 +147,11 @@
     "coverComparisonTitle": "Comparaison de couverture avant / après",
     "coverComparisonHint": "Choisissez la couverture et une image de la galerie (ou deux images) pour afficher un curseur à la place de la couverture.",
     "coverComparisonNeedSources": "Ajoutez une image de couverture et au moins une image de galerie pour configurer la comparaison.",
+    "coverSplitLabel": "Répartition de la vignette grille",
+    "coverSplitValue": "{{percent}}% après",
+    "coverSplitBefore": "Avant",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "Après",
     "coverImageBadge": "Couverture"
   },
   "profile": {

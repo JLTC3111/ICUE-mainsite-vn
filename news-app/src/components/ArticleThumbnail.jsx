@@ -8,7 +8,12 @@ export default function ArticleThumbnail({ article, comparison, className = '' }
   if (pair?.before?.url && pair?.after?.url) {
     return (
       <div className={`article-thumb ${className}`.trim()} aria-hidden="true">
-        <BentoCardComparison before={pair.before} after={pair.after} staticSplit />
+        <BentoCardComparison
+          before={pair.before}
+          after={pair.after}
+          staticSplit
+          splitPercent={pair.splitPercent}
+        />
       </div>
     )
   }

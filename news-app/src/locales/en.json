@@ -152,6 +152,11 @@
     "coverComparisonTitle": "Cover before / after",
     "coverComparisonHint": "Pick two images from cover A, cover B, or gallery photos for the before/after slider on cards and the article page.",
     "coverComparisonNeedSources": "Add two cover images, or a cover plus a gallery image, to set up a cover comparison.",
+    "coverSplitLabel": "Grid thumbnail split",
+    "coverSplitValue": "{{percent}}% after",
+    "coverSplitBefore": "Before",
+    "coverSplitMiddle": "50/50",
+    "coverSplitAfter": "After",
     "coverImageBadge": "Cover A",
     "coverImageAltBadge": "Cover B",
     "thumbnailPreview": "Card thumbnail preview"

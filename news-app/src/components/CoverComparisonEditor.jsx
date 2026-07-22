@@ -4,12 +4,17 @@ import { useTranslation } from 'react-i18next'
 import {
   COVER_COMPARISON_ID,
   COVER_COMPARISON_ID_2,
+  DEFAULT_COVER_SPLIT_PERCENT,
   findEditorCoverComparisonPairs,
+  normalizeSplitPercent,
 } from '../lib/mediaComparison'
 import ArticleImageComparison from './ArticleImageComparison'
+import BentoCardComparison from './BentoCardComparison'
 import './MediaUploader.css'
 
-const EMPTY_COMPARISON = { pairs: [{ beforeId: null, afterId: null }] }
+const EMPTY_COMPARISON = {
+  pairs: [{ beforeId: null, afterId: null, splitPercent: DEFAULT_COVER_SPLIT_PERCENT }],
+}
 
 function CoverComparisonEditor({
   coverUrl = '',
@@ -71,8 +76,23 @@ function CoverComparisonEditor({
     [activePair, onComparisonChange],
   )
 
+  const setSplitPercent = useCallback(
+    (value) => {
+      if (!onComparisonChange || !activePair) return
+      onComparisonChange({
+        pairs: [{
+          ...activePair,
+          splitPercent: normalizeSplitPercent(value),
+        }],
+      })
+    },
+    [activePair, onComparisonChange],
+  )
+
   const clearComparison = useCallback(() => {
-    onComparisonChange?.({ pairs: [{ beforeId: null, afterId: null }] })
+    onComparisonChange?.({
+      pairs: [{ beforeId: null, afterId: null, splitPercent: DEFAULT_COVER_SPLIT_PERCENT }],
+    })
   }, [onComparisonChange])
 
   const hasComparison = Boolean(comparisonPair)
@@ -161,6 +181,37 @@ function CoverComparisonEditor({
           {hasComparison && (
             <div className="media-comparison-editor__preview">
               <p className="media-comparison-editor__preview-label">{t('editor.comparisonPreview')}</p>
+              <div className="cover-comparison-editor__split">
+                <div className="cover-comparison-editor__split-head">
+                  <span>{t('editor.coverSplitLabel')}</span>
+                  <output className="cover-comparison-editor__split-value">
+                    {t('editor.coverSplitValue', { percent: activePair.splitPercent ?? DEFAULT_COVER_SPLIT_PERCENT })}
+                  </output>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={activePair.splitPercent ?? DEFAULT_COVER_SPLIT_PERCENT}
+                  className="cover-comparison-editor__split-range"
+                  aria-label={t('editor.coverSplitLabel')}
+                  onChange={(event) => setSplitPercent(event.target.value)}
+                />
+                <div className="cover-comparison-editor__split-labels" aria-hidden>
+                  <span>{t('editor.coverSplitBefore')}</span>
+                  <span>{t('editor.coverSplitMiddle')}</span>
+                  <span>{t('editor.coverSplitAfter')}</span>
+                </div>
+              </div>
+              <div className="cover-comparison-editor__grid-preview">
+                <BentoCardComparison
+                  before={comparisonPair.before}
+                  after={comparisonPair.after}
+                  staticSplit
+                  splitPercent={activePair.splitPercent ?? DEFAULT_COVER_SPLIT_PERCENT}
+                />
+              </div>
               <ArticleImageComparison
                 before={comparisonPair.before}
                 after={comparisonPair.after}
