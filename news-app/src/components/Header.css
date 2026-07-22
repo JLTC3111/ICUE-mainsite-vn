@@ -306,6 +306,20 @@
   .icue-app--news-home.icue-app--news-theme-dark .icue-header__link.active {
     color: #fff;
   }
+
+  .icue-app--news-home.icue-app--news-theme-dark .icue-header__right > .btn-primary {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .icue-app--news-home.icue-app--news-theme-dark .icue-header__right > .btn-primary:hover:not(:disabled) {
+    border-color: rgba(255, 255, 255, 0.36);
+    background: rgba(255, 255, 255, 0.14);
+    filter: none;
+    transform: none;
+  }
 }
 
 .icue-header__theme-toggle {
