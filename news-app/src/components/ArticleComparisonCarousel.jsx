@@ -8,34 +8,27 @@ import {
 import { useTranslation } from 'react-i18next'
 import useEmblaCarousel from 'embla-carousel-react'
 import { bindEmblaParallax } from '../lib/emblaParallax'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import ArticleImageComparison from './ArticleImageComparison'
 import './ArticleComparisonCarousel.css'
 
 const PARALLAX_LAYER_SELECTOR = '.article-comparison-parallax__layer'
 
-function useReducedMotion() {
-  const [reduceMotion, setReduceMotion] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduceMotion(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
-
-  return reduceMotion
-}
-
-export default function ArticleComparisonCarousel({ pairs = [], fitContent = false }) {
+export default function ArticleComparisonCarousel({
+  pairs = [],
+  fitContent = false,
+  disableParallax: disableParallaxProp,
+}) {
   const { t } = useTranslation()
-  const reduceMotion = useReducedMotion()
+  const { disableParallax: profileDisableParallax, reduceMotion: profileReduceMotion } = usePerformanceProfile()
+  const disableParallax = disableParallaxProp ?? profileDisableParallax
+  const reduceMotion = profileReduceMotion
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const slideCount = pairs.length
-  const useParallax = slideCount > 1 && !reduceMotion
+  const useParallax = slideCount > 1 && !reduceMotion && !disableParallax
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',

@@ -6,11 +6,13 @@ import Footer from './Footer'
 import MarketTicker from './MarketTicker'
 import VnMarketTicker from './VnMarketTicker'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'
 
 function Layout() {
   const { pathname } = useLocation()
   const { isDark } = useNewsroomTheme()
+  const { tier, reduceBlur } = usePerformanceProfile()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
   const isDarkReader = isReaderRoute && isDark
 
@@ -23,7 +25,9 @@ function Layout() {
     <div
       className={`icue-app${
         isReaderRoute ? ' icue-app--news-home' : ''
-      }${isDarkReader ? ' icue-app--news-theme-dark' : ''}`}
+      }${isDarkReader ? ' icue-app--news-theme-dark' : ''}${
+        reduceBlur ? ' icue-app--perf-minimal' : tier === 'reduced' ? ' icue-app--perf-reduced' : ''
+      }`}
     >
       <Header />
       <MarketTicker />

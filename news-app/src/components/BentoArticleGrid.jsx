@@ -4,15 +4,17 @@ import BentoCardBackground from './BentoCardBackground'
 import ArticleViewCounter from './ArticleViewCounter'
 import { formatDate } from '../lib/helpers'
 import { categoryColor, PLACEHOLDER_COVER, withBentoLayout } from '../lib/bentoArticles'
+import { tierToProfile } from '../lib/performanceProfile'
 
 export default function BentoArticleGrid({
   items,
-  reduceMotion = false,
+  profile = tierToProfile('full'),
   animationOffset = 0,
   onItemClick,
 }) {
   const { t, i18n } = useTranslation()
   const layoutItems = withBentoLayout(items)
+  const { reduceMotion, disableLens, disableBorderBeam } = profile
 
   return (
     <BentoGrid>
@@ -25,7 +27,8 @@ export default function BentoArticleGrid({
           spanRows={item.spanRows}
           animate={!reduceMotion}
           animationDelay={reduceMotion ? 0 : (animationOffset + index) * 60}
-          lens={!reduceMotion && !item.comparison && item.img !== PLACEHOLDER_COVER}
+          lens={!disableLens && !item.comparison && item.img !== PLACEHOLDER_COVER}
+          showBorderBeam={!disableBorderBeam}
           cta={t('gallery.readArticle')}
           onClick={() => onItemClick(item)}
           description={(

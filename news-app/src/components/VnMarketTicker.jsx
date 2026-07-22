@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchVnMarketQuotes } from '../lib/vnMarketTicker'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './VnMarketTicker.css'
 
 function formatPrice(q, locale) {
@@ -41,10 +42,22 @@ function TickerItem({ q, locale, ohlcLabel }) {
 
 export default function VnMarketTicker() {
   const { t, i18n } = useTranslation()
+  const { pauseTickers } = usePerformanceProfile()
   const [quotes, setQuotes] = useState([])
   const [status, setStatus] = useState('loading')
+  const [tabVisible, setTabVisible] = useState(
+    () => typeof document === 'undefined' || document.visibilityState === 'visible',
+  )
 
   useEffect(() => {
+    const onVisibility = () => setTabVisible(document.visibilityState === 'visible')
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
+
+  useEffect(() => {
+    if (!tabVisible) return undefined
+
     let active = true
     const load = () => {
       fetchVnMarketQuotes()
@@ -56,12 +69,17 @@ export default function VnMarketTicker() {
         .catch(() => active && setStatus('error'))
     }
     load()
+    if (pauseTickers) {
+      return () => {
+        active = false
+      }
+    }
     const id = setInterval(load, 60 * 1000)
     return () => {
       active = false
       clearInterval(id)
     }
-  }, [])
+  }, [pauseTickers, tabVisible])
 
   if (status === 'error' && !quotes.length) {
     return (
@@ -96,7 +114,7 @@ export default function VnMarketTicker() {
     <div className="vn-ticker" aria-label={t('market.vnLabel')}>
       <div className="vn-ticker__label">{t('market.vnLabel')}</div>
       <div className="vn-ticker__viewport">
-        <div className={`vn-ticker__track${quotes.length ? ' is-animated' : ''}`}>
+        <div className={`vn-ticker__track${quotes.length && !pauseTickers ? ' is-animated' : ''}`}>
           {track}
         </div>
       </div>

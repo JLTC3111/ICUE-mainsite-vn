@@ -10,6 +10,7 @@ import Globe, {
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
+import { applyGlobeQuality, tierToProfile } from '../lib/performanceProfile'
 import { buildBentoItems } from '../lib/bentoArticles'
 import {
   NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE,
@@ -18,12 +19,17 @@ import {
 import { normalizeUnicode } from '../lib/helpers'
 import './ArticleMasonry.css'
 
-export default function ArticleMasonry({ articles, reduceMotion = false }) {
+export default function ArticleMasonry({ articles, profile = tierToProfile('full') }) {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const isDesktopBentoCarousel = useMediaQuery(NEWSROOM_BENTO_CAROUSEL_QUERY)
   const { isDark } = useNewsroomTheme()
-  const globeConfig = isDark ? NEWSROOM_GLOBE_CONFIG_DARK : NEWSROOM_GLOBE_CONFIG_LIGHT
+  const { reduceMotion, disableGlobe, globeQuality } = profile
+  const baseGlobeConfig = isDark ? NEWSROOM_GLOBE_CONFIG_DARK : NEWSROOM_GLOBE_CONFIG_LIGHT
+  const globeConfig = useMemo(
+    () => applyGlobeQuality(baseGlobeConfig, globeQuality),
+    [baseGlobeConfig, globeQuality],
+  )
   const { titles, isTitlePending } = useArticleTitleTranslations(articles, i18n.resolvedLanguage)
 
   const items = useMemo(
@@ -40,18 +46,24 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
   const useYCarousel =
     isDesktopBentoCarousel && items.length > NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE
 
+  const showGlobe = !disableGlobe && globeQuality !== 'off'
+
   return (
     <section className="article-bento" aria-label={t('gallery.ariaLabel')}>
       <div className="article-bento__gallery">
         <div className="article-bento__backdrop" aria-hidden="true">
-          <div className="article-bento__globe-shell">
-            <Globe
-              key={isDark ? 'dark' : 'light'}
-              className="article-bento__globe"
-              config={globeConfig}
-              reduceMotion={reduceMotion}
-            />
-          </div>
+          {showGlobe ? (
+            <div className="article-bento__globe-shell">
+              <Globe
+                key={isDark ? 'dark' : 'light'}
+                className="article-bento__globe"
+                config={globeConfig}
+                reduceMotion={reduceMotion}
+                quality={globeQuality}
+                pauseWhenHidden
+              />
+            </div>
+          ) : null}
           <div className="article-bento__globe-vignette" />
         </div>
 
@@ -59,13 +71,13 @@ export default function ArticleMasonry({ articles, reduceMotion = false }) {
           {useYCarousel ? (
             <BentoYCarousel
               items={items}
-              reduceMotion={reduceMotion}
+              profile={profile}
               onItemClick={handleItemClick}
             />
           ) : (
             <BentoArticleGrid
               items={items}
-              reduceMotion={reduceMotion}
+              profile={profile}
               onItemClick={handleItemClick}
             />
           )}

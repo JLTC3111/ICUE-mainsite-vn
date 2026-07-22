@@ -23,14 +23,19 @@ import ScrollProgress from '../components/ScrollProgress'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import { findAllCoverComparisonImages } from '../lib/mediaComparison'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './ArticleDetail.css'
 
 const LENS_PREF_KEY = 'icue-article-lens-enabled'
 
-function useLensCapable() {
+function useLensCapable(disableLens = false) {
   const [capable, setCapable] = useState(false)
 
   useEffect(() => {
+    if (disableLens) {
+      setCapable(false)
+      return undefined
+    }
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const sync = () => setCapable(fine.matches && !motion.matches)
@@ -41,7 +46,7 @@ function useLensCapable() {
       fine.removeEventListener('change', sync)
       motion.removeEventListener('change', sync)
     }
-  }, [])
+  }, [disableLens])
 
   return capable
 }
@@ -68,7 +73,9 @@ export default function ArticleDetail() {
   const { t, i18n } = useTranslation()
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
-  const lensCapable = useLensCapable()
+  const profile = usePerformanceProfile()
+  const { disableLens, showScrollProgress, hyperTextScramble, disableParallax } = profile
+  const lensCapable = useLensCapable(disableLens)
   const [lensOn, setLensOn] = useState(readLensPreference)
 
   const [article, setArticle] = useState(null)
@@ -259,7 +266,9 @@ export default function ArticleDetail() {
       className={`article-detail${isViContent ? ' article-detail--vi' : ''}`}
       lang={contentLang}
     >
-      <ScrollProgress progress={pageProgress ?? undefined} />
+      {showScrollProgress ? (
+        <ScrollProgress progress={pageProgress ?? undefined} />
+      ) : null}
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
         {isTranslating ? (
@@ -276,6 +285,7 @@ export default function ArticleDetail() {
             animateOnHover={false}
             duration={1200}
             delay={120}
+            reduceMotion={!hyperTextScramble}
           >
             {displayTitle}
           </HyperText>
@@ -341,7 +351,11 @@ export default function ArticleDetail() {
 
       {coverComparisonPairs.length > 0 ? (
         <div className="article-detail__cover article-detail__cover--comparison">
-          <ArticleComparisonCarousel pairs={coverComparisonPairs} fitContent />
+          <ArticleComparisonCarousel
+            pairs={coverComparisonPairs}
+            fitContent
+            disableParallax={disableParallax}
+          />
         </div>
       ) : article.cover_image_url ? (
         <figure className="article-detail__cover">

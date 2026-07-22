@@ -4,16 +4,18 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import BentoArticleGrid from './BentoArticleGrid'
 import SlidingNumber, { SLOW_SPRING } from './magicui/SlidingNumber'
+import { tierToProfile } from '../lib/performanceProfile'
 import { chunkBentoItems } from '../lib/bentoArticles'
 import { NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE } from '../lib/newsroom'
 import './BentoYCarousel.css'
 
 export default function BentoYCarousel({
   items,
-  reduceMotion = false,
+  profile = tierToProfile('full'),
   onItemClick,
 }) {
   const { t } = useTranslation()
+  const { reduceMotion } = profile
   const slides = useMemo(
     () => chunkBentoItems(items, NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE),
     [items],
@@ -112,7 +114,7 @@ export default function BentoYCarousel({
                 <div key={`slide-${slideIndex}-${slideItems[0]?.id ?? slideIndex}`} className="bento-y-carousel__slide">
                   <BentoArticleGrid
                     items={slideItems}
-                    reduceMotion={reduceMotion}
+                    profile={profile}
                     animationOffset={slideIndex * NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE}
                     onItemClick={onItemClick}
                   />

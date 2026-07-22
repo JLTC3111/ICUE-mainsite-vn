@@ -1,14 +1,27 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchMarketQuotes } from '../lib/marketTicker'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './MarketTicker.css'
 
 export default function MarketTicker() {
   const { t, i18n } = useTranslation()
+  const { pauseTickers } = usePerformanceProfile()
   const [quotes, setQuotes] = useState([])
   const [status, setStatus] = useState('loading')
+  const [tabVisible, setTabVisible] = useState(
+    () => typeof document === 'undefined' || document.visibilityState === 'visible',
+  )
 
   useEffect(() => {
+    const onVisibility = () => setTabVisible(document.visibilityState === 'visible')
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
+
+  useEffect(() => {
+    if (!tabVisible) return undefined
+
     let active = true
     const load = () => {
       fetchMarketQuotes()
@@ -20,12 +33,17 @@ export default function MarketTicker() {
         .catch(() => active && setStatus('error'))
     }
     load()
+    if (pauseTickers) {
+      return () => {
+        active = false
+      }
+    }
     const id = setInterval(load, 5 * 60 * 1000)
     return () => {
       active = false
       clearInterval(id)
     }
-  }, [])
+  }, [pauseTickers, tabVisible])
 
   if (status === 'error' && !quotes.length) {
     return (

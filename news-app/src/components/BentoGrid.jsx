@@ -27,6 +27,7 @@ export function BentoCard({
   animate = false,
   animationDelay = 0,
   lens = false,
+  showBorderBeam = true,
   onClick,
   ...props
 }) {
@@ -53,7 +54,7 @@ export function BentoCard({
       onClick={onClick}
       {...props}
     >
-      <BorderBeam />
+      {showBorderBeam ? <BorderBeam /> : null}
       <div className="bento-card__background">{backgroundNode}</div>
       <div className="bento-card__body">
         <div className="bento-card__copy">

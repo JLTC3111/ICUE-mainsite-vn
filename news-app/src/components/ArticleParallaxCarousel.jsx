@@ -13,6 +13,7 @@ import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
 import { resolveArticleCoverComparison } from '../lib/mediaComparison'
 import { bindEmblaParallax } from '../lib/emblaParallax'
+import { tierToProfile } from '../lib/performanceProfile'
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import ArticleViewCounter from './ArticleViewCounter'
 import TranslationLineSkeleton from './TranslationSkeleton'
@@ -30,9 +31,10 @@ function readInitialIndex(count) {
   return Math.max(0, Math.min(count - 1, raw))
 }
 
-export default function ArticleParallaxCarousel({ articles, reduceMotion = false }) {
+export default function ArticleParallaxCarousel({ articles, profile = tierToProfile('full') }) {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const { reduceMotion, disableParallax } = profile
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -69,7 +71,7 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
 
   const slideCount = items.length
   const useLoop = slideCount > 2 && !reduceMotion
-  const useParallax = slideCount > 1 && !reduceMotion
+  const useParallax = slideCount > 1 && !reduceMotion && !disableParallax
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: useLoop,

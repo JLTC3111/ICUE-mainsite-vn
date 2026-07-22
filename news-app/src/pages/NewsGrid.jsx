@@ -11,6 +11,7 @@ import CategoryFilter from '../components/CategoryFilter'
 import NewsroomThemeToggle from '../components/NewsroomThemeToggle'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
+import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
 import { isCategory } from '../lib/categories'
 import {
@@ -28,7 +29,8 @@ const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & E
 
 export default function NewsGrid() {
   const { t } = useTranslation()
-  const [reduceMotion, setReduceMotion] = useState(false)
+  const profile = usePerformanceProfile()
+  const { reduceMotion, simplifyHero } = profile
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
@@ -48,18 +50,12 @@ export default function NewsGrid() {
     return () => { active = false }
   }, [])
 
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduceMotion(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
-
   const rotatingTags = useMemo(() => {
     const tags = t('hero.rotatingTags', { returnObjects: true })
     return Array.isArray(tags) ? tags : DEFAULT_ROTATING_TAGS
   }, [t])
+
+  const heroTags = simplifyHero ? [rotatingTags[0] || DEFAULT_ROTATING_TAGS[0]] : rotatingTags
 
   const filtered = useMemo(() => {
     let list = articles
@@ -95,15 +91,19 @@ export default function NewsGrid() {
               <AnimatedShinyText className="news-hero__institute" shimmerWidth={140}>
                 {t('instituteName')}
               </AnimatedShinyText>
-              <RotatingText
-                texts={rotatingTags}
-                mainClassName="news-hero__rotating"
-                splitBy="words"
-                rotationInterval={3200}
-                staggerDuration={0.07}
-                staggerFrom="first"
-                auto={!reduceMotion}
-              />
+              {simplifyHero ? (
+                <span className="news-hero__rotating">{heroTags[0]}</span>
+              ) : (
+                <RotatingText
+                  texts={heroTags}
+                  mainClassName="news-hero__rotating"
+                  splitBy="words"
+                  rotationInterval={3200}
+                  staggerDuration={0.07}
+                  staggerFrom="first"
+                  auto={!reduceMotion}
+                />
+              )}
             </h1>
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
@@ -112,7 +112,7 @@ export default function NewsGrid() {
               showCompactLabel
               className="animated-theme-toggler--hero news-hero__theme-toggle"
             />
-            <SocialGooeyNav reduceMotion={reduceMotion} />
+            <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
           </div>
         </div>
       </header>
@@ -137,9 +137,9 @@ export default function NewsGrid() {
 
         {state === 'ready' && visibleArticles.length > 0 && (
           isCompactLayout ? (
-            <ArticleParallaxCarousel articles={visibleArticles} reduceMotion={reduceMotion} />
+            <ArticleParallaxCarousel articles={visibleArticles} profile={profile} />
           ) : (
-            <ArticleMasonry articles={visibleArticles} reduceMotion={reduceMotion} />
+            <ArticleMasonry articles={visibleArticles} profile={profile} />
           )
         )}
 

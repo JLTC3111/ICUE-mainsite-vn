@@ -5,10 +5,12 @@ import { initSupabase } from './lib/supabase'
 import './lib/i18n'
 import './styles/theme.css'
 import './styles/newsroomTheme.css'
+import './styles/performance.css'
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import { NewsroomThemeProvider } from './context/NewsroomThemeContext'
+import { PerformanceProfileProvider } from './context/PerformanceProfileContext'
 
 // Strip entry hints after i18n + detectEntrySite have read them.
 cleanSiteParams()
@@ -18,11 +20,13 @@ async function bootstrap() {
 
   createRoot(document.getElementById('root')).render(
     <StrictMode>
-      <AuthProvider>
-        <NewsroomThemeProvider>
-          <App />
-        </NewsroomThemeProvider>
-      </AuthProvider>
+      <PerformanceProfileProvider>
+        <AuthProvider>
+          <NewsroomThemeProvider>
+            <App />
+          </NewsroomThemeProvider>
+        </AuthProvider>
+      </PerformanceProfileProvider>
     </StrictMode>,
   )
 }

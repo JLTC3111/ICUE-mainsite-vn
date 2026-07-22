@@ -73,10 +73,21 @@ export default function HyperText({
   as: Component = 'div',
   startOnView = false,
   animateOnHover = true,
+  reduceMotion = false,
   characterSet = DEFAULT_CHARACTER_SET,
   ...props
 }) {
   const MotionComponent = motionElements[Component] || motion.div
+
+  if (reduceMotion) {
+    const PlainComponent = Component
+    return (
+      <PlainComponent className={cn('hyper-text', className)} {...props}>
+        {children}
+      </PlainComponent>
+    )
+  }
+
   const [displayText, setDisplayText] = useState(() => scrambleText(children, characterSet))
   const [isAnimating, setIsAnimating] = useState(false)
   const iterationCount = useRef(0)
