@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { useTranslation } from 'react-i18next'
 import SlidingNumber from './magicui/SlidingNumber'
+import ArticleHtmlContent from './ArticleHtmlContent'
 import { paginateArticleHtml } from '../lib/articlePagination'
 import { markDropCapInHtml } from '../lib/articleDropCap'
 import './ArticlePagedContent.css'
@@ -225,10 +226,10 @@ export default function ArticlePagedContent({
 
   if (!isMultipage) {
     return (
-      <div
+      <ArticleHtmlContent
         key={contentKey}
         className={className}
-        dangerouslySetInnerHTML={{ __html: renderedPages[0] || '' }}
+        html={renderedPages[0] || ''}
       />
     )
   }
@@ -248,9 +249,9 @@ export default function ArticlePagedContent({
                 className={`article-pages__slide${index === selectedIndex ? ' is-active' : ''}`}
                 aria-hidden={index !== selectedIndex}
               >
-                <div
+                <ArticleHtmlContent
                   className={`${className} article-detail__content--paged`}
-                  dangerouslySetInnerHTML={{ __html: pageHtml }}
+                  html={pageHtml}
                 />
               </article>
             ))}

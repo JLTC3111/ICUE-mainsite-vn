@@ -8,6 +8,13 @@ function countWords(text) {
   return String(text ?? '').trim().split(/\s+/).filter(Boolean).length
 }
 
+function pageHasMeaningfulContent(html) {
+  const source = String(html ?? '')
+  if (!source.trim()) return false
+  if (countWords(source.replace(/<[^>]+>/g, ' ')) > 0) return true
+  return /video-embed|iframe|<img\b/i.test(source)
+}
+
 function countWordsInNode(node) {
   if (!node) return 0
   if (node.nodeType === Node.TEXT_NODE) return countWords(node.textContent)
@@ -49,7 +56,7 @@ function splitByManualBreaks(children) {
   }
 
   if (bucket.length) pages.push(serializeNodes(bucket))
-  return pages.filter((page) => countWords(page.replace(/<[^>]+>/g, ' ')) > 0)
+  return pages.filter((page) => pageHasMeaningfulContent(page))
 }
 
 function autoSplitChildren(children) {

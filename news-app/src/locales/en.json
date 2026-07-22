@@ -178,6 +178,7 @@
     "comparisonAfter": "After",
     "comparisonCarouselAria": "Before and after image comparisons",
     "comparisonGoTo": "Go to comparison {{index}}",
+    "playVideo": "Play video",
     "pageNav": "Article pages",
     "pageOf": "Page {{current}} of {{total}}",
     "prevPage": "Previous",

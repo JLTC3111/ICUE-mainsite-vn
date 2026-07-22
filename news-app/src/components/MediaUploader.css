@@ -22,6 +22,7 @@
   border-radius: 999px;
 }
 .media-chip.is-full { color: #1a7f37; background: rgba(46, 160, 67, 0.1); border-color: rgba(46, 160, 67, 0.25); }
+.media-chip__icon { flex: 0 0 auto; display: block; }
 
 /* Drag & drop zone ----------------------------------------------------- */
 .media-dropzone {

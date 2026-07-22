@@ -1,7 +1,8 @@
 import { memo, useCallback, useId, useState } from 'react'
-import { Image as ImageIcon, Play, Upload, Video, X } from 'lucide-react'
+import { Play, Upload, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { MEDIA_LIMITS } from '../lib/supabase'
+import { ImageMediaIcon, VideoMediaIcon } from './MediaUploadIcons'
 import './MediaUploader.css'
 
 let tmpId = 0
@@ -78,11 +79,11 @@ function MediaUploader({ items, onChange }) {
         <h3>{t('editor.media')}</h3>
         <div className="media-uploader__counts">
           <span className={`media-chip ${imagesLeft <= 0 ? 'is-full' : ''}`}>
-            <ImageIcon size={14} strokeWidth={2} aria-hidden />
+            <ImageMediaIcon size={16} className="media-chip__icon" />
             {images.length}/{MEDIA_LIMITS.images}
           </span>
           <span className={`media-chip ${videosLeft <= 0 ? 'is-full' : ''}`}>
-            <Video size={14} strokeWidth={2} aria-hidden />
+            <VideoMediaIcon size={16} className="media-chip__icon" />
             {videos.length}/{MEDIA_LIMITS.videos}
           </span>
         </div>

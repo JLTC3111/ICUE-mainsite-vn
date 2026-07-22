@@ -340,6 +340,25 @@ html:lang(vi) .article-detail__subtitle {
   margin: 2em 0;
   padding: 0;
 }
+
+.article-detail__content .video-embed__mount {
+  width: 100%;
+}
+
+.article-detail__content .video-embed--dialog {
+  aspect-ratio: 16 / 9;
+}
+
+.article-detail__content .video-embed__fallback-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--icue-radius);
+  box-shadow: var(--icue-shadow-md);
+}
+
 .article-detail__content .video-embed__frame {
   position: relative;
   width: 100%;
@@ -355,6 +374,10 @@ html:lang(vi) .article-detail__subtitle {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.article-detail__content .hero-video-dialog {
+  margin: 2em 0;
 }
 
 .article-detail__content mark {
