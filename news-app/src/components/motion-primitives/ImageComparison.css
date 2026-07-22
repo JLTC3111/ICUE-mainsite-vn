@@ -5,6 +5,10 @@
   touch-action: pan-y;
 }
 
+.image-comparison--dragging {
+  touch-action: none;
+}
+
 .image-comparison--hover {
   cursor: ew-resize;
 }

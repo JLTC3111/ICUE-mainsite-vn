@@ -126,6 +126,31 @@ html:lang(vi) .article-detail__subtitle {
   flex-shrink: 0;
 }
 
+@media (max-width: 860px) {
+  .article-detail__tools--mobile {
+    position: sticky;
+    top: calc(var(--icue-header-h) + 8px);
+    z-index: 12;
+    margin-top: 16px;
+    padding: 10px 16px;
+    border: 1px solid var(--icue-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    box-shadow: var(--icue-shadow-sm);
+  }
+
+  .icue-app--news-theme-dark .article-detail__tools--mobile {
+    background: rgba(14, 14, 14, 0.92);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .article-detail__tools--mobile .article-detail__lens-toggle {
+    margin-left: 0;
+  }
+}
+
 .article-detail__lens-toggle {
   display: inline-flex;
   align-items: center;

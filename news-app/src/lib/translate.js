@@ -5,6 +5,7 @@ import {
   inferSourceLanguage,
   normalizeLang,
   shouldTranslateArticle,
+  buildArticleTranslateSample,
 } from './translateUtils.js'
 
 export {
@@ -12,6 +13,7 @@ export {
   normalizeLang,
   shouldTranslateArticle,
   shouldTranslateComment,
+  buildArticleTranslateSample,
 } from './translateUtils.js'
 
 const memoryCache = new Map()

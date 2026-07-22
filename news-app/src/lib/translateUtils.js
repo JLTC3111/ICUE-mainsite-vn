@@ -39,3 +39,11 @@ export function shouldTranslateComment(body, targetLocale) {
   const source = inferSourceLanguage('', sample)
   return source !== target
 }
+
+/** Build the same text sample client + server use for translate gating. */
+export function buildArticleTranslateSample({ title, subtitle, content_html } = {}) {
+  return [title, subtitle, String(content_html || '').replace(/<[^>]+>/g, ' ')]
+    .filter(Boolean)
+    .join('\n')
+    .slice(0, 1200)
+}

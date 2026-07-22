@@ -25,12 +25,18 @@ export function ImageComparison({
   hoverOnly = false,
   springOptions,
 }) {
+  const containerRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
+  const [useDirectMotion, setUseDirectMotion] = useState(false)
   const isLockedRef = useRef(false)
+  const isDraggingRef = useRef(false)
+  const isTouchPointerRef = useRef(false)
   const motionValue = useMotionValue(50)
   const springPosition = useSpring(motionValue, springOptions ?? DEFAULT_SPRING_OPTIONS)
-  const motionSliderPosition = (enableHover || hoverOnly) ? motionValue : springPosition
+  const motionSliderPosition = (enableHover || hoverOnly || useDirectMotion)
+    ? motionValue
+    : springPosition
   const [sliderPosition, setSliderPosition] = useState(50)
   const dragMovedRef = useRef(false)
   const pointerActiveRef = useRef(false)
@@ -42,38 +48,69 @@ export function ImageComparison({
   }
 
   const updatePosition = (event) => {
-    const containerRect = event.currentTarget.getBoundingClientRect()
-    const x = 'touches' in event
-      ? event.touches[0].clientX - containerRect.left
-      : event.clientX - containerRect.left
-
+    const container = containerRef.current
+    if (!container) return
+    const containerRect = container.getBoundingClientRect()
+    const x = event.clientX - containerRect.left
     const width = Math.max(containerRect.width, 1)
     const percentage = Math.min(Math.max((x / width) * 100, 0), 100)
     motionValue.jump(percentage)
     setSliderPosition(percentage)
   }
 
-  const handleDrag = (event) => {
-    if (isLockedRef.current && !hoverOnly) return
+  const finishPointer = (event, { lockAfterDrag = false } = {}) => {
+    isDraggingRef.current = false
+    setIsDragging(false)
+    setUseDirectMotion(false)
+    pointerActiveRef.current = false
+
+    if (event?.currentTarget?.releasePointerCapture && event.pointerId != null) {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId)
+      } catch {
+        // ignore if capture was already released
+      }
+    }
+
+    if (isTouchPointerRef.current) {
+      dragMovedRef.current = false
+      isTouchPointerRef.current = false
+      return
+    }
+
+    if (lockAfterDrag && dragMovedRef.current) {
+      lockInteraction()
+      suppressClickRef.current = true
+    }
+    dragMovedRef.current = false
+  }
+
+  const handlePointerMove = (event) => {
+    if (isLockedRef.current && !hoverOnly && !isTouchPointerRef.current) return
 
     if (hoverOnly) {
       if (enableHover || pointerActiveRef.current) {
-        dragMovedRef.current = pointerActiveRef.current
+        if (pointerActiveRef.current) dragMovedRef.current = true
         updatePosition(event)
       }
       return
     }
 
     if (!pointerActiveRef.current && !enableHover) return
-    if (!isDragging && !enableHover) return
+    if (!isDraggingRef.current && !enableHover) return
 
     dragMovedRef.current = true
+    if (isTouchPointerRef.current) {
+      event.preventDefault()
+    }
     updatePosition(event)
   }
 
   const lockInteraction = () => {
     setLocked(true)
+    isDraggingRef.current = false
     setIsDragging(false)
+    setUseDirectMotion(false)
     pointerActiveRef.current = false
     dragMovedRef.current = false
   }
@@ -86,33 +123,33 @@ export function ImageComparison({
   }
 
   const handlePointerDown = (event) => {
-    if (isLockedRef.current && !hoverOnly) return
+    if (event.button > 0) return
+    if (isLockedRef.current && !hoverOnly && event.pointerType === 'mouse') return
+
+    isTouchPointerRef.current = event.pointerType === 'touch'
     pointerActiveRef.current = true
+    isDraggingRef.current = true
+    setIsDragging(true)
+    setUseDirectMotion(true)
     dragMovedRef.current = false
+
     if (hoverOnly && !enableHover) {
-      setIsDragging(true)
       updatePosition(event)
-      return
+    } else if (!enableHover || event.pointerType === 'touch') {
+      event.currentTarget.setPointerCapture?.(event.pointerId)
+      updatePosition(event)
     }
-    if (!enableHover) setIsDragging(true)
   }
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (event) => {
     if (hoverOnly) {
-      pointerActiveRef.current = false
-      setIsDragging(false)
       if (dragMovedRef.current) suppressClickRef.current = true
-      dragMovedRef.current = false
+      finishPointer(event)
       return
     }
 
-    if (isLockedRef.current) return
-    if (!enableHover) setIsDragging(false)
-    pointerActiveRef.current = false
-    if (dragMovedRef.current) {
-      lockInteraction()
-      suppressClickRef.current = true
-    }
+    if (isLockedRef.current && !isTouchPointerRef.current) return
+    finishPointer(event, { lockAfterDrag: !isTouchPointerRef.current && !enableHover })
   }
 
   const handleMouseEnter = (event) => {
@@ -131,12 +168,16 @@ export function ImageComparison({
       motionValue.jump(50)
       setSliderPosition(50)
       pointerActiveRef.current = false
+      isDraggingRef.current = false
       setIsDragging(false)
+      setUseDirectMotion(false)
       dragMovedRef.current = false
       return
     }
 
-    if (!enableHover) handlePointerUp()
+    if (!enableHover && pointerActiveRef.current) {
+      finishPointer(null)
+    }
   }
 
   const handleClick = () => {
@@ -150,14 +191,9 @@ export function ImageComparison({
       unlockInteraction()
       return
     }
-    // Click without dragging (e.g. hover mode) locks the split in place.
     if (enableHover) {
       lockInteraction()
     }
-  }
-
-  const handleTouchEnd = () => {
-    handlePointerUp()
   }
 
   return (
@@ -165,21 +201,22 @@ export function ImageComparison({
       value={{ sliderPosition, setSliderPosition, motionSliderPosition, isLocked }}
     >
       <div
+        ref={containerRef}
         className={cn(
           'image-comparison',
           (enableHover || hoverOnly) && !isLocked && 'image-comparison--hover',
           hoverOnly && 'image-comparison--hover-only',
           isLocked && 'image-comparison--locked',
+          isDragging && 'image-comparison--dragging',
           className,
         )}
         onMouseEnter={handleMouseEnter}
-        onMouseMove={handleDrag}
-        onMouseDown={handlePointerDown}
-        onMouseUp={handlePointerUp}
+        onMouseMove={handlePointerMove}
         onMouseLeave={handleMouseLeave}
-        onTouchMove={handleDrag}
-        onTouchStart={handlePointerDown}
-        onTouchEnd={handleTouchEnd}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onClick={handleClick}
       >
         {children}

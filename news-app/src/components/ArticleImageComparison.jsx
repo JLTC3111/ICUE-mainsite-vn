@@ -113,7 +113,7 @@ export default function ArticleImageComparison({
       className={`article-image-comparison__frame${fitContent ? ' article-image-comparison__frame--fit' : ''}`}
       enableHover={hoverScrub}
       hoverOnly={hoverOnly}
-      springOptions={reduceMotion ? { bounce: 0, duration: 0 } : { bounce: 0.08, duration: 0.25 }}
+      springOptions={{ bounce: 0, duration: 0 }}
     >
       <ImageComparisonImage
         src={before.url}

@@ -135,36 +135,58 @@ export default function ArticlePagedContent({
       const viewport = emblaApi.rootNode()
       const slide = emblaApi.slideNodes()[emblaApi.selectedScrollSnap()]
       if (!viewport || !slide) return
-      viewport.style.height = `${slide.offsetHeight}px`
+      const height = Math.max(slide.scrollHeight, slide.offsetHeight, 1)
+      viewport.style.height = `${height}px`
+      viewport.style.minHeight = `${height}px`
+    }
+
+    const scheduleViewportHeight = () => {
+      syncViewportHeight()
+      requestAnimationFrame(syncViewportHeight)
     }
 
     emblaApi.reInit()
     syncIndex()
-    syncViewportHeight()
+    scheduleViewportHeight()
 
-    emblaApi.on('select', syncViewportHeight)
-    emblaApi.on('settle', syncViewportHeight)
-    emblaApi.on('reInit', syncViewportHeight)
+    emblaApi.on('select', scheduleViewportHeight)
+    emblaApi.on('settle', scheduleViewportHeight)
+    emblaApi.on('reInit', scheduleViewportHeight)
 
     const resizeObserver = typeof ResizeObserver !== 'undefined'
-      ? new ResizeObserver(() => syncViewportHeight())
+      ? new ResizeObserver(() => scheduleViewportHeight())
       : null
 
     emblaApi.slideNodes().forEach((slide) => resizeObserver?.observe(slide))
 
+    const slideImages = emblaApi.slideNodes().flatMap((slide) => [...slide.querySelectorAll('img')])
+    slideImages.forEach((img) => {
+      if (!img.complete) {
+        img.addEventListener('load', scheduleViewportHeight, { once: true })
+        img.addEventListener('error', scheduleViewportHeight, { once: true })
+      }
+    })
+
     const id = requestAnimationFrame(() => {
-      syncViewportHeight()
+      scheduleViewportHeight()
       skipScrollRef.current = false
     })
 
     return () => {
       cancelAnimationFrame(id)
-      emblaApi.off('select', syncViewportHeight)
-      emblaApi.off('settle', syncViewportHeight)
-      emblaApi.off('reInit', syncViewportHeight)
+      emblaApi.off('select', scheduleViewportHeight)
+      emblaApi.off('settle', scheduleViewportHeight)
+      emblaApi.off('reInit', scheduleViewportHeight)
       resizeObserver?.disconnect()
+      slideImages.forEach((img) => {
+        img.removeEventListener('load', scheduleViewportHeight)
+        img.removeEventListener('error', scheduleViewportHeight)
+      })
       const viewport = emblaApi.rootNode()
-      if (viewport) viewport.style.height = ''
+      if (viewport) {
+        viewport.style.height = ''
+        viewport.style.minHeight = ''
+      }
     }
   }, [contentKey, emblaApi, isMultipage, pages.length, syncIndex])
 

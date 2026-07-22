@@ -14,7 +14,8 @@ import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
-import { translateArticleViaApi, shouldTranslateArticle } from '../lib/translate'
+import { translateArticleViaApi, shouldTranslateArticle, buildArticleTranslateSample } from '../lib/translate'
+import useMediaQuery from '../hooks/useMediaQuery'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticlePagedContent from '../components/ArticlePagedContent'
@@ -87,7 +88,9 @@ export default function ArticleDetail() {
   const [translateError, setTranslateError] = useState(false)
   const [showOriginal, setShowOriginal] = useState(false)
   const [translateAttempt, setTranslateAttempt] = useState(0)
+  const [translateResolved, setTranslateResolved] = useState(false)
   const [pageProgress, setPageProgress] = useState(null)
+  const isMobileLayout = useMediaQuery('(max-width: 860px)')
 
   useDocumentTitle(state === 'ready' && article?.title ? article.title : null)
 
@@ -103,6 +106,7 @@ export default function ArticleDetail() {
     setShowOriginal(false)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslateError(false)
+    setTranslateResolved(false)
     setPageProgress(null)
     fetchArticleBySlug(slug)
       .then((data) => {
@@ -124,19 +128,27 @@ export default function ArticleDetail() {
   useEffect(() => {
     setShowOriginal(false)
     setTranslateError(false)
+    setTranslateResolved(false)
   }, [i18n.resolvedLanguage])
+
+  const translateSample = useMemo(
+    () => buildArticleTranslateSample(article),
+    [article],
+  )
 
   useEffect(() => {
     if (state !== 'ready' || !article?.id || showOriginal) return undefined
 
     const uiLang = i18n.resolvedLanguage
-    if (!shouldTranslateArticle(article.language, uiLang, article.title)) {
+    if (!shouldTranslateArticle(article.language, uiLang, translateSample)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslation(null)
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslatedLang(null)
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslateBusy(false)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTranslateResolved(true)
       return undefined
     }
 
@@ -145,6 +157,8 @@ export default function ArticleDetail() {
     setTranslateBusy(true)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslateError(false)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslateResolved(false)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslation(null)
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -167,10 +181,15 @@ export default function ArticleDetail() {
         }
       })
       .catch(() => active && setTranslateError(true))
-      .finally(() => active && setTranslateBusy(false))
+      .finally(() => {
+        if (active) {
+          setTranslateBusy(false)
+          setTranslateResolved(true)
+        }
+      })
 
     return () => { active = false }
-  }, [article, state, i18n.resolvedLanguage, showOriginal, translateAttempt])
+  }, [article, state, i18n.resolvedLanguage, showOriginal, translateAttempt, translateSample])
 
   const retryTranslation = useCallback(() => {
     setShowOriginal(false)
@@ -245,19 +264,24 @@ export default function ArticleDetail() {
   }
 
   const usingTranslation = translation && !showOriginal
-  const needsTranslation = shouldTranslateArticle(article.language, i18n.resolvedLanguage, article.title) && !showOriginal
-  const isTranslating = needsTranslation && translateBusy && !usingTranslation
+  const needsTranslation = shouldTranslateArticle(
+    article.language,
+    i18n.resolvedLanguage,
+    translateSample,
+  ) && !showOriginal
+  const isTranslating = needsTranslation && !usingTranslation && !translateResolved && !translateError
   const displayTitle = normalizeUnicode(usingTranslation ? translation.title : article.title)
   const displaySubtitle = normalizeUnicode(usingTranslation ? translation.subtitle : article.subtitle)
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || coverComparisonPairs.length > 0 || images.length > 0
   const showLensToggle = lensCapable && hasLensPhotos
   const showTranslatorBar =
-    translateBusy
+    needsTranslation
+    || translateBusy
     || translateError
     || Boolean(translatedLang && translation)
     || (showOriginal && Boolean(translatedLang))
-  const showToolsBar = showLensToggle || showTranslatorBar
+  const showToolsBar = showLensToggle || showTranslatorBar || (isMobileLayout && needsTranslation)
   const contentLang = usingTranslation && translatedLang ? translatedLang : article.language
   const isViContent = String(contentLang || '').startsWith('vi')
 
@@ -285,7 +309,7 @@ export default function ArticleDetail() {
             animateOnHover={false}
             duration={1200}
             delay={120}
-            reduceMotion={!hyperTextScramble}
+            reduceMotion={!hyperTextScramble || usingTranslation}
           >
             {displayTitle}
           </HyperText>
@@ -320,10 +344,10 @@ export default function ArticleDetail() {
       </div>
 
       {showToolsBar && (
-        <div className="article-detail__tools icue-readw">
+        <div className={`article-detail__tools icue-readw${isMobileLayout ? ' article-detail__tools--mobile' : ''}`}>
           {showTranslatorBar && (
             <ArticleTranslator
-              busy={translateBusy}
+              busy={translateBusy || (needsTranslation && !translateResolved && !translateError)}
               error={translateError}
               translationLang={translatedLang}
               showOriginal={showOriginal}

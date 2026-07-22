@@ -10,7 +10,7 @@ import {
   translatePlainText,
   translateSources,
 } from './translateProviders.js'
-import { shouldTranslateComment } from './translateUtils.js'
+import { buildArticleTranslateSample, shouldTranslateComment } from './translateUtils.js'
 import { sanitizeSourcesForSave } from './articleSources.js'
 
 const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources'
@@ -94,14 +94,11 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   const article = await fetchPublishedArticle(articleId, env)
   if (!article) throw new Error('article_not_found')
 
-  const detectSample = [article.title, article.subtitle, article.content_html?.replace(/<[^>]+>/g, ' ')]
-    .filter(Boolean)
-    .join('\n')
-    .slice(0, 1200)
+  const detectSample = buildArticleTranslateSample(article)
 
   const declaredSource = normalizeLang(article.language || 'vi')
-  const detected = await detectSourceLanguage(detectSample, env)
-  const sourceLang = detected || inferSourceLanguage(declaredSource, detectSample)
+  const sourceLang = inferSourceLanguage(declaredSource, detectSample)
+  const apiSourceLang = (await detectSourceLanguage(detectSample, env)) || sourceLang
 
   const articleSources = sanitizeSourcesForSave(article.sources)
 
@@ -141,12 +138,12 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       content_html: article.content_html || '',
     },
     locale,
-    sourceLang,
+    apiSourceLang,
     env,
   )
 
   const translatedSources = articleSources.length
-    ? await translateSources(articleSources, locale, sourceLang, env)
+    ? await translateSources(articleSources, locale, apiSourceLang, env)
     : []
 
   const result = {
