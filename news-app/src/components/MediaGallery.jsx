@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -6,8 +6,6 @@ import { Keyboard, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import Lens from './Lens'
-import ArticleImageComparison from './ArticleImageComparison'
-import { findComparisonImages, imagesWithoutComparison } from '../lib/mediaComparison'
 import './MediaGallery.css'
 
 function useMobileGallery() {
@@ -26,26 +24,11 @@ function useMobileGallery() {
 
 // Renders an article's images + videos with a responsive layout and an
 // accessible image lightbox (touch swipe, keyboard + click navigation).
-export default function MediaGallery({
-  images = [],
-  videos = [],
-  comparison = null,
-  lensEnabled = false,
-}) {
+export default function MediaGallery({ images = [], videos = [], lensEnabled = false }) {
   const { t } = useTranslation()
   const [index, setIndex] = useState(null)
   const lightboxSwiperRef = useRef(null)
   const isMobile = useMobileGallery()
-
-  const comparisonPair = useMemo(
-    () => findComparisonImages(images, comparison),
-    [images, comparison],
-  )
-
-  const gridImages = useMemo(
-    () => imagesWithoutComparison(images, comparison),
-    [images, comparison],
-  )
 
   const open = useCallback((i) => setIndex(i), [])
   const close = useCallback(() => setIndex(null), [])
@@ -66,14 +49,12 @@ export default function MediaGallery({
 
   if (images.length === 0 && videos.length === 0) return null
 
-  const imgCountClass = `media-gallery__grid--${Math.min(gridImages.length, 4)}`
-  const showMobileCarousel = isMobile && gridImages.length > 1
+  const imgCountClass = `media-gallery__grid--${Math.min(images.length, 4)}`
+  const showMobileCarousel = isMobile && images.length > 1
 
   return (
     <section className="media-gallery icue-readw">
-      {(images.length > 0 || videos.length > 0) && (
-        <h2 className="media-gallery__heading">{t('article.gallery')}</h2>
-      )}
+      <h2 className="media-gallery__heading">{t('article.gallery')}</h2>
 
       {videos.length > 0 && (
         <div className={`media-gallery__videos ${videos.length > 1 ? 'is-multi' : ''}`}>
@@ -90,14 +71,7 @@ export default function MediaGallery({
         </div>
       )}
 
-      {comparisonPair && (
-        <ArticleImageComparison
-          before={comparisonPair.before}
-          after={comparisonPair.after}
-        />
-      )}
-
-      {gridImages.length > 0 && showMobileCarousel && (
+      {images.length > 0 && showMobileCarousel && (
         <Swiper
           className="media-gallery__mobile-swiper"
           modules={[Pagination]}
@@ -107,7 +81,7 @@ export default function MediaGallery({
           pagination={{ clickable: true }}
           grabCursor
         >
-          {gridImages.map((img, i) => (
+          {images.map((img, i) => (
             <SwiperSlide key={img.id}>
               <button
                 type="button"
@@ -125,9 +99,9 @@ export default function MediaGallery({
         </Swiper>
       )}
 
-      {gridImages.length > 0 && !showMobileCarousel && (
+      {images.length > 0 && !showMobileCarousel && (
         <div className={`media-gallery__grid ${imgCountClass}`}>
-          {gridImages.map((img, i) => (
+          {images.map((img, i) => (
             <button
               key={img.id}
               type="button"
@@ -153,7 +127,7 @@ export default function MediaGallery({
         </div>
       )}
 
-      {index !== null && gridImages[index] && (
+      {index !== null && images[index] && (
         <div
           className="lightbox"
           role="dialog"
@@ -185,7 +159,7 @@ export default function MediaGallery({
               modules={[Keyboard, Pagination]}
               initialSlide={index}
               keyboard={{ enabled: true }}
-              pagination={gridImages.length > 1 ? { clickable: true } : false}
+              pagination={images.length > 1 ? { clickable: true } : false}
               grabCursor
               resistanceRatio={0.72}
               threshold={8}
@@ -195,7 +169,7 @@ export default function MediaGallery({
               }}
               onSlideChange={(swiper) => setIndex(swiper.activeIndex)}
             >
-              {gridImages.map((img) => (
+              {images.map((img) => (
                 <SwiperSlide
                   key={img.id}
                   className="lightbox__slide"
@@ -212,7 +186,7 @@ export default function MediaGallery({
             </Swiper>
           </div>
 
-          {gridImages.length > 1 && (
+          {images.length > 1 && (
             <>
               <button
                 type="button"
@@ -236,7 +210,7 @@ export default function MediaGallery({
               >
                 <ChevronRight size={28} strokeWidth={2} />
               </button>
-              <span className="lightbox__count">{index + 1} / {gridImages.length}</span>
+              <span className="lightbox__count">{index + 1} / {images.length}</span>
             </>
           )}
         </div>

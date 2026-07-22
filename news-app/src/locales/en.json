@@ -140,7 +140,14 @@
     "comparisonAfter": "After",
     "comparisonClear": "Clear comparison",
     "comparisonNeedTwo": "Upload at least 2 images above to set up a before/after slider.",
-    "comparisonPreview": "Preview on article page"
+    "comparisonPreview": "Preview on article page",
+    "comparisonPair": "Pair {{n}}",
+    "comparisonAddPair": "Add pair",
+    "comparisonRemovePair": "Remove pair {{n}}",
+    "coverComparisonTitle": "Cover before / after",
+    "coverComparisonHint": "Pick the cover and a gallery image (or two gallery images) to show a draggable slider in place of the cover.",
+    "coverComparisonNeedSources": "Add a cover image and at least one gallery image to set up a cover comparison.",
+    "coverImageBadge": "Cover"
   },
   "profile": {
     "displayName": "Display name",
@@ -161,7 +168,14 @@
     "lensOff": "Off",
     "sourcesTitle": "Sources",
     "comparisonBefore": "Before",
-    "comparisonAfter": "After"
+    "comparisonAfter": "After",
+    "comparisonCarouselAria": "Before and after image comparisons",
+    "comparisonGoTo": "Go to comparison {{index}}",
+    "pageNav": "Article pages",
+    "pageOf": "Page {{current}} of {{total}}",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "goToPage": "Go to page {{n}}"
   },
   "engagement": {
     "like": "Leave a heart",

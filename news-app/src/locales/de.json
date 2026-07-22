@@ -140,7 +140,14 @@
     "comparisonAfter": "Nachher",
     "comparisonClear": "Vergleich entfernen",
     "comparisonNeedTwo": "Lade mindestens 2 Bilder hoch, um den Vorher/Nachher-Schieberegler einzurichten.",
-    "comparisonPreview": "Vorschau auf der Artikelseite"
+    "comparisonPreview": "Vorschau auf der Artikelseite",
+    "comparisonPair": "Paar {{n}}",
+    "comparisonAddPair": "Paar hinzufügen",
+    "comparisonRemovePair": "Paar {{n}} entfernen",
+    "coverComparisonTitle": "Titelbild Vorher / Nachher",
+    "coverComparisonHint": "Wähle das Titelbild und ein Galeriebild (oder zwei Galeriebilder) für den Schieberegler anstelle des Titelbilds.",
+    "coverComparisonNeedSources": "Füge ein Titelbild und mindestens ein Galeriebild hinzu, um den Titelbild-Vergleich einzurichten.",
+    "coverImageBadge": "Titel"
   },
   "profile": {
     "displayName": "Anzeigename",
@@ -161,7 +168,14 @@
     "lensOff": "Aus",
     "sourcesTitle": "Quellen",
     "comparisonBefore": "Vorher",
-    "comparisonAfter": "Nachher"
+    "comparisonAfter": "Nachher",
+    "comparisonCarouselAria": "Vorher-Nachher-Bildvergleiche",
+    "comparisonGoTo": "Zu Vergleich {{index}}",
+    "pageNav": "Artikelseiten",
+    "pageOf": "Seite {{current}} von {{total}}",
+    "prevPage": "Zurück",
+    "nextPage": "Weiter",
+    "goToPage": "Gehe zu Seite {{n}}"
   },
   "engagement": {
     "like": "Herz hinterlassen",

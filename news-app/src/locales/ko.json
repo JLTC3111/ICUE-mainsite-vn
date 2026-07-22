@@ -140,7 +140,14 @@
     "comparisonAfter": "이후",
     "comparisonClear": "비교 해제",
     "comparisonNeedTwo": "슬라이더를 설정하려면 위에 이미지를 2장 이상 업로드하세요.",
-    "comparisonPreview": "기사 페이지 미리보기"
+    "comparisonPreview": "기사 페이지 미리보기",
+    "comparisonPair": "쌍 {{n}}",
+    "comparisonAddPair": "쌍 추가",
+    "comparisonRemovePair": "쌍 {{n}} 삭제",
+    "coverComparisonTitle": "커버 이미지 전후 비교",
+    "coverComparisonHint": "커버와 갤러리 이미지(또는 갤러리 이미지 2장)를 선택하면 커버 대신 슬라이더가 표시됩니다.",
+    "coverComparisonNeedSources": "커버 비교를 설정하려면 커버 이미지와 갤러리 이미지를 1장 이상 추가하세요.",
+    "coverImageBadge": "커버"
   },
   "profile": {
     "displayName": "표시 이름",
@@ -161,7 +168,14 @@
     "lensOff": "꺼짐",
     "sourcesTitle": "출처",
     "comparisonBefore": "이전",
-    "comparisonAfter": "이후"
+    "comparisonAfter": "이후",
+    "comparisonCarouselAria": "전후 이미지 비교",
+    "comparisonGoTo": "비교 {{index}}(으)로 이동",
+    "pageNav": "기사 페이지",
+    "pageOf": "{{total}}페이지 중 {{current}}페이지",
+    "prevPage": "이전",
+    "nextPage": "다음",
+    "goToPage": "{{n}}페이지로 이동"
   },
   "engagement": {
     "like": "하트 남기기",

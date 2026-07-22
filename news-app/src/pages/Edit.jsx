@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import ArticleForm from '../components/ArticleForm'
 import { fetchArticleById, updateArticle, toEditorMedia } from '../lib/articles'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function Edit() {
   const { t } = useTranslation()
@@ -14,6 +15,12 @@ export default function Edit() {
   const [article, setArticle] = useState(null)
   const [originalItems, setOriginalItems] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
+
+  useDocumentTitle(
+    state === 'ready' && article?.title
+      ? `${t('editor.editTitle')}: ${article.title}`
+      : t('editor.editTitle'),
+  )
 
   useEffect(() => {
     let active = true

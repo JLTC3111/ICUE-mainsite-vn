@@ -59,10 +59,14 @@
 .article-form__cover-block { margin-bottom: 26px; }
 .article-form__cover {
   display: block;
+  width: 100%;
   border: 1.5px dashed var(--icue-border);
   border-radius: var(--icue-radius);
   overflow: hidden;
   cursor: pointer;
+  background: transparent;
+  padding: 0;
+  text-align: inherit;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 .article-form__cover:hover { border-color: var(--icue-ink); background: var(--icue-surface-2); }
@@ -93,6 +97,10 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 .article-form__cover-change { cursor: pointer; margin: 0; }
+
+.article-form .media-thumb__remove {
+  opacity: 1;
+}
 
 .article-form__title,
 .article-form__subtitle {

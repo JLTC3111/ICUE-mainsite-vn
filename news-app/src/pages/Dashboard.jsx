@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchMyArticles, deleteArticle } from '../lib/articles'
 import { formatDate } from '../lib/helpers'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import './Dashboard.css'
 
 export default function Dashboard() {
   const { t, i18n } = useTranslation()
+  useDocumentTitle(t('nav.dashboard'))
   const { user } = useAuth()
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading')

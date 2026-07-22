@@ -3,95 +3,67 @@ import { fileExt, readMinutes, uniqueSlug } from './helpers'
 import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode'
 import { normalizeSources, sanitizeSourcesForSave } from './articleSources'
 import {
-  normalizeMediaComparison,
-  resolveMediaComparisonForSave,
+  normalizeMediaComparisonField,
+  normalizeCoverComparisonField,
+  resolveCoverComparisonForSave,
 } from './mediaComparison'
 
 const ARTICLE_SELECT = `
   id, slug, title, subtitle, content_html, content_json, cover_image_url,
   status, language, category, article_date, article_time, read_minutes, published_at,
-  view_count, created_at, updated_at, author_id, author_name, sources, media_comparison,
+  view_count, created_at, updated_at, author_id, author_name, sources, media_comparison, cover_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
 
-const ARTICLE_SELECT_LEGACY = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, category, article_date, article_time, read_minutes, published_at,
-  created_at, updated_at, author_id, author_name, sources, media_comparison,
-  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
-`
-
-function isMissingViewCount(error) {
-  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
-  return error?.code === '42703' || msg.includes('view_count')
+const SCHEMA_COLUMN_ALIASES = {
+  cover_comparison: ['cover_comparison'],
+  media_comparison: ['media_comparison'],
+  view_count: ['view_count'],
+  sources: ['sources'],
+  poster_url: ['poster_url'],
 }
 
-function isMissingSources(error) {
-  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
-  return error?.code === '42703' || msg.includes('sources')
+function isSchemaColumnError(error) {
+  const code = error?.code
+  return code === '42703' || code === 'PGRST204'
+}
+
+function getMissingColumn(error) {
+  const msg = `${error?.message || ''} ${error?.details || ''} ${error?.hint || ''}`.toLowerCase()
+  for (const [column, aliases] of Object.entries(SCHEMA_COLUMN_ALIASES)) {
+    if (aliases.some((alias) => msg.includes(alias))) return column
+  }
+  return null
+}
+
+function stripColumn(select, column) {
+  return select
+    .replace(new RegExp(`,\\s*${column}\\b`, 'g'), '')
+    .replace(new RegExp(`\\b${column}\\s*,`, 'g'), '')
 }
 
 function isMissingMediaComparison(error) {
-  const msg = `${error?.message || ''} ${error?.details || ''}`.toLowerCase()
-  return error?.code === '42703' || msg.includes('media_comparison')
+  const missing = getMissingColumn(error)
+  return missing === 'media_comparison' || missing === 'cover_comparison'
 }
 
-const ARTICLE_SELECT_NO_MEDIA_COMPARISON = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, category, article_date, article_time, read_minutes, published_at,
-  view_count, created_at, updated_at, author_id, author_name, sources,
-  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
-`
-
-const ARTICLE_SELECT_LEGACY_NO_MEDIA_COMPARISON = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, category, article_date, article_time, read_minutes, published_at,
-  created_at, updated_at, author_id, author_name, sources,
-  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
-`
-
-const ARTICLE_SELECT_NO_SOURCES = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, category, article_date, article_time, read_minutes, published_at,
-  view_count, created_at, updated_at, author_id, author_name,
-  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
-`
-
-const ARTICLE_SELECT_LEGACY_NO_SOURCES = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
-  status, language, category, article_date, article_time, read_minutes, published_at,
-  created_at, updated_at, author_id, author_name,
-  author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
-`
-
 async function runArticleSelect(runQuery) {
-  let { data, error } = await runQuery(ARTICLE_SELECT)
-  if (error && isMissingViewCount(error)) {
-    ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY))
+  let select = ARTICLE_SELECT.trim()
+
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const { data, error } = await runQuery(select)
+    if (!error) return data
+
+    const missing = getMissingColumn(error)
+    if (!missing || !isSchemaColumnError(error)) throw error
+
+    const nextSelect = stripColumn(select, missing)
+    if (nextSelect === select) throw error
+    select = nextSelect
   }
-  if (error && isMissingSources(error)) {
-    ;({ data, error } = await runQuery(ARTICLE_SELECT_NO_SOURCES))
-    if (error && isMissingViewCount(error)) {
-      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_SOURCES))
-    }
-  }
-  if (error && isMissingMediaComparison(error)) {
-    ;({ data, error } = await runQuery(ARTICLE_SELECT_NO_MEDIA_COMPARISON))
-    if (error && isMissingViewCount(error)) {
-      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_MEDIA_COMPARISON))
-    }
-    if (error && isMissingSources(error)) {
-      ;({ data, error } = await runQuery(ARTICLE_SELECT_LEGACY_NO_SOURCES))
-    }
-  }
-  if (error) throw error
-  return data
+
+  throw new Error('Article select exceeded schema fallback attempts')
 }
 
 function normalizeArticle(article) {
@@ -103,7 +75,8 @@ function normalizeArticle(article) {
   const views = Number(normalized.view_count)
   normalized.view_count = Number.isFinite(views) ? Math.max(0, Math.floor(views)) : 0
   normalized.sources = normalizeSources(normalized.sources)
-  normalized.media_comparison = normalizeMediaComparison(normalized.media_comparison)
+  normalized.media_comparison = normalizeMediaComparisonField(normalized.media_comparison)
+  normalized.cover_comparison = normalizeCoverComparisonField(normalized.cover_comparison)
   return normalized
 }
 
@@ -204,11 +177,11 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
   return clientToDb
 }
 
-async function saveMediaComparison(articleId, comparison, clientToDb) {
-  const resolved = resolveMediaComparisonForSave(comparison, clientToDb)
+async function saveCoverComparison(articleId, comparison, clientToDb, hasCover) {
+  const resolved = resolveCoverComparisonForSave(comparison, clientToDb, hasCover)
   const { error } = await supabase
     .from('articles')
-    .update({ media_comparison: resolved })
+    .update({ cover_comparison: resolved })
     .eq('id', articleId)
   if (error && !isMissingMediaComparison(error)) throw error
 }
@@ -244,7 +217,7 @@ export async function createArticle({ form, items, coverFile, userId, status }) 
   if (error) throw error
 
   const clientToDb = await syncMedia(data.id, userId, items)
-  await saveMediaComparison(data.id, form.mediaComparison, clientToDb)
+  await saveCoverComparison(data.id, form.coverComparison, clientToDb, Boolean(coverUrl))
   return data
 }
 
@@ -284,7 +257,7 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
   if (error) throw error
 
   const clientToDb = await syncMedia(id, userId, items, originalItems)
-  await saveMediaComparison(id, form.mediaComparison, clientToDb)
+  await saveCoverComparison(id, form.coverComparison, clientToDb, Boolean(coverUrl))
   return data
 }
 

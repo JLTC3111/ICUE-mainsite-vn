@@ -8,6 +8,7 @@ import { recordArticleView } from '../lib/engagement'
 import { formatDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
+import ArticleComparisonCarousel from '../components/ArticleComparisonCarousel'
 import ArticleSources from '../components/ArticleSources'
 import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
@@ -17,9 +18,12 @@ import { translateArticleViaApi, shouldTranslateArticle } from '../lib/translate
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticleTextReveal from '../components/TextReveal'
+import ArticlePagedContent from '../components/ArticlePagedContent'
 import Lens from '../components/Lens'
 import ScrollProgress from '../components/ScrollProgress'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
+import { findAllCoverComparisonImages } from '../lib/mediaComparison'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import './ArticleDetail.css'
 
 const LENS_PREF_KEY = 'icue-article-lens-enabled'
@@ -77,6 +81,9 @@ export default function ArticleDetail() {
   const [translateError, setTranslateError] = useState(false)
   const [showOriginal, setShowOriginal] = useState(false)
   const [translateAttempt, setTranslateAttempt] = useState(0)
+  const [pageProgress, setPageProgress] = useState(null)
+
+  useDocumentTitle(state === 'ready' && article?.title ? article.title : null)
 
   useEffect(() => {
     let active = true
@@ -90,6 +97,7 @@ export default function ArticleDetail() {
     setShowOriginal(false)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslateError(false)
+    setPageProgress(null)
     fetchArticleBySlug(slug)
       .then((data) => {
         if (!active) return
@@ -97,7 +105,6 @@ export default function ArticleDetail() {
         setArticle(data)
         setViewCount(data.view_count ?? 0)
         setState('ready')
-        document.title = `${data.title} · ICUE News`
         if (data.status === 'published') {
           recordArticleView(data.id)
             .then((result) => active && setViewCount(result.count))
@@ -173,6 +180,11 @@ export default function ArticleDetail() {
     }
   }, [article])
 
+  const coverComparisonPairs = useMemo(
+    () => findAllCoverComparisonImages(article?.cover_image_url, images, article?.cover_comparison),
+    [article?.cover_image_url, article?.cover_comparison, images],
+  )
+
   const displayContent = useMemo(() => {
     const usingTranslation = translation && !showOriginal
     const raw = usingTranslation ? translation.content_html : article?.content_html
@@ -185,6 +197,14 @@ export default function ArticleDetail() {
       writeLensPreference(next)
       return next
     })
+  }, [])
+
+  const handlePageChange = useCallback((pageIndex, totalPages) => {
+    if (totalPages <= 1) {
+      setPageProgress(null)
+      return
+    }
+    setPageProgress((pageIndex + 1) / totalPages)
   }, [])
 
   if (state === 'loading') {
@@ -219,7 +239,7 @@ export default function ArticleDetail() {
   const displayTitle = normalizeUnicode(usingTranslation ? translation.title : article.title)
   const displaySubtitle = normalizeUnicode(usingTranslation ? translation.subtitle : article.subtitle)
   const lensEnabled = lensCapable && lensOn
-  const hasLensPhotos = Boolean(article.cover_image_url) || images.length > 0
+  const hasLensPhotos = Boolean(article.cover_image_url) || coverComparisonPairs.length > 0 || images.length > 0
   const showLensToggle = lensCapable && hasLensPhotos
   const showTranslatorBar =
     translateBusy
@@ -227,10 +247,15 @@ export default function ArticleDetail() {
     || Boolean(translatedLang && translation)
     || (showOriginal && Boolean(translatedLang))
   const showToolsBar = showLensToggle || showTranslatorBar
+  const contentLang = usingTranslation && translatedLang ? translatedLang : article.language
+  const isViContent = String(contentLang || '').startsWith('vi')
 
   return (
-    <article className="article-detail">
-      <ScrollProgress />
+    <article
+      className={`article-detail${isViContent ? ' article-detail--vi' : ''}`}
+      lang={contentLang}
+    >
+      <ScrollProgress progress={pageProgress ?? undefined} />
       <div className="article-detail__head icue-container">
         {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
         {isTranslating ? (
@@ -310,7 +335,11 @@ export default function ArticleDetail() {
         </div>
       )}
 
-      {article.cover_image_url && (
+      {coverComparisonPairs.length > 0 ? (
+        <div className="article-detail__cover article-detail__cover--comparison">
+          <ArticleComparisonCarousel pairs={coverComparisonPairs} />
+        </div>
+      ) : article.cover_image_url ? (
         <figure className="article-detail__cover">
           <Lens
             className="article-detail__cover-lens"
@@ -321,7 +350,7 @@ export default function ArticleDetail() {
             <img src={article.cover_image_url} alt="" decoding="async" />
           </Lens>
         </figure>
-      )}
+      ) : null}
 
       {isTranslating ? (
         <div className="article-detail__content icue-readw article-detail__content--translating">
@@ -331,20 +360,18 @@ export default function ArticleDetail() {
           />
         </div>
       ) : (
-        <ArticleTextReveal
+        <ArticlePagedContent
           key={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
           html={displayContent}
-          className="article-detail__content icue-readw translation-reveal"
-          finishBy={0.4}
+          className="article-detail__content translation-reveal"
+          contentKey={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
+          onPageChange={handlePageChange}
         />
       )}
 
-      <MediaGallery
-        images={images}
-        videos={videos}
-        comparison={article.media_comparison}
-        lensEnabled={lensEnabled}
-      />
+      {!isTranslating && (
+        <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
+      )}
 
       <ArticleSources
         sources={article.sources}

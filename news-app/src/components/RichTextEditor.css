@@ -120,11 +120,13 @@
   min-height: 320px;
   padding: 24px 26px;
   font-family: var(--icue-serif);
-  font-size: 20px;
-  line-height: 1.7;
+  font-size: var(--icue-article-size);
+  font-weight: 400;
+  line-height: var(--icue-article-leading);
+  letter-spacing: var(--icue-article-tracking);
   color-scheme: light;
   background: #fff;
-  color: #111316;
+  color: var(--icue-article-text);
   caret-color: #111316;
   outline: none;
   overflow-x: auto;
@@ -133,10 +135,17 @@
   hyphens: none;
 }
 
+.article-form__canvas[lang="vi"] .rte-content,
+.article-form__canvas[lang="vi"] .rte .ProseMirror {
+  font-family: var(--icue-vi-serif);
+  letter-spacing: normal;
+}
+
 .rte-content a,
 .rte .ProseMirror a {
-  color: #1a73e8;
+  color: inherit;
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .rte-content p.is-editor-empty:first-child::before {
@@ -147,9 +156,9 @@
   height: 0;
 }
 
-.rte-content p { margin: 0 0 1em; }
-.rte-content h2 { font-size: 30px; line-height: 1.25; margin: 1.2em 0 0.4em; font-weight: 700; }
-.rte-content h3 { font-size: 24px; line-height: 1.3; margin: 1em 0 0.3em; font-weight: 700; }
+.rte-content p { margin: 0 0 1.58em; }
+.rte-content h2 { font-size: 1.75rem; line-height: 1.28; letter-spacing: -0.01em; margin: 2em 0 0.35em; font-weight: 700; }
+.rte-content h3 { font-size: 1.45rem; line-height: 1.32; letter-spacing: -0.008em; margin: 1.65em 0 0.3em; font-weight: 700; }
 .rte-content blockquote {
   border-left: 3px solid var(--icue-ink);
   margin: 1.2em 0;
@@ -162,7 +171,9 @@
 
 .rte-content mark {
   border-radius: 2px;
-  padding: 0 0.12em;
+  padding: 0.08em 0.1em;
+  background: rgba(186, 237, 189, 0.55);
+  color: inherit;
 }
 
 /* Tables --------------------------------------------------------------- */

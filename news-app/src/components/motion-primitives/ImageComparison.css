@@ -9,6 +9,10 @@
   cursor: ew-resize;
 }
 
+.image-comparison--locked {
+  cursor: default;
+}
+
 .image-comparison__image {
   position: absolute;
   inset: 0;

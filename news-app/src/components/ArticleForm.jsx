@@ -9,7 +9,8 @@ import ArticleSourcesEditor from './ArticleSourcesEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
 import { normalizeSources } from '../lib/articleSources'
-import { comparisonToEditorIds } from '../lib/mediaComparison'
+import { coverComparisonToEditorIds, pruneEditorComparison } from '../lib/mediaComparison'
+import CoverComparisonEditor from './CoverComparisonEditor'
 import './ArticleForm.css'
 
 const todayStr = () => new Date().toISOString().slice(0, 10)
@@ -38,12 +39,26 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [contentJson, setContentJson] = useState(initial?.content_json || null)
   const [sources, setSources] = useState(() => normalizeSources(initial?.sources))
   const [items, setItems] = useState(initial?.items || [])
-  const [mediaComparison, setMediaComparison] = useState(() =>
-    comparisonToEditorIds(initial?.media_comparison, initial?.items || []),
+  const [coverComparison, setCoverComparison] = useState(() =>
+    coverComparisonToEditorIds(initial?.cover_comparison, initial?.items || []),
   )
   const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
   const coverFileRef = useRef(null)
+  const coverInputRef = useRef(null)
   const [coverPreview, setCoverPreview] = useState(initial?.cover_image_url || '')
+
+  const pickCover = useCallback(() => {
+    coverInputRef.current?.click()
+  }, [])
+
+  const removeMediaItem = useCallback((id) => {
+    setItems((prev) => {
+      const target = prev.find((item) => item.id === id)
+      if (target?.isNew && target.url?.startsWith('blob:')) URL.revokeObjectURL(target.url)
+      return prev.filter((item) => item.id !== id)
+    })
+    setCoverComparison((prev) => pruneEditorComparison(prev, id))
+  }, [])
 
   const [busy, setBusy] = useState(null) // 'draft' | 'publish' | 'update'
   const [error, setError] = useState('')
@@ -61,17 +76,27 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
 
   const onCoverChange = useCallback((e) => {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file || !file.type.startsWith('image/')) return
     coverFileRef.current = file
-    setCoverPreview(URL.createObjectURL(file))
+    setCoverPreview((prev) => {
+      if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+      return URL.createObjectURL(file)
+    })
+    setCoverUrl('')
+    e.target.value = ''
   }, [])
 
   // Drop the cover entirely: clear any pending upload, the preview, and the
   // stored URL so submit persists a null cover.
   const removeCover = useCallback(() => {
     coverFileRef.current = null
-    setCoverPreview('')
+    if (coverInputRef.current) coverInputRef.current.value = ''
+    setCoverPreview((prev) => {
+      if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+      return ''
+    })
     setCoverUrl('')
+    setCoverComparison({ pairs: [{ beforeId: null, afterId: null }] })
   }, [])
 
   const submit = useCallback(
@@ -98,7 +123,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             contentHtml,
             contentJson,
             sources,
-            mediaComparison,
+            coverComparison,
             coverImageUrl: coverUrl || null,
             language: initial?.language || 'vi',
             category,
@@ -112,7 +137,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, mediaComparison, items, coverUrl, onSubmit, mode, t, initial?.language],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, onSubmit, mode, t, initial?.language],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -146,7 +171,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         </div>
       </div>
 
-      <div className="article-form__canvas icue-container">
+      <div className="article-form__canvas icue-container" lang={initial?.language || 'vi'}>
         {error && <p className="article-form__error">{error}</p>}
 
         <div className="article-form__meta">
@@ -180,25 +205,37 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         </div>
 
         <div className="article-form__cover-block">
+          <input
+            ref={coverInputRef}
+            type="file"
+            accept="image/*"
+            className="visually-hidden"
+            onChange={onCoverChange}
+          />
           {coverPreview ? (
             <div className="article-form__cover-filled">
               <img src={coverPreview} alt="" className="article-form__cover-img" />
               <div className="article-form__cover-tools">
-                <label className="btn btn-ghost btn-sm article-form__cover-change">
+                <button type="button" className="btn btn-ghost btn-sm" onClick={pickCover}>
                   {t('editor.changeCover')}
-                  <input type="file" accept="image/*" className="visually-hidden" onChange={onCoverChange} />
-                </label>
+                </button>
                 <button type="button" className="btn btn-danger btn-sm" onClick={removeCover}>
                   {t('editor.removeCover')}
                 </button>
               </div>
             </div>
           ) : (
-            <label className="article-form__cover">
+            <button type="button" className="article-form__cover" onClick={pickCover}>
               <span className="article-form__cover-empty">＋ {t('editor.coverImage')}</span>
-              <input type="file" accept="image/*" className="visually-hidden" onChange={onCoverChange} />
-            </label>
+            </button>
           )}
+          <CoverComparisonEditor
+            coverUrl={coverPreview}
+            images={items.filter((item) => item.kind === 'image')}
+            comparison={coverComparison}
+            onComparisonChange={setCoverComparison}
+            onRemoveImage={removeMediaItem}
+          />
         </div>
 
         <input
@@ -222,12 +259,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
 
         <ArticleSourcesEditor sources={sources} onChange={setSources} />
 
-        <MediaUploader
-          items={items}
-          onChange={setItems}
-          comparison={mediaComparison}
-          onComparisonChange={setMediaComparison}
-        />
+        <MediaUploader items={items} onChange={setItems} />
       </div>
     </div>
   )

@@ -140,7 +140,14 @@
     "comparisonAfter": "アフター",
     "comparisonClear": "比較を解除",
     "comparisonNeedTwo": "スライダーを設定するには、上で画像を2枚以上アップロードしてください。",
-    "comparisonPreview": "記事ページのプレビュー"
+    "comparisonPreview": "記事ページのプレビュー",
+    "comparisonPair": "ペア {{n}}",
+    "comparisonAddPair": "ペアを追加",
+    "comparisonRemovePair": "ペア {{n}} を削除",
+    "coverComparisonTitle": "カバー画像ビフォー / アフター",
+    "coverComparisonHint": "カバーとギャラリー画像（またはギャラリー画像2枚）を選ぶと、カバーの代わりにスライダーが表示されます。",
+    "coverComparisonNeedSources": "カバー比較を設定するには、カバー画像とギャラリー画像を1枚以上追加してください。",
+    "coverImageBadge": "カバー"
   },
   "profile": {
     "displayName": "表示名",
@@ -161,7 +168,14 @@
     "lensOff": "オフ",
     "sourcesTitle": "出典",
     "comparisonBefore": "ビフォー",
-    "comparisonAfter": "アフター"
+    "comparisonAfter": "アフター",
+    "comparisonCarouselAria": "ビフォー・アフター画像比較",
+    "comparisonGoTo": "比較 {{index}} へ",
+    "pageNav": "記事ページ",
+    "pageOf": "{{current}} / {{total}} ページ",
+    "prevPage": "前へ",
+    "nextPage": "次へ",
+    "goToPage": "{{n}} ページへ"
   },
   "engagement": {
     "like": "ハートを送る",

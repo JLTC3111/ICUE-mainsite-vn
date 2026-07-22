@@ -1,0 +1,120 @@
+.article-comparison-parallax {
+  margin: 0 0 24px;
+}
+
+.article-comparison-parallax__wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.article-comparison-parallax__viewport {
+  overflow: hidden;
+  width: 100%;
+  touch-action: pan-y pinch-zoom;
+}
+
+.article-comparison-parallax__container {
+  display: flex;
+  align-items: stretch;
+  margin-left: -10px;
+  backface-visibility: hidden;
+}
+
+.article-comparison-parallax__slide {
+  flex: 0 0 min(92%, 660px);
+  min-width: 0;
+  padding-left: 10px;
+}
+
+.article-comparison-parallax__parallax {
+  overflow: hidden;
+  border-radius: var(--icue-radius, 12px);
+}
+
+.article-comparison-parallax__layer {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.article-comparison-parallax__layer .article-image-comparison {
+  margin-bottom: 0;
+}
+
+.article-comparison-parallax__slide:not(.is-active) .article-image-comparison__frame {
+  filter: blur(0.35px) brightness(0.96) saturate(0.98);
+  opacity: 0.92;
+  transition: filter 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-comparison-parallax__slide.is-active .article-image-comparison__frame {
+  filter: none;
+  opacity: 1;
+  box-shadow: var(--icue-shadow-sm);
+}
+
+.article-comparison-parallax__rail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.article-comparison-parallax__bar {
+  width: 22px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--icue-border);
+  cursor: pointer;
+  transition: background 0.25s ease, width 0.25s ease;
+}
+
+.article-comparison-parallax__bar.is-active {
+  width: 34px;
+  background: var(--icue-ink);
+}
+
+.article-comparison-parallax__bar:hover {
+  background: var(--icue-text-soft);
+}
+
+.article-comparison-parallax__bar.is-active:hover {
+  background: var(--icue-ink);
+}
+
+@media (max-width: 680px) {
+  .article-comparison-parallax__slide {
+    flex-basis: 94%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-comparison-parallax__layer {
+    transform: none !important;
+  }
+
+  .article-comparison-parallax__slide:not(.is-active) .article-image-comparison__frame {
+    filter: none !important;
+    opacity: 1 !important;
+    transition: none;
+  }
+}
+
+.icue-app--news-theme-dark .article-comparison-parallax__bar {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.icue-app--news-theme-dark .article-comparison-parallax__bar:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.icue-app--news-theme-dark .article-comparison-parallax__bar.is-active {
+  background: #e7e8e4;
+}
+
+.icue-app--news-theme-dark .article-comparison-parallax__slide.is-active .article-image-comparison__frame {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}

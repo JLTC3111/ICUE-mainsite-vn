@@ -22,10 +22,34 @@
 }
 
 html:lang(vi) .article-detail__title,
-html:lang(vi) .article-detail__subtitle,
-html:lang(vi) .article-detail__content {
+html:lang(vi) .article-detail__subtitle {
   font-family: var(--icue-vi-sans);
   letter-spacing: normal;
+}
+
+/* Article language drives body typography — not UI locale. */
+.article-detail--vi .article-detail__title,
+.article-detail--vi .article-detail__subtitle,
+.article-detail[lang="vi"] .article-detail__title,
+.article-detail[lang="vi"] .article-detail__subtitle {
+  font-family: var(--icue-vi-sans) !important;
+  letter-spacing: normal;
+}
+
+.article-detail--vi .article-detail__content,
+.article-detail--vi .article-detail__content--paged,
+.article-detail--vi .text-reveal-content,
+.article-detail[lang="vi"] .article-detail__content,
+.article-detail[lang="vi"] .article-detail__content--paged {
+  font-family: var(--icue-vi-serif) !important;
+  letter-spacing: normal;
+}
+
+/* Charter lacks Vietnamese glyphs — force Noto on all body descendants (incl. TipTap inline styles). */
+.article-detail--vi .article-detail__content :where(p, li, blockquote, h2, h3, h4, td, th, span, a, strong, em, div),
+.article-detail--vi .article-detail__content--paged :where(p, li, blockquote, h2, h3, h4, td, th, span, a, strong, em, div),
+.article-detail--vi .text-reveal-content :where(p, li, blockquote, h2, h3, h4, td, th, span, a, strong, em, div) {
+  font-family: inherit !important;
 }
 .article-detail__subtitle {
   margin: 0 0 26px;
@@ -133,6 +157,18 @@ html:lang(vi) .article-detail__content {
   cursor: default;
 }
 
+.article-detail__cover--comparison {
+  margin-bottom: 0;
+}
+
+.article-detail__cover--comparison .article-comparison-parallax {
+  margin-bottom: 0;
+}
+
+.cover-comparison-editor {
+  margin-top: 16px;
+}
+
 .article-detail__cover img {
   width: 100%;
   display: block;
@@ -142,34 +178,107 @@ html:lang(vi) .article-detail__content {
 
 .article-detail__content {
   margin-top: 36px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 32px 24px 0;
+  max-width: var(--icue-article-readw);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   font-family: var(--icue-serif);
-  font-size: 20px;
-  line-height: 1.78;
-  color: #1f2226;
-  /* Wrap on spaces / soft breaks only — never mid-syllable (critical for vi). */
+  font-size: var(--icue-article-size);
+  font-weight: 400;
+  line-height: var(--icue-article-leading);
+  letter-spacing: var(--icue-article-tracking);
+  color: var(--icue-article-text);
   overflow-wrap: break-word;
   word-break: normal;
   line-break: auto;
   hyphens: none;
+  text-align: left;
 }
 
-.article-detail__content :where(p, h2, h3, li, blockquote, td, th, a, span) {
+.article-detail__content--paged {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.article-detail__content :where(p, li, blockquote, td, th, a, span) {
   overflow-wrap: break-word;
   word-break: normal;
   hyphens: none;
 }
+
 .article-detail__content > :first-child { margin-top: 0; }
-.article-detail__content p { margin: 0 0 1.4em; }
-.article-detail__content h2 { font-size: clamp(24px, 3.6vw, 32px); line-height: 1.25; margin: 1.6em 0 0.5em; font-weight: 800; }
-.article-detail__content h3 { font-size: clamp(20px, 2.8vw, 26px); margin: 1.3em 0 0.4em; font-weight: 800; }
-.article-detail__content blockquote {
-  border-left: 3px solid var(--icue-ink);
-  margin: 1.6em 0; padding-left: 22px;
-  font-style: italic; color: var(--icue-text-soft);
+
+/* Short chapter labels stay intact — no drop cap. */
+.article-detail__content > p:first-of-type {
+  margin-bottom: 0.35em;
 }
-.article-detail__content ul, .article-detail__content ol { padding-left: 1.5em; margin: 0 0 1.4em; }
-.article-detail__content li { margin-bottom: 0.4em; }
-.article-detail__content a { color: #1a73e8; text-decoration: underline; }
+
+.article-detail__content > p:first-of-type strong:only-child,
+.article-detail__content > h2:first-child,
+.article-detail__content > h3:first-child {
+  display: block;
+  margin: 0 0 0.75em;
+  font-size: 1.05em;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.006em;
+}
+
+.article-detail__content > p:nth-of-type(2) strong:first-child {
+  font-weight: 700;
+}
+
+.article-detail__content > p.article-dropcap::first-letter {
+  float: left;
+  margin: 0.04em 0.14em 0 0;
+  padding-top: 0.02em;
+  font-family: inherit;
+  font-size: 3.5em;
+  font-weight: 400;
+  line-height: 0.78;
+  color: inherit;
+}
+
+@supports (initial-letter: 3) {
+  .article-detail__content > p.article-dropcap::first-letter {
+    float: none;
+    initial-letter: 3;
+    initial-letter-align: auto;
+    margin-right: 0.12em;
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
+
+.article-detail__content p { margin: 0 0 1.58em; }
+.article-detail__content h2 {
+  font-size: clamp(1.45rem, 2.8vw, 1.75rem);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  margin: 2em 0 0.35em;
+  font-weight: 700;
+  color: var(--icue-article-text);
+}
+.article-detail__content h3 {
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  line-height: 1.32;
+  letter-spacing: -0.008em;
+  margin: 1.65em 0 0.3em;
+  font-weight: 700;
+  color: var(--icue-article-text);
+}
+.article-detail__content blockquote {
+  border-left: 3px solid rgba(41, 41, 41, 0.25);
+  margin: 1.58em 0;
+  padding-left: 20px;
+  font-style: italic;
+  color: rgba(41, 41, 41, 0.72);
+}
+.article-detail__content ul,
+.article-detail__content ol { padding-left: 1.35em; margin: 0 0 1.58em; }
+.article-detail__content li { margin-bottom: 0.35em; }
+.article-detail__content a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .article-detail__content img { width: 100%; border-radius: 10px; margin: 1.8em 0; box-shadow: var(--icue-shadow-sm); }
 
 .article-detail__content .video-embed,
@@ -196,7 +305,9 @@ html:lang(vi) .article-detail__content {
 
 .article-detail__content mark {
   border-radius: 2px;
-  padding: 0 0.12em;
+  padding: 0.08em 0.1em;
+  background: rgba(186, 237, 189, 0.55);
+  color: inherit;
 }
 
 /* Tables --------------------------------------------------------------- */
@@ -362,24 +473,46 @@ html:lang(vi) .article-detail__content {
 
 .icue-app--news-theme-dark .article-detail__content {
   color: #d8dbd4;
+  letter-spacing: var(--icue-article-tracking);
+  border-top-color: rgba(255, 255, 255, 0.12);
 }
 
 .icue-app--news-theme-dark .article-detail__content h2,
 .icue-app--news-theme-dark .article-detail__content h3 {
-  color: #f0f1ed;
-}
-
-.icue-app--news-theme-dark .article-detail__content blockquote {
-  border-left-color: rgba(255, 255, 255, 0.35);
-  color: var(--icue-text-soft);
+  color: #f0f1ed !important;
 }
 
 .icue-app--news-theme-dark .article-detail__content a {
-  color: #6eb3ff;
+  color: #d8dbd4 !important;
+}
+
+.icue-app--news-theme-dark .article-detail__content mark {
+  background: rgba(186, 237, 189, 0.32);
+  color: #111 !important;
+}
+
+.icue-app--news-theme-dark .article-detail__content blockquote {
+  border-left-color: rgba(255, 255, 255, 0.22);
+  color: rgba(216, 219, 212, 0.78) !important;
+}
+
+.icue-app--news-theme-dark .article-detail__content :where(p, li, span, div, td, blockquote, em, i) {
+  color: #d8dbd4 !important;
+}
+
+.icue-app--news-theme-dark .article-detail__content :where(h1, h4, strong, b, th) {
+  color: #f0f1ed !important;
+}
+
+.icue-app--news-theme-dark .article-detail__content th,
+.icue-app--news-theme-dark .article-detail__content td {
+  border-color: var(--icue-border);
+  color: #d8dbd4;
 }
 
 .icue-app--news-theme-dark .article-detail__content th {
   background: rgba(255, 255, 255, 0.06);
+  color: #f0f1ed !important;
 }
 
 .icue-app--news-theme-dark .article-detail__content tr:nth-child(even) td {

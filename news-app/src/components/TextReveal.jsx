@@ -1,6 +1,7 @@
-import { createElement, useEffect, useMemo, useRef, useState } from 'react'
+import { createElement, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
+import { applyArticleDropCap } from '../lib/articleDropCap'
 import './TextReveal.css'
 
 // Tags kept as opaque HTML (not word-split). Must not include void tags —
@@ -223,6 +224,7 @@ export default function ArticleTextReveal({
   finishBy = 0.5,
 }) {
   const sectionRef = useRef(null)
+  const contentRef = useRef(null)
   const { isDark } = useNewsroomTheme()
   const [reduceMotion, setReduceMotion] = useState(false)
   const wordMinOpacity = isDark ? 0.52 : 0.28
@@ -245,9 +247,15 @@ export default function ArticleTextReveal({
     return buildRevealTree(html, scrollYProgress, finishBy, wordMinOpacity)
   }, [html, reduceMotion, scrollYProgress, finishBy, wordMinOpacity])
 
+  useLayoutEffect(() => {
+    if (!reduceMotion && content) return
+    applyArticleDropCap(contentRef.current)
+  }, [html, reduceMotion, content])
+
   if (reduceMotion || !html) {
     return (
       <div
+        ref={contentRef}
         className={className}
         dangerouslySetInnerHTML={{ __html: html || '' }}
       />
@@ -257,6 +265,7 @@ export default function ArticleTextReveal({
   if (!content) {
     return (
       <div
+        ref={contentRef}
         className={className}
         dangerouslySetInnerHTML={{ __html: html || '' }}
       />

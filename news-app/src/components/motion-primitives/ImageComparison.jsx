@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
 import {
   motion,
   useMotionValue,
@@ -25,13 +25,15 @@ export function ImageComparison({
   springOptions,
 }) {
   const [isDragging, setIsDragging] = useState(false)
+  const [isLocked, setIsLocked] = useState(false)
   const motionValue = useMotionValue(50)
   const motionSliderPosition = useSpring(motionValue, springOptions ?? DEFAULT_SPRING_OPTIONS)
   const [sliderPosition, setSliderPosition] = useState(50)
+  const dragMovedRef = useRef(false)
+  const pointerActiveRef = useRef(false)
+  const suppressClickRef = useRef(false)
 
-  const handleDrag = (event) => {
-    if (!isDragging && !enableHover) return
-
+  const updatePosition = (event) => {
     const containerRect = event.currentTarget.getBoundingClientRect()
     const x = 'touches' in event
       ? event.touches[0].clientX - containerRect.left
@@ -42,23 +44,79 @@ export function ImageComparison({
     setSliderPosition(percentage)
   }
 
+  const handleDrag = (event) => {
+    if (isLocked) return
+    if (!pointerActiveRef.current && !enableHover) return
+    if (!isDragging && !enableHover) return
+
+    dragMovedRef.current = true
+    updatePosition(event)
+  }
+
+  const lockInteraction = () => {
+    setIsLocked(true)
+    setIsDragging(false)
+    pointerActiveRef.current = false
+    dragMovedRef.current = false
+  }
+
+  const handlePointerDown = () => {
+    if (isLocked) return
+    pointerActiveRef.current = true
+    dragMovedRef.current = false
+    if (!enableHover) setIsDragging(true)
+  }
+
+  const handlePointerUp = () => {
+    if (isLocked) return
+    if (!enableHover) setIsDragging(false)
+    pointerActiveRef.current = false
+    if (dragMovedRef.current) {
+      lockInteraction()
+      suppressClickRef.current = true
+    }
+  }
+
+  const handleClick = () => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false
+      return
+    }
+    if (isLocked) {
+      setIsLocked(false)
+      return
+    }
+    // Click without dragging (e.g. hover mode) locks the split in place.
+    if (enableHover) {
+      lockInteraction()
+    }
+  }
+
+  const handleTouchEnd = () => {
+    handlePointerUp()
+  }
+
   return (
     <ImageComparisonContext.Provider
-      value={{ sliderPosition, setSliderPosition, motionSliderPosition }}
+      value={{ sliderPosition, setSliderPosition, motionSliderPosition, isLocked }}
     >
       <div
         className={cn(
           'image-comparison',
-          enableHover && 'image-comparison--hover',
+          enableHover && !isLocked && 'image-comparison--hover',
+          isLocked && 'image-comparison--locked',
           className,
         )}
         onMouseMove={handleDrag}
-        onMouseDown={() => !enableHover && setIsDragging(true)}
-        onMouseUp={() => !enableHover && setIsDragging(false)}
-        onMouseLeave={() => !enableHover && setIsDragging(false)}
+        onMouseDown={handlePointerDown}
+        onMouseUp={handlePointerUp}
+        onMouseLeave={() => {
+          if (!enableHover) handlePointerUp()
+        }}
         onTouchMove={handleDrag}
-        onTouchStart={() => !enableHover && setIsDragging(true)}
-        onTouchEnd={() => !enableHover && setIsDragging(false)}
+        onTouchStart={handlePointerDown}
+        onTouchEnd={handleTouchEnd}
+        onClick={handleClick}
       >
         {children}
       </div>

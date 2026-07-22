@@ -140,7 +140,14 @@
     "comparisonAfter": "Sau",
     "comparisonClear": "Xóa so sánh",
     "comparisonNeedTwo": "Tải lên ít nhất 2 ảnh ở trên để thiết lập thanh trượt trước/sau.",
-    "comparisonPreview": "Xem trước trên trang bài viết"
+    "comparisonPreview": "Xem trước trên trang bài viết",
+    "comparisonPair": "Cặp {{n}}",
+    "comparisonAddPair": "Thêm cặp",
+    "comparisonRemovePair": "Xóa cặp {{n}}",
+    "coverComparisonTitle": "So sánh ảnh bìa trước / sau",
+    "coverComparisonHint": "Chọn ảnh bìa và một ảnh gallery (hoặc hai ảnh gallery) để hiển thị thanh trượt thay cho ảnh bìa.",
+    "coverComparisonNeedSources": "Thêm ảnh bìa và ít nhất một ảnh gallery để thiết lập so sánh ảnh bìa.",
+    "coverImageBadge": "Bìa"
   },
   "profile": {
     "displayName": "Tên hiển thị",
@@ -161,7 +168,14 @@
     "lensOff": "Tắt",
     "sourcesTitle": "Nguồn tham khảo",
     "comparisonBefore": "Trước",
-    "comparisonAfter": "Sau"
+    "comparisonAfter": "Sau",
+    "comparisonCarouselAria": "So sánh ảnh trước và sau",
+    "comparisonGoTo": "Đến so sánh {{index}}",
+    "pageNav": "Trang bài viết",
+    "pageOf": "Trang {{current}} / {{total}}",
+    "prevPage": "Trước",
+    "nextPage": "Tiếp",
+    "goToPage": "Đến trang {{n}}"
   },
   "engagement": {
     "like": "Thả tim",

@@ -30,7 +30,7 @@ function useComparisonMotion() {
   return { reduceMotion, hoverCapable }
 }
 
-export default function ArticleImageComparison({ before, after }) {
+export default function ArticleImageComparison({ before, after, showCaption = false }) {
   const { t } = useTranslation()
   const { reduceMotion, hoverCapable } = useComparisonMotion()
 
@@ -55,11 +55,13 @@ export default function ArticleImageComparison({ before, after }) {
         />
         <ImageComparisonSlider className="article-image-comparison__slider" />
       </ImageComparison>
-      <figcaption className="article-image-comparison__caption">
-        <span>{t('article.comparisonBefore')}</span>
-        <span aria-hidden> · </span>
-        <span>{t('article.comparisonAfter')}</span>
-      </figcaption>
+      {showCaption && (
+        <figcaption className="article-image-comparison__caption">
+          <span>{t('article.comparisonBefore')}</span>
+          <span aria-hidden> · </span>
+          <span>{t('article.comparisonAfter')}</span>
+        </figcaption>
+      )}
     </figure>
   )
 }

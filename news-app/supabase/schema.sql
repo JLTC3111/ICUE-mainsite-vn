@@ -64,6 +64,7 @@ create table if not exists public.articles (
   published_at  timestamptz,
   sources       jsonb not null default '[]'::jsonb,
   media_comparison jsonb,
+  cover_comparison jsonb,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
@@ -85,6 +86,7 @@ alter table public.articles add column if not exists view_count int not null def
 alter table public.articles add column if not exists sources jsonb not null default '[]'::jsonb;
 
 alter table public.articles add column if not exists media_comparison jsonb;
+alter table public.articles add column if not exists cover_comparison jsonb;
 
 -- ----------------------------------------------------------------------------
 -- article_media: up to 10 images + 2 videos enforced at app + trigger level

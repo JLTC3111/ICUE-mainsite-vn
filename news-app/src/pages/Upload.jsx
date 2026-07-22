@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import ArticleForm from '../components/ArticleForm'
 import { createArticle } from '../lib/articles'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function Upload() {
   const { t } = useTranslation()
+  useDocumentTitle(t('editor.writeTitle'))
   const { user } = useAuth()
   const navigate = useNavigate()
 
