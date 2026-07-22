@@ -9,7 +9,7 @@ import ArticleSourcesEditor from './ArticleSourcesEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
 import { normalizeSources } from '../lib/articleSources'
-import { coverComparisonToEditorIds, pruneEditorComparison } from '../lib/mediaComparison'
+import { coverComparisonToEditorIds, COVER_COMPARISON_ID, COVER_COMPARISON_ID_2, pruneEditorComparison } from '../lib/mediaComparison'
 import CoverComparisonEditor from './CoverComparisonEditor'
 import './ArticleForm.css'
 
@@ -43,12 +43,20 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
     coverComparisonToEditorIds(initial?.cover_comparison, initial?.items || []),
   )
   const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
+  const [coverAltUrl, setCoverAltUrl] = useState(initial?.cover_image_alt_url || '')
   const coverFileRef = useRef(null)
+  const coverAltFileRef = useRef(null)
   const coverInputRef = useRef(null)
+  const coverAltInputRef = useRef(null)
   const [coverPreview, setCoverPreview] = useState(initial?.cover_image_url || '')
+  const [coverAltPreview, setCoverAltPreview] = useState(initial?.cover_image_alt_url || '')
 
   const pickCover = useCallback(() => {
     coverInputRef.current?.click()
+  }, [])
+
+  const pickCoverAlt = useCallback(() => {
+    coverAltInputRef.current?.click()
   }, [])
 
   const removeMediaItem = useCallback((id) => {
@@ -86,6 +94,18 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
     e.target.value = ''
   }, [])
 
+  const onCoverAltChange = useCallback((e) => {
+    const file = e.target.files?.[0]
+    if (!file || !file.type.startsWith('image/')) return
+    coverAltFileRef.current = file
+    setCoverAltPreview((prev) => {
+      if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+      return URL.createObjectURL(file)
+    })
+    setCoverAltUrl('')
+    e.target.value = ''
+  }, [])
+
   // Drop the cover entirely: clear any pending upload, the preview, and the
   // stored URL so submit persists a null cover.
   const removeCover = useCallback(() => {
@@ -96,7 +116,28 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       return ''
     })
     setCoverUrl('')
-    setCoverComparison({ pairs: [{ beforeId: null, afterId: null }] })
+    setCoverComparison((prev) => ({
+      pairs: (prev.pairs ?? []).map((pair) => ({
+        beforeId: pair.beforeId === COVER_COMPARISON_ID ? null : pair.beforeId,
+        afterId: pair.afterId === COVER_COMPARISON_ID ? null : pair.afterId,
+      })),
+    }))
+  }, [])
+
+  const removeCoverAlt = useCallback(() => {
+    coverAltFileRef.current = null
+    if (coverAltInputRef.current) coverAltInputRef.current.value = ''
+    setCoverAltPreview((prev) => {
+      if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev)
+      return ''
+    })
+    setCoverAltUrl('')
+    setCoverComparison((prev) => ({
+      pairs: (prev.pairs ?? []).map((pair) => ({
+        beforeId: pair.beforeId === COVER_COMPARISON_ID_2 ? null : pair.beforeId,
+        afterId: pair.afterId === COVER_COMPARISON_ID_2 ? null : pair.afterId,
+      })),
+    }))
   }, [])
 
   const submit = useCallback(
@@ -125,11 +166,13 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             sources,
             coverComparison,
             coverImageUrl: coverUrl || null,
+            coverImageAltUrl: coverAltUrl || null,
             language: initial?.language || 'vi',
             category,
           },
           items,
           coverFile: coverFileRef.current,
+          coverAltFile: coverAltFileRef.current,
           status,
         })
       } catch (err) {
@@ -137,7 +180,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, onSubmit, mode, t, initial?.language],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, onSubmit, mode, t, initial?.language],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -212,25 +255,59 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             className="visually-hidden"
             onChange={onCoverChange}
           />
-          {coverPreview ? (
-            <div className="article-form__cover-filled">
-              <img src={coverPreview} alt="" className="article-form__cover-img" />
-              <div className="article-form__cover-tools">
-                <button type="button" className="btn btn-ghost btn-sm" onClick={pickCover}>
-                  {t('editor.changeCover')}
+          <input
+            ref={coverAltInputRef}
+            type="file"
+            accept="image/*"
+            className="visually-hidden"
+            onChange={onCoverAltChange}
+          />
+          <div className="article-form__covers">
+            <div className="article-form__cover-slot">
+              <p className="article-form__cover-label">{t('editor.coverImagePrimary')}</p>
+              {coverPreview ? (
+                <div className="article-form__cover-filled">
+                  <img src={coverPreview} alt="" className="article-form__cover-img" />
+                  <div className="article-form__cover-tools">
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={pickCover}>
+                      {t('editor.changeCover')}
+                    </button>
+                    <button type="button" className="btn btn-danger btn-sm" onClick={removeCover}>
+                      {t('editor.removeCover')}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button type="button" className="article-form__cover" onClick={pickCover}>
+                  <span className="article-form__cover-empty">＋ {t('editor.coverImage')}</span>
                 </button>
-                <button type="button" className="btn btn-danger btn-sm" onClick={removeCover}>
-                  {t('editor.removeCover')}
-                </button>
-              </div>
+              )}
             </div>
-          ) : (
-            <button type="button" className="article-form__cover" onClick={pickCover}>
-              <span className="article-form__cover-empty">＋ {t('editor.coverImage')}</span>
-            </button>
-          )}
+
+            <div className="article-form__cover-slot">
+              <p className="article-form__cover-label">{t('editor.coverImageSecondary')}</p>
+              {coverAltPreview ? (
+                <div className="article-form__cover-filled">
+                  <img src={coverAltPreview} alt="" className="article-form__cover-img" />
+                  <div className="article-form__cover-tools">
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={pickCoverAlt}>
+                      {t('editor.changeCover')}
+                    </button>
+                    <button type="button" className="btn btn-danger btn-sm" onClick={removeCoverAlt}>
+                      {t('editor.removeCover')}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button type="button" className="article-form__cover" onClick={pickCoverAlt}>
+                  <span className="article-form__cover-empty">＋ {t('editor.coverImageAlt')}</span>
+                </button>
+              )}
+            </div>
+          </div>
           <CoverComparisonEditor
             coverUrl={coverPreview}
+            coverAltUrl={coverAltPreview}
             images={items.filter((item) => item.kind === 'image')}
             comparison={coverComparison}
             onComparisonChange={setCoverComparison}

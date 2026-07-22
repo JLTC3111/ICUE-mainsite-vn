@@ -13,8 +13,8 @@ export default function Upload() {
   const navigate = useNavigate()
 
   const handleSubmit = useCallback(
-    async ({ form, items, coverFile, status }) => {
-      const res = await createArticle({ form, items, coverFile, userId: user.id, status })
+    async ({ form, items, coverFile, coverAltFile, status }) => {
+      const res = await createArticle({ form, items, coverFile, coverAltFile, userId: user.id, status })
       if (status === 'published') navigate(`/article/${res.slug}`)
       else navigate('/dashboard')
     },

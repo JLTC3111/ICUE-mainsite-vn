@@ -6,18 +6,19 @@ import {
   normalizeMediaComparisonField,
   normalizeCoverComparisonField,
   resolveCoverComparisonForSave,
+  enrichCoverComparisonForSave,
 } from './mediaComparison'
 
 // cover_comparison requires migration 20260722160000_article_cover_comparison.sql on Supabase.
 const ARTICLE_SELECT = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url,
+  id, slug, title, subtitle, content_html, content_json, cover_image_url, cover_image_alt_url,
   status, language, category, article_date, article_time, read_minutes, published_at,
   view_count, created_at, updated_at, author_id, author_name, sources, media_comparison, cover_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
   media:article_media ( id, kind, url, storage_path, poster_url, position )
 `
 
-const MISSING_COLUMNS_KEY = 'icue:articles:missing-columns:v2'
+const MISSING_COLUMNS_KEY = 'icue:articles:missing-columns:v3'
 
 function getKnownMissingColumns() {
   if (typeof sessionStorage === 'undefined') return new Set()
@@ -45,6 +46,7 @@ function buildArticleSelect() {
 
 const SCHEMA_COLUMN_ALIASES = {
   cover_comparison: ['cover_comparison'],
+  cover_image_alt_url: ['cover_image_alt_url', 'cover image alt url'],
   media_comparison: ['media_comparison'],
   view_count: ['view_count'],
   sources: ['sources'],
@@ -205,21 +207,43 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
   return clientToDb
 }
 
-async function saveCoverComparison(articleId, comparison, clientToDb, hasCover) {
-  const resolved = resolveCoverComparisonForSave(comparison, clientToDb, hasCover)
+async function saveCoverComparison(
+  articleId,
+  comparison,
+  clientToDb,
+  { coverUrl, coverAltUrl, editorImages },
+) {
+  const resolved = resolveCoverComparisonForSave(
+    comparison,
+    clientToDb,
+    Boolean(coverUrl),
+    Boolean(coverAltUrl),
+  )
+  const payload = enrichCoverComparisonForSave(
+    resolved,
+    coverUrl,
+    coverAltUrl,
+    editorImages,
+    clientToDb,
+  )
   const { error } = await supabase
     .from('articles')
-    .update({ cover_comparison: resolved })
+    .update({ cover_comparison: payload })
     .eq('id', articleId)
   if (error && !isMissingMediaComparison(error)) throw error
 }
 
 // Create a brand-new article (Component 2).
-export async function createArticle({ form, items, coverFile, userId, status }) {
+export async function createArticle({ form, items, coverFile, coverAltFile, userId, status }) {
   let coverUrl = form.coverImageUrl || null
+  let coverAltUrl = form.coverImageAltUrl || null
   if (coverFile) {
     const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverFile, 'covers')
     coverUrl = url
+  }
+  if (coverAltFile) {
+    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverAltFile, 'covers')
+    coverAltUrl = url
   }
 
   const payload = {
@@ -229,6 +253,7 @@ export async function createArticle({ form, items, coverFile, userId, status }) 
     content_html: form.contentHtml || '',
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
+    cover_image_alt_url: coverAltUrl,
     author_id: userId,
     author_name: form.author?.trim() || null,
     status,
@@ -245,16 +270,25 @@ export async function createArticle({ form, items, coverFile, userId, status }) 
   if (error) throw error
 
   const clientToDb = await syncMedia(data.id, userId, items)
-  await saveCoverComparison(data.id, form.coverComparison, clientToDb, Boolean(coverUrl))
+  await saveCoverComparison(data.id, form.coverComparison, clientToDb, {
+    coverUrl,
+    coverAltUrl,
+    editorImages: items,
+  })
   return data
 }
 
 // Update an existing article (Component 3).
-export async function updateArticle({ id, form, items, originalItems, coverFile, userId, status }) {
+export async function updateArticle({ id, form, items, originalItems, coverFile, coverAltFile, userId, status }) {
   let coverUrl = form.coverImageUrl ?? null
+  let coverAltUrl = form.coverImageAltUrl ?? null
   if (coverFile) {
     const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverFile, 'covers')
     coverUrl = url
+  }
+  if (coverAltFile) {
+    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverAltFile, 'covers')
+    coverAltUrl = url
   }
 
   const payload = {
@@ -264,6 +298,7 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     content_html: form.contentHtml || '',
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
+    cover_image_alt_url: coverAltUrl,
     language: form.language || 'vi',
     category: form.category || 'general',
     article_date: form.date || null,
@@ -285,7 +320,11 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
   if (error) throw error
 
   const clientToDb = await syncMedia(id, userId, items, originalItems)
-  await saveCoverComparison(id, form.coverComparison, clientToDb, Boolean(coverUrl))
+  await saveCoverComparison(id, form.coverComparison, clientToDb, {
+    coverUrl,
+    coverAltUrl,
+    editorImages: items,
+  })
   return data
 }
 

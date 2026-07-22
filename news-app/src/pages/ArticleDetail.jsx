@@ -180,8 +180,13 @@ export default function ArticleDetail() {
   }, [article])
 
   const coverComparisonPairs = useMemo(
-    () => findAllCoverComparisonImages(article?.cover_image_url, images, article?.cover_comparison),
-    [article?.cover_image_url, article?.cover_comparison, images],
+    () => findAllCoverComparisonImages(
+      article?.cover_image_url,
+      images,
+      article?.cover_comparison,
+      article?.cover_image_alt_url,
+    ),
+    [article?.cover_image_url, article?.cover_image_alt_url, article?.cover_comparison, images],
   )
 
   const displayContent = useMemo(() => {

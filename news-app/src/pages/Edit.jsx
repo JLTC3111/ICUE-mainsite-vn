@@ -40,13 +40,14 @@ export default function Edit() {
   }, [id])
 
   const handleSubmit = useCallback(
-    async ({ form, items, coverFile, status }) => {
+    async ({ form, items, coverFile, coverAltFile, status }) => {
       const res = await updateArticle({
         id,
         form,
         items,
         originalItems,
         coverFile,
+        coverAltFile,
         userId: user.id,
         status,
       })

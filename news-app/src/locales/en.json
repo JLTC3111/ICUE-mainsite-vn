@@ -104,6 +104,9 @@
     "authorPlaceholder": "Display author name",
     "loggedInAs": "Logged in as",
     "coverImage": "Cover image",
+    "coverImagePrimary": "Cover image A",
+    "coverImageSecondary": "Cover image B",
+    "coverImageAlt": "Second cover image",
     "changeCover": "Change cover",
     "removeCover": "Remove cover",
     "media": "Images & Videos",
@@ -145,9 +148,10 @@
     "comparisonAddPair": "Add pair",
     "comparisonRemovePair": "Remove pair {{n}}",
     "coverComparisonTitle": "Cover before / after",
-    "coverComparisonHint": "Choose exactly two images (cover + gallery, or two gallery images) for one before/after slider on the article.",
-    "coverComparisonNeedSources": "Add a cover image and at least one gallery image to set up a cover comparison.",
-    "coverImageBadge": "Cover"
+    "coverComparisonHint": "Pick two images from cover A, cover B, or gallery photos for the before/after slider on cards and the article page.",
+    "coverComparisonNeedSources": "Add two cover images, or a cover plus a gallery image, to set up a cover comparison.",
+    "coverImageBadge": "Cover A",
+    "coverImageAltBadge": "Cover B"
   },
   "profile": {
     "displayName": "Display name",

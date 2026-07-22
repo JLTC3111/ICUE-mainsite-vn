@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   COVER_COMPARISON_ID,
+  COVER_COMPARISON_ID_2,
   findEditorCoverComparisonPairs,
 } from '../lib/mediaComparison'
 import ArticleImageComparison from './ArticleImageComparison'
@@ -12,6 +13,7 @@ const EMPTY_COMPARISON = { pairs: [{ beforeId: null, afterId: null }] }
 
 function CoverComparisonEditor({
   coverUrl = '',
+  coverAltUrl = '',
   images = [],
   comparison = EMPTY_COMPARISON,
   onComparisonChange,
@@ -23,20 +25,30 @@ function CoverComparisonEditor({
 
   const pickerImages = useMemo(() => {
     const list = [...images]
+    if (coverAltUrl) {
+      list.unshift({
+        id: COVER_COMPARISON_ID_2,
+        url: coverAltUrl,
+        kind: 'image',
+        isCover: true,
+        coverSlot: 2,
+      })
+    }
     if (coverUrl) {
       list.unshift({
         id: COVER_COMPARISON_ID,
         url: coverUrl,
         kind: 'image',
         isCover: true,
+        coverSlot: 1,
       })
     }
     return list
-  }, [coverUrl, images])
+  }, [coverUrl, coverAltUrl, images])
 
   const comparisonPair = useMemo(
-    () => findEditorCoverComparisonPairs(coverUrl, images, comparison)[0] ?? null,
-    [coverUrl, images, comparison],
+    () => findEditorCoverComparisonPairs(coverUrl, images, comparison, coverAltUrl)[0] ?? null,
+    [coverUrl, coverAltUrl, images, comparison],
   )
 
   const setComparisonRole = useCallback(
@@ -111,7 +123,7 @@ function CoverComparisonEditor({
                   )}
                   {img.isCover && (
                     <span className="media-comparison-editor__badge is-cover">
-                      {t('editor.coverImageBadge')}
+                      {img.coverSlot === 2 ? t('editor.coverImageAltBadge') : t('editor.coverImageBadge')}
                     </span>
                   )}
                   {(isBefore || isAfter) && (

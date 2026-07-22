@@ -57,6 +57,31 @@
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 .article-form__cover-block { margin-bottom: 26px; }
+.article-form__covers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+@media (min-width: 720px) {
+  .article-form__covers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.article-form__cover-slot {
+  min-width: 0;
+}
+
+.article-form__cover-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
 .article-form__cover {
   display: block;
   width: 100%;

@@ -50,6 +50,7 @@ create table if not exists public.articles (
   content_html  text not null default '',
   content_json  jsonb,
   cover_image_url text,
+  cover_image_alt_url text,
   -- author_id = the logged-in account that created/owns the row (used for RLS).
   author_id     uuid not null references public.profiles (id) on delete cascade,
   -- author_name = the display byline shown on the article; editable and

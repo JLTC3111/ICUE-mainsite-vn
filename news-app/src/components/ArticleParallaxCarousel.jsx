@@ -11,10 +11,12 @@ import { useTranslation } from 'react-i18next'
 import useEmblaCarousel from 'embla-carousel-react'
 import { formatDate, normalizeUnicode } from '../lib/helpers'
 import { isCategory, categoryColor } from '../lib/categories'
+import { resolveArticleCoverComparison } from '../lib/mediaComparison'
 import { bindEmblaParallax } from '../lib/emblaParallax'
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import ArticleViewCounter from './ArticleViewCounter'
 import TranslationLineSkeleton from './TranslationSkeleton'
+import BentoCardBackground from './BentoCardBackground'
 import { ShinyButton } from './magicui/ShinyButton'
 import './ArticleParallaxCarousel.css'
 
@@ -48,6 +50,8 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
             ? article.category
             : null
         const date = article.published_at || article.article_date || ''
+        const comparison = resolveArticleCoverComparison(article)
+        const coverUrl = article.cover_image_url || comparison?.before?.url || null
         return {
           id: article.slug || article.id || String(index),
           slug: article.slug,
@@ -56,7 +60,8 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
           category,
           date,
           viewCount: article.view_count ?? 0,
-          img: article.cover_image_url || PLACEHOLDER_COVER,
+          img: coverUrl || PLACEHOLDER_COVER,
+          comparison,
         }
       }),
     [articles, titles, isTitlePending],
@@ -153,17 +158,7 @@ export default function ArticleParallaxCarousel({ articles, reduceMotion = false
                 >
                   <div className="article-parallax__parallax">
                     <div className="article-parallax__layer">
-                      {item.img && item.img !== PLACEHOLDER_COVER ? (
-                        <img
-                          src={item.img}
-                          alt=""
-                          className="article-parallax__img"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : (
-                        <div className="article-parallax__placeholder">ICUE</div>
-                      )}
+                      <BentoCardBackground item={item} />
                     </div>
                   </div>
                   <span className="article-parallax__rank" aria-hidden="true">
