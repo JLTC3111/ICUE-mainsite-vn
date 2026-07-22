@@ -12,13 +12,29 @@
 .article-detail__title {
   margin: 0 0 14px;
   font-family: var(--icue-serif);
-  font-size: clamp(30px, 5vw, 46px);
-  font-weight: 800; line-height: 1.15; letter-spacing: -0.02em;
+  font-size: clamp(26px, calc(1.35rem + 2.4vw), 38px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
   display: block;
   overflow-wrap: break-word;
   word-break: normal;
   line-break: auto;
   hyphens: none;
+}
+
+@media (max-width: 480px) {
+  .article-detail__title {
+    font-size: clamp(24px, 6.8vw, 30px);
+    line-height: 1.22;
+    letter-spacing: -0.012em;
+  }
+}
+
+@media (min-width: 900px) {
+  .article-detail__title {
+    font-size: clamp(30px, 2.6vw, 38px);
+  }
 }
 
 html:lang(vi) .article-detail__title,
@@ -73,7 +89,13 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 
-.article-detail__byline { display: flex; align-items: center; gap: 12px; padding: 16px 0; border-top: 1px solid var(--icue-border); border-bottom: 1px solid var(--icue-border); }
+.article-detail__byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--icue-border);
+}
 .article-detail__avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; display: grid; place-items: center; }
 .article-detail__avatar--fallback { background: var(--icue-gradient-dark); color: #fff; font-weight: 700; font-size: 18px; }
 .article-detail__byline-text { display: flex; flex-direction: column; gap: 2px; }
@@ -145,7 +167,7 @@ html:lang(vi) .article-detail__subtitle {
   color: var(--icue-blue, #368adf);
 }
 
-.article-detail__cover { margin: 32px auto; max-width: 980px; padding: 0 24px; }
+.article-detail__cover { margin: 32px auto; max-width: 1127px; padding: 0 24px; }
 .article-detail__cover-lens {
   border-radius: var(--icue-radius);
   box-shadow: var(--icue-shadow-md);
@@ -163,6 +185,36 @@ html:lang(vi) .article-detail__subtitle {
 
 .article-detail__cover--comparison .article-comparison-parallax {
   margin-bottom: 0;
+}
+
+.article-detail__cover .article-image-comparison {
+  margin-bottom: 0;
+}
+
+/* Tall infographics were losing their top edge under object-fit: cover + 16/10. */
+.article-detail__cover .article-image-comparison__frame {
+  aspect-ratio: 16 / 11;
+}
+
+.article-detail__cover .image-comparison__image {
+  object-fit: contain;
+  object-position: top center;
+}
+
+/* Cover already separates hero media from body — drop the extra content top rule. */
+.article-detail__cover + .article-pages {
+  margin-top: 0;
+}
+
+.article-detail__cover + .article-pages .article-pages__reader {
+  border-top: 0;
+  padding-top: 24px;
+}
+
+.article-detail__cover + .article-detail__content {
+  margin-top: 24px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .cover-comparison-editor {
@@ -199,6 +251,7 @@ html:lang(vi) .article-detail__subtitle {
 .article-detail__content--paged {
   border-top: 0;
   padding-top: 0;
+  margin-top: 0;
 }
 
 .article-detail__content :where(p, li, blockquote, td, th, a, span) {

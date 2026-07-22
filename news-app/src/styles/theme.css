@@ -38,10 +38,10 @@
   --icue-article-size: 21px;
   --icue-article-leading: 1.58;
   --icue-article-tracking: -0.003em;
-  --icue-article-readw: 680px;
+  --icue-article-readw: 782px; /* 680px + 15% */
 
   --icue-maxw: 1200px;
-  --icue-readw: 720px;
+  --icue-readw: 828px; /* 720px + 15% */
   --icue-header-h: 64px;
   --icue-ticker-h: 34px;
   --icue-vn-ticker-h: 30px;

@@ -1,11 +1,10 @@
-import { memo, useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   COVER_COMPARISON_ID,
   findEditorCoverComparisonPairs,
 } from '../lib/mediaComparison'
-import ArticleComparisonCarousel from './ArticleComparisonCarousel'
 import ArticleImageComparison from './ArticleImageComparison'
 import './MediaUploader.css'
 
@@ -19,10 +18,8 @@ function CoverComparisonEditor({
   onRemoveImage,
 }) {
   const { t } = useTranslation()
-  const [activePairIndex, setActivePairIndex] = useState(0)
 
-  const pairs = comparison.pairs ?? EMPTY_COMPARISON.pairs
-  const activePair = pairs[activePairIndex] ?? pairs[0]
+  const activePair = comparison.pairs?.[0] ?? EMPTY_COMPARISON.pairs[0]
 
   const pickerImages = useMemo(() => {
     const list = [...images]
@@ -37,61 +34,36 @@ function CoverComparisonEditor({
     return list
   }, [coverUrl, images])
 
-  const comparisonPairs = useMemo(
-    () => findEditorCoverComparisonPairs(coverUrl, images, comparison),
+  const comparisonPair = useMemo(
+    () => findEditorCoverComparisonPairs(coverUrl, images, comparison)[0] ?? null,
     [coverUrl, images, comparison],
   )
 
   const setComparisonRole = useCallback(
     (itemId, role) => {
       if (!onComparisonChange || !activePair) return
-      const nextPairs = pairs.map((pair, index) => {
-        if (index !== activePairIndex) return pair
-        const next = { ...pair }
-        if (role === 'before') {
-          next.beforeId = itemId
-          if (next.afterId === itemId) next.afterId = null
-        } else if (role === 'after') {
-          next.afterId = itemId
-          if (next.beforeId === itemId) next.beforeId = null
-        } else if (role === 'clear-before') {
-          if (next.beforeId === itemId) next.beforeId = null
-        } else if (role === 'clear-after') {
-          if (next.afterId === itemId) next.afterId = null
-        }
-        return next
-      })
-      onComparisonChange({ pairs: nextPairs })
+      const next = { ...activePair }
+      if (role === 'before') {
+        next.beforeId = itemId
+        if (next.afterId === itemId) next.afterId = null
+      } else if (role === 'after') {
+        next.afterId = itemId
+        if (next.beforeId === itemId) next.beforeId = null
+      } else if (role === 'clear-before') {
+        if (next.beforeId === itemId) next.beforeId = null
+      } else if (role === 'clear-after') {
+        if (next.afterId === itemId) next.afterId = null
+      }
+      onComparisonChange({ pairs: [next] })
     },
-    [activePair, activePairIndex, onComparisonChange, pairs],
+    [activePair, onComparisonChange],
   )
 
   const clearComparison = useCallback(() => {
     onComparisonChange?.({ pairs: [{ beforeId: null, afterId: null }] })
-    setActivePairIndex(0)
   }, [onComparisonChange])
 
-  const addComparisonPair = useCallback(() => {
-    onComparisonChange?.({
-      pairs: [...pairs, { beforeId: null, afterId: null }],
-    })
-    setActivePairIndex(pairs.length)
-  }, [onComparisonChange, pairs])
-
-  const removeComparisonPair = useCallback(
-    (index) => {
-      if (pairs.length <= 1) {
-        clearComparison()
-        return
-      }
-      const nextPairs = pairs.filter((_, pairIndex) => pairIndex !== index)
-      onComparisonChange?.({ pairs: nextPairs })
-      setActivePairIndex((current) => Math.min(current, nextPairs.length - 1))
-    },
-    [clearComparison, onComparisonChange, pairs],
-  )
-
-  const hasComparison = comparisonPairs.length > 0
+  const hasComparison = Boolean(comparisonPair)
   const canCompare = pickerImages.length >= 2
 
   if (!onComparisonChange) return null
@@ -116,49 +88,14 @@ function CoverComparisonEditor({
         <p className="media-comparison-editor__empty">{t('editor.coverComparisonNeedSources')}</p>
       ) : (
         <>
-          <div className="media-comparison-editor__pairs">
-            {pairs.map((pair, pairIndex) => (
-              <div key={`cover-comparison-pair-${pairIndex}`} className="media-comparison-editor__pair-tab">
-                <button
-                  type="button"
-                  className={`media-comparison-editor__pair-btn${activePairIndex === pairIndex ? ' is-active' : ''}`}
-                  onClick={() => setActivePairIndex(pairIndex)}
-                >
-                  {t('editor.comparisonPair', { n: pairIndex + 1 })}
-                </button>
-                {pairs.length > 1 && (
-                  <button
-                    type="button"
-                    className="media-comparison-editor__pair-remove"
-                    onClick={() => removeComparisonPair(pairIndex)}
-                    aria-label={t('editor.comparisonRemovePair', { n: pairIndex + 1 })}
-                  >
-                    <X size={14} strokeWidth={2} aria-hidden />
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              className="btn btn-ghost btn-sm media-comparison-editor__add-pair"
-              onClick={addComparisonPair}
-            >
-              {t('editor.comparisonAddPair')}
-            </button>
-          </div>
-
           <ul className="media-comparison-editor__grid">
             {pickerImages.map((img, index) => {
               const isBefore = activePair?.beforeId === img.id
               const isAfter = activePair?.afterId === img.id
-              const usedInOtherPair = pairs.some(
-                (pair, pairIndex) => pairIndex !== activePairIndex
-                  && (pair.beforeId === img.id || pair.afterId === img.id),
-              )
               return (
                 <li
                   key={img.id}
-                  className={`media-comparison-editor__card${isBefore || isAfter ? ' is-selected' : ''}${usedInOtherPair ? ' is-used' : ''}`}
+                  className={`media-comparison-editor__card${isBefore || isAfter ? ' is-selected' : ''}`}
                 >
                   <img src={img.url} alt="" loading="lazy" decoding="async" />
                   <span className="media-comparison-editor__index">{index + 1}</span>
@@ -212,15 +149,11 @@ function CoverComparisonEditor({
           {hasComparison && (
             <div className="media-comparison-editor__preview">
               <p className="media-comparison-editor__preview-label">{t('editor.comparisonPreview')}</p>
-              {comparisonPairs.length > 1 ? (
-                <ArticleComparisonCarousel pairs={comparisonPairs} />
-              ) : (
-                <ArticleImageComparison
-                  before={comparisonPairs[0].before}
-                  after={comparisonPairs[0].after}
-                  showCaption
-                />
-              )}
+              <ArticleImageComparison
+                before={comparisonPair.before}
+                after={comparisonPair.after}
+                showCaption
+              />
             </div>
           )}
         </>

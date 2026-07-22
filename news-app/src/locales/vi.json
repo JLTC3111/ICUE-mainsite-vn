@@ -145,7 +145,7 @@
     "comparisonAddPair": "Thêm cặp",
     "comparisonRemovePair": "Xóa cặp {{n}}",
     "coverComparisonTitle": "So sánh ảnh bìa trước / sau",
-    "coverComparisonHint": "Chọn ảnh bìa và một ảnh gallery (hoặc hai ảnh gallery) để hiển thị thanh trượt thay cho ảnh bìa.",
+    "coverComparisonHint": "Chọn đúng hai ảnh (ảnh bìa + gallery, hoặc hai ảnh gallery) để hiển thị một thanh trượt trước/sau trên bài viết.",
     "coverComparisonNeedSources": "Thêm ảnh bìa và ít nhất một ảnh gallery để thiết lập so sánh ảnh bìa.",
     "coverImageBadge": "Bìa"
   },

@@ -29,6 +29,7 @@ function findClientId(dbId, items = []) {
 }
 
 export const COVER_COMPARISON_ID = '__cover__'
+export const MAX_COVER_COMPARISON_PAIRS = 1
 
 function normalizeComparisonField(raw) {
   const pairs = normalizeMediaComparisons(raw)
@@ -77,7 +78,7 @@ function comparisonIdsToEditor(pair, items = []) {
 const EMPTY_EDITOR_PAIR = { beforeId: null, afterId: null }
 
 export function coverComparisonToEditorIds(comparison, items = []) {
-  const normalized = normalizeMediaComparisons(comparison)
+  const normalized = normalizeMediaComparisons(comparison).slice(0, MAX_COVER_COMPARISON_PAIRS)
   if (!normalized.length) return { pairs: [{ ...EMPTY_EDITOR_PAIR }] }
 
   return {
@@ -108,14 +109,13 @@ export function pruneEditorComparison(comparison, itemId) {
 }
 
 export function resolveCoverComparisonForSave(comparison, clientToDb, hasCover) {
-  const pairs = comparison?.pairs ?? []
+  const pairs = (comparison?.pairs ?? []).slice(0, MAX_COVER_COMPARISON_PAIRS)
   const resolved = pairs
     .map((pair) => resolveComparisonIds(pair, clientToDb, { allowCover: true, hasCover }))
     .filter(Boolean)
 
   if (!resolved.length) return null
-  if (resolved.length === 1) return resolved[0]
-  return { pairs: resolved }
+  return resolved[0]
 }
 export function resolveMediaComparisonForSave(comparison, clientToDb) {
   const pairs = comparison?.pairs ?? []
@@ -133,7 +133,7 @@ export function findEditorCoverComparisonPairs(coverUrl, images, comparison) {
 }
 
 export function findAllCoverComparisonImages(coverUrl, images, comparison) {
-  const normalized = normalizeMediaComparisons(comparison)
+  const normalized = normalizeMediaComparisons(comparison).slice(0, MAX_COVER_COMPARISON_PAIRS)
   if (!normalized.length) return []
 
   return normalized

@@ -66,6 +66,8 @@ export default function ArticlePagedContent({
   const pages = useMemo(() => paginateArticleHtml(html), [html])
   const reduceMotion = useReducedMotion()
   const rootRef = useRef(null)
+  const readerRef = useRef(null)
+  const skipScrollRef = useRef(true)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
@@ -78,9 +80,19 @@ export default function ArticlePagedContent({
     align: 'start',
     containScroll: 'trimSnaps',
     dragThreshold: 8,
-    duration: reduceMotion ? 0 : 24,
+    duration: reduceMotion ? 0 : 32,
     startIndex: 0,
   })
+
+  const scrollReaderToTop = useCallback(() => {
+    const reader = readerRef.current
+    if (!reader) return
+    const top = reader.getBoundingClientRect().top + window.scrollY - 12
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    })
+  }, [reduceMotion])
 
   const syncIndex = useCallback(() => {
     if (!emblaApi) return
@@ -89,7 +101,15 @@ export default function ArticlePagedContent({
     setCanScrollPrev(emblaApi.canScrollPrev())
     setCanScrollNext(emblaApi.canScrollNext())
     onPageChange?.(index, totalPages)
-  }, [emblaApi, onPageChange, totalPages])
+
+    if (!skipScrollRef.current) {
+      scrollReaderToTop()
+    }
+  }, [emblaApi, onPageChange, scrollReaderToTop, totalPages])
+
+  useEffect(() => {
+    skipScrollRef.current = true
+  }, [contentKey])
 
   useEffect(() => {
     if (!emblaApi || !isMultipage) return undefined
@@ -119,6 +139,7 @@ export default function ArticlePagedContent({
     syncViewportHeight()
 
     emblaApi.on('select', syncViewportHeight)
+    emblaApi.on('settle', syncViewportHeight)
     emblaApi.on('reInit', syncViewportHeight)
 
     const resizeObserver = typeof ResizeObserver !== 'undefined'
@@ -128,26 +149,30 @@ export default function ArticlePagedContent({
     emblaApi.slideNodes().forEach((slide) => resizeObserver?.observe(slide))
 
     const id = requestAnimationFrame(() => {
-      emblaApi.reInit()
-      syncIndex()
       syncViewportHeight()
+      skipScrollRef.current = false
     })
 
     return () => {
       cancelAnimationFrame(id)
       emblaApi.off('select', syncViewportHeight)
+      emblaApi.off('settle', syncViewportHeight)
       emblaApi.off('reInit', syncViewportHeight)
       resizeObserver?.disconnect()
       const viewport = emblaApi.rootNode()
       if (viewport) viewport.style.height = ''
     }
-  }, [contentKey, emblaApi, isMultipage, pages.length, selectedIndex, syncIndex])
+  }, [contentKey, emblaApi, isMultipage, pages.length, syncIndex])
 
   useEffect(() => {
     if (!emblaApi || !isMultipage) return
+    skipScrollRef.current = true
     const index = readPageFromHash(totalPages)
     emblaApi.scrollTo(index, true)
     setSelectedIndex(index)
+    requestAnimationFrame(() => {
+      skipScrollRef.current = false
+    })
   }, [contentKey, emblaApi, isMultipage, totalPages])
 
   useLayoutEffect(() => {
@@ -172,6 +197,7 @@ export default function ArticlePagedContent({
     observer.observe(node)
     return () => observer.disconnect()
   }, [isMultipage, contentKey])
+
   useEffect(() => {
     if (!isMultipage) return undefined
     const hash = `#page-${selectedIndex + 1}`
@@ -182,13 +208,11 @@ export default function ArticlePagedContent({
 
   const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev()
-    rootRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' })
-  }, [emblaApi, reduceMotion])
+  }, [emblaApi])
 
   const scrollNext = useCallback(() => {
     emblaApi?.scrollNext()
-    rootRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' })
-  }, [emblaApi, reduceMotion])
+  }, [emblaApi])
 
   useEffect(() => {
     if (!isMultipage) return undefined
@@ -223,9 +247,7 @@ export default function ArticlePagedContent({
       className={`article-pages${arrowsVisible ? ' is-arrows-visible' : ''}`}
       aria-label={t('article.pageNav')}
     >
-      <PageCounter page={selectedIndex} total={totalPages} reduceMotion={reduceMotion} />
-
-      <div className="article-pages__reader">
+      <div ref={readerRef} className="article-pages__reader">
         <div className="article-pages__viewport" ref={emblaRef}>
           <div className="article-pages__container">
             {pages.map((pageHtml, index) => (
@@ -242,6 +264,8 @@ export default function ArticlePagedContent({
             ))}
           </div>
         </div>
+
+        <PageCounter page={selectedIndex} total={totalPages} reduceMotion={reduceMotion} />
       </div>
 
       <button
