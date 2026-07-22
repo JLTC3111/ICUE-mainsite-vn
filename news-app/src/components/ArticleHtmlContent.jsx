@@ -4,6 +4,16 @@ import { embedUrlWithAutoplay, splitArticleHtmlSegments } from '../lib/articleHt
 
 export default function ArticleHtmlContent({ html, className }) {
   const segments = useMemo(() => splitArticleHtmlSegments(html), [html])
+  const hasVideo = segments.some((segment) => segment.kind === 'video')
+
+  if (!hasVideo && segments.length === 1) {
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: segments[0].html ?? '' }}
+      />
+    )
+  }
 
   return (
     <div className={className}>
@@ -25,6 +35,7 @@ export default function ArticleHtmlContent({ html, className }) {
         return (
           <div
             key={`html-${index}`}
+            className="article-detail__html-segment"
             dangerouslySetInnerHTML={{ __html: segment.html }}
           />
         )

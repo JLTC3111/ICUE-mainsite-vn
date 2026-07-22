@@ -277,7 +277,7 @@ html:lang(vi) .article-detail__subtitle {
   font-weight: 700;
 }
 
-.article-detail__content > p.article-dropcap::first-letter {
+.article-detail__content p.article-dropcap::first-letter {
   float: left;
   margin: 0.04em 0.14em 0 0;
   padding-top: 0.02em;
@@ -289,12 +289,12 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 @supports (initial-letter: 3) {
-  .article-detail--vi .article-detail__content > p.article-dropcap::first-letter,
-  .article-detail[lang="vi"] .article-detail__content > p.article-dropcap::first-letter {
+  .article-detail--vi .article-detail__content p.article-dropcap::first-letter,
+  .article-detail[lang="vi"] .article-detail__content p.article-dropcap::first-letter {
     font-family: inherit !important;
   }
 
-  .article-detail__content > p.article-dropcap::first-letter {
+  .article-detail__content p.article-dropcap::first-letter {
     float: left;
     initial-letter: 3;
     initial-letter-align: auto;
