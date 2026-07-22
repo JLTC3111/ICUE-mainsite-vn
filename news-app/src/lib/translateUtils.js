@@ -41,7 +41,8 @@ export function shouldTranslateComment(body, targetLocale) {
 }
 
 /** Build the same text sample client + server use for translate gating. */
-export function buildArticleTranslateSample({ title, subtitle, content_html } = {}) {
+export function buildArticleTranslateSample(article) {
+  const { title, subtitle, content_html } = article || {}
   return [title, subtitle, String(content_html || '').replace(/<[^>]+>/g, ' ')]
     .filter(Boolean)
     .join('\n')
