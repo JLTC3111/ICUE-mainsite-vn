@@ -14,7 +14,7 @@ import HeartButton from '../components/HeartButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
-import { translateArticleViaApi, shouldTranslateArticle, buildArticleTranslateSample } from '../lib/translate'
+import { translateArticleViaApi, shouldTranslateArticle, buildArticleTranslateSample, clearTranslateCache } from '../lib/translate'
 import useMediaQuery from '../hooks/useMediaQuery'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
@@ -192,10 +192,11 @@ export default function ArticleDetail() {
   }, [article, state, i18n.resolvedLanguage, showOriginal, translateAttempt, translateSample])
 
   const retryTranslation = useCallback(() => {
+    if (article?.id) clearTranslateCache(article.id, i18n.resolvedLanguage)
     setShowOriginal(false)
     setTranslateError(false)
     setTranslateAttempt((attempt) => attempt + 1)
-  }, [])
+  }, [article?.id, i18n.resolvedLanguage])
 
   const { images, videos } = useMemo(() => {
     const media = (article?.media || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))

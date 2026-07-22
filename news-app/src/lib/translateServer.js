@@ -1,5 +1,5 @@
 import { normalizeHtmlUnicode, normalizeUnicode } from './normalizeUnicode.js'
-import { sanitizeArticleHtml, sanitizePlainText } from '../../../shared/text/sanitizeArticleHtml.js'
+import * as sanitizeArticleHtmlModule from '../../../shared/text/sanitizeArticleHtml.js'
 import { resolveServerEnv, supabaseServiceKey } from './serverEnv.js'
 import {
   detectSourceLanguage,
@@ -12,6 +12,19 @@ import {
 } from './translateProviders.js'
 import { buildArticleTranslateSample, shouldTranslateComment } from './translateUtils.js'
 import { sanitizeSourcesForSave } from './articleSources.js'
+
+function pickNamedExport(moduleNs, name) {
+  if (typeof moduleNs?.[name] === 'function') return moduleNs[name]
+  const fallback = moduleNs?.default
+  if (typeof fallback?.[name] === 'function') return fallback[name]
+  if (fallback && typeof fallback === 'object' && typeof fallback.default?.[name] === 'function') {
+    return fallback.default[name]
+  }
+  throw new Error(`missing_export_${name}`)
+}
+
+const sanitizeArticleHtml = pickNamedExport(sanitizeArticleHtmlModule, 'sanitizeArticleHtml')
+const sanitizePlainText = pickNamedExport(sanitizeArticleHtmlModule, 'sanitizePlainText')
 
 const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources'
 

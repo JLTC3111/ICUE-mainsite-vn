@@ -358,13 +358,6 @@
     margin-left: auto;
     margin-right: 8px;
   }
-
-  .icue-header__nav.is-open .icue-header__theme-toggle {
-    display: inline-flex;
-    width: 100%;
-    justify-content: center;
-    margin: 0 0 8px;
-  }
 }
 
 /* Main-site drawer + newsroom burger on dark newsroom home */
