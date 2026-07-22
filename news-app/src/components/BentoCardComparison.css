@@ -33,7 +33,6 @@
 }
 
 .bento-card-comparison.is-static .bento-card-comparison__before {
-  clip-path: inset(0 50% 0 0);
   transition: none;
 }
 

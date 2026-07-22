@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchMyArticles, deleteArticle } from '../lib/articles'
 import { formatDate } from '../lib/helpers'
+import ArticleThumbnail from '../components/ArticleThumbnail'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import './Dashboard.css'
 
@@ -44,7 +45,7 @@ export default function Dashboard() {
           {articles.map((a) => (
             <li key={a.id} className="dash__row">
               <div className="dash__thumb">
-                {a.cover_image_url ? <img src={a.cover_image_url} alt="" loading="lazy" /> : <span>ICUE</span>}
+                <ArticleThumbnail article={a} />
               </div>
               <div className="dash__info">
                 <span className={`dash__status dash__status--${a.status}`}>

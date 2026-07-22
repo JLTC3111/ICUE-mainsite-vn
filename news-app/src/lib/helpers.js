@@ -1,6 +1,7 @@
 // Small dependency-free helpers shared across pages.
 
 import { normalizeHtmlUnicode, normalizeUnicode } from '@icue/text/normalizeUnicode'
+import { sanitizeArticleHtml, sanitizePlainText } from '@icue/text/sanitizeArticleHtml'
 
 export function slugify(text) {
   return (text || '')
@@ -63,7 +64,7 @@ export function plainExcerpt(html, max = 160) {
   return text.length > max ? `${text.slice(0, max).trim()}…` : text
 }
 
-export { normalizeHtmlUnicode, normalizeUnicode }
+export { normalizeHtmlUnicode, normalizeUnicode, sanitizeArticleHtml, sanitizePlainText }
 
 export const fileExt = (name = '') => {
   const i = name.lastIndexOf('.')

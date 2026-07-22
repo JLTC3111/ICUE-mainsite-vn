@@ -128,6 +128,8 @@
     "required": "Vui lòng nhập tiêu đề và nội dung.",
     "needTitle": "Vui lòng nhập tiêu đề ở ô “Tiêu đề” phía trên.",
     "needContent": "Vui lòng nhập nội dung bài viết.",
+    "cleanFormatting": "Xóa định dạng",
+    "cleanFormattingDone": "Đã xóa định dạng",
     "sourcesTitle": "Nguồn tham khảo",
     "sourcesOptional": "Tùy chọn — trích dẫn nguồn với nhãn và liên kết.",
     "sourceLabel": "Nhãn",
@@ -151,7 +153,8 @@
     "coverComparisonHint": "Chọn hai ảnh từ bìa A, bìa B hoặc gallery để hiển thị thanh trượt trên thẻ bài và trang bài viết.",
     "coverComparisonNeedSources": "Thêm hai ảnh bìa, hoặc một ảnh bìa cùng ảnh gallery, để thiết lập so sánh ảnh bìa.",
     "coverImageBadge": "Bìa A",
-    "coverImageAltBadge": "Bìa B"
+    "coverImageAltBadge": "Bìa B",
+    "thumbnailPreview": "Xem trước ảnh thu nhỏ trên thẻ"
   },
   "profile": {
     "displayName": "Tên hiển thị",

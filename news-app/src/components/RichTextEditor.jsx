@@ -1,13 +1,21 @@
 import { useEffect, memo, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   AlignCenter,
   AlignLeft,
+  Eraser,
   Link as LinkIcon,
   Quote,
   Table2,
   TableProperties,
   X,
 } from 'lucide-react'
+import {
+  ARTICLE_HIGHLIGHT_COLORS,
+  ARTICLE_LINE_HEIGHTS,
+  ARTICLE_TEXT_COLORS,
+  sanitizeArticleHtml,
+} from '@icue/text/sanitizeArticleHtml'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -24,31 +32,38 @@ import './RichTextEditor.css'
 
 const ICON = { size: 16, strokeWidth: 2 }
 
-const TEXT_COLORS = [
-  { name: 'Black', value: '#111316' },
-  { name: 'Red', value: '#dc2626' },
-  { name: 'Orange', value: '#ea580c' },
-  { name: 'Green', value: '#059669' },
-  { name: 'Blue', value: '#2563eb' },
-  { name: 'Purple', value: '#7c3aed' },
-  { name: 'Gray', value: '#6b7280' },
-]
+const TEXT_COLOR_NAMES = {
+  '#111316': 'Black',
+  '#dc2626': 'Red',
+  '#ea580c': 'Orange',
+  '#059669': 'Green',
+  '#2563eb': 'Blue',
+  '#7c3aed': 'Purple',
+  '#6b7280': 'Gray',
+}
 
-const HIGHLIGHT_COLORS = [
-  { name: 'Yellow', value: '#fef08a' },
-  { name: 'Green', value: '#bbf7d0' },
-  { name: 'Blue', value: '#bfdbfe' },
-  { name: 'Pink', value: '#fbcfe8' },
-  { name: 'Orange', value: '#fed7aa' },
-]
+const HIGHLIGHT_COLOR_NAMES = {
+  '#fef08a': 'Yellow',
+  '#bbf7d0': 'Green',
+  '#bfdbfe': 'Blue',
+  '#fbcfe8': 'Pink',
+  '#fed7aa': 'Orange',
+}
 
-const LINE_HEIGHTS = [
-  { label: '1.0', value: '1' },
-  { label: '1.25', value: '1.25' },
-  { label: '1.5', value: '1.5' },
-  { label: '1.75', value: '1.75' },
-  { label: '2.0', value: '2' },
-]
+const TEXT_COLORS = [...ARTICLE_TEXT_COLORS].map((value) => ({
+  name: TEXT_COLOR_NAMES[value] || value,
+  value,
+}))
+
+const HIGHLIGHT_COLORS = [...ARTICLE_HIGHLIGHT_COLORS].map((value) => ({
+  name: HIGHLIGHT_COLOR_NAMES[value] || value,
+  value,
+}))
+
+const LINE_HEIGHTS = [...ARTICLE_LINE_HEIGHTS].map((value) => ({
+  label: value === '1' ? '1.0' : value,
+  value,
+}))
 
 const extensions = (placeholder) => [
   StarterKit.configure({ heading: { levels: [2, 3] }, link: false, underline: false }),
@@ -84,6 +99,7 @@ function ToolbarButton({ active, onClick, label, children, disabled }) {
 }
 
 function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' }) {
+  const { t } = useTranslation()
   const lastEmitted = useRef(value || '')
 
   const editor = useEditor({
@@ -91,12 +107,20 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     content: value || '',
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML()
+      const raw = editor.getHTML()
+      const html = sanitizeArticleHtml(raw)
+      if (html !== raw) {
+        lastEmitted.current = html
+        editor.commands.setContent(html, false)
+        onChange?.({ html, json: editor.getJSON() })
+        return
+      }
       lastEmitted.current = html
       onChange?.({ html, json: editor.getJSON() })
     },
     editorProps: {
       attributes: { class: 'rte-content', spellcheck: 'true' },
+      transformPastedHTML: (html) => sanitizeArticleHtml(html),
     },
   })
 
@@ -122,6 +146,14 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     }
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
+
+  const cleanFormatting = useCallback(() => {
+    if (!editor) return
+    const clean = sanitizeArticleHtml(editor.getHTML())
+    lastEmitted.current = clean
+    editor.commands.setContent(clean, false)
+    onChange?.({ html: clean, json: editor.getJSON() })
+  }, [editor, onChange])
 
   const activeHighlight = editor?.getAttributes('highlight').color
   const activeColor = editor?.getAttributes('textStyle').color
@@ -205,6 +237,13 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         </ToolbarButton>
         <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>
           <AlignCenter {...ICON} />
+        </ToolbarButton>
+        <span className="rte-sep" />
+        <ToolbarButton
+          label={t('editor.cleanFormatting')}
+          onClick={cleanFormatting}
+        >
+          <Eraser {...ICON} />
         </ToolbarButton>
         <span className="rte-sep" />
         <label className="rte-lineheight" title="Line spacing">

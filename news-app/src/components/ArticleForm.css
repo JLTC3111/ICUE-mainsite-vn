@@ -116,6 +116,30 @@
   display: flex;
   gap: 8px;
 }
+.article-form__thumb-preview {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--icue-border);
+}
+
+.article-form__thumb-preview-label {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
+
+.article-form__thumb-preview-frame {
+  width: min(100%, 280px);
+  aspect-ratio: 16 / 11;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--icue-border);
+  box-shadow: var(--icue-shadow-sm);
+}
+
 .article-form__cover-tools .btn {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(6px);

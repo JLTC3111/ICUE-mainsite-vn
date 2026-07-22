@@ -1,4 +1,5 @@
 import { normalizeHtmlUnicode, normalizeUnicode } from './normalizeUnicode.js'
+import { sanitizeArticleHtml, sanitizePlainText } from '../../../shared/text/sanitizeArticleHtml.js'
 import { resolveServerEnv, supabaseServiceKey } from './serverEnv.js'
 import {
   detectSourceLanguage,
@@ -110,9 +111,9 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       provider: null,
       source_lang: sourceLang,
       locale,
-      title: normalizeUnicode(article.title || ''),
-      subtitle: normalizeUnicode(article.subtitle || ''),
-      content_html: normalizeHtmlUnicode(article.content_html || ''),
+      title: sanitizePlainText(article.title || ''),
+      subtitle: article.subtitle ? sanitizePlainText(article.subtitle) : '',
+      content_html: normalizeHtmlUnicode(sanitizeArticleHtml(article.content_html || '')),
       sources: articleSources,
       original: true,
     }
@@ -125,9 +126,9 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       provider: cached.provider,
       source_lang: cached.source_lang || sourceLang,
       locale,
-      title: normalizeUnicode(cached.title || ''),
-      subtitle: normalizeUnicode(cached.subtitle || ''),
-      content_html: normalizeHtmlUnicode(cached.content_html || ''),
+      title: sanitizePlainText(cached.title || ''),
+      subtitle: cached.subtitle ? sanitizePlainText(cached.subtitle) : '',
+      content_html: normalizeHtmlUnicode(sanitizeArticleHtml(cached.content_html || '')),
       sources: sanitizeSourcesForSave(cached.sources?.length ? cached.sources : articleSources),
       original: false,
     }
@@ -153,9 +154,9 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     provider: translated.provider,
     source_lang: sourceLang,
     locale,
-    title: normalizeUnicode(translated.title || ''),
-    subtitle: normalizeUnicode(translated.subtitle || ''),
-    content_html: normalizeHtmlUnicode(translated.content_html || ''),
+    title: sanitizePlainText(translated.title || ''),
+    subtitle: translated.subtitle ? sanitizePlainText(translated.subtitle) : '',
+    content_html: normalizeHtmlUnicode(sanitizeArticleHtml(translated.content_html || '')),
     sources: sanitizeSourcesForSave(translatedSources),
     original: false,
   }

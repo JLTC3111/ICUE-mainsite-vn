@@ -1,6 +1,7 @@
 import { supabase, STORAGE_BUCKETS } from './supabase'
 import { fileExt, readMinutes, uniqueSlug } from './helpers'
 import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode'
+import { sanitizeArticleHtml, sanitizePlainText } from '@icue/text/sanitizeArticleHtml'
 import { normalizeSources, sanitizeSourcesForSave } from './articleSources'
 import {
   normalizeMediaComparisonField,
@@ -100,7 +101,7 @@ function normalizeArticle(article) {
   if (!article) return article
   const normalized = normalizeDeep(article)
   if (normalized.content_html) {
-    normalized.content_html = normalizeHtmlUnicode(normalized.content_html)
+    normalized.content_html = normalizeHtmlUnicode(sanitizeArticleHtml(normalized.content_html))
   }
   const views = Number(normalized.view_count)
   normalized.view_count = Number.isFinite(views) ? Math.max(0, Math.floor(views)) : 0
@@ -248,14 +249,14 @@ export async function createArticle({ form, items, coverFile, coverAltFile, user
 
   const payload = {
     slug: uniqueSlug(form.title),
-    title: form.title.trim(),
-    subtitle: form.subtitle?.trim() || null,
-    content_html: form.contentHtml || '',
+    title: sanitizePlainText(form.title.trim()),
+    subtitle: form.subtitle?.trim() ? sanitizePlainText(form.subtitle.trim()) : null,
+    content_html: sanitizeArticleHtml(form.contentHtml || ''),
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     cover_image_alt_url: coverAltUrl,
     author_id: userId,
-    author_name: form.author?.trim() || null,
+    author_name: form.author?.trim() ? sanitizePlainText(form.author.trim()) : null,
     status,
     language: form.language || 'vi',
     category: form.category || 'general',
@@ -292,10 +293,10 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
   }
 
   const payload = {
-    title: form.title.trim(),
-    subtitle: form.subtitle?.trim() || null,
-    author_name: form.author?.trim() || null,
-    content_html: form.contentHtml || '',
+    title: sanitizePlainText(form.title.trim()),
+    subtitle: form.subtitle?.trim() ? sanitizePlainText(form.subtitle.trim()) : null,
+    author_name: form.author?.trim() ? sanitizePlainText(form.author.trim()) : null,
+    content_html: sanitizeArticleHtml(form.contentHtml || ''),
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     cover_image_alt_url: coverAltUrl,

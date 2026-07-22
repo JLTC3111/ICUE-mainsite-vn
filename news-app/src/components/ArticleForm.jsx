@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -9,8 +9,15 @@ import ArticleSourcesEditor from './ArticleSourcesEditor'
 import MediaUploader from './MediaUploader'
 import ErrorBoundary from './ErrorBoundary'
 import { normalizeSources } from '../lib/articleSources'
-import { coverComparisonToEditorIds, COVER_COMPARISON_ID, COVER_COMPARISON_ID_2, pruneEditorComparison } from '../lib/mediaComparison'
+import {
+  coverComparisonToEditorIds,
+  COVER_COMPARISON_ID,
+  COVER_COMPARISON_ID_2,
+  findEditorCoverComparisonPairs,
+  pruneEditorComparison,
+} from '../lib/mediaComparison'
 import CoverComparisonEditor from './CoverComparisonEditor'
+import ArticleThumbnail from './ArticleThumbnail'
 import './ArticleForm.css'
 
 const todayStr = () => new Date().toISOString().slice(0, 10)
@@ -70,6 +77,21 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
 
   const [busy, setBusy] = useState(null) // 'draft' | 'publish' | 'update'
   const [error, setError] = useState('')
+
+  const galleryImages = useMemo(
+    () => items.filter((item) => item.kind === 'image'),
+    [items],
+  )
+
+  const thumbnailComparison = useMemo(
+    () => findEditorCoverComparisonPairs(
+      coverPreview,
+      galleryImages,
+      coverComparison,
+      coverAltPreview,
+    )[0] ?? null,
+    [coverPreview, coverAltPreview, galleryImages, coverComparison],
+  )
 
   const onEditorChange = useCallback(({ html, json }) => {
     setContentHtml(html)
@@ -308,11 +330,19 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           <CoverComparisonEditor
             coverUrl={coverPreview}
             coverAltUrl={coverAltPreview}
-            images={items.filter((item) => item.kind === 'image')}
+            images={galleryImages}
             comparison={coverComparison}
             onComparisonChange={setCoverComparison}
             onRemoveImage={removeMediaItem}
           />
+          {thumbnailComparison && (
+            <div className="article-form__thumb-preview">
+              <p className="article-form__thumb-preview-label">{t('editor.thumbnailPreview')}</p>
+              <div className="article-form__thumb-preview-frame">
+                <ArticleThumbnail comparison={thumbnailComparison} />
+              </div>
+            </div>
+          )}
         </div>
 
         <input

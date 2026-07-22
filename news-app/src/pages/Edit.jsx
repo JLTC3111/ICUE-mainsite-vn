@@ -67,7 +67,7 @@ export default function Edit() {
   return (
     <>
       <h1 className="visually-hidden">{t('editor.editTitle')}</h1>
-      <ArticleForm mode="edit" initial={article} onSubmit={handleSubmit} />
+      <ArticleForm key={article.id} mode="edit" initial={article} onSubmit={handleSubmit} />
     </>
   )
 }

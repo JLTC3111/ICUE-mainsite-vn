@@ -128,6 +128,8 @@
     "required": "Please enter a title and content.",
     "needTitle": "Please enter a title in the “Title” field above.",
     "needContent": "Please enter some content for the article.",
+    "cleanFormatting": "Clean formatting",
+    "cleanFormattingDone": "Formatting cleaned",
     "sourcesTitle": "Sources",
     "sourcesOptional": "Optional — cite references with a label and link.",
     "sourceLabel": "Label",
@@ -151,7 +153,8 @@
     "coverComparisonHint": "Pick two images from cover A, cover B, or gallery photos for the before/after slider on cards and the article page.",
     "coverComparisonNeedSources": "Add two cover images, or a cover plus a gallery image, to set up a cover comparison.",
     "coverImageBadge": "Cover A",
-    "coverImageAltBadge": "Cover B"
+    "coverImageAltBadge": "Cover B",
+    "thumbnailPreview": "Card thumbnail preview"
   },
   "profile": {
     "displayName": "Display name",
