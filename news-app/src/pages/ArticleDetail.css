@@ -191,30 +191,27 @@ html:lang(vi) .article-detail__subtitle {
   margin-bottom: 0;
 }
 
-/* Tall infographics were losing their top edge under object-fit: cover + 16/10. */
-.article-detail__cover .article-image-comparison__frame {
-  aspect-ratio: 16 / 11;
-}
-
-.article-detail__cover .image-comparison__image {
-  object-fit: contain;
-  object-position: top center;
-}
-
-/* Cover already separates hero media from body — drop the extra content top rule. */
+/* Cover already separates hero media from body — no divider after it. */
 .article-detail__cover + .article-pages {
   margin-top: 0;
 }
 
 .article-detail__cover + .article-pages .article-pages__reader {
-  border-top: 0;
   padding-top: 24px;
 }
 
 .article-detail__cover + .article-detail__content {
   margin-top: 24px;
   padding-top: 0;
-  border-top: 0;
+}
+
+/* Divider before body text only when there is no cover image. */
+.article-detail:not(:has(.article-detail__cover)) .article-pages__reader {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.article-detail:not(:has(.article-detail__cover)) .article-detail__content:not(.article-detail__content--paged) {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .cover-comparison-editor {
@@ -234,7 +231,6 @@ html:lang(vi) .article-detail__subtitle {
   margin-right: auto;
   padding: 32px 24px 0;
   max-width: var(--icue-article-readw);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
   font-family: var(--icue-serif);
   font-size: var(--icue-article-size);
   font-weight: 400;
@@ -249,9 +245,8 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 .article-detail__content--paged {
-  border-top: 0;
-  padding-top: 0;
   margin-top: 0;
+  padding-top: 0;
 }
 
 .article-detail__content :where(p, li, blockquote, td, th, a, span) {
@@ -524,10 +519,17 @@ html:lang(vi) .article-detail__subtitle {
   color: #8fd4ff;
 }
 
+.icue-app--news-theme-dark .article-detail:not(:has(.article-detail__cover)) .article-pages__reader {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.icue-app--news-theme-dark .article-detail:not(:has(.article-detail__cover)) .article-detail__content:not(.article-detail__content--paged) {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
 .icue-app--news-theme-dark .article-detail__content {
   color: #d8dbd4;
   letter-spacing: var(--icue-article-tracking);
-  border-top-color: rgba(255, 255, 255, 0.12);
 }
 
 .icue-app--news-theme-dark .article-detail__content h2,

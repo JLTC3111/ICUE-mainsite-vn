@@ -337,7 +337,7 @@ export default function ArticleDetail() {
 
       {coverComparisonPairs.length > 0 ? (
         <div className="article-detail__cover article-detail__cover--comparison">
-          <ArticleComparisonCarousel pairs={coverComparisonPairs} />
+          <ArticleComparisonCarousel pairs={coverComparisonPairs} fitContent />
         </div>
       ) : article.cover_image_url ? (
         <figure className="article-detail__cover">

@@ -364,17 +364,6 @@
   margin-bottom: 0;
 }
 
-.cover-comparison-editor .article-image-comparison__frame,
-.media-comparison-editor__preview .article-image-comparison__frame {
-  aspect-ratio: 16 / 11;
-}
-
-.cover-comparison-editor .image-comparison__image,
-.media-comparison-editor__preview .image-comparison__image {
-  object-fit: contain;
-  object-position: top center;
-}
-
 @media (hover: none) {
   .media-comparison-editor__remove {
     opacity: 1;

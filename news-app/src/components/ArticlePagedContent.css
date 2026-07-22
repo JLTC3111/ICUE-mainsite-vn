@@ -39,7 +39,6 @@
   max-width: var(--icue-article-readw);
   margin: 0 auto;
   padding: 28px 24px 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .article-pages__side-arrow {
@@ -173,10 +172,6 @@
   .article-pages__side-arrow--next {
     right: max(6px, calc(50% - var(--icue-article-readw) / 2 - 44px));
   }
-}
-
-.icue-app--news-theme-dark .article-pages__reader {
-  border-top-color: rgba(255, 255, 255, 0.12);
 }
 
 .icue-app--news-theme-dark .article-pages__counter {

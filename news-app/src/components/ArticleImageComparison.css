@@ -10,6 +10,20 @@
   background: var(--icue-surface-2);
 }
 
+.article-image-comparison--fit-content .article-image-comparison__sizer {
+  width: 100%;
+}
+
+.article-image-comparison__frame--fit {
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+.article-image-comparison--fit-content .image-comparison__image {
+  object-fit: contain;
+  object-position: top center;
+}
+
 .article-image-comparison__caption {
   display: flex;
   justify-content: space-between;

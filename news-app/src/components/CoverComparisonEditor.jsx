@@ -153,6 +153,7 @@ function CoverComparisonEditor({
                 before={comparisonPair.before}
                 after={comparisonPair.after}
                 showCaption
+                fitContent
               />
             </div>
           )}

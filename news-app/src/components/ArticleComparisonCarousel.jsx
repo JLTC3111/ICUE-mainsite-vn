@@ -27,7 +27,7 @@ function useReducedMotion() {
   return reduceMotion
 }
 
-export default function ArticleComparisonCarousel({ pairs = [] }) {
+export default function ArticleComparisonCarousel({ pairs = [], fitContent = false }) {
   const { t } = useTranslation()
   const reduceMotion = useReducedMotion()
   const tweenNodesRef = useRef([])
@@ -103,6 +103,7 @@ export default function ArticleComparisonCarousel({ pairs = [] }) {
       <ArticleImageComparison
         before={pairs[0].before}
         after={pairs[0].after}
+        fitContent={fitContent}
       />
     )
   }
@@ -125,6 +126,7 @@ export default function ArticleComparisonCarousel({ pairs = [] }) {
                     <ArticleImageComparison
                       before={pair.before}
                       after={pair.after}
+                      fitContent={fitContent}
                     />
                   </div>
                 </div>
