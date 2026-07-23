@@ -57,6 +57,40 @@
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 .article-form__meta-field .dt-picker { min-width: 11rem; }
 
+@media (max-width: 900px) {
+  .article-form__meta-field .dt-picker { min-width: 10rem; }
+  .article-form__meta-field:has(.dt-picker) {
+    flex: 1 1 calc(50% - 8px);
+    min-width: min(100%, 10rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .article-form__meta {
+    gap: 12px;
+  }
+
+  .article-form__meta-field .dt-picker { min-width: 0; }
+
+  /* Keep date/time on one row; popover uses viewport width via fixed positioning */
+  .article-form__meta-field:has(.dt-picker) {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+  }
+
+  .article-form__meta-field--category,
+  .article-form__meta-field--author {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .article-form__meta-field:has(.dt-picker) {
+    flex: 1 1 100%;
+  }
+}
+
 .article-form__cover-block { margin-bottom: 26px; }
 .article-form__covers {
   display: grid;

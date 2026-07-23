@@ -8,6 +8,7 @@ import {
   parseISODate,
   toISODate,
 } from '../lib/dayPickerLocale'
+import { usePopoverPosition } from '../hooks/usePopoverPosition'
 import '@daypicker/react/style.css'
 import './DateTimePicker.css'
 
@@ -29,7 +30,12 @@ export default function DatePickerField({
   const autoId = useId()
   const fieldId = id || autoId
   const rootRef = useRef(null)
+  const triggerRef = useRef(null)
   const [open, setOpen] = useState(false)
+  const popoverStyle = usePopoverPosition(open, triggerRef, {
+    minWidth: 300,
+    maxWidth: 360,
+  })
 
   const selected = parseISODate(value)
   const label = formatDisplayDate(value, lang) || t('picker.placeholderDate')
@@ -72,6 +78,7 @@ export default function DatePickerField({
       <button
         type="button"
         id={fieldId}
+        ref={triggerRef}
         className="input dt-picker__trigger"
         disabled={disabled}
         aria-haspopup="dialog"
@@ -82,7 +89,7 @@ export default function DatePickerField({
         <span className={value ? 'dt-picker__value' : 'dt-picker__placeholder'}>
           {label}
         </span>
-        <Calendar size={16} aria-hidden="true" className="dt-picker__icon" />
+        <Calendar aria-hidden="true" className="dt-picker__icon" />
       </button>
 
       {open && (
@@ -90,6 +97,7 @@ export default function DatePickerField({
           className="dt-picker__popover"
           role="dialog"
           aria-label={t('picker.openDate')}
+          style={popoverStyle || undefined}
         >
           <DayPicker
             mode="single"

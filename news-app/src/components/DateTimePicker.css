@@ -1,22 +1,46 @@
 .dt-picker {
+  --dt-popover-pad: 0.75rem;
+  --dt-day: 2.75rem;
+  --dt-day-btn: calc(var(--dt-day) - 0.2rem);
+  --dt-nav: 2.35rem;
+  --dt-caption: 0.95rem;
+  --dt-weekday: 0.75rem;
+  --dt-trigger-pad-y: 0.7rem;
+  --dt-trigger-pad-x: 0.9rem;
+  --dt-trigger-font: 0.95rem;
+  --dt-icon: 1.05rem;
+
   position: relative;
   width: 100%;
+  min-width: 0;
 }
 
 .dt-picker__trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 0.65rem;
   width: 100%;
+  min-height: 2.75rem;
+  padding: var(--dt-trigger-pad-y) var(--dt-trigger-pad-x);
   text-align: left;
   cursor: pointer;
   font: inherit;
+  font-size: var(--dt-trigger-font);
+  line-height: 1.3;
 }
 
 .dt-picker__trigger:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.dt-picker__value,
+.dt-picker__placeholder {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dt-picker__value {
@@ -29,48 +53,62 @@
 
 .dt-picker__icon {
   flex-shrink: 0;
+  width: var(--dt-icon);
+  height: var(--dt-icon);
   color: var(--icue-text-soft);
 }
 
 .dt-picker__popover {
   position: absolute;
-  z-index: 40;
+  z-index: 80;
   top: calc(100% + 6px);
   left: 0;
-  min-width: min(100%, 288px);
-  padding: 12px;
+  box-sizing: border-box;
+  width: 22rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: var(--dt-popover-pad);
   border: 1px solid var(--icue-border);
   border-radius: var(--icue-radius-sm);
   background: var(--icue-surface);
   box-shadow: var(--icue-shadow-md);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  container-type: inline-size;
+  container-name: dt-popover;
 }
 
 .dt-picker__popover--time {
-  min-width: 220px;
+  width: 16rem;
+  overflow: visible;
 }
 
 .dt-picker__footer {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
-  padding-top: 10px;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
   border-top: 1px solid var(--icue-border);
+}
+
+.dt-picker__footer .btn {
+  min-height: 2.35rem;
+  padding-inline: 0.85rem;
 }
 
 .dt-picker__time-row {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .dt-picker__time-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.3rem;
   flex: 1 1 0;
   min-width: 0;
-  font-size: 11px;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -78,8 +116,9 @@
 }
 
 .dt-picker__time-field .input {
-  padding: 8px 10px;
-  font-size: 14px;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.55rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-transform: none;
   letter-spacing: normal;
@@ -87,36 +126,57 @@
 }
 
 .dt-picker__time-sep {
-  padding-bottom: 10px;
-  font-size: 18px;
+  padding-bottom: 0.65rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--icue-text-soft);
 }
 
-/* DayPicker theme tokens → ICUE */
+/* Day cells scale with popover width so the grid fills available space */
 .dt-picker__calendar.rdp-root {
+  --dt-day: clamp(2.45rem, 13.2cqi, 3rem);
+  --dt-day-btn: calc(var(--dt-day) - 0.18rem);
   --rdp-accent-color: var(--icue-ink);
   --rdp-accent-background-color: color-mix(in srgb, var(--icue-blue) 18%, transparent);
   --rdp-today-color: var(--icue-blue);
-  --rdp-day-height: 2.2rem;
-  --rdp-day-width: 2.2rem;
-  --rdp-day_button-height: 2.05rem;
-  --rdp-day_button-width: 2.05rem;
+  --rdp-day-height: var(--dt-day);
+  --rdp-day-width: var(--dt-day);
+  --rdp-day_button-height: var(--dt-day-btn);
+  --rdp-day_button-width: var(--dt-day-btn);
   --rdp-day_button-border-radius: 999px;
   --rdp-selected-border: 2px solid var(--icue-ink);
-  margin: 0;
+  --rdp-nav_button-height: var(--dt-nav);
+  --rdp-nav_button-width: var(--dt-nav);
+  --rdp-nav-height: calc(var(--dt-nav) + 0.35rem);
+  margin: 0 auto;
+  width: max-content;
+  max-width: 100%;
   font-family: inherit;
+  font-size: var(--dt-caption);
   color: var(--icue-text);
 }
 
-.dt-picker__calendar .rdp-caption_label,
-.dt-picker__calendar .rdp-weekday {
+.dt-picker__calendar .rdp-months,
+.dt-picker__calendar .rdp-month {
+  width: max-content;
+  max-width: 100%;
+}
+
+.dt-picker__calendar .rdp-month_caption {
+  padding-inline: 0.15rem;
+}
+
+.dt-picker__calendar .rdp-caption_label {
+  font-size: var(--dt-caption);
+  font-weight: 700;
   color: var(--icue-text);
 }
 
 .dt-picker__calendar .rdp-weekday {
-  font-size: 12px;
+  font-size: var(--dt-weekday);
+  font-weight: 600;
   color: var(--icue-text-faint);
+  opacity: 1;
 }
 
 .dt-picker__calendar .rdp-button_previous,
@@ -135,10 +195,73 @@
   font-weight: 700;
 }
 
-@media (max-width: 520px) {
+/* Desktop / large tablets: roomier calendar */
+@media (min-width: 901px) {
+  .dt-picker {
+    --dt-day: 2.85rem;
+    --dt-nav: 2.4rem;
+    --dt-caption: 1rem;
+  }
+
   .dt-picker__popover {
-    left: 0;
-    right: 0;
-    min-width: 0;
+    width: 23rem;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .dt-picker {
+    --dt-trigger-font: 0.9rem;
+    --dt-icon: 1rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  .dt-picker {
+    --dt-popover-pad: 0.8rem;
+    --dt-trigger-pad-y: 0.75rem;
+    --dt-nav: 2.5rem;
+    --dt-caption: 0.95rem;
+    --dt-weekday: 0.72rem;
+  }
+
+  .dt-picker__trigger {
+    min-height: 2.9rem;
+  }
+
+  .dt-picker__footer .btn {
+    min-height: 2.5rem;
+    flex: 1 1 auto;
+  }
+
+  .dt-picker__time-field .input {
+    min-height: 2.75rem;
+  }
+
+  .dt-picker__calendar.rdp-root {
+    /* Fill the wide mobile popover (~full viewport) */
+    --dt-day: clamp(2.55rem, 13.5cqi, 3.15rem);
+  }
+}
+
+@media (pointer: coarse) {
+  .dt-picker {
+    --dt-nav: max(var(--dt-nav), 2.5rem);
+  }
+
+  .dt-picker__trigger {
+    min-height: 2.9rem;
+  }
+
+  .dt-picker__footer .btn,
+  .dt-picker__time-field .input {
+    min-height: 2.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-picker__calendar.rdp-root {
+    --rdp-animation_duration: 0s;
   }
 }

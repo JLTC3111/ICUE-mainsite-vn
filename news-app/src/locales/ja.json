@@ -83,7 +83,9 @@
     "loadMore": "さらに記事を表示",
     "showingCount": "{{total}}件中{{shown}}件を表示",
     "by": "投稿者",
-    "minRead": "分で読了"
+    "minRead": "分で読了",
+    "publishedOn": "公開日 {{date}}",
+    "editedOn": "更新 {{date}}"
   },
   "theme": {
     "dark": "ダーク",

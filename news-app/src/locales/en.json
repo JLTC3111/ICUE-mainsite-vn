@@ -83,7 +83,9 @@
     "loadMore": "Load more articles",
     "showingCount": "Showing {{shown}} of {{total}} articles",
     "by": "by",
-    "minRead": "min read"
+    "minRead": "min read",
+    "publishedOn": "Published {{date}}",
+    "editedOn": "Edited {{date}}"
   },
   "theme": {
     "dark": "Dark",

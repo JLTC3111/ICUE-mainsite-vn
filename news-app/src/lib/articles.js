@@ -309,7 +309,18 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
   }
   if (status) {
     payload.status = status
-    if (status === 'published') payload.published_at = new Date().toISOString()
+    // Only stamp published_at on first publish — never overwrite on later updates.
+    if (status === 'published') {
+      const { data: existing, error: existingError } = await supabase
+        .from('articles')
+        .select('published_at')
+        .eq('id', id)
+        .single()
+      if (existingError) throw existingError
+      if (!existing?.published_at) {
+        payload.published_at = new Date().toISOString()
+      }
+    }
   }
 
   const { data, error } = await supabase

@@ -83,7 +83,9 @@
     "loadMore": "Xem thêm bài viết",
     "showingCount": "Đang hiển thị {{shown}} / {{total}} bài viết",
     "by": "bởi",
-    "minRead": "phút đọc"
+    "minRead": "phút đọc",
+    "publishedOn": "Đăng ngày {{date}}",
+    "editedOn": "Chỉnh sửa {{date}}"
   },
   "theme": {
     "dark": "Tối",

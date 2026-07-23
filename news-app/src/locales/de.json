@@ -83,7 +83,9 @@
     "loadMore": "Weitere Artikel laden",
     "showingCount": "{{shown}} von {{total}} Artikeln angezeigt",
     "by": "von",
-    "minRead": "Min. Lesezeit"
+    "minRead": "Min. Lesezeit",
+    "publishedOn": "Veröffentlicht {{date}}",
+    "editedOn": "Bearbeitet {{date}}"
   },
   "theme": {
     "dark": "Dunkel",

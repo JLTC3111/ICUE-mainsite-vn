@@ -83,7 +83,9 @@
     "loadMore": "기사 더 보기",
     "showingCount": "{{total}}개 중 {{shown}}개 표시",
     "by": "작성",
-    "minRead": "분 소요"
+    "minRead": "분 소요",
+    "publishedOn": "게시 {{date}}",
+    "editedOn": "수정 {{date}}"
   },
   "theme": {
     "dark": "다크",

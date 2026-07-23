@@ -42,6 +42,26 @@ export function formatDate(value, locale = 'vi') {
   }
 }
 
+/** Publish / display date for an article (server stamp, else author form date). */
+export function articlePublishDate(article) {
+  return article?.published_at || article?.article_date || null
+}
+
+/**
+ * Last-edited timestamp. Uses updated_at once view increments no longer touch it.
+ * Returns null when the article has not been meaningfully edited after publish.
+ */
+export function articleEditedDate(article, { minDiffMs = 60_000 } = {}) {
+  if (!article?.updated_at) return null
+  const published = articlePublishDate(article)
+  if (!published) return article.updated_at
+  const pubMs = new Date(published).getTime()
+  const editMs = new Date(article.updated_at).getTime()
+  if (!Number.isFinite(pubMs) || !Number.isFinite(editMs)) return null
+  if (editMs - pubMs < minDiffMs) return null
+  return article.updated_at
+}
+
 export function formatDateTime(value, locale = 'vi') {
   if (!value) return ''
   try {

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { recordArticleView } from '../lib/engagement'
-import { formatDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
+import { formatDate, articlePublishDate, articleEditedDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import MediaGallery from '../components/MediaGallery'
 import ArticleComparisonCarousel from '../components/ArticleComparisonCarousel'
@@ -257,6 +257,8 @@ export default function ArticleDetail() {
   const author = article.author || {}
   const byline = article.author_name || author.display_name || author.full_name || 'ICUE'
   const canEdit = isAdmin || (user && user.id === article.author_id)
+  const publishDate = articlePublishDate(article)
+  const editedDate = articleEditedDate(article)
 
   const handleDelete = async () => {
     if (!window.confirm(t('common.confirmDelete'))) return
@@ -329,8 +331,11 @@ export default function ArticleDetail() {
           <div className="article-detail__byline-text">
             <span className="article-detail__author">{byline}</span>
             <span className="article-detail__meta">
-              {formatDate(article.published_at || article.article_date, i18n.resolvedLanguage)}
+              {formatDate(publishDate, i18n.resolvedLanguage)}
               {article.article_time ? ` · ${article.article_time.slice(0, 5)}` : ''}
+              {editedDate
+                ? ` · ${t('news.editedOn', { date: formatDate(editedDate, i18n.resolvedLanguage) })}`
+                : ''}
               {' · '}{article.read_minutes || 1} {t('news.minRead')}
             </span>
           </div>

@@ -78,7 +78,12 @@
 }
 
 .article-sources-editor__field--date {
-  max-width: 220px;
+  max-width: 240px;
+  min-width: 0;
+}
+
+.article-sources-editor__field--date .dt-picker {
+  min-width: 0;
 }
 
 .article-sources-editor__error {
@@ -94,6 +99,12 @@
 
 .article-sources-editor__add {
   margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .article-sources-editor__field--date {
+    max-width: 280px;
+  }
 }
 
 @media (max-width: 720px) {

@@ -7,6 +7,7 @@ import {
   toTimeValue,
   uses12HourClock,
 } from '../lib/dayPickerLocale'
+import { usePopoverPosition } from '../hooks/usePopoverPosition'
 import './DateTimePicker.css'
 
 const HOURS_24 = Array.from({ length: 24 }, (_, i) => i)
@@ -40,7 +41,12 @@ export default function TimePickerField({
   const autoId = useId()
   const fieldId = id || autoId
   const rootRef = useRef(null)
+  const triggerRef = useRef(null)
   const [open, setOpen] = useState(false)
+  const popoverStyle = usePopoverPosition(open, triggerRef, {
+    minWidth: 240,
+    maxWidth: 320,
+  })
 
   const parsed = useMemo(() => parseTimeValue(value) || { hours: 0, minutes: 0 }, [value])
   const parts12 = to12HourParts(parsed.hours)
@@ -89,6 +95,7 @@ export default function TimePickerField({
       <button
         type="button"
         id={fieldId}
+        ref={triggerRef}
         className="input dt-picker__trigger"
         disabled={disabled}
         aria-haspopup="dialog"
@@ -98,7 +105,7 @@ export default function TimePickerField({
         <span className={value ? 'dt-picker__value' : 'dt-picker__placeholder'}>
           {label}
         </span>
-        <Clock size={16} aria-hidden="true" className="dt-picker__icon" />
+        <Clock aria-hidden="true" className="dt-picker__icon" />
       </button>
 
       {open && (
@@ -106,6 +113,7 @@ export default function TimePickerField({
           className="dt-picker__popover dt-picker__popover--time"
           role="dialog"
           aria-label={t('picker.openTime')}
+          style={popoverStyle || undefined}
         >
           <div className="dt-picker__time-row">
             <label className="dt-picker__time-field">

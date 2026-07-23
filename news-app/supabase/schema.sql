@@ -67,6 +67,7 @@ create table if not exists public.articles (
   media_comparison jsonb,
   cover_comparison jsonb,
   created_at    timestamptz not null default now(),
+  -- Last content edit (view_count-only updates do not bump this; see touch_articles_updated_at).
   updated_at    timestamptz not null default now()
 );
 
@@ -138,9 +139,23 @@ create or replace function public.touch_updated_at()
 returns trigger language plpgsql as $$
 begin new.updated_at = now(); return new; end $$;
 
+-- Articles: view_count increments must not rewrite updated_at (that field is
+-- "last edited"). Any other column change still stamps updated_at = now().
+create or replace function public.touch_articles_updated_at()
+returns trigger language plpgsql as $$
+begin
+  if (to_jsonb(NEW) - 'view_count' - 'updated_at')
+     = (to_jsonb(OLD) - 'view_count' - 'updated_at') then
+    NEW.updated_at = OLD.updated_at;
+    return NEW;
+  end if;
+  NEW.updated_at = now();
+  return NEW;
+end $$;
+
 drop trigger if exists trg_articles_touch on public.articles;
 create trigger trg_articles_touch before update on public.articles
-  for each row execute function public.touch_updated_at();
+  for each row execute function public.touch_articles_updated_at();
 
 drop trigger if exists trg_profiles_touch on public.profiles;
 create trigger trg_profiles_touch before update on public.profiles
