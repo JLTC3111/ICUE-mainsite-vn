@@ -2,11 +2,13 @@ import { useCallback, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import './animated-view-toggle.css';
 
-function polygonCollapsed(cx, cy, vertexCount) {
-  const pairs = Array.from({ length: vertexCount }, () => `${cx}px ${cy}px`).join(', ');
+function polygonCollapsed(point, vertexCount) {
+  const pairs = Array.from({ length: vertexCount }, () => point).join(', ');
   return `polygon(${pairs})`;
 }
 
+// Percentage coords against the snapshot reference box — absolute px on
+// ::view-transition-new(root) mis-scale on fractional display zoom (e.g. 150%).
 function getTransitionClipPaths(
   variant,
   cx,
@@ -15,34 +17,101 @@ function getTransitionClipPaths(
   viewportWidth,
   viewportHeight,
 ) {
+  const toX = (x) => `${(x / viewportWidth) * 100}%`;
+  const toY = (y) => `${(y / viewportHeight) * 100}%`;
+  const point = (x, y) => `${toX(x)} ${toY(y)}`;
+  // circle() % radii resolve against hypot(w, h) / sqrt(2) of the reference box.
+  const toRadius = (r) =>
+    `${(r / (Math.hypot(viewportWidth, viewportHeight) / Math.SQRT2)) * 100}%`;
+
   switch (variant) {
+    case 'circle':
+      return [
+        `circle(0% at ${point(cx, cy)})`,
+        `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
+      ];
     case 'square': {
       const halfW = Math.max(cx, viewportWidth - cx);
       const halfH = Math.max(cy, viewportHeight - cy);
       const halfSide = Math.max(halfW, halfH) * 1.05;
       const end = [
-        `${cx - halfSide}px ${cy - halfSide}px`,
-        `${cx + halfSide}px ${cy - halfSide}px`,
-        `${cx + halfSide}px ${cy + halfSide}px`,
-        `${cx - halfSide}px ${cy + halfSide}px`,
+        point(cx - halfSide, cy - halfSide),
+        point(cx + halfSide, cy - halfSide),
+        point(cx + halfSide, cy + halfSide),
+        point(cx - halfSide, cy + halfSide),
       ].join(', ');
-      return [polygonCollapsed(cx, cy, 4), `polygon(${end})`];
+      return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
+    }
+    case 'triangle': {
+      const scale = maxRadius * 2.2;
+      const dx = (Math.sqrt(3) / 2) * scale;
+      const verts = [
+        point(cx, cy - scale),
+        point(cx + dx, cy + 0.5 * scale),
+        point(cx - dx, cy + 0.5 * scale),
+      ].join(', ');
+      return [polygonCollapsed(point(cx, cy), 3), `polygon(${verts})`];
     }
     case 'diamond': {
-      const radius = maxRadius * Math.SQRT2;
+      const R = maxRadius * Math.SQRT2;
       const end = [
-        `${cx}px ${cy - radius}px`,
-        `${cx + radius}px ${cy}px`,
-        `${cx}px ${cy + radius}px`,
-        `${cx - radius}px ${cy}px`,
+        point(cx, cy - R),
+        point(cx + R, cy),
+        point(cx, cy + R),
+        point(cx - R, cy),
       ].join(', ');
-      return [polygonCollapsed(cx, cy, 4), `polygon(${end})`];
+      return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
     }
-    case 'circle':
+    case 'hexagon': {
+      const R = maxRadius * Math.SQRT2;
+      const verts = [];
+      for (let i = 0; i < 6; i++) {
+        const a = -Math.PI / 2 + (i * Math.PI) / 3;
+        verts.push(point(cx + R * Math.cos(a), cy + R * Math.sin(a)));
+      }
+      return [
+        polygonCollapsed(point(cx, cy), 6),
+        `polygon(${verts.join(', ')})`,
+      ];
+    }
+    case 'rectangle': {
+      const halfW = Math.max(cx, viewportWidth - cx);
+      const halfH = Math.max(cy, viewportHeight - cy);
+      const end = [
+        point(cx - halfW, cy - halfH),
+        point(cx + halfW, cy - halfH),
+        point(cx + halfW, cy + halfH),
+        point(cx - halfW, cy + halfH),
+      ].join(', ');
+      return [polygonCollapsed(point(cx, cy), 4), `polygon(${end})`];
+    }
+    case 'star': {
+      const R = maxRadius * Math.SQRT2 * 1.03;
+      const innerRatio = 0.42;
+      const starPolygon = (radius) => {
+        const verts = [];
+        for (let i = 0; i < 5; i++) {
+          const outerA = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+          verts.push(
+            point(cx + radius * Math.cos(outerA), cy + radius * Math.sin(outerA)),
+          );
+          const innerA = outerA + Math.PI / 5;
+          verts.push(
+            point(
+              cx + radius * innerRatio * Math.cos(innerA),
+              cy + radius * innerRatio * Math.sin(innerA),
+            ),
+          );
+        }
+        return `polygon(${verts.join(', ')})`;
+      };
+      const startR = Math.max(2, R * 0.025);
+      return [starPolygon(startR), starPolygon(R)];
+    }
     default:
       return [
-        `circle(0px at ${cx}px ${cy}px)`,
-        `circle(${maxRadius}px at ${cx}px ${cy}px)`,
+        `circle(0% at ${point(cx, cy)})`,
+        `circle(${toRadius(maxRadius)} at ${point(cx, cy)})`,
       ];
   }
 }
@@ -81,16 +150,26 @@ export default function AnimatedViewToggle({
   ariaLabel,
   ...props
 }) {
+  const shape = variant ?? 'circle';
   const buttonRef = useRef(null);
+  const isTransitioningRef = useRef(false);
 
   const toggle = useCallback(() => {
     if (disabled) return;
 
     const button = buttonRef.current;
-    if (!button || button.dataset.transitioning === 'true') return;
+    if (
+      !button ||
+      isTransitioningRef.current ||
+      document.documentElement.dataset.icueViewToggleVt === 'active'
+    ) {
+      return;
+    }
 
-    const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
-    const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+    // innerWidth/innerHeight (not visualViewport): percentages must resolve
+    // against the snapshot reference box, which includes classic scrollbars.
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
     let x;
     let y;
@@ -117,10 +196,8 @@ export default function AnimatedViewToggle({
       return;
     }
 
-    button.dataset.transitioning = 'true';
-
     const clipPath = getTransitionClipPaths(
-      variant,
+      shape,
       x,
       y,
       maxRadius,
@@ -131,40 +208,45 @@ export default function AnimatedViewToggle({
     const root = document.documentElement;
     root.dataset.icueViewToggleVt = 'active';
     root.style.setProperty('--icue-view-toggle-vt-duration', `${duration}ms`);
+    // Pin collapsed clip-path so Firefox does not paint unclipped between
+    // snapshot and the ready.then() JS animation.
     root.style.setProperty('--icue-view-toggle-vt-clip-from', clipPath[0]);
 
     const cleanup = () => {
-      delete button.dataset.transitioning;
+      isTransitioningRef.current = false;
       delete root.dataset.icueViewToggleVt;
       root.style.removeProperty('--icue-view-toggle-vt-duration');
       root.style.removeProperty('--icue-view-toggle-vt-clip-from');
     };
 
+    isTransitioningRef.current = true;
     const transition = document.startViewTransition(() => {
       flushSync(applyChange);
     });
 
     if (typeof transition?.finished?.finally === 'function') {
-      transition.finished.finally(cleanup);
+      transition.finished.finally(cleanup).catch(() => {});
     } else {
       cleanup();
     }
 
     const ready = transition?.ready;
     if (ready && typeof ready.then === 'function') {
-      ready.then(() => {
-        document.documentElement.animate(
-          { clipPath },
-          {
-            duration,
-            easing: 'ease-in-out',
-            fill: 'forwards',
-            pseudoElement: '::view-transition-new(root)',
-          },
-        );
-      });
+      ready
+        .then(() => {
+          document.documentElement.animate(
+            { clipPath },
+            {
+              duration,
+              easing: shape === 'star' ? 'linear' : 'ease-in-out',
+              fill: 'forwards',
+              pseudoElement: '::view-transition-new(root)',
+            },
+          );
+        })
+        .catch(() => {});
     }
-  }, [checked, disabled, duration, fromCenter, onCheckedChange, variant]);
+  }, [checked, disabled, duration, fromCenter, onCheckedChange, shape]);
 
   const classes = ['animated-view-toggle', className].filter(Boolean).join(' ');
 

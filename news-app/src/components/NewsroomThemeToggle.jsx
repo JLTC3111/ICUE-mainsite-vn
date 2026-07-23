@@ -23,8 +23,9 @@ export default function NewsroomThemeToggle({ className = '', showCompactLabel =
       }${className ? ` ${className}` : ''}`}
       theme={isDark ? 'dark' : 'light'}
       onThemeChange={handleThemeChange}
+      variant="square"
       label={showCompactLabel ? (isDark ? t('theme.light') : t('theme.dark')) : undefined}
-      duration={280}
+      duration={400}
       aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
       title={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
     />

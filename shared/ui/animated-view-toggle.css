@@ -5,11 +5,11 @@
 }
 
 html[data-icue-view-toggle-vt='active']::view-transition-group(root) {
-  animation-duration: var(--icue-view-toggle-vt-duration, 400ms);
+  animation-duration: var(--icue-view-toggle-vt-duration, 450ms);
 }
 
 html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
-  clip-path: var(--icue-view-toggle-vt-clip-from, circle(0px at 50% 50%));
+  clip-path: var(--icue-view-toggle-vt-clip-from, circle(0% at 50% 50%));
 }
 
 .animated-view-toggle {
@@ -56,4 +56,14 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-icue-view-toggle-vt='active']::view-transition-new(root) {
+    clip-path: none;
+  }
+
+  .animated-view-toggle:hover:not(:disabled) {
+    transform: none;
+  }
 }

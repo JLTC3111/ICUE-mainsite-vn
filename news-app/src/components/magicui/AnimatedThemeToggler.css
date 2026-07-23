@@ -4,15 +4,12 @@
   mix-blend-mode: normal;
 }
 
-html[data-magicui-theme-vt='active']::view-transition-new(root) {
-  animation: magicui-theme-curtain-left var(--magicui-theme-toggle-vt-duration, 280ms) ease-out forwards;
-  clip-path: inset(0 100% 0 0);
+html[data-magicui-theme-vt='active']::view-transition-group(root) {
+  animation-duration: var(--magicui-theme-toggle-vt-duration, 400ms);
 }
 
-@keyframes magicui-theme-curtain-left {
-  to {
-    clip-path: inset(0 0 0 0);
-  }
+html[data-magicui-theme-vt='active']::view-transition-new(root) {
+  clip-path: var(--magicui-theme-vt-clip-from, circle(0% at 50% 50%));
 }
 
 .animated-theme-toggler {
@@ -77,7 +74,6 @@ html[data-magicui-theme-vt='active']::view-transition-new(root) {
 
 @media (prefers-reduced-motion: reduce) {
   html[data-magicui-theme-vt='active']::view-transition-new(root) {
-    animation: none;
     clip-path: none;
   }
 
