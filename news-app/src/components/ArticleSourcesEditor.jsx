@@ -7,6 +7,7 @@ import {
   MAX_ARTICLE_SOURCES,
   normalizeSourcesForEditor,
 } from '../lib/articleSources'
+import DatePickerField from './DatePickerField'
 import './ArticleSourcesEditor.css'
 
 export default function ArticleSourcesEditor({ sources, onChange }) {
@@ -132,15 +133,14 @@ export default function ArticleSourcesEditor({ sources, onChange }) {
                   />
                 </label>
 
-                <label className="field article-sources-editor__field article-sources-editor__field--date">
+                <div className="field article-sources-editor__field article-sources-editor__field--date">
                   <span>{t('editor.sourceAccessed')}</span>
-                  <input
-                    className="input"
-                    type="date"
+                  <DatePickerField
                     value={row.accessed_at || ''}
-                    onChange={(e) => updateRow(row.id, { accessed_at: e.target.value })}
+                    onChange={(next) => updateRow(row.id, { accessed_at: next })}
+                    allowClear
                   />
-                </label>
+                </div>
               </div>
             </li>
           ))}

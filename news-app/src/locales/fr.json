@@ -270,5 +270,18 @@
     "draft": "Brouillon",
     "published": "Publié",
     "notFound": "Article introuvable."
+  },
+  "picker": {
+    "today": "Aujourd'hui",
+    "clear": "Effacer",
+    "openDate": "Choisir une date",
+    "openTime": "Choisir une heure",
+    "placeholderDate": "Sélectionner une date",
+    "placeholderTime": "Sélectionner une heure",
+    "hour": "Heure",
+    "minute": "Minute",
+    "period": "AM/PM",
+    "am": "AM",
+    "pm": "PM"
   }
 }

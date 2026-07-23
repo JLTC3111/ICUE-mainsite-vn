@@ -1,9 +1,10 @@
 .bento-grid {
   display: grid;
   width: 100%;
-  gap: 18px;
+  gap: 16px;
   grid-template-columns: 1fr;
-  grid-auto-rows: minmax(220px, 22rem);
+  grid-auto-rows: 22rem;
+  grid-auto-flow: dense;
 }
 
 @media (min-width: 600px) {
@@ -37,11 +38,10 @@
   font: inherit;
   color: inherit;
   transform: translateZ(0);
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  transition: box-shadow 0.28s ease, background 0.28s ease;
 }
 
 .bento-card:hover {
-  transform: translateY(-2px);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.04),
     0 8px 20px rgba(0, 0, 0, 0.08),
@@ -51,6 +51,21 @@
 .bento-card:focus-visible {
   outline: 2px solid var(--icue-accent);
   outline-offset: 2px;
+}
+
+.bento-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.bento-card:hover::after,
+.bento-card:focus-visible::after {
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .bento-card .border-beam {
@@ -127,10 +142,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   margin-top: auto;
-  min-height: 42%;
   padding-top: 12px;
 }
 
@@ -199,7 +213,6 @@
 }
 
 .bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__copy {
-  min-height: 48%;
   gap: 8px;
   padding-top: 8px;
 }
@@ -226,10 +239,9 @@
   padding: 3px 7px;
 }
 
-/* Wide 2×1 cells */
+/* Wide 2×1 cells — Magic UI primary mosaic piece */
 .bento-card--span-cols-2:not(.bento-card--span-rows-2) .bento-card__copy {
-  min-height: 48%;
-  max-width: 88%;
+  max-width: 92%;
 }
 
 .bento-card--span-cols-2:not(.bento-card--span-rows-2) .bento-card__title {
@@ -238,13 +250,12 @@
   -webkit-line-clamp: 3;
 }
 
-/* Tall 1×2 cells */
+/* Tall 1×2 cells (legacy / rare) */
 .bento-card--span-rows-2:not(.bento-card--span-cols-2) .bento-card__body {
   padding: 18px 20px 22px;
 }
 
 .bento-card--span-rows-2:not(.bento-card--span-cols-2) .bento-card__copy {
-  min-height: 36%;
   gap: 12px;
 }
 
@@ -254,13 +265,12 @@
   -webkit-line-clamp: 4;
 }
 
-/* Featured 2×2 cells */
+/* Featured 2×2 cells (legacy / rare) */
 .bento-card--span-cols-2.bento-card--span-rows-2 .bento-card__body {
   padding: 22px 26px 26px;
 }
 
 .bento-card--span-cols-2.bento-card--span-rows-2 .bento-card__copy {
-  min-height: 34%;
   gap: 12px;
   max-width: 92%;
 }
@@ -352,7 +362,6 @@
   }
 
   .bento-card__copy {
-    min-height: 46%;
     gap: 8px;
   }
 

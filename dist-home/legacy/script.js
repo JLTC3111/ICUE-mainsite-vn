@@ -450,10 +450,10 @@ function initOrgProfiles() {
         bio: 'Đỗ Bảo Long — Thạc sỹ Quản Lý Dự Án từ Đại học Salford, Vương quốc Anh.'
       },
       {
-        name: 'Phan Thị Hiến',
+        name: 'Phạm Thị Hiến',
         img: 'public/profilePhotos/hienorgstructure.png',
         title: 'Kế Toán Trưởng',
-        bio: 'Phan Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán.'
+        bio: 'Phạm Thị Hiến — Kế toán trưởng với nhiều năm kinh nghiệm trong lĩnh vực tài chính và kế toán.'
       },
       {
         name: 'Trịnh Thị Tình',

@@ -270,5 +270,18 @@
     "draft": "초안",
     "published": "게시됨",
     "notFound": "기사를 찾을 수 없습니다."
+  },
+  "picker": {
+    "today": "오늘",
+    "clear": "지우기",
+    "openDate": "날짜 선택",
+    "openTime": "시간 선택",
+    "placeholderDate": "날짜를 선택하세요",
+    "placeholderTime": "시간을 선택하세요",
+    "hour": "시",
+    "minute": "분",
+    "period": "오전/오후",
+    "am": "오전",
+    "pm": "오후"
   }
 }

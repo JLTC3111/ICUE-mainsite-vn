@@ -4,6 +4,7 @@ import BentoCardBackground from './BentoCardBackground'
 import ArticleViewCounter from './ArticleViewCounter'
 import { formatDate } from '../lib/helpers'
 import { categoryColor, PLACEHOLDER_COVER, withBentoLayout } from '../lib/bentoArticles'
+import { NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE } from '../lib/newsroom'
 import { tierToProfile } from '../lib/performanceProfile'
 
 export default function BentoArticleGrid({
@@ -13,7 +14,8 @@ export default function BentoArticleGrid({
   onItemClick,
 }) {
   const { t, i18n } = useTranslation()
-  const layoutItems = withBentoLayout(items)
+  const templateIndex = Math.floor(animationOffset / NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE)
+  const layoutItems = withBentoLayout(items, { templateIndex })
   const { reduceMotion, disableLens, disableBorderBeam } = profile
 
   return (

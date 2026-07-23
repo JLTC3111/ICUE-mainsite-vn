@@ -702,13 +702,13 @@
     }
   },
   {
-    "id": "phan-thi-hien",
+    "id": "pham-thi-hien",
     "group": "core",
     "photo": "profilePhotos/hien.png",
     "links": [],
     "i18n": {
       "vi": {
-        "name": "Phan Thị Hiến",
+        "name": "Phạm Thị Hiến",
         "honorific": "",
         "title": "Kế toán",
         "bio": "Tốt nghiệp chuyên ngành kế toán tại trường Đại học Mở Hà Nội. Hiện tại tôi đang làm việc trong lĩnh vực kế toán. Với kinh nghiệm, tôi đã tích lũy được nhiều kiến thức và kỹ năng về kế toán, báo cáo tài chính và phân tích dữ liệu. Tôi luôn chú trọng đến tính chính xác và minh bạch trong công việc.",
@@ -719,7 +719,7 @@
         ]
       },
       "en": {
-        "name": "Phan Thi Hien",
+        "name": "Pham Thi Hien",
         "honorific": "",
         "title": "Accountant",
         "bio": "Graduated in Accounting from Hanoi Open University. Currently working in accounting with solid knowledge and skills in bookkeeping, financial reporting, and data analysis. Always prioritizes accuracy and transparency in work.",
@@ -730,7 +730,7 @@
         ]
       },
       "de": {
-        "name": "Phan Thi Hien",
+        "name": "Pham Thi Hien",
         "honorific": "",
         "title": "Buchhalterin",
         "bio": "Absolventin der Rechnungswesen-Studiengänge an der Open University Hanoi. Derzeit im Rechnungswesen tätig mit fundiertem Wissen und Fähigkeiten in Buchführung, Finanzberichterstattung und Datenanalyse. Legt stets Wert auf Genauigkeit und Transparenz in der Arbeit.",
@@ -741,7 +741,7 @@
         ]
       },
       "fr": {
-        "name": "Phan Thi Hien",
+        "name": "Pham Thi Hien",
         "honorific": "",
         "title": "Comptable",
         "bio": "Diplômée en comptabilité de l'Université ouverte de Hanoi. Travaille actuellement en comptabilité avec de solides connaissances et compétences en tenue de livres, reporting financier et analyse de données. Accorde toujours la priorité à la précision et à la transparence dans son travail.",
@@ -752,7 +752,7 @@
         ]
       },
       "ko": {
-        "name": "Phan Thi Hien",
+        "name": "Pham Thi Hien",
         "honorific": "",
         "title": "회계 담당",
         "bio": "하노이오픈대학교 회계학 전공을 존업했습니다. 현재 회계 분야에서 근무하며, 부기, 재무 보고, 데이터 분석에 대한 탄탄한 지식과 기술을 갖추고 있습니다. 업무에서 정확성과 투명성을 항상 최우선으로 합니다.",
@@ -763,7 +763,7 @@
         ]
       },
       "ja": {
-        "name": "Phan Thi Hien",
+        "name": "Pham Thi Hien",
         "honorific": "",
         "title": "会計担当",
         "bio": "ハノイオープン大学会計学科を卒業。現在会計分野で勤務し、簿記、財務報告、データ分析に関する確かな知識とスキルを有しています。業務において正確性と透明性を常に最優先しています。",

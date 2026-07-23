@@ -23,6 +23,7 @@ export default function BentoYCarousel({
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   const sectionRef = useRef(null)
+  const wheelLockRef = useRef(false)
   const useLoop = slides.length > 2 && !reduceMotion
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -30,6 +31,7 @@ export default function BentoYCarousel({
     align: 'start',
     loop: useLoop,
     containScroll: useLoop ? false : 'trimSnaps',
+    skipSnaps: false,
     watchResize: true,
     watchSlides: true,
     duration: reduceMotion ? 0 : 24,
@@ -64,11 +66,17 @@ export default function BentoYCarousel({
     return () => cancelAnimationFrame(id)
   }, [emblaApi, slides, syncControls])
 
+  // Trackpad/mouse wheel fires many events per gesture — lock until Embla settles
+  // so one flick advances exactly one page (previously skipped middle slides).
   useEffect(() => {
     if (!emblaApi || slides.length <= 1) return undefined
 
     const section = sectionRef.current
     if (!section) return undefined
+
+    const unlockWheel = () => {
+      wheelLockRef.current = false
+    }
 
     const onWheel = (event) => {
       if (Math.abs(event.deltaY) < 8) return
@@ -81,19 +89,56 @@ export default function BentoYCarousel({
 
       if (!canGo) return
 
+      // Always consume the gesture while hovering the carousel so the page
+      // behind it doesn't scroll; ignore extras until the snap finishes.
       event.preventDefault()
       event.stopPropagation()
+
+      if (wheelLockRef.current) return
+
+      wheelLockRef.current = true
       if (goingDown) emblaApi.scrollNext()
       else emblaApi.scrollPrev()
+
+      // Fallback if settle never fires (e.g. already at snap with loop glitch).
+      window.setTimeout(unlockWheel, reduceMotion ? 50 : 450)
     }
 
+    emblaApi.on('settle', unlockWheel)
     section.addEventListener('wheel', onWheel, { passive: false })
-    return () => section.removeEventListener('wheel', onWheel)
-  }, [emblaApi, slides.length, useLoop])
+    return () => {
+      emblaApi.off('settle', unlockWheel)
+      section.removeEventListener('wheel', onWheel)
+      wheelLockRef.current = false
+    }
+  }, [emblaApi, slides.length, useLoop, reduceMotion])
 
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
-  const scrollTo = useCallback((index) => emblaApi?.scrollTo(index), [emblaApi])
+  const scrollPrev = useCallback(() => {
+    if (!emblaApi || wheelLockRef.current) return
+    wheelLockRef.current = true
+    emblaApi.scrollPrev()
+    window.setTimeout(() => {
+      wheelLockRef.current = false
+    }, reduceMotion ? 50 : 450)
+  }, [emblaApi, reduceMotion])
+
+  const scrollNext = useCallback(() => {
+    if (!emblaApi || wheelLockRef.current) return
+    wheelLockRef.current = true
+    emblaApi.scrollNext()
+    window.setTimeout(() => {
+      wheelLockRef.current = false
+    }, reduceMotion ? 50 : 450)
+  }, [emblaApi, reduceMotion])
+
+  const scrollTo = useCallback((index) => {
+    if (!emblaApi || wheelLockRef.current) return
+    wheelLockRef.current = true
+    emblaApi.scrollTo(index)
+    window.setTimeout(() => {
+      wheelLockRef.current = false
+    }, reduceMotion ? 50 : 450)
+  }, [emblaApi, reduceMotion])
 
   const canScrollPrev = useLoop || selectedIndex > 0
   const canScrollNext = useLoop || selectedIndex < slides.length - 1
@@ -164,18 +209,18 @@ export default function BentoYCarousel({
             <button
               type="button"
               className="bento-y-carousel__nav-btn"
-              onClick={scrollNext}
-              disabled={!canScrollNext}
-              aria-label={t('gallery.bentoNextSlide')}
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              aria-label={t('gallery.bentoPrevSlide')}
             >
               <ChevronUp className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>
             <button
               type="button"
               className="bento-y-carousel__nav-btn"
-              onClick={scrollPrev}
-              disabled={!canScrollPrev}
-              aria-label={t('gallery.bentoPrevSlide')}
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              aria-label={t('gallery.bentoNextSlide')}
             >
               <ChevronDown className="bento-y-carousel__nav-icon" size={18} strokeWidth={2} aria-hidden />
             </button>

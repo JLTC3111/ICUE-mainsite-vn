@@ -20,7 +20,7 @@ export const departments = [
   },
   {
     id: 'finance',
-    head: 'Phan Thị Hiến',
+    head: 'Phạm Thị Hiến',
     email: 'billing@icue.vn',
     icon: 'finance',
   },

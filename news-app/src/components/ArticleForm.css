@@ -55,6 +55,7 @@
   background-size: 12px 8px;
 }
 .article-form__meta-field span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.article-form__meta-field .dt-picker { min-width: 11rem; }
 
 .article-form__cover-block { margin-bottom: 26px; }
 .article-form__covers {

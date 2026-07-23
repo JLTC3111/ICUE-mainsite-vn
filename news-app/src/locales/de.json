@@ -270,5 +270,18 @@
     "draft": "Entwurf",
     "published": "Veröffentlicht",
     "notFound": "Artikel nicht gefunden."
+  },
+  "picker": {
+    "today": "Heute",
+    "clear": "Löschen",
+    "openDate": "Datum wählen",
+    "openTime": "Uhrzeit wählen",
+    "placeholderDate": "Datum auswählen",
+    "placeholderTime": "Uhrzeit auswählen",
+    "hour": "Stunde",
+    "minute": "Minute",
+    "period": "AM/PM",
+    "am": "AM",
+    "pm": "PM"
   }
 }

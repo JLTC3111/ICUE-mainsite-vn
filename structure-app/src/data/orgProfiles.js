@@ -37,8 +37,8 @@ export const orgProfiles = [
   },
   {
     id: 'hien',
-    name: 'Phan Thị Hiến',
-    searchNames: ['Phan Thị Hiến'],
+    name: 'Phạm Thị Hiến',
+    searchNames: ['Phạm Thị Hiến'],
     img: '/public/profilePhotos/hienorgstructure.png',
     handle: 'hien',
   },

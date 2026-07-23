@@ -1,0 +1,144 @@
+.dt-picker {
+  position: relative;
+  width: 100%;
+}
+
+.dt-picker__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dt-picker__trigger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.dt-picker__value {
+  color: var(--icue-text);
+}
+
+.dt-picker__placeholder {
+  color: var(--icue-text-faint);
+}
+
+.dt-picker__icon {
+  flex-shrink: 0;
+  color: var(--icue-text-soft);
+}
+
+.dt-picker__popover {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: min(100%, 288px);
+  padding: 12px;
+  border: 1px solid var(--icue-border);
+  border-radius: var(--icue-radius-sm);
+  background: var(--icue-surface);
+  box-shadow: var(--icue-shadow-md);
+}
+
+.dt-picker__popover--time {
+  min-width: 220px;
+}
+
+.dt-picker__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--icue-border);
+}
+
+.dt-picker__time-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.dt-picker__time-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
+
+.dt-picker__time-field .input {
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--icue-text);
+}
+
+.dt-picker__time-sep {
+  padding-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--icue-text-soft);
+}
+
+/* DayPicker theme tokens → ICUE */
+.dt-picker__calendar.rdp-root {
+  --rdp-accent-color: var(--icue-ink);
+  --rdp-accent-background-color: color-mix(in srgb, var(--icue-blue) 18%, transparent);
+  --rdp-today-color: var(--icue-blue);
+  --rdp-day-height: 2.2rem;
+  --rdp-day-width: 2.2rem;
+  --rdp-day_button-height: 2.05rem;
+  --rdp-day_button-width: 2.05rem;
+  --rdp-day_button-border-radius: 999px;
+  --rdp-selected-border: 2px solid var(--icue-ink);
+  margin: 0;
+  font-family: inherit;
+  color: var(--icue-text);
+}
+
+.dt-picker__calendar .rdp-caption_label,
+.dt-picker__calendar .rdp-weekday {
+  color: var(--icue-text);
+}
+
+.dt-picker__calendar .rdp-weekday {
+  font-size: 12px;
+  color: var(--icue-text-faint);
+}
+
+.dt-picker__calendar .rdp-button_previous,
+.dt-picker__calendar .rdp-button_next {
+  color: var(--icue-text-soft);
+}
+
+.dt-picker__calendar .rdp-selected .rdp-day_button {
+  background: var(--icue-ink);
+  color: #fff;
+  border: none;
+}
+
+.dt-picker__calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+  color: var(--icue-blue);
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .dt-picker__popover {
+    left: 0;
+    right: 0;
+    min-width: 0;
+  }
+}

@@ -14,6 +14,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@daypicker/react": "^10.0.1",
     "@supabase/supabase-js": "^2.108.2",
     "@tiptap/extension-color": "^3.27.0",
     "@tiptap/extension-highlight": "^3.27.0",

@@ -284,5 +284,18 @@
     "draft": "Nháp",
     "published": "Đã đăng",
     "notFound": "Không tìm thấy bài viết."
+  },
+  "picker": {
+    "today": "Hôm nay",
+    "clear": "Xóa",
+    "openDate": "Chọn ngày",
+    "openTime": "Chọn giờ",
+    "placeholderDate": "Chọn ngày",
+    "placeholderTime": "Chọn giờ",
+    "hour": "Giờ",
+    "minute": "Phút",
+    "period": "AM/PM",
+    "am": "SA",
+    "pm": "CH"
   }
 }

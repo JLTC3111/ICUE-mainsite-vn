@@ -270,5 +270,18 @@
     "draft": "下書き",
     "published": "公開済み",
     "notFound": "記事が見つかりません。"
+  },
+  "picker": {
+    "today": "今日",
+    "clear": "クリア",
+    "openDate": "日付を選択",
+    "openTime": "時刻を選択",
+    "placeholderDate": "日付を選択してください",
+    "placeholderTime": "時刻を選択してください",
+    "hour": "時",
+    "minute": "分",
+    "period": "午前/午後",
+    "am": "午前",
+    "pm": "午後"
   }
 }

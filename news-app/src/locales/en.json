@@ -284,5 +284,18 @@
     "draft": "Draft",
     "published": "Published",
     "notFound": "Article not found."
+  },
+  "picker": {
+    "today": "Today",
+    "clear": "Clear",
+    "openDate": "Choose date",
+    "openTime": "Choose time",
+    "placeholderDate": "Select a date",
+    "placeholderTime": "Select a time",
+    "hour": "Hour",
+    "minute": "Minute",
+    "period": "AM/PM",
+    "am": "AM",
+    "pm": "PM"
   }
 }

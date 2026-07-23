@@ -18,6 +18,8 @@ import {
 } from '../lib/mediaComparison'
 import CoverComparisonEditor from './CoverComparisonEditor'
 import ArticleThumbnail from './ArticleThumbnail'
+import DatePickerField from './DatePickerField'
+import TimePickerField from './TimePickerField'
 import './ArticleForm.css'
 
 const todayStr = () => new Date().toISOString().slice(0, 10)
@@ -250,14 +252,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
               ))}
             </select>
           </label>
-          <label className="field article-form__meta-field">
+          <div className="field article-form__meta-field">
             <span>{t('editor.date')}</span>
-            <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-          </label>
-          <label className="field article-form__meta-field">
+            <DatePickerField value={date} onChange={setDate} />
+          </div>
+          <div className="field article-form__meta-field">
             <span>{t('editor.time')}</span>
-            <input className="input" type="time" value={time} onChange={(e) => setTime(e.target.value)} />
-          </label>
+            <TimePickerField value={time} onChange={setTime} />
+          </div>
           <label className="field article-form__meta-field article-form__meta-field--author">
             <span>{t('editor.author')}</span>
             <input
