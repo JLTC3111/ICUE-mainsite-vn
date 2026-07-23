@@ -94,7 +94,7 @@ export default function ArticleSearch({ open, onOpenChange }) {
         <div className="article-search__shell">
           <motion.div
             className="article-search__motion"
-            animate={{ width: isOpen ? 300 : 52 }}
+            animate={{ width: isOpen ? 300 : 36 }}
             initial={false}
           >
             <div className="article-search__inner">

@@ -630,6 +630,11 @@
   background: transparent;
 }
 
+.main-site-nav .home-video-toggle--animated .animated-view-toggle__face svg {
+  width: 100%;
+  height: 100%;
+}
+
 .main-site-nav .home-video-toggle {
   position: relative;
   z-index: 1;
@@ -1026,7 +1031,7 @@
     height: clamp(2.35rem, 0.2rem + 2.4vw, 3.25rem);
   }
 
-  .main-site-nav .home-video-toggle--animated.home-video-toggle--nav .home-video-toggle__animated svg {
+  .main-site-nav .home-video-toggle--animated.home-video-toggle--nav .animated-view-toggle__icons {
     width: clamp(1.1rem, 0.15rem + 1.15vw, 1.5rem);
     height: clamp(1.1rem, 0.15rem + 1.15vw, 1.5rem);
   }

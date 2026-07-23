@@ -48,18 +48,39 @@
   --icue-nav-hover-line: #f59e0b;
   --icue-chrome-top: calc(var(--icue-header-h) + var(--icue-ticker-h) + var(--icue-vn-ticker-h));
 
-  /* Neumorphism — inset (distance 11, blur 15, intensity 8) */
-  --np-bg: #2a2d35;
-  --np-text: #e2e8f0;
+  /* Neumorphism — raised light (dark overridden in newsroomTheme) */
+  --np-bg: #dde3ec;
+  --np-text: #3c4858;
   --np-radius: 24px;
-  --np-shadow-dark: #10131b;
-  --np-shadow-light: #4e5159;
-  --np-shadow: inset 1px 1px 1px rgba(16, 19, 27, 0.55),
-    inset -1px -1px 1px rgba(82, 85, 93, 0.18),
-    inset 6px 6px 15px rgba(16, 19, 27, 0.87),
-    inset -6px -6px 15px rgba(78, 81, 89, 0.50);
-  --np-shadow-pressed: inset 6px 6px 8px rgba(16, 19, 27, 0.87),
-    inset -6px -6px 8px rgba(78, 81, 89, 0.50);
+  --np-shadow-dark: #98a1ae;
+  --np-shadow-light: #ffffff;
+  --np-gradient: linear-gradient(145deg, #e2e8f1 0%, #d8dee7 100%);
+  --np-gradient-pressed: linear-gradient(325deg, #e2e8f1 0%, #d8dee7 100%);
+  --np-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.70),
+    inset -1px -1px 1px rgba(152, 161, 174, 0.35),
+    14px 14px 28px rgba(152, 161, 174, 0.75),
+    -14px -14px 28px rgba(255, 255, 255, 0.95);
+  --np-shadow-pressed: inset 7px 7px 14px rgba(152, 161, 174, 0.85),
+    inset -7px -7px 14px rgba(255, 255, 255, 0.95);
+  /* Compact raised/pressed for small controls (heart, views, etc.) */
+  --np-shadow-sm: inset 1px 1px 1px rgba(255, 255, 255, 0.70),
+    inset -1px -1px 1px rgba(152, 161, 174, 0.35),
+    6px 6px 14px rgba(152, 161, 174, 0.55),
+    -6px -6px 14px rgba(255, 255, 255, 0.95);
+  --np-shadow-pressed-sm: inset 5px 5px 10px rgba(152, 161, 174, 0.85),
+    inset -5px -5px 10px rgba(255, 255, 255, 0.95);
+
+  /* Inset (search bar light mode) — no outer glow, no gradient */
+  --np-inset-bg: #dde3ec;
+  --np-inset-text: #3c4858;
+  --np-inset-shadow: inset 1px 1px 1px rgba(152, 161, 174, 0.35),
+    inset -1px -1px 1px rgba(255, 255, 255, 0.70),
+    inset 7px 7px 28px rgba(152, 161, 174, 0.85),
+    inset -7px -7px 28px rgba(255, 255, 255, 0.95);
+  --np-inset-shadow-pressed: inset 7px 7px 14px rgba(152, 161, 174, 0.85),
+    inset -7px -7px 14px rgba(255, 255, 255, 0.95);
+  --np-inset-shadow-sm: inset 5px 5px 12px rgba(152, 161, 174, 0.8),
+    inset -5px -5px 12px rgba(255, 255, 255, 0.95);
 }
 
 *,

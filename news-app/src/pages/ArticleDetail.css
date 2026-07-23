@@ -652,12 +652,6 @@ html:lang(vi) .article-detail__subtitle {
   border-color: var(--icue-border);
 }
 
-.icue-app--news-theme-dark .article-detail__engagement .article-view-counter {
-  border-color: var(--icue-border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--icue-text-soft);
-}
-
 .icue-app--news-theme-dark .btn-ghost {
   color: var(--icue-text);
   border-color: var(--icue-border);

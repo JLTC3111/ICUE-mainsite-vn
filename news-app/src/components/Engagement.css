@@ -3,19 +3,48 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
-  background: var(--icue-surface);
-  color: var(--icue-text-soft);
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--np-radius);
+  background-color: var(--np-bg);
+  background-image: var(--np-gradient);
+  color: var(--np-text);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+  box-shadow: var(--np-shadow-sm);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-image 0.15s ease,
+    color 0.15s ease;
 }
-.heart-btn:hover:not(:disabled) { border-color: #e0245e; color: #e0245e; }
-.heart-btn:active:not(:disabled) { transform: scale(0.96); }
-.heart-btn:disabled { opacity: 0.6; cursor: default; }
+
+.heart-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  color: #e0245e;
+}
+
+.heart-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--np-shadow-pressed-sm);
+  background-image: var(--np-gradient-pressed);
+}
+
+.heart-btn:focus,
+.heart-btn:focus-visible {
+  outline: none;
+}
+
+.heart-btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.heart-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 
 .heart-btn__icon {
   width: 22px;
@@ -25,9 +54,24 @@
   stroke-width: 1.8;
   transition: fill 0.18s ease, stroke 0.18s ease, transform 0.18s ease;
 }
-.heart-btn.is-liked { border-color: #e0245e; color: #e0245e; }
-.heart-btn.is-liked .heart-btn__icon { fill: #e0245e; stroke: #e0245e; transform: scale(1.08); }
-.heart-btn__count { font-variant-numeric: tabular-nums; min-width: 1ch; text-align: left; }
+
+.heart-btn.is-liked {
+  color: #e0245e;
+  box-shadow: var(--np-shadow-pressed-sm);
+  background-image: var(--np-gradient-pressed);
+}
+
+.heart-btn.is-liked .heart-btn__icon {
+  fill: #e0245e;
+  stroke: #e0245e;
+  transform: scale(1.08);
+}
+
+.heart-btn__count {
+  font-variant-numeric: tabular-nums;
+  min-width: 1ch;
+  text-align: left;
+}
 
 /* Comments ----------------------------------------------------------------- */
 .comments {
@@ -79,10 +123,17 @@
   max-width: none;
 }
 
-.icue-app--news-theme-dark .heart-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: var(--icue-border);
-  color: var(--icue-text-soft);
+.icue-app--news-theme-dark .heart-btn.is-liked {
+  color: #ff4d7a;
+}
+
+.icue-app--news-theme-dark .heart-btn:hover:not(:disabled) {
+  color: #ff4d7a;
+}
+
+.icue-app--news-theme-dark .heart-btn.is-liked .heart-btn__icon {
+  fill: #ff4d7a;
+  stroke: #ff4d7a;
 }
 
 .icue-app--news-theme-dark .comments {

@@ -116,21 +116,20 @@ function getTransitionClipPaths(
   }
 }
 
-function VideoOnIcon() {
+/** Phosphor `video-camera` — from public/design-dev-icons/phosphoricicons */
+function VideoCameraIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="6" width="13" height="12" rx="2" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M16 10.2 21 7.5v9L16 13.8V10.2Z" fill="currentColor" />
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+      <path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM192,184H32V72H192V184Zm48-22.95-32-21.33V116.28L240,95Z" />
     </svg>
   );
 }
 
-function VideoOffIcon() {
+/** Phosphor `video-camera-slash` — from public/design-dev-icons/phosphoricicons */
+function VideoCameraSlashIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="4" y="6" width="11" height="12" rx="2" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M15 10.5 19 8v8l-4-2.5v-3Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
-      <path d="m4 4 16 16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+      <path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H113.06a8,8,0,0,0,0,16H192v87.63a8,8,0,0,0,16,0V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM240,161.05l-32-21.33V116.28L240,95ZM53.92,34.62A8,8,0,1,0,42.08,45.38L51.73,56H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H182.64l19.44,21.38a8,8,0,1,0,11.84-10.76ZM32,184V72H66.28L168.1,184Z" />
     </svg>
   );
 }
@@ -148,6 +147,7 @@ export default function AnimatedViewToggle({
   onCheckedChange,
   disabled = false,
   ariaLabel,
+  viewTransitionName = 'icue-avt-video-icon',
   ...props
 }) {
   const shape = variant ?? 'circle';
@@ -191,7 +191,8 @@ export default function AnimatedViewToggle({
       onCheckedChange?.(!checked);
     };
 
-    if (typeof document.startViewTransition !== 'function') {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion || typeof document.startViewTransition !== 'function') {
       applyChange();
       return;
     }
@@ -248,7 +249,13 @@ export default function AnimatedViewToggle({
     }
   }, [checked, disabled, duration, fromCenter, onCheckedChange, shape]);
 
-  const classes = ['animated-view-toggle', className].filter(Boolean).join(' ');
+  const classes = [
+    'animated-view-toggle',
+    checked ? 'is-on' : 'is-off',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button
@@ -261,7 +268,18 @@ export default function AnimatedViewToggle({
       aria-label={ariaLabel}
       {...props}
     >
-      {checked ? <VideoOffIcon /> : <VideoOnIcon />}
+      <span
+        className="animated-view-toggle__icons"
+        style={{ viewTransitionName }}
+        aria-hidden="true"
+      >
+        <span className={`animated-view-toggle__face animated-view-toggle__face--on${checked ? ' is-active' : ''}`}>
+          <VideoCameraIcon />
+        </span>
+        <span className={`animated-view-toggle__face animated-view-toggle__face--off${!checked ? ' is-active' : ''}`}>
+          <VideoCameraSlashIcon />
+        </span>
+      </span>
       <span className="animated-view-toggle__sr-only">{ariaLabel}</span>
     </button>
   );

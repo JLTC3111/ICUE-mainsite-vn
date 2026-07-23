@@ -1,16 +1,33 @@
 .article-view-counter {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
-  background: var(--icue-surface);
-  color: var(--icue-text-soft);
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--np-radius);
+  background-color: var(--np-bg);
+  background-image: var(--np-gradient);
+  color: var(--np-text);
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
   line-height: 1;
+  box-shadow: var(--np-shadow-sm);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-image 0.15s ease;
+}
+
+.article-view-counter:hover {
+  transform: translateY(-2px);
+}
+
+.article-view-counter:active {
+  transform: translateY(0);
+  box-shadow: var(--np-shadow-pressed-sm);
+  background-image: var(--np-gradient-pressed);
 }
 
 .article-view-counter__icon {
@@ -20,19 +37,41 @@
   stroke-width: 2;
 }
 
+.article-view-counter__number {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
 .article-view-counter__label {
   font-size: 15px;
   font-weight: 700;
   color: inherit;
 }
 
+/* Overlay / card chips — keep translucent treatment, not raised neumorph */
 .article-view-counter--compact {
   gap: 4px;
   padding: 4px 8px;
   font-size: 12px;
-  border-color: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
   background: rgba(0, 0, 0, 0.35);
+  background-image: none;
+  box-shadow: none;
   backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.92);
+  cursor: default;
+  transform: none;
+  transition: none;
+}
+
+.article-view-counter--compact:hover,
+.article-view-counter--compact:active {
+  transform: none;
+  box-shadow: none;
+  background-image: none;
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .article-view-counter--compact .article-view-counter__icon {

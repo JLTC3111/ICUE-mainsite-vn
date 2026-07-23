@@ -26,5 +26,37 @@
   --icue-text-soft: #adb2a8;
   --icue-text-faint: #8a9088;
   --icue-ink: #f0f1ed;
+
+  /* Neumorphism — dark gradient (heart, views chip, search) */
+  --np-bg: #2a2d35;
+  --np-text: #e2e8f0;
+  --np-shadow-dark: #0a0d15;
+  --np-shadow-light: #575a62;
+  --np-gradient: linear-gradient(135deg, #484b53 0%, #0e1119 100%);
+  --np-gradient-pressed: linear-gradient(315deg, #484b53 0%, #0e1119 100%);
+  --np-shadow: inset 1px 1px 1px rgba(82, 85, 93, 0.18),
+    inset -1px -1px 1px rgba(10, 13, 21, 0.55),
+    14px 14px 28px rgba(10, 13, 21, 0.85),
+    -14px -14px 28px rgba(87, 90, 98, 0.55);
+  --np-shadow-pressed: inset 7px 7px 14px rgba(10, 13, 21, 0.95),
+    inset -7px -7px 14px rgba(87, 90, 98, 0.55);
+  --np-shadow-sm: inset 1px 1px 1px rgba(82, 85, 93, 0.18),
+    inset -1px -1px 1px rgba(10, 13, 21, 0.55),
+    6px 6px 14px rgba(10, 13, 21, 0.75),
+    -6px -6px 14px rgba(87, 90, 98, 0.4);
+  --np-shadow-pressed-sm: inset 5px 5px 10px rgba(10, 13, 21, 0.95),
+    inset -5px -5px 10px rgba(87, 90, 98, 0.45);
+
+  /* Inset (search bar) — dark */
+  --np-inset-bg: #2a2d35;
+  --np-inset-text: #e2e8f0;
+  --np-inset-shadow: inset 1px 1px 1px rgba(10, 13, 21, 0.55),
+    inset -1px -1px 1px rgba(82, 85, 93, 0.18),
+    inset 7px 7px 28px rgba(10, 13, 21, 0.95),
+    inset -7px -7px 28px rgba(87, 90, 98, 0.45);
+  --np-inset-shadow-pressed: inset 7px 7px 14px rgba(10, 13, 21, 0.95),
+    inset -7px -7px 14px rgba(87, 90, 98, 0.55);
+  --np-inset-shadow-sm: inset 5px 5px 12px rgba(10, 13, 21, 0.9),
+    inset -5px -5px 12px rgba(87, 90, 98, 0.4);
   color-scheme: dark;
 }
