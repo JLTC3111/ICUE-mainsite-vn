@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "Qualitätsstandards (PDF, 138KB)",
       "bao_cao_kiem_toan": "Jährlicher Prüfbericht (PDF, 129KB)",
       "danh_sach_tuan_thu": "Compliance-Checkliste (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "Suche öffnen",
+    "searchBack": "Zurück",
+    "searchClear": "Löschen"
   },
   "modal": {
     "close": "Schließen"

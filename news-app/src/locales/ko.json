@@ -245,6 +245,7 @@
     "noResults": "검색 결과가 없습니다.",
     "clear": "지우기",
     "open": "검색 열기",
+    "back": "뒤로",
     "showing": "“{{query}}” 검색 결과"
   },
   "gallery": {

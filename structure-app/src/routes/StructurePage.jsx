@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import { orgProfiles, orgChartLevels, findProfile } from '../data/orgProfiles'
 import { departments } from '../data/departments'
 import { documentCategories, downloadDocument } from '../data/documents'
@@ -13,6 +14,7 @@ import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPat
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
 import { WordRotate } from '../components/magicui/WordRotate'
 import { RippleButton } from '../components/magicui/RippleButton'
+import { TransitionPanel } from '../components/motion-primitives/TransitionPanel'
 
 const TAB_IDS = [
   { id: 'org-chart', labelKey: 'tabs.orgChart' },
@@ -20,15 +22,33 @@ const TAB_IDS = [
   { id: 'documents', labelKey: 'tabs.documents' },
 ]
 
+const TAB_PANEL_TRANSITION = { duration: 0.2, ease: 'easeInOut' }
+
+const TAB_PANEL_VARIANTS = {
+  enter: { opacity: 0, y: -50, filter: 'blur(4px)' },
+  center: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  exit: { opacity: 0, y: 50, filter: 'blur(4px)' },
+}
+
 export default function StructurePage() {
   const { t, i18n } = useTranslation()
+  const [searchParams] = useSearchParams()
+  const searchTerm = searchParams.get('q') || ''
   const [activeTab, setActiveTab] = useState('org-chart')
   const [selectedProfile, setSelectedProfile] = useState(null)
-  const [searchTerm, setSearchTerm] = useState('')
+
+  const activeIndex = Math.max(
+    0,
+    TAB_IDS.findIndex((tab) => tab.id === activeTab),
+  )
 
   useEffect(() => {
     document.title = t('meta.title')
   }, [t, i18n.language])
+
+  useEffect(() => {
+    if (searchTerm.trim()) setActiveTab('documents')
+  }, [searchTerm])
 
   const profileById = useMemo(() => {
     const map = new Map()
@@ -106,8 +126,10 @@ export default function StructurePage() {
               {TAB_IDS.map((tab) => (
                 <RippleButton
                   key={tab.id}
+                  id={`structure-tab-${tab.id}`}
                   role="tab"
                   aria-selected={activeTab === tab.id}
+                  aria-controls={`structure-panel-${tab.id}`}
                   className={`structure-tab${activeTab === tab.id ? ' active' : ''}`}
                   rippleColor="rgba(255, 255, 255, 0.65)"
                   duration="700ms"
@@ -118,46 +140,53 @@ export default function StructurePage() {
               ))}
             </div>
 
-            {activeTab === 'org-chart' && (
-              <section
-                className="structure-tab-content structure-tab-content--bento active"
-                role="tabpanel"
+            <div className="structure-tabs-panel">
+              <TransitionPanel
+                activeIndex={activeIndex}
+                transition={TAB_PANEL_TRANSITION}
+                variants={TAB_PANEL_VARIANTS}
               >
-                <h2 className="structure-section-title structure-section-title--on-dark structure-section-title--underline">
-                  {t('orgChart.title')}
-                </h2>
-                <OrgChart levels={levels} onSelectPerson={openProfile} />
-              </section>
-            )}
+                <section
+                  id="structure-panel-org-chart"
+                  className="structure-tab-content structure-tab-content--bento"
+                  role="tabpanel"
+                  aria-labelledby="structure-tab-org-chart"
+                >
+                  <h2 className="structure-section-title structure-section-title--on-dark structure-section-title--underline">
+                    {t('orgChart.title')}
+                  </h2>
+                  <OrgChart levels={levels} onSelectPerson={openProfile} />
+                </section>
 
-            {activeTab === 'departments' && (
-              <section
-                className="structure-tab-content structure-tab-content--bento active"
-                role="tabpanel"
-              >
-                <h2 className="structure-section-title structure-section-title--on-dark">
-                  {t('departments.title')}
-                </h2>
-                <DepartmentsGrid departments={departmentCards} />
-              </section>
-            )}
+                <section
+                  id="structure-panel-departments"
+                  className="structure-tab-content structure-tab-content--bento"
+                  role="tabpanel"
+                  aria-labelledby="structure-tab-departments"
+                >
+                  <h2 className="structure-section-title structure-section-title--on-dark">
+                    {t('departments.title')}
+                  </h2>
+                  <DepartmentsGrid departments={departmentCards} />
+                </section>
 
-            {activeTab === 'documents' && (
-              <section
-                className="structure-tab-content structure-tab-content--bento active"
-                role="tabpanel"
-              >
-                <h2 className="structure-section-title structure-section-title--on-dark">
-                  {t('documents.title')}
-                </h2>
-                <LegalDocuments
-                  categories={documentCategories}
-                  searchTerm={searchTerm}
-                  onSearchChange={setSearchTerm}
-                  onDownload={downloadDocument}
-                />
-              </section>
-            )}
+                <section
+                  id="structure-panel-documents"
+                  className="structure-tab-content structure-tab-content--bento"
+                  role="tabpanel"
+                  aria-labelledby="structure-tab-documents"
+                >
+                  <h2 className="structure-section-title structure-section-title--on-dark">
+                    {t('documents.title')}
+                  </h2>
+                  <LegalDocuments
+                    categories={documentCategories}
+                    searchTerm={searchTerm}
+                    onDownload={downloadDocument}
+                  />
+                </section>
+              </TransitionPanel>
+            </div>
           </div>
         </div>
 

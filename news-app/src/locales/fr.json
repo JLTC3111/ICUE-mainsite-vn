@@ -245,6 +245,7 @@
     "noResults": "Aucun article ne correspond à votre recherche.",
     "clear": "Effacer",
     "open": "Ouvrir la recherche",
+    "back": "Retour",
     "showing": "Résultats pour « {{query}} »"
   },
   "gallery": {

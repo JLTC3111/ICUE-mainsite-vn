@@ -245,6 +245,7 @@
     "noResults": "該当する記事がありません。",
     "clear": "クリア",
     "open": "検索を開く",
+    "back": "戻る",
     "showing": "「{{query}}」の検索結果"
   },
   "gallery": {

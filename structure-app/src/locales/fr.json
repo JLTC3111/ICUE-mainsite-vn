@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "Normes de qualité (PDF, 138KB)",
       "bao_cao_kiem_toan": "Rapport d’audit annuel (PDF, 129KB)",
       "danh_sach_tuan_thu": "Liste de contrôle de conformité (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "Ouvrir la recherche",
+    "searchBack": "Retour",
+    "searchClear": "Effacer"
   },
   "modal": {
     "close": "Fermer"

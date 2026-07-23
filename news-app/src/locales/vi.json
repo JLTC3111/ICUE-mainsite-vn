@@ -253,6 +253,7 @@
     "noResults": "Không có bài viết phù hợp.",
     "clear": "Xóa",
     "open": "Mở tìm kiếm",
+    "back": "Quay lại",
     "showing": "Kết quả cho “{{query}}”"
   },
   "gallery": {

@@ -1,7 +1,8 @@
-import { memo } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageSwitcher from './LanguageSwitcher'
+import DocumentSearch from './DocumentSearch'
 import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
@@ -9,9 +10,14 @@ import './Header.css'
 function Header() {
   const { t } = useTranslation()
   const { base, hashLink, peopleLink } = useMainSite()
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  const handleSearchOpenChange = useCallback((next) => {
+    setSearchOpen(next)
+  }, [])
 
   return (
-    <header className="structure-site-header">
+    <header className={`structure-site-header${searchOpen ? ' is-search-open' : ''}`}>
       <LightRays
         className="structure-site-header__rays"
         count={6}
@@ -34,6 +40,7 @@ function Header() {
         </a>
 
         <nav className="structure-site-header__nav" aria-label={t('nav.mainNav')}>
+          <DocumentSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
           <a href={hashLink('Home')} className="structure-site-header__link">
             {t('nav.home')}
           </a>

@@ -47,6 +47,19 @@
   --icue-vn-ticker-h: 30px;
   --icue-nav-hover-line: #f59e0b;
   --icue-chrome-top: calc(var(--icue-header-h) + var(--icue-ticker-h) + var(--icue-vn-ticker-h));
+
+  /* Neumorphism — inset (distance 11, blur 15, intensity 8) */
+  --np-bg: #2a2d35;
+  --np-text: #e2e8f0;
+  --np-radius: 24px;
+  --np-shadow-dark: #10131b;
+  --np-shadow-light: #4e5159;
+  --np-shadow: inset 1px 1px 1px rgba(16, 19, 27, 0.55),
+    inset -1px -1px 1px rgba(82, 85, 93, 0.18),
+    inset 6px 6px 15px rgba(16, 19, 27, 0.87),
+    inset -6px -6px 15px rgba(78, 81, 89, 0.50);
+  --np-shadow-pressed: inset 6px 6px 8px rgba(16, 19, 27, 0.87),
+    inset -6px -6px 8px rgba(78, 81, 89, 0.50);
 }
 
 *,

@@ -7,7 +7,6 @@ const CARD_COLORS = ['#0b1220', '#101a2e', '#0d1830', '#122038']
 export default function LegalDocuments({
   categories,
   searchTerm,
-  onSearchChange,
   onDownload,
 }) {
   const { t } = useTranslation()
@@ -70,14 +69,6 @@ export default function LegalDocuments({
 
   return (
     <>
-      <input
-        type="search"
-        className="search-bar search-bar--on-dark"
-        placeholder={t('documents.searchPlaceholder')}
-        value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
-        aria-label={t('documents.searchAria')}
-      />
       {cards.length > 0 ? (
         <MagicBento
           cards={cards}

@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "品質基準 (PDF, 138KB)",
       "bao_cao_kiem_toan": "年次監査報告書 (PDF, 129KB)",
       "danh_sach_tuan_thu": "コンプライアンス・チェックリスト (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "検索を開く",
+    "searchBack": "戻る",
+    "searchClear": "クリア"
   },
   "modal": {
     "close": "閉じる"

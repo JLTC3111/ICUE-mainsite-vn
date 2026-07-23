@@ -20,8 +20,13 @@ function Header() {
   const { isAuthed, profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const close = useCallback(() => setOpen(false), [])
+  const handleSearchOpenChange = useCallback((next) => {
+    setSearchOpen(next)
+    if (next) setOpen(false)
+  }, [])
   const handleSignOut = useCallback(async () => {
     await signOut()
     close()
@@ -29,14 +34,14 @@ function Header() {
   }, [signOut, close, navigate])
 
   return (
-    <header className="icue-header">
+    <header className={`icue-header${searchOpen ? ' is-search-open' : ''}`}>
       <div className="icue-header__inner icue-container">
         <DrawerMenu
           hashLink={hashLink}
           peopleLink={peopleLink}
           orgHref={structureLink()}
         />
-        <ArticleSearch />
+        <ArticleSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
 
         <div className="icue-header__brand-box">
           {isReaderRoute && (
@@ -75,15 +80,17 @@ function Header() {
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
-          <a href={base} className="icue-header__link" onClick={close}>
-            {t('nav.mainSite')}
-          </a>
-          <NavLink to="/" end className="icue-header__link" onClick={close}>
-            {t('nav.news')}
-          </NavLink>
-          <a href={archiveLink()} className="icue-header__link" onClick={close}>
-            {t('nav.archive')}
-          </a>
+          <div className="icue-header__primary-links" aria-hidden={searchOpen || undefined}>
+            <a href={base} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+              {t('nav.mainSite')}
+            </a>
+            <NavLink to="/" end className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+              {t('nav.news')}
+            </NavLink>
+            <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+              {t('nav.archive')}
+            </a>
+          </div>
 
           {isAuthed && (
             <>

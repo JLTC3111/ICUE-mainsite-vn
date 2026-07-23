@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "Quality Standards (PDF, 138KB)",
       "bao_cao_kiem_toan": "Annual Audit Report (PDF, 129KB)",
       "danh_sach_tuan_thu": "Compliance Checklist (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "Open search",
+    "searchBack": "Back",
+    "searchClear": "Clear"
   },
   "modal": {
     "close": "Close"

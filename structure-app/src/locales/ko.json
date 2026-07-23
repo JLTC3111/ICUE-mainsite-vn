@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "품질 표준 (PDF, 138KB)",
       "bao_cao_kiem_toan": "연간 감사 보고서 (PDF, 129KB)",
       "danh_sach_tuan_thu": "컴플라이언스 점검표 (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "검색 열기",
+    "searchBack": "뒤로",
+    "searchClear": "지우기"
   },
   "modal": {
     "close": "닫기"

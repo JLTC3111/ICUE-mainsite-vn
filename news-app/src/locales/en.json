@@ -253,6 +253,7 @@
     "noResults": "No articles match your search.",
     "clear": "Clear",
     "open": "Open search",
+    "back": "Back",
     "showing": "Showing results for “{{query}}”"
   },
   "gallery": {

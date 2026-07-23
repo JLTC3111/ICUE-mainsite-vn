@@ -33,6 +33,28 @@
   --icue-header-h: 64px;
 
   --people-transition: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Neumorphism — light raised (tabs/buttons) + pressed (inputs) */
+  --np-bg: #dde3ec;
+  --np-text: #3c4858;
+  --np-radius: 24px;
+  --np-shadow-light: #ffffff;
+  --np-shadow-dark: #98a1ae;
+  --np-gradient: linear-gradient(145deg, #e2e8f1 0%, #d8dee7 100%);
+  --np-gradient-pressed: none;
+  --np-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.70),
+    inset -1px -1px 1px rgba(152, 161, 174, 0.35),
+    14px 14px 28px rgba(152, 161, 174, 0.75),
+    -14px -14px 28px rgba(255, 255, 255, 0.95);
+  --np-shadow-pressed: inset 7px 7px 14px rgba(152, 161, 174, 0.85),
+    inset -7px -7px 14px rgba(255, 255, 255, 0.95);
+  /* Softer inset for search input (lower distance / blur / intensity) */
+  --np-shadow-search: inset 4px 4px 10px rgba(152, 161, 174, 0.48),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.82);
+  --np-shadow-search-surface: inset 1px 1px 1px rgba(255, 255, 255, 0.65),
+    inset -1px -1px 1px rgba(152, 161, 174, 0.28),
+    8px 8px 18px rgba(152, 161, 174, 0.42),
+    -8px -8px 18px rgba(255, 255, 255, 0.88);
 }
 
 *,

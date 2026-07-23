@@ -60,6 +60,11 @@
   flex-shrink: 0;
 }
 
+.structure-site-header.is-search-open .structure-site-header__link {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 .structure-site-header__link {
   font-size: 14px;
   font-weight: 500;

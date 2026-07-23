@@ -162,7 +162,10 @@
       "tieu_chuan_chat_luong": "Tiêu Chuẩn Chất Lượng (PDF, 138KB)",
       "bao_cao_kiem_toan": "Báo Cáo Kiểm Toán Hàng Năm (PDF, 129KB)",
       "danh_sach_tuan_thu": "Danh Sách Kiểm Tra Tuân Thủ (PDF, 152KB)"
-    }
+    },
+    "searchOpen": "Mở tìm kiếm",
+    "searchBack": "Quay lại",
+    "searchClear": "Xóa"
   },
   "modal": {
     "close": "Đóng"

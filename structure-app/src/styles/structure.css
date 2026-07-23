@@ -71,43 +71,71 @@
 
 .structure-tabs {
   display: flex;
-  background: linear-gradient(135deg, #4d5053 0%, #368adf 100%);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  gap: 14px;
+  padding: 22px 18px;
+  background-color: var(--np-bg);
+  border-bottom: none;
 }
 
 .structure-tab {
   flex: 1;
-  padding: 20px 16px;
+  padding: 14px 20px;
   text-align: center;
-  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
-  background: none;
+  border-radius: var(--np-radius);
+  background-color: var(--np-bg);
+  background-image: var(--np-gradient);
+  color: var(--np-text);
   font-size: clamp(0.75rem, 2vw, 1.15rem);
   font-weight: 600;
-  color: #eef4fd;
   font-family: inherit;
-  border-radius: 0;
+  box-shadow: var(--np-shadow);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-image 0.15s ease,
+    color 0.15s ease;
+}
+
+/* Keep outer raised shadows; clip ripples to the pill only */
+.structure-tab.ripple-button {
+  overflow: visible;
+}
+
+.structure-tab .ripple-button__ripples {
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 .structure-tab:hover {
-  background: rgba(102, 126, 234, 0.05);
-  transform: translateY(-1px);
-  text-decoration: underline;
+  transform: translateY(-2px);
+  text-decoration: none;
 }
 
+.structure-tab:active,
 .structure-tab.active {
-  background: linear-gradient(135deg, #888888 0%, #2821a8 100%);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+  transform: translateY(0);
+  background-image: var(--np-gradient-pressed);
+  box-shadow: var(--np-shadow-pressed);
+  color: var(--np-text);
+}
+
+.structure-tab:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 
 .structure-tab-content {
   padding: 50px 40px;
-  animation: structureFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.structure-tabs-panel {
+  overflow: hidden;
+}
+
+.structure-tabs-panel .transition-panel {
+  position: relative;
 }
 
 .structure-tab-content--bento {
@@ -129,17 +157,6 @@
 
 .structure-section-title--on-dark {
   color: #eef4fd;
-}
-
-@keyframes structureFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .org-chart {
@@ -361,47 +378,6 @@
   color: rgba(226, 232, 240, 0.75);
 }
 
-.search-bar--on-dark {
-  background: rgba(15, 23, 42, 0.65);
-  border-color: rgba(148, 163, 184, 0.35);
-  color: #e2e8f0;
-}
-
-.search-bar--on-dark::placeholder {
-  color: rgba(148, 163, 184, 0.85);
-}
-
-.search-bar--on-dark:focus {
-  border-color: rgba(54, 138, 223, 0.8);
-  box-shadow: 0 0 0 3px rgba(54, 138, 223, 0.2);
-}
-
-.search-bar {
-  width: 100%;
-  border: 2px solid rgba(226, 232, 240, 0.8);
-  margin-bottom: 40px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.8);
-  color: #334155;
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 14px 16px;
-  border-radius: 8px;
-  font-family: inherit;
-}
-
-.search-bar:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-  background: white;
-}
-
-.search-bar::placeholder {
-  color: #94a3b8;
-  font-weight: 400;
-}
-
 .profile-modal {
   display: flex;
   flex-direction: column;
@@ -483,6 +459,8 @@
 
   .structure-tabs {
     flex-direction: column;
+    padding: 18px 14px;
+    gap: 12px;
   }
 
   .structure-tab {
