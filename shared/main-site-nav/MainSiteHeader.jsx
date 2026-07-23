@@ -1,8 +1,13 @@
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
+
+/** Matches `.menu-icon-metallic__layer` transform duration in MainSiteNav.css */
+const MENU_MORPH_MS = 500;
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -31,6 +36,97 @@ export default function MainSiteHeader({
   const logoMarkSrc = `${assetPrefix}logoIcons/favicon.png`;
 
   const showActionsGroup = showHomeVideoToggle || showAboutUsVideoToggle || showContactLink;
+
+  const spacerRef = useRef(null);
+  const [navRoot, setNavRoot] = useState(null);
+  // Keep one DOM node for the toggle; only flip this class after the morph finishes.
+  const [centered, setCentered] = useState(false);
+
+  useEffect(() => {
+    setNavRoot(document.querySelector('.main-site-nav'));
+  }, []);
+
+  useEffect(() => {
+    if (drawerOpen) {
+      const t = window.setTimeout(() => setCentered(true), MENU_MORPH_MS);
+      return () => window.clearTimeout(t);
+    }
+    const t = window.setTimeout(() => setCentered(false), MENU_MORPH_MS);
+    return () => window.clearTimeout(t);
+  }, [drawerOpen]);
+
+  // Pin the (always-portaled) toggle over the dock spacer when not centered,
+  // so we never remount MetallicPaint during open/close.
+  useLayoutEffect(() => {
+    const btn = typeof menuToggleRef === 'object' ? menuToggleRef?.current : null;
+    const spacer = spacerRef.current;
+    if (!btn || !spacer || !navRoot) return undefined;
+
+    const clearInlinePin = () => {
+      btn.style.removeProperty('position');
+      btn.style.removeProperty('left');
+      btn.style.removeProperty('top');
+      btn.style.removeProperty('transform');
+      btn.style.removeProperty('width');
+      btn.style.removeProperty('height');
+      btn.style.removeProperty('z-index');
+      btn.style.removeProperty('margin');
+      btn.style.removeProperty('transition');
+    };
+
+    // Pin by top-left (no translate) so layer rotate/scale is the only transform
+    // running during the morph.
+    const pinToSpacerRect = (rect) => {
+      btn.style.transition = 'none';
+      btn.style.position = 'fixed';
+      btn.style.left = `${rect.left}px`;
+      btn.style.top = `${rect.top}px`;
+      btn.style.transform = 'none';
+      btn.style.width = `${Math.max(rect.width, 42)}px`;
+      btn.style.height = `${Math.max(rect.height, 42)}px`;
+      btn.style.zIndex = '1221';
+      btn.style.margin = '0';
+    };
+
+    if (centered) {
+      clearInlinePin();
+      return undefined;
+    }
+
+    // Drawer opening / morphing at dock: freeze coords — spacer reflow from the
+    // drawer must not nudge the icon mid-morph.
+    if (drawerOpen) {
+      pinToSpacerRect(spacer.getBoundingClientRect());
+      return undefined;
+    }
+
+    // Idle closed: keep aligned with the dock spacer.
+    const syncToSpacer = () => pinToSpacerRect(spacer.getBoundingClientRect());
+    syncToSpacer();
+    window.addEventListener('resize', syncToSpacer);
+    window.addEventListener('scroll', syncToSpacer, true);
+    return () => {
+      window.removeEventListener('resize', syncToSpacer);
+      window.removeEventListener('scroll', syncToSpacer, true);
+    };
+  }, [centered, drawerOpen, navRoot, menuToggleRef]);
+
+  const menuToggleButton = (
+    <button
+      ref={menuToggleRef}
+      type="button"
+      className={['menu-toggle', centered ? 'menu-toggle--centered' : ''].filter(Boolean).join(' ')}
+      id="menuToggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded={drawerOpen}
+      onClick={(e) => {
+        e.stopPropagation();
+        onToggleDrawer();
+      }}
+    >
+      <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
+    </button>
+  );
 
   return (
     <div className="main-site-nav__dock-wrap">
@@ -68,20 +164,12 @@ export default function MainSiteHeader({
           </div>
 
           <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--menu">
-            <button
-              ref={menuToggleRef}
-              type="button"
-              className="menu-toggle"
-              id="menuToggle"
-              aria-label="Toggle navigation menu"
-              aria-expanded={drawerOpen}
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleDrawer();
-              }}
-            >
-              <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
-            </button>
+            <span
+              ref={spacerRef}
+              className="main-site-nav__menu-toggle-spacer"
+              aria-hidden="true"
+            />
+            {navRoot ? createPortal(menuToggleButton, navRoot) : menuToggleButton}
           </DockIcon>
         </div>
 

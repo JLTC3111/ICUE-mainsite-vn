@@ -797,24 +797,26 @@
   stroke: currentColor;
 }
 
-/* Logo + dock stay above the open drawer overlay */
+/*
+ * When the drawer is open, lift the nav bar above the overlay (1200) and
+ * drawer panel (1210) so the logo mark + ICUE VideoText stay visible.
+ * pointer-events:none on the bar keeps drawer links clickable underneath;
+ * brand + menu toggle re-enable hits.
+ */
 .main-site-nav.drawer-open .main-site-nav__bar,
 .main-site-nav:has(#drawerMenu.open) .main-site-nav__bar {
-  z-index: 120;
+  z-index: 1220;
+  pointer-events: none;
 }
 
 .main-site-nav.drawer-open .main-site-nav__dock-wrap,
 .main-site-nav:has(#drawerMenu.open) .main-site-nav__dock-wrap {
   position: relative;
-  z-index: 121;
+  z-index: auto;
 }
 
 .main-site-nav.drawer-open .main-site-nav__dock-slot--brand,
-.main-site-nav:has(#drawerMenu.open) .main-site-nav__dock-slot--brand {
-  position: relative;
-  z-index: 121;
-}
-
+.main-site-nav:has(#drawerMenu.open) .main-site-nav__dock-slot--brand,
 .main-site-nav.drawer-open .logo-link,
 .main-site-nav.drawer-open .logo-mark,
 .main-site-nav.drawer-open .logo-wordmark,
@@ -822,7 +824,39 @@
 .main-site-nav:has(#drawerMenu.open) .logo-mark,
 .main-site-nav:has(#drawerMenu.open) .logo-wordmark {
   position: relative;
-  z-index: 1;
+  z-index: 1221;
+  pointer-events: auto;
+}
+
+.main-site-nav.drawer-open .main-site-nav__dock-icon--menu,
+.main-site-nav:has(#drawerMenu.open) .main-site-nav__dock-icon--menu {
+  pointer-events: none;
+}
+
+.main-site-nav__menu-toggle-spacer {
+  display: block;
+  width: clamp(42px, 10.5vw, 50px);
+  height: clamp(42px, 10.5vw, 50px);
+  flex-shrink: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Portaled out of Dock so fixed uses the viewport (not a transformed ancestor). */
+.main-site-nav .menu-toggle.menu-toggle--centered {
+  pointer-events: auto;
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: calc(env(safe-area-inset-top, 0px) + 0.75rem) !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 1225 !important;
+  width: clamp(42px, 10.5vw, 50px);
+  height: clamp(42px, 10.5vw, 50px);
+  min-width: 42px;
+  min-height: 42px;
+  margin: 0;
 }
 
 .main-site-nav .drawer-resize-handle {
@@ -1220,6 +1254,12 @@
 @media (max-width: 1440px) {
   .main-site-nav__bar.menu-bar {
     z-index: 30;
+  }
+
+  .main-site-nav.drawer-open .main-site-nav__bar.menu-bar,
+  .main-site-nav:has(#drawerMenu.open) .main-site-nav__bar.menu-bar {
+    z-index: 1220;
+    pointer-events: none;
   }
 
   .main-site-nav .menu-toggle {
