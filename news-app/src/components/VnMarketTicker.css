@@ -60,12 +60,23 @@
   min-height: var(--icue-vn-ticker-h);
 }
 
-.vn-ticker__track.is-animated {
+.vn-ticker__track.is-animated,
+.vn-ticker__track.is-hover-play {
   animation: vn-ticker-scroll 80s linear infinite;
 }
 
+/* Lite: scroll by default, pause on hover */
 .vn-ticker__track.is-animated:hover {
   animation-play-state: paused;
+}
+
+/* Full: paused by default, resume on hover */
+.vn-ticker__track.is-hover-play {
+  animation-play-state: paused;
+}
+
+.vn-ticker__track.is-hover-play:hover {
+  animation-play-state: running;
 }
 
 .vn-ticker__row {
@@ -160,14 +171,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vn-ticker__track.is-animated {
+  .vn-ticker__track.is-animated,
+  .vn-ticker__track.is-hover-play {
     animation: none;
     overflow-x: auto;
     scrollbar-width: none;
     max-width: 100%;
   }
 
-  .vn-ticker__track.is-animated::-webkit-scrollbar { display: none; }
+  .vn-ticker__track.is-animated::-webkit-scrollbar,
+  .vn-ticker__track.is-hover-play::-webkit-scrollbar { display: none; }
 
   .vn-ticker__row:last-child { display: none; }
 }

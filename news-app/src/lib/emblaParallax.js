@@ -18,10 +18,11 @@ export function setParallaxTweenFactor(emblaApi, tweenFactorRef, tweenFactorBase
   )
 }
 
-export function tweenParallax(emblaApi, tweenNodes, tweenFactorRef) {
+export function tweenParallax(emblaApi, tweenNodes, tweenFactorRef, axis = 'x') {
   const engine = emblaApi.internalEngine()
   const scrollProgress = emblaApi.scrollProgress()
   const loop = engine.options.loop
+  const vertical = axis === 'y'
 
   getSnapList(emblaApi).forEach((scrollSnap, snapIndex) => {
     let diffToTarget = scrollSnap - scrollProgress
@@ -48,7 +49,9 @@ export function tweenParallax(emblaApi, tweenNodes, tweenFactorRef) {
       const translate = diffToTarget * (-1 * tweenFactorRef.current) * 100
       const layerNode = tweenNodes[slideIndex]
       if (layerNode) {
-        layerNode.style.transform = `translate3d(${translate}%, 0, 0)`
+        layerNode.style.transform = vertical
+          ? `translate3d(0, ${translate}%, 0)`
+          : `translate3d(${translate}%, 0, 0)`
       }
     })
   })
@@ -62,7 +65,7 @@ export function clearParallaxTransforms(tweenNodes) {
 
 export function bindEmblaParallax(
   emblaApi,
-  { layerSelector, tweenNodesRef, tweenFactorRef, enabled, tweenFactorBase },
+  { layerSelector, tweenNodesRef, tweenFactorRef, enabled, tweenFactorBase, axis = 'x' },
 ) {
   if (!enabled) return () => {}
 
@@ -73,7 +76,7 @@ export function bindEmblaParallax(
   const refreshFactor = () => setParallaxTweenFactor(emblaApi, tweenFactorRef, tweenFactorBase)
 
   const applyParallax = () => {
-    tweenParallax(emblaApi, tweenNodesRef.current, tweenFactorRef)
+    tweenParallax(emblaApi, tweenNodesRef.current, tweenFactorRef, axis)
   }
 
   refreshNodes()

@@ -7,7 +7,6 @@ function getOrCreateVisualizer() {
   if (window.__icueAudioVisualizer) return window.__icueAudioVisualizer
 
   const audio = new Audio(AUDIO_SRC)
-  audio.loop = true
   const ctx = new (window.AudioContext || window.webkitAudioContext)()
   const source = ctx.createMediaElementSource(audio)
   const analyser = ctx.createAnalyser()

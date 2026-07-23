@@ -4,10 +4,13 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import BentoArticleGrid from './BentoArticleGrid'
 import SlidingNumber, { SLOW_SPRING } from './magicui/SlidingNumber'
+import { bindEmblaParallax } from '../lib/emblaParallax'
 import { tierToProfile } from '../lib/performanceProfile'
 import { chunkBentoItems } from '../lib/bentoArticles'
 import { NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE } from '../lib/newsroom'
 import './BentoYCarousel.css'
+
+const PARALLAX_LAYER_SELECTOR = '.bento-y-carousel__layer'
 
 export default function BentoYCarousel({
   items,
@@ -15,7 +18,7 @@ export default function BentoYCarousel({
   onItemClick,
 }) {
   const { t } = useTranslation()
-  const { reduceMotion } = profile
+  const { reduceMotion, disableParallax } = profile
   const slides = useMemo(
     () => chunkBentoItems(items, NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE),
     [items],
@@ -24,7 +27,10 @@ export default function BentoYCarousel({
 
   const sectionRef = useRef(null)
   const wheelLockRef = useRef(false)
+  const tweenNodesRef = useRef([])
+  const tweenFactorRef = useRef(0)
   const useLoop = slides.length > 2 && !reduceMotion
+  const useParallax = slides.length > 1 && !reduceMotion && !disableParallax
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: 'y',
@@ -54,6 +60,19 @@ export default function BentoYCarousel({
       emblaApi.off('init', syncControls)
     }
   }, [emblaApi, syncControls])
+
+  useEffect(() => {
+    if (!emblaApi || !useParallax) return undefined
+
+    return bindEmblaParallax(emblaApi, {
+      layerSelector: PARALLAX_LAYER_SELECTOR,
+      tweenNodesRef,
+      tweenFactorRef,
+      enabled: true,
+      tweenFactorBase: 0.28,
+      axis: 'y',
+    })
+  }, [emblaApi, useParallax])
 
   useLayoutEffect(() => {
     if (!emblaApi) return undefined
@@ -156,13 +175,20 @@ export default function BentoYCarousel({
           <div className="bento-y-carousel__viewport" ref={emblaRef}>
             <div className="bento-y-carousel__container">
               {slides.map((slideItems, slideIndex) => (
-                <div key={`slide-${slideIndex}-${slideItems[0]?.id ?? slideIndex}`} className="bento-y-carousel__slide">
-                  <BentoArticleGrid
-                    items={slideItems}
-                    profile={profile}
-                    animationOffset={slideIndex * NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE}
-                    onItemClick={onItemClick}
-                  />
+                <div
+                  key={`slide-${slideIndex}-${slideItems[0]?.id ?? slideIndex}`}
+                  className="bento-y-carousel__slide"
+                >
+                  <div className="bento-y-carousel__parallax">
+                    <div className="bento-y-carousel__layer">
+                      <BentoArticleGrid
+                        items={slideItems}
+                        profile={profile}
+                        animationOffset={slideIndex * NEWSROOM_BENTO_CAROUSEL_PAGE_SIZE}
+                        onItemClick={onItemClick}
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

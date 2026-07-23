@@ -151,21 +151,29 @@ export function tierToProfile(tier) {
   const safeTier = PERF_TIERS.includes(tier) ? tier : 'full'
   const isMinimal = safeTier === 'minimal'
   const isReduced = safeTier === 'reduced' || isMinimal
+  const isFull = safeTier === 'full'
 
   return {
     tier: safeTier,
-    reduceMotion: isMinimal,
+    // Lite keeps carousel/hero motion; other flags still cut heavier GPU work.
+    reduceMotion: safeTier === 'reduced',
     disableGlobe: false,
     freezeGlobe: isMinimal,
-    disableParallax: isReduced,
+    // Lite (minimal) keeps Embla parallax; only mid "reduced" tier disables it.
+    disableParallax: safeTier === 'reduced',
     disableBorderBeam: isReduced,
-    disableLens: safeTier !== 'full',
+    disableLens: !isFull,
     reduceBlur: isMinimal,
-    simplifyHero: isMinimal,
+    // Lite keeps rotating tags + gooey particles; pauses the hero retro grid.
+    simplifyHero: false,
+    pauseRetroGrid: isMinimal,
     globeQuality: isMinimal ? 'low' : isReduced ? 'low' : 'full',
-    showScrollProgress: safeTier === 'full',
-    hyperTextScramble: safeTier === 'full',
+    showScrollProgress: isFull || isMinimal,
+    hyperTextScramble: isFull,
+    // Market quote polling cadence (VN scroll uses vnTickerHoverToPlay).
     pauseTickers: isMinimal,
+    // Full: VN ticker paused until hover. Lite: runs, pauses on hover.
+    vnTickerHoverToPlay: isFull,
   }
 }
 

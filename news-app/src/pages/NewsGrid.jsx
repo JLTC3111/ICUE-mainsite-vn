@@ -30,7 +30,7 @@ const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & E
 export default function NewsGrid() {
   const { t } = useTranslation()
   const profile = usePerformanceProfile()
-  const { reduceMotion, simplifyHero } = profile
+  const { reduceMotion, simplifyHero, pauseRetroGrid } = profile
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
@@ -83,7 +83,7 @@ export default function NewsGrid() {
           className="news-hero__grid"
           lineColor="rgba(255, 255, 255, 0.38)"
           opacity={0.78}
-          reduceMotion={reduceMotion}
+          reduceMotion={reduceMotion || pauseRetroGrid}
         />
         <div className="icue-container news-hero__inner">
           <div className="news-hero__text">
@@ -112,7 +112,7 @@ export default function NewsGrid() {
               showCompactLabel
               className="animated-theme-toggler--hero news-hero__theme-toggle"
             />
-            <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
+            <SocialGooeyNav reduceMotion={simplifyHero} />
           </div>
         </div>
       </header>

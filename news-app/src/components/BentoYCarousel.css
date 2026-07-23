@@ -89,6 +89,19 @@
   overflow: hidden;
 }
 
+.bento-y-carousel__parallax {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bento-y-carousel__layer {
+  height: 118%;
+  min-height: 0;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
 .bento-y-carousel__slide .bento-grid {
   height: 100%;
   min-height: 0;

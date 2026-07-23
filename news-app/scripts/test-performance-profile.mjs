@@ -15,22 +15,29 @@ describe('performanceProfile', () => {
     assert.equal(profile.tier, 'minimal')
     assert.equal(profile.disableGlobe, false)
     assert.equal(profile.freezeGlobe, true)
-    assert.equal(profile.disableParallax, true)
+    assert.equal(profile.reduceMotion, false)
+    assert.equal(profile.disableParallax, false)
+    assert.equal(profile.simplifyHero, false)
+    assert.equal(profile.pauseRetroGrid, true)
     assert.equal(profile.disableBorderBeam, true)
     assert.equal(profile.disableLens, true)
     assert.equal(profile.hyperTextScramble, false)
-    assert.equal(profile.showScrollProgress, false)
+    assert.equal(profile.showScrollProgress, true)
     assert.equal(profile.globeQuality, 'low')
+    assert.equal(profile.vnTickerHoverToPlay, false)
+    assert.equal(profile.pauseTickers, true)
   })
 
   it('maps reduced tier to partial degradation', () => {
     const profile = tierToProfile('reduced')
     assert.equal(profile.disableGlobe, false)
     assert.equal(profile.freezeGlobe, false)
+    assert.equal(profile.reduceMotion, true)
     assert.equal(profile.disableParallax, true)
     assert.equal(profile.disableLens, true)
     assert.equal(profile.globeQuality, 'low')
     assert.equal(profile.showScrollProgress, false)
+    assert.equal(profile.vnTickerHoverToPlay, false)
   })
 
   it('maps full tier to current behavior', () => {
@@ -42,7 +49,10 @@ describe('performanceProfile', () => {
     assert.equal(profile.disableLens, false)
     assert.equal(profile.hyperTextScramble, true)
     assert.equal(profile.showScrollProgress, true)
+    assert.equal(profile.pauseRetroGrid, false)
     assert.equal(profile.globeQuality, 'full')
+    assert.equal(profile.vnTickerHoverToPlay, true)
+    assert.equal(profile.pauseTickers, false)
   })
 
   it('lowers globe quality settings', () => {
