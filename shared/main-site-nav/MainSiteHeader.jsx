@@ -1,13 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
-
-/** Matches `.menu-icon-metallic__layer` transform duration in MainSiteNav.css */
-const MENU_MORPH_MS = 500;
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -36,111 +31,6 @@ export default function MainSiteHeader({
   const logoMarkSrc = `${assetPrefix}logoIcons/favicon.png`;
 
   const showActionsGroup = showHomeVideoToggle || showAboutUsVideoToggle || showContactLink;
-
-  const spacerRef = useRef(null);
-  const [navRoot, setNavRoot] = useState(null);
-  // When false, toggle sits at viewport center (stable). Morph only runs there so
-  // drawer/dock reflow cannot remeasure it mid-animation. Snap back to the dock
-  // spacer only after the close morph finishes.
-  const [docked, setDocked] = useState(true);
-
-  useEffect(() => {
-    setNavRoot(document.querySelector('.main-site-nav'));
-  }, []);
-
-  useEffect(() => {
-    const btn = typeof menuToggleRef === 'object' ? menuToggleRef?.current : null;
-
-    if (drawerOpen) {
-      // Hide one frame while jumping dock → center, then morph in place.
-      if (btn) btn.style.opacity = '0';
-      setDocked(false);
-      let innerRaf = 0;
-      const outerRaf = window.requestAnimationFrame(() => {
-        innerRaf = window.requestAnimationFrame(() => {
-          if (btn) btn.style.opacity = '';
-        });
-      });
-      return () => {
-        window.cancelAnimationFrame(outerRaf);
-        window.cancelAnimationFrame(innerRaf);
-        if (btn) btn.style.opacity = '';
-      };
-    }
-
-    // Close: keep centered through the morph, then snap back to the dock.
-    const t = window.setTimeout(() => {
-      if (btn) btn.style.opacity = '0';
-      setDocked(true);
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          if (btn) btn.style.opacity = '';
-        });
-      });
-    }, MENU_MORPH_MS);
-    return () => {
-      window.clearTimeout(t);
-      if (btn) btn.style.opacity = '';
-    };
-  }, [drawerOpen, menuToggleRef]);
-
-  // Only remeasure when fully docked (idle). Never during an open/close morph.
-  useLayoutEffect(() => {
-    const btn = typeof menuToggleRef === 'object' ? menuToggleRef?.current : null;
-    const spacer = spacerRef.current;
-    if (!btn || !spacer || !navRoot) return undefined;
-
-    if (!docked) {
-      btn.style.removeProperty('position');
-      btn.style.removeProperty('left');
-      btn.style.removeProperty('top');
-      btn.style.removeProperty('transform');
-      btn.style.removeProperty('width');
-      btn.style.removeProperty('height');
-      btn.style.removeProperty('z-index');
-      btn.style.removeProperty('margin');
-      btn.style.removeProperty('transition');
-      return undefined;
-    }
-
-    const pinToSpacer = () => {
-      const rect = spacer.getBoundingClientRect();
-      btn.style.transition = 'none';
-      btn.style.position = 'fixed';
-      btn.style.left = `${rect.left}px`;
-      btn.style.top = `${rect.top}px`;
-      btn.style.transform = 'none';
-      btn.style.width = `${Math.max(rect.width, 42)}px`;
-      btn.style.height = `${Math.max(rect.height, 42)}px`;
-      btn.style.zIndex = '1221';
-      btn.style.margin = '0';
-    };
-
-    pinToSpacer();
-    window.addEventListener('resize', pinToSpacer);
-    window.addEventListener('scroll', pinToSpacer, true);
-    return () => {
-      window.removeEventListener('resize', pinToSpacer);
-      window.removeEventListener('scroll', pinToSpacer, true);
-    };
-  }, [docked, navRoot, menuToggleRef]);
-
-  const menuToggleButton = (
-    <button
-      ref={menuToggleRef}
-      type="button"
-      className={['menu-toggle', docked ? '' : 'menu-toggle--centered'].filter(Boolean).join(' ')}
-      id="menuToggle"
-      aria-label="Toggle navigation menu"
-      aria-expanded={drawerOpen}
-      onClick={(e) => {
-        e.stopPropagation();
-        onToggleDrawer();
-      }}
-    >
-      <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
-    </button>
-  );
 
   return (
     <div className="main-site-nav__dock-wrap">
@@ -178,12 +68,20 @@ export default function MainSiteHeader({
           </div>
 
           <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--menu">
-            <span
-              ref={spacerRef}
-              className="main-site-nav__menu-toggle-spacer"
-              aria-hidden="true"
-            />
-            {navRoot ? createPortal(menuToggleButton, navRoot) : menuToggleButton}
+            <button
+              ref={menuToggleRef}
+              type="button"
+              className="menu-toggle"
+              id="menuToggle"
+              aria-label="Toggle navigation menu"
+              aria-expanded={drawerOpen}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleDrawer();
+              }}
+            >
+              <MetallicMenuIcon isOpen={drawerOpen} menuIconRef={menuIconRef} />
+            </button>
           </DockIcon>
         </div>
 
