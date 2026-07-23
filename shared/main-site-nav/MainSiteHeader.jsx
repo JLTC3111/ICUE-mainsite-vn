@@ -39,30 +39,58 @@ export default function MainSiteHeader({
 
   const spacerRef = useRef(null);
   const [navRoot, setNavRoot] = useState(null);
-  // Keep one DOM node for the toggle; only flip this class after the morph finishes.
-  const [centered, setCentered] = useState(false);
+  // When false, toggle sits at viewport center (stable). Morph only runs there so
+  // drawer/dock reflow cannot remeasure it mid-animation. Snap back to the dock
+  // spacer only after the close morph finishes.
+  const [docked, setDocked] = useState(true);
 
   useEffect(() => {
     setNavRoot(document.querySelector('.main-site-nav'));
   }, []);
 
   useEffect(() => {
-    if (drawerOpen) {
-      const t = window.setTimeout(() => setCentered(true), MENU_MORPH_MS);
-      return () => window.clearTimeout(t);
-    }
-    const t = window.setTimeout(() => setCentered(false), MENU_MORPH_MS);
-    return () => window.clearTimeout(t);
-  }, [drawerOpen]);
+    const btn = typeof menuToggleRef === 'object' ? menuToggleRef?.current : null;
 
-  // Pin the (always-portaled) toggle over the dock spacer when not centered,
-  // so we never remount MetallicPaint during open/close.
+    if (drawerOpen) {
+      // Hide one frame while jumping dock → center, then morph in place.
+      if (btn) btn.style.opacity = '0';
+      setDocked(false);
+      let innerRaf = 0;
+      const outerRaf = window.requestAnimationFrame(() => {
+        innerRaf = window.requestAnimationFrame(() => {
+          if (btn) btn.style.opacity = '';
+        });
+      });
+      return () => {
+        window.cancelAnimationFrame(outerRaf);
+        window.cancelAnimationFrame(innerRaf);
+        if (btn) btn.style.opacity = '';
+      };
+    }
+
+    // Close: keep centered through the morph, then snap back to the dock.
+    const t = window.setTimeout(() => {
+      if (btn) btn.style.opacity = '0';
+      setDocked(true);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          if (btn) btn.style.opacity = '';
+        });
+      });
+    }, MENU_MORPH_MS);
+    return () => {
+      window.clearTimeout(t);
+      if (btn) btn.style.opacity = '';
+    };
+  }, [drawerOpen, menuToggleRef]);
+
+  // Only remeasure when fully docked (idle). Never during an open/close morph.
   useLayoutEffect(() => {
     const btn = typeof menuToggleRef === 'object' ? menuToggleRef?.current : null;
     const spacer = spacerRef.current;
     if (!btn || !spacer || !navRoot) return undefined;
 
-    const clearInlinePin = () => {
+    if (!docked) {
       btn.style.removeProperty('position');
       btn.style.removeProperty('left');
       btn.style.removeProperty('top');
@@ -72,11 +100,11 @@ export default function MainSiteHeader({
       btn.style.removeProperty('z-index');
       btn.style.removeProperty('margin');
       btn.style.removeProperty('transition');
-    };
+      return undefined;
+    }
 
-    // Pin by top-left (no translate) so layer rotate/scale is the only transform
-    // running during the morph.
-    const pinToSpacerRect = (rect) => {
+    const pinToSpacer = () => {
+      const rect = spacer.getBoundingClientRect();
       btn.style.transition = 'none';
       btn.style.position = 'fixed';
       btn.style.left = `${rect.left}px`;
@@ -88,34 +116,20 @@ export default function MainSiteHeader({
       btn.style.margin = '0';
     };
 
-    if (centered) {
-      clearInlinePin();
-      return undefined;
-    }
-
-    // Drawer opening / morphing at dock: freeze coords — spacer reflow from the
-    // drawer must not nudge the icon mid-morph.
-    if (drawerOpen) {
-      pinToSpacerRect(spacer.getBoundingClientRect());
-      return undefined;
-    }
-
-    // Idle closed: keep aligned with the dock spacer.
-    const syncToSpacer = () => pinToSpacerRect(spacer.getBoundingClientRect());
-    syncToSpacer();
-    window.addEventListener('resize', syncToSpacer);
-    window.addEventListener('scroll', syncToSpacer, true);
+    pinToSpacer();
+    window.addEventListener('resize', pinToSpacer);
+    window.addEventListener('scroll', pinToSpacer, true);
     return () => {
-      window.removeEventListener('resize', syncToSpacer);
-      window.removeEventListener('scroll', syncToSpacer, true);
+      window.removeEventListener('resize', pinToSpacer);
+      window.removeEventListener('scroll', pinToSpacer, true);
     };
-  }, [centered, drawerOpen, navRoot, menuToggleRef]);
+  }, [docked, navRoot, menuToggleRef]);
 
   const menuToggleButton = (
     <button
       ref={menuToggleRef}
       type="button"
-      className={['menu-toggle', centered ? 'menu-toggle--centered' : ''].filter(Boolean).join(' ')}
+      className={['menu-toggle', docked ? '' : 'menu-toggle--centered'].filter(Boolean).join(' ')}
       id="menuToggle"
       aria-label="Toggle navigation menu"
       aria-expanded={drawerOpen}
