@@ -5575,7 +5575,7 @@ updateCalendarSvgTime();
 setInterval(updateCalendarSvgTime, 60 * 1000);
 
 function initAudioVisualizer(
-    audioSrc = 'public/music/royalty_free.mp3',
+    audioSrc = 'public/music/mixkit-driving-ambition-32.mp3',
   barSelector = '.music-bars',
     clickTargetSelector = '#visualizer'
   ) {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-const AUDIO_SRC = '/public/music/royalty_free.mp3'
+const AUDIO_SRC = '/public/music/mixkit-driving-ambition-32.mp3'
 
 function getOrCreateVisualizer() {
   if (typeof window === 'undefined') return null
