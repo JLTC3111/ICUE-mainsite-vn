@@ -110,7 +110,7 @@
 
 @media (min-width: 1025px) {
   .article-bento__gallery {
-    --bento-y-slide-height: clamp(400px, 52vh, 640px);
+    --bento-y-slide-height: clamp(480px, 58vh, 720px);
     --bento-gallery-min-height: calc(var(--bento-y-slide-height) + 120px);
     min-height: var(--bento-gallery-min-height);
   }

@@ -1,5 +1,5 @@
 .bento-y-carousel {
-  --bento-y-slide-height: clamp(400px, 52vh, 640px);
+  --bento-y-slide-height: clamp(480px, 58vh, 720px);
   --bento-y-nav-size: 38px;
   --bento-y-dot-active: var(--icue-blue-2, #1db7ff);
   margin: 0;

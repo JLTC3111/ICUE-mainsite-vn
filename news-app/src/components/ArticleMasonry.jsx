@@ -24,7 +24,7 @@ export default function ArticleMasonry({ articles, profile = tierToProfile('full
   const navigate = useNavigate()
   const isDesktopBentoCarousel = useMediaQuery(NEWSROOM_BENTO_CAROUSEL_QUERY)
   const { isDark } = useNewsroomTheme()
-  const { reduceMotion, disableGlobe, globeQuality } = profile
+  const { reduceMotion, disableGlobe, freezeGlobe, globeQuality } = profile
   const baseGlobeConfig = isDark ? NEWSROOM_GLOBE_CONFIG_DARK : NEWSROOM_GLOBE_CONFIG_LIGHT
   const globeConfig = useMemo(
     () => applyGlobeQuality(baseGlobeConfig, globeQuality),
@@ -58,9 +58,10 @@ export default function ArticleMasonry({ articles, profile = tierToProfile('full
                 key={isDark ? 'dark' : 'light'}
                 className="article-bento__globe"
                 config={globeConfig}
-                reduceMotion={reduceMotion}
+                reduceMotion={reduceMotion && !freezeGlobe}
+                frozen={freezeGlobe}
                 quality={globeQuality}
-                pauseWhenHidden
+                pauseWhenHidden={!freezeGlobe}
               />
             </div>
           ) : null}

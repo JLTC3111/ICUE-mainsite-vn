@@ -13,18 +13,20 @@ describe('performanceProfile', () => {
   it('maps minimal tier to degraded feature flags', () => {
     const profile = tierToProfile('minimal')
     assert.equal(profile.tier, 'minimal')
-    assert.equal(profile.disableGlobe, true)
+    assert.equal(profile.disableGlobe, false)
+    assert.equal(profile.freezeGlobe, true)
     assert.equal(profile.disableParallax, true)
     assert.equal(profile.disableBorderBeam, true)
     assert.equal(profile.disableLens, true)
     assert.equal(profile.hyperTextScramble, false)
     assert.equal(profile.showScrollProgress, false)
-    assert.equal(profile.globeQuality, 'off')
+    assert.equal(profile.globeQuality, 'low')
   })
 
   it('maps reduced tier to partial degradation', () => {
     const profile = tierToProfile('reduced')
     assert.equal(profile.disableGlobe, false)
+    assert.equal(profile.freezeGlobe, false)
     assert.equal(profile.disableParallax, true)
     assert.equal(profile.disableLens, true)
     assert.equal(profile.globeQuality, 'low')
@@ -34,6 +36,7 @@ describe('performanceProfile', () => {
   it('maps full tier to current behavior', () => {
     const profile = tierToProfile('full')
     assert.equal(profile.disableGlobe, false)
+    assert.equal(profile.freezeGlobe, false)
     assert.equal(profile.disableParallax, false)
     assert.equal(profile.disableBorderBeam, false)
     assert.equal(profile.disableLens, false)

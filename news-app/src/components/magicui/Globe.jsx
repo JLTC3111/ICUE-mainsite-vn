@@ -51,6 +51,7 @@ export default function Globe({
   config = NEWSROOM_GLOBE_CONFIG,
   interactive = false,
   reduceMotion = false,
+  frozen = false,
   quality = 'full',
   pauseWhenHidden = false,
 }) {
@@ -62,6 +63,8 @@ export default function Globe({
   const pointerInteractionMovement = useRef(0)
   const globeRef = useRef(null)
   const pausedRef = useRef(false)
+  const frozenRef = useRef(frozen)
+  frozenRef.current = frozen
 
   const r = useMotionValue(0)
   const rs = useSpring(r, {
@@ -85,8 +88,11 @@ export default function Globe({
     }
   }
 
+  // Static globe still mounts; only quality === 'off' skips WebGL entirely.
+  const hideGlobe = quality === 'off' || (reduceMotion && !frozen)
+
   useEffect(() => {
-    if (reduceMotion || quality === 'off' || !canvasRef.current) return undefined
+    if (hideGlobe || !canvasRef.current) return undefined
 
     const onResize = () => {
       if (canvasRef.current) {
@@ -103,7 +109,9 @@ export default function Globe({
       height: widthRef.current * 2,
       onRender: (state) => {
         if (pausedRef.current) return
-        if (!pointerInteracting.current) phiRef.current += 0.007
+        if (!frozenRef.current && !pointerInteracting.current) {
+          phiRef.current += 0.007
+        }
         state.phi = phiRef.current + rs.get()
         state.width = widthRef.current * 2
         state.height = widthRef.current * 2
@@ -122,10 +130,10 @@ export default function Globe({
       globeRef.current = null
       window.removeEventListener('resize', onResize)
     }
-  }, [config, reduceMotion, quality, rs])
+  }, [config, hideGlobe, rs])
 
   useEffect(() => {
-    if (!pauseWhenHidden || reduceMotion || quality === 'off') return undefined
+    if (!pauseWhenHidden || hideGlobe || frozen) return undefined
 
     const node = shellRef.current || canvasRef.current
     if (!node || typeof IntersectionObserver === 'undefined') return undefined
@@ -139,11 +147,11 @@ export default function Globe({
 
     observer.observe(node)
     return () => observer.disconnect()
-  }, [pauseWhenHidden, reduceMotion, quality])
+  }, [pauseWhenHidden, hideGlobe, frozen])
 
-  if (reduceMotion || quality === 'off') return null
+  if (hideGlobe) return null
 
-  const pointerHandlers = interactive
+  const pointerHandlers = interactive && !frozen
     ? {
         onPointerDown: (event) => {
           pointerInteracting.current = event.clientX
