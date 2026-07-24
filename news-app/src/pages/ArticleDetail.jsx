@@ -11,6 +11,7 @@ import MediaGallery from '../components/MediaGallery'
 import ArticleComparisonCarousel from '../components/ArticleComparisonCarousel'
 import ArticleSources from '../components/ArticleSources'
 import HeartButton from '../components/HeartButton'
+import ClapButton from '../components/ClapButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
@@ -431,6 +432,7 @@ export default function ArticleDetail() {
         {article.status === 'published' && (
           <div className="article-detail__engagement">
             <ArticleViewCounter count={viewCount} />
+            <ClapButton articleId={article.id} />
             <HeartButton articleId={article.id} />
           </div>
         )}

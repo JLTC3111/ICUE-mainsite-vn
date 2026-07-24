@@ -10,6 +10,25 @@
     />
     <meta name="theme-color" content="#0a0a0a" />
     <link rel="canonical" href="https://icue.vn/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://icue.vn/" />
+    <meta property="og:site_name" content="iCUE Vietnam" />
+    <meta property="og:title" content="ICUE-Vietnam" />
+    <meta
+      property="og:description"
+      content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Và Đô Thị."
+    />
+    <!-- Static social preview: Netlify cannot screenshot the graphics-heavy home page. -->
+    <meta property="og:image" content="https://icue.vn/preview.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ICUE-Vietnam" />
+    <meta
+      name="twitter:description"
+      content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Và Đô Thị."
+    />
+    <meta name="twitter:image" content="https://icue.vn/preview.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,5 +46,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <!-- Netlify/headless crawlers: show static preview instead of rendering the heavy home app -->
+    <script>
+      if (navigator.userAgent.includes('Headless')) {
+        document.body.innerHTML =
+          '<img src="/preview.jpg" alt="iCUE Vietnam" style="width:100vw;height:100vh;object-fit:cover;display:block;margin:0;" />';
+      }
+    </script>
   </body>
 </html>

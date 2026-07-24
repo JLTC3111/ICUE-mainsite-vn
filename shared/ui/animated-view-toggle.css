@@ -87,10 +87,11 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-video-icon
 }
 
 .animated-view-toggle__icons {
-  position: relative;
-  display: block;
-  width: 1.15rem;
-  height: 1.15rem;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
 }
 
 .animated-view-toggle__face {
@@ -116,9 +117,10 @@ html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-video-icon
 }
 
 .animated-view-toggle__face svg {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 55%;
+  height: 55%;
   display: block;
+  margin: 0;
 }
 
 .animated-view-toggle__sr-only {

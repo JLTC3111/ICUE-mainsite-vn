@@ -47,6 +47,15 @@ copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
 
+// Publish social/Netlify preview image at site root (/preview.jpg) in addition to /public/preview.jpg.
+const previewJpg = path.join(root, 'public/preview.jpg');
+if (fs.existsSync(previewJpg)) {
+  copyFile(previewJpg, path.join(homeDist, 'preview.jpg'));
+  copyFile(previewJpg, path.join(root, 'preview.jpg'));
+} else {
+  console.warn('[postbuild] Missing public/preview.jpg — Netlify/OG preview image will be unavailable.');
+}
+
 const builtIndex = path.join(homeDist, 'index.html');
 if (!fs.existsSync(builtIndex)) {
   console.error('[postbuild] dist-home/index.html not found.');

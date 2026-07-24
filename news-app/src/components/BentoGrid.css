@@ -116,7 +116,10 @@
   flex-direction: column;
   justify-content: flex-end;
   flex: 1;
-  min-height: 100%;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
   padding: clamp(16px, 2.8vw, 26px);
   color: #fff;
   isolation: isolate;
@@ -144,6 +147,7 @@
   justify-content: flex-end;
   gap: 8px;
   width: 100%;
+  min-width: 0;
   margin-top: auto;
   padding-top: 12px;
 }
@@ -166,6 +170,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: anywhere;
   text-wrap: balance;
   text-shadow:
     0 1px 2px rgba(0, 0, 0, 0.55),
@@ -184,14 +189,18 @@
 }
 
 .bento-card__cta {
+  position: absolute;
+  inset: auto auto clamp(16px, 2.8vw, 26px) clamp(16px, 2.8vw, 26px);
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 10px;
+  margin: 0;
   font-size: 13px;
   font-weight: 700;
   color: var(--icue-accent);
   opacity: 0;
+  pointer-events: none;
   transform: translateY(8px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -202,6 +211,12 @@
   transform: translateY(0);
 }
 
+/* Reserve room so the hover CTA never covers the title */
+.bento-card:hover .bento-card__copy,
+.bento-card:focus-visible .bento-card__copy {
+  padding-bottom: 28px;
+}
+
 .bento-card__cta-icon {
   width: 14px;
   height: 14px;
@@ -210,6 +225,10 @@
 /* Compact 1×1 cells — shorter titles, tighter meta */
 .bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__body {
   padding: 14px 16px 16px;
+}
+
+.bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__cta {
+  inset: auto auto 16px 16px;
 }
 
 .bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__copy {
@@ -255,6 +274,10 @@
   padding: 18px 20px 22px;
 }
 
+.bento-card--span-rows-2:not(.bento-card--span-cols-2) .bento-card__cta {
+  inset: auto auto 22px 20px;
+}
+
 .bento-card--span-rows-2:not(.bento-card--span-cols-2) .bento-card__copy {
   gap: 12px;
 }
@@ -268,6 +291,10 @@
 /* Featured 2×2 cells (legacy / rare) */
 .bento-card--span-cols-2.bento-card--span-rows-2 .bento-card__body {
   padding: 22px 26px 26px;
+}
+
+.bento-card--span-cols-2.bento-card--span-rows-2 .bento-card__cta {
+  inset: auto auto 26px 26px;
 }
 
 .bento-card--span-cols-2.bento-card--span-rows-2 .bento-card__copy {

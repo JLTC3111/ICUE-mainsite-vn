@@ -1,5 +1,5 @@
-/* Heart button ------------------------------------------------------------ */
-.heart-btn {
+/* Shared engagement chips (heart / clap) ---------------------------------- */
+.engagement-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -20,57 +20,74 @@
     color 0.15s ease;
 }
 
-.heart-btn:hover:not(:disabled) {
+.engagement-chip:hover:not(:disabled) {
   transform: translateY(-2px);
-  color: #e0245e;
 }
 
-.heart-btn:active:not(:disabled) {
+.engagement-chip:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: var(--np-shadow-pressed-sm);
   background-image: var(--np-gradient-pressed);
 }
 
-.heart-btn:focus,
-.heart-btn:focus-visible {
+.engagement-chip:focus,
+.engagement-chip:focus-visible {
   outline: none;
 }
 
-.heart-btn:focus-visible {
+.engagement-chip:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
 }
 
-.heart-btn:disabled {
+.engagement-chip:disabled {
   opacity: 0.6;
   cursor: default;
 }
 
-.heart-btn__icon {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  transition: fill 0.18s ease, stroke 0.18s ease, transform 0.18s ease;
+.engagement-chip__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  overflow: visible;
+  transition: transform 0.18s ease;
 }
 
-.heart-btn.is-liked {
-  color: #e0245e;
+.engagement-chip.is-active {
   box-shadow: var(--np-shadow-pressed-sm);
   background-image: var(--np-gradient-pressed);
 }
 
-.heart-btn.is-liked .heart-btn__icon {
-  fill: #e0245e;
-  stroke: #e0245e;
+.engagement-chip.is-active .engagement-chip__icon {
   transform: scale(1.08);
 }
 
-.heart-btn__count {
+.engagement-chip__count {
   font-variant-numeric: tabular-nums;
   min-width: 1ch;
   text-align: left;
+}
+
+/* Heart ------------------------------------------------------------------- */
+.heart-btn:hover:not(:disabled),
+.heart-btn.is-active {
+  color: #e0245e;
+}
+
+.icue-app--news-theme-dark .heart-btn:hover:not(:disabled),
+.icue-app--news-theme-dark .heart-btn.is-active {
+  color: #ff4d7a;
+}
+
+/* Clap -------------------------------------------------------------------- */
+.clap-btn:hover:not(:disabled),
+.clap-btn.is-active {
+  color: #c27803;
+}
+
+.icue-app--news-theme-dark .clap-btn:hover:not(:disabled),
+.icue-app--news-theme-dark .clap-btn.is-active {
+  color: #fbbf24;
 }
 
 /* Comments ----------------------------------------------------------------- */
@@ -123,55 +140,21 @@
   max-width: none;
 }
 
-.icue-app--news-theme-dark .heart-btn.is-liked {
-  color: #ff4d7a;
-}
-
-.icue-app--news-theme-dark .heart-btn:hover:not(:disabled) {
-  color: #ff4d7a;
-}
-
-.icue-app--news-theme-dark .heart-btn.is-liked .heart-btn__icon {
-  fill: #ff4d7a;
-  stroke: #ff4d7a;
-}
-
-.icue-app--news-theme-dark .comments {
-  border-color: var(--icue-border);
-}
-
-.icue-app--news-theme-dark .comments__title {
-  color: var(--icue-text);
-}
-
 .icue-app--news-theme-dark .comments__item {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: var(--icue-border);
+  background: #141414;
+  border-color: #16181d;
 }
 
-.icue-app--news-theme-dark .comments__author {
-  color: var(--icue-text);
+.icue-app--news-theme-dark .comments__author,
+.icue-app--news-theme-dark .comments__title {
+  color: #e7e8e4;
 }
 
 .icue-app--news-theme-dark .comments__date,
-.icue-app--news-theme-dark .comments__text,
 .icue-app--news-theme-dark .comments__empty {
-  color: var(--icue-text-soft);
+  color: #8c929c;
 }
 
-.icue-app--news-theme-dark .comments__date {
-  color: var(--icue-text-faint);
-}
-
-.icue-app--news-theme-dark .input,
-.icue-app--news-theme-dark .textarea {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: var(--icue-border);
-  color: var(--icue-text);
-}
-
-.icue-app--news-theme-dark .input:focus,
-.icue-app--news-theme-dark .textarea:focus {
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+.icue-app--news-theme-dark .comments__text {
+  color: #c4c7c0;
 }

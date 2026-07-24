@@ -201,6 +201,8 @@
   "engagement": {
     "like": "Thả tim",
     "liked": "Bỏ tim",
+    "clap": "Vỗ tay",
+    "clapped": "Bỏ vỗ tay",
     "comments": "Bình luận",
     "commentsCount": "Bình luận ({{count}})",
     "namePlaceholder": "Tên của bạn (tùy chọn)",

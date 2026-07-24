@@ -65,14 +65,14 @@ function MessengerIcon() {
   const gradId = useId()
   return (
     <svg
-      width="22"
-      height="22"
+      width="30"
+      height="30"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Messenger"
       role="img"
-      viewBox="0 0 512 512"
+      // Crop empty padding so the bubble matches Zalo’s visual weight in the 50px slot.
+      viewBox="64 64 384 384"
     >
-      <rect width="30" height="30" rx="15%" fill="#fff" />
       <linearGradient id={gradId} x1="256" x2="256" y1="78.2" y2="441.2" gradientUnits="userSpaceOnUse">
         <stop offset="0" stopColor="#00B2FF" />
         <stop offset="1" stopColor="#006AFF" />
@@ -172,7 +172,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           href="https://www.facebook.com/profile.php?id=100075982245583"
           target="_blank"
           rel="noopener noreferrer"
-          className="contact-sidebar__item"
+          className="contact-sidebar__item contact-sidebar__item--messenger"
           aria-label="Messenger"
         >
           <MessengerIcon />

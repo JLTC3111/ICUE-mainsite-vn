@@ -1162,11 +1162,8 @@ const AboutUsBackgroundVideoManager = (() => {
 
   initEnabledState();
 
-  const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const canPlayVideosInThisContext = () => {
-    const connection = getConnection();
-    const slowNetwork = connection && (connection.saveData || /(slow-2g|2g)/i.test(connection.effectiveType || ''));
-    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !slowNetwork;
+    return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   };
 
   const shouldKeepStatic = () => {

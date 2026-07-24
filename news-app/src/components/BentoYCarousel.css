@@ -96,7 +96,9 @@
 }
 
 .bento-y-carousel__layer {
-  height: 118%;
+  /* Must stay 100%: taller layers clip bottom-row card text at rest
+     (Embla image-parallax “oversized media” pattern does not apply to content grids). */
+  height: 100%;
   min-height: 0;
   will-change: transform;
   transform: translate3d(0, 0, 0);

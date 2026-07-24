@@ -71,6 +71,12 @@ aside.contact-sidebar button:hover {
   height: 70%;
 }
 
+/* Circle reads smaller than Zalo’s squircle at the same box size. */
+.contact-sidebar__item--messenger svg {
+  width: 82%;
+  height: 82%;
+}
+
 .contact-sidebar__item:hover svg {
   transform: rotate(-360deg) scale(1.25);
   transition: transform 0.3s ease-in-out;
@@ -173,6 +179,11 @@ aside.contact-sidebar button:hover {
   .contact-sidebar__music svg {
     width: 25px;
     height: 25px;
+  }
+
+  .contact-sidebar__item--messenger svg {
+    width: 30px;
+    height: 30px;
   }
 
   /* Hide while the mobile drawer menu covers the viewport. */

@@ -201,6 +201,8 @@
   "engagement": {
     "like": "Leave a heart",
     "liked": "Remove heart",
+    "clap": "Leave a clap",
+    "clapped": "Remove clap",
     "comments": "Comments",
     "commentsCount": "Comments ({{count}})",
     "namePlaceholder": "Your name (optional)",

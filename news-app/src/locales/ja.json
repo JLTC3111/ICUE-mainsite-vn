@@ -193,6 +193,8 @@
   "engagement": {
     "like": "ハートを送る",
     "liked": "ハートを取り消す",
+    "clap": "拍手を送る",
+    "clapped": "拍手を取り消す",
     "comments": "コメント",
     "commentsCount": "コメント ({{count}})",
     "namePlaceholder": "お名前（任意）",

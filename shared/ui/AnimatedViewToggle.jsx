@@ -116,19 +116,20 @@ function getTransitionClipPaths(
   }
 }
 
-/** Phosphor `video-camera` — from public/design-dev-icons/phosphoricicons */
-function VideoCameraIcon() {
+/** Phosphor `video-camera` — from public/phosphor-icons/video-camera.svg
+ *  viewBox cropped to glyph width so ink is horizontally centered in the circle. */
+function CameraIcon() {
   return (
-    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+    <svg viewBox="16 0 236 256" fill="currentColor" aria-hidden="true">
       <path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM192,184H32V72H192V184Zm48-22.95-32-21.33V116.28L240,95Z" />
     </svg>
   );
 }
 
-/** Phosphor `video-camera-slash` — from public/design-dev-icons/phosphoricicons */
-function VideoCameraSlashIcon() {
+/** Phosphor `video-camera-slash` — from public/phosphor-icons/video-camera-slash.svg */
+function CameraSlashIcon() {
   return (
-    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+    <svg viewBox="16 0 236 256" fill="currentColor" aria-hidden="true">
       <path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H113.06a8,8,0,0,0,0,16H192v87.63a8,8,0,0,0,16,0V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM240,161.05l-32-21.33V116.28L240,95ZM53.92,34.62A8,8,0,1,0,42.08,45.38L51.73,56H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H182.64l19.44,21.38a8,8,0,1,0,11.84-10.76ZM32,184V72H66.28L168.1,184Z" />
     </svg>
   );
@@ -274,10 +275,10 @@ export default function AnimatedViewToggle({
         aria-hidden="true"
       >
         <span className={`animated-view-toggle__face animated-view-toggle__face--on${checked ? ' is-active' : ''}`}>
-          <VideoCameraIcon />
+          <CameraIcon />
         </span>
         <span className={`animated-view-toggle__face animated-view-toggle__face--off${!checked ? ' is-active' : ''}`}>
-          <VideoCameraSlashIcon />
+          <CameraSlashIcon />
         </span>
       </span>
       <span className="animated-view-toggle__sr-only">{ariaLabel}</span>

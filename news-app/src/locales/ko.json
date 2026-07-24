@@ -193,6 +193,8 @@
   "engagement": {
     "like": "하트 남기기",
     "liked": "하트 취소",
+    "clap": "박수 남기기",
+    "clapped": "박수 취소",
     "comments": "댓글",
     "commentsCount": "댓글 ({{count}})",
     "namePlaceholder": "이름 (선택 사항)",

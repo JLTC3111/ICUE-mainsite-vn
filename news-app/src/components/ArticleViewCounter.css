@@ -31,10 +31,10 @@
 }
 
 .article-view-counter__icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 13px;
   flex: 0 0 auto;
-  stroke-width: 2;
+  overflow: visible;
 }
 
 .article-view-counter__number {
@@ -75,8 +75,8 @@
 }
 
 .article-view-counter--compact .article-view-counter__icon {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 10px;
 }
 
 .article-view-counter--compact .article-view-counter__label {

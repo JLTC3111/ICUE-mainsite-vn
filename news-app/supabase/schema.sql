@@ -306,10 +306,11 @@ create policy storage_auth_delete on storage.objects for delete to authenticated
   );
 
 -- ============================================================================
--- Visitor engagement: IP-based hearts (likes) + comments — no login required.
+-- Visitor engagement: IP-based hearts (likes), claps + comments — no login required.
 -- Visitors are identified by a hash of their request IP (read server-side from
 -- PostgREST request headers), so writes happen exclusively through SECURITY
 -- DEFINER RPCs below. The raw IP is never stored — only an md5 hash.
+-- Hearts and claps are independent — a visitor may leave both on one article.
 -- ============================================================================
 
 -- One heart per IP per article (toggleable).
@@ -322,6 +323,17 @@ create table if not exists public.article_reactions (
 );
 create index if not exists article_reactions_article_idx
   on public.article_reactions (article_id);
+
+-- One clap per IP per article (toggleable), independent of hearts.
+create table if not exists public.article_claps (
+  id          uuid primary key default gen_random_uuid(),
+  article_id  uuid not null references public.articles (id) on delete cascade,
+  ip_hash     text not null,
+  created_at  timestamptz not null default now(),
+  unique (article_id, ip_hash)
+);
+create index if not exists article_claps_article_idx
+  on public.article_claps (article_id);
 
 -- Comments left by visitors (multiple allowed per IP).
 create table if not exists public.article_comments (
@@ -394,6 +406,48 @@ begin
   return json_build_object('liked', v_liked, 'count', v_count);
 end $$;
 
+-- Current clap count + whether this visitor has already clapped.
+create or replace function public.get_claps(p_article uuid)
+returns json language plpgsql security definer set search_path = public as $$
+declare
+  v_ip      text := public.client_ip_hash();
+  v_count   int;
+  v_clapped boolean;
+begin
+  select count(*) into v_count from public.article_claps where article_id = p_article;
+  select exists (
+    select 1 from public.article_claps where article_id = p_article and ip_hash = v_ip
+  ) into v_clapped;
+  return json_build_object('clapped', v_clapped, 'count', v_count);
+end $$;
+
+-- Toggle this visitor's clap on/off; returns the new state + count.
+create or replace function public.toggle_clap(p_article uuid)
+returns json language plpgsql security definer set search_path = public as $$
+declare
+  v_ip      text := public.client_ip_hash();
+  v_clapped boolean;
+  v_count   int;
+begin
+  if not exists (select 1 from public.articles where id = p_article) then
+    raise exception 'article not found';
+  end if;
+
+  if exists (
+    select 1 from public.article_claps where article_id = p_article and ip_hash = v_ip
+  ) then
+    delete from public.article_claps where article_id = p_article and ip_hash = v_ip;
+    v_clapped := false;
+  else
+    insert into public.article_claps (article_id, ip_hash)
+      values (p_article, v_ip) on conflict do nothing;
+    v_clapped := true;
+  end if;
+
+  select count(*) into v_count from public.article_claps where article_id = p_article;
+  return json_build_object('clapped', v_clapped, 'count', v_count);
+end $$;
+
 -- Add a comment as the current visitor (identified by IP hash).
 create or replace function public.add_comment(p_article uuid, p_body text, p_name text default null)
 returns public.article_comments language plpgsql security definer set search_path = public as $$
@@ -432,8 +486,9 @@ begin
 end $$;
 
 -- RLS: writes only via the SECURITY DEFINER RPCs above. Comments are publicly
--- readable for published articles; reactions are only read via get_hearts.
+-- readable for published articles; reactions/claps are only read via RPCs.
 alter table public.article_reactions enable row level security;
+alter table public.article_claps     enable row level security;
 alter table public.article_comments  enable row level security;
 
 drop policy if exists comments_select_public on public.article_comments;
@@ -446,6 +501,8 @@ create policy comments_select_public on public.article_comments for select
 -- Expose the RPCs to anonymous + authenticated visitors.
 grant execute on function public.get_hearts(uuid)            to anon, authenticated;
 grant execute on function public.toggle_heart(uuid)          to anon, authenticated;
+grant execute on function public.get_claps(uuid)             to anon, authenticated;
+grant execute on function public.toggle_clap(uuid)           to anon, authenticated;
 grant execute on function public.add_comment(uuid, text, text) to anon, authenticated;
 grant execute on function public.record_article_view(uuid)   to anon, authenticated;
 

@@ -193,6 +193,8 @@
   "engagement": {
     "like": "Laisser un cœur",
     "liked": "Retirer le cœur",
+    "clap": "Laisser un applaudissement",
+    "clapped": "Retirer l'applaudissement",
     "comments": "Commentaires",
     "commentsCount": "Commentaires ({{count}})",
     "namePlaceholder": "Votre nom (facultatif)",

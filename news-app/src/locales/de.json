@@ -193,6 +193,8 @@
   "engagement": {
     "like": "Herz hinterlassen",
     "liked": "Herz entfernen",
+    "clap": "Klatschen hinterlassen",
+    "clapped": "Klatschen entfernen",
     "comments": "Kommentare",
     "commentsCount": "Kommentare ({{count}})",
     "namePlaceholder": "Dein Name (optional)",

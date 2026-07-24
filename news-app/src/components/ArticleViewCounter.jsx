@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { animate } from 'motion/react'
 import { useTranslation } from 'react-i18next'
-import { Eye } from 'lucide-react'
 import useMediaQuery from '../hooks/useMediaQuery'
-import SlidingNumber from './magicui/SlidingNumber'
+import DevIcon174 from './icons/DevIcon174'
+import SlidingNumber, { SLOW_SPRING } from './magicui/SlidingNumber'
 import './ArticleViewCounter.css'
 
 export default function ArticleViewCounter({ count = 0, compact = false, tone = 'light' }) {
@@ -11,28 +12,30 @@ export default function ArticleViewCounter({ count = 0, compact = false, tone = 
   const parsed = Number(count)
   const safeCount = Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : 0
   const [displayValue, setDisplayValue] = useState(safeCount)
-  const settleRafRef = useRef(0)
+  const animRef = useRef(null)
 
   useEffect(() => {
+    animRef.current?.stop()
+    animRef.current = null
     setDisplayValue(safeCount)
   }, [safeCount])
 
   useEffect(() => () => {
-    if (settleRafRef.current) cancelAnimationFrame(settleRafRef.current)
+    animRef.current?.stop()
   }, [])
 
-  const playHoverRoll = () => {
-    if (reduceMotion || compact) return
-    if (settleRafRef.current) cancelAnimationFrame(settleRafRef.current)
+  const playHoverCount = () => {
+    if (reduceMotion || safeCount <= 0) return
 
-    // Nudge last digit so SlidingNumber has a from→to to animate.
-    const nudge = safeCount === 0 ? 1 : safeCount - 1
-    setDisplayValue(nudge)
-    settleRafRef.current = requestAnimationFrame(() => {
-      settleRafRef.current = requestAnimationFrame(() => {
+    animRef.current?.stop()
+    setDisplayValue(0)
+    animRef.current = animate(0, safeCount, {
+      ...SLOW_SPRING,
+      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
+      onComplete: () => {
         setDisplayValue(safeCount)
-        settleRafRef.current = 0
-      })
+        animRef.current = null
+      },
     })
   }
 
@@ -41,12 +44,13 @@ export default function ArticleViewCounter({ count = 0, compact = false, tone = 
       className={`article-view-counter${compact ? ' article-view-counter--compact' : ''}${tone === 'dark' ? ' article-view-counter--dark' : ''}`}
       aria-label={t('engagement.views', { count: safeCount })}
       title={t('engagement.views', { count: safeCount })}
-      onMouseEnter={playHoverRoll}
+      onMouseEnter={playHoverCount}
     >
-      <Eye className="article-view-counter__icon" aria-hidden="true" />
+      <DevIcon174 className="article-view-counter__icon" />
       <SlidingNumber
         value={displayValue}
         reduceMotion={reduceMotion}
+        spring={SLOW_SPRING}
         className="article-view-counter__number"
       />
       <span className="article-view-counter__label">{t('engagement.viewsLabel')}</span>
