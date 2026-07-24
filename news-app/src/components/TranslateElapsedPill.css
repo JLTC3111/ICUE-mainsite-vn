@@ -1,0 +1,61 @@
+.translate-elapsed-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--agent-border, rgba(255, 255, 255, 0.12));
+  background: var(--agent-panel-2, rgba(255, 255, 255, 0.06));
+  color: var(--agent-text, #e8eae6);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.translate-elapsed-pill__spinner {
+  flex: 0 0 auto;
+  color: var(--agent-accent-light, #1db7ff);
+  animation: translate-elapsed-spin 0.85s linear infinite;
+}
+
+.translate-elapsed-pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: #3dd68c;
+}
+
+.translate-elapsed-pill__label {
+  opacity: 0.82;
+}
+
+.translate-elapsed-pill__ms {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 2px;
+  min-width: 4.5ch;
+  font-weight: 750;
+}
+
+.translate-elapsed-pill__unit {
+  opacity: 0.55;
+  font-weight: 600;
+}
+
+.translate-elapsed-pill__number {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes translate-elapsed-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .translate-elapsed-pill__spinner {
+    animation: none;
+  }
+}

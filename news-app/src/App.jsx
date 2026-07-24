@@ -15,6 +15,7 @@ const Upload = lazyWithRetry(() => import('./pages/Upload'))
 const Edit = lazyWithRetry(() => import('./pages/Edit'))
 const Dashboard = lazyWithRetry(() => import('./pages/Dashboard'))
 const Profile = lazyWithRetry(() => import('./pages/Profile'))
+const AiAssist = lazyWithRetry(() => import('./pages/AiAssist'))
 
 function RouteFallback() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="write" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
             <Route path="edit/:id" element={<ProtectedRoute><Edit /></ProtectedRoute>} />
             <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="assist" element={<ProtectedRoute><AiAssist /></ProtectedRoute>} />
             <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />

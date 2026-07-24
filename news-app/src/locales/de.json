@@ -3,7 +3,11 @@
   "brandBadge": "Aktuelles",
   "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
   "hero": {
-    "rotatingTags": ["NEUESTE NACHRICHTEN", "LERNEN & WISSEN", "BAUEN & ENTDECKEN"]
+    "rotatingTags": [
+      "NEUESTE NACHRICHTEN",
+      "LERNEN & WISSEN",
+      "BAUEN & ENTDECKEN"
+    ]
   },
   "nav": {
     "home": "Startseite",
@@ -13,7 +17,9 @@
     "write": "Schreiben",
     "dashboard": "Meine Artikel",
     "login": "Anmelden",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "assist": "KI-Assistenz",
+    "authorTools": "Autorentools"
   },
   "drawer": {
     "menu": "Menü",
@@ -238,7 +244,9 @@
     "retry": "Erneut versuchen",
     "translated": "Übersetzt: {{lang}}",
     "error": "Übersetzung fehlgeschlagen. Bitte versuche es erneut.",
-    "note": "Maschinelle Übersetzung"
+    "note": "Maschinelle Übersetzung",
+    "ready": "Fertig",
+    "ms": "ms"
   },
   "search": {
     "label": "Artikel suchen",
@@ -288,5 +296,87 @@
     "period": "AM/PM",
     "am": "AM",
     "pm": "PM"
+  },
+  "aiAssist": {
+    "title": "Intelligenter Editor",
+    "eyebrow": "Intelligenter Editor",
+    "context": "Artikel",
+    "contextHint": "Hängen Sie bis zu 5 Ihrer Artikel an, damit Gemini sie lesen kann.",
+    "hideContext": "Artikel ausblenden",
+    "showContext": "Artikel",
+    "attached": "Angehängte Artikel",
+    "removeArticle": "Artikel entfernen",
+    "articlesError": "Ihre Artikel konnten nicht geladen werden.",
+    "noArticles": "Noch keine Artikel — entwerfen Sie aus einem Briefing oder schreiben Sie zuerst einen.",
+    "modes": "Assistenten-Modi",
+    "modeChat": "Fragen",
+    "modeReview": "Prüfen",
+    "modeImprove": "Verbessern",
+    "modeDraft": "Entwurf",
+    "clear": "Leeren",
+    "you": "Sie",
+    "agent": "Editor",
+    "emptyBody": "Entwurf prüfen, Text schärfen oder einen neuen Artikel im Studio erstellen.",
+    "suggestReview": "Prüfen Sie den angehängten Artikel wie ein erfahrener Redakteur.",
+    "suggestImprove": "Schlagen Sie konkrete Umschreibungen für Lead und Überschrift vor.",
+    "suggestOutline": "Skizzieren Sie einen Nachrichtenbeitrag zur Stadtplanungspolitik dieser Woche.",
+    "suggestDraft": "Entwerfen Sie einen kurzen ICUE-Nachrichtenartikel aus diesem Briefing…",
+    "suggestHeadline": "Geben Sie mir 8 Überschrift-Optionen im Newsroom-Ton.",
+    "draftReady": "Entwurf bereit",
+    "openInEditor": "Im Editor öffnen",
+    "needArticle": "Hängen Sie für Prüfen oder Verbessern mindestens einen Artikel an.",
+    "send": "Senden",
+    "thinking": "Denkt nach",
+    "enterHint": "Enter zum Senden · Shift+Enter für Zeilenumbruch",
+    "errorGeneric": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
+    "errorNotConfigured": "Gemini ist auf dem Server noch nicht konfiguriert.",
+    "errorAuth": "Ihre Sitzung ist abgelaufen. Bitte erneut anmelden.",
+    "errorRate": "Gemini-Kontingent/Rate erreicht. ~30 s warten und erneut versuchen, oder Quota/Billing in Google AI Studio prüfen.",
+    "placeholder": {
+      "chat": "Fragen Sie zu angehängten Artikeln oder einem neuen Stück…",
+      "review": "Worauf soll die Prüfung fokussieren?",
+      "improve": "Was sollen wir zuerst verbessern?",
+      "draft": "Beschreiben Sie den Artikel, den Sie entwerfen möchten…"
+    },
+    "sidebar": "Studio",
+    "history": "Verlauf",
+    "newChat": "Neuer Chat",
+    "historyEmpty": "Noch keine Chats — senden Sie eine Nachricht, um zu starten.",
+    "historyUnavailable": "Chat-Verlauf benötigt die Supabase-Migration 20260724180000_assist_history_and_text_translations.sql.",
+    "historyError": "Chat-Verlauf konnte nicht geladen werden.",
+    "historyLoadError": "Chat konnte nicht geöffnet werden.",
+    "historyDeleteConfirm": "Diesen Chat löschen?",
+    "historyDeleteError": "Chat konnte nicht gelöscht werden.",
+    "hideHistory": "Verlauf ausblenden",
+    "showHistory": "Verlauf",
+    "generateImage": "Bild erzeugen",
+    "generatingImage": "Bild wird erzeugt…",
+    "imageReady": "Erzeugtes Bild",
+    "imagePromptRequired": "Beschreiben Sie das Bild zuerst im Eingabefeld.",
+    "errorFluxNotConfigured": "Cloudflare Workers AI (FLUX) ist auf dem Server noch nicht konfiguriert.",
+    "errorImageGeneric": "Bilderzeugung fehlgeschlagen. Bitte erneut versuchen.",
+    "errorImageRate": "Limit für Bilderzeugung erreicht. Kurz warten und erneut versuchen.",
+    "emptyGreetings": {
+      "morning": [
+        "Guten Morgen.",
+        "Wie geht's?",
+        "Bereit, wenn Sie es sind."
+      ],
+      "afternoon": [
+        "Womit kann ich helfen?",
+        "Wo sollen wir anfangen?",
+        "Bereit, wenn Sie es sind."
+      ],
+      "evening": [
+        "Wie geht's?",
+        "Wo sollen wir anfangen?",
+        "Womit kann ich helfen?"
+      ],
+      "night": [
+        "Bereit, wenn Sie es sind.",
+        "Womit kann ich helfen?",
+        "Wo sollen wir anfangen?"
+      ]
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { memo, useState, useCallback } from 'react'
+import { memo, useState, useCallback, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -12,9 +12,145 @@ import PerformanceModeToggle from './PerformanceModeToggle'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 
+function AuthorIcon({ name }) {
+  const common = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.75,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    className: 'icue-header__tool-icon',
+    'aria-hidden': true,
+  }
+
+  if (name === 'articles') {
+    return (
+      <svg {...common}>
+        <path d="M7 4h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V6a2 2 0 0 1 2-2Z" />
+        <path d="M9 9h6M9 13h6" />
+      </svg>
+    )
+  }
+
+  if (name === 'editor') {
+    return (
+      <svg {...common}>
+        <path d="M4 20h16" />
+        <path d="M7 16V8a2 2 0 0 1 2-2h2" />
+        <path d="M14 4h4v4" />
+        <path d="m18 4-7 7" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg {...common}>
+      <circle cx="12" cy="5" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function AuthorToolsMenu({ onNavigate }) {
+  const { t } = useTranslation()
+  const { pathname } = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const rootRef = useRef(null)
+  const active = pathname.startsWith('/dashboard') || pathname.startsWith('/assist')
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+    const onDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) setMenuOpen(false)
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  const go = useCallback(() => {
+    setMenuOpen(false)
+    onNavigate?.()
+  }, [onNavigate])
+
+  return (
+    <div className="icue-header__author-tools" ref={rootRef}>
+      <div className={`icue-header__author-menu${menuOpen ? ' is-open' : ''}${active ? ' is-active' : ''}`}>
+        <button
+          type="button"
+          className="icue-header__author-trigger"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          aria-label={t('nav.authorTools')}
+          title={t('nav.authorTools')}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <AuthorIcon name="editor" />
+          <span className="icue-header__author-label">{t('nav.assist')}</span>
+          <svg className="icue-header__author-chev" viewBox="0 0 12 12" aria-hidden="true">
+            <path
+              d="M2.5 4.5 6 7.5 9.5 4.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        {menuOpen && (
+          <ul className="icue-header__author-dropdown" role="menu">
+            <li role="none">
+              <NavLink
+                to="/dashboard"
+                role="menuitem"
+                className="icue-header__author-item"
+                onClick={go}
+              >
+                <AuthorIcon name="articles" />
+                <span>{t('nav.dashboard')}</span>
+              </NavLink>
+            </li>
+            <li role="none">
+              <NavLink
+                to="/assist"
+                role="menuitem"
+                className="icue-header__author-item"
+                onClick={go}
+              >
+                <AuthorIcon name="editor" />
+                <span>{t('nav.assist')}</span>
+              </NavLink>
+            </li>
+          </ul>
+        )}
+      </div>
+
+      <NavLink to="/write" className="btn btn-accent btn-sm icue-header__write-btn" onClick={onNavigate}>
+        {t('nav.write')}
+      </NavLink>
+    </div>
+  )
+}
+
 function Header() {
   const { pathname } = useLocation()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
+  const isAgentRoute = pathname.startsWith('/assist')
+  const showThemeToggle = isReaderRoute || isAgentRoute
   const { t } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, signOut } = useAuth()
@@ -92,16 +228,7 @@ function Header() {
             </a>
           </div>
 
-          {isAuthed && (
-            <>
-              <NavLink to="/dashboard" className="icue-header__link" onClick={close}>
-                {t('nav.dashboard')}
-              </NavLink>
-              <NavLink to="/write" className="btn btn-accent btn-sm" onClick={close}>
-                {t('nav.write')}
-              </NavLink>
-            </>
-          )}
+          {isAuthed && <AuthorToolsMenu onNavigate={close} />}
 
           <div className="icue-header__right">
             <LanguageSwitcher />
@@ -115,7 +242,7 @@ function Header() {
                 {t('nav.login')}
               </Link>
             )}
-            {isReaderRoute && (
+            {showThemeToggle && (
               <NewsroomThemeToggle className="animated-theme-toggler--header icue-header__theme-toggle" />
             )}
           </div>

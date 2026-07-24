@@ -3,7 +3,11 @@
   "brandBadge": "Bản Tin",
   "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
   "hero": {
-    "rotatingTags": ["TIN MỚI NHẤT", "HỌC HỎI & TRI THỨC", "XÂY DỰNG & KHÁM PHÁ"]
+    "rotatingTags": [
+      "TIN MỚI NHẤT",
+      "HỌC HỎI & TRI THỨC",
+      "XÂY DỰNG & KHÁM PHÁ"
+    ]
   },
   "nav": {
     "home": "Trang Chủ",
@@ -11,9 +15,11 @@
     "archive": "Tin Cũ",
     "mainSite": "Trang Chính",
     "write": "Viết Bài",
+    "assist": "Trợ lý AI",
     "dashboard": "Bài Viết Của Tôi",
     "login": "Đăng Nhập",
-    "logout": "Đăng Xuất"
+    "logout": "Đăng Xuất",
+    "authorTools": "Công cụ tác giả"
   },
   "drawer": {
     "menu": "Menu",
@@ -246,7 +252,9 @@
     "retry": "Thử lại",
     "translated": "Đã dịch sang {{lang}}",
     "error": "Dịch không thành công. Vui lòng thử lại.",
-    "note": "Dịch tự động"
+    "note": "Dịch tự động",
+    "ready": "Xong",
+    "ms": "ms"
   },
   "search": {
     "label": "Tìm kiếm bài viết",
@@ -289,6 +297,88 @@
     "draft": "Nháp",
     "published": "Đã đăng",
     "notFound": "Không tìm thấy bài viết."
+  },
+  "aiAssist": {
+    "title": "Biên Tập Thông Minh",
+    "eyebrow": "Biên Tập Thông Minh",
+    "context": "Bài viết",
+    "contextHint": "Gắn tối đa 5 bài của bạn để Gemini đọc.",
+    "hideContext": "Ẩn bài viết",
+    "showContext": "Bài viết",
+    "attached": "Bài đã gắn",
+    "removeArticle": "Bỏ bài",
+    "articlesError": "Không tải được bài viết.",
+    "noArticles": "Chưa có bài — soạn từ brief, hoặc viết bài trước.",
+    "modes": "Chế độ trợ lý",
+    "modeChat": "Hỏi",
+    "modeReview": "Đánh giá",
+    "modeImprove": "Cải thiện",
+    "modeDraft": "Viết nháp",
+    "clear": "Xóa chat",
+    "you": "Bạn",
+    "agent": "Biên tập",
+    "emptyBody": "Rà soát bản nháp, chỉnh văn phong, hoặc tạo bài mới trong Studio.",
+    "suggestReview": "Đánh giá bài đã gắn như biên tập viên cấp cao.",
+    "suggestImprove": "Đề xuất viết lại cụ thể cho mở bài và tiêu đề.",
+    "suggestOutline": "Dàn ý bài tin về quy hoạch đô thị tuần này.",
+    "suggestDraft": "Viết nháp bài tin ICUE ngắn từ brief này…",
+    "suggestHeadline": "Cho tôi 8 tiêu đề theo giọng tòa soạn.",
+    "draftReady": "Bản nháp sẵn sàng",
+    "openInEditor": "Mở trong trình soạn",
+    "needArticle": "Hãy gắn ít nhất một bài cho Đánh giá hoặc Cải thiện.",
+    "send": "Gửi",
+    "thinking": "Đang nghĩ",
+    "enterHint": "Enter để gửi · Shift+Enter xuống dòng",
+    "errorGeneric": "Có lỗi xảy ra. Thử lại.",
+    "errorNotConfigured": "Gemini chưa được cấu hình trên máy chủ.",
+    "errorAuth": "Phiên đăng nhập hết hạn. Đăng nhập lại.",
+    "errorRate": "Gemini hết hạn mức/quota. Đợi ~30 giây rồi thử lại, hoặc kiểm tra quota/billing trên Google AI Studio.",
+    "placeholder": {
+      "chat": "Hỏi về bài đã gắn hoặc ý tưởng bài mới…",
+      "review": "Đánh giá nên tập trung vào đâu?",
+      "improve": "Nên cải thiện phần nào trước?",
+      "draft": "Mô tả bài bạn muốn viết nháp…"
+    },
+    "sidebar": "Studio",
+    "history": "Lịch sử",
+    "newChat": "Chat mới",
+    "historyEmpty": "Chưa có chat nào — gửi tin nhắn để bắt đầu.",
+    "historyUnavailable": "Lịch sử chat cần chạy migration Supabase 20260724180000_assist_history_and_text_translations.sql.",
+    "historyError": "Không tải được lịch sử chat.",
+    "historyLoadError": "Không mở được chat này.",
+    "historyDeleteConfirm": "Xóa chat này?",
+    "historyDeleteError": "Không xóa được chat này.",
+    "hideHistory": "Ẩn lịch sử",
+    "showHistory": "Lịch sử",
+    "generateImage": "Tạo ảnh",
+    "generatingImage": "Đang tạo ảnh…",
+    "imageReady": "Ảnh đã tạo",
+    "imagePromptRequired": "Hãy mô tả ảnh trong ô soạn thảo trước.",
+    "errorFluxNotConfigured": "Cloudflare Workers AI (FLUX) chưa được cấu hình trên máy chủ.",
+    "errorImageGeneric": "Tạo ảnh thất bại. Thử lại.",
+    "errorImageRate": "Đã vượt hạn mức tạo ảnh. Đợi một chút rồi thử lại.",
+    "emptyGreetings": {
+      "morning": [
+        "Chào buổi sáng.",
+        "Dạo này thế nào?",
+        "Sẵn sàng khi bạn cần."
+      ],
+      "afternoon": [
+        "Mình có thể giúp gì?",
+        "Bắt đầu từ đâu nhỉ?",
+        "Sẵn sàng khi bạn cần."
+      ],
+      "evening": [
+        "Dạo này thế nào?",
+        "Bắt đầu từ đâu nhỉ?",
+        "Mình có thể giúp gì?"
+      ],
+      "night": [
+        "Sẵn sàng khi bạn cần.",
+        "Mình có thể giúp gì?",
+        "Bắt đầu từ đâu nhỉ?"
+      ]
+    }
   },
   "picker": {
     "today": "Hôm nay",

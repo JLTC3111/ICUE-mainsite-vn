@@ -1,0 +1,14 @@
+/* motion-primitives Text Loop
+ * @see https://motion-primitives.com/docs/text-loop
+ */
+.text-loop {
+  position: relative;
+  display: inline-grid;
+  vertical-align: baseline;
+}
+
+.text-loop__item {
+  grid-area: 1 / 1;
+  display: inline-block;
+  white-space: normal;
+}

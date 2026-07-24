@@ -14,29 +14,32 @@ function Layout() {
   const { isDark } = useNewsroomTheme()
   const { tier, reduceBlur } = usePerformanceProfile()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
-  const isDarkReader = isReaderRoute && isDark
+  const isAgentRoute = pathname.startsWith('/assist')
+  const isThemedDark = (isReaderRoute || isAgentRoute) && isDark
 
   useLayoutEffect(() => {
-    syncNewsroomDocumentTheme(isDarkReader)
+    syncNewsroomDocumentTheme(isThemedDark)
     return () => syncNewsroomDocumentTheme(false)
-  }, [isDarkReader])
+  }, [isThemedDark])
 
   return (
     <div
       className={`icue-app${
         isReaderRoute ? ' icue-app--news-home' : ''
-      }${isDarkReader ? ' icue-app--news-theme-dark' : ''}${
+      }${isThemedDark ? ' icue-app--news-theme-dark' : ''}${
+        isAgentRoute ? ' icue-app--agent' : ''
+      }${isAgentRoute && !isDark ? ' icue-app--agent-light' : ''}${
         reduceBlur ? ' icue-app--perf-minimal' : tier === 'reduced' ? ' icue-app--perf-reduced' : ''
       }`}
     >
       <Header />
-      <MarketTicker />
-      <VnMarketTicker />
+      {!isAgentRoute && <MarketTicker />}
+      {!isAgentRoute && <VnMarketTicker />}
       <main className="icue-main">
         <Outlet />
       </main>
-      <Footer />
-      <ContactSidebar contentKey={pathname} />
+      {!isAgentRoute && <Footer />}
+      {!isAgentRoute && <ContactSidebar contentKey={pathname} />}
     </div>
   )
 }

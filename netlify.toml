@@ -8,7 +8,17 @@
 #
 # translate-article function needs these Netlify env vars:
 #   GOOGLE_TRANSLATE_API_KEY     — required (scope: Builds + Functions)
-#   SUPABASE_SERVICE_ROLE_KEY    — recommended for translation cache
+#   SUPABASE_SERVICE_ROLE_KEY    — required to persist article/comment/text translation cache
+#                                 (without it, every language switch re-runs Google Translate)
+#
+# gemini-article (AI Assist at /newsroom/assist) needs:
+#   GEMINI_API_KEY               — required (scope: Builds + Functions)
+#   GEMINI_MODEL                 — optional (default: gemini-3.5-flash-lite)
+#
+# flux-image (Generate Image via Workers AI FLUX) needs:
+#   CLOUDFLARE_ACCOUNT_ID        — required (scope: Builds + Functions)
+#   CLOUDFLARE_API_TOKEN         — required (Workers AI permission)
+#   CLOUDFLARE_FLUX_MODEL        — optional (default: @cf/black-forest-labs/flux-1-schnell)
 #
 # Keys are baked into the function bundle at build time (private-env.cjs) and
 # also read at runtime. Enable BOTH Builds and Functions scopes in Netlify UI.

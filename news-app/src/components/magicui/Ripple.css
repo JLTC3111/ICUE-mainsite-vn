@@ -1,0 +1,40 @@
+/* Magic UI Ripple — theme tokens come from .agent / .agent--light
+ * @see https://magicui.design/docs/components/ripple
+ */
+.magic-ripple {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 100%);
+}
+
+.magic-ripple__circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid var(--agent-ripple-border, rgba(255, 255, 255, 0.14));
+  background: var(--agent-ripple-fill, rgba(255, 255, 255, 0.05));
+  box-shadow: 0 8px 28px var(--agent-ripple-shadow, rgba(255, 255, 255, 0.06));
+  transform: translate(-50%, -50%) scale(1);
+  animation: magic-ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s) infinite;
+}
+
+@keyframes magic-ripple {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-ripple__circle {
+    animation: none;
+  }
+}

@@ -63,6 +63,14 @@ export function supabaseServiceKey(env = {}) {
   ])
 }
 
+export function geminiApiKey(env = {}) {
+  return envString(env, [
+    'GEMINI_API_KEY',
+    'GOOGLE_GEMINI_API_KEY',
+    'GOOGLE_AI_API_KEY',
+  ])
+}
+
 export function resolveServerEnv(rawEnv = process.env) {
   const env = { ...rawEnv }
   const fileConfig = loadSupabaseFileConfig()
@@ -76,6 +84,11 @@ export function resolveServerEnv(rawEnv = process.env) {
   const serviceKey = supabaseServiceKey(env)
   if (serviceKey) {
     env.SUPABASE_SERVICE_ROLE_KEY = serviceKey
+  }
+
+  const geminiKey = geminiApiKey(env)
+  if (geminiKey) {
+    env.GEMINI_API_KEY = geminiKey
   }
 
   if (fileConfig?.url) {

@@ -1,0 +1,30 @@
+.text-animate {
+  white-space: pre-wrap;
+}
+
+.agent__msg-body--animate {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--agent-text);
+}
+
+.text-animate__segment {
+  display: inline-block;
+  white-space: pre;
+}
+
+.text-animate__line {
+  display: block;
+}
+
+.text-animate__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

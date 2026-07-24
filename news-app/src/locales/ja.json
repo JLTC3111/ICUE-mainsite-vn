@@ -3,7 +3,11 @@
   "brandBadge": "ニュース",
   "instituteName": "建設経済・都市計画研究所",
   "hero": {
-    "rotatingTags": ["最新ニュース", "学び & 知識", "構築 & 探索"]
+    "rotatingTags": [
+      "最新ニュース",
+      "学び & 知識",
+      "構築 & 探索"
+    ]
   },
   "nav": {
     "home": "ホーム",
@@ -13,7 +17,9 @@
     "write": "投稿",
     "dashboard": "マイ記事",
     "login": "ログイン",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "assist": "AIアシスト",
+    "authorTools": "執筆ツール"
   },
   "drawer": {
     "menu": "メニュー",
@@ -238,7 +244,9 @@
     "retry": "再試行",
     "translated": "{{lang}} に翻訳しました",
     "error": "翻訳に失敗しました。もう一度お試しください。",
-    "note": "機械翻訳"
+    "note": "機械翻訳",
+    "ready": "完了",
+    "ms": "ms"
   },
   "search": {
     "label": "記事を検索",
@@ -288,5 +296,87 @@
     "period": "午前/午後",
     "am": "午前",
     "pm": "午後"
+  },
+  "aiAssist": {
+    "title": "インテリジェント・エディター",
+    "eyebrow": "インテリジェント・エディター",
+    "context": "記事",
+    "contextHint": "Geminiに読ませる記事を最大5本まで添付できます。",
+    "hideContext": "記事を隠す",
+    "showContext": "記事",
+    "attached": "添付した記事",
+    "removeArticle": "記事を外す",
+    "articlesError": "記事を読み込めませんでした。",
+    "noArticles": "まだ記事がありません。ブリーフから下書きするか、先に記事を書いてください。",
+    "modes": "アシスタントモード",
+    "modeChat": "質問",
+    "modeReview": "レビュー",
+    "modeImprove": "改善",
+    "modeDraft": "下書き",
+    "clear": "クリア",
+    "you": "あなた",
+    "agent": "エディター",
+    "emptyBody": "下書きのレビュー、文章の推敲、新規記事の作成をスタジオで。",
+    "suggestReview": "添付記事をシニア編集者としてレビューしてください。",
+    "suggestImprove": "リードと見出しの具体的な書き換え案を出してください。",
+    "suggestOutline": "今週の都市計画政策に関する記事の構成案を作ってください。",
+    "suggestDraft": "このブリーフから短いICUEニュース記事を下書きしてください…",
+    "suggestHeadline": "ニュースルームらしい見出し案を8つください。",
+    "draftReady": "下書きの準備完了",
+    "openInEditor": "エディタで開く",
+    "needArticle": "レビューまたは改善には、記事を1本以上添付してください。",
+    "send": "送信",
+    "thinking": "考え中",
+    "enterHint": "Enterで送信 · Shift+Enterで改行",
+    "errorGeneric": "問題が発生しました。もう一度お試しください。",
+    "errorNotConfigured": "サーバーにGeminiがまだ設定されていません。",
+    "errorAuth": "セッションの有効期限が切れました。再度ログインしてください。",
+    "errorRate": "Geminiのレート/クォータ制限に達しました。約30秒待って再試行するか、Google AI Studioでクォータ/請求を確認してください。",
+    "placeholder": {
+      "chat": "添付記事や新しい企画について質問…",
+      "review": "レビューの重点はどこにしますか？",
+      "improve": "まずどこを改善しますか？",
+      "draft": "下書きしたい記事の内容を説明…"
+    },
+    "sidebar": "スタジオ",
+    "history": "履歴",
+    "newChat": "新しいチャット",
+    "historyEmpty": "まだチャットがありません。メッセージを送って開始してください。",
+    "historyUnavailable": "チャット履歴には Supabase マイグレーション 20260724180000_assist_history_and_text_translations.sql が必要です。",
+    "historyError": "チャット履歴を読み込めませんでした。",
+    "historyLoadError": "そのチャットを開けませんでした。",
+    "historyDeleteConfirm": "このチャットを削除しますか？",
+    "historyDeleteError": "チャットを削除できませんでした。",
+    "hideHistory": "履歴を隠す",
+    "showHistory": "履歴",
+    "generateImage": "画像を生成",
+    "generatingImage": "画像を生成中…",
+    "imageReady": "生成された画像",
+    "imagePromptRequired": "先に入力欄で画像の内容を書いてください。",
+    "errorFluxNotConfigured": "Cloudflare Workers AI（FLUX）がサーバーに未設定です。",
+    "errorImageGeneric": "画像生成に失敗しました。再試行してください。",
+    "errorImageRate": "画像生成の上限に達しました。少し待って再試行してください。",
+    "emptyGreetings": {
+      "morning": [
+        "おはようございます。",
+        "調子はどうですか？",
+        "いつでもどうぞ。"
+      ],
+      "afternoon": [
+        "何をお手伝いしましょうか？",
+        "どこから始めますか？",
+        "いつでもどうぞ。"
+      ],
+      "evening": [
+        "調子はどうですか？",
+        "どこから始めますか？",
+        "何をお手伝いしましょうか？"
+      ],
+      "night": [
+        "いつでもどうぞ。",
+        "何をお手伝いしましょうか？",
+        "どこから始めますか？"
+      ]
+    }
   }
 }

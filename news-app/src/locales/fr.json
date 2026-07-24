@@ -3,7 +3,11 @@
   "brandBadge": "Actualités",
   "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
   "hero": {
-    "rotatingTags": ["DERNIÈRES NOUVELLES", "APPRENDRE & SAVOIR", "CONSTRUIRE & EXPLORER"]
+    "rotatingTags": [
+      "DERNIÈRES NOUVELLES",
+      "APPRENDRE & SAVOIR",
+      "CONSTRUIRE & EXPLORER"
+    ]
   },
   "nav": {
     "home": "Accueil",
@@ -13,7 +17,9 @@
     "write": "Rédiger",
     "dashboard": "Mes articles",
     "login": "Connexion",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "assist": "Assistant IA",
+    "authorTools": "Outils auteur"
   },
   "drawer": {
     "menu": "Menu",
@@ -238,7 +244,9 @@
     "retry": "Réessayer",
     "translated": "Traduit en {{lang}}",
     "error": "Échec de la traduction. Veuillez réessayer.",
-    "note": "Traduction automatique"
+    "note": "Traduction automatique",
+    "ready": "Prêt",
+    "ms": "ms"
   },
   "search": {
     "label": "Rechercher des articles",
@@ -288,5 +296,87 @@
     "period": "AM/PM",
     "am": "AM",
     "pm": "PM"
+  },
+  "aiAssist": {
+    "title": "Éditeur intelligent",
+    "eyebrow": "Éditeur intelligent",
+    "context": "Articles",
+    "contextHint": "Joignez jusqu’à 5 de vos articles pour que Gemini les lise.",
+    "hideContext": "Masquer les articles",
+    "showContext": "Articles",
+    "attached": "Articles joints",
+    "removeArticle": "Retirer l’article",
+    "articlesError": "Impossible de charger vos articles.",
+    "noArticles": "Pas encore d’articles — rédigez à partir d’un brief, ou écrivez-en un d’abord.",
+    "modes": "Modes de l’assistant",
+    "modeChat": "Demander",
+    "modeReview": "Relire",
+    "modeImprove": "Améliorer",
+    "modeDraft": "Brouillon",
+    "clear": "Effacer",
+    "you": "Vous",
+    "agent": "Éditeur",
+    "emptyBody": "Relisez un brouillon, affinez le texte ou générez un article dans le Studio.",
+    "suggestReview": "Relisez l’article joint comme un rédacteur en chef.",
+    "suggestImprove": "Proposez des réécritures concrètes pour l’attaque et le titre.",
+    "suggestOutline": "Esquissez un article sur la politique d’urbanisme cette semaine.",
+    "suggestDraft": "Rédigez un court article ICUE à partir de ce brief…",
+    "suggestHeadline": "Donnez-moi 8 options de titres dans le ton de la rédaction.",
+    "draftReady": "Brouillon prêt",
+    "openInEditor": "Ouvrir dans l’éditeur",
+    "needArticle": "Joignez au moins un article pour Relire ou Améliorer.",
+    "send": "Envoyer",
+    "thinking": "Réflexion",
+    "enterHint": "Entrée pour envoyer · Maj+Entrée pour une nouvelle ligne",
+    "errorGeneric": "Une erreur s’est produite. Réessayez.",
+    "errorNotConfigured": "Gemini n’est pas encore configuré sur le serveur.",
+    "errorAuth": "Votre session a expiré. Reconnectez-vous.",
+    "errorRate": "Limite/quota Gemini atteinte. Attendez ~30 s puis réessayez, ou vérifiez le quota/facturation dans Google AI Studio.",
+    "placeholder": {
+      "chat": "Posez une question sur les articles joints ou une nouvelle pièce…",
+      "review": "Sur quoi la relecture doit-elle se concentrer ?",
+      "improve": "Que devons-nous améliorer en premier ?",
+      "draft": "Décrivez l’article que vous souhaitez brouillonner…"
+    },
+    "sidebar": "Studio",
+    "history": "Historique",
+    "newChat": "Nouveau chat",
+    "historyEmpty": "Pas encore de chats — envoyez un message pour commencer.",
+    "historyUnavailable": "L’historique nécessite la migration Supabase 20260724180000_assist_history_and_text_translations.sql.",
+    "historyError": "Impossible de charger l’historique.",
+    "historyLoadError": "Impossible d’ouvrir ce chat.",
+    "historyDeleteConfirm": "Supprimer ce chat ?",
+    "historyDeleteError": "Impossible de supprimer ce chat.",
+    "hideHistory": "Masquer l’historique",
+    "showHistory": "Historique",
+    "generateImage": "Générer une image",
+    "generatingImage": "Génération de l’image…",
+    "imageReady": "Image générée",
+    "imagePromptRequired": "Décrivez d’abord l’image dans le champ de saisie.",
+    "errorFluxNotConfigured": "Cloudflare Workers AI (FLUX) n’est pas encore configuré sur le serveur.",
+    "errorImageGeneric": "Échec de la génération d’image. Réessayez.",
+    "errorImageRate": "Limite de génération d’image atteinte. Patientez puis réessayez.",
+    "emptyGreetings": {
+      "morning": [
+        "Bonjour.",
+        "Comment ça va ?",
+        "Prêt quand vous l’êtes."
+      ],
+      "afternoon": [
+        "Comment puis-je aider ?",
+        "Par où commencer ?",
+        "Prêt quand vous l’êtes."
+      ],
+      "evening": [
+        "Comment ça va ?",
+        "Par où commencer ?",
+        "Comment puis-je aider ?"
+      ],
+      "night": [
+        "Prêt quand vous l’êtes.",
+        "Comment puis-je aider ?",
+        "Par où commencer ?"
+      ]
+    }
   }
 }

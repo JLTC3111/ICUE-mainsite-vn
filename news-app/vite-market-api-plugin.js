@@ -4,6 +4,8 @@ import { loadEnv } from 'vite'
 import { fetchYahooQuotes } from './src/lib/marketQuotesFetch.js'
 import { fetchVnMarketQuotes } from './src/lib/vnMarketQuotesFetch.js'
 import { handleTranslateArticleRequest } from './src/lib/translateServer.js'
+import { handleGeminiArticleRequest } from './src/lib/geminiServer.js'
+import { handleFluxImageRequest } from './src/lib/fluxServer.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -22,6 +24,16 @@ const AUTH_FORGOT_PATHS = new Set([
 const TRANSLATE_PATHS = new Set([
   '/newsroom/api/translate-article',
   '/api/translate-article',
+])
+
+const GEMINI_PATHS = new Set([
+  '/newsroom/api/gemini-article',
+  '/api/gemini-article',
+])
+
+const FLUX_PATHS = new Set([
+  '/newsroom/api/flux-image',
+  '/api/flux-image',
 ])
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -74,6 +86,92 @@ export function marketApiPlugin() {
       const runtimeEnv = () => ({ ...fileEnv, ...process.env })
       server.middlewares.use(async (req, res, next) => {
         const [path, query = ''] = (req.url || '').split('?')
+
+        if (FLUX_PATHS.has(path)) {
+          if (req.method === 'OPTIONS') {
+            res.statusCode = 204
+            res.setHeader('Access-Control-Allow-Origin', '*')
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+            res.end('')
+            return
+          }
+          if (req.method !== 'POST') {
+            res.statusCode = 405
+            res.end(JSON.stringify({ error: 'method not allowed' }))
+            return
+          }
+          let raw = ''
+          req.on('data', (chunk) => { raw += chunk })
+          req.on('end', async () => {
+            try {
+              const response = await handleFluxImageRequest(
+                {
+                  httpMethod: 'POST',
+                  body: raw,
+                  headers: {
+                    authorization: req.headers.authorization || '',
+                    Authorization: req.headers.authorization || '',
+                  },
+                },
+                runtimeEnv(),
+              )
+              res.statusCode = response.statusCode
+              Object.entries(response.headers || {}).forEach(([key, value]) => {
+                res.setHeader(key, value)
+              })
+              res.end(response.body)
+            } catch (err) {
+              res.statusCode = 502
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: err.message || 'image generation failed', code: 'flux_failed' }))
+            }
+          })
+          return
+        }
+
+        if (GEMINI_PATHS.has(path)) {
+          if (req.method === 'OPTIONS') {
+            res.statusCode = 204
+            res.setHeader('Access-Control-Allow-Origin', '*')
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+            res.end('')
+            return
+          }
+          if (req.method !== 'POST') {
+            res.statusCode = 405
+            res.end(JSON.stringify({ error: 'method not allowed' }))
+            return
+          }
+          let raw = ''
+          req.on('data', (chunk) => { raw += chunk })
+          req.on('end', async () => {
+            try {
+              const response = await handleGeminiArticleRequest(
+                {
+                  httpMethod: 'POST',
+                  body: raw,
+                  headers: {
+                    authorization: req.headers.authorization || '',
+                    Authorization: req.headers.authorization || '',
+                  },
+                },
+                runtimeEnv(),
+              )
+              res.statusCode = response.statusCode
+              Object.entries(response.headers || {}).forEach(([key, value]) => {
+                res.setHeader(key, value)
+              })
+              res.end(response.body)
+            } catch (err) {
+              res.statusCode = 502
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: err.message || 'gemini failed', code: 'gemini_failed' }))
+            }
+          })
+          return
+        }
 
         if (TRANSLATE_PATHS.has(path)) {
           if (req.method !== 'POST') {

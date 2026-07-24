@@ -3,7 +3,11 @@
   "brandBadge": "뉴스",
   "instituteName": "건설경제 및 도시계획 연구원",
   "hero": {
-    "rotatingTags": ["최신 뉴스", "학습 & 지식", "구축 & 탐험"]
+    "rotatingTags": [
+      "최신 뉴스",
+      "학습 & 지식",
+      "구축 & 탐험"
+    ]
   },
   "nav": {
     "home": "홈",
@@ -13,7 +17,9 @@
     "write": "작성",
     "dashboard": "내 기사",
     "login": "로그인",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "assist": "AI 어시스트",
+    "authorTools": "작성 도구"
   },
   "drawer": {
     "menu": "메뉴",
@@ -238,7 +244,9 @@
     "retry": "다시 시도",
     "translated": "{{lang}}(으)로 번역됨",
     "error": "번역에 실패했습니다. 다시 시도해 주세요.",
-    "note": "기계 번역"
+    "note": "기계 번역",
+    "ready": "완료",
+    "ms": "ms"
   },
   "search": {
     "label": "기사 검색",
@@ -288,5 +296,87 @@
     "period": "오전/오후",
     "am": "오전",
     "pm": "오후"
+  },
+  "aiAssist": {
+    "title": "인텔리전트 에디터",
+    "eyebrow": "인텔리전트 에디터",
+    "context": "기사",
+    "contextHint": "Gemini가 읽을 기사를 최대 5개까지 첨부하세요.",
+    "hideContext": "기사 숨기기",
+    "showContext": "기사",
+    "attached": "첨부된 기사",
+    "removeArticle": "기사 제거",
+    "articlesError": "기사를 불러오지 못했습니다.",
+    "noArticles": "아직 기사가 없습니다. 브리프에서 초안을 만들거나 먼저 기사를 작성하세요.",
+    "modes": "어시스턴트 모드",
+    "modeChat": "질문",
+    "modeReview": "검토",
+    "modeImprove": "개선",
+    "modeDraft": "초안",
+    "clear": "지우기",
+    "you": "나",
+    "agent": "에디터",
+    "emptyBody": "초고 검토, 문장 다듬기, 새 기사 생성을 스튜디오에서 진행하세요.",
+    "suggestReview": "첨부된 기사를 선임 편집터처럼 검토해 주세요.",
+    "suggestImprove": "리드와 헤드라인에 대한 구체적인 재작성안을 제안해 주세요.",
+    "suggestOutline": "이번 주 도시계획 정책에 관한 기사 개요를 잡아 주세요.",
+    "suggestDraft": "이 브리프로 짧은 ICUE 뉴스 기사 초안을 작성해 주세요…",
+    "suggestHeadline": "뉴스룸 톤의 헤드라인 후보 8개를 주세요.",
+    "draftReady": "초안 준비됨",
+    "openInEditor": "에디터에서 열기",
+    "needArticle": "검토 또는 개선을 위해 기사를 하나 이상 첨부하세요.",
+    "send": "보내기",
+    "thinking": "생각 중",
+    "enterHint": "Enter로 전송 · Shift+Enter로 줄바꿈",
+    "errorGeneric": "문제가 발생했습니다. 다시 시도하세요.",
+    "errorNotConfigured": "서버에 Gemini가 아직 설정되지 않았습니다.",
+    "errorAuth": "세션이 만료되었습니다. 다시 로그인해 주세요.",
+    "errorRate": "Gemini 한도/쿼터에 도달했습니다. 약 30초 후 다시 시도하거나 Google AI Studio에서 쿼터/결제를 확인하세요.",
+    "placeholder": {
+      "chat": "첨부 기사나 새 기획에 대해 질문하세요…",
+      "review": "검토 초점은 어디에 둘까요?",
+      "improve": "먼저 무엇을 개선할까요?",
+      "draft": "초안을 원하는 기사 내용을 설명하세요…"
+    },
+    "sidebar": "스튜디오",
+    "history": "기록",
+    "newChat": "새 채팅",
+    "historyEmpty": "저장된 채팅이 없습니다. 메시지를 보내 시작하세요.",
+    "historyUnavailable": "채팅 기록에는 Supabase 마이그레이션 20260724180000_assist_history_and_text_translations.sql 이 필요합니다.",
+    "historyError": "채팅 기록을 불러오지 못했습니다.",
+    "historyLoadError": "채팅을 열 수 없습니다.",
+    "historyDeleteConfirm": "이 채팅을 삭제할까요?",
+    "historyDeleteError": "채팅을 삭제할 수 없습니다.",
+    "hideHistory": "기록 숨기기",
+    "showHistory": "기록",
+    "generateImage": "이미지 생성",
+    "generatingImage": "이미지 생성 중…",
+    "imageReady": "생성된 이미지",
+    "imagePromptRequired": "먼저 입력창에 이미지 설명을 적어 주세요.",
+    "errorFluxNotConfigured": "서버에 Cloudflare Workers AI(FLUX)가 아직 설정되지 않았습니다.",
+    "errorImageGeneric": "이미지 생성에 실패했습니다. 다시 시도하세요.",
+    "errorImageRate": "이미지 생성 한도에 도달했습니다. 잠시 후 다시 시도하세요.",
+    "emptyGreetings": {
+      "morning": [
+        "좋은 아침입니다.",
+        "잘 지내고 계신가요?",
+        "준비되면 말씀해 주세요."
+      ],
+      "afternoon": [
+        "무엇을 도와드릴까요?",
+        "어디서부터 시작할까요?",
+        "준비되면 말씀해 주세요."
+      ],
+      "evening": [
+        "잘 지내고 계신가요?",
+        "어디서부터 시작할까요?",
+        "무엇을 도와드릴까요?"
+      ],
+      "night": [
+        "준비되면 말씀해 주세요.",
+        "무엇을 도와드릴까요?",
+        "어디서부터 시작할까요?"
+      ]
+    }
   }
 }

@@ -29,14 +29,13 @@ const sanitizePlainText = pickNamedExport(sanitizeArticleHtmlModule, 'sanitizePl
 const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources'
 
 function supabaseConfig(env) {
-  const serviceKey = supabaseServiceKey(env)
+  const serviceRole = supabaseServiceKey(env)
+  const anonKey = env.SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || ''
   return {
     url: env.SUPABASE_URL || env.VITE_SUPABASE_URL || '',
-    serviceKey:
-      serviceKey
-      || env.SUPABASE_ANON_KEY
-      || env.VITE_SUPABASE_ANON_KEY
-      || '',
+    /** Prefer service role; anon is read-only via RLS for published content. */
+    serviceKey: serviceRole || anonKey || '',
+    hasServiceRole: Boolean(serviceRole),
   }
 }
 
@@ -46,6 +45,10 @@ function restHeaders(key) {
     Authorization: `Bearer ${key}`,
     'Content-Type': 'application/json',
   }
+}
+
+function logCacheWriteFailure(kind, detail) {
+  console.warn(`[translate-cache] ${kind} upsert failed:`, detail)
 }
 
 async function fetchPublishedArticle(articleId, env) {
@@ -75,8 +78,18 @@ async function fetchCachedTranslation(articleId, locale, env) {
 }
 
 async function upsertCachedTranslation(articleId, locale, payload, env) {
-  const { url, serviceKey } = supabaseConfig(env)
-  if (!url || !serviceKey) return
+  const { url, serviceKey, hasServiceRole } = supabaseConfig(env)
+  if (!url || !serviceKey) {
+    logCacheWriteFailure('article_translations', 'supabase_not_configured')
+    return false
+  }
+  if (!hasServiceRole) {
+    logCacheWriteFailure(
+      'article_translations',
+      'SUPABASE_SERVICE_ROLE_KEY missing — cache writes require service role (anon cannot INSERT under RLS)',
+    )
+    return false
+  }
 
   const body = {
     article_id: articleId,
@@ -90,7 +103,7 @@ async function upsertCachedTranslation(articleId, locale, payload, env) {
     updated_at: new Date().toISOString(),
   }
 
-  await fetch(`${url}/rest/v1/article_translations?on_conflict=article_id,locale`, {
+  const res = await fetch(`${url}/rest/v1/article_translations?on_conflict=article_id,locale`, {
     method: 'POST',
     headers: {
       ...restHeaders(serviceKey),
@@ -98,6 +111,13 @@ async function upsertCachedTranslation(articleId, locale, payload, env) {
     },
     body: JSON.stringify(body),
   })
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '')
+    logCacheWriteFailure('article_translations', `${res.status} ${errText.slice(0, 240)}`)
+    return false
+  }
+  return true
 }
 
 export async function translateArticleForLocale(articleId, targetLocale, env = process.env) {
@@ -108,11 +128,8 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   if (!article) throw new Error('article_not_found')
 
   const detectSample = buildArticleTranslateSample(article)
-
   const declaredSource = normalizeLang(article.language || 'vi')
   const sourceLang = inferSourceLanguage(declaredSource, detectSample)
-  const apiSourceLang = (await detectSourceLanguage(detectSample, env)) || sourceLang
-
   const articleSources = sanitizeSourcesForSave(article.sources)
 
   if (!shouldTranslateArticle(sourceLang, locale, detectSample)) {
@@ -129,6 +146,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     }
   }
 
+  // Read DB cache before any Google Detect/Translate call.
   const cached = await fetchCachedTranslation(articleId, locale, env)
   if (cached) {
     return {
@@ -143,6 +161,8 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       original: false,
     }
   }
+
+  const apiSourceLang = (await detectSourceLanguage(detectSample, env)) || sourceLang
 
   const translated = await translateFields(
     {
@@ -248,8 +268,18 @@ async function fetchCachedCommentTranslations(commentIds, locale, env) {
 }
 
 async function upsertCommentTranslation(commentId, locale, payload, env) {
-  const { url, serviceKey } = supabaseConfig(env)
-  if (!url || !serviceKey) return
+  const { url, serviceKey, hasServiceRole } = supabaseConfig(env)
+  if (!url || !serviceKey) {
+    logCacheWriteFailure('comment_translations', 'supabase_not_configured')
+    return false
+  }
+  if (!hasServiceRole) {
+    logCacheWriteFailure(
+      'comment_translations',
+      'SUPABASE_SERVICE_ROLE_KEY missing — cache writes require service role (anon cannot INSERT under RLS)',
+    )
+    return false
+  }
 
   const body = {
     comment_id: commentId,
@@ -260,7 +290,7 @@ async function upsertCommentTranslation(commentId, locale, payload, env) {
     updated_at: new Date().toISOString(),
   }
 
-  await fetch(`${url}/rest/v1/comment_translations?on_conflict=comment_id,locale`, {
+  const res = await fetch(`${url}/rest/v1/comment_translations?on_conflict=comment_id,locale`, {
     method: 'POST',
     headers: {
       ...restHeaders(serviceKey),
@@ -268,6 +298,13 @@ async function upsertCommentTranslation(commentId, locale, payload, env) {
     },
     body: JSON.stringify(body),
   })
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '')
+    logCacheWriteFailure('comment_translations', `${res.status} ${errText.slice(0, 240)}`)
+    return false
+  }
+  return true
 }
 
 async function translateCommentBody(comment, locale, cachedRows, env) {
@@ -338,6 +375,120 @@ export async function translateCommentsBatch(commentIds, targetLocale, env = pro
   return { locale, bodies }
 }
 
+const MAX_PLAIN_TEXTS = 8
+const MAX_PLAIN_TEXT_CHARS = 12_000
+
+async function sha256Hex(text) {
+  const { createHash } = await import('node:crypto')
+  return createHash('sha256').update(String(text), 'utf8').digest('hex')
+}
+
+async function fetchCachedTextTranslation(contentHash, locale, env) {
+  const { url, serviceKey } = supabaseConfig(env)
+  if (!url || !serviceKey || !contentHash) return null
+
+  const res = await fetch(
+    `${url}/rest/v1/text_translations?content_hash=eq.${encodeURIComponent(contentHash)}&locale=eq.${encodeURIComponent(locale)}&select=body,provider,source_lang`,
+    { headers: restHeaders(serviceKey) },
+  )
+  if (!res.ok) return null
+  const rows = await res.json()
+  return rows?.[0] || null
+}
+
+async function upsertCachedTextTranslation(contentHash, locale, payload, env) {
+  const { url, serviceKey, hasServiceRole } = supabaseConfig(env)
+  if (!url || !serviceKey || !contentHash) {
+    logCacheWriteFailure('text_translations', 'supabase_not_configured_or_missing_hash')
+    return false
+  }
+  if (!hasServiceRole) {
+    logCacheWriteFailure(
+      'text_translations',
+      'SUPABASE_SERVICE_ROLE_KEY missing — cache writes require service role (anon cannot INSERT under RLS)',
+    )
+    return false
+  }
+
+  const res = await fetch(`${url}/rest/v1/text_translations?on_conflict=content_hash,locale`, {
+    method: 'POST',
+    headers: {
+      ...restHeaders(serviceKey),
+      Prefer: 'resolution=merge-duplicates,return=minimal',
+    },
+    body: JSON.stringify({
+      content_hash: contentHash,
+      locale,
+      provider: payload.provider,
+      source_lang: payload.source_lang || null,
+      body: payload.body || '',
+      updated_at: new Date().toISOString(),
+    }),
+  })
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '')
+    logCacheWriteFailure('text_translations', `${res.status} ${errText.slice(0, 240)}`)
+    return false
+  }
+  return true
+}
+
+/** Freeform plain-text batch for AI Assist replies and similar dynamic copy. */
+export async function translateTextsBatch(texts, targetLocale, env = process.env) {
+  const locale = normalizeLang(targetLocale)
+  const list = (Array.isArray(texts) ? texts : [])
+    .map((t) => String(t ?? ''))
+    .slice(0, MAX_PLAIN_TEXTS)
+
+  if (!locale || !list.length) {
+    return { locale, texts: list, originals: list.map(() => true), cached: list.map(() => false) }
+  }
+
+  const out = []
+  const originals = []
+  const cachedFlags = []
+  for (const raw of list) {
+    const sample = normalizeUnicode(raw).slice(0, MAX_PLAIN_TEXT_CHARS)
+    if (!sample.trim()) {
+      out.push(sample)
+      originals.push(true)
+      cachedFlags.push(false)
+      continue
+    }
+    try {
+      const hash = await sha256Hex(`${locale}::${sample}`)
+      const cached = await fetchCachedTextTranslation(hash, locale, env)
+      if (cached?.body) {
+        out.push(normalizeUnicode(cached.body))
+        originals.push(false)
+        cachedFlags.push(true)
+        continue
+      }
+
+      const result = await translatePlainText(sample, locale, undefined, env)
+      const next = normalizeUnicode(result.text || sample)
+      out.push(next)
+      originals.push(Boolean(result.original))
+      cachedFlags.push(false)
+
+      if (!result.original && result.provider) {
+        await upsertCachedTextTranslation(hash, locale, {
+          provider: result.provider,
+          source_lang: result.source_lang || null,
+          body: next,
+        }, env)
+      }
+    } catch {
+      out.push(sample)
+      originals.push(true)
+      cachedFlags.push(false)
+    }
+  }
+
+  return { locale, texts: out, originals, cached: cachedFlags }
+}
+
 function jsonResponse(statusCode, body, extraHeaders = {}) {
   return {
     statusCode,
@@ -372,6 +523,23 @@ export async function handleTranslateArticleRequest(event, env = process.env) {
   const target = normalizeLang(payload.target || payload.locale || payload.lang)
   const batchIds = payload.articleIds || payload.article_ids
   const commentIds = payload.commentIds || payload.comment_ids
+  const plainTexts = payload.texts
+
+  if (Array.isArray(plainTexts)) {
+    if (!target) {
+      return jsonResponse(422, { error: 'texts and target required', code: 'invalid_request' })
+    }
+    try {
+      const result = await translateTextsBatch(plainTexts, target, runtimeEnv)
+      return jsonResponse(200, result)
+    } catch (err) {
+      const code = err?.message || 'translate_failed'
+      if (code === 'google_not_configured' || code === 'deepl_not_configured') {
+        return jsonResponse(503, { error: 'translation provider not configured', code })
+      }
+      return jsonResponse(502, { error: 'translation failed', code })
+    }
+  }
 
   if (Array.isArray(commentIds)) {
     const ids = commentIds.map(String).filter(Boolean)

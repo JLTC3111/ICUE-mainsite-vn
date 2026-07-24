@@ -1,0 +1,65 @@
+/* Magic UI Animated Shiny Text
+ * @see https://magicui.design/docs/components/animated-shiny-text
+ */
+.animated-shiny-text {
+  --shiny-width: 100px;
+  --shiny-muted: rgba(82, 82, 82, 0.72);
+  --shiny-bright: rgba(0, 0, 0, 0.92);
+  display: inline-block;
+  max-width: 100%;
+  background-image: linear-gradient(
+    90deg,
+    var(--shiny-muted) 0%,
+    var(--shiny-muted) 40%,
+    var(--shiny-bright) 50%,
+    var(--shiny-muted) 60%,
+    var(--shiny-muted) 100%
+  );
+  background-size: calc(var(--shiny-width) * 4) 100%;
+  background-repeat: no-repeat;
+  background-position: calc(-100% - var(--shiny-width)) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shiny-text 8s infinite;
+}
+
+.agent:not(.agent--light) .animated-shiny-text {
+  --shiny-muted: rgba(163, 163, 163, 0.78);
+  --shiny-bright: rgba(255, 255, 255, 0.98);
+}
+
+.agent--light .animated-shiny-text {
+  --shiny-muted: rgba(82, 82, 82, 0.72);
+  --shiny-bright: rgba(0, 0, 0, 0.92);
+}
+
+.agent__thinking-shiny,
+.agent__empty-shiny {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-weight: inherit;
+}
+
+@keyframes shiny-text {
+  0%,
+  90%,
+  100% {
+    background-position: calc(-100% - var(--shiny-width)) 0;
+  }
+  30%,
+  60% {
+    background-position: calc(100% + var(--shiny-width)) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-shiny-text {
+    animation: none;
+    -webkit-text-fill-color: var(--shiny-muted);
+    color: var(--shiny-muted);
+    background-image: none;
+  }
+}

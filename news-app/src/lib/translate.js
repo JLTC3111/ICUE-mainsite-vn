@@ -129,6 +129,34 @@ export async function translateCommentsViaApi(commentIds, targetLocale) {
   return data
 }
 
+function textsCacheKey(texts, locale) {
+  const fingerprint = texts.map((t) => String(t || '').slice(0, 80)).join('|')
+  return `texts::${locale}::${fingerprint}::${texts.length}`
+}
+
+/** Translate freeform strings (AI Assist replies) into the UI locale. */
+export async function translateTextsViaApi(texts, targetLocale) {
+  const target = normalizeLang(targetLocale)
+  const list = (Array.isArray(texts) ? texts : []).map((t) => String(t ?? ''))
+  if (!target || !list.length) {
+    return { locale: target, texts: list, originals: list.map(() => true) }
+  }
+
+  const needs = list.some((text) => shouldTranslateArticle('', target, text))
+  if (!needs) {
+    return { locale: target, texts: list, originals: list.map(() => true) }
+  }
+
+  const key = textsCacheKey(list, target)
+  if (memoryCache.has(key)) {
+    return memoryCache.get(key)
+  }
+
+  const data = await postTranslateWithRetry({ texts: list, target })
+  memoryCache.set(key, data)
+  return data
+}
+
 export async function translateArticle(article, target) {
   const result = await translateArticleViaApi(article.id, target)
   return {

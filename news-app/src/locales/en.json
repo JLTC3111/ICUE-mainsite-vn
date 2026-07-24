@@ -3,7 +3,11 @@
   "brandBadge": "News",
   "instituteName": "Institute of Economics and Urban Planning",
   "hero": {
-    "rotatingTags": ["LATEST NEWS", "LEARNING & KNOWLEDGE", "BUILD & EXPLORE"]
+    "rotatingTags": [
+      "LATEST NEWS",
+      "LEARNING & KNOWLEDGE",
+      "BUILD & EXPLORE"
+    ]
   },
   "nav": {
     "home": "Home",
@@ -11,9 +15,11 @@
     "archive": "News Archive",
     "mainSite": "Main Site",
     "write": "Write",
+    "assist": "AI assist",
     "dashboard": "My Articles",
     "login": "Log In",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "authorTools": "Author tools"
   },
   "drawer": {
     "menu": "Menu",
@@ -246,7 +252,9 @@
     "retry": "Retry",
     "translated": "Translated to {{lang}}",
     "error": "Translation failed. Please try again.",
-    "note": "Machine translation"
+    "note": "Machine translation",
+    "ready": "Ready",
+    "ms": "ms"
   },
   "search": {
     "label": "Search articles",
@@ -289,6 +297,88 @@
     "draft": "Draft",
     "published": "Published",
     "notFound": "Article not found."
+  },
+  "aiAssist": {
+    "title": "Intelligent Editor",
+    "eyebrow": "Intelligent Editor",
+    "context": "Articles",
+    "contextHint": "Attach up to 5 of your articles for Gemini to read.",
+    "hideContext": "Hide articles",
+    "showContext": "Articles",
+    "attached": "Attached articles",
+    "removeArticle": "Remove article",
+    "articlesError": "Could not load your articles.",
+    "noArticles": "No articles yet — draft from a brief, or write one first.",
+    "modes": "Assistant modes",
+    "modeChat": "Ask",
+    "modeReview": "Review",
+    "modeImprove": "Improve",
+    "modeDraft": "Draft",
+    "clear": "Clear",
+    "you": "You",
+    "agent": "Editor",
+    "emptyBody": "Review a draft, tighten the writing, or generate a new article in Studio.",
+    "suggestReview": "Review the attached article like a senior editor.",
+    "suggestImprove": "Suggest concrete rewrites for the lede and headline.",
+    "suggestOutline": "Outline a news piece on urban planning policy this week.",
+    "suggestDraft": "Draft a short ICUE news article from this brief…",
+    "suggestHeadline": "Give me 8 headline options in a newsroom voice.",
+    "draftReady": "Draft ready",
+    "openInEditor": "Open in editor",
+    "needArticle": "Attach at least one article for Review or Improve.",
+    "send": "Send",
+    "thinking": "Thinking",
+    "enterHint": "Enter to send · Shift+Enter for newline",
+    "errorGeneric": "Something went wrong. Try again.",
+    "errorNotConfigured": "Gemini is not configured on the server yet.",
+    "errorAuth": "Your session expired. Sign in again.",
+    "errorRate": "Gemini rate/quota limit hit. Wait ~30s and retry, or check quota/billing in Google AI Studio.",
+    "placeholder": {
+      "chat": "Ask anything about attached articles or a new piece…",
+      "review": "What should the review focus on?",
+      "improve": "What should we improve first?",
+      "draft": "Describe the article you want drafted…"
+    },
+    "sidebar": "Studio",
+    "history": "History",
+    "newChat": "New chat",
+    "historyEmpty": "No saved chats yet — send a message to start one.",
+    "historyUnavailable": "Chat history needs a Supabase migration. Run 20260724180000_assist_history_and_text_translations.sql.",
+    "historyError": "Could not load chat history.",
+    "historyLoadError": "Could not open that chat.",
+    "historyDeleteConfirm": "Delete this chat?",
+    "historyDeleteError": "Could not delete that chat.",
+    "hideHistory": "Hide history",
+    "showHistory": "History",
+    "generateImage": "Generate Image",
+    "generatingImage": "Generating image…",
+    "imageReady": "Generated image",
+    "imagePromptRequired": "Describe the image in the composer first.",
+    "errorFluxNotConfigured": "Cloudflare Workers AI (FLUX) is not configured on the server yet.",
+    "errorImageGeneric": "Image generation failed. Try again.",
+    "errorImageRate": "Image generation rate limit hit. Wait a moment and retry.",
+    "emptyGreetings": {
+      "morning": [
+        "Good morning.",
+        "How's it going?",
+        "Ready when you are."
+      ],
+      "afternoon": [
+        "How can I help?",
+        "Where should we begin?",
+        "Ready when you are."
+      ],
+      "evening": [
+        "How's it going?",
+        "Where should we begin?",
+        "How can I help?"
+      ],
+      "night": [
+        "Ready when you are.",
+        "How can I help?",
+        "Where should we begin?"
+      ]
+    }
   },
   "picker": {
     "today": "Today",
