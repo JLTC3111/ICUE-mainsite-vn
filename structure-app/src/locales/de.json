@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "Organigramm",
+    "badgeLabel": "Mitarbeiterausweis",
+    "badgeGeneric": "ICUE-Team",
+    "badgeGenericRole": "Institutspersonal",
+    "badgeSelectHint": "Wählen Sie eine Person im Organigramm aus, um den Ausweis anzupassen.",
+    "badgeDragHint": "Ziehen Sie den Ausweis oder wählen Sie ihn aus, um das vollständige Profil zu öffnen.",
+    "badgeOpenProfile": "Profil anzeigen",
     "people": {
       "hanh": {
         "displayName": "Dr. Nguyễn Hồng Hạnh",

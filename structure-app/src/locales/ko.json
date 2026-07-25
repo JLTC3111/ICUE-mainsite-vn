@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "조직도",
+    "badgeLabel": "직원 배지",
+    "badgeGeneric": "ICUE 직원",
+    "badgeGenericRole": "연구소 직원",
+    "badgeSelectHint": "조직도에서 직원을 선택해 배지를 맞춤 설정하세요.",
+    "badgeDragHint": "배지를 드래그하거나 선택하여 전체 프로필을 확인하세요.",
+    "badgeOpenProfile": "프로필 보기",
     "people": {
       "hanh": {
         "displayName": "박사 Nguyễn Hồng Hạnh",

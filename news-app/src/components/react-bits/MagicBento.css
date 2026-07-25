@@ -1,0 +1,101 @@
+/* React Bits Magic Bento — structural app shell (spotlight + border glow)
+ * @see https://reactbits.dev/components/magic-bento
+ */
+.magic-bento-section {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+  --glow-radius: 200px;
+  --mb-glow: 160, 170, 185;
+  position: relative;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.magic-bento-card {
+  position: relative;
+  border-radius: 18px;
+  border: 1px solid var(--agent-border, rgba(255, 255, 255, 0.12));
+  overflow: hidden;
+  isolation: isolate;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.magic-bento-card.card--border-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  background: radial-gradient(
+    var(--glow-radius) circle at var(--glow-x) var(--glow-y),
+    rgba(var(--mb-glow), calc(var(--glow-intensity) * 0.85)) 0%,
+    rgba(var(--mb-glow), calc(var(--glow-intensity) * 0.35)) 30%,
+    transparent 60%
+  );
+  border-radius: inherit;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.magic-bento-card.card--border-glow:hover {
+  box-shadow:
+    0 4px 22px rgba(0, 0, 0, 0.18),
+    0 0 28px rgba(var(--mb-glow), 0.12);
+}
+
+.agent--light .magic-bento-card.card--border-glow:hover {
+  box-shadow:
+    0 4px 22px rgba(16, 19, 24, 0.1),
+    0 0 28px rgba(var(--mb-glow), 0.16);
+}
+
+.magic-bento-spotlight {
+  --mb-glow: 160, 170, 185;
+  position: fixed;
+  width: 720px;
+  height: 720px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle,
+    rgba(var(--mb-glow), 0.14) 0%,
+    rgba(var(--mb-glow), 0.07) 18%,
+    rgba(var(--mb-glow), 0.03) 35%,
+    transparent 68%
+  );
+  transition: opacity 0.2s ease;
+}
+
+.agent--light ~ .magic-bento-spotlight,
+.agent--light .magic-bento-section {
+  --mb-glow: 90, 100, 120;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-bento-card.card--border-glow::after,
+  .magic-bento-spotlight {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .magic-bento-section {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .magic-bento-card {
+    border-radius: 14px;
+  }
+}

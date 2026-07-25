@@ -302,7 +302,7 @@
     "title": "Biên Tập Thông Minh",
     "eyebrow": "Biên Tập Thông Minh",
     "context": "Bài viết",
-    "contextHint": "Gắn tối đa 5 bài của bạn để Gemini đọc.",
+    "contextHint": "Gắn tối đa 5 bài của bạn để biên tập viên đọc.",
     "hideContext": "Ẩn bài viết",
     "showContext": "Bài viết",
     "attached": "Bài đã gắn",
@@ -330,9 +330,9 @@
     "thinking": "Đang nghĩ",
     "enterHint": "Enter để gửi · Shift+Enter xuống dòng",
     "errorGeneric": "Có lỗi xảy ra. Thử lại.",
-    "errorNotConfigured": "Gemini chưa được cấu hình trên máy chủ.",
+    "errorNotConfigured": "AI assist chưa được cấu hình trên máy chủ.",
     "errorAuth": "Phiên đăng nhập hết hạn. Đăng nhập lại.",
-    "errorRate": "Gemini hết hạn mức/quota. Đợi ~30 giây rồi thử lại, hoặc kiểm tra quota/billing trên Google AI Studio.",
+    "errorRate": "AI hết hạn mức/quota. Đợi ~30 giây rồi thử lại, hoặc kiểm tra quota/billing trên máy chủ.",
     "placeholder": {
       "chat": "Hỏi về bài đã gắn hoặc ý tưởng bài mới…",
       "review": "Đánh giá nên tập trung vào đâu?",
@@ -360,7 +360,7 @@
     "emptyGreetings": {
       "morning": [
         "Chào buổi sáng.",
-        "Dạo này thế nào?",
+        "Hôm Nay Bạn Thế Nào",
         "Sẵn sàng khi bạn cần."
       ],
       "afternoon": [
@@ -369,7 +369,7 @@
         "Sẵn sàng khi bạn cần."
       ],
       "evening": [
-        "Dạo này thế nào?",
+        "Hôm Nay Bạn Thế Nào",
         "Bắt đầu từ đâu nhỉ?",
         "Mình có thể giúp gì?"
       ],

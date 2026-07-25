@@ -1,0 +1,205 @@
+.employee-lanyard {
+  position: sticky;
+  top: calc(var(--icue-header-h) + 20px);
+  min-width: 0;
+  height: 760px;
+  border: 1px solid rgba(128, 236, 255, 0.12);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 65% 22%, rgba(29, 183, 255, 0.12), transparent 35%),
+    linear-gradient(145deg, rgba(20, 35, 58, 0.84), rgba(7, 15, 28, 0.88));
+  box-shadow:
+    -8px -8px 18px rgba(92, 119, 154, 0.08),
+    14px 14px 30px rgba(0, 4, 12, 0.44),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.045);
+  overflow: hidden;
+}
+
+.employee-lanyard__heading {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(226, 238, 250, 0.72);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.employee-lanyard__status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #80ecff;
+  box-shadow: 0 0 12px rgba(128, 236, 255, 0.72);
+}
+
+.employee-lanyard__stage {
+  position: relative;
+  width: 100%;
+  height: 665px;
+  touch-action: pan-y;
+}
+
+.employee-lanyard__loading {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 76px;
+  height: 108px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+}
+
+.employee-lanyard__identity {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  display: grid;
+  gap: 3px;
+  min-height: 92px;
+  padding: 13px 14px;
+  border: 1px solid rgba(128, 236, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(5, 12, 23, 0.76);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.42),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.035);
+}
+
+.employee-lanyard__identity strong {
+  overflow: hidden;
+  color: #f3f8ff;
+  font-size: 0.93rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employee-lanyard__identity > span {
+  color: #9be9ff;
+  font-size: 0.78rem;
+}
+
+.employee-lanyard__identity p {
+  margin: 4px 0 0;
+  color: rgba(226, 238, 250, 0.58);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.employee-lanyard__identity button {
+  justify-self: start;
+  margin-top: 5px;
+  padding: 0;
+  color: #9be9ff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.employee-lanyard__identity button:focus-visible {
+  outline-color: #80ecff;
+}
+
+.employee-badge-static {
+  position: absolute;
+  top: 76px;
+  left: 50%;
+  width: 270px;
+  min-height: 400px;
+  padding: 24px;
+  border: 1px solid rgba(128, 236, 255, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #173559, #07111f);
+  color: #fff;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.38);
+  transform: translateX(-50%);
+  text-align: left;
+}
+
+.employee-badge-static:disabled {
+  cursor: default;
+}
+
+.employee-badge-static__brand {
+  display: block;
+  margin-bottom: 14px;
+  color: #80ecff;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.employee-badge-static img,
+.employee-badge-static__monogram {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: top center;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.employee-badge-static__monogram {
+  display: grid;
+  place-items: center;
+  color: #80ecff;
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.employee-badge-static strong,
+.employee-badge-static > span:last-child {
+  display: block;
+}
+
+.employee-badge-static > span:last-child {
+  margin-top: 4px;
+  color: #9be9ff;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 1200px) {
+  .employee-lanyard {
+    position: relative;
+    top: auto;
+    width: min(100%, 560px);
+    height: 740px;
+    margin-inline: auto;
+  }
+
+  .employee-lanyard__stage {
+    height: 645px;
+  }
+}
+
+@media (max-width: 760px) {
+  .employee-lanyard {
+    width: min(100%, 500px);
+    height: 700px;
+  }
+
+  .employee-lanyard__stage {
+    height: 605px;
+  }
+}
+
+@media (max-width: 450px),
+  (max-width: 520px) and (pointer: coarse),
+  (max-height: 520px) and (pointer: coarse) {
+  .employee-lanyard {
+    display: none;
+  }
+}

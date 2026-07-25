@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "組織図",
+    "badgeLabel": "職員証",
+    "badgeGeneric": "ICUEスタッフ",
+    "badgeGenericRole": "研究所職員",
+    "badgeSelectHint": "組織図から職員を選択してバッジを更新します。",
+    "badgeDragHint": "バッジをドラッグするか、選択して詳しいプロフィールを表示します。",
+    "badgeOpenProfile": "プロフィールを見る",
     "people": {
       "hanh": {
         "displayName": "博士 Nguyễn Hồng Hạnh",

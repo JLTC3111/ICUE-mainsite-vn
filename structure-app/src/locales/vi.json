@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "Sơ Đồ Nhân Sự",
+    "badgeLabel": "Thẻ Nhân Viên",
+    "badgeGeneric": "Nhân Sự ICUE",
+    "badgeGenericRole": "Nhân sự viện",
+    "badgeSelectHint": "Chọn một nhân sự trong sơ đồ để cá nhân hóa thẻ.",
+    "badgeDragHint": "Kéo thẻ hoặc chọn thẻ để xem hồ sơ đầy đủ.",
+    "badgeOpenProfile": "Xem hồ sơ",
     "people": {
       "hanh": {
         "displayName": "Tiến Sỹ. Nguyễn Hồng Hạnh",

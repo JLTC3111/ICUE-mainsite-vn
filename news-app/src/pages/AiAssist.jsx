@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { fetchMyArticles } from '../lib/articles'
-import { askGeminiAssist } from '../lib/geminiAssist'
+import { askAssist, ASSIST_ERROR } from '../lib/assistClient'
 import { generateFluxImage } from '../lib/fluxAssist'
 import { saveAiDraft } from '../lib/aiDraft'
 import { translateTextsViaApi } from '../lib/translate'
@@ -25,6 +25,7 @@ import { AnimatedShinyText } from '../components/magicui/AnimatedShinyText'
 import { RainbowButton } from '../components/magicui/RainbowButton'
 import { TextLoop } from '../components/motion-primitives/TextLoop'
 import { Ripple } from '../components/magicui/Ripple'
+import { MagicBentoCard, MagicBentoSection } from '../components/react-bits/MagicBento'
 import './AiAssist.css'
 
 const MODES = [
@@ -373,7 +374,7 @@ export default function AiAssist() {
         role: m.role === 'assistant' ? 'model' : 'user',
         content: m.content,
       }))
-      const result = await askGeminiAssist({
+      const result = await askAssist({
         mode,
         messages: history,
         articleIds: selectedIds,
@@ -426,8 +427,9 @@ export default function AiAssist() {
       if (session !== sessionRef.current) return
       const code = err?.code || ''
       let msg = t('aiAssist.errorGeneric')
-      if (code === 'gemini_not_configured') msg = t('aiAssist.errorNotConfigured')
-      else if (code === 'unauthorized') msg = t('aiAssist.errorAuth')
+      if (code === ASSIST_ERROR.notConfigured || code === 'assist_not_configured') {
+        msg = t('aiAssist.errorNotConfigured')
+      } else if (code === 'unauthorized') msg = t('aiAssist.errorAuth')
       else if (code === 'article_required') msg = t('aiAssist.needArticle')
       else if (code === 'rate_limited' || err?.status === 429) msg = t('aiAssist.errorRate')
       else if (err?.message) msg = err.message
@@ -515,7 +517,7 @@ export default function AiAssist() {
   ])
 
   const startNewChat = useCallback(() => {
-    // Invalidate in-flight Gemini/image work so late responses cannot refill the chat.
+    // Invalidate in-flight assist/image work so late responses cannot refill the chat.
     sessionRef.current += 1
     setBusy(false)
     setLocalizing(false)
@@ -603,9 +605,21 @@ export default function AiAssist() {
     historyOpen ? '' : 'agent--history-collapsed',
   ].filter(Boolean).join(' ')
 
+  const glowColor = isDark ? '180, 188, 200' : '90, 100, 120'
+
   return (
-    <div className={layoutClass}>
-      <aside className="agent__rail agent__rail--articles" aria-label={t('aiAssist.context')}>
+    <MagicBentoSection
+      className={layoutClass}
+      enableSpotlight
+      enableBorderGlow
+      spotlightRadius={340}
+      glowColor={glowColor}
+    >
+      <MagicBentoCard
+        as="aside"
+        className="agent__rail agent__rail--articles"
+        aria-label={t('aiAssist.context')}
+      >
         <div className="agent__rail-head">
           <div className="agent__rail-title-row">
             <Icon name="articles" />
@@ -667,9 +681,9 @@ export default function AiAssist() {
             })}
           </ul>
         )}
-      </aside>
+      </MagicBentoCard>
 
-      <section className="agent__main">
+      <MagicBentoCard as="section" className="agent__main">
         <Ripple className="agent__main-ripple" mainCircleSize={180} mainCircleOpacity={0.34} numCircles={7} />
         <header className="agent__top">
           <div className="agent__top-left">
@@ -904,9 +918,13 @@ export default function AiAssist() {
             </button>
           </div>
         </form>
-      </section>
+      </MagicBentoCard>
 
-      <aside className="agent__rail agent__rail--history" aria-label={t('aiAssist.history')}>
+      <MagicBentoCard
+        as="aside"
+        className="agent__rail agent__rail--history"
+        aria-label={t('aiAssist.history')}
+      >
         <div className="agent__rail-head">
           <div className="agent__rail-title-row">
             <Icon name="history" />
@@ -954,14 +972,6 @@ export default function AiAssist() {
                   <li key={thread.id} className={`agent__history-entry${on ? ' is-on' : ''}`}>
                     <button
                       type="button"
-                      className={`agent__history-item${on ? ' is-on' : ''}`}
-                      onClick={() => openThread(thread.id)}
-                    >
-                      <span className="agent__history-title">{thread.title || t('aiAssist.newChat')}</span>
-                      <span className="agent__history-meta">{formatThreadTime(thread.updated_at)}</span>
-                    </button>
-                    <button
-                      type="button"
                       className="agent__history-delete"
                       onClick={(e) => removeThread(thread.id, e)}
                       aria-label={t('common.delete')}
@@ -969,13 +979,21 @@ export default function AiAssist() {
                     >
                       <Trash2 className="agent__trash-icon" size={17} strokeWidth={2.35} aria-hidden />
                     </button>
+                    <button
+                      type="button"
+                      className={`agent__history-item${on ? ' is-on' : ''}`}
+                      onClick={() => openThread(thread.id)}
+                    >
+                      <span className="agent__history-title">{thread.title || t('aiAssist.newChat')}</span>
+                      <span className="agent__history-meta">{formatThreadTime(thread.updated_at)}</span>
+                    </button>
                   </li>
                 )
               })}
             </ul>
           )}
         </div>
-      </aside>
-    </div>
+      </MagicBentoCard>
+    </MagicBentoSection>
   )
 }

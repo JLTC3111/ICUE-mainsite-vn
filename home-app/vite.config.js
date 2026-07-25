@@ -31,6 +31,7 @@ const LEGACY_PAGE_REDIRECTS = {
 
 export default defineConfig({
   base: '/',
+  assetsInclude: ['**/*.glb'],
   plugins: [
     react(),
     {

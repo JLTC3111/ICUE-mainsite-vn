@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "Organigramme",
+    "badgeLabel": "Badge employé",
+    "badgeGeneric": "Équipe ICUE",
+    "badgeGenericRole": "Personnel de l’institut",
+    "badgeSelectHint": "Sélectionnez une personne dans l’organigramme pour personnaliser ce badge.",
+    "badgeDragHint": "Faites glisser le badge ou sélectionnez-le pour voir le profil complet.",
+    "badgeOpenProfile": "Voir le profil",
     "people": {
       "hanh": {
         "displayName": "Dr. Nguyễn Hồng Hạnh",

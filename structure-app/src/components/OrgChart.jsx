@@ -11,7 +11,7 @@ import { TextShimmerWave } from './motion-primitives/TextShimmerWave'
 const HUB_ID = 'hanh'
 
 const PersonCard = forwardRef(function PersonCard(
-  { person, onSelectPerson, isHub },
+  { person, onSelectPerson, isHub, isSelected },
   ref,
 ) {
   const { t } = useTranslation()
@@ -23,8 +23,11 @@ const PersonCard = forwardRef(function PersonCard(
     <button
       ref={ref}
       type="button"
-      className={`person-card${isHub ? ' person-card--hub' : ''}`}
+      className={`person-card${isHub ? ' person-card--hub' : ''}${
+        isSelected ? ' person-card--selected' : ''
+      }`}
       onClick={() => onSelectPerson(person)}
+      aria-pressed={isSelected}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
@@ -54,7 +57,7 @@ const PersonCard = forwardRef(function PersonCard(
   )
 })
 
-export default function OrgChart({ levels, onSelectPerson }) {
+export default function OrgChart({ levels, onSelectPerson, selectedPersonId = null }) {
   const containerRef = useRef(null)
 
   const lanAnhRef = useRef(null)
@@ -109,6 +112,7 @@ export default function OrgChart({ levels, onSelectPerson }) {
               person={person}
               onSelectPerson={onSelectPerson}
               isHub={person.id === HUB_ID}
+              isSelected={person.id === selectedPersonId}
             />
           ))}
         </div>

@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   base: '/structure/',
+  assetsInclude: ['**/*.glb'],
   plugins: [react()],
   resolve: {
     dedupe: ['react', 'react-dom'],

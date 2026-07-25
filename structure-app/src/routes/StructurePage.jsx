@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { orgProfiles, orgChartLevels, findProfile } from '../data/orgProfiles'
+import { orgProfiles, orgChartLevels } from '../data/orgProfiles'
 import { departments } from '../data/departments'
 import { documentCategories, downloadDocument } from '../data/documents'
 import PageShell from '../components/PageShell'
@@ -10,6 +10,9 @@ import DepartmentsGrid from '../components/DepartmentsGrid'
 import LegalDocuments from '../components/LegalDocuments'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
+import EmployeeLanyard, {
+  EMPLOYEE_LANYARD_PHONE_QUERY,
+} from '../components/EmployeeLanyard'
 import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
 import { WordRotate } from '../components/magicui/WordRotate'
@@ -36,6 +39,7 @@ export default function StructurePage() {
   const searchTerm = searchParams.get('q') || ''
   const [activeTab, setActiveTab] = useState('org-chart')
   const [selectedProfile, setSelectedProfile] = useState(null)
+  const [badgeProfile, setBadgeProfile] = useState(null)
 
   const activeIndex = Math.max(
     0,
@@ -83,9 +87,23 @@ export default function StructurePage() {
     [t, i18n.language],
   )
 
-  function openProfile(query) {
-    const profile = typeof query === 'object' ? query : findProfile(query)
-    if (profile) setSelectedProfile(profile)
+  function selectBadgeProfile(profile) {
+    if (!profile) return
+    setBadgeProfile(profile)
+
+    if (window.matchMedia(EMPLOYEE_LANYARD_PHONE_QUERY).matches) {
+      setSelectedProfile(profile)
+      return
+    }
+
+    if (window.matchMedia('(max-width: 1200px)').matches) {
+      requestAnimationFrame(() => {
+        document.querySelector('.employee-lanyard')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+      })
+    }
   }
 
   return (
@@ -155,7 +173,21 @@ export default function StructurePage() {
                   <h2 className="structure-section-title structure-section-title--on-dark structure-section-title--underline">
                     {t('orgChart.title')}
                   </h2>
-                  <OrgChart levels={levels} onSelectPerson={openProfile} />
+                  <div className="org-chart-layout">
+                    <div className="org-chart-layout__chart">
+                      <OrgChart
+                        levels={levels}
+                        onSelectPerson={selectBadgeProfile}
+                        selectedPersonId={badgeProfile?.id}
+                      />
+                    </div>
+                    <EmployeeLanyard
+                      profile={badgeProfile}
+                      onOpen={() => {
+                        if (badgeProfile) setSelectedProfile(badgeProfile)
+                      }}
+                    />
+                  </div>
                 </section>
 
                 <section

@@ -50,6 +50,12 @@
   },
   "orgChart": {
     "title": "Organizational Chart",
+    "badgeLabel": "Employee Badge",
+    "badgeGeneric": "ICUE Staff",
+    "badgeGenericRole": "Institute staff",
+    "badgeSelectHint": "Select a person in the chart to personalize this badge.",
+    "badgeDragHint": "Drag the badge, or select it to view the full profile.",
+    "badgeOpenProfile": "View profile",
     "people": {
       "hanh": {
         "displayName": "Ph.D. Nguyễn Hồng Hạnh",
