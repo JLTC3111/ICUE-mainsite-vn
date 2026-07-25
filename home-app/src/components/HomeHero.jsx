@@ -4,8 +4,6 @@ import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEn
 import RainbowButton from './magicui/RainbowButton'
 import HeroVideoTitle from './HeroVideoTitle'
 import WarpBackground from './magicui/WarpBackground'
-import LanyardShowcase from './LanyardShowcase'
-import ErrorBoundary from './ErrorBoundary'
 
 export default function HomeHero({ hero, beamRef }) {
   const subtitleRef = useRef(null)
@@ -18,10 +16,6 @@ export default function HomeHero({ hero, beamRef }) {
         {!bgVideoEnabled ? <WarpBackground className="home-hero__warp" /> : null}
         <div className="home-hero__overlay" />
       </div>
-
-      <ErrorBoundary fallback={null}>
-        <LanyardShowcase />
-      </ErrorBoundary>
 
       <div className="home-hero__content">
         <div className="home-banner">

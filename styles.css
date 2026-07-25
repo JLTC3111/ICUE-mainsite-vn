@@ -1982,7 +1982,7 @@ body.loaded #app {
     transform: translateY(50px);
     filter: blur(20px);
     opacity: 0;
-    animation: showContent .5s 1s linear 1 forwards;
+    animation: showContent .4s .08s ease-out 1 forwards;
 }
 @keyframes showContent{
     to{
@@ -1992,16 +1992,16 @@ body.loaded #app {
     }
 }
 .work-carousel .work-list .work-item:nth-child(1) .work-content .work-title{
-    animation-delay: 1.2s!important;
+    animation-delay: .14s!important;
 }
 .work-carousel .work-list .work-item:nth-child(1) .work-content .work-topic{
-    animation-delay: 1.4s!important;
+    animation-delay: .2s!important;
 }
 .work-carousel .work-list .work-item:nth-child(1) .work-content .work-des{
-    animation-delay: 1.6s!important;
+    animation-delay: .26s!important;
 }
 .work-carousel .work-list .work-item:nth-child(1) .work-content .work-buttons{
-    animation-delay: 1.8s!important;
+    animation-delay: .32s!important;
 }
 /* create animation when next click */
 .work-carousel.work-next .work-list .work-item:nth-child(1) img{
@@ -2093,8 +2093,7 @@ body.loaded #app {
     opacity: 0;
     animation: showThumbnail .5s linear 1 forwards;
 }
-.work-carousel.work-next .work-arrows button,
-.work-carousel.work-prev .work-arrows button{
+.work-carousel.work-transitioning .work-arrows button{
     pointer-events: none;
 }
 .work-carousel.work-prev .work-list .work-item:nth-child(2) .work-content .work-author,
@@ -2741,4 +2740,3 @@ button:hover {
     height: clamp(180px, 30vw, 260px);
   }
 }
-

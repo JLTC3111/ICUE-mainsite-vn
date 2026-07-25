@@ -3,6 +3,8 @@ let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
 let newsArchiveSliderApi = null
 let newsArchiveSliderPromise = null
+let ourWorkCarouselApi = null
+let ourWorkCarouselPromise = null
 
 function getPastProjectsSlider() {
   if (!pastProjectsSliderPromise) {
@@ -35,6 +37,16 @@ function getNewsArchiveSlider() {
     })
   }
   return newsArchiveSliderPromise
+}
+
+function getOurWorkCarousel() {
+  if (!ourWorkCarouselPromise) {
+    ourWorkCarouselPromise = import('./ourWorkCarousel').then((api) => {
+      ourWorkCarouselApi = api
+      return api
+    })
+  }
+  return ourWorkCarouselPromise
 }
 
 function loadLegacyRuntime() {
@@ -70,7 +82,8 @@ const PAGE_INIT = {
     window.AboutUsBackgroundVideoManager?.init?.()
   },
   ourWork: async () => {
-    window.initializeCarousel?.()
+    const carousel = await getOurWorkCarousel()
+    carousel.initOurWorkCarousel()
   },
   pastProjects: async () => {
     // Skip the sluggish custom touch slider in legacy/script.js —
@@ -106,6 +119,9 @@ const PAGE_CLEANUP = {
   aboutUs: () => {
     window.AboutUsBackgroundVideoManager?.destroy?.()
   },
+  ourWork: () => {
+    ourWorkCarouselApi?.destroyOurWorkCarousel()
+  },
   pastProjects: () => {
     pastProjectsAosApi?.destroyPastProjectsAos?.()
     if (!pastProjectsAosApi) {
@@ -129,9 +145,15 @@ const PAGE_CLEANUP = {
 }
 
 export async function initLegacyPage(pageName) {
-  await loadLegacyRuntime()
   window.currentPage = pageName
   window.__mainSiteNav?.setPage?.(pageName)
+
+  // Our Work has a small route-specific initializer and does not need the
+  // 291 KB all-pages legacy runtime.
+  if (pageName !== 'ourWork') {
+    await loadLegacyRuntime()
+  }
+
   const init = PAGE_INIT[pageName]
   if (init) await init()
 }

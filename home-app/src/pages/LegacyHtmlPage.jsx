@@ -40,11 +40,7 @@ export default function LegacyHtmlPage() {
         const raw = await response.text()
         if (cancelled) return
 
-        if (pageUsesModelViewer(pageName)) {
-          await loadModelViewer()
-        }
-
-        // Only set HTML here — page init runs after paint so querySelectors work.
+        // Render the page before loading the large, decorative 3D runtime.
         setHtml(prepareLegacyHtml(raw))
       } catch (err) {
         if (cancelled || err.name === 'AbortError') return
@@ -61,9 +57,34 @@ export default function LegacyHtmlPage() {
     }
   }, [pageName])
 
-  useLayoutEffect(() => {
-    if (!html || !pageUsesModelViewer(pageName)) return
-    upgradeModelViewers(legacyRootRef.current)
+  useEffect(() => {
+    if (!html || !pageUsesModelViewer(pageName)) return undefined
+
+    let cancelled = false
+    let idleId = null
+    let timerId = null
+
+    const load = () => {
+      void loadModelViewer()
+        .then(() => {
+          if (!cancelled) upgradeModelViewers(legacyRootRef.current)
+        })
+        .catch((err) => {
+          if (!cancelled) console.warn('Deferred model viewer failed to load:', err)
+        })
+    }
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(load, { timeout: 1200 })
+    } else {
+      timerId = window.setTimeout(load, 180)
+    }
+
+    return () => {
+      cancelled = true
+      if (idleId != null) window.cancelIdleCallback(idleId)
+      if (timerId != null) window.clearTimeout(timerId)
+    }
   }, [html, pageName])
 
   // Init after HTML is committed to the DOM (fixes empty querySelector race).

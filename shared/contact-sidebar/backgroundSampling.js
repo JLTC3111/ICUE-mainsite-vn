@@ -1,5 +1,5 @@
 const OPAQUE_ALPHA = 0.72
-export const BACKGROUND_SAMPLE_SIZE = 200
+export const BACKGROUND_SAMPLE_SIZE = 48
 
 let sampleCanvas = null
 
@@ -62,6 +62,9 @@ export function getBackgroundCanvases() {
     if (!(node instanceof HTMLCanvasElement)) return
     if (node.closest('.contact-sidebar')) return
     if (node.closest('.home-hero__title')) return
+    // The lanyard is a foreground WebGL effect, not the page background.
+    // Reading it back stalls the GPU and can return a mostly transparent frame.
+    if (node.closest('.home-hero__lanyard, .lanyard-wrapper')) return
 
     const rect = node.getBoundingClientRect()
     if (rect.width < 80 || rect.height < 80) return
