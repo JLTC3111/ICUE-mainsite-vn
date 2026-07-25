@@ -1,0 +1,164 @@
+/* Magic UI Rainbow Button — adapted for ICUE (no Tailwind)
+ * @see https://magicui.design/docs/components/rainbow-button
+ */
+.rainbow-button {
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
+  --speed: 2s;
+  --rb-fill: #121213;
+  --rb-fade: rgba(18, 18, 19, 0.6);
+  --rb-text: #f5f5f5;
+
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 6px;
+  outline: none;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: var(--rb-text);
+  transition: opacity 0.18s ease, transform 0.15s ease;
+  animation: rainbow var(--speed, 2s) infinite linear;
+
+  border: 0.125rem solid transparent;
+  background-image:
+    linear-gradient(var(--rb-fill), var(--rb-fill)),
+    linear-gradient(var(--rb-fill) 50%, var(--rb-fade) 80%, transparent),
+    linear-gradient(
+      90deg,
+      var(--color-1),
+      var(--color-5),
+      var(--color-3),
+      var(--color-4),
+      var(--color-2)
+    );
+  background-size: 200%;
+  background-clip: padding-box, border-box, border-box;
+  background-origin: border-box;
+}
+
+.rainbow-button::before {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  z-index: -1;
+  height: 20%;
+  width: 60%;
+  transform: translateX(-50%);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-1),
+    var(--color-5),
+    var(--color-3),
+    var(--color-4),
+    var(--color-2)
+  );
+  background-size: 200%;
+  filter: blur(0.75rem);
+  animation: rainbow var(--speed, 2s) infinite linear;
+  pointer-events: none;
+}
+
+.rainbow-button__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.rainbow-button__label .agent-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.rainbow-button:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.rainbow-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.rainbow-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.rainbow-button:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-3) 35%, transparent);
+}
+
+.agent__generate-btn.rainbow-button:focus-visible {
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.55),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.05),
+    0 0 0 3px color-mix(in srgb, var(--color-3) 35%, transparent);
+}
+
+.agent--light .agent__generate-btn.rainbow-button:focus-visible {
+  box-shadow:
+    inset 4px 4px 10px rgba(16, 19, 24, 0.16),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.95),
+    0 0 0 3px color-mix(in srgb, var(--color-3) 35%, transparent);
+}
+
+/* Dark studio: dark fill + light text */
+.agent:not(.agent--light) .rainbow-button {
+  --rb-fill: #121213;
+  --rb-fade: rgba(18, 18, 19, 0.6);
+  --rb-text: #f5f5f5;
+}
+
+/* Light studio: light fill + dark text */
+.agent--light .rainbow-button {
+  --rb-fill: #ffffff;
+  --rb-fade: rgba(255, 255, 255, 0.6);
+  --rb-text: #0a0a0a;
+}
+
+/* Outline variant */
+.rainbow-button--outline {
+  --rb-fill: #ffffff;
+  --rb-fade: rgba(18, 18, 19, 0.6);
+  --rb-text: #111111;
+  border-color: var(--agent-border, rgba(0, 0, 0, 0.12));
+  border-bottom-color: transparent;
+}
+
+.agent:not(.agent--light) .rainbow-button--outline {
+  --rb-fill: #0a0a0a;
+  --rb-fade: rgba(255, 255, 255, 0.6);
+  --rb-text: #f5f5f5;
+  border-color: rgba(255, 255, 255, 0.14);
+  border-bottom-color: transparent;
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainbow-button,
+  .rainbow-button::before {
+    animation: none;
+  }
+}

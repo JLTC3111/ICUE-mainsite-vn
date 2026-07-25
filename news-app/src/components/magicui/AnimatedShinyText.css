@@ -1,38 +1,75 @@
-/* Magic UI Animated Shiny Text
+/* Magic UI Animated Shiny Text — original props/mechanics + ICUE theme colors
  * @see https://magicui.design/docs/components/animated-shiny-text
+ *
+ * Original (Tailwind) → CSS:
+ *   shimmerWidth = 100           → --shiny-width
+ *   mx-auto max-w-md
+ *   text-neutral-600/70          → --shiny-muted @ 70%
+ *   dark:text-neutral-400/70
+ *   bg-size-[var(--shiny-width)_100%]
+ *   bg-clip-text bg-position-[0_0] bg-no-repeat
+ *   animate-shiny-text (8s infinite)
+ *   transition: background-position 1s cubic-bezier(0.6, 0.6, 0, 1)
+ *   from-transparent via (color at 80%) via-50% to-transparent
+ *                                → --shiny-bright @ 80%
  */
 .animated-shiny-text {
   --shiny-width: 100px;
-  --shiny-muted: rgba(82, 82, 82, 0.72);
-  --shiny-bright: rgba(0, 0, 0, 0.92);
+  --shiny-muted: #5a7d9a;
+  --shiny-bright: #c8d9ea;
+
   display: inline-block;
-  max-width: 100%;
-  background-image: linear-gradient(
-    90deg,
-    var(--shiny-muted) 0%,
-    var(--shiny-muted) 40%,
-    var(--shiny-bright) 50%,
-    var(--shiny-muted) 60%,
-    var(--shiny-muted) 100%
-  );
-  background-size: calc(var(--shiny-width) * 4) 100%;
-  background-repeat: no-repeat;
-  background-position: calc(-100% - var(--shiny-width)) 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 28rem; /* max-w-md */
+
+  color: color-mix(in srgb, var(--shiny-muted) 70%, transparent);
   -webkit-text-fill-color: transparent;
-  animation: shiny-text 8s infinite;
+
+  /* Layer 1: MagiUI shine band · Layer 2: solid muted base (keeps glyphs visible) */
+  background-image:
+    linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--shiny-bright) 80%, transparent) 50%,
+      transparent
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--shiny-muted) 70%, transparent),
+      color-mix(in srgb, var(--shiny-muted) 70%, transparent)
+    );
+  background-size: var(--shiny-width) 100%, 100% 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat;
+  -webkit-background-clip: text, text;
+  background-clip: text, text;
+
+  animation: shiny-text 2.8s ease-in-out infinite alternate;
+  transition: none;
 }
 
-.agent:not(.agent--light) .animated-shiny-text {
-  --shiny-muted: rgba(163, 163, 163, 0.78);
-  --shiny-bright: rgba(255, 255, 255, 0.98);
+/* Smooth back-and-forth shimmer (demo-style) */
+@keyframes shiny-text {
+  from {
+    background-position: calc(-100% - var(--shiny-width)) 0, 0 0;
+  }
+  to {
+    background-position: calc(100% + var(--shiny-width)) 0, 0 0;
+  }
 }
 
+/* Dark studio — keep our blue theme tokens */
+.agent:not(.agent--light) .animated-shiny-text,
+.icue-app--news-theme-dark .animated-shiny-text {
+  --shiny-muted: #7a9bb8;
+  --shiny-bright: #dceaf7;
+}
+
+/* Light studio — gray-900 base → light blue shine */
 .agent--light .animated-shiny-text {
-  --shiny-muted: rgba(82, 82, 82, 0.72);
-  --shiny-bright: rgba(0, 0, 0, 0.92);
+  --shiny-muted: #111827;
+  --shiny-bright: #c8d9ea;
 }
 
 .agent__thinking-shiny,
@@ -41,25 +78,17 @@
   letter-spacing: inherit;
   text-transform: inherit;
   font-weight: inherit;
-}
-
-@keyframes shiny-text {
-  0%,
-  90%,
-  100% {
-    background-position: calc(-100% - var(--shiny-width)) 0;
-  }
-  30%,
-  60% {
-    background-position: calc(100% + var(--shiny-width)) 0;
-  }
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animated-shiny-text {
     animation: none;
-    -webkit-text-fill-color: var(--shiny-muted);
-    color: var(--shiny-muted);
+    transition: none;
     background-image: none;
+    -webkit-text-fill-color: color-mix(in srgb, var(--shiny-muted) 70%, transparent);
+    color: color-mix(in srgb, var(--shiny-muted) 70%, transparent);
   }
 }

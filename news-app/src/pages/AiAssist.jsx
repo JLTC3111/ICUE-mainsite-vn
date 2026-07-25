@@ -17,16 +17,17 @@ import {
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
+import { DatabaseCheck, Trash2, X } from 'lucide-react'
 import TranslateElapsedPill from '../components/TranslateElapsedPill'
 import PhosphorCpu from '../components/icons/PhosphorCpu'
 import TextAnimate from '../components/magicui/TextAnimate'
 import { AnimatedShinyText } from '../components/magicui/AnimatedShinyText'
+import { RainbowButton } from '../components/magicui/RainbowButton'
 import { TextLoop } from '../components/motion-primitives/TextLoop'
 import { Ripple } from '../components/magicui/Ripple'
 import './AiAssist.css'
 
 const MODES = [
-  { id: 'chat', labelKey: 'aiAssist.modeChat', icon: 'ask' },
   { id: 'review', labelKey: 'aiAssist.modeReview', icon: 'review' },
   { id: 'improve', labelKey: 'aiAssist.modeImprove', icon: 'improve' },
   { id: 'draft', labelKey: 'aiAssist.modeDraft', icon: 'draft' },
@@ -123,12 +124,10 @@ function Icon({ name, className = '' }) {
           <path d="m18 4-7 7" />
         </svg>
       )
-    case 'image':
+    case 'plus':
       return (
         <svg {...common}>
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <circle cx="8.5" cy="10" r="1.5" />
-          <path d="m21 15-4.5-4.5L9 18" />
+          <path d="M12 5v14M5 12h14" />
         </svg>
       )
     case 'send':
@@ -150,12 +149,6 @@ function Icon({ name, className = '' }) {
         <svg {...common}>
           <rect x="5" y="8" width="14" height="11" rx="3" />
           <path d="M12 5v3M9 13h.01M15 13h.01" />
-        </svg>
-      )
-    case 'trash':
-      return (
-        <svg {...common}>
-          <path d="M4 7h16M9 7V5h6v2M8 7l1 12h6l1-12" />
         </svg>
       )
     case 'panel':
@@ -261,6 +254,8 @@ export default function AiAssist() {
 
   const listRef = useRef(null)
   const inputRef = useRef(null)
+  const sessionRef = useRef(0)
+  const [chatKey, setChatKey] = useState(0)
   const {
     titles: translatedTitles,
     isTitlePending,
@@ -364,6 +359,8 @@ export default function AiAssist() {
       return
     }
 
+    const session = sessionRef.current
+    const activeThreadId = threadId
     setError('')
     const userMsg = { id: uid(), role: 'user', content: text }
     const nextMessages = [...messages, userMsg]
@@ -383,6 +380,8 @@ export default function AiAssist() {
         language: uiLang,
       })
 
+      if (session !== sessionRef.current) return
+
       setBusy(false)
       setLocalizing(true)
       const localized = await localizeAssistPayload(
@@ -390,6 +389,8 @@ export default function AiAssist() {
         uiLang,
         t('aiAssist.draftReady'),
       )
+
+      if (session !== sessionRef.current) return
 
       const assistantMsg = {
         id: uid(),
@@ -403,7 +404,7 @@ export default function AiAssist() {
 
       try {
         const saved = await persistAssistExchange({
-          threadId,
+          threadId: activeThreadId,
           userId: user.id,
           mode,
           language: uiLang,
@@ -412,7 +413,8 @@ export default function AiAssist() {
           userMessage: userMsg,
           assistantMessage: assistantMsg,
         })
-        if (saved.threadId && saved.threadId !== threadId) {
+        if (session !== sessionRef.current) return
+        if (saved.threadId && saved.threadId !== activeThreadId) {
           setThreadId(saved.threadId)
         }
         if (!saved.unavailable) refreshThreads()
@@ -421,6 +423,7 @@ export default function AiAssist() {
         /* history persistence is best-effort */
       }
     } catch (err) {
+      if (session !== sessionRef.current) return
       const code = err?.code || ''
       let msg = t('aiAssist.errorGeneric')
       if (code === 'gemini_not_configured') msg = t('aiAssist.errorNotConfigured')
@@ -430,9 +433,11 @@ export default function AiAssist() {
       else if (err?.message) msg = err.message
       setError(msg)
     } finally {
-      setBusy(false)
-      setLocalizing(false)
-      inputRef.current?.focus()
+      if (session === sessionRef.current) {
+        setBusy(false)
+        setLocalizing(false)
+        inputRef.current?.focus()
+      }
     }
   }, [busy, localizing, mode, selectedIds, messages, uiLang, t, threadId, user, refreshThreads, historyState])
 
@@ -444,6 +449,8 @@ export default function AiAssist() {
     }
     if (busy || localizing || imageBusy) return
 
+    const session = sessionRef.current
+    const activeThreadId = threadId
     setError('')
     const userMsg = { id: uid(), role: 'user', content: prompt }
     setMessages((prev) => [...prev, userMsg])
@@ -452,6 +459,8 @@ export default function AiAssist() {
 
     try {
       const result = await generateFluxImage({ prompt, steps: 4 })
+      if (session !== sessionRef.current) return
+
       const assistantMsg = {
         id: uid(),
         role: 'assistant',
@@ -463,7 +472,7 @@ export default function AiAssist() {
 
       try {
         const saved = await persistAssistExchange({
-          threadId,
+          threadId: activeThreadId,
           userId: user.id,
           mode: 'chat',
           language: uiLang,
@@ -475,7 +484,8 @@ export default function AiAssist() {
             content: `${assistantMsg.content}\n\n${assistantMsg.imagePrompt || prompt}`,
           },
         })
-        if (saved.threadId && saved.threadId !== threadId) {
+        if (session !== sessionRef.current) return
+        if (saved.threadId && saved.threadId !== activeThreadId) {
           setThreadId(saved.threadId)
         }
         if (!saved.unavailable) refreshThreads()
@@ -484,6 +494,7 @@ export default function AiAssist() {
         /* history persistence is best-effort */
       }
     } catch (err) {
+      if (session !== sessionRef.current) return
       const code = err?.code || ''
       let msg = t('aiAssist.errorImageGeneric')
       if (code === 'flux_not_configured') msg = t('aiAssist.errorFluxNotConfigured')
@@ -493,8 +504,10 @@ export default function AiAssist() {
       else if (err?.message) msg = err.message
       setError(msg)
     } finally {
-      setImageBusy(false)
-      inputRef.current?.focus()
+      if (session === sessionRef.current) {
+        setImageBusy(false)
+        inputRef.current?.focus()
+      }
     }
   }, [
     input, busy, localizing, imageBusy, t, threadId, user, uiLang,
@@ -502,10 +515,20 @@ export default function AiAssist() {
   ])
 
   const startNewChat = useCallback(() => {
+    // Invalidate in-flight Gemini/image work so late responses cannot refill the chat.
+    sessionRef.current += 1
+    setBusy(false)
+    setLocalizing(false)
+    setImageBusy(false)
     setThreadId(null)
     setMessages([])
     setError('')
     setSelectedIds([])
+    setInput('')
+    setMode('chat')
+    setHistoryOpen(true)
+    setChatKey((key) => key + 1)
+    queueMicrotask(() => inputRef.current?.focus())
   }, [])
 
   const openThread = useCallback(async (id) => {
@@ -594,7 +617,7 @@ export default function AiAssist() {
             onClick={() => setArticlesOpen(false)}
             aria-label={t('aiAssist.hideContext')}
           >
-            ×
+            <X className="agent__close-icon" size={18} strokeWidth={2.25} aria-hidden />
           </button>
         </div>
 
@@ -625,7 +648,6 @@ export default function AiAssist() {
                     aria-pressed={on}
                     aria-busy={pending || undefined}
                   >
-                    <span className={`agent__dot agent__dot--${a.status}`} />
                     <span className="agent__article-body">
                       {pending ? (
                         <TranslationLineSkeleton
@@ -648,7 +670,7 @@ export default function AiAssist() {
       </aside>
 
       <section className="agent__main">
-        <Ripple className="agent__main-ripple" mainCircleSize={180} mainCircleOpacity={0.22} numCircles={7} />
+        <Ripple className="agent__main-ripple" mainCircleSize={180} mainCircleOpacity={0.34} numCircles={7} />
         <header className="agent__top">
           <div className="agent__top-left">
             {!articlesOpen && (
@@ -663,7 +685,7 @@ export default function AiAssist() {
             )}
             <div className="agent__brand-block">
               <span className="agent__brand-mark" aria-hidden>
-                <Icon name="editor" />
+                <DatabaseCheck className="agent-icon agent__brand-icon" size={18} strokeWidth={2} />
               </span>
               <div>
                 <p className="agent__eyebrow">{t('aiAssist.sidebar')}</p>
@@ -704,22 +726,21 @@ export default function AiAssist() {
             {!historyOpen && (
               <button
                 type="button"
-                className="agent__ghost-btn"
+                className="agent__ghost-btn agent__show-history"
                 onClick={() => setHistoryOpen(true)}
               >
                 <Icon name="history" />
                 {t('aiAssist.showHistory')}
               </button>
             )}
-            <button
+            <RainbowButton
               type="button"
-              className="agent__solid-btn"
+              className="agent__generate-btn"
               onClick={generateImage}
               disabled={busy || localizing || imageBusy}
             >
-              <Icon name="image" />
               {imageBusy ? t('aiAssist.generatingImage') : t('aiAssist.generateImage')}
-            </button>
+            </RainbowButton>
           </div>
         </header>
 
@@ -731,7 +752,7 @@ export default function AiAssist() {
               role="tab"
               aria-selected={mode === m.id}
               className={`agent__mode${mode === m.id ? ' is-on' : ''}`}
-              onClick={() => setMode(m.id)}
+              onClick={() => setMode((prev) => (prev === m.id ? 'chat' : m.id))}
             >
               <Icon name={m.icon} />
               {t(m.labelKey)}
@@ -739,7 +760,7 @@ export default function AiAssist() {
           ))}
         </div>
 
-        <div className="agent__transcript" ref={listRef}>
+        <div className="agent__transcript" ref={listRef} key={chatKey}>
           {messages.length === 0 && !busy && !localizing && !imageBusy && (
             <div className="agent__empty">
               <span className="agent__empty-mark" aria-hidden>
@@ -897,11 +918,20 @@ export default function AiAssist() {
             onClick={() => setHistoryOpen(false)}
             aria-label={t('aiAssist.hideHistory')}
           >
-            ×
+            <X className="agent__close-icon" size={18} strokeWidth={2.25} aria-hidden />
           </button>
         </div>
 
         <div className="agent__history">
+          <button
+            type="button"
+            className="agent__ghost-btn agent__new-chat agent__history-new"
+            onClick={startNewChat}
+          >
+            <Icon name="plus" />
+            {t('aiAssist.newChat')}
+          </button>
+
           {historyState === 'loading' && (
             <div className="agent__sidebar-loading">
               <span className="spin" style={{ borderColor: 'currentColor', borderTopColor: 'transparent' }} />
@@ -921,7 +951,7 @@ export default function AiAssist() {
               {threads.map((thread) => {
                 const on = thread.id === threadId
                 return (
-                  <li key={thread.id}>
+                  <li key={thread.id} className={`agent__history-entry${on ? ' is-on' : ''}`}>
                     <button
                       type="button"
                       className={`agent__history-item${on ? ' is-on' : ''}`}
@@ -937,7 +967,7 @@ export default function AiAssist() {
                       aria-label={t('common.delete')}
                       title={t('common.delete')}
                     >
-                      <Icon name="trash" />
+                      <Trash2 className="agent__trash-icon" size={17} strokeWidth={2.35} aria-hidden />
                     </button>
                   </li>
                 )

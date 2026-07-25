@@ -1,28 +1,50 @@
+/* Magic UI Shiny Button — light + dark (agent / newsroom)
+ * @see https://magicui.design/docs/components/shiny-button
+ */
 .shiny-button {
   --primary: rgb(0, 0, 0);
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border-radius: 0.5rem;
-  border: 1px solid;
-  padding: 0.5rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  padding: 0.5rem 1.25rem;
   font-weight: 500;
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  transition: box-shadow 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, opacity 0.18s ease;
 }
 
-.shiny-button:hover {
+.shiny-button:hover:not(:disabled) {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.shiny-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .shiny-button__label {
   position: relative;
-  display: block;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
   width: 100%;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.65);
+}
+
+.shiny-button__label .agent-icon {
+  width: 15px;
+  height: 15px;
 }
 
 .shiny-button__shine {
@@ -33,4 +55,45 @@
   border-radius: inherit;
   padding: 1px;
   pointer-events: none;
+}
+
+/* Dark agent / newsroom */
+.agent:not(.agent--light) .shiny-button,
+.icue-app--news-theme-dark .shiny-button {
+  --primary: rgb(255, 255, 255);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+    rgba(20, 20, 20, 0.72);
+}
+
+.agent:not(.agent--light) .shiny-button:hover:not(:disabled),
+.icue-app--news-theme-dark .shiny-button:hover:not(:disabled) {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.agent:not(.agent--light) .shiny-button__label,
+.icue-app--news-theme-dark .shiny-button__label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.agent:not(.agent--light) .shiny-button__shine,
+.icue-app--news-theme-dark .shiny-button__shine {
+  background-image: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.1) calc(var(--x) + 20%),
+    rgba(255, 255, 255, 0.5) calc(var(--x) + 25%),
+    rgba(255, 255, 255, 0.1) calc(var(--x) + 100%)
+  ) !important;
+}
+
+/* Light agent */
+.agent--light .shiny-button {
+  --primary: rgb(0, 0, 0);
+  border-color: rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.agent--light .shiny-button__label {
+  color: rgba(0, 0, 0, 0.65);
 }
