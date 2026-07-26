@@ -1,27 +1,26 @@
-# Home React app (history routing) — migrated from hash SPA.
-/contact           /index.html   200
-/about-us          /index.html   200
-/our-work          /index.html   200
-/past-projects     /index.html   200
-/recruitment       /index.html   200
-/notable-awards    /index.html   200
-/community-activities  /index.html   200
-/faqs              /index.html   200
-/donations         /index.html   200
-/privacy           /index.html   200
-/terms             /index.html   200
-/gdpr              /index.html   200
-/cookies           /index.html   200
+# Public main-site routes use dedicated crawlable HTML shells.
+/                     /index.html                              200
+/contact              /route-shells/contact.html               200
+/about-us             /route-shells/about-us.html              200
+/our-work             /route-shells/our-work.html              200
+/past-projects        /route-shells/past-projects.html         200
+/recruitment          /route-shells/recruitment.html           200
+/news-archive         /route-shells/news-archive.html          200
+/notable-awards       /route-shells/notable-awards.html        200
+/community-activities /route-shells/community-activities.html  200
+/faqs                 /route-shells/faqs.html                  200
+/privacy              /route-shells/privacy.html               200
+/terms                /route-shells/terms.html                 200
+/gdpr                 /route-shells/gdpr.html                  200
+/cookies              /route-shells/cookies.html               200
 
-# Legacy News archive: force React shell (MainSiteNav + footer) over the static HTML file.
-/src/pages/News.html  /index.html  200!
-/news-archive         /src/pages/News.html  301
+# Legacy News archive URL → canonical route.
+/src/pages/News.html  /news-archive  301
 
 # Redirect old static footer pages to React shell routes.
 /src/pages/notableAwards.html       /notable-awards         301
 /src/pages/communityActivities.html /community-activities   301
 /src/pages/FAQs.html                /faqs                   301
-/src/pages/donations.html           /donations              301
 /src/pages/privacy.html             /privacy                301
 /src/pages/terms.html               /terms                  301
 /src/pages/gdpr.html                /gdpr                   301
@@ -78,3 +77,6 @@
 
 # Vite copies public/ to dist root; keep /public/* URLs working in production.
 /public/*            /:splat                         200
+
+# Future main-site client routes retain SPA support. Keep this rule last.
+/*                   /index.html                     200

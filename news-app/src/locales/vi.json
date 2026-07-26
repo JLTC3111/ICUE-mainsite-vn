@@ -30,6 +30,7 @@
     "projects": "Đề Tài, Dự Án",
     "newsEvents": "Tin Tức & Sự Kiện",
     "about": "Về Chúng Tôi",
+    "contact": "Liên Hệ",
     "people": "Nhân Lực",
     "experts": "Chuyên Gia",
     "coreTeam": "Cán Bộ"
@@ -42,7 +43,6 @@
     "news": "Bản Tin",
     "faqs": "Câu Hỏi Thường Gặp",
     "recruitment": "Tuyển Dụng",
-    "donations": "Quyên Góp",
     "privacy": "Quyền Riêng Tư",
     "terms": "Điều Khoản",
     "gdpr": "GDPR",
@@ -91,7 +91,8 @@
     "by": "bởi",
     "minRead": "phút đọc",
     "publishedOn": "Đăng ngày {{date}}",
-    "editedOn": "Chỉnh sửa {{date}}"
+    "editedOn": "Chỉnh sửa {{date}}",
+    "articleDetails": "Thông tin bài viết"
   },
   "theme": {
     "dark": "Tối",
@@ -186,6 +187,7 @@
   },
   "article": {
     "gallery": "Thư viện hình ảnh & video",
+    "moreStories": "Đọc thêm",
     "viewImage": "Xem hình {{n}}",
     "prevImage": "Ảnh trước",
     "nextImage": "Ảnh sau",
@@ -277,7 +279,8 @@
     "coverflowAriaLabel": "Carousel bài viết. Vuốt để xem và nhấn để đọc.",
     "parallaxGoToSlide": "Đến bài viết {{index}}",
     "hint": "Nhấp vào bài để đọc",
-    "readArticle": "Đọc bài"
+    "readArticle": "Đọc bài",
+    "trending": "Đang được quan tâm"
   },
   "market": {
     "label": "Chỉ số thị trường",

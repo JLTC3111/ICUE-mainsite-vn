@@ -226,7 +226,7 @@ export async function translateFields(
   }
 }
 
-export async function translateSources(sources, targetLocale, sourceLocale, env) {
+export async function translateSources(sources, targetLocale, _sourceLocale, env) {
   const list = Array.isArray(sources) ? sources : []
   if (!list.length) return []
 
@@ -234,10 +234,13 @@ export async function translateSources(sources, targetLocale, sourceLocale, env)
     list.map(async (row) => {
       const [labelResult, publisherResult] = await Promise.all([
         row.label
-          ? translatePlainText(row.label, targetLocale, sourceLocale, env)
+          // Source labels and publishers are independent UGC and may not use
+          // the article's declared language. Detect each value separately so
+          // Google Cloud receives the correct source text/language pair.
+          ? translatePlainText(row.label, targetLocale, '', env)
           : Promise.resolve({ text: '' }),
         row.publisher
-          ? translatePlainText(row.publisher, targetLocale, sourceLocale, env)
+          ? translatePlainText(row.publisher, targetLocale, '', env)
           : Promise.resolve({ text: '' }),
       ])
 

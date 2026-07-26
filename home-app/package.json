@@ -7,7 +7,7 @@
     "sync-assets": "node scripts/sync-assets.mjs",
     "dev": "vite",
     "predev": "npm run sync-assets",
-    "build": "vite build",
+    "build": "vite build && node ../scripts/generate-route-shells.mjs",
     "prebuild": "npm run sync-assets",
     "preview": "vite preview"
   },

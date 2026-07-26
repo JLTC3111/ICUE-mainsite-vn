@@ -20,10 +20,12 @@ import useMediaQuery from '../hooks/useMediaQuery'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
 import ArticlePagedContent from '../components/ArticlePagedContent'
+import ArticleMoreStories from '../components/ArticleMoreStories'
 import Lens from '../components/Lens'
 import ScrollProgress from '../components/ScrollProgress'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import { findAllCoverComparisonImages } from '../lib/mediaComparison'
+import { categoryColor, isCategory } from '../lib/categories'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './ArticleDetail.css'
@@ -288,6 +290,8 @@ export default function ArticleDetail() {
   const showToolsBar = showLensToggle || showTranslatorBar || (isMobileLayout && needsTranslation)
   const contentLang = usingTranslation && translatedLang ? translatedLang : article.language
   const isViContent = String(contentLang || '').startsWith('vi')
+  const category = isCategory(article.category) ? article.category : 'general'
+  const translatedSources = usingTranslation ? translation?.sources : null
 
   return (
     <article
@@ -298,7 +302,17 @@ export default function ArticleDetail() {
         <ScrollProgress progress={pageProgress ?? undefined} />
       ) : null}
       <div className="article-detail__head icue-container">
-        {article.status === 'draft' && <span className="article-detail__badge">{t('common.draft')}</span>}
+        <div className="article-detail__eyebrow">
+          <span
+            className="article-detail__category"
+            style={{ '--article-category-color': categoryColor(category) }}
+          >
+            {t(`categories.${category}`)}
+          </span>
+          {article.status === 'draft' && (
+            <span className="article-detail__badge">{t('common.draft')}</span>
+          )}
+        </div>
         {isTranslating ? (
           <h1 className="article-detail__title">
             <TranslationLineSkeleton
@@ -332,12 +346,22 @@ export default function ArticleDetail() {
           <div className="article-detail__byline-text">
             <span className="article-detail__author">{byline}</span>
             <span className="article-detail__meta">
-              {formatDate(publishDate, i18n.resolvedLanguage)}
-              {article.article_time ? ` · ${article.article_time.slice(0, 5)}` : ''}
+              <span className="article-detail__meta-item">
+                {formatDate(publishDate, i18n.resolvedLanguage)}
+                {article.article_time ? ` ${article.article_time.slice(0, 5)}` : ''}
+              </span>
               {editedDate
-                ? ` · ${t('news.editedOn', { date: formatDate(editedDate, i18n.resolvedLanguage) })}`
-                : ''}
-              {' · '}{article.read_minutes || 1} {t('news.minRead')}
+                ? (
+                  <span className="article-detail__meta-item article-detail__meta-item--edited">
+                    {t('news.editedOn', {
+                      date: formatDate(editedDate, i18n.resolvedLanguage),
+                    })}
+                  </span>
+                )
+                : null}
+              <span className="article-detail__meta-item">
+                {article.read_minutes || 1} {t('news.minRead')}
+              </span>
             </span>
           </div>
 
@@ -401,33 +425,60 @@ export default function ArticleDetail() {
         </figure>
       ) : null}
 
-      {isTranslating ? (
-        <div className="article-detail__content icue-readw article-detail__content--translating">
-          <TranslationLineSkeleton
-            lines={8}
-            className="translation-skeleton--article"
+      <div className="article-detail__editorial-frame">
+        <aside className="article-detail__meta-rail" aria-label={t('news.articleDetails')}>
+          <div className="article-detail__rail-card">
+            <span className="article-detail__rail-kicker">{t(`categories.${category}`)}</span>
+            <time dateTime={publishDate || undefined}>
+              {t('news.publishedOn', {
+                date: formatDate(publishDate, i18n.resolvedLanguage),
+              })}
+            </time>
+            {editedDate && (
+              <span>
+                {t('news.editedOn', {
+                  date: formatDate(editedDate, i18n.resolvedLanguage),
+                })}
+              </span>
+            )}
+            <span>{article.read_minutes || 1} {t('news.minRead')}</span>
+          </div>
+        </aside>
+
+        <main className="article-detail__reader">
+          {isTranslating ? (
+            <div className="article-detail__content article-detail__content--translating">
+              <TranslationLineSkeleton
+                lines={8}
+                className="translation-skeleton--article"
+              />
+            </div>
+          ) : (
+            <ArticlePagedContent
+              key={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
+              html={displayContent}
+              className="article-detail__content translation-reveal"
+              contentKey={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </main>
+
+        <aside className="article-detail__sources-rail">
+          <ArticleSources
+            sources={article.sources}
+            translatedSources={translatedSources}
           />
-        </div>
-      ) : (
-        <ArticlePagedContent
-          key={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
-          html={displayContent}
-          className="article-detail__content translation-reveal"
-          contentKey={`${displayContent.slice(0, 48)}-${usingTranslation ? 'tr' : 'orig'}`}
-          onPageChange={handlePageChange}
-        />
-      )}
+        </aside>
+      </div>
 
       {!isTranslating && (
-        <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
+        <div className="article-detail__media-band">
+          <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
+        </div>
       )}
 
-      <ArticleSources
-        sources={article.sources}
-        translatedSources={usingTranslation ? translation?.sources : null}
-      />
-
-      <div className="article-detail__foot icue-readw">
+      <div className="article-detail__foot article-detail__support-band">
         <Link to="/" className="btn btn-ghost btn-sm">← {t('news.title')}</Link>
         {article.status === 'published' && (
           <div className="article-detail__engagement">
@@ -438,7 +489,13 @@ export default function ArticleDetail() {
         )}
       </div>
 
-      {article.status === 'published' && <CommentSection articleId={article.id} />}
+      <ArticleMoreStories article={article} profile={profile} />
+
+      {article.status === 'published' && (
+        <div className="article-detail__comments-band">
+          <CommentSection articleId={article.id} />
+        </div>
+      )}
     </article>
   )
 }

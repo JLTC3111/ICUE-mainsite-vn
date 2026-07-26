@@ -115,9 +115,6 @@ const PAGE_INIT = {
   FAQs: async () => {
     window.initFrequentlyAskedQuestions?.()
   },
-  donations: async () => {
-    window.DonationForm?.init?.()
-  },
   notableAwards: async () => {
     window.AwardsPage?.init?.()
   },
@@ -161,7 +158,7 @@ export async function initLegacyPage(pageName) {
 
   // These pages have route-specific initializers and do not need the 291 KB
   // all-pages legacy runtime.
-  if (!['aboutUs', 'ourWork', 'pastProjects'].includes(pageName)) {
+  if (!['aboutUs', 'ourWork', 'pastProjects', 'newsArchive'].includes(pageName)) {
     await loadLegacyRuntime()
   }
 

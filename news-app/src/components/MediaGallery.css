@@ -57,6 +57,30 @@
   transition: transform 0.45s ease;
   display: block;
 }
+
+/* Preserve the visual rhythm of portrait photography in the desktop grid.
+   The class is added after the image reports its intrinsic dimensions. */
+@media (min-width: 681px) {
+  .media-gallery__item--portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  .media-gallery__item--portrait img {
+    object-fit: contain;
+    background: var(--icue-surface-2);
+  }
+}
+
+@media (max-width: 680px) {
+  .media-gallery__item--mobile.media-gallery__item--portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  .media-gallery__item--mobile.media-gallery__item--portrait img {
+    object-fit: contain;
+    background: var(--icue-surface-2);
+  }
+}
 .media-gallery__item:hover img { transform: scale(1.05); }
 
 .media-gallery__item--lens:hover img { transform: none; }

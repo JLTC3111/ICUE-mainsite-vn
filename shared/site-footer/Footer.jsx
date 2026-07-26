@@ -25,7 +25,6 @@ function Footer({ linkMode = 'hash' }) {
           <h4>{labels.otherPages}</h4>
           <a href={links.faqs}>{labels.faqs}</a>
           <a href={links.recruitment}>{labels.recruitment}</a>
-          <a href={links.donations}>{labels.donations}</a>
         </div>
         <div className="icue-footer__brand">
           <div className="icue-footer__logo-wrap">

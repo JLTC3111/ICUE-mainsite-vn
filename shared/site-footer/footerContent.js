@@ -8,7 +8,6 @@ export const FOOTER_LABELS = {
   archive: 'Tin Cũ',
   faqs: 'Câu Hỏi Thường Gặp',
   recruitment: 'Tuyển Dụng',
-  donations: 'Quyên Góp',
   privacy: 'Quyền Riêng Tư',
   terms: 'Điều Khoản',
   gdpr: 'GDPR',

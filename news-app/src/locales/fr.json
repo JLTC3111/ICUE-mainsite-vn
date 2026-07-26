@@ -30,6 +30,7 @@
     "projects": "Recherche & Projets",
     "newsEvents": "Actualités & Événements",
     "about": "À propos",
+    "contact": "Contact",
     "people": "Notre équipe",
     "experts": "Nos experts",
     "coreTeam": "Équipe principale"
@@ -42,7 +43,6 @@
     "news": "Actualités",
     "faqs": "FAQ",
     "recruitment": "Recrutement",
-    "donations": "Dons",
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "gdpr": "RGPD",
@@ -91,7 +91,8 @@
     "by": "par",
     "minRead": "min de lecture",
     "publishedOn": "Publié le {{date}}",
-    "editedOn": "Modifié le {{date}}"
+    "editedOn": "Modifié le {{date}}",
+    "articleDetails": "Détails de l’article"
   },
   "theme": {
     "dark": "Sombre",
@@ -179,6 +180,7 @@
   },
   "article": {
     "gallery": "Galerie d'images & vidéos",
+    "moreStories": "Plus d’articles",
     "viewImage": "Voir l'image {{n}}",
     "prevImage": "Image précédente",
     "nextImage": "Image suivante",
@@ -260,10 +262,17 @@
   },
   "gallery": {
     "ariaLabel": "Articles. Parcourez la grille bento et cliquez sur un article pour l'ouvrir.",
+    "bentoCarouselAriaLabel": "Galerie d’actualités bento. Faites défiler verticalement pour découvrir plus d’articles.",
+    "bentoPrevSlide": "Page bento précédente",
+    "bentoNextSlide": "Page bento suivante",
+    "bentoSlideNav": "Pages de la galerie bento",
+    "bentoPageIndicator": "Page bento {{current}} sur {{total}}",
+    "bentoGoToSlide": "Aller à la page bento {{n}}",
     "coverflowAriaLabel": "Carrousel d'articles. Faites défiler et appuyez pour lire.",
     "parallaxGoToSlide": "Aller à l'article {{index}}",
     "hint": "Cliquez sur un article pour lire",
-    "readArticle": "Lire l'article"
+    "readArticle": "Lire l'article",
+    "trending": "Tendances"
   },
   "market": {
     "label": "Indices boursiers",

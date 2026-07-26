@@ -29,8 +29,12 @@ if (!fs.existsSync(homeDist)) {
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
-for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'logoIcons', 'models', 'news', 'pastProjects', 'recruitment', 'work']) {
+for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'logoIcons', 'models', 'news', 'pastProjects', 'recruitment', 'route-shells', 'work']) {
   copyDir(path.join(homeDist, dir), path.join(root, dir));
 }
+
+copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
+copyFile(path.join(homeDist, 'sitemap.xml'), path.join(root, 'sitemap.xml'));
+copyFile(path.join(homeDist, 'robots.txt'), path.join(root, 'robots.txt'));
 
 console.log('[sync-home-dev] Synced dist-home assets to repo root for local dev.');

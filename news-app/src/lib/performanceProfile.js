@@ -157,8 +157,6 @@ export function tierToProfile(tier) {
     tier: safeTier,
     // Lite keeps carousel/hero motion; other flags still cut heavier GPU work.
     reduceMotion: safeTier === 'reduced',
-    disableGlobe: false,
-    freezeGlobe: isMinimal,
     // Lite (minimal) keeps Embla parallax; only mid "reduced" tier disables it.
     disableParallax: safeTier === 'reduced',
     disableBorderBeam: isReduced,
@@ -167,21 +165,11 @@ export function tierToProfile(tier) {
     // Lite keeps rotating tags + gooey particles; pauses the hero retro grid.
     simplifyHero: false,
     pauseRetroGrid: isMinimal,
-    globeQuality: isMinimal ? 'low' : isReduced ? 'low' : 'full',
     showScrollProgress: isFull || isMinimal,
     hyperTextScramble: isFull,
     // Market quote polling cadence (VN scroll uses vnTickerHoverToPlay).
     pauseTickers: isMinimal,
     // Full: VN ticker paused until hover. Lite: runs, pauses on hover.
     vnTickerHoverToPlay: isFull,
-  }
-}
-
-export function applyGlobeQuality(config, quality = 'full') {
-  if (!config || quality === 'full') return config
-  return {
-    ...config,
-    devicePixelRatio: 1,
-    mapSamples: 6000,
   }
 }

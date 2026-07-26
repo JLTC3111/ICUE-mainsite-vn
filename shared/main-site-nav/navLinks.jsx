@@ -38,6 +38,12 @@ const IconAbout = () => (
   </svg>
 );
 
+const IconContact = () => (
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0-8.546 5.698a2.25 2.25 0 0 1-2.408 0L2.25 6.75" />
+  </svg>
+);
+
 const IconPeople = () => (
   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.21a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
@@ -57,6 +63,7 @@ export const DRAWER_LINKS = [
   { page: 'pastProjects', href: '#/pastProjects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '#/aboutUs', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: '#/Contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
 ];
 
 /** Path-based drawer links for the standalone home React app. */
@@ -67,6 +74,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'pastProjects', href: '/past-projects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
   { page: 'News', href: newsroomUrl('vi'), label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
+  { page: 'Contact', href: '/contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
 ];
 
 export const PEOPLE_SUBMENU = {
@@ -98,6 +106,7 @@ export {
   IconProjects,
   IconNews,
   IconAbout,
+  IconContact,
   IconPeople,
   IconSubmenuArrow,
 };

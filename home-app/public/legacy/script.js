@@ -1741,9 +1741,6 @@ window.loadPage = (page) => {
               case 'recruitment':
                 JobBoard.init();
                 break;
-              case 'donations':
-                DonationForm.init();
-                break;
               case 'notableAwards':
                 AwardsPage.init();
                 break;
@@ -3472,172 +3469,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-window.DonationForm = (function () {
-  let selectedAmount = '200,000';
-  let selectedFrequency = "monthly";
-
-  function selectAmount(button, amount) {
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
-
-    button.classList.add('active');
-
-    // Update selected amount
-    selectedAmount = amount;
-    const donateAmountElement = document.getElementById('donateAmount');
-    if (donateAmountElement) {
-      donateAmountElement.textContent = amount;
-    }
-
-    // Clear custom amount input if it exists
-    const customAmountInput = document.getElementById('customAmount');
-    if (customAmountInput) {
-      customAmountInput.value = '';
-    }
-  }
-
-  // Function to update custom amount
-  function updateCustomAmount(input) {
-    const customAmount = parseInt(input.value);
-    if (customAmount && customAmount > 0) {
-      document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      selectedAmount = customAmount;
-      const donateAmountElement = document.getElementById('donateAmount');
-      if (donateAmountElement) {
-        donateAmountElement.textContent = customAmount;
-      }
-    }
-  }
-
-  // Function to select donation frequency
-  function selectFrequency(option, frequency) {
-    // Remove active class from all frequency options
-    document.querySelectorAll('.donation-option').forEach(opt => {
-      opt.classList.remove('active');
-    });
-
-    // Add active class to clicked option
-    option.classList.add('active');
-
-    // Update selected frequency
-    selectedFrequency = frequency;
-  }
-
-  // Function to process donation
-  function processDonation(event) {
-    event.preventDefault();
-
-    // Get form data
-    const formData = new FormData(event.target);
-    const donationData = {
-      amount: selectedAmount,
-      frequency: selectedFrequency,
-      firstName: formData.get('firstName'),
-      lastName: formData.get('lastName'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      company: formData.get('company')
-    };
-
-    // Validate required fields
-    if (!donationData.firstName || !donationData.lastName || !donationData.email) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-
-    // Validate amount
-    if (!selectedAmount || selectedAmount <= 0) {
-      alert('Please select a valid donation amount.');
-      return;
-    }
-
-    // Stripe Integration - Create checkout session and redirect
-    fetch('/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(donationData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(session => {
-      // Redirect to Stripe Checkout
-      window.location.href = session.url;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Quyên Góp Sẽ Được Kích Hoạt Trong Vài Tháng Tới.');
-    });
-
-    console.log('Donation data:', donationData);
-  }
-
-  // Initialize page
-  function init() {
-    // Check if donateAmount element exists before trying to set its content
-    const donateAmountElement = document.getElementById('donateAmount');
-    if (donateAmountElement) {
-      donateAmountElement.textContent = selectedAmount;
-    }
-
-    // Add hover effects to cards
-    const cards = document.querySelectorAll('.award-card, .project-card');
-    cards.forEach(card => {
-      card.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-2.5px)';
-      });
-      card.addEventListener('mouseleave', function () {
-        this.style.transform = 'translateY(0)';
-      });
-    });
-  }
-
-  // Run init after DOM is ready
-  document.addEventListener('DOMContentLoaded', init);
-
-  // Public API (accessible globally as window.DonationForm)
-  return {
-    selectAmount,
-    updateCustomAmount,
-    selectFrequency,
-    processDonation,
-    init
-  };
-})();
-
-window.selectAmount = function(button, amount) {
-  if (window.DonationForm && window.DonationForm.selectAmount) {
-    window.DonationForm.selectAmount(button, amount);
-  }
-};
-
-window.updateCustomAmount = function(input) {
-  if (window.DonationForm && window.DonationForm.updateCustomAmount) {
-    window.DonationForm.updateCustomAmount(input);
-  }
-};
-
-window.selectFrequency = function(option, frequency) {
-  if (window.DonationForm && window.DonationForm.selectFrequency) {
-    window.DonationForm.selectFrequency(option, frequency);
-  }
-};
-
-window.processDonation = function(event) {
-  if (window.DonationForm && window.DonationForm.processDonation) {
-    window.DonationForm.processDonation(event);
-  }
-};
-
 window.AwardsPage = (function () {
     const observerOptions = {
       threshold: 0.1,
@@ -4438,8 +4269,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           ],
           fallback: {
             answer: lang === 'vi'
-              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Quyên góp / Liên hệ)?'
-              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Donations / Contact)?'
+              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Liên hệ)?'
+              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Contact)?'
           }
         };
       }
@@ -4557,11 +4388,11 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const tokens = norm.split(' ').filter(Boolean);
 
         const viHints = new Set([
-          'xin','chao','camon','cam','on','dich','vu','lien','he','tuyen','dung','ung','tuyen','du','an','quyen','gop',
+          'xin','chao','camon','cam','on','dich','vu','lien','he','tuyen','dung','ung','tuyen','du','an',
           'bao','gia','chi','phi','gia','thoi','gian','quy','trinh','hop','tac','doi','tac','bao','chi','truyen','thong'
         ]);
         const enHints = new Set([
-          'what','how','where','when','services','service','projects','project','contact','recruitment','donation','donate',
+          'what','how','where','when','services','service','projects','project','contact','recruitment',
           'privacy','terms','cookies','gdpr','price','pricing','quote','proposal','meeting','schedule','internship','partner','press'
         ]);
 
@@ -5046,7 +4877,7 @@ document.addEventListener("DOMContentLoaded", function() {
           console.log('[Language Switcher] Detected path page:', pathPage);
           
           // Check for static pages that don't follow hash routing
-          if (['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs'].includes(pathPage.toLowerCase())) {
+          if (['gdpr', 'privacy', 'recruitment', 'terms', 'faqs'].includes(pathPage.toLowerCase())) {
             return pathPage.toLowerCase();
           }
           
@@ -5069,7 +4900,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
         if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
         if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
-        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
         if (title.includes('gdpr')) return 'gdpr';
         if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
         if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
@@ -5095,7 +4925,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (title.includes('structure') || title.includes('cơ cấu')) return 'orgStructure';
         if (title.includes('expert') || title.includes('chuyên gia')) return 'meetOurExperts';
         if (title.includes('core') || title.includes('cán bộ')) return 'coreTeam';
-        if (title.includes('donation') || title.includes('quyên góp')) return 'donations';
         if (title.includes('gdpr')) return 'gdpr';
         if (title.includes('privacy') || title.includes('bảo mật') || title.includes('riêng tư')) return 'privacy';
         if (title.includes('recruitment') || title.includes('tuyển dụng')) return 'recruitment';
@@ -5119,7 +4948,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (contentText.includes('contact') || contentText.includes('liên hệ')) return 'Contact';
         if (contentText.includes('experts') || contentText.includes('chuyên gia')) return 'meetOurExperts';
         if (contentText.includes('core team') || contentText.includes('cán bộ')) return 'coreTeam';
-        if (contentText.includes('donation') || contentText.includes('quyên góp')) return 'donations';
         if (contentText.includes('gdpr') || contentText.includes('gdpr')) return 'gdpr';
         if (contentText.includes('privacy') || contentText.includes('bảo mật') || contentText.includes('riêng tư')) return 'privacy';
         if (contentText.includes('recruitment') || contentText.includes('tuyển dụng')) return 'recruitment';
@@ -5147,7 +4975,6 @@ document.addEventListener("DOMContentLoaded", function() {
       'meetOurExperts': 'meetOurExperts',
       'coreTeam': 'coreTeam',
       'Contact': 'Contact',
-      'donations': 'donations',
       'gdpr': 'gdpr',
       'privacy': 'privacy',
       'recruitment': 'recruitment',
@@ -5166,7 +4993,7 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('[Language Switcher] Target page mapped:', targetPageName);
     
     // Static pages that can be accessed via hash routing
-    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+    const staticPages = ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     
     // Build target path - using hash-based routing for consistency
     let targetPath = '';
@@ -5306,11 +5133,6 @@ function initializePageFunctions() {
       console.log('[Init] JobBoard initialized globally');
     }
     
-    if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-      DonationForm.init();
-      console.log('[Init] DonationForm initialized globally');
-    }
-    
     if (typeof AwardsPage !== 'undefined' && AwardsPage.init) {
       AwardsPage.init();
       console.log('[Init] AwardsPage initialized globally');
@@ -5326,7 +5148,7 @@ function initializePageFunctions() {
     const currentHash = window.location.hash;
     
     // static page OR hash-routed page
-    const staticPages = ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
+    const staticPages = ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'];
     const isStaticPage = staticPages.some(page => currentPath.includes(`${page}.html`)) || languageSwitchTarget;
     const isHashRoutedPage = currentHash && staticPages.some(page => currentHash.includes(page));
     
@@ -5350,11 +5172,6 @@ function initializePageFunctions() {
         if (typeof JobBoard !== 'undefined' && JobBoard.init) {
           JobBoard.init();
           console.log('[Init] JobBoard initialized');
-        }
-      } else if (pageName === 'donations' || currentPath.includes('donations.html')) {
-        if (typeof DonationForm !== 'undefined' && DonationForm.init) {
-          DonationForm.init();
-          console.log('[Init] DonationForm initialized');
         }
       } else if (pageName === 'faqs' || currentPath.includes('faqs.html')) {
         if (typeof initFrequentlyAskedQuestions === 'function') {

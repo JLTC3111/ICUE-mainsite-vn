@@ -21,6 +21,7 @@
     "projects": "연구·프로젝트",
     "newsEvents": "뉴스·이벤트",
     "about": "소개",
+    "contact": "문의",
     "people": "인력",
     "experts": "전문가",
     "coreTeam": "핵심 인력"
@@ -34,7 +35,6 @@
     "archive": "뉴스 아카이브",
     "faqs": "FAQ",
     "recruitment": "채용",
-    "donations": "기부",
     "privacy": "개인정보",
     "terms": "약관",
     "gdpr": "GDPR",

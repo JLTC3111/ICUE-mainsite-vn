@@ -6,11 +6,9 @@ import react from '@vitejs/plugin-react'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const LEGACY_SHELL_SRC_PAGES = new Set([
-  '/src/pages/News.html',
   '/src/pages/notableAwards.html',
   '/src/pages/communityActivities.html',
   '/src/pages/FAQs.html',
-  '/src/pages/donations.html',
   '/src/pages/privacy.html',
   '/src/pages/terms.html',
   '/src/pages/gdpr.html',
@@ -18,11 +16,10 @@ const LEGACY_SHELL_SRC_PAGES = new Set([
 ])
 
 const LEGACY_PAGE_REDIRECTS = {
-  '/legacy/pages/News.html': '/src/pages/News.html',
+  '/legacy/pages/News.html': '/news-archive',
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/FAQs.html': '/faqs',
-  '/legacy/pages/donations.html': '/donations',
   '/legacy/pages/privacy.html': '/privacy',
   '/legacy/pages/terms.html': '/terms',
   '/legacy/pages/gdpr.html': '/gdpr',

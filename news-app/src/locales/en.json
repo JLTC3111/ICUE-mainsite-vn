@@ -30,6 +30,7 @@
     "projects": "Research & Projects",
     "newsEvents": "News & Events",
     "about": "About Us",
+    "contact": "Contact",
     "people": "Our People",
     "experts": "Our Experts",
     "coreTeam": "Core Team"
@@ -42,7 +43,6 @@
     "news": "News",
     "faqs": "FAQs",
     "recruitment": "Recruitment",
-    "donations": "Donations",
     "privacy": "Privacy",
     "terms": "Terms",
     "gdpr": "GDPR",
@@ -91,7 +91,8 @@
     "by": "by",
     "minRead": "min read",
     "publishedOn": "Published {{date}}",
-    "editedOn": "Edited {{date}}"
+    "editedOn": "Edited {{date}}",
+    "articleDetails": "Article details"
   },
   "theme": {
     "dark": "Dark",
@@ -186,6 +187,7 @@
   },
   "article": {
     "gallery": "Image & video gallery",
+    "moreStories": "More stories",
     "viewImage": "View image {{n}}",
     "prevImage": "Previous image",
     "nextImage": "Next image",
@@ -277,7 +279,8 @@
     "coverflowAriaLabel": "News articles carousel. Swipe through stories and tap to read.",
     "parallaxGoToSlide": "Go to article {{index}}",
     "hint": "Click an article to read",
-    "readArticle": "Read article"
+    "readArticle": "Read article",
+    "trending": "Trending now"
   },
   "market": {
     "label": "Market indices",

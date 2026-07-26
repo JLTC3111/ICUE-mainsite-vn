@@ -48,6 +48,10 @@ export default function MainSiteNav({
   drawerLinks,
   homeHref = 'https://icue.vn',
   contactHref = '#/aboutUs',
+  usePillNav = false,
+  onNavigate,
+  PillHeaderComponent,
+  pillOverflowItems = [],
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -317,7 +321,7 @@ export default function MainSiteNav({
       window.removeEventListener('scroll', syncDockExpansion);
       mq.removeEventListener('change', syncDockExpansion);
     };
-  }, []);
+  }, [usePillNav]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => playEntranceAnimation(true), 50);
@@ -372,6 +376,7 @@ export default function MainSiteNav({
 
   const navClass = [
     'main-site-nav',
+    usePillNav ? 'main-site-nav--pill' : '',
     dockExpanded ? 'main-site-nav--dock-expanded' : 'main-site-nav--dock-contracted',
     darkNav ? 'nav-on-dark' : '',
     drawerOpen ? 'drawer-open' : '',
@@ -407,6 +412,12 @@ export default function MainSiteNav({
           logoLinkRef={logoLinkRef}
           contactLinkRef={contactLinkRef}
           flagLinkRef={flagLinkRef}
+          usePillNav={usePillNav}
+          activePage={activePage}
+          pillItems={drawerLinkConfig}
+          onNavigate={onNavigate}
+          PillHeaderComponent={PillHeaderComponent}
+          pillOverflowItems={pillOverflowItems}
         />
       </nav>
 

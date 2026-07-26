@@ -51,7 +51,6 @@ const LEGACY_PAGES = [
   'notableAwards.html',
   'communityActivities.html',
   'FAQs.html',
-  'donations.html',
   'privacy.html',
   'terms.html',
   'gdpr.html',
@@ -83,6 +82,7 @@ for (const file of LEGACY_PAGES) {
 }
 
 copyFile(path.join(siteRoot, 'src/script.js'), path.join(appRoot, 'public/legacy/script.js'))
+copyFile(path.join(siteRoot, '_redirects'), path.join(appRoot, 'public/_redirects'))
 copyFile(
   path.join(siteRoot, 'public/logoIcons/favicon.png'),
   path.join(appRoot, 'public/logoIcons/favicon.png'),

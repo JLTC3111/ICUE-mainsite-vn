@@ -44,14 +44,13 @@
     <title>ICUE-Vietnam</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="route-shell-fallback">
+        <p>ICUE Vietnam</p>
+        <h1>Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị</h1>
+        <p>Nghiên cứu, quy hoạch, đổi mới và phát triển đô thị bền vững.</p>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
-    <!-- Netlify/headless crawlers: show static preview instead of rendering the heavy home app -->
-    <script>
-      if (navigator.userAgent.includes('Headless')) {
-        document.body.innerHTML =
-          '<img src="/preview.jpg" alt="iCUE Vietnam" style="width:100vw;height:100vh;object-fit:cover;display:block;margin:0;" />';
-      }
-    </script>
   </body>
 </html>

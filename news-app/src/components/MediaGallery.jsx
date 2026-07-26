@@ -27,11 +27,20 @@ function useMobileGallery() {
 export default function MediaGallery({ images = [], videos = [], lensEnabled = false }) {
   const { t } = useTranslation()
   const [index, setIndex] = useState(null)
+  const [orientations, setOrientations] = useState({})
   const lightboxSwiperRef = useRef(null)
   const isMobile = useMobileGallery()
 
   const open = useCallback((i) => setIndex(i), [])
   const close = useCallback(() => setIndex(null), [])
+  const handleImageLoad = useCallback((id, event) => {
+    const next = event.currentTarget.naturalHeight > event.currentTarget.naturalWidth
+      ? 'portrait'
+      : 'landscape'
+    setOrientations((previous) => (
+      previous[id] === next ? previous : { ...previous, [id]: next }
+    ))
+  }, [])
 
   useEffect(() => {
     if (index === null) return undefined
@@ -85,11 +94,11 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
             <SwiperSlide key={img.id}>
               <button
                 type="button"
-                className="media-gallery__item media-gallery__item--mobile"
+                className={`media-gallery__item media-gallery__item--mobile${orientations[img.id] ? ` media-gallery__item--${orientations[img.id]}` : ''}`}
                 onClick={() => open(i)}
                 aria-label={t('article.viewImage', { n: i + 1 })}
               >
-                <img src={img.url} alt="" loading="lazy" decoding="async" />
+                <img src={img.url} alt="" loading="lazy" decoding="async" onLoad={(event) => handleImageLoad(img.id, event)} />
                 <span className="media-gallery__zoom" aria-hidden>
                   <Maximize2 size={15} strokeWidth={2} />
                 </span>
@@ -105,7 +114,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
             <button
               key={img.id}
               type="button"
-              className={`media-gallery__item${lensEnabled ? ' media-gallery__item--lens' : ''}`}
+              className={`media-gallery__item${lensEnabled ? ' media-gallery__item--lens' : ''}${orientations[img.id] ? ` media-gallery__item--${orientations[img.id]}` : ''}`}
               onClick={() => open(i)}
               aria-label={t('article.viewImage', { n: i + 1 })}
             >
@@ -115,7 +124,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
                 lensSize={150}
                 disabled={!lensEnabled}
               >
-                <img src={img.url} alt="" loading="lazy" decoding="async" />
+                <img src={img.url} alt="" loading="lazy" decoding="async" onLoad={(event) => handleImageLoad(img.id, event)} />
               </Lens>
               {!lensEnabled && (
                 <span className="media-gallery__zoom" aria-hidden>

@@ -77,6 +77,7 @@ const rootDirsFromHome = [
   'news',
   'pastProjects',
   'recruitment',
+  'route-shells',
   'work',
   'newsroom',
   'people',
@@ -93,6 +94,8 @@ for (const dir of rootDirsFromHome) {
 
 copyDir(path.join(homeDist, 'src/pages'), path.join(root, 'src/pages'));
 copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
+copyFile(path.join(homeDist, 'sitemap.xml'), path.join(root, 'sitemap.xml'));
+copyFile(path.join(homeDist, 'robots.txt'), path.join(root, 'robots.txt'));
 
 // Ensure past-project card galleries are present in both /pastProjects and /public/pastProjects.
 const cardGalleriesSrc = path.join(root, 'src/pages/public/pastProjects');

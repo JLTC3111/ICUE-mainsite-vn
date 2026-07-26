@@ -25,12 +25,48 @@ export default function MainSiteHeader({
   logoLinkRef,
   contactLinkRef,
   flagLinkRef,
+  usePillNav = false,
+  activePage,
+  pillItems = [],
+  onNavigate,
+  PillHeaderComponent,
+  pillOverflowItems = [],
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
   const logoMarkSrc = `${assetPrefix}logoIcons/favicon.png`;
 
   const showActionsGroup = showHomeVideoToggle || showAboutUsVideoToggle || showContactLink;
+
+  if (usePillNav && PillHeaderComponent) {
+    const ResponsivePillHeader = PillHeaderComponent;
+    return (
+      <ResponsivePillHeader
+        activePage={activePage}
+        items={pillItems}
+        homeHref={homeHref}
+        logoMarkSrc={logoMarkSrc}
+        logoVideoSrc={logoVideoSrc}
+        drawerOpen={drawerOpen}
+        onToggleDrawer={onToggleDrawer}
+        showHomeVideoToggle={showHomeVideoToggle}
+        showAboutUsVideoToggle={showAboutUsVideoToggle}
+        homeVideoEnabled={homeVideoEnabled}
+        homeVideoToggleDisabled={homeVideoToggleDisabled}
+        onHomeVideoToggle={onHomeVideoToggle}
+        aboutUsVideoEnabled={aboutUsVideoEnabled}
+        aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
+        onAboutUsVideoToggle={onAboutUsVideoToggle}
+        menuIconRef={menuIconRef}
+        menuToggleRef={menuToggleRef}
+        logoLinkRef={logoLinkRef}
+        contactLinkRef={contactLinkRef}
+        flagLinkRef={flagLinkRef}
+        onNavigate={onNavigate}
+        overflowItems={pillOverflowItems}
+      />
+    );
+  }
 
   return (
     <div className="main-site-nav__dock-wrap">

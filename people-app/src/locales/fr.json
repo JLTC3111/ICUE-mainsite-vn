@@ -22,6 +22,7 @@
     "projects": "Recherche & Projets",
     "newsEvents": "Actualités & Événements",
     "about": "À propos",
+    "contact": "Contact",
     "people": "Notre équipe",
     "experts": "Nos experts",
     "coreTeam": "Équipe principale"
@@ -34,7 +35,6 @@
     "news": "Actualités",
     "faqs": "FAQ",
     "recruitment": "Recrutement",
-    "donations": "Dons",
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "gdpr": "RGPD",

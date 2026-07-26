@@ -30,6 +30,7 @@
     "projects": "研究・プロジェクト",
     "newsEvents": "ニュース・イベント",
     "about": "私たちについて",
+    "contact": "お問い合わせ",
     "people": "私たちのチーム",
     "experts": "専門家",
     "coreTeam": "コアチーム"
@@ -42,7 +43,6 @@
     "news": "ニュース",
     "faqs": "よくある質問",
     "recruitment": "採用",
-    "donations": "寄付",
     "privacy": "プライバシー",
     "terms": "利用規約",
     "gdpr": "GDPR",
@@ -91,7 +91,8 @@
     "by": "投稿者",
     "minRead": "分で読了",
     "publishedOn": "公開日 {{date}}",
-    "editedOn": "更新 {{date}}"
+    "editedOn": "更新 {{date}}",
+    "articleDetails": "記事の詳細"
   },
   "theme": {
     "dark": "ダーク",
@@ -179,6 +180,7 @@
   },
   "article": {
     "gallery": "画像・動画ギャラリー",
+    "moreStories": "その他の記事",
     "viewImage": "画像 {{n}} を表示",
     "prevImage": "前の画像",
     "nextImage": "次の画像",
@@ -260,10 +262,17 @@
   },
   "gallery": {
     "ariaLabel": "ニュース記事。ベントグリッドを閲覧し、記事をクリックして開きます。",
+    "bentoCarouselAriaLabel": "ニュースのベントギャラリー。縦にスクロールして他の記事を表示します。",
+    "bentoPrevSlide": "前のベントページ",
+    "bentoNextSlide": "次のベントページ",
+    "bentoSlideNav": "ベントギャラリーのページ",
+    "bentoPageIndicator": "ベントページ {{current}} / {{total}}",
+    "bentoGoToSlide": "ベントページ {{n}} へ移動",
     "coverflowAriaLabel": "記事カルーセル。スワイプして記事を選び、タップして読みます。",
     "parallaxGoToSlide": "記事 {{index}} へ移動",
     "hint": "記事をクリックして読む",
-    "readArticle": "記事を読む"
+    "readArticle": "記事を読む",
+    "trending": "注目の記事"
   },
   "market": {
     "label": "市場指数",

@@ -30,6 +30,7 @@
     "projects": "Forschung & Projekte",
     "newsEvents": "News & Veranstaltungen",
     "about": "Über uns",
+    "contact": "Kontakt",
     "people": "Unser Team",
     "experts": "Unsere Experten",
     "coreTeam": "Kernteam"
@@ -42,7 +43,6 @@
     "news": "Aktuelles",
     "faqs": "FAQ",
     "recruitment": "Karriere",
-    "donations": "Spenden",
     "privacy": "Datenschutz",
     "terms": "Bedingungen",
     "gdpr": "DSGVO",
@@ -91,7 +91,8 @@
     "by": "von",
     "minRead": "Min. Lesezeit",
     "publishedOn": "Veröffentlicht {{date}}",
-    "editedOn": "Bearbeitet {{date}}"
+    "editedOn": "Bearbeitet {{date}}",
+    "articleDetails": "Artikeldetails"
   },
   "theme": {
     "dark": "Dunkel",
@@ -179,6 +180,7 @@
   },
   "article": {
     "gallery": "Bild- & Videogalerie",
+    "moreStories": "Weitere Artikel",
     "viewImage": "Bild {{n}} ansehen",
     "prevImage": "Vorheriges Bild",
     "nextImage": "Nächstes Bild",
@@ -260,10 +262,17 @@
   },
   "gallery": {
     "ariaLabel": "Nachrichtenartikel. Durchsuchen Sie das Bento-Raster und klicken Sie auf einen Artikel, um ihn zu öffnen.",
+    "bentoCarouselAriaLabel": "Bento-Nachrichtengalerie. Scrollen Sie vertikal für weitere Artikel.",
+    "bentoPrevSlide": "Vorherige Bento-Seite",
+    "bentoNextSlide": "Nächste Bento-Seite",
+    "bentoSlideNav": "Seiten der Bento-Galerie",
+    "bentoPageIndicator": "Bento-Seite {{current}} von {{total}}",
+    "bentoGoToSlide": "Zur Bento-Seite {{n}}",
     "coverflowAriaLabel": "Nachrichten-Karussell. Wischen Sie durch die Artikel und tippen Sie zum Lesen.",
     "parallaxGoToSlide": "Zu Artikel {{index}}",
     "hint": "Artikel anklicken zum Lesen",
-    "readArticle": "Artikel lesen"
+    "readArticle": "Artikel lesen",
+    "trending": "Aktuell im Trend"
   },
   "market": {
     "label": "Marktindizes",

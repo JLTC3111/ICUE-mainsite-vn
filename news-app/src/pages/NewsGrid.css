@@ -250,7 +250,9 @@
 
 @media (min-width: 1025px) {
   .icue-container--bento-gallery {
-    max-width: 75vw;
+    width: min(1520px, calc(100vw - clamp(64px, 8vw, 160px)));
+    max-width: 1520px;
+    padding-inline: 0;
   }
 }
 

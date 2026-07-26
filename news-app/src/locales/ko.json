@@ -30,6 +30,7 @@
     "projects": "연구 및 프로젝트",
     "newsEvents": "뉴스 및 행사",
     "about": "소개",
+    "contact": "문의",
     "people": "우리 팀",
     "experts": "전문가",
     "coreTeam": "핵심 팀"
@@ -42,7 +43,6 @@
     "news": "뉴스",
     "faqs": "자주 묻는 질문",
     "recruitment": "채용",
-    "donations": "기부",
     "privacy": "개인정보 처리방침",
     "terms": "이용약관",
     "gdpr": "GDPR",
@@ -91,7 +91,8 @@
     "by": "작성",
     "minRead": "분 소요",
     "publishedOn": "게시 {{date}}",
-    "editedOn": "수정 {{date}}"
+    "editedOn": "수정 {{date}}",
+    "articleDetails": "기사 정보"
   },
   "theme": {
     "dark": "다크",
@@ -179,6 +180,7 @@
   },
   "article": {
     "gallery": "이미지 및 동영상 갤러리",
+    "moreStories": "더 많은 기사",
     "viewImage": "이미지 {{n}} 보기",
     "prevImage": "이전 이미지",
     "nextImage": "다음 이미지",
@@ -260,10 +262,17 @@
   },
   "gallery": {
     "ariaLabel": "뉴스 기사. 벤토 그리드를 탐색하고 기사를 클릭하여 엽니다.",
+    "bentoCarouselAriaLabel": "뉴스 벤토 갤러리. 더 많은 기사를 보려면 세로로 스크롤하세요.",
+    "bentoPrevSlide": "이전 벤토 페이지",
+    "bentoNextSlide": "다음 벤토 페이지",
+    "bentoSlideNav": "벤토 갤러리 페이지",
+    "bentoPageIndicator": "벤토 페이지 {{current}} / {{total}}",
+    "bentoGoToSlide": "벤토 페이지 {{n}}로 이동",
     "coverflowAriaLabel": "기사 캐러셀. 스와이프하여 탐색하고 탭하여 읽습니다.",
     "parallaxGoToSlide": "{{index}}번 기사로 이동",
     "hint": "기사를 클릭하여 읽기",
-    "readArticle": "기사 읽기"
+    "readArticle": "기사 읽기",
+    "trending": "주요 기사"
   },
   "market": {
     "label": "시장 지수",

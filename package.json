@@ -1,7 +1,7 @@
 {
   "name": "icue-main-site-vietnamese",
   "version": "1.0.0",
-  "description": "ICUE Website with Stripe Integration",
+  "description": "ICUE Vietnam website and connected applications",
   "main": "server.js",
   "dependencies": {
     "@google/model-viewer": "^4.1.0",
@@ -20,7 +20,6 @@
     "ogl": "^1.0.11",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "stripe": "^12.0.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.6.0"
   },
@@ -43,6 +42,7 @@
     "build:people": "npm run build --prefix people-app",
     "dev:people": "npm run dev --prefix people-app",
     "build:structure": "npm run build --prefix structure-app",
+    "verify:routes": "node scripts/verify-route-shells.mjs",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",
     "dev:structure": "npm run dev --prefix structure-app"

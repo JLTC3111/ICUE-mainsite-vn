@@ -364,7 +364,6 @@ footer {
                     <div class="collapsible">
                         <a href="/src/pages/FAQs.html">Câu Hỏi Thường Gặp</a>
                         <a href="/recruitment">Tuyển Dụng</a>
-                        <a href="/src/pages/donations.html">Quyên Góp</a>
                     </div>
                 </div>
                 <div class="footer-brand">
@@ -461,7 +460,7 @@ footer {
                 return;
             }
 
-            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/donations', '#/notableAwards', '#/communityActivities', '#/pastProjects'];
+            const allowedPages = ['#Home', '#/aboutUs', '#/orgStructure', '#/Contact', '#/cookies', '#/privacy', '#/gdpr', '#/terms', '#/FAQs', '#/recruitment', '#/notableAwards', '#/communityActivities', '#/pastProjects'];
             const currentPage = window.location.hash.trim();
             console.log("Current page:", currentPage);
             const normalizedPage = currentPage.replace(/\/$/, '').toLowerCase();
@@ -520,4 +519,3 @@ footer {
         }
     };
 })(window);
-

@@ -1,10 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
 import Footer from '@icue/site-footer/Footer'
 import ContactSidebar from '@icue/contact-sidebar'
-import { STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
+import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
+import PillSiteHeader from './components/PillSiteHeader'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
@@ -31,6 +32,7 @@ function NavSync() {
 
 function AppShell() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     // #region agent log
@@ -44,9 +46,13 @@ function AppShell() {
       <NavSync />
       <MainSiteNav
         variant="standalone"
+        usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}
         homeHref={ROUTE_PATHS.home}
         contactHref={ROUTE_PATHS.aboutUs}
+        onNavigate={navigate}
+        PillHeaderComponent={PillSiteHeader}
+        pillOverflowItems={PEOPLE_SUBMENU.items}
       />
       <HomeLayoutGuard />
       <main id="content">
@@ -61,7 +67,6 @@ function AppShell() {
           <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.donations} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />

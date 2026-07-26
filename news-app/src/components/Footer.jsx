@@ -27,7 +27,6 @@ function Footer() {
           <h4>{t('footer.otherPages')}</h4>
           <a href={links.faqs}>{t('footer.faqs')}</a>
           <a href={links.recruitment}>{t('footer.recruitment')}</a>
-          <a href={links.donations}>{t('footer.donations')}</a>
         </div>
         <div className="icue-footer__brand">
           <div className="icue-footer__logo-wrap">

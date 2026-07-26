@@ -37,7 +37,7 @@ export default function LanguageFlagLink() {
     }
 
     if (
-      ['donations', 'gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'].includes(
+      ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'].includes(
         fresh.targetPageName
       )
     ) {

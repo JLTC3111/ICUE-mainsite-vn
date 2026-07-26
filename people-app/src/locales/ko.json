@@ -22,6 +22,7 @@
     "projects": "연구 및 프로젝트",
     "newsEvents": "뉴스 및 행사",
     "about": "소개",
+    "contact": "문의",
     "people": "우리 팀",
     "experts": "전문가",
     "coreTeam": "핵심 팀"
@@ -34,7 +35,6 @@
     "news": "뉴스",
     "faqs": "자주 묻는 질문",
     "recruitment": "채용",
-    "donations": "기부",
     "privacy": "개인정보 처리방침",
     "terms": "이용약관",
     "gdpr": "GDPR",

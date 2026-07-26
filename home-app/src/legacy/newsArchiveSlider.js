@@ -170,6 +170,9 @@ function initLogoSwiper(generation) {
   const el = findLogoEl()
   if (!el || generation !== logoState.generation) return
 
+  el.classList.remove('news-logo-ready')
+  el.setAttribute('aria-busy', 'true')
+
   if (logoState.swiper) {
     logoState.swiper.destroy(true, true)
     logoState.swiper = null
@@ -192,6 +195,39 @@ function initLogoSwiper(generation) {
     pagination: {
       el: el.querySelector('.swiper-pagination'),
       clickable: true,
+    },
+    on: {
+      init(swiper) {
+        const images = Array.from(el.querySelectorAll('img'))
+        const imageReady = images.map((image) => {
+          if (image.complete) {
+            return typeof image.decode === 'function' ? image.decode().catch(() => {}) : Promise.resolve()
+          }
+          return new Promise((resolve) => {
+            image.addEventListener('load', resolve, { once: true })
+            image.addEventListener('error', resolve, { once: true })
+            if (image.complete) resolve()
+          })
+        })
+
+        const readyOrTimeout = Promise.race([
+          Promise.all(imageReady),
+          new Promise((resolve) => window.setTimeout(resolve, 1500)),
+        ])
+
+        readyOrTimeout.then(() => {
+          if (
+            generation !== logoState.generation
+            || swiper.destroyed
+            || !el.isConnected
+          ) return
+
+          requestAnimationFrame(() => {
+            el.classList.add('news-logo-ready')
+            el.setAttribute('aria-busy', 'false')
+          })
+        })
+      },
     },
     breakpoints: {
       0: { spaceBetween: 16 },
@@ -443,6 +479,10 @@ export async function initNewsArchiveSlider() {
 export function destroyNewsArchiveSlider() {
   logoState.generation += 1
   cardsState.generation += 1
+
+  const logoEl = findLogoEl()
+  logoEl?.classList.remove('news-logo-ready')
+  logoEl?.removeAttribute('aria-busy')
 
   if (logoState.swiper) {
     logoState.swiper.destroy(true, true)

@@ -24,7 +24,6 @@ export const MAIN_SITE_PAGE_PATHS = {
   communityActivities: '/community-activities',
   FAQs: '/faqs',
   faqs: '/faqs',
-  donations: '/donations',
   privacy: '/privacy',
   terms: '/terms',
   gdpr: '/gdpr',

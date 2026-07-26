@@ -85,11 +85,9 @@ function homeDevFallback() {
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
-    '/src/pages/News.html',
     '/src/pages/notableAwards.html',
     '/src/pages/communityActivities.html',
     '/src/pages/FAQs.html',
-    '/src/pages/donations.html',
     '/src/pages/privacy.html',
     '/src/pages/terms.html',
     '/src/pages/gdpr.html',
@@ -97,11 +95,10 @@ function homeDevFallback() {
   ]);
 
   const legacyPageRedirects = {
-    '/legacy/pages/News.html': '/src/pages/News.html',
+    '/legacy/pages/News.html': '/news-archive',
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/FAQs.html': '/faqs',
-    '/legacy/pages/donations.html': '/donations',
     '/legacy/pages/privacy.html': '/privacy',
     '/legacy/pages/terms.html': '/terms',
     '/legacy/pages/gdpr.html': '/gdpr',
@@ -112,7 +109,6 @@ function homeDevFallback() {
     '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
     '/src/pages/FAQs.html': '/faqs',
-    '/src/pages/donations.html': '/donations',
     '/src/pages/privacy.html': '/privacy',
     '/src/pages/terms.html': '/terms',
     '/src/pages/gdpr.html': '/gdpr',
