@@ -5,6 +5,8 @@ let newsArchiveSliderApi = null
 let newsArchiveSliderPromise = null
 let ourWorkCarouselApi = null
 let ourWorkCarouselPromise = null
+let aboutUsPageApi = null
+let aboutUsPagePromise = null
 
 function getPastProjectsSlider() {
   if (!pastProjectsSliderPromise) {
@@ -49,6 +51,16 @@ function getOurWorkCarousel() {
   return ourWorkCarouselPromise
 }
 
+function getAboutUsPage() {
+  if (!aboutUsPagePromise) {
+    aboutUsPagePromise = import('./aboutUsPage').then((api) => {
+      aboutUsPageApi = api
+      return api
+    })
+  }
+  return aboutUsPagePromise
+}
+
 function loadLegacyRuntime() {
   if (window.__icueLegacyRuntimeLoaded) {
     return Promise.resolve()
@@ -77,9 +89,8 @@ const PAGE_INIT = {
     window.initPostMethod?.()
   },
   aboutUs: async () => {
-    window.initHomeTextSlider?.()
-    window.AboutUsBackgroundVideoManager?.bindToggleUI?.()
-    window.AboutUsBackgroundVideoManager?.init?.()
+    const aboutUsPage = await getAboutUsPage()
+    aboutUsPage.initAboutUsPage()
   },
   ourWork: async () => {
     const carousel = await getOurWorkCarousel()
@@ -117,7 +128,7 @@ const PAGE_INIT = {
 
 const PAGE_CLEANUP = {
   aboutUs: () => {
-    window.AboutUsBackgroundVideoManager?.destroy?.()
+    aboutUsPageApi?.destroyAboutUsPage()
   },
   ourWork: () => {
     ourWorkCarouselApi?.destroyOurWorkCarousel()
@@ -148,9 +159,9 @@ export async function initLegacyPage(pageName) {
   window.currentPage = pageName
   window.__mainSiteNav?.setPage?.(pageName)
 
-  // Our Work has a small route-specific initializer and does not need the
-  // 291 KB all-pages legacy runtime.
-  if (pageName !== 'ourWork') {
+  // These pages have route-specific initializers and do not need the 291 KB
+  // all-pages legacy runtime.
+  if (!['aboutUs', 'ourWork', 'pastProjects'].includes(pageName)) {
     await loadLegacyRuntime()
   }
 

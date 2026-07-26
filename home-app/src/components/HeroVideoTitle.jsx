@@ -3,7 +3,7 @@ import { useReducedMotion } from 'motion/react'
 import { useHomeBackgroundVideoEnabled } from '../hooks/useHomeBackgroundVideoEnabled'
 import './HeroVideoTitle.css'
 
-const HERO_TITLE_VIDEO_SRC = '/bgVideos/video-text-fifa2026.mp4'
+const HERO_TITLE_VIDEO_SRC = '/bgVideos/video-text-fifa2026-optimized.mp4'
 
 function getWrappedLines(element) {
   const textNode = element.firstChild
@@ -158,7 +158,7 @@ export default function HeroVideoTitle({ text }) {
       </span>
       <span className="home-hero__title-stack" aria-hidden="true">
         <span className="home-hero__title-fill" style={maskStyle}>
-          <video autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+          <video autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
             <source src={HERO_TITLE_VIDEO_SRC} type="video/mp4" />
           </video>
         </span>

@@ -1495,11 +1495,12 @@ h3:hover {
 }
 
 [data-aboutus-bg-video="off"] #content {
-  background-color: #e8e6e3;
+  background-color: #efe8dc;
   background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 80%, rgba(200, 198, 195, 0.45) 0%, transparent 50%),
-    linear-gradient(145deg, #f0eeeb 0%, #ddd9d4 45%, #cfcbc6 100%);
+    radial-gradient(circle at 12% 12%, rgba(255, 248, 222, 0.94) 0%, transparent 38%),
+    radial-gradient(circle at 86% 18%, rgba(164, 219, 211, 0.58) 0%, transparent 42%),
+    radial-gradient(circle at 72% 86%, rgba(230, 171, 145, 0.48) 0%, transparent 44%),
+    linear-gradient(138deg, #f5e9d9 0%, #dce9e3 48%, #ead5cc 100%);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

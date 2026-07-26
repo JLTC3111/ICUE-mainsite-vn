@@ -24,7 +24,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.pastProjects,
     cards: [
       {
-        image: '/pastProjects/pp_1.jpg',
+        image: '/pastProjects/pp_1.webp',
         imageAlt: 'Project preview 1',
         href: projectCardUrl(1),
         title: 'Điều chỉnh quy hoạch chung thành phố Lào Cai',
@@ -32,7 +32,7 @@ export const HOME_SECTIONS = [
           'Tổng diện tích quy hoạch lên đến 28.162,64 ha, với mục tiêu hoàn thành vào năm 2045.',
       },
       {
-        image: '/pastProjects/pp_3.jpg',
+        image: '/pastProjects/pp_3.webp',
         imageAlt: 'Project preview 2',
         href: projectCardUrl(3),
         title: 'Quy Hoạch Phân Khu 6B (Phường Nguyễn Ái Quốc)',
@@ -59,7 +59,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.ourWork,
     cards: [
       {
-        image: '/work/ourWork_img1.jpg',
+        image: '/work/ourWork_img1.webp',
         imageAlt: 'Our work preview 1',
         href: ROUTE_PATHS.ourWork,
         title: 'Đánh Giá, Báo Cáo Công Trình',
@@ -67,7 +67,7 @@ export const HOME_SECTIONS = [
           'Thiết kế và đánh giá dữ liệu cho hạ tầng số đáng tin cậy. Các báo cáo tổng hợp dữ liệu, xác định điểm thiếu sót và đưa ra giải pháp.',
       },
       {
-        image: '/work/ourWork_img2.jpg',
+        image: '/work/ourWork_img2.webp',
         imageAlt: 'Our work preview 2',
         href: ROUTE_PATHS.ourWork,
         title: 'Khảo Sát Đo Lường',
@@ -75,7 +75,7 @@ export const HOME_SECTIONS = [
           'Cung cấp các dịch vụ chuyên biệt để hỗ trợ việc phát triển, đánh giá và triển khai các dự án hạ tầng và xây dựng',
       },
       {
-        image: '/work/ourWork_img3.jpg',
+        image: '/work/ourWork_img3.webp',
         imageAlt: 'Our work preview 3',
         href: ROUTE_PATHS.ourWork,
         title: 'Phân Tích Cơ Sở Hạ Tầng',
@@ -100,7 +100,7 @@ export const HOME_SECTIONS = [
     linkHref: newsroomUrl('vi'),
     cards: [
       {
-        image: '/news/articles/Card_1.jpg',
+        image: '/news/articles/Card_1.webp',
         imageAlt: 'News preview 1',
         href: articleUrl(1),
         title: 'Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ',
@@ -108,7 +108,7 @@ export const HOME_SECTIONS = [
           'Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An. Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng',
       },
       {
-        image: '/news/articles/Card_2.jpg',
+        image: '/news/articles/Card_2.webp',
         imageAlt: 'News preview 2',
         href: articleUrl(2),
         title: 'Diễn đàn Bảo tồn Khu vực Châu Á',
@@ -134,7 +134,7 @@ export const HOME_SECTIONS = [
     linkHref: ROUTE_PATHS.recruitment,
     cards: [
       {
-        image: '/recruitment/office.jpg',
+        image: '/recruitment/office.webp',
         imageAlt: 'Recruitment preview 1',
         href: ROUTE_PATHS.recruitment,
         title: 'Văn Hóa Hợp tác',
@@ -142,7 +142,7 @@ export const HOME_SECTIONS = [
         imageOnly: true,
       },
       {
-        image: '/recruitment/event.jpg',
+        image: '/recruitment/event.webp',
         imageAlt: 'Recruitment preview 2',
         href: ROUTE_PATHS.recruitment,
         title: 'Học Hỏi & Phát triển',
@@ -150,7 +150,7 @@ export const HOME_SECTIONS = [
         imageOnly: true,
       },
       {
-        image: '/recruitment/survey.jpg',
+        image: '/recruitment/survey.webp',
         imageAlt: 'Recruitment preview 3',
         href: ROUTE_PATHS.recruitment,
         title: 'Tạo Ra Khác biệt',

@@ -121,16 +121,14 @@ export default function AnimatedBeam({
 
     retryUntilReady()
 
-    const onViewportChange = () => updatePath()
-    window.addEventListener('scroll', onViewportChange, { passive: true })
-    window.addEventListener('resize', onViewportChange)
+    // All endpoints are inside the same scrolling container, so their relative
+    // geometry does not change during document scroll. ResizeObserver covers
+    // content/layout changes without forcing repeated layout reads per beam.
 
     return () => {
       cancelled = true
       cancelAnimationFrame(rafId)
       resizeObserver.disconnect()
-      window.removeEventListener('scroll', onViewportChange)
-      window.removeEventListener('resize', onViewportChange)
     }
   }, [
     containerRef,

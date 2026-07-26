@@ -452,6 +452,8 @@
             alt="A 3D model of a grand piano" 
             auto-rotate
             camera-orbit="45deg 45deg 45deg 10m"
+            loading="lazy"
+            reveal="auto"
             camera-controls>
             </model-viewer>
 
@@ -514,11 +516,11 @@
             <h2 class="handwritten">Nhân Lực</h2>
             
             <div class="image-grid-top">
-                <img src="public/aboutUs/kids2.png" alt="Urban Planning">
-                <img src="public/aboutUs/hat.png" alt="Team Collaboration">
+                <img src="public/aboutUs/kids2.webp" width="600" height="450" alt="Urban Planning" loading="lazy" decoding="async">
+                <img src="public/aboutUs/hat.webp" width="600" height="600" alt="Team Collaboration" loading="lazy" decoding="async">
             </div>
             <div class="image-grid-mid">
-                <img src="public/aboutUs/kids1.png" alt="Construction">
+                <img src="public/aboutUs/kids1.webp" width="600" height="303" alt="Construction" loading="lazy" decoding="async">
             </div>
 
             <p class="middle-text">Hơn 10 Năm Quản Lý Đô Thị</p>
@@ -527,20 +529,20 @@
         <div class="section">
             <h2 class="handwritten">Gặp Những Thành Viên Ưu Tú</h2>
             <div class="image-grid-bottom">
-                <img src="public/aboutUs/aboutUs1.png" alt="Our Vision">
-                <img src="public/aboutUs/aboutUs2.png" alt="Our Mission">
-                <img src="public/aboutUs/aboutUs3.png" alt="Our Values">
-                <img src="public/aboutUs/aboutUs4.png" alt="Our Team">
+                <img src="public/aboutUs/aboutUs1.webp" width="600" height="385" alt="Our Vision" loading="lazy" decoding="async">
+                <img src="public/aboutUs/aboutUs2.webp" width="600" height="384" alt="Our Mission" loading="lazy" decoding="async">
+                <img src="public/aboutUs/aboutUs3.webp" width="600" height="496" alt="Our Values" loading="lazy" decoding="async">
+                <img src="public/aboutUs/aboutUs4.webp" width="600" height="290" alt="Our Team" loading="lazy" decoding="async">
             </div>
         </div>
 
         <div class="section contact-section">
             <h2 class="handwritten">Kết Nối Nhé</h2>
         </div>
-        <button onclick="createBalloons()" id="balloonButton" class="balloon-button">Thả Bóng!</button>
+        <button id="balloonButton" class="balloon-button">Thả Bóng!</button>
         <video class="video-bg" muted loop playsinline preload="none">
-            <source src="public/bgVideos/bg9.mp4" type="video/mp4" media="(min-width: 768px)">
-            <source src="public/bgVideos/bg9-mobile.mp4" type="video/mp4">
+            <source src="public/bgVideos/bg9-optimized.mp4" type="video/mp4" media="(min-width: 768px)">
+            <source src="public/bgVideos/bg9-mobile-optimized.mp4" type="video/mp4">
         </video>
     </div>
 

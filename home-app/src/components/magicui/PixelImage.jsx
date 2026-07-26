@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './PixelImage.css'
 
 const DEFAULT_GRIDS = {
@@ -14,6 +14,31 @@ export default function PixelImage({
   maxAnimationDelay = 600,
   className = '',
 }) {
+  const rootRef = useRef(null)
+  const [effectsReady, setEffectsReady] = useState(false)
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return undefined
+
+    if (!('IntersectionObserver' in window)) {
+      setEffectsReady(true)
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return
+        setEffectsReady(true)
+        observer.disconnect()
+      },
+      { rootMargin: '400px 0px' },
+    )
+
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
+
   const { rows, cols } = useMemo(() => {
     if (customGrid?.rows >= 1 && customGrid?.cols >= 1) return customGrid
     return DEFAULT_GRIDS[grid] || DEFAULT_GRIDS['6x4']
@@ -39,29 +64,33 @@ export default function PixelImage({
 
   return (
     <div
+      ref={rootRef}
       className={`pixel-image ${className}`.trim()}
-      style={{ '--pixel-src': `url("${src}")` }}
+      style={effectsReady ? { '--pixel-src': `url("${src}")` } : undefined}
     >
       <img
         src={src}
         alt={alt}
         className="pixel-image__static"
+        loading="lazy"
         decoding="async"
         draggable={false}
       />
 
-      <div className="pixel-image__grid" aria-hidden="true">
-        {pieces.map((piece, index) => (
-          <div
-            key={index}
-            className="pixel-image__piece"
-            style={{
-              clipPath: piece.clipPath,
-              '--piece-delay': `${piece.delay}ms`,
-            }}
-          />
-        ))}
-      </div>
+      {effectsReady ? (
+        <div className="pixel-image__grid" aria-hidden="true">
+          {pieces.map((piece, index) => (
+            <div
+              key={index}
+              className="pixel-image__piece"
+              style={{
+                clipPath: piece.clipPath,
+                '--piece-delay': `${piece.delay}ms`,
+              }}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }

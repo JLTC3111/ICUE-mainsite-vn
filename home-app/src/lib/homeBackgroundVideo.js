@@ -42,26 +42,26 @@ const HomeBackgroundVideoManager = (() => {
   const videoPlaylist = [
     {
       id: 'momentum',
-      desktop: '/bgVideos/home_bg_1.mp4',
-      mobile: '/bgVideos/home_bg_1_mobile.mp4',
+      desktop: '/bgVideos/home_bg_1_720.mp4',
+      mobile: '/bgVideos/home_bg_1_540.mp4',
       prefersLightNav: true
     },
     {
       id: 'harmony',
-      desktop: '/bgVideos/home_bg_2.mp4',
-      mobile: '/bgVideos/home_bg_2_mobile.mp4',
+      desktop: '/bgVideos/home_bg_2_720.mp4',
+      mobile: '/bgVideos/home_bg_2_540.mp4',
       prefersLightNav: true
     },
     {
       id: 'luminous',
-      desktop: '/bgVideos/home_bg_3.mp4',
-      mobile: '/bgVideos/home_bg_3_mobile.mp4',
+      desktop: '/bgVideos/home_bg_3_720.mp4',
+      mobile: '/bgVideos/home_bg_3_540.mp4',
       prefersLightNav: true
     },
     {
       id: 'kaleidoscope',
-      desktop: '/bgVideos/home_bg_4.mp4',
-      mobile: '/bgVideos/home_bg_4_mobile.mp4',
+      desktop: '/bgVideos/home_bg_4_720.mp4',
+      mobile: '/bgVideos/home_bg_4_540.mp4',
       prefersLightNav: true
     },
   ];
@@ -167,7 +167,7 @@ const HomeBackgroundVideoManager = (() => {
     }
     if (videoEl) {
       videoEl.loop = false;
-      videoEl.preload = 'auto';
+      videoEl.preload = 'metadata';
       videoEl.muted = true;
       videoEl.playsInline = true;
       videoEl.setAttribute('muted', '');
