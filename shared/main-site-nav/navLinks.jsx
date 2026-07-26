@@ -20,8 +20,8 @@ const IconWork = () => (
 );
 
 const IconProjects = () => (
-  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path fillRule="evenodd" clipRule="evenodd" d="M4 4C4.55228 4 5 4.44772 5 5V11.5858L7.29289 9.29289C7.59725 8.98853 8.06222 8.91308 8.44721 9.10557L11.6576 10.7108L15.1679 5.4453C15.4477 5.02568 15.9961 4.88003 16.4472 5.10557L20.4472 7.10557C20.786 7.27496 21 7.62123 21 8V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V14.0002V5C3 4.44772 3.44772 4 4 4Z" fill="currentColor" />
+  <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
   </svg>
 );
 

@@ -79,7 +79,14 @@ function createVideoManager() {
     video.preload = 'none'
     video.removeAttribute('src')
     video.removeAttribute('data-active-src')
-    video.load()
+    // `load()` can synchronously tear down a large media resource and freeze
+    // the main thread for several seconds on slower devices. Removing the
+    // source is enough to stop playback; defer the decoder reset off the click
+    // path so the toggle remains responsive.
+    window.requestAnimationFrame?.(() => {
+      if (!video.isConnected || video.dataset.activeSrc) return
+      video.load()
+    })
   }
 
   const startVideo = () => {
@@ -110,7 +117,7 @@ function createVideoManager() {
   const scheduleStart = () => {
     if (shouldKeepStatic()) return
     if (typeof window.requestIdleCallback === 'function') {
-      idleId = window.requestIdleCallback(startVideo, { timeout: 500 })
+      idleId = window.requestIdleCallback(startVideo, { timeout: 120 })
     } else {
       startTimer = window.setTimeout(startVideo, 100)
     }
@@ -396,6 +403,7 @@ export function initAboutUsPage() {
   })
 
   videoManager.init()
+  window.dispatchEvent(new CustomEvent('icue:aboutUsVideoManagerReady'))
 
   cleanupCurrent = () => {
     abortController.abort()

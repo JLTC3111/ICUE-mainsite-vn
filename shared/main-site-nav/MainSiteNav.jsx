@@ -141,12 +141,33 @@ export default function MainSiteNav({
   }, []);
 
   const handleAboutUsVideoToggle = useCallback((enabled) => {
-    window.AboutUsBackgroundVideoManager?.setEnabled?.(enabled);
+    const manager = window.AboutUsBackgroundVideoManager;
+    if (manager?.setEnabled) {
+      manager.setEnabled(enabled);
+      return;
+    }
+
+    // The legacy page manager is initialized asynchronously. Preserve the
+    // first click so its initialisation can apply the user's intent.
+    try {
+      localStorage.setItem('aboutUs_bg_video_enabled', enabled ? '1' : '0');
+    } catch {
+      // Storage can be unavailable in privacy-restricted contexts.
+    }
+    setAboutUsVideoEnabled(!!enabled);
   }, []);
 
   const syncAboutUsVideoToggleState = useCallback(() => {
     const manager = window.AboutUsBackgroundVideoManager;
-    if (!manager) return;
+    if (!manager) {
+      try {
+        const raw = localStorage.getItem('aboutUs_bg_video_enabled');
+        setAboutUsVideoEnabled(raw === null ? true : raw === '1' || raw === 'true' || raw === 'on');
+      } catch {
+        setAboutUsVideoEnabled(true);
+      }
+      return;
+    }
     setAboutUsVideoEnabled(!!manager.isEnabled?.());
     setAboutUsVideoToggleDisabled(!manager.canToggleVideos?.());
   }, []);
@@ -349,10 +370,16 @@ export default function MainSiteNav({
     window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
 
     const onAboutUsVideoEnabled = () => syncAboutUsVideoToggleState();
+    const onAboutUsVideoManagerReady = () => {
+      syncAboutUsVideoToggleState();
+      window.AboutUsBackgroundVideoManager?.bindToggleUI?.();
+    };
     window.addEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+    window.addEventListener('icue:aboutUsVideoManagerReady', onAboutUsVideoManagerReady);
 
     return () => {
       window.removeEventListener('icue:aboutUsVideoEnabled', onAboutUsVideoEnabled);
+      window.removeEventListener('icue:aboutUsVideoManagerReady', onAboutUsVideoManagerReady);
     };
   }, [showAboutUsVideoToggle, syncAboutUsVideoToggleState]);
 

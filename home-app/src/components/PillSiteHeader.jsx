@@ -109,9 +109,6 @@ export default function PillSiteHeader({
   const visibleItems = isTablet
     ? items.filter((item) => TABLET_PRIMARY_PAGES.has(item.page))
     : items;
-  const hiddenItemIsActive = isTablet && items.some(
-    (item) => !TABLET_PRIMARY_PAGES.has(item.page) && item.page === activePage,
-  );
   const tabletOverflowItems = [
     ...items.filter((item) => !TABLET_PRIMARY_PAGES.has(item.page)),
     ...overflowItems,
@@ -209,7 +206,7 @@ export default function PillSiteHeader({
                   <button
                     ref={moreButtonRef}
                     type="button"
-                    className={`pill-site-header__link pill-site-header__more${hiddenItemIsActive ? ' is-active' : ''}`}
+                    className="pill-site-header__link pill-site-header__more"
                     aria-label="Mở thêm mục điều hướng"
                     aria-expanded={overflowOpen}
                     aria-controls="pillSiteTabletOverflow"

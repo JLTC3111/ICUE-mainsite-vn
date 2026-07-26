@@ -442,10 +442,6 @@
     max-width: calc(100vw - 1rem);
   }
 
-  .pill-site-header__brand {
-    display: none;
-  }
-
   .pill-site-header__logo {
     width: var(--pill-nav-height);
     padding: 0.38rem;
@@ -467,6 +463,18 @@
     --pill-nav-height: 3rem;
     width: calc(100vw - 1rem);
     justify-content: center;
+  }
+
+  /* Keep the mark and ICUE wordmark together in the leading tablet capsule. */
+  .pill-site-header__logo {
+    width: auto;
+    min-width: max-content;
+    justify-content: flex-start;
+    padding-inline: 0.42rem 0.8rem;
+  }
+
+  .pill-site-header__brand {
+    display: inline-block;
   }
 
   .pill-site-header__nav-wrap,
@@ -503,6 +511,13 @@
     gap: 0.08rem;
     width: max-content;
     min-width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pill-site-header__list > li,
+  .pill-site-header__link {
+    align-items: center;
     justify-content: center;
   }
 
@@ -547,6 +562,25 @@
   .pill-site-header__actions {
     gap: 0.18rem;
     padding-inline: 0.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pill-site-header--mobile .pill-site-header__brand {
+    display: none;
+  }
+}
+
+/* Touch screens retain the neutral More button after a tap; hover should not
+   become a sticky visual state on tablets. */
+@media (hover: none) and (min-width: 769px) and (max-width: 1024px) {
+  .pill-site-header__more:hover,
+  .pill-site-header__more:focus-visible {
+    color: var(--pill-nav-text) !important;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    text-shadow: none;
   }
 }
 
