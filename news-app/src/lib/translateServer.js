@@ -153,7 +153,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   // Read DB cache before any Google Detect/Translate call.
   const cached = await fetchCachedTranslation(articleId, locale, env)
   const cachedMediaComplete = cached && originalMedia.every((original) => {
-    if (original.kind !== 'image' || !original.info) return true
+    if (!original.info) return true
     const translated = cached.media?.find((item) => item.id === original.id)
     return Boolean(translated) && translated.info !== original.info
   })
@@ -189,7 +189,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     ? await translateSources(articleSources, locale, apiSourceLang, env)
     : []
   const translatedMedia = await Promise.all(originalMedia.map(async (m) => {
-    if (m.kind !== 'image' || !m.info) return m
+    if (!m.info) return m
     const translatedInfo = await translatePlainText(m.info, locale, '', env, { force: true })
     return { ...m, info: translatedInfo.text || m.info }
   }))

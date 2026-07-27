@@ -147,19 +147,17 @@ function MediaUploader({ items, onChange }) {
               >
                 <X size={16} strokeWidth={2} />
               </button>
-              {m.kind === 'image' && (
-                <input
-                  className="media-thumb__info"
-                  type="text"
-                  value={m.info || ''}
-                  maxLength={240}
-                  placeholder={t('editor.imageInfoPlaceholder')}
-                  aria-label={t('editor.imageInfo')}
-                  onChange={(event) => onChange(items.map((item) => (
-                    item.id === m.id ? { ...item, info: event.target.value } : item
-                  )))}
-                />
-              )}
+              <input
+                className="media-thumb__info"
+                type="text"
+                value={m.info || ''}
+                maxLength={240}
+                placeholder={t('editor.mediaInfoPlaceholder')}
+                aria-label={t('editor.mediaInfo')}
+                onChange={(event) => onChange(items.map((item) => (
+                  item.id === m.id ? { ...item, info: event.target.value } : item
+                )))}
+              />
             </li>
           ))}
         </ul>

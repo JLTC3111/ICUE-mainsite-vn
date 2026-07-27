@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import gsap from 'gsap'
 
 export function useRainText(textRef, text) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = textRef.current
     if (!el || !text) return undefined
 

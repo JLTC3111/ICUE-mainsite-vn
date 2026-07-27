@@ -177,7 +177,9 @@
     "thumbnailPreview": "Xem trước ảnh thu nhỏ trên thẻ",
     "previewImage": "Xem trước ảnh",
     "imageInfo": "Thông tin ảnh",
-    "imageInfoPlaceholder": "Thông tin bổ sung (ví dụ: nguồn: AI tạo)"
+    "imageInfoPlaceholder": "Thông tin bổ sung (ví dụ: nguồn: AI tạo)",
+    "mediaInfo": "Thông tin tệp",
+    "mediaInfoPlaceholder": "Thông tin bổ sung (ví dụ: nguồn: AI tạo)"
   },
   "profile": {
     "displayName": "Tên hiển thị",

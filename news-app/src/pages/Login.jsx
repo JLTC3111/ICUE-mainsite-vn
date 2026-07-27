@@ -16,7 +16,7 @@ export default function Login() {
   const { signIn } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const redirectTo = location.state?.from || '/write'
+  const redirectTo = location.state?.from || '/dashboard'
 
   const [mode, setMode] = useState(() => (isPasswordRecoveryUrl() ? 'recovery' : 'login'))
   const [email, setEmail] = useState('')

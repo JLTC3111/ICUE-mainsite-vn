@@ -194,7 +194,7 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
           kind: m.kind,
           url,
           storage_path: path,
-          info: m.kind === 'image' ? (m.info || null) : null,
+          info: m.info || null,
           position,
         })
         .select('id')
@@ -205,7 +205,7 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
       clientToDb.set(m.id, m.dbId)
       await supabase.from('article_media').update({
         position,
-        info: m.kind === 'image' ? (m.info || null) : null,
+        info: m.info || null,
       }).eq('id', m.dbId)
     }
   }

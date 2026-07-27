@@ -29,9 +29,19 @@
   # directory. Keep the server translation module and its local dependencies
   # in the deployed function bundle; otherwise zip-it-and-ship-it can omit
   # them even though the function source exists in the repository.
+  #
+  # news-app/package.json (with "type": "module") must ALSO be included:
+  # news-app/src/lib/**.js is ESM, and Node determines that by walking up
+  # from the imported file to the nearest package.json. Without this file
+  # present in the deployed bundle, Node finds no package.json above
+  # news-app/src/lib and falls back to CommonJS, so the dynamic
+  # `import('.../translateServer.js')` throws "Cannot use import statement
+  # outside a module" at runtime in production even though the function
+  # deploys successfully and the file is present.
   included_files = [
     "newsroom/supabase-config.json",
     "news-app/public/supabase-config.json",
+    "news-app/package.json",
     "news-app/src/lib/**",
     "shared/text/**"
   ]
