@@ -7,7 +7,6 @@ import { fetchMyArticles } from '../lib/articles'
 import { askAssist, ASSIST_ERROR } from '../lib/assistClient'
 import { generateFluxImage } from '../lib/fluxAssist'
 import { saveAiDraft } from '../lib/aiDraft'
-import { translateTextsViaApi } from '../lib/translate'
 import {
   listAssistThreads,
   fetchAssistThread,
@@ -203,30 +202,15 @@ function replyAnimateBy(text) {
   return String(text || '').length > 420 ? 'word' : 'character'
 }
 
-async function localizeAssistPayload(result, uiLang, draftReadyFallback) {
+/**
+ * Assist replies are used as written by the model — there is no translation
+ * step. The draft is tagged with the UI locale so the editor opens in the
+ * language the author was working in.
+ */
+function localizeAssistPayload(result, uiLang, draftReadyFallback) {
   const reply = String(result?.reply || '').trim() || (result?.draft ? draftReadyFallback : '')
-  const draft = result?.draft || null
-  const toTranslate = [reply]
-  if (draft?.title) toTranslate.push(String(draft.title))
-  if (draft?.subtitle) toTranslate.push(String(draft.subtitle))
-
-  try {
-    const translated = await translateTextsViaApi(toTranslate, uiLang)
-    const texts = translated?.texts || toTranslate
-    let cursor = 0
-    const nextReply = texts[cursor++] ?? reply
-    const nextDraft = draft
-      ? {
-          ...draft,
-          title: draft.title ? (texts[cursor++] ?? draft.title) : draft.title,
-          subtitle: draft.subtitle ? (texts[cursor++] ?? draft.subtitle) : draft.subtitle,
-          language: uiLang,
-        }
-      : null
-    return { reply: nextReply, draft: nextDraft }
-  } catch {
-    return { reply, draft }
-  }
+  const draft = result?.draft ? { ...result.draft, language: uiLang } : null
+  return { reply, draft }
 }
 
 export default function AiAssist() {

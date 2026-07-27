@@ -1,0 +1,96 @@
+.translations-editor {
+  max-width: var(--icue-readw);
+  margin: 32px auto 64px;
+  padding: 20px 24px 24px;
+  border: 1px solid var(--icue-border);
+  border-radius: 12px;
+  background: var(--icue-surface-2);
+}
+
+.translations-editor__head { margin-bottom: 16px; }
+.translations-editor__title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.translations-editor__hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--icue-text-faint);
+}
+
+.translations-editor__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.translations-editor__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.translations-editor__tab:hover { color: var(--icue-text); }
+.translations-editor__tab.is-active {
+  color: #111;
+  border-color: var(--icue-accent-ink, #1db7ff);
+  background: var(--icue-accent, #c8ff00);
+}
+.translations-editor__tab svg { color: #4a8a00; flex-shrink: 0; }
+.translations-editor__tab.is-active svg { color: #111; }
+
+.translations-editor__panel { display: grid; gap: 16px; }
+
+.translations-editor__status {
+  margin: 0;
+  font-size: 13px;
+  color: var(--icue-text-soft);
+}
+.translations-editor__status.is-error { color: var(--icue-danger); }
+
+.translations-editor__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.translations-editor__delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--icue-danger);
+}
+
+.translations-editor__saved {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a7f37;
+}
+.translations-editor__saved.is-error { color: var(--icue-danger); }
+
+.icue-app--news-theme-dark .translations-editor__tab {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--icue-text-soft);
+}
+.icue-app--news-theme-dark .translations-editor__tab.is-active {
+  color: #111;
+  background: var(--icue-accent, #c8ff00);
+}
+
+@media (max-width: 600px) {
+  .translations-editor { padding: 16px; margin-bottom: 40px; }
+}

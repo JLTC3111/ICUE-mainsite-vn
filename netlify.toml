@@ -6,10 +6,8 @@
 #   VITE_SUPABASE_URL  or  SUPABASE_URL
 #   VITE_SUPABASE_ANON_KEY  or  SUPABASE_ANON_KEY
 #
-# translate-article function needs these Netlify env vars:
-#   GOOGLE_TRANSLATE_API_KEY     — required (scope: Builds + Functions)
-#   SUPABASE_SERVICE_ROLE_KEY    — required to persist article/comment/text translation cache
-#                                 (without it, every language switch re-runs Google Translate)
+# Article translations are authored by editors in the newsroom and read straight
+# from Supabase (public.article_translations) — no translation API, no key.
 #
 # gemini-article (AI Assist at /newsroom/assist) needs:
 #   GEMINI_API_KEY               — required (scope: Builds + Functions)
@@ -25,19 +23,18 @@
 
 [functions]
   directory = "netlify/functions"
-  # translate-article dynamically imports source outside the functions
-  # directory. Keep the server translation module and its local dependencies
-  # in the deployed function bundle; otherwise zip-it-and-ship-it can omit
-  # them even though the function source exists in the repository.
+  # gemini-article / flux-image dynamically import source outside the functions
+  # directory. Keep those modules and their local dependencies in the deployed
+  # bundle; otherwise zip-it-and-ship-it can omit them even though the function
+  # source exists in the repository.
   #
   # news-app/package.json (with "type": "module") must ALSO be included:
   # news-app/src/lib/**.js is ESM, and Node determines that by walking up
   # from the imported file to the nearest package.json. Without this file
   # present in the deployed bundle, Node finds no package.json above
-  # news-app/src/lib and falls back to CommonJS, so the dynamic
-  # `import('.../translateServer.js')` throws "Cannot use import statement
-  # outside a module" at runtime in production even though the function
-  # deploys successfully and the file is present.
+  # news-app/src/lib and falls back to CommonJS, so the dynamic import throws
+  # "Cannot use import statement outside a module" at runtime in production
+  # even though the function deploys successfully and the file is present.
   included_files = [
     "newsroom/supabase-config.json",
     "news-app/public/supabase-config.json",

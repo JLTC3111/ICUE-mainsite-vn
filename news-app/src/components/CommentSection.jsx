@@ -2,11 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchComments, addComment } from '../lib/engagement'
 import { formatDateTime } from '../lib/helpers'
-import { useCommentTranslations } from '../hooks/useCommentTranslations'
-import ArticleTranslator from './ArticleTranslator'
-import TranslationLineSkeleton from './TranslationSkeleton'
 import './Engagement.css'
-import './ArticleTranslator.css'
 
 // IP-based comments (no login). Any visitor can post; comments are public.
 export default function CommentSection({ articleId }) {
@@ -16,14 +12,6 @@ export default function CommentSection({ articleId }) {
   const [body, setBody] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [showOriginal, setShowOriginal] = useState(false)
-  const {
-    isBodyPending,
-    displayBody,
-    pending,
-    canToggleTranslation,
-    translationLang,
-  } = useCommentTranslations(comments, i18n.resolvedLanguage, showOriginal)
 
   useEffect(() => {
     let active = true
@@ -88,44 +76,21 @@ export default function CommentSection({ articleId }) {
         </div>
       </form>
 
-      {canToggleTranslation && !pending && (
-        <div className="comments__translate-bar">
-          <ArticleTranslator
-            translationLang={translationLang}
-            showOriginal={showOriginal}
-            onShowOriginal={() => setShowOriginal(true)}
-            onShowTranslation={() => setShowOriginal(false)}
-          />
-        </div>
-      )}
-
       {comments.length === 0 ? (
         <p className="comments__empty">{t('engagement.empty')}</p>
       ) : (
         <ul className="comments__list">
-          {comments.map((c) => {
-            const pending = isBodyPending(c.id)
-            const text = displayBody(c)
-
-            return (
-              <li key={c.id} className="comments__item">
-                <div className="comments__meta">
-                  <span className="comments__author">{c.author_name || t('engagement.anon')}</span>
-                  <time className="comments__date" dateTime={c.created_at}>
-                    {formatDateTime(c.created_at, i18n.resolvedLanguage)}
-                  </time>
-                </div>
-                {pending ? (
-                  <TranslationLineSkeleton
-                    lines={2}
-                    className="comments__text-skeleton"
-                  />
-                ) : (
-                  <p className="comments__text translation-reveal">{text}</p>
-                )}
-              </li>
-            )
-          })}
+          {comments.map((c) => (
+            <li key={c.id} className="comments__item">
+              <div className="comments__meta">
+                <span className="comments__author">{c.author_name || t('engagement.anon')}</span>
+                <time className="comments__date" dateTime={c.created_at}>
+                  {formatDateTime(c.created_at, i18n.resolvedLanguage)}
+                </time>
+              </div>
+              <p className="comments__text">{c.body}</p>
+            </li>
+          ))}
         </ul>
       )}
     </section>

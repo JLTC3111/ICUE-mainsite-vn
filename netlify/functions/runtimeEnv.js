@@ -18,7 +18,6 @@ function pick(name, aliases = []) {
 }
 
 function loadRuntimeEnv() {
-  const googleKey = pick('GOOGLE_TRANSLATE_API_KEY', ['GOOGLE_CLOUD_TRANSLATE_API_KEY', 'GOOGLE_API_KEY'])
   const serviceKey = pick('SUPABASE_SERVICE_ROLE_KEY', ['SUPABASE_SERVICE_KEY'])
   const geminiKey = pick('GEMINI_API_KEY', ['GOOGLE_GEMINI_API_KEY', 'GOOGLE_AI_API_KEY'])
   const geminiModel = pick('GEMINI_MODEL')
@@ -30,9 +29,6 @@ function loadRuntimeEnv() {
 
   return {
     ...process.env,
-    ...(googleKey
-      ? { GOOGLE_TRANSLATE_API_KEY: googleKey, GOOGLE_CLOUD_TRANSLATE_API_KEY: googleKey }
-      : {}),
     ...(serviceKey ? { SUPABASE_SERVICE_ROLE_KEY: serviceKey } : {}),
     ...(geminiKey ? { GEMINI_API_KEY: geminiKey } : {}),
     ...(geminiModel ? { GEMINI_MODEL: geminiModel } : {}),

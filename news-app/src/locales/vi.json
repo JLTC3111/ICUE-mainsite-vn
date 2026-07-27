@@ -400,5 +400,22 @@
     "period": "AM/PM",
     "am": "SA",
     "pm": "CH"
+  },
+  "translationsEditor": {
+    "title": "Bản dịch",
+    "hint": "Tự nhập nội dung cho từng ngôn ngữ. Độc giả sẽ thấy đúng những gì bạn lưu ở đây; ngôn ngữ để trống sẽ hiển thị theo ngôn ngữ gốc của bài viết.",
+    "loading": "Đang tải bản dịch…",
+    "loadError": "Không tải được bản dịch.",
+    "fieldTitle": "Tiêu đề",
+    "fieldSubtitle": "Tiêu đề phụ",
+    "fieldStory": "Nội dung",
+    "titlePlaceholder": "Tiêu đề đã dịch",
+    "subtitlePlaceholder": "Tiêu đề phụ đã dịch (không bắt buộc)",
+    "storyPlaceholder": "Nội dung bài viết đã dịch…",
+    "save": "Lưu bản dịch",
+    "saving": "Đang lưu…",
+    "saved": "Đã lưu",
+    "saveError": "Không lưu được. Vui lòng thử lại.",
+    "remove": "Xoá"
   }
 }

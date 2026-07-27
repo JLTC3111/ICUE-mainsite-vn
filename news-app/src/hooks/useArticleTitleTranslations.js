@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  fetchArticleTitleTranslations,
   normalizeLang,
   shouldTranslateArticle,
-  translateArticleTitlesViaApi,
 } from '../lib/translate'
 
 export function useArticleTitleTranslations(articles, locale) {
@@ -31,7 +31,7 @@ export function useArticleTitleTranslations(articles, locale) {
     setTitles({})
     setPending(true)
 
-    translateArticleTitlesViaApi(articleIds, uiLang)
+    fetchArticleTitleTranslations(articleIds, uiLang)
       .then((result) => {
         if (active) setTitles(result.titles || {})
       })

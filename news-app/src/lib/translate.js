@@ -1,12 +1,10 @@
-// Client-side article translation via /api/translate-article (Google Cloud).
-// All UI locales in localeCodes.js — including English — are valid translation targets.
+// Per-locale article translations authored in the newsroom editor and stored in
+// public.article_translations. Nothing here calls a translation API: reads hit
+// Supabase directly, and an article with no stored translation for the active
+// locale simply falls back to its original text.
 
-import {
-  inferSourceLanguage,
-  normalizeLang,
-  shouldTranslateArticle,
-  buildArticleTranslateSample,
-} from './translateUtils.js'
+import { supabase } from './supabase'
+import { normalizeLang } from './translateUtils.js'
 
 export {
   inferSourceLanguage,
@@ -16,45 +14,12 @@ export {
   buildArticleTranslateSample,
 } from './translateUtils.js'
 
+const TRANSLATION_COLUMNS = 'title,subtitle,content_html,sources,media'
+
 const memoryCache = new Map()
 
 function cacheKey(articleId, locale) {
   return `${articleId}::${locale}`
-}
-
-function translateEndpoint() {
-  const base = import.meta.env.BASE_URL || '/newsroom/'
-  return new URL('api/translate-article', window.location.origin + base).toString()
-}
-
-async function postTranslate(body, { signal } = {}) {
-  const res = await fetch(translateEndpoint(), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-    signal,
-  })
-
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok) {
-    const err = new Error(data.error || 'translation failed')
-    err.code = data.code || `http_${res.status}`
-    err.status = res.status
-    throw err
-  }
-  return data
-}
-
-/** Retry once on network / 5xx — common on mobile radios + cold Netlify functions. */
-async function postTranslateWithRetry(body) {
-  try {
-    return await postTranslate(body)
-  } catch (err) {
-    const retryable = !err.status || err.status >= 500 || err.name === 'TypeError'
-    if (!retryable) throw err
-    await new Promise((resolve) => setTimeout(resolve, 450))
-    return postTranslate(body)
-  }
 }
 
 export function clearTranslateCache(articleId, locale) {
@@ -71,99 +36,128 @@ export function clearTranslateCache(articleId, locale) {
   }
 }
 
-export async function translateArticleViaApi(articleId, targetLocale) {
+/**
+ * Stored translation for one article + locale.
+ * Returns `{ original: true }` when nothing has been authored yet, which tells
+ * the reader to keep showing the article in its original language.
+ */
+export async function fetchArticleTranslation(articleId, targetLocale) {
   const target = normalizeLang(targetLocale)
-  if (!articleId || !target) {
-    throw new Error('invalid_request')
-  }
+  if (!articleId || !target) throw new Error('invalid_request')
 
   const key = cacheKey(articleId, target)
-  if (memoryCache.has(key)) {
-    return memoryCache.get(key)
-  }
+  if (memoryCache.has(key)) return memoryCache.get(key)
 
-  const data = await postTranslateWithRetry({ articleId, target })
-  memoryCache.set(key, data)
-  return data
+  const { data, error } = await supabase
+    .from('article_translations')
+    .select(TRANSLATION_COLUMNS)
+    .eq('article_id', articleId)
+    .eq('locale', target)
+    .maybeSingle()
+
+  if (error) throw error
+
+  // A row with no title and no body is a half-finished draft translation —
+  // treat it as absent rather than blanking the article.
+  const usable = data && (data.title || data.content_html)
+
+  const result = usable
+    ? {
+      locale: target,
+      title: data.title || '',
+      subtitle: data.subtitle || '',
+      content_html: data.content_html || '',
+      sources: data.sources || [],
+      media: data.media || [],
+      original: false,
+    }
+    : { locale: target, original: true }
+
+  memoryCache.set(key, result)
+  return result
 }
 
-function batchCacheKey(articleIds, locale) {
-  return `${locale}::${[...articleIds].sort().join('|')}`
-}
-
-export async function translateArticleTitlesViaApi(articleIds, targetLocale) {
+/** One query for a whole grid of articles — used by the card/list views. */
+export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
   const target = normalizeLang(targetLocale)
   const ids = [...new Set((articleIds || []).map(String).filter(Boolean))]
-  if (!target || !ids.length) {
-    return { locale: target, titles: {} }
+  if (!target || !ids.length) return { locale: target, titles: {} }
+
+  const key = `titles::${target}::${[...ids].sort().join('|')}`
+  if (memoryCache.has(key)) return memoryCache.get(key)
+
+  const { data, error } = await supabase
+    .from('article_translations')
+    .select('article_id,title')
+    .eq('locale', target)
+    .in('article_id', ids)
+
+  if (error) return { locale: target, titles: {} }
+
+  const titles = {}
+  for (const row of data || []) {
+    if (row.title) titles[row.article_id] = row.title
   }
 
-  const key = batchCacheKey(ids, target)
-  if (memoryCache.has(key)) {
-    return memoryCache.get(key)
-  }
-
-  const data = await postTranslateWithRetry({ articleIds: ids, target })
-  memoryCache.set(key, data)
-  return data
+  const result = { locale: target, titles }
+  memoryCache.set(key, result)
+  return result
 }
 
-function commentCacheKey(commentIds, locale) {
-  return `comments::${locale}::${[...commentIds].sort().join('|')}`
+/** Every stored translation for an article, keyed by locale (editor use). */
+export async function fetchArticleTranslations(articleId) {
+  if (!articleId) return {}
+
+  const { data, error } = await supabase
+    .from('article_translations')
+    .select(`locale,${TRANSLATION_COLUMNS}`)
+    .eq('article_id', articleId)
+
+  if (error) throw error
+
+  return Object.fromEntries(
+    (data || []).map((row) => [row.locale, {
+      title: row.title || '',
+      subtitle: row.subtitle || '',
+      content_html: row.content_html || '',
+      sources: row.sources || [],
+      media: row.media || [],
+    }]),
+  )
 }
 
-export async function translateCommentsViaApi(commentIds, targetLocale) {
-  const target = normalizeLang(targetLocale)
-  const ids = [...new Set((commentIds || []).map(String).filter(Boolean))]
-  if (!target || !ids.length) {
-    return { locale: target, bodies: {} }
-  }
+export async function saveArticleTranslation(articleId, locale, payload = {}) {
+  const target = normalizeLang(locale)
+  if (!articleId || !target) throw new Error('invalid_request')
 
-  const key = commentCacheKey(ids, target)
-  if (memoryCache.has(key)) {
-    return memoryCache.get(key)
-  }
+  const { error } = await supabase
+    .from('article_translations')
+    .upsert({
+      article_id: articleId,
+      locale: target,
+      provider: 'manual',
+      title: payload.title || '',
+      subtitle: payload.subtitle || null,
+      content_html: payload.content_html || '',
+      sources: payload.sources || [],
+      media: payload.media || [],
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'article_id,locale' })
 
-  const data = await postTranslateWithRetry({ commentIds: ids, target })
-  memoryCache.set(key, data)
-  return data
+  if (error) throw error
+  clearTranslateCache(articleId, target)
 }
 
-function textsCacheKey(texts, locale) {
-  const fingerprint = texts.map((t) => String(t || '').slice(0, 80)).join('|')
-  return `texts::${locale}::${fingerprint}::${texts.length}`
-}
+export async function deleteArticleTranslation(articleId, locale) {
+  const target = normalizeLang(locale)
+  if (!articleId || !target) throw new Error('invalid_request')
 
-/** Translate freeform strings (AI Assist replies) into the UI locale. */
-export async function translateTextsViaApi(texts, targetLocale) {
-  const target = normalizeLang(targetLocale)
-  const list = (Array.isArray(texts) ? texts : []).map((t) => String(t ?? ''))
-  if (!target || !list.length) {
-    return { locale: target, texts: list, originals: list.map(() => true) }
-  }
+  const { error } = await supabase
+    .from('article_translations')
+    .delete()
+    .eq('article_id', articleId)
+    .eq('locale', target)
 
-  const needs = list.some((text) => shouldTranslateArticle('', target, text))
-  if (!needs) {
-    return { locale: target, texts: list, originals: list.map(() => true) }
-  }
-
-  const key = textsCacheKey(list, target)
-  if (memoryCache.has(key)) {
-    return memoryCache.get(key)
-  }
-
-  const data = await postTranslateWithRetry({ texts: list, target })
-  memoryCache.set(key, data)
-  return data
-}
-
-export async function translateArticle(article, target) {
-  const result = await translateArticleViaApi(article.id, target)
-  return {
-    title: result.title,
-    subtitle: result.subtitle,
-    content_html: result.content_html,
-    sources: result.sources,
-    media: result.media,
-  }
+  if (error) throw error
+  clearTranslateCache(articleId, target)
 }
