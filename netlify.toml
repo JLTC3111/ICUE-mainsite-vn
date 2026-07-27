@@ -25,4 +25,13 @@
 
 [functions]
   directory = "netlify/functions"
-  included_files = ["newsroom/supabase-config.json", "news-app/public/supabase-config.json"]
+  # translate-article dynamically imports source outside the functions
+  # directory. Keep the server translation module and its local dependencies
+  # in the deployed function bundle; otherwise zip-it-and-ship-it can omit
+  # them even though the function source exists in the repository.
+  included_files = [
+    "newsroom/supabase-config.json",
+    "news-app/public/supabase-config.json",
+    "news-app/src/lib/**",
+    "shared/text/**"
+  ]
