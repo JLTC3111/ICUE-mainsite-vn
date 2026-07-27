@@ -20,6 +20,7 @@ function MediaUploader({ items, onChange }) {
   const inputId = useId()
   const [dragging, setDragging] = useState(false)
   const [notice, setNotice] = useState('')
+  const [preview, setPreview] = useState(null)
 
   const images = items.filter((m) => m.kind === 'image')
   const videos = items.filter((m) => m.kind === 'video')
@@ -121,7 +122,14 @@ function MediaUploader({ items, onChange }) {
           {items.map((m) => (
             <li key={m.id} className="media-thumb">
               {m.kind === 'image' ? (
-                <img src={m.url} alt="" loading="lazy" decoding="async" />
+                <button
+                  type="button"
+                  className="media-thumb__preview-trigger"
+                  onClick={() => setPreview({ url: m.url, alt: m.file?.name || '', info: m.info || '' })}
+                  aria-label={t('editor.previewImage')}
+                >
+                  <img src={m.url} alt="" loading="lazy" decoding="async" />
+                </button>
               ) : (
                 <>
                   <video src={m.url} muted playsInline preload="metadata" />
@@ -139,9 +147,34 @@ function MediaUploader({ items, onChange }) {
               >
                 <X size={16} strokeWidth={2} />
               </button>
+              {m.kind === 'image' && (
+                <input
+                  className="media-thumb__info"
+                  type="text"
+                  value={m.info || ''}
+                  maxLength={240}
+                  placeholder={t('editor.imageInfoPlaceholder')}
+                  aria-label={t('editor.imageInfo')}
+                  onChange={(event) => onChange(items.map((item) => (
+                    item.id === m.id ? { ...item, info: event.target.value } : item
+                  )))}
+                />
+              )}
             </li>
           ))}
         </ul>
+      )}
+
+      {preview && (
+        <div className="media-preview" role="dialog" aria-modal="true" onClick={() => setPreview(null)}>
+          <div className="media-preview__panel" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="media-preview__close" onClick={() => setPreview(null)} aria-label={t('common.close')}>
+              <X size={20} strokeWidth={2} aria-hidden />
+            </button>
+            <img src={preview.url} alt={preview.alt} className="media-preview__image" />
+            {preview.info && <p className="media-preview__info">{preview.info}</p>}
+          </div>
+        </div>
       )}
     </div>
   )

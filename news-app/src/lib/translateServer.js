@@ -26,7 +26,7 @@ function pickNamedExport(moduleNs, name) {
 const sanitizeArticleHtml = pickNamedExport(sanitizeArticleHtmlModule, 'sanitizeArticleHtml')
 const sanitizePlainText = pickNamedExport(sanitizeArticleHtmlModule, 'sanitizePlainText')
 
-const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources'
+const ARTICLE_FIELDS = 'id,title,subtitle,content_html,language,status,sources,media:article_media(id,kind,url,storage_path,poster_url,info,position)'
 
 function supabaseConfig(env) {
   const serviceRole = supabaseServiceKey(env)
@@ -69,7 +69,7 @@ async function fetchCachedTranslation(articleId, locale, env) {
   if (!url || !serviceKey) return null
 
   const res = await fetch(
-    `${url}/rest/v1/article_translations?article_id=eq.${encodeURIComponent(articleId)}&locale=eq.${encodeURIComponent(locale)}&select=title,subtitle,content_html,sources,provider,source_lang`,
+    `${url}/rest/v1/article_translations?article_id=eq.${encodeURIComponent(articleId)}&locale=eq.${encodeURIComponent(locale)}&select=title,subtitle,content_html,sources,media,provider,source_lang`,
     { headers: restHeaders(serviceKey) },
   )
   if (!res.ok) return null
@@ -100,6 +100,7 @@ async function upsertCachedTranslation(articleId, locale, payload, env) {
     subtitle: payload.subtitle || null,
     content_html: payload.content_html || '',
     sources: payload.sources || [],
+    media: payload.media || [],
     updated_at: new Date().toISOString(),
   }
 
@@ -131,6 +132,8 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   const declaredSource = normalizeLang(article.language || 'vi')
   const sourceLang = inferSourceLanguage(declaredSource, detectSample)
   const articleSources = sanitizeSourcesForSave(article.sources)
+  const articleMedia = Array.isArray(article.media) ? article.media : []
+  const originalMedia = articleMedia.map((m) => ({ ...m, info: m.info || '' }))
 
   if (!shouldTranslateArticle(sourceLang, locale, detectSample)) {
     return {
@@ -142,13 +145,19 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       subtitle: article.subtitle ? sanitizePlainText(article.subtitle) : '',
       content_html: normalizeHtmlUnicode(sanitizeArticleHtml(article.content_html || '')),
       sources: articleSources,
+      media: originalMedia,
       original: true,
     }
   }
 
   // Read DB cache before any Google Detect/Translate call.
   const cached = await fetchCachedTranslation(articleId, locale, env)
-  if (cached) {
+  const cachedMediaComplete = cached && originalMedia.every((original) => {
+    if (original.kind !== 'image' || !original.info) return true
+    const translated = cached.media?.find((item) => item.id === original.id)
+    return Boolean(translated) && translated.info !== original.info
+  })
+  if (cached && cachedMediaComplete) {
     return {
       cached: true,
       provider: cached.provider,
@@ -158,6 +167,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
       subtitle: cached.subtitle ? sanitizePlainText(cached.subtitle) : '',
       content_html: normalizeHtmlUnicode(sanitizeArticleHtml(cached.content_html || '')),
       sources: sanitizeSourcesForSave(cached.sources?.length ? cached.sources : articleSources),
+      media: Array.isArray(cached.media) && cached.media.length ? cached.media : originalMedia,
       original: false,
     }
   }
@@ -178,6 +188,11 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   const translatedSources = articleSources.length
     ? await translateSources(articleSources, locale, apiSourceLang, env)
     : []
+  const translatedMedia = await Promise.all(originalMedia.map(async (m) => {
+    if (m.kind !== 'image' || !m.info) return m
+    const translatedInfo = await translatePlainText(m.info, locale, '', env, { force: true })
+    return { ...m, info: translatedInfo.text || m.info }
+  }))
 
   const result = {
     cached: false,
@@ -188,6 +203,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     subtitle: translated.subtitle ? sanitizePlainText(translated.subtitle) : '',
     content_html: normalizeHtmlUnicode(sanitizeArticleHtml(translated.content_html || '')),
     sources: sanitizeSourcesForSave(translatedSources),
+    media: translatedMedia,
     original: false,
   }
 
@@ -198,6 +214,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
     subtitle: result.subtitle,
     content_html: result.content_html,
     sources: result.sources,
+    media: result.media,
   }, env)
 
   return result

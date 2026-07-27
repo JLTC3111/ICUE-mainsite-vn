@@ -121,6 +121,12 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     editorProps: {
       attributes: { class: 'rte-content', spellcheck: 'true' },
       transformPastedHTML: (html) => sanitizeArticleHtml(html),
+      handleKeyDown: (_view, event) => {
+        if (event.key !== 'Enter') return false
+        event.preventDefault()
+        if (event.shiftKey) return editor?.commands.setHardBreak() ?? false
+        return editor?.commands.splitBlock() ?? false
+      },
     },
   })
 

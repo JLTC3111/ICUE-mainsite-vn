@@ -174,7 +174,10 @@
     "coverSplitAfter": "After",
     "coverImageBadge": "Cover A",
     "coverImageAltBadge": "Cover B",
-    "thumbnailPreview": "Card thumbnail preview"
+    "thumbnailPreview": "Card thumbnail preview",
+    "previewImage": "Preview image",
+    "imageInfo": "Image information",
+    "imageInfoPlaceholder": "Additional information (e.g. source: AI-generated)"
   },
   "profile": {
     "displayName": "Display name",

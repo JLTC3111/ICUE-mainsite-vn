@@ -48,6 +48,7 @@
   aspect-ratio: 4 / 3;
   box-shadow: var(--icue-shadow-sm);
 }
+.media-gallery__info { position: absolute; right: 0; bottom: 0; left: 0; z-index: 2; padding: 8px 10px; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.78)); font-size: 11px; line-height: 1.35; text-align: left; pointer-events: none; }
 .media-gallery__grid--1 .media-gallery__item { aspect-ratio: 16 / 9; }
 .media-gallery__grid--3 .media-gallery__item:first-child,
 .media-gallery__grid--4 .media-gallery__item:first-child { aspect-ratio: 16 / 7; }
@@ -224,6 +225,7 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+.lightbox__info { margin: 12px auto 0; max-width: min(88vw, 780px); color: #fff; font-size: 14px; line-height: 1.45; text-align: center; }
 .lightbox__close { top: 20px; right: 24px; width: 44px; height: 44px; }
 .lightbox__nav { top: 50%; transform: translateY(-50%); width: 52px; height: 52px; }
 .lightbox__prev { left: 24px; }

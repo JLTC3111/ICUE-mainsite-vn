@@ -64,6 +64,7 @@ create table if not exists public.articles (
   read_minutes  int default 1,
   published_at  timestamptz,
   sources       jsonb not null default '[]'::jsonb,
+  media         jsonb not null default '[]'::jsonb,
   media_comparison jsonb,
   cover_comparison jsonb,
   created_at    timestamptz not null default now(),
@@ -100,6 +101,7 @@ create table if not exists public.article_media (
   url         text not null,
   storage_path text,
   poster_url  text,
+  info        text,
   position    int not null default 0,
   created_at  timestamptz not null default now()
 );

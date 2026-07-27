@@ -950,6 +950,12 @@ h3:hover {
   pointer-events: none;
 }
 
+/* The subtitle is replaced by the rain-text effect after mount; keep the
+   literal React text from flashing during the first paint. */
+.home-hero__subtitle {
+  visibility: hidden;
+}
+
 .home-hero__content a,
 .home-hero__content button,
 .home-hero__title {

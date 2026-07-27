@@ -164,5 +164,6 @@ export async function translateArticle(article, target) {
     subtitle: result.subtitle,
     content_html: result.content_html,
     sources: result.sources,
+    media: result.media,
   }
 }

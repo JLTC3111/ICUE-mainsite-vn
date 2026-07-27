@@ -16,10 +16,10 @@ export function isValidSourceUrl(value) {
 }
 
 function normalizeRow(raw = {}, { preserveDraft = false } = {}) {
-  const label = trim(raw.label)
-  const url = trim(raw.url)
-  const publisher = trim(raw.publisher)
-  const accessedAt = trim(raw.accessed_at ?? raw.accessedAt)
+  const label = preserveDraft ? String(raw.label ?? '') : trim(raw.label)
+  const url = preserveDraft ? String(raw.url ?? '') : trim(raw.url)
+  const publisher = preserveDraft ? String(raw.publisher ?? '') : trim(raw.publisher)
+  const accessedAt = preserveDraft ? String(raw.accessed_at ?? raw.accessedAt ?? '') : trim(raw.accessed_at ?? raw.accessedAt)
   const id = trim(raw.id)
 
   if (!label && !url && !publisher && !accessedAt) {

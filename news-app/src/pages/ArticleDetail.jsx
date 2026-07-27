@@ -179,6 +179,7 @@ export default function ArticleDetail() {
             subtitle: result.subtitle,
             content_html: result.content_html,
             sources: result.sources,
+            media: result.media,
           })
           setTranslatedLang(uiLang)
         }
@@ -292,6 +293,7 @@ export default function ArticleDetail() {
   const isViContent = String(contentLang || '').startsWith('vi')
   const category = isCategory(article.category) ? article.category : 'general'
   const translatedSources = usingTranslation ? translation?.sources : null
+  const translatedMedia = usingTranslation ? translation?.media : null
 
   return (
     <article
@@ -474,7 +476,11 @@ export default function ArticleDetail() {
 
       {!isTranslating && (
         <div className="article-detail__media-band">
-          <MediaGallery images={images} videos={videos} lensEnabled={lensEnabled} />
+          <MediaGallery
+            images={translatedMedia?.filter((m) => m.kind === 'image') || images}
+            videos={videos}
+            lensEnabled={lensEnabled}
+          />
         </div>
       )}
 

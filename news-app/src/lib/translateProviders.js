@@ -257,23 +257,26 @@ export async function translateSources(sources, targetLocale, _sourceLocale, env
   return results
 }
 
-export async function translatePlainText(text, targetLocale, sourceLocale, env) {
+export async function translatePlainText(text, targetLocale, sourceLocale, env, options = {}) {
   const sample = String(text || '').trim()
   if (!sample) return { provider: null, text: '' }
 
   const target = normalizeLang(targetLocale)
-  const source = sourceLocale || inferSourceLanguage('', sample)
-  if (!shouldTranslateArticle(source, target, sample)) {
+  const detectedSource = sourceLocale || inferSourceLanguage('', sample)
+  if (!options.force && !shouldTranslateArticle(detectedSource, target, sample)) {
     return { provider: null, text: sample, original: true }
   }
 
-  const provider = resolveProvider(target, source, env)
+  // For mixed-language UGC, omit the source hint so Google can detect each
+  // segment instead of treating the entire string as the article language.
+  const source = options.force ? '' : detectedSource
+  const provider = resolveProvider(target, source || detectedSource, env)
   const googleKey = googleTranslateKey(env)
   const deeplKey = env.DEEPL_API_KEY || env.DEEPL_AUTH_KEY
 
   if (provider === 'deepl') {
     if (!DEEPL_ENABLED || !deeplKey) throw new Error('deepl_not_configured')
-    const next = await deeplTranslate(sample, target, deeplKey, { source })
+    const next = await deeplTranslate(sample, target, deeplKey, { source: source || undefined })
     return { provider: 'deepl', text: next, original: false }
   }
 

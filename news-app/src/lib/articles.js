@@ -16,7 +16,7 @@ const ARTICLE_SELECT = `
   status, language, category, article_date, article_time, read_minutes, published_at,
   view_count, created_at, updated_at, author_id, author_name, sources, media_comparison, cover_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
-  media:article_media ( id, kind, url, storage_path, poster_url, position )
+  media:article_media ( id, kind, url, storage_path, poster_url, info, position )
 `
 
 const MISSING_COLUMNS_KEY = 'icue:articles:missing-columns:v3'
@@ -52,6 +52,7 @@ const SCHEMA_COLUMN_ALIASES = {
   view_count: ['view_count'],
   sources: ['sources'],
   poster_url: ['poster_url'],
+  info: ['info'],
 }
 
 function isSchemaColumnError(error) {
@@ -193,6 +194,7 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
           kind: m.kind,
           url,
           storage_path: path,
+          info: m.kind === 'image' ? (m.info || null) : null,
           position,
         })
         .select('id')
@@ -201,7 +203,10 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
       clientToDb.set(m.id, data.id)
     } else if (m.dbId) {
       clientToDb.set(m.id, m.dbId)
-      await supabase.from('article_media').update({ position }).eq('id', m.dbId)
+      await supabase.from('article_media').update({
+        position,
+        info: m.kind === 'image' ? (m.info || null) : null,
+      }).eq('id', m.dbId)
     }
   }
 
@@ -353,6 +358,7 @@ export function toEditorMedia(row) {
     kind: row.kind,
     url: row.url,
     storage_path: row.storage_path,
+    info: row.info || '',
     isNew: false,
   }
 }

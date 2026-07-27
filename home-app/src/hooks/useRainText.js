@@ -6,6 +6,9 @@ export function useRainText(textRef, text) {
     const el = textRef.current
     if (!el || !text) return undefined
 
+    // Hide the server/React text before the first paint. The animation replaces
+    // it in this effect, otherwise users briefly see the unanimated paragraph.
+    el.style.visibility = 'hidden'
     el.textContent = ''
 
     const reduceMotion =
@@ -27,6 +30,7 @@ export function useRainText(textRef, text) {
       el.appendChild(span)
       return span
     })
+    el.style.visibility = 'visible'
 
     const tweens = spans.map((span, i) =>
       gsap.fromTo(
