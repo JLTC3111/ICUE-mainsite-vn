@@ -15,7 +15,7 @@ import ClapButton from '../components/ClapButton'
 import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
-import { translateArticleViaApi, shouldTranslateArticle, buildArticleTranslateSample, clearTranslateCache } from '../lib/translate'
+import { fetchArticleTranslation, shouldTranslateArticle, buildArticleTranslateSample, clearTranslateCache } from '../lib/translate'
 import useMediaQuery from '../hooks/useMediaQuery'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
@@ -167,7 +167,7 @@ export default function ArticleDetail() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslatedLang(null)
 
-    translateArticleViaApi(article.id, uiLang)
+    fetchArticleTranslation(article.id, uiLang)
       .then((result) => {
         if (!active) return
         if (result.original) {

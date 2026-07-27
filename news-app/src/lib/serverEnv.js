@@ -48,14 +48,6 @@ export function envString(env, keys) {
   return ''
 }
 
-export function googleTranslateKey(env = {}) {
-  return envString(env, [
-    'GOOGLE_TRANSLATE_API_KEY',
-    'GOOGLE_CLOUD_TRANSLATE_API_KEY',
-    'GOOGLE_API_KEY',
-  ])
-}
-
 export function supabaseServiceKey(env = {}) {
   return envString(env, [
     'SUPABASE_SERVICE_ROLE_KEY',
@@ -74,12 +66,6 @@ export function geminiApiKey(env = {}) {
 export function resolveServerEnv(rawEnv = process.env) {
   const env = { ...rawEnv }
   const fileConfig = loadSupabaseFileConfig()
-
-  const googleKey = googleTranslateKey(env)
-  if (googleKey) {
-    env.GOOGLE_TRANSLATE_API_KEY = googleKey
-    env.GOOGLE_CLOUD_TRANSLATE_API_KEY = googleKey
-  }
 
   const serviceKey = supabaseServiceKey(env)
   if (serviceKey) {

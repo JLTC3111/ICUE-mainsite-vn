@@ -400,5 +400,22 @@
     "period": "AM/PM",
     "am": "AM",
     "pm": "PM"
+  },
+  "translationsEditor": {
+    "title": "Translations",
+    "hint": "Write each language version by hand. Readers see exactly what you save here; a language you leave blank falls back to the article's original language.",
+    "loading": "Loading translations…",
+    "loadError": "Could not load translations.",
+    "fieldTitle": "Title",
+    "fieldSubtitle": "Subtitle",
+    "fieldStory": "Story",
+    "titlePlaceholder": "Translated title",
+    "subtitlePlaceholder": "Translated subtitle (optional)",
+    "storyPlaceholder": "Translated article body…",
+    "save": "Save translation",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "saveError": "Could not save. Please try again.",
+    "remove": "Remove"
   }
 }
