@@ -155,7 +155,7 @@ export async function translateArticleForLocale(articleId, targetLocale, env = p
   const cachedMediaComplete = cached && originalMedia.every((original) => {
     if (!original.info) return true
     const translated = cached.media?.find((item) => item.id === original.id)
-    return Boolean(translated) && translated.info !== original.info
+    return Boolean(translated?.info) && translated.info !== original.info
   })
   if (cached && cachedMediaComplete) {
     return {

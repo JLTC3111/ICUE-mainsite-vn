@@ -178,14 +178,16 @@ function renderFallback(route) {
     .join('\n          ')
 
   return `<div id="root">
-      <main class="route-shell-fallback">
-        <p class="route-shell-fallback__brand">ICUE Vietnam</p>
-        <h1>${escapeHtml(route.heading)}</h1>
-        <p>${escapeHtml(route.content)}</p>
-        <nav aria-label="Các trang chính">
-          ${primaryLinks}
-        </nav>
-      </main>
+      <noscript>
+        <main class="route-shell-fallback">
+          <p class="route-shell-fallback__brand">ICUE Vietnam</p>
+          <h1>${escapeHtml(route.heading)}</h1>
+          <p>${escapeHtml(route.content)}</p>
+          <nav aria-label="Các trang chính">
+            ${primaryLinks}
+          </nav>
+        </main>
+      </noscript>
     </div>`
 }
 
