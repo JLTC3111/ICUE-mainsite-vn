@@ -762,7 +762,7 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 .article-detail__tools {
-  max-width: var(--article-frame-width);
+  max-width: var(--article-hero-width);
   padding-inline: 0;
 }
 

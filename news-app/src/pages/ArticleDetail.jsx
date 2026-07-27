@@ -478,7 +478,7 @@ export default function ArticleDetail() {
         <div className="article-detail__media-band">
           <MediaGallery
             images={translatedMedia?.filter((m) => m.kind === 'image') || images}
-            videos={videos}
+            videos={translatedMedia?.filter((m) => m.kind === 'video') || videos}
             lensEnabled={lensEnabled}
           />
         </div>

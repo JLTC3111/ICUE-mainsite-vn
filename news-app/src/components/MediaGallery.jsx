@@ -68,14 +68,16 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
       {videos.length > 0 && (
         <div className={`media-gallery__videos ${videos.length > 1 ? 'is-multi' : ''}`}>
           {videos.map((v) => (
-            <video
-              key={v.id}
-              src={v.url}
-              poster={v.poster_url || undefined}
-              controls
-              preload="metadata"
-              playsInline
-            />
+            <div key={v.id} className="media-gallery__video-item">
+              <video
+                src={v.url}
+                poster={v.poster_url || undefined}
+                controls
+                preload="metadata"
+                playsInline
+              />
+              {v.info && <p className="media-gallery__video-info">{v.info}</p>}
+            </div>
           ))}
         </div>
       )}

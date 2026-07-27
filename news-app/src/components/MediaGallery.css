@@ -16,6 +16,7 @@
   margin-bottom: 22px;
 }
 .media-gallery__videos.is-multi { grid-template-columns: repeat(2, 1fr); }
+.media-gallery__video-item { display: flex; flex-direction: column; gap: 6px; }
 .media-gallery__videos video {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -23,6 +24,7 @@
   background: #000;
   box-shadow: var(--icue-shadow-sm);
 }
+.media-gallery__video-info { margin: 0; padding: 0 2px; font-size: 12px; line-height: 1.4; color: var(--icue-text-soft); }
 
 /* Image grid ---------------------------------------------------------- */
 .media-gallery__grid {
