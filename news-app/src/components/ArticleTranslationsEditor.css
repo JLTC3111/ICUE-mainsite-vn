@@ -94,3 +94,63 @@
 @media (max-width: 600px) {
   .translations-editor { padding: 16px; margin-bottom: 40px; }
 }
+
+.translations-editor__captions {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid var(--icue-border);
+}
+.translations-editor__captions-label {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.translations-editor__caption label {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.translations-editor__caption-kind {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--icue-surface);
+  border: 1px solid var(--icue-border);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
+.translations-editor__caption-original {
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--icue-text-faint);
+  overflow-wrap: anywhere;
+}
+
+.translations-editor__warning {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border: 1px solid #ffe69c;
+  border-radius: 8px;
+  background: #fff3cd;
+  color: #8a6d00;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Shows the source text above a translation input, so the author can see what
+   they are translating without switching tabs. */
+.translations-editor__original {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--icue-text-faint);
+  overflow-wrap: anywhere;
+}

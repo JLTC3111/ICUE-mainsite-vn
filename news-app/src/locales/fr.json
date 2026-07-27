@@ -167,7 +167,27 @@
     "coverSplitBefore": "Avant",
     "coverSplitMiddle": "50/50",
     "coverSplitAfter": "Après",
-    "coverImageBadge": "Couverture"
+    "coverImageBadge": "Couverture",
+    "sourceUntitled": "Référence {{n}}",
+    "sourcesEmpty": "Aucune référence pour l'instant.",
+    "sourcesExpandAll": "Tout déplier",
+    "sourcesCollapseAll": "Tout replier",
+    "sourcesExpandAllAria": "Déplier toutes les références",
+    "sourcesCollapseAllAria": "Replier toutes les références",
+    "coverImagePrimary": "Image de couverture A",
+    "coverImageSecondary": "Image de couverture B",
+    "coverImageAlt": "Seconde image de couverture",
+    "thumbnailPreview": "Aperçu de la vignette",
+    "previewImage": "Aperçu de l'image",
+    "imageInfo": "Informations sur l'image",
+    "imageInfoPlaceholder": "Informations complémentaires (ex. source : généré par IA)",
+    "mediaInfo": "Informations sur le média",
+    "mediaInfoPlaceholder": "Informations complémentaires (ex. source : généré par IA)",
+    "cleanFormatting": "Nettoyer la mise en forme",
+    "cleanFormattingDone": "Mise en forme nettoyée",
+    "coverImageAltBadge": "Couverture B",
+    "coverInfo": "Source de l'image de couverture",
+    "coverInfoPlaceholder": "ex. Source : NASA — facultatif"
   },
   "profile": {
     "displayName": "Nom affiché",
@@ -196,7 +216,8 @@
     "pageOf": "Page {{current}} sur {{total}}",
     "prevPage": "Précédent",
     "nextPage": "Suivant",
-    "goToPage": "Aller à la page {{n}}"
+    "goToPage": "Aller à la page {{n}}",
+    "playVideo": "Lire la vidéo"
   },
   "engagement": {
     "like": "Laisser un cœur",
@@ -387,5 +408,28 @@
         "Par où commencer ?"
       ]
     }
+  },
+  "translationsEditor": {
+    "title": "Traductions",
+    "hint": "Rédigez vous-même chaque version linguistique. Les lecteurs voient exactement ce que vous enregistrez ici ; une langue laissée vide affiche la langue d'origine de l'article.",
+    "loading": "Chargement des traductions…",
+    "loadError": "Impossible de charger les traductions.",
+    "fieldTitle": "Titre",
+    "fieldSubtitle": "Sous-titre",
+    "fieldStory": "Corps de l'article",
+    "titlePlaceholder": "Titre traduit",
+    "subtitlePlaceholder": "Sous-titre traduit (facultatif)",
+    "storyPlaceholder": "Corps de l'article traduit…",
+    "save": "Enregistrer la traduction",
+    "saving": "Enregistrement…",
+    "saved": "Enregistré",
+    "saveError": "Échec de l'enregistrement. Veuillez réessayer.",
+    "remove": "Supprimer",
+    "captions": "Légendes des médias",
+    "captionsHint": "Chaque image ou vidéo légendée. Laissez vide pour conserver la légende d'origine.",
+    "kind_image": "Image",
+    "kind_video": "Vidéo",
+    "languageMismatch": "Remarque : cet article est enregistré en « {{declared}} » mais son texte semble être en « {{detected}} ». Les onglets ci-dessous suivent la langue détectée. Corrigez le champ Langue si c'est incorrect.",
+    "fieldCoverInfo": "Source de l'image de couverture"
   }
 }

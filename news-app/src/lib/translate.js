@@ -14,7 +14,7 @@ export {
   buildArticleTranslateSample,
 } from './translateUtils.js'
 
-const TRANSLATION_COLUMNS = 'title,subtitle,content_html,sources,media'
+const TRANSLATION_COLUMNS = 'title,subtitle,content_html,cover_info,sources,media'
 
 const memoryCache = new Map()
 
@@ -67,6 +67,7 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
       title: data.title || '',
       subtitle: data.subtitle || '',
       content_html: data.content_html || '',
+      cover_info: data.cover_info || '',
       sources: data.sources || [],
       media: data.media || [],
       original: false,
@@ -120,6 +121,7 @@ export async function fetchArticleTranslations(articleId) {
       title: row.title || '',
       subtitle: row.subtitle || '',
       content_html: row.content_html || '',
+      cover_info: row.cover_info || '',
       sources: row.sources || [],
       media: row.media || [],
     }]),
@@ -139,6 +141,7 @@ export async function saveArticleTranslation(articleId, locale, payload = {}) {
       title: payload.title || '',
       subtitle: payload.subtitle || null,
       content_html: payload.content_html || '',
+      cover_info: payload.cover_info || null,
       sources: payload.sources || [],
       media: payload.media || [],
       updated_at: new Date().toISOString(),

@@ -167,7 +167,27 @@
     "coverSplitBefore": "ビフォー",
     "coverSplitMiddle": "50/50",
     "coverSplitAfter": "アフター",
-    "coverImageBadge": "カバー"
+    "coverImageBadge": "カバー",
+    "sourceUntitled": "出典 {{n}}",
+    "sourcesEmpty": "出典はまだありません。",
+    "sourcesExpandAll": "すべて展開",
+    "sourcesCollapseAll": "すべて折りたたむ",
+    "sourcesExpandAllAria": "すべての出典を展開",
+    "sourcesCollapseAllAria": "すべての出典を折りたたむ",
+    "coverImagePrimary": "カバー画像 A",
+    "coverImageSecondary": "カバー画像 B",
+    "coverImageAlt": "2枚目のカバー画像",
+    "thumbnailPreview": "カードのサムネイルプレビュー",
+    "previewImage": "画像をプレビュー",
+    "imageInfo": "画像情報",
+    "imageInfoPlaceholder": "補足情報（例：出典：AI生成）",
+    "mediaInfo": "メディア情報",
+    "mediaInfoPlaceholder": "補足情報（例：出典：AI生成）",
+    "cleanFormatting": "書式をクリア",
+    "cleanFormattingDone": "書式をクリアしました",
+    "coverImageAltBadge": "カバー B",
+    "coverInfo": "カバー画像の出典",
+    "coverInfoPlaceholder": "例：出典：NASA（任意）"
   },
   "profile": {
     "displayName": "表示名",
@@ -196,7 +216,8 @@
     "pageOf": "{{current}} / {{total}} ページ",
     "prevPage": "前へ",
     "nextPage": "次へ",
-    "goToPage": "{{n}} ページへ"
+    "goToPage": "{{n}} ページへ",
+    "playVideo": "動画を再生"
   },
   "engagement": {
     "like": "ハートを送る",
@@ -387,5 +408,28 @@
         "どこから始めますか？"
       ]
     }
+  },
+  "translationsEditor": {
+    "title": "翻訳",
+    "hint": "各言語版を手動で作成します。読者はここに保存した内容をそのまま見ます。空欄の言語は記事の元の言語で表示されます。",
+    "loading": "翻訳を読み込み中…",
+    "loadError": "翻訳を読み込めませんでした。",
+    "fieldTitle": "タイトル",
+    "fieldSubtitle": "サブタイトル",
+    "fieldStory": "本文",
+    "titlePlaceholder": "翻訳されたタイトル",
+    "subtitlePlaceholder": "翻訳されたサブタイトル（任意）",
+    "storyPlaceholder": "翻訳された本文…",
+    "save": "翻訳を保存",
+    "saving": "保存中…",
+    "saved": "保存しました",
+    "saveError": "保存できませんでした。もう一度お試しください。",
+    "remove": "削除",
+    "captions": "メディアのキャプション",
+    "captionsHint": "キャプションのある画像・動画。空欄にすると元のキャプションが使われます。",
+    "kind_image": "画像",
+    "kind_video": "動画",
+    "languageMismatch": "注意：この記事は「{{declared}}」として保存されていますが、本文は「{{detected}}」のようです。以下のタブは検出された言語に基づいています。誤りであれば記事の言語欄を修正してください。",
+    "fieldCoverInfo": "カバー画像の出典"
   }
 }

@@ -167,7 +167,27 @@
     "coverSplitBefore": "이전",
     "coverSplitMiddle": "50/50",
     "coverSplitAfter": "이후",
-    "coverImageBadge": "커버"
+    "coverImageBadge": "커버",
+    "sourceUntitled": "출처 {{n}}",
+    "sourcesEmpty": "아직 출처가 없습니다.",
+    "sourcesExpandAll": "모두 펼치기",
+    "sourcesCollapseAll": "모두 접기",
+    "sourcesExpandAllAria": "모든 출처 펼치기",
+    "sourcesCollapseAllAria": "모든 출처 접기",
+    "coverImagePrimary": "커버 이미지 A",
+    "coverImageSecondary": "커버 이미지 B",
+    "coverImageAlt": "두 번째 커버 이미지",
+    "thumbnailPreview": "카드 썸네일 미리보기",
+    "previewImage": "이미지 미리보기",
+    "imageInfo": "이미지 정보",
+    "imageInfoPlaceholder": "추가 정보 (예: 출처: AI 생성)",
+    "mediaInfo": "미디어 정보",
+    "mediaInfoPlaceholder": "추가 정보 (예: 출처: AI 생성)",
+    "cleanFormatting": "서식 지우기",
+    "cleanFormattingDone": "서식을 지웠습니다",
+    "coverImageAltBadge": "커버 B",
+    "coverInfo": "커버 이미지 출처",
+    "coverInfoPlaceholder": "예: 출처: NASA (선택)"
   },
   "profile": {
     "displayName": "표시 이름",
@@ -196,7 +216,8 @@
     "pageOf": "{{total}}페이지 중 {{current}}페이지",
     "prevPage": "이전",
     "nextPage": "다음",
-    "goToPage": "{{n}}페이지로 이동"
+    "goToPage": "{{n}}페이지로 이동",
+    "playVideo": "동영상 재생"
   },
   "engagement": {
     "like": "하트 남기기",
@@ -387,5 +408,28 @@
         "어디서부터 시작할까요?"
       ]
     }
+  },
+  "translationsEditor": {
+    "title": "번역",
+    "hint": "각 언어 버전을 직접 작성하세요. 독자에게는 여기에 저장한 내용이 그대로 표시되며, 비워 둔 언어는 원문 언어로 표시됩니다.",
+    "loading": "번역을 불러오는 중…",
+    "loadError": "번역을 불러오지 못했습니다.",
+    "fieldTitle": "제목",
+    "fieldSubtitle": "부제",
+    "fieldStory": "본문",
+    "titlePlaceholder": "번역된 제목",
+    "subtitlePlaceholder": "번역된 부제(선택)",
+    "storyPlaceholder": "번역된 본문…",
+    "save": "번역 저장",
+    "saving": "저장 중…",
+    "saved": "저장됨",
+    "saveError": "저장하지 못했습니다. 다시 시도해 주세요.",
+    "remove": "삭제",
+    "captions": "미디어 캡션",
+    "captionsHint": "캡션이 있는 이미지 및 동영상. 비워 두면 원본 캡션이 사용됩니다.",
+    "kind_image": "이미지",
+    "kind_video": "동영상",
+    "languageMismatch": "참고: 이 기사는 “{{declared}}”로 저장되어 있지만 본문은 “{{detected}}”로 보입니다. 아래 탭은 감지된 언어를 기준으로 합니다. 잘못되었다면 기사의 언어 항목을 수정하세요.",
+    "fieldCoverInfo": "커버 이미지 출처"
   }
 }

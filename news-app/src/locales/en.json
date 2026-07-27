@@ -179,7 +179,15 @@
     "imageInfo": "Image information",
     "imageInfoPlaceholder": "Additional information (e.g. source: AI-generated)",
     "mediaInfo": "Media information",
-    "mediaInfoPlaceholder": "Additional information (e.g. source: AI-generated)"
+    "mediaInfoPlaceholder": "Additional information (e.g. source: AI-generated)",
+    "sourceUntitled": "Reference {{n}}",
+    "sourcesEmpty": "No references yet.",
+    "sourcesExpandAll": "Expand all",
+    "sourcesCollapseAll": "Collapse all",
+    "sourcesExpandAllAria": "Expand all references",
+    "sourcesCollapseAllAria": "Collapse all references",
+    "coverInfo": "Cover image source",
+    "coverInfoPlaceholder": "e.g. Source: NASA — optional"
   },
   "profile": {
     "displayName": "Display name",
@@ -416,6 +424,12 @@
     "saving": "Saving…",
     "saved": "Saved",
     "saveError": "Could not save. Please try again.",
-    "remove": "Remove"
+    "remove": "Remove",
+    "captions": "Media captions",
+    "captionsHint": "Each captioned image or video below. Leave one blank to keep the original caption.",
+    "kind_image": "Image",
+    "kind_video": "Video",
+    "languageMismatch": "Heads up: this article is saved as “{{declared}}” but its text looks like “{{detected}}”. Tabs below are based on the detected language. Fix the article's Language field if that's wrong.",
+    "fieldCoverInfo": "Cover image source"
   }
 }

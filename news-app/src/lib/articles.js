@@ -12,7 +12,7 @@ import {
 
 // cover_comparison requires migration 20260722160000_article_cover_comparison.sql on Supabase.
 const ARTICLE_SELECT = `
-  id, slug, title, subtitle, content_html, content_json, cover_image_url, cover_image_alt_url,
+  id, slug, title, subtitle, content_html, content_json, cover_image_url, cover_image_alt_url, cover_info,
   status, language, category, article_date, article_time, read_minutes, published_at,
   view_count, created_at, updated_at, author_id, author_name, sources, media_comparison, cover_comparison,
   author:profiles!articles_author_id_fkey ( id, display_name, full_name, avatar_url ),
@@ -260,6 +260,7 @@ export async function createArticle({ form, items, coverFile, coverAltFile, user
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     cover_image_alt_url: coverAltUrl,
+    cover_info: form.coverInfo?.trim() ? sanitizePlainText(form.coverInfo.trim()) : null,
     author_id: userId,
     author_name: form.author?.trim() ? sanitizePlainText(form.author.trim()) : null,
     status,
@@ -305,6 +306,7 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     cover_image_alt_url: coverAltUrl,
+    cover_info: form.coverInfo?.trim() ? sanitizePlainText(form.coverInfo.trim()) : null,
     language: form.language || 'vi',
     category: form.category || 'general',
     article_date: form.date || null,

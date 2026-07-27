@@ -16,6 +16,7 @@ import CommentSection from '../components/CommentSection'
 import ArticleTranslator from '../components/ArticleTranslator'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import { fetchArticleTranslation, shouldTranslateArticle, buildArticleTranslateSample, clearTranslateCache } from '../lib/translate'
+import { applyMediaCaptions, findUntranslatedCaptions } from '../lib/mediaTranslations'
 import useMediaQuery from '../hooks/useMediaQuery'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import HyperText from '../components/HyperText'
@@ -178,10 +179,25 @@ export default function ArticleDetail() {
             title: result.title,
             subtitle: result.subtitle,
             content_html: result.content_html,
+            cover_info: result.cover_info,
             sources: result.sources,
             media: result.media,
           })
           setTranslatedLang(uiLang)
+
+          // Captions are authored per locale, so a missing one is a content gap,
+          // not a code error — it would otherwise fail completely silently.
+          if (import.meta.env.DEV) {
+            const missing = findUntranslatedCaptions(article.media, result.media)
+            if (missing.length) {
+              console.warn(
+                `[i18n] ${missing.length} media caption(s) have no "${uiLang}" translation `
+                + '— showing the original text. Add them in the newsroom editor '
+                + `(Translations → ${uiLang} → Media captions).`,
+                missing.map((m) => ({ id: m.id, kind: m.kind, info: m.info })),
+              )
+            }
+          }
         }
       })
       .catch(() => active && setTranslateError(true))
@@ -279,6 +295,11 @@ export default function ArticleDetail() {
   const isTranslating = needsTranslation && !usingTranslation && !translateResolved && !translateError
   const displayTitle = normalizeUnicode(usingTranslation ? translation.title : article.title)
   const displaySubtitle = normalizeUnicode(usingTranslation ? translation.subtitle : article.subtitle)
+  // Cover attribution: the translated version when one has been authored for
+  // this locale, otherwise the author's original (never blank-out on fallback).
+  const displayCoverInfo = normalizeUnicode(
+    (usingTranslation && translation.cover_info) || article.cover_info || '',
+  )
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || coverComparisonPairs.length > 0 || images.length > 0
   const showLensToggle = lensCapable && hasLensPhotos
@@ -407,13 +428,16 @@ export default function ArticleDetail() {
       )}
 
       {coverComparisonPairs.length > 0 ? (
-        <div className="article-detail__cover article-detail__cover--comparison">
+        <figure className="article-detail__cover article-detail__cover--comparison">
           <ArticleComparisonCarousel
             pairs={coverComparisonPairs}
             fitContent
             disableParallax={disableParallax}
           />
-        </div>
+          {displayCoverInfo && (
+            <figcaption className="article-detail__cover-info">{displayCoverInfo}</figcaption>
+          )}
+        </figure>
       ) : article.cover_image_url ? (
         <figure className="article-detail__cover">
           <Lens
@@ -424,6 +448,9 @@ export default function ArticleDetail() {
           >
             <img src={article.cover_image_url} alt="" decoding="async" />
           </Lens>
+          {displayCoverInfo && (
+            <figcaption className="article-detail__cover-info">{displayCoverInfo}</figcaption>
+          )}
         </figure>
       ) : null}
 
@@ -476,9 +503,11 @@ export default function ArticleDetail() {
 
       {!isTranslating && (
         <div className="article-detail__media-band">
+          {/* Captions come from the hand-authored per-locale translation and
+              fall back to the original when a locale has none. */}
           <MediaGallery
-            images={translatedMedia?.filter((m) => m.kind === 'image') || images}
-            videos={translatedMedia?.filter((m) => m.kind === 'video') || videos}
+            images={applyMediaCaptions(images, translatedMedia)}
+            videos={applyMediaCaptions(videos, translatedMedia)}
             lensEnabled={lensEnabled}
           />
         </div>

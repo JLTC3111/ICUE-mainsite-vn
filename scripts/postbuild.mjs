@@ -154,6 +154,7 @@ if (fs.existsSync(newsSrc)) {
   copyDir(newsSrc, path.join(root, 'news'));
 }
 
-console.log('[postbuild] Synced home-app production build to repo root for Netlify deploy.');
+// Quiet on success — the remaining console.warn calls above still surface real
+// problems (missing preview.jpg, card.js, article.js) during a build.
 
 execSync('node scripts/write-function-secrets.mjs', { cwd: root, stdio: 'inherit' });

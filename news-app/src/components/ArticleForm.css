@@ -211,3 +211,7 @@
   .article-form__subtitle { font-size: 19px; }
   .article-form__bar { flex-wrap: wrap; }
 }
+
+.article-form__cover-info {
+  margin-top: 14px;
+}

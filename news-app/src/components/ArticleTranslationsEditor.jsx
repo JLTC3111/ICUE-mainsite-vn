@@ -5,13 +5,23 @@ import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import {
   deleteArticleTranslation,
   fetchArticleTranslations,
+  inferSourceLanguage,
   normalizeLang,
   saveArticleTranslation,
 } from '../lib/translate'
 import RichTextEditor from './RichTextEditor'
 import './ArticleTranslationsEditor.css'
 
-const EMPTY = { title: '', subtitle: '', content_html: '' }
+const EMPTY = { title: '', subtitle: '', content_html: '', cover_info: '', media: [] }
+
+/** Caption text keyed by media id, for easy diffing and editing. */
+function captionsOf(entry) {
+  const map = {}
+  for (const item of entry?.media || []) {
+    if (item?.id != null) map[String(item.id)] = item.info || ''
+  }
+  return map
+}
 
 /**
  * Per-locale translations authored by hand. Whatever is saved here is what
@@ -19,9 +29,34 @@ const EMPTY = { title: '', subtitle: '', content_html: '' }
  * anywhere in the pipeline, so a locale left blank simply falls back to the
  * article's original language.
  */
-export default function ArticleTranslationsEditor({ articleId, sourceLanguage }) {
+export default function ArticleTranslationsEditor({
+  articleId,
+  sourceLanguage,
+  sourceSample = '',
+  coverInfo = '',
+  media = [],
+}) {
   const { t } = useTranslation()
-  const sourceLang = normalizeLang(sourceLanguage) || 'vi'
+
+  /*
+   * Infer the language from the article's actual text, exactly as the reader
+   * does via shouldTranslateArticle(). Trusting the declared `language` column
+   * silently broke this editor: an article stored as 'en' whose body and
+   * captions are Vietnamese had its English tab removed entirely (you cannot
+   * translate "into" the declared source), so English translations were typed
+   * into the Vietnamese tab and readers never saw them.
+   */
+  const declaredLang = normalizeLang(sourceLanguage) || 'vi'
+  const sourceLang = inferSourceLanguage(declaredLang, sourceSample) || declaredLang
+  const languageMismatch = sourceLang !== declaredLang
+
+  // Only media the author actually captioned needs a translation.
+  const captionSources = useMemo(
+    () => (media || [])
+      .filter((m) => m?.id != null && String(m.info || '').trim())
+      .sort((a, b) => (a.position || 0) - (b.position || 0)),
+    [media],
+  )
 
   const locales = useMemo(
     () => SUPPORTED_LANGUAGES.filter((l) => l.code !== sourceLang),
@@ -37,7 +72,9 @@ export default function ArticleTranslationsEditor({ articleId, sourceLanguage })
 
   useEffect(() => {
     let live = true
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState('loading')
+
     fetchArticleTranslations(articleId)
       .then((rows) => {
         if (!live) return
@@ -59,12 +96,33 @@ export default function ArticleTranslationsEditor({ articleId, sourceLanguage })
     }))
   }, [active])
 
+  const currentCaptions = useMemo(() => captionsOf(current), [current])
+
+  const updateCaption = useCallback((mediaId, value) => {
+    setSaved('')
+    setDrafts((prev) => {
+      const entry = prev[active] || EMPTY
+      const existing = Array.isArray(entry.media) ? entry.media : []
+      const index = existing.findIndex((m) => String(m?.id) === String(mediaId))
+      const next = [...existing]
+      if (index >= 0) {
+        next[index] = { ...next[index], info: value }
+      } else {
+        const source = captionSources.find((m) => String(m.id) === String(mediaId))
+        next.push({ id: mediaId, kind: source?.kind || 'image', info: value })
+      }
+      return { ...prev, [active]: { ...entry, media: next } }
+    })
+  }, [active, captionSources])
+
   const isDirty = useMemo(() => {
     const base = stored[active] || EMPTY
     return base.title !== current.title
       || (base.subtitle || '') !== (current.subtitle || '')
       || base.content_html !== current.content_html
-  }, [stored, active, current])
+      || (base.cover_info || '') !== (current.cover_info || '')
+      || JSON.stringify(captionsOf(base)) !== JSON.stringify(currentCaptions)
+  }, [stored, active, current, currentCaptions])
 
   const handleSave = useCallback(async () => {
     setBusy(true)
@@ -109,6 +167,14 @@ export default function ArticleTranslationsEditor({ articleId, sourceLanguage })
       <div className="translations-editor__head">
         <h3 className="translations-editor__title">{t('translationsEditor.title')}</h3>
         <p className="translations-editor__hint">{t('translationsEditor.hint')}</p>
+        {languageMismatch && (
+          <p className="translations-editor__warning">
+            {t('translationsEditor.languageMismatch', {
+              declared: declaredLang,
+              detected: sourceLang,
+            })}
+          </p>
+        )}
       </div>
 
       <div className="translations-editor__tabs" role="tablist">
@@ -170,6 +236,53 @@ export default function ArticleTranslationsEditor({ articleId, sourceLanguage })
               placeholder={t('translationsEditor.storyPlaceholder')}
             />
           </div>
+
+          {coverInfo && (
+            <div className="field">
+              <label htmlFor={`tr-cover-${active}`}>
+                {t('translationsEditor.fieldCoverInfo')}
+              </label>
+              <span className="translations-editor__original">{coverInfo}</span>
+              <input
+                id={`tr-cover-${active}`}
+                className="input"
+                type="text"
+                maxLength={240}
+                value={current.cover_info || ''}
+                onChange={(e) => update('cover_info', e.target.value)}
+                placeholder={coverInfo}
+              />
+            </div>
+          )}
+
+          {captionSources.length > 0 && (
+            <div className="translations-editor__captions">
+              <p className="translations-editor__captions-label">
+                {t('translationsEditor.captions')}
+              </p>
+              <p className="translations-editor__hint">{t('translationsEditor.captionsHint')}</p>
+
+              {captionSources.map((m) => (
+                <div className="field translations-editor__caption" key={m.id}>
+                  <label htmlFor={`tr-cap-${active}-${m.id}`}>
+                    <span className="translations-editor__caption-kind">
+                      {t(`translationsEditor.kind_${m.kind}`)}
+                    </span>
+                    <span className="translations-editor__caption-original">{m.info}</span>
+                  </label>
+                  <input
+                    id={`tr-cap-${active}-${m.id}`}
+                    className="input"
+                    type="text"
+                    maxLength={240}
+                    value={currentCaptions[String(m.id)] || ''}
+                    onChange={(e) => updateCaption(m.id, e.target.value)}
+                    placeholder={m.info}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="translations-editor__actions">
             <button

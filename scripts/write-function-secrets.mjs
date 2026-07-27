@@ -37,24 +37,22 @@ fs.writeFileSync(
   `// Generated during Netlify build — do not commit.\nmodule.exports = ${JSON.stringify(payload, null, 2)}\n`,
 )
 
-if (payload.SUPABASE_SERVICE_ROLE_KEY) {
-  console.log('[write-function-secrets] Supabase service role captured for Netlify functions.')
-}
+// These keys are expected to be absent on a local build — they only exist in
+// Netlify's environment. Warn on real deploys (where a missing key silently
+// disables a feature in production) and stay quiet locally.
+const isDeploy = process.env.NETLIFY === 'true' || process.env.CI === 'true'
 
-if (payload.GEMINI_API_KEY) {
-  console.log('[write-function-secrets] Gemini API key captured for Netlify functions.')
-} else {
-  console.warn(
-    '[write-function-secrets] GEMINI_API_KEY missing at build time. '
-      + 'Set it in Netlify env (Functions + Builds scopes) to enable /newsroom/assist.',
-  )
-}
-
-if (payload.CLOUDFLARE_ACCOUNT_ID && payload.CLOUDFLARE_API_TOKEN) {
-  console.log('[write-function-secrets] Cloudflare Workers AI credentials captured for Netlify functions.')
-} else {
-  console.warn(
-    '[write-function-secrets] CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN missing at build time. '
-      + 'Set both in Netlify env (Functions + Builds scopes) to enable Generate Image (FLUX).',
-  )
+if (isDeploy) {
+  if (!payload.GEMINI_API_KEY) {
+    console.warn(
+      '[write-function-secrets] GEMINI_API_KEY missing at build time. '
+        + 'Set it in Netlify env (Functions + Builds scopes) to enable /newsroom/assist.',
+    )
+  }
+  if (!payload.CLOUDFLARE_ACCOUNT_ID || !payload.CLOUDFLARE_API_TOKEN) {
+    console.warn(
+      '[write-function-secrets] CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_API_TOKEN missing at build time. '
+        + 'Set both in Netlify env (Functions + Builds scopes) to enable Generate Image (FLUX).',
+    )
+  }
 }

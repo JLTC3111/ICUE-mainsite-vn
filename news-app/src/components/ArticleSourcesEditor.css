@@ -5,14 +5,38 @@
 }
 
 .article-sources-editor__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 18px;
 }
 
+.article-sources-editor__head-text { min-width: 0; }
+
 .article-sources-editor__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0 0 4px;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.01em;
+}
+
+.article-sources-editor__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--icue-surface-2);
+  border: 1px solid var(--icue-border);
+  color: var(--icue-text-faint);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .article-sources-editor__hint {
@@ -21,30 +45,85 @@
   color: var(--icue-text-faint);
 }
 
+/* Bulk control sits top-right of the section header: available when scanning
+   the list, but visually secondary to each item's own affordance. */
+.article-sources-editor__bulk {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--icue-text-soft);
+}
+
+.article-sources-editor__empty {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px dashed var(--icue-border);
+  border-radius: 10px;
+  background: var(--icue-surface-2);
+  font-size: 13px;
+  color: var(--icue-text-soft);
+}
+
 .article-sources-editor__list {
   list-style: none;
   margin: 0 0 16px;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
-.article-sources-editor__row {
-  padding: 16px;
+/* --- One reference ---------------------------------------------------- */
+.source-item {
   border: 1px solid var(--icue-border);
   border-radius: 12px;
-  background: var(--icue-surface-2, #fafafa);
+  background: var(--icue-surface);
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.article-sources-editor__row-head {
+/* Expanded items lift off the list so the open one is obvious while scanning. */
+.source-item.is-expanded {
+  background: var(--icue-surface-2, #fafafa);
+  border-color: #cdd1c8;
+  box-shadow: var(--icue-shadow-sm);
+}
+
+.source-item__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  gap: 4px;
+  /* Padding lives on the header, not the item, so collapsed and expanded rows
+     keep identical spacing and the list never shifts. */
+  padding: 4px 8px 4px 4px;
 }
 
-.article-sources-editor__row-num {
+/* The whole header row is the hit target, not just the chevron. */
+.source-item__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 8px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.source-item__toggle:hover { background: rgba(0, 0, 0, 0.03); }
+
+.source-item__chevron {
+  flex: 0 0 auto;
+  color: var(--icue-text-faint);
+  transition: transform 0.2s ease;
+}
+.source-item.is-expanded .source-item__chevron { transform: rotate(90deg); }
+
+.source-item__num {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -58,35 +137,78 @@
   font-weight: 700;
 }
 
-.article-sources-editor__remove {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--icue-text-soft);
+.source-item__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.article-sources-editor__fields {
+.source-item__label {
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-item__meta {
+  font-size: 12px;
+  color: var(--icue-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-item__remove {
+  flex: 0 0 auto;
+  color: var(--icue-text-soft);
+}
+.source-item__remove:hover { color: var(--icue-danger); }
+
+/*
+  Height animation without JS measurement: grid-template-rows 0fr → 1fr.
+  The child must own the overflow and a zero min-height for the collapse to
+  actually reach zero.
+*/
+.source-item__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.2s ease, opacity 0.2s ease;
+}
+
+.source-item.is-expanded .source-item__panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.source-item__panel > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.source-item__fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px 16px;
+  padding: 4px 16px 16px;
 }
 
-.article-sources-editor__field span {
+.source-item__field span {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.article-sources-editor__field--date {
+.source-item__field--date {
   max-width: 240px;
   min-width: 0;
 }
 
-.article-sources-editor__field--date .dt-picker {
-  min-width: 0;
-}
+.source-item__field--date .dt-picker { min-width: 0; }
 
-.article-sources-editor__error {
+.source-item__error {
   display: block;
   margin-top: 4px;
   font-size: 12px;
@@ -101,18 +223,37 @@
   margin-top: 4px;
 }
 
-@media (max-width: 900px) {
-  .article-sources-editor__field--date {
-    max-width: 280px;
+.icue-app--news-theme-dark .source-item {
+  background: rgba(255, 255, 255, 0.02);
+}
+.icue-app--news-theme-dark .source-item.is-expanded {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.icue-app--news-theme-dark .source-item__toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Motion is decoration here — state is still conveyed by the chevron, the
+   background change, and aria-expanded. */
+@media (prefers-reduced-motion: reduce) {
+  .source-item,
+  .source-item__panel,
+  .source-item__chevron {
+    transition: none;
   }
 }
 
-@media (max-width: 720px) {
-  .article-sources-editor__fields {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 900px) {
+  .source-item__field--date { max-width: 280px; }
+}
 
-  .article-sources-editor__field--date {
-    max-width: none;
+@media (max-width: 720px) {
+  .source-item__fields { grid-template-columns: 1fr; }
+  .source-item__field--date { max-width: none; }
+  .article-sources-editor__head {
+    flex-direction: column;
+    align-items: stretch;
   }
+  .article-sources-editor__bulk { align-self: flex-start; }
 }

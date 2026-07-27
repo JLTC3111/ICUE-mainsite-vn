@@ -167,7 +167,27 @@
     "coverSplitBefore": "Vorher",
     "coverSplitMiddle": "50/50",
     "coverSplitAfter": "Nachher",
-    "coverImageBadge": "Titel"
+    "coverImageBadge": "Titel",
+    "sourceUntitled": "Quelle {{n}}",
+    "sourcesEmpty": "Noch keine Quellen.",
+    "sourcesExpandAll": "Alle ausklappen",
+    "sourcesCollapseAll": "Alle einklappen",
+    "sourcesExpandAllAria": "Alle Quellen ausklappen",
+    "sourcesCollapseAllAria": "Alle Quellen einklappen",
+    "coverImagePrimary": "Titelbild A",
+    "coverImageSecondary": "Titelbild B",
+    "coverImageAlt": "Zweites Titelbild",
+    "thumbnailPreview": "Vorschau der Kartenminiatur",
+    "previewImage": "Bildvorschau",
+    "imageInfo": "Bildinformation",
+    "imageInfoPlaceholder": "Zusatzinformation (z. B. Quelle: KI-generiert)",
+    "mediaInfo": "Medieninformation",
+    "mediaInfoPlaceholder": "Zusatzinformation (z. B. Quelle: KI-generiert)",
+    "cleanFormatting": "Formatierung bereinigen",
+    "cleanFormattingDone": "Formatierung bereinigt",
+    "coverImageAltBadge": "Cover B",
+    "coverInfo": "Quelle des Titelbilds",
+    "coverInfoPlaceholder": "z. B. Quelle: NASA — optional"
   },
   "profile": {
     "displayName": "Anzeigename",
@@ -196,7 +216,8 @@
     "pageOf": "Seite {{current}} von {{total}}",
     "prevPage": "Zurück",
     "nextPage": "Weiter",
-    "goToPage": "Gehe zu Seite {{n}}"
+    "goToPage": "Gehe zu Seite {{n}}",
+    "playVideo": "Video abspielen"
   },
   "engagement": {
     "like": "Herz hinterlassen",
@@ -387,5 +408,28 @@
         "Wo sollen wir anfangen?"
       ]
     }
+  },
+  "translationsEditor": {
+    "title": "Übersetzungen",
+    "hint": "Verfassen Sie jede Sprachversion selbst. Leser sehen genau das, was Sie hier speichern; eine leer gelassene Sprache greift auf die Originalsprache des Artikels zurück.",
+    "loading": "Übersetzungen werden geladen…",
+    "loadError": "Übersetzungen konnten nicht geladen werden.",
+    "fieldTitle": "Titel",
+    "fieldSubtitle": "Untertitel",
+    "fieldStory": "Artikeltext",
+    "titlePlaceholder": "Übersetzter Titel",
+    "subtitlePlaceholder": "Übersetzter Untertitel (optional)",
+    "storyPlaceholder": "Übersetzter Artikeltext…",
+    "save": "Übersetzung speichern",
+    "saving": "Wird gespeichert…",
+    "saved": "Gespeichert",
+    "saveError": "Speichern fehlgeschlagen. Bitte erneut versuchen.",
+    "remove": "Entfernen",
+    "captions": "Medienunterschriften",
+    "captionsHint": "Jedes Bild und Video mit Bildunterschrift. Leer lassen, um die Originalunterschrift zu behalten.",
+    "kind_image": "Bild",
+    "kind_video": "Video",
+    "languageMismatch": "Hinweis: Dieser Artikel ist als „{{declared}}“ gespeichert, sein Text wirkt aber wie „{{detected}}“. Die Tabs unten richten sich nach der erkannten Sprache. Korrigieren Sie das Sprachfeld, falls das falsch ist.",
+    "fieldCoverInfo": "Quelle des Titelbilds"
   }
 }

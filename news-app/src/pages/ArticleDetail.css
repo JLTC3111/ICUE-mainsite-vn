@@ -1217,3 +1217,13 @@ html:lang(vi) .article-detail__subtitle {
     font-size: clamp(25px, 7.2vw, 30px);
   }
 }
+
+/* Cover attribution — author-written content (e.g. "Nguồn: NASA"), translated
+   per locale in the newsroom editor. Sits under the cover, matching the muted
+   caption treatment used by the media gallery. */
+.article-detail__cover-info {
+  margin: 10px 2px 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--icue-text-faint);
+}

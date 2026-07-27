@@ -21,10 +21,6 @@ export default function CommentSection({ articleId }) {
     return () => { active = false }
   }, [articleId])
 
-  useEffect(() => {
-    setShowOriginal(false)
-  }, [i18n.resolvedLanguage])
-
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault()

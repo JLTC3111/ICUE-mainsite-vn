@@ -53,6 +53,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   )
   const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
   const [coverAltUrl, setCoverAltUrl] = useState(initial?.cover_image_alt_url || '')
+  const [coverInfo, setCoverInfo] = useState(initial?.cover_info || '')
   const coverFileRef = useRef(null)
   const coverAltFileRef = useRef(null)
   const coverInputRef = useRef(null)
@@ -192,6 +193,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             sources,
             coverComparison,
             coverImageUrl: coverUrl || null,
+            coverInfo: coverInfo || null,
             coverImageAltUrl: coverAltUrl || null,
             language: initial?.language || 'vi',
             category,
@@ -206,7 +208,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, onSubmit, mode, t, initial?.language],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, onSubmit, mode, t, initial?.language],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -331,6 +333,19 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
               )}
             </div>
           </div>
+
+          <label className="field article-form__cover-info">
+            <span>{t('editor.coverInfo')}</span>
+            <input
+              className="input"
+              type="text"
+              value={coverInfo}
+              maxLength={240}
+              placeholder={t('editor.coverInfoPlaceholder')}
+              onChange={(e) => setCoverInfo(e.target.value)}
+            />
+          </label>
+
           <CoverComparisonEditor
             coverUrl={coverPreview}
             coverAltUrl={coverAltPreview}
