@@ -187,7 +187,18 @@
     "sourcesExpandAllAria": "Expand all references",
     "sourcesCollapseAllAria": "Collapse all references",
     "coverInfo": "Cover image source",
-    "coverInfoPlaceholder": "e.g. Source: NASA — optional"
+    "coverInfoPlaceholder": "e.g. Source: NASA — optional",
+    "sectionMeta": "Meta & schedule",
+    "sectionCovers": "Cover images",
+    "sectionCoversEmpty": "No cover images",
+    "outlineHeading": "On this page",
+    "outlineMeta": "Meta",
+    "outlineCover": "Cover",
+    "outlineTitle": "Title",
+    "outlineBody": "Body",
+    "outlineSources": "Sources",
+    "outlineMedia": "Media",
+    "outlineTranslations": "Translations"
   },
   "profile": {
     "displayName": "Display name",
@@ -431,5 +442,9 @@
     "kind_video": "Video",
     "languageMismatch": "Heads up: this article is saved as “{{declared}}” but its text looks like “{{detected}}”. Tabs below are based on the detected language. Fix the article's Language field if that's wrong.",
     "fieldCoverInfo": "Cover image source"
+  },
+  "captionsDrawer": {
+    "title": "Captions",
+    "empty": "No captions to translate yet. Add caption text under a photo or video in the Media section, save the article, then come back here."
   }
 }

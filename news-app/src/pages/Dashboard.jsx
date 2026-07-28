@@ -11,16 +11,16 @@ import './Dashboard.css'
 export default function Dashboard() {
   const { t, i18n } = useTranslation()
   useDocumentTitle(t('nav.dashboard'))
-  const { user } = useAuth()
+  const { user, isAdmin } = useAuth()
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading')
 
   const load = useCallback(() => {
     if (!user) return
-    fetchMyArticles(user.id)
+    fetchMyArticles(user.id, { includeAll: isAdmin })
       .then((data) => { setArticles(data); setState('ready') })
       .catch(() => setState('error'))
-  }, [user])
+  }, [user, isAdmin])
 
   useEffect(() => { load() }, [load])
 

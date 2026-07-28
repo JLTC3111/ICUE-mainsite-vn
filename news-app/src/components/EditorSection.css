@@ -1,0 +1,112 @@
+.editor-section {
+  margin-bottom: 12px;
+  border: 1px solid var(--icue-border);
+  border-radius: 12px;
+  background: var(--icue-surface-2, #fafafa);
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.editor-section.is-open {
+  background: var(--icue-surface);
+  border-color: #cdd1c8;
+}
+
+/* Whole row is the target, not just the chevron. */
+.editor-section__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.editor-section__toggle:hover { background: rgba(0, 0, 0, 0.025); }
+.editor-section__toggle:focus-visible {
+  outline: 2px solid var(--icue-accent);
+  outline-offset: -2px;
+}
+
+.editor-section__chevron {
+  flex: 0 0 auto;
+  color: var(--icue-text-faint);
+  transition: transform 200ms ease, color 160ms ease;
+}
+.editor-section.is-open .editor-section__chevron { transform: rotate(90deg); }
+.editor-section__toggle:hover .editor-section__chevron { color: var(--icue-text); }
+
+.editor-section__label {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--icue-text-soft);
+}
+
+/* Current values at a glance while collapsed. */
+.editor-section__summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--icue-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-section__summary-swatch {
+  width: 34px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: 5px;
+  border: 1px solid var(--icue-border);
+  object-fit: cover;
+  background: var(--icue-surface-2);
+}
+
+/* Height animation without JS measurement (see ArticleSourcesEditor.css). */
+.editor-section__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 220ms ease, opacity 180ms ease;
+}
+.editor-section.is-open .editor-section__panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.editor-section__panel > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.editor-section__panel-inner { padding: 2px 14px 14px; }
+
+.icue-app--news-theme-dark .editor-section {
+  background: rgba(255, 255, 255, 0.02);
+}
+.icue-app--news-theme-dark .editor-section.is-open {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.icue-app--news-theme-dark .editor-section__toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-section,
+  .editor-section__panel,
+  .editor-section__chevron,
+  .editor-section__toggle {
+    transition: none;
+  }
+}

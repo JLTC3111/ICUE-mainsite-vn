@@ -1,0 +1,138 @@
+.editor-rail {
+  flex: 0 0 208px;
+  width: 208px;
+  align-self: stretch;
+}
+
+/* Sticky so the outline stays reachable from any scroll position, sitting just
+   below the top bar rather than scrolling away with the canvas. */
+.editor-rail__inner {
+  position: sticky;
+  top: calc(var(--icue-header-h, 56px) + 104px);
+  padding-top: 8px;
+  padding-right: 16px;
+}
+
+.editor-rail__title {
+  margin: 0 0 10px;
+  padding-left: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--icue-text-faint);
+}
+
+.editor-rail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.editor-rail__item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-left: 2px solid transparent;
+  border-radius: 0 7px 7px 0;
+  background: none;
+  color: var(--icue-text-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease,
+    border-color 160ms ease, padding-left 160ms ease;
+}
+
+.editor-rail__item:hover {
+  color: var(--icue-text);
+  background: rgba(0, 0, 0, 0.035);
+  padding-left: 13px;
+}
+
+.editor-rail__item.is-active {
+  color: var(--icue-text);
+  border-left-color: var(--icue-accent-ink, #1db7ff);
+  background: rgba(0, 0, 0, 0.045);
+}
+
+.editor-rail__item:focus-visible {
+  outline: 2px solid var(--icue-accent);
+  outline-offset: -2px;
+}
+
+.editor-rail__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Captions opens the drawer instead of scrolling — separated so it doesn't read
+   as just another section of the page. */
+.editor-rail__item.is-drawer {
+  margin-top: 8px;
+  padding-top: 11px;
+  border-top: 1px solid var(--icue-border);
+  border-radius: 0;
+  color: var(--icue-text-faint);
+}
+.editor-rail__item.is-drawer:hover { color: var(--icue-text); }
+.editor-rail__item.is-drawer svg { flex: 0 0 auto; }
+
+.editor-rail__count {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--icue-surface-2);
+  border: 1px solid var(--icue-border);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--icue-text-faint);
+}
+
+/* Layout: top bar above, rail + canvas side by side below. */
+.article-form__layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+}
+
+.article-form__layout .article-form__canvas {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Offsets anchor scrolling so targets clear the sticky top bar. */
+.article-form__layout [id^="edit-"] {
+  scroll-margin-top: calc(var(--icue-header-h, 56px) + 84px);
+}
+
+.icue-app--news-theme-dark .editor-rail__item:hover,
+.icue-app--news-theme-dark .editor-rail__item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Below ~1100px the rail would squeeze the canvas; the accordions, the pill and
+   normal scrolling all still work without it. */
+@media (max-width: 1100px) {
+  .editor-rail { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-rail__item { transition: none; }
+}

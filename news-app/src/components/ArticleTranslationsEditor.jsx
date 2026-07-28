@@ -232,7 +232,11 @@ export default function ArticleTranslationsEditor({
             <RichTextEditor
               key={active}
               value={current.content_html}
-              onChange={(html) => update('content_html', html)}
+              /* RichTextEditor emits { html, json } — destructure it. Passing the
+                 whole object stored it as content_html, which the editor's sync
+                 effect then fed back into setContent(); that threw inside its
+                 try/catch, so typed text never rendered and nothing was logged. */
+              onChange={({ html }) => update('content_html', html)}
               placeholder={t('translationsEditor.storyPlaceholder')}
             />
           </div>

@@ -144,14 +144,19 @@ export async function fetchPublishedArticles({ limit = 24, language } = {}) {
   return (data ?? []).map(normalizeArticle)
 }
 
-export async function fetchMyArticles(userId) {
-  const data = await runArticleSelect((select) =>
-    supabase
-      .from('articles')
-      .select(select)
-      .eq('author_id', userId)
-      .order('updated_at', { ascending: false }),
-  )
+/**
+ * Articles for the dashboard.
+ *
+ * Admins pass `includeAll` to list everyone's articles, since RLS already lets
+ * them edit any article — without this they had the permission but no way to
+ * reach another author's work. Authors always see only their own.
+ */
+export async function fetchMyArticles(userId, { includeAll = false } = {}) {
+  const data = await runArticleSelect((select) => {
+    const query = supabase.from('articles').select(select)
+    return (includeAll ? query : query.eq('author_id', userId))
+      .order('updated_at', { ascending: false })
+  })
   return (data ?? []).map(normalizeArticle)
 }
 

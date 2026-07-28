@@ -235,7 +235,15 @@ export default function EmployeeLanyard({ profile, onOpen }) {
         ) : (
           <Suspense fallback={<div className="employee-lanyard__loading" aria-hidden="true" />}>
             <Lanyard
-              key={`${profile?.id || 'generic'}-${badgeImage ? 'ready' : 'loading'}`}
+              /*
+               * Key on the profile only. Including the badge-image load state
+               * tore down and rebuilt the whole WebGL scene (renderer, physics
+               * rig, textures) a second time the moment the canvas-composited
+               * badge finished generating — the "loads twice on profile change".
+               * `frontImage` is already reactive inside Lanyard via useTexture,
+               * so the texture swaps in place without a remount.
+               */
+              key={profile?.id || 'generic'}
               position={[0, 0, 26]}
               gravity={[0, -34, 0]}
               fov={22}

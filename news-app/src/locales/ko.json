@@ -187,7 +187,18 @@
     "cleanFormattingDone": "서식을 지웠습니다",
     "coverImageAltBadge": "커버 B",
     "coverInfo": "커버 이미지 출처",
-    "coverInfoPlaceholder": "예: 출처: NASA (선택)"
+    "coverInfoPlaceholder": "예: 출처: NASA (선택)",
+    "sectionMeta": "메타 및 일정",
+    "sectionCovers": "커버 이미지",
+    "sectionCoversEmpty": "커버 이미지 없음",
+    "outlineHeading": "이 페이지에서",
+    "outlineMeta": "메타",
+    "outlineCover": "커버",
+    "outlineTitle": "제목",
+    "outlineBody": "본문",
+    "outlineSources": "출처",
+    "outlineMedia": "미디어",
+    "outlineTranslations": "번역"
   },
   "profile": {
     "displayName": "표시 이름",
@@ -431,5 +442,9 @@
     "kind_video": "동영상",
     "languageMismatch": "참고: 이 기사는 “{{declared}}”로 저장되어 있지만 본문은 “{{detected}}”로 보입니다. 아래 탭은 감지된 언어를 기준으로 합니다. 잘못되었다면 기사의 언어 항목을 수정하세요.",
     "fieldCoverInfo": "커버 이미지 출처"
+  },
+  "captionsDrawer": {
+    "title": "캡션",
+    "empty": "번역할 캡션이 없습니다. 미디어 섹션에서 사진이나 동영상에 캡션을 추가하고 기사를 저장한 뒤 다시 열어 주세요."
   }
 }

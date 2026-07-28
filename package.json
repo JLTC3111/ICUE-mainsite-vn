@@ -18,15 +18,16 @@
     "motion": "^12.42.2",
     "normalize.css": "^8.0.1",
     "ogl": "^1.0.11",
+    "psql": "^0.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "swiper": "^11.2.10",
+    "swiper": "^14.0.6",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
     "cpy": "^11.1.0",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.14",
     "vite": "^6.3.2"
   },
   "scripts": {

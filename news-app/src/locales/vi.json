@@ -187,7 +187,18 @@
     "sourcesExpandAllAria": "Mở tất cả nguồn tham khảo",
     "sourcesCollapseAllAria": "Thu gọn tất cả nguồn tham khảo",
     "coverInfo": "Nguồn ảnh bìa",
-    "coverInfoPlaceholder": "ví dụ: Nguồn: NASA — không bắt buộc"
+    "coverInfoPlaceholder": "ví dụ: Nguồn: NASA — không bắt buộc",
+    "sectionMeta": "Thông tin & lịch đăng",
+    "sectionCovers": "Ảnh bìa",
+    "sectionCoversEmpty": "Chưa có ảnh bìa",
+    "outlineHeading": "Trên trang này",
+    "outlineMeta": "Thông tin",
+    "outlineCover": "Ảnh bìa",
+    "outlineTitle": "Tiêu đề",
+    "outlineBody": "Nội dung",
+    "outlineSources": "Nguồn",
+    "outlineMedia": "Media",
+    "outlineTranslations": "Bản dịch"
   },
   "profile": {
     "displayName": "Tên hiển thị",
@@ -431,5 +442,9 @@
     "kind_video": "Video",
     "languageMismatch": "Lưu ý: bài viết được lưu là “{{declared}}” nhưng nội dung có vẻ là “{{detected}}”. Các tab bên dưới dựa trên ngôn ngữ phát hiện được. Hãy sửa trường Ngôn ngữ của bài viết nếu chưa đúng.",
     "fieldCoverInfo": "Nguồn ảnh bìa"
+  },
+  "captionsDrawer": {
+    "title": "Chú thích",
+    "empty": "Chưa có chú thích nào để dịch. Hãy thêm chú thích dưới ảnh hoặc video ở mục Media, lưu bài viết, rồi quay lại đây."
   }
 }

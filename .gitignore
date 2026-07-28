@@ -1,3 +1,5 @@
 .DS_Store
 **/.DS_Store
 netlify/functions/private-env.cjs
+# Dependencies are installed by the build (npm ci) — never commit them.
+node_modules/

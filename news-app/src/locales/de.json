@@ -187,7 +187,18 @@
     "cleanFormattingDone": "Formatierung bereinigt",
     "coverImageAltBadge": "Cover B",
     "coverInfo": "Quelle des Titelbilds",
-    "coverInfoPlaceholder": "z. B. Quelle: NASA — optional"
+    "coverInfoPlaceholder": "z. B. Quelle: NASA — optional",
+    "sectionMeta": "Meta & Zeitplan",
+    "sectionCovers": "Titelbilder",
+    "sectionCoversEmpty": "Keine Titelbilder",
+    "outlineHeading": "Auf dieser Seite",
+    "outlineMeta": "Meta",
+    "outlineCover": "Titelbild",
+    "outlineTitle": "Titel",
+    "outlineBody": "Text",
+    "outlineSources": "Quellen",
+    "outlineMedia": "Medien",
+    "outlineTranslations": "Übersetzungen"
   },
   "profile": {
     "displayName": "Anzeigename",
@@ -431,5 +442,9 @@
     "kind_video": "Video",
     "languageMismatch": "Hinweis: Dieser Artikel ist als „{{declared}}“ gespeichert, sein Text wirkt aber wie „{{detected}}“. Die Tabs unten richten sich nach der erkannten Sprache. Korrigieren Sie das Sprachfeld, falls das falsch ist.",
     "fieldCoverInfo": "Quelle des Titelbilds"
+  },
+  "captionsDrawer": {
+    "title": "Bildunterschriften",
+    "empty": "Noch keine Bildunterschriften zum Übersetzen. Fügen Sie im Medienbereich Text unter einem Foto oder Video hinzu, speichern Sie den Artikel und kommen Sie zurück."
   }
 }

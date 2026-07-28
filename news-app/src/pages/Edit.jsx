@@ -3,9 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import ArticleForm from '../components/ArticleForm'
-import ArticleTranslationsEditor from '../components/ArticleTranslationsEditor'
 import { fetchArticleById, updateArticle, toEditorMedia } from '../lib/articles'
-import { buildArticleTranslateSample } from '../lib/translate'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function Edit() {
@@ -70,13 +68,6 @@ export default function Edit() {
     <>
       <h1 className="visually-hidden">{t('editor.editTitle')}</h1>
       <ArticleForm key={article.id} mode="edit" initial={article} onSubmit={handleSubmit} />
-      <ArticleTranslationsEditor
-        articleId={article.id}
-        sourceLanguage={article.language}
-        sourceSample={buildArticleTranslateSample(article)}
-        coverInfo={article.cover_info || ''}
-        media={article.media}
-      />
     </>
   )
 }

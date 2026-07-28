@@ -238,7 +238,14 @@ export default function ArticleDetail() {
 
   const displayContent = useMemo(() => {
     const usingTranslation = translation && !showOriginal
-    const raw = usingTranslation ? translation.content_html : article?.content_html
+    /*
+     * Fall back to the original body when a translation row has a title but an
+     * empty body — a half-finished translation must never blank out the article.
+     * TipTap stores "empty" as <p></p>, so test the stripped text, not truthiness.
+     */
+    const translated = usingTranslation ? translation.content_html : ''
+    const hasBody = String(translated || '').replace(/<[^>]*>/g, '').trim().length > 0
+    const raw = hasBody ? translated : article?.content_html
     return normalizeHtmlUnicode(embedVideosInHtml(raw || ''))
   }, [translation, showOriginal, article?.content_html])
 

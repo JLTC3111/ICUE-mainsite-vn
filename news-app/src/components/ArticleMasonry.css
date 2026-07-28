@@ -199,6 +199,44 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+  /* Negative margin + matching padding lets the tint bleed to the row edges
+     without changing the text's resting position. */
+  position: relative;
+  isolation: isolate;
+  padding-inline: 12px;
+  margin-inline: -12px;
+  border-radius: 10px;
+  transition: color 200ms ease;
+}
+
+/*
+ * The green tint is a pseudo-element whose opacity animates, rather than an
+ * animated gradient: gradients aren't interpolatable, so transitioning one
+ * snaps. Opacity stays on the compositor and fades smoothly.
+ */
+.editorial-trending__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 10px;
+  opacity: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(74, 222, 128, 0.22) 0%,
+    rgba(34, 197, 94, 0.12) 48%,
+    rgba(34, 197, 94, 0) 100%
+  );
+  transition: opacity 220ms ease;
+}
+
+.editorial-trending__item:hover::before,
+.editorial-trending__item:focus-visible::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-trending__item::before { transition: none; }
 }
 
 .editorial-trending__item:last-child {

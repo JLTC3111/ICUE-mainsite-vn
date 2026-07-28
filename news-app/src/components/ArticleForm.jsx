@@ -7,6 +7,12 @@ import { CATEGORY_SLUGS, DEFAULT_CATEGORY } from '../lib/categories'
 import RichTextEditor from './RichTextEditor'
 import ArticleSourcesEditor from './ArticleSourcesEditor'
 import MediaUploader from './MediaUploader'
+import EditorSection from './EditorSection'
+import EditorOutlineRail from './EditorOutlineRail'
+import ArticleTranslationsEditor from './ArticleTranslationsEditor'
+import CaptionsDrawer from './CaptionsDrawer'
+import { MessageSquare } from 'lucide-react'
+import { buildArticleTranslateSample } from '../lib/translate'
 import ErrorBoundary from './ErrorBoundary'
 import { normalizeSources } from '../lib/articleSources'
 import {
@@ -54,6 +60,66 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [coverUrl, setCoverUrl] = useState(initial?.cover_image_url || '')
   const [coverAltUrl, setCoverAltUrl] = useState(initial?.cover_image_alt_url || '')
   const [coverInfo, setCoverInfo] = useState(initial?.cover_info || '')
+  const [captionsOpen, setCaptionsOpen] = useState(false)
+  const [metaOpen, setMetaOpen] = useState(false)
+  const [coverOpen, setCoverOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState(null)
+
+  // Captions only exist for media already saved to the database, so the pill is
+  // hidden while creating a new article (nothing has an id yet).
+  const captionedMedia = useMemo(
+    () => (initial?.media || []).filter((m) => m?.id && String(m.info || '').trim()),
+    [initial],
+  )
+
+  const outlineItems = useMemo(() => {
+    const items = [
+      { id: 'edit-meta', label: t('editor.outlineMeta'), kind: 'expands' },
+      { id: 'edit-cover', label: t('editor.outlineCover'), kind: 'expands' },
+      { id: 'edit-title', label: t('editor.outlineTitle') },
+      { id: 'edit-body', label: t('editor.outlineBody') },
+      { id: 'edit-sources', label: t('editor.outlineSources') },
+      { id: 'edit-media', label: t('editor.outlineMedia') },
+    ]
+    if (mode === 'edit') {
+      items.push({ id: 'edit-translations', label: t('editor.outlineTranslations') })
+      // Always listed once the article exists — hiding it at zero made the
+      // entry look broken on articles whose author never captioned anything.
+      // The drawer explains the empty state instead.
+      items.push({
+        id: 'captions',
+        label: t('captionsDrawer.title'),
+        kind: 'drawer',
+        count: captionedMedia.length,
+      })
+    }
+    return items
+  }, [t, mode, captionedMedia])
+
+  const handleOutlineNavigate = useCallback((item) => {
+    setActiveSection(item.id)
+
+    // Captions live in the drawer, not the page flow — open it, don't scroll.
+    if (item.kind === 'drawer') {
+      setCaptionsOpen(true)
+      return
+    }
+
+    // A collapsed section has nothing to scroll to but its one-line header, so
+    // expand it first; the scroll runs on the next frame, once the panel has
+    // begun laying out at its full height.
+    if (item.id === 'edit-meta') setMetaOpen(true)
+    if (item.id === 'edit-cover') setCoverOpen(true)
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    requestAnimationFrame(() => {
+      document.getElementById(item.id)?.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      })
+    })
+  }, [])
+
   const coverFileRef = useRef(null)
   const coverAltFileRef = useRef(null)
   const coverInputRef = useRef(null)
@@ -242,9 +308,23 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         </div>
       </div>
 
-      <div className="article-form__canvas icue-container" lang={initial?.language || 'vi'}>
+      <div className="article-form__layout icue-container">
+        <EditorOutlineRail
+          items={outlineItems}
+          activeId={activeSection}
+          onNavigate={handleOutlineNavigate}
+        />
+
+      <div className="article-form__canvas" lang={initial?.language || 'vi'}>
         {error && <p className="article-form__error">{error}</p>}
 
+        <EditorSection
+          id="edit-meta"
+          open={metaOpen}
+          onOpenChange={setMetaOpen}
+          label={t('editor.sectionMeta')}
+          summary={[t(`categories.${category}`), date, time, author].filter(Boolean).join(' · ')}
+        >
         <div className="article-form__meta">
           <label className="field article-form__meta-field article-form__meta-field--category">
             <span>{t('editor.category')}</span>
@@ -274,7 +354,26 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             />
           </label>
         </div>
+        </EditorSection>
 
+        <EditorSection
+          id="edit-cover"
+          open={coverOpen}
+          onOpenChange={setCoverOpen}
+          label={t('editor.sectionCovers')}
+          summary={
+            coverPreview || coverAltPreview ? (
+              <>
+                {coverPreview && (
+                  <img src={coverPreview} alt="" className="editor-section__summary-swatch" />
+                )}
+                {coverAltPreview && (
+                  <img src={coverAltPreview} alt="" className="editor-section__summary-swatch" />
+                )}
+              </>
+            ) : t('editor.sectionCoversEmpty')
+          }
+        >
         <div className="article-form__cover-block">
           <input
             ref={coverInputRef}
@@ -363,30 +462,79 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             </div>
           )}
         </div>
+        </EditorSection>
 
-        <input
-          className="article-form__title"
-          placeholder={t('editor.titlePlaceholder')}
-          value={title}
-          onChange={onTitleChange}
-          maxLength={160}
-        />
-        <input
-          className="article-form__subtitle"
-          placeholder={t('editor.subtitlePlaceholder')}
-          value={subtitle}
-          onChange={(e) => setSubtitle(e.target.value)}
-          maxLength={220}
-        />
+        <div id="edit-title">
+          <input
+            className="article-form__title"
+            placeholder={t('editor.titlePlaceholder')}
+            value={title}
+            onChange={onTitleChange}
+            maxLength={160}
+          />
+          <input
+            className="article-form__subtitle"
+            placeholder={t('editor.subtitlePlaceholder')}
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+            maxLength={220}
+          />
+        </div>
 
-        <ErrorBoundary>
-          <RichTextEditor value={contentHtml} onChange={onEditorChange} placeholder={t('editor.storyPlaceholder')} />
-        </ErrorBoundary>
+        <div id="edit-body">
+          <ErrorBoundary>
+            <RichTextEditor value={contentHtml} onChange={onEditorChange} placeholder={t('editor.storyPlaceholder')} />
+          </ErrorBoundary>
+        </div>
 
-        <ArticleSourcesEditor sources={sources} onChange={setSources} />
+        <div id="edit-sources">
+          <ArticleSourcesEditor sources={sources} onChange={setSources} />
+        </div>
 
-        <MediaUploader items={items} onChange={setItems} />
+        <div id="edit-media">
+          <MediaUploader items={items} onChange={setItems} />
+        </div>
+
+        {/* Translations render inside the canvas (not on the Edit page) so the
+            rail can treat them as one more flowing section. */}
+        {mode === 'edit' && initial?.id && (
+          <div id="edit-translations">
+            <ArticleTranslationsEditor
+              articleId={initial.id}
+              sourceLanguage={initial.language}
+              sourceSample={buildArticleTranslateSample(initial)}
+              coverInfo={initial.cover_info || ''}
+              media={initial.media}
+            />
+          </div>
+        )}
       </div>
+      </div>
+
+      {mode === 'edit' && initial?.id && (
+        <>
+          <button
+            type="button"
+            className="captions-pill"
+            onClick={() => setCaptionsOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={captionsOpen}
+          >
+            <MessageSquare size={16} strokeWidth={2} aria-hidden />
+            <span>{t('captionsDrawer.title')}</span>
+            <span className="captions-pill__count">{captionedMedia.length}</span>
+          </button>
+
+          <CaptionsDrawer
+            open={captionsOpen}
+            onClose={() => setCaptionsOpen(false)}
+            articleId={initial?.id}
+            media={captionedMedia}
+            sourceLanguage={initial?.language}
+            sourceSample={buildArticleTranslateSample(initial)}
+          />
+        </>
+      )}
     </div>
   )
 }

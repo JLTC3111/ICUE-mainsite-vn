@@ -187,7 +187,18 @@
     "cleanFormattingDone": "書式をクリアしました",
     "coverImageAltBadge": "カバー B",
     "coverInfo": "カバー画像の出典",
-    "coverInfoPlaceholder": "例：出典：NASA（任意）"
+    "coverInfoPlaceholder": "例：出典：NASA（任意）",
+    "sectionMeta": "メタ情報と公開日時",
+    "sectionCovers": "カバー画像",
+    "sectionCoversEmpty": "カバー画像なし",
+    "outlineHeading": "このページの内容",
+    "outlineMeta": "メタ情報",
+    "outlineCover": "カバー",
+    "outlineTitle": "タイトル",
+    "outlineBody": "本文",
+    "outlineSources": "出典",
+    "outlineMedia": "メディア",
+    "outlineTranslations": "翻訳"
   },
   "profile": {
     "displayName": "表示名",
@@ -431,5 +442,9 @@
     "kind_video": "動画",
     "languageMismatch": "注意：この記事は「{{declared}}」として保存されていますが、本文は「{{detected}}」のようです。以下のタブは検出された言語に基づいています。誤りであれば記事の言語欄を修正してください。",
     "fieldCoverInfo": "カバー画像の出典"
+  },
+  "captionsDrawer": {
+    "title": "キャプション",
+    "empty": "翻訳するキャプションがありません。メディア欄で写真や動画にキャプションを追加し、記事を保存してから戻ってきてください。"
   }
 }
