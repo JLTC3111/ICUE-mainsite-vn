@@ -58,6 +58,7 @@ export default function ProfileModal({ profile, onClose }) {
           variants={animatedGroupCustomVariants2}
         >
           <ProfileCard
+            className={`profile-card--${profile.id}`}
             avatarUrl={profile.img}
             miniAvatarUrl={profile.img}
             iconUrl={`${import.meta.env.BASE_URL}profile-card/iconpattern.png`}

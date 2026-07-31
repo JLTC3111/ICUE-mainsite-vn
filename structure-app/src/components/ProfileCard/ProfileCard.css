@@ -262,6 +262,12 @@
   transition: transform 120ms ease-out;
 }
 
+/* Hanh's portrait is considerably taller than the other profile cutouts.
+   Scale it down while keeping it bottom-aligned so her head clears the title. */
+.profile-card--hanh .pc-avatar-content .avatar {
+  width: 78%;
+}
+
 .pc-avatar-content::before {
   content: '';
   position: absolute;
