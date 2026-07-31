@@ -45,6 +45,28 @@ Article/comment MT already uses `article_translations` / `comment_translations`.
 
 Locally, put `GEMINI_API_KEY`, `CLOUDFLARE_ACCOUNT_ID`, and `CLOUDFLARE_API_TOKEN` in `news-app/.env` so the Vite market API plugin can proxy the same endpoints.
 
+## Notifications
+
+Bell + dropdown in the header for signed-in admins and authors. Apply migration on Supabase:
+
+`news-app/supabase/migrations/20260730120000_notifications.sql`
+
+Events are raised by database triggers, so they fire regardless of which client path wrote the row:
+
+| Event | Fires when |
+|---|---|
+| `article_published` | an article first transitions to `published` — **edits never notify** |
+| `article_deleted` | the article row is deleted (the notice outlives the article) |
+| `views_milestone` | `view_count` crosses 100 / 500 / 1k / 5k / 10k / 50k / 100k |
+| `hearts_milestone` | hearts cross 1 / 5 / 10 / 25 / 50 / 100 / 250 / 500 / 1k |
+| `claps_milestone` | claps cross the same thresholds as hearts |
+
+Recipients are the article's author plus every admin; whoever caused the event is never notified about their own action. Thresholds live in `newsroom_view_milestones()` / `newsroom_reaction_milestones()` — edit those two functions to retune, no app changes needed.
+
+Everything this feature adds is namespaced `newsroom_*` (table `newsroom_notifications`, enum `newsroom_notification_type`, the RPCs below). This project already has unrelated `notifications` and `hr_notifications` tables; nothing here reads, writes, or alters them.
+
+Rows are read under RLS (`recipient_id = auth.uid()`) and read state changes only through `mark_newsroom_notification_read` / `mark_all_newsroom_notifications_read` / `dismiss_newsroom_notification`. The migration also adds the table to the `supabase_realtime` publication so the badge updates live; without Realtime the client falls back to polling every 90s plus on tab focus. If the migration has not been applied, the bell hides itself rather than erroring.
+
 ## Develop
 
 **Option A — live HMR (recommended while editing the newsroom):**

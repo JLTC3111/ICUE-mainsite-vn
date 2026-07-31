@@ -245,7 +245,36 @@
     "anon": "익명",
     "error": "문제가 발생했습니다. 다시 시도해 주세요.",
     "views": "{{count}}회 조회",
-    "viewsLabel": "회 조회"
+    "viewsLabel": "회 조회",
+    "translateComments": "댓글 {{total}}개 번역",
+    "translateDownloading": "기기 내 번역기 준비 중… {{percent}}%",
+    "translationOnDevice": "기기 내 번역",
+    "translationOnDeviceHint": "브라우저에서 번역되었습니다. 서버로 전송된 데이터는 없습니다.",
+    "translationHuman": "번역됨",
+    "translationHumanHint": "편집국에서 작성한 번역입니다.",
+    "showTranslated": "번역 보기",
+    "addTranslation": "번역 추가",
+    "editTranslation": "번역 수정",
+    "saveTranslation": "번역 저장",
+    "translationFor": "번역 ({{lang}})",
+    "translationPlaceholder": "선택한 언어로 이 댓글을 작성하세요…"
+  },
+  "notifications": {
+    "title": "알림",
+    "unread": "읽지 않음 {{total}}건",
+    "markAllRead": "모두 읽음으로 표시",
+    "empty": "아직 알림이 없습니다.",
+    "loading": "불러오는 중…",
+    "loadError": "알림을 불러올 수 없습니다.",
+    "dismiss": "지우기",
+    "untitled": "제목 없는 기사",
+    "published": "「{{title}}」이(가) 게시되었습니다",
+    "publishedBy": "{{actor}}님이 「{{title}}」을(를) 게시했습니다",
+    "deleted": "「{{title}}」이(가) 삭제되었습니다",
+    "deletedBy": "{{actor}}님이 「{{title}}」을(를) 삭제했습니다",
+    "views": "「{{title}}」의 조회수가 {{total}}회를 넘었습니다",
+    "hearts": "「{{title}}」이(가) 좋아요 {{total}}개를 달성했습니다",
+    "claps": "「{{title}}」이(가) 박수 {{total}}개를 달성했습니다"
   },
   "categories": {
     "label": "카테고리",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "캡션",
     "empty": "번역할 캡션이 없습니다. 미디어 섹션에서 사진이나 동영상에 캡션을 추가하고 기사를 저장한 뒤 다시 열어 주세요."
+  },
+  "commentsDrawer": {
+    "title": "댓글 번역",
+    "empty": "아직 번역할 댓글이 없습니다.",
+    "suggest": "기기 내 번역으로 제안",
+    "suggestHint": "브라우저에 내장된 번역기로 빈 칸을 채웁니다. 저장을 누르기 전까지는 아무것도 저장되지 않습니다."
   }
 }

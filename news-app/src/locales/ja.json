@@ -245,7 +245,36 @@
     "anon": "匿名",
     "error": "問題が発生しました。もう一度お試しください。",
     "views": "{{count}} 回閲覧",
-    "viewsLabel": "回閲覧"
+    "viewsLabel": "回閲覧",
+    "translateComments": "コメント {{total}} 件を翻訳",
+    "translateDownloading": "端末内翻訳エンジンを準備中… {{percent}}%",
+    "translationOnDevice": "端末内翻訳",
+    "translationOnDeviceHint": "ブラウザ内で翻訳されました。サーバーへ送信されたデータはありません。",
+    "translationHuman": "翻訳済み",
+    "translationHumanHint": "編集部が作成した翻訳です。",
+    "showTranslated": "翻訳を表示",
+    "addTranslation": "翻訳を追加",
+    "editTranslation": "翻訳を編集",
+    "saveTranslation": "翻訳を保存",
+    "translationFor": "翻訳 ({{lang}})",
+    "translationPlaceholder": "選択した言語でこのコメントを書いてください…"
+  },
+  "notifications": {
+    "title": "通知",
+    "unread": "未読 {{total}} 件",
+    "markAllRead": "すべて既読にする",
+    "empty": "通知はまだありません。",
+    "loading": "読み込み中…",
+    "loadError": "通知を読み込めませんでした。",
+    "dismiss": "削除",
+    "untitled": "無題の記事",
+    "published": "「{{title}}」が公開されました",
+    "publishedBy": "{{actor}}さんが「{{title}}」を公開しました",
+    "deleted": "「{{title}}」が削除されました",
+    "deletedBy": "{{actor}}さんが「{{title}}」を削除しました",
+    "views": "「{{title}}」の閲覧数が {{total}} を超えました",
+    "hearts": "「{{title}}」のハートが {{total}} に達しました",
+    "claps": "「{{title}}」の拍手が {{total}} に達しました"
   },
   "categories": {
     "label": "カテゴリー",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "キャプション",
     "empty": "翻訳するキャプションがありません。メディア欄で写真や動画にキャプションを追加し、記事を保存してから戻ってきてください。"
+  },
+  "commentsDrawer": {
+    "title": "コメントの翻訳",
+    "empty": "翻訳するコメントはまだありません。",
+    "suggest": "端末内翻訳で下書きする",
+    "suggestHint": "ブラウザ内蔵の翻訳機能で空欄を埋めます。保存を押すまで何も保存されません。"
   }
 }

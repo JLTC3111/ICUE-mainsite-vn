@@ -535,7 +535,7 @@ export default function ArticleDetail() {
 
       {article.status === 'published' && (
         <div className="article-detail__comments-band">
-          <CommentSection articleId={article.id} />
+          <CommentSection articleId={article.id} canEdit={canEdit} />
         </div>
       )}
     </article>

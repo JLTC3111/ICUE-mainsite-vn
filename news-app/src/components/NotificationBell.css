@@ -1,0 +1,382 @@
+/* Header bell + dropdown. Matches the neumorphic author-tools trigger in Header.css. */
+
+.notif {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.notif__trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--icue-surface) 70%, var(--icue-border));
+  border-radius: 999px;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  cursor: pointer;
+  box-shadow:
+    5px 5px 12px rgba(16, 19, 24, 0.1),
+    -4px -4px 10px rgba(255, 255, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.notif__trigger:hover,
+.notif.is-open .notif__trigger {
+  color: var(--icue-text);
+  border-color: color-mix(in srgb, var(--icue-border) 55%, var(--icue-text));
+  transform: translateY(-1px);
+}
+
+.notif.is-open .notif__trigger {
+  transform: translateY(0);
+  box-shadow:
+    inset 3px 3px 7px rgba(16, 19, 24, 0.1),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.85);
+}
+
+.notif__bell {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
+.notif__trigger-label {
+  display: none;
+}
+
+.notif__badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--icue-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px var(--icue-surface);
+}
+
+/* ---------------------------------------------------------------- panel ---- */
+
+.notif__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 70;
+  width: min(360px, calc(100vw - 32px));
+  border: 1px solid var(--icue-border);
+  border-radius: 12px;
+  background: var(--icue-surface);
+  box-shadow: var(--icue-shadow-md);
+  overflow: hidden;
+}
+
+.notif__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--icue-border);
+}
+
+.notif__panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--icue-text);
+}
+
+.notif__mark-all {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--icue-blue);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notif__mark-all:hover {
+  text-decoration: underline;
+}
+
+.notif__msg {
+  margin: 0;
+  padding: 22px 14px;
+  color: var(--icue-text-faint);
+  font-size: 13px;
+  text-align: center;
+}
+
+.notif__msg--error {
+  color: var(--icue-danger);
+}
+
+.notif__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.notif__item {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid color-mix(in srgb, var(--icue-border) 60%, transparent);
+}
+
+.notif__item:last-child {
+  border-bottom: 0;
+}
+
+.notif__item.is-unread {
+  background: color-mix(in srgb, var(--icue-blue) 6%, transparent);
+}
+
+.notif__item-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 11px 4px 11px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+}
+
+.notif__item-main.is-link {
+  cursor: pointer;
+}
+
+.notif__item-main:hover {
+  background: var(--icue-surface-2);
+}
+
+.notif__type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  margin-top: 1px;
+  border-radius: 999px;
+  background: var(--icue-surface-2);
+  color: var(--icue-text-soft);
+}
+
+.notif__type--article_published {
+  color: var(--icue-blue);
+}
+
+.notif__type--article_deleted {
+  color: var(--icue-danger);
+}
+
+.notif__type--hearts_milestone {
+  color: #e0245e;
+}
+
+.notif__type--claps_milestone {
+  color: #f59e0b;
+}
+
+.notif__type-icon {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.notif__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.notif__text {
+  color: var(--icue-text);
+  font-size: 13px;
+  line-height: 1.4;
+  /* Long headlines wrap to at most three lines. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.notif__time {
+  color: var(--icue-text-faint);
+  font-size: 11px;
+}
+
+.notif__dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-top: 11px;
+  border-radius: 999px;
+  background: var(--icue-blue);
+}
+
+.notif__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  border: 0;
+  background: none;
+  color: var(--icue-text-faint);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.notif__dismiss:hover {
+  color: var(--icue-text);
+}
+
+.notif__dismiss-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* ------------------------------------------------------------ dark mode ---- */
+
+.icue-app--news-theme-dark .notif__trigger {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: #171717;
+  color: #9aa0a6;
+  box-shadow:
+    5px 5px 12px rgba(0, 0, 0, 0.55),
+    -3px -3px 9px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.icue-app--news-theme-dark .notif__trigger:hover,
+.icue-app--news-theme-dark .notif.is-open .notif__trigger {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.icue-app--news-theme-dark .notif.is-open .notif__trigger {
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.55),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.04);
+}
+
+.icue-app--news-theme-dark .notif__badge {
+  box-shadow: 0 0 0 2px #141414;
+}
+
+.icue-app--news-theme-dark .notif__panel {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #141414;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.icue-app--news-theme-dark .notif__panel-head,
+.icue-app--news-theme-dark .notif__item {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.icue-app--news-theme-dark .notif__panel-title,
+.icue-app--news-theme-dark .notif__text {
+  color: #f3f4f0;
+}
+
+.icue-app--news-theme-dark .notif__item.is-unread {
+  background: rgba(54, 138, 223, 0.12);
+}
+
+.icue-app--news-theme-dark .notif__item-main:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.icue-app--news-theme-dark .notif__type {
+  background: rgba(255, 255, 255, 0.07);
+  color: #9aa0a6;
+}
+
+.icue-app--news-theme-dark .notif__time,
+.icue-app--news-theme-dark .notif__msg {
+  color: #8c929c;
+}
+
+/* ------------------------------------------------------------- responsive -- */
+
+/* In the mobile drawer the header nav stacks, so the bell becomes a full-width
+   row with a visible label and the panel flows inline instead of floating. */
+@media (max-width: 860px) {
+  .notif {
+    width: 100%;
+  }
+
+  .notif__trigger {
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .notif__trigger-label {
+    display: inline;
+  }
+
+  .notif__badge {
+    position: static;
+    margin-left: auto;
+  }
+
+  .notif__panel {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: none;
+  }
+
+  .notif__list {
+    max-height: 50vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notif__trigger {
+    transition: none;
+  }
+
+  .notif__trigger:hover {
+    transform: none;
+  }
+}

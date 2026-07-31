@@ -245,7 +245,36 @@
     "anon": "Anonym",
     "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "views": "{{count}} Aufrufe",
-    "viewsLabel": "Aufrufe"
+    "viewsLabel": "Aufrufe",
+    "translateComments": "{{total}} Kommentar(e) übersetzen",
+    "translateDownloading": "Lokaler Übersetzer wird vorbereitet… {{percent}}%",
+    "translationOnDevice": "Lokale Übersetzung",
+    "translationOnDeviceHint": "In Ihrem Browser übersetzt. Es wurden keine Daten an einen Server gesendet.",
+    "translationHuman": "Übersetzt",
+    "translationHumanHint": "Übersetzung von der Redaktion verfasst.",
+    "showTranslated": "Übersetzung anzeigen",
+    "addTranslation": "Übersetzung hinzufügen",
+    "editTranslation": "Übersetzung bearbeiten",
+    "saveTranslation": "Übersetzung speichern",
+    "translationFor": "Übersetzung ({{lang}})",
+    "translationPlaceholder": "Diesen Kommentar in der gewählten Sprache schreiben…"
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "unread": "{{total}} ungelesen",
+    "markAllRead": "Alle als gelesen markieren",
+    "empty": "Noch keine Benachrichtigungen.",
+    "loading": "Wird geladen…",
+    "loadError": "Benachrichtigungen konnten nicht geladen werden.",
+    "dismiss": "Ausblenden",
+    "untitled": "Artikel ohne Titel",
+    "published": "„{{title}}“ wurde veröffentlicht",
+    "publishedBy": "{{actor}} hat „{{title}}“ veröffentlicht",
+    "deleted": "„{{title}}“ wurde gelöscht",
+    "deletedBy": "{{actor}} hat „{{title}}“ gelöscht",
+    "views": "„{{title}}“ hat {{total}} Aufrufe überschritten",
+    "hearts": "„{{title}}“ hat {{total}} Herzen erreicht",
+    "claps": "„{{title}}“ hat {{total}} Applaus erreicht"
   },
   "categories": {
     "label": "Kategorien",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "Bildunterschriften",
     "empty": "Noch keine Bildunterschriften zum Übersetzen. Fügen Sie im Medienbereich Text unter einem Foto oder Video hinzu, speichern Sie den Artikel und kommen Sie zurück."
+  },
+  "commentsDrawer": {
+    "title": "Kommentarübersetzungen",
+    "empty": "Noch keine Kommentare zum Übersetzen.",
+    "suggest": "Mit lokaler Übersetzung vorschlagen",
+    "suggestHint": "Füllt leere Felder mit dem integrierten Übersetzer Ihres Browsers. Es wird nichts gespeichert, bis Sie auf Speichern klicken."
   }
 }

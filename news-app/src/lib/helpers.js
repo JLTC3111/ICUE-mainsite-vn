@@ -77,6 +77,34 @@ export function formatDateTime(value, locale = 'vi') {
   }
 }
 
+const RELATIVE_DIVISIONS = [
+  { amount: 60, unit: 'second' },
+  { amount: 60, unit: 'minute' },
+  { amount: 24, unit: 'hour' },
+  { amount: 7, unit: 'day' },
+  { amount: 4.34524, unit: 'week' },
+  { amount: 12, unit: 'month' },
+  { amount: Number.POSITIVE_INFINITY, unit: 'year' },
+]
+
+/** "3 minutes ago" in the active UI locale. Empty string on bad input. */
+export function formatRelativeTime(value, locale = 'vi') {
+  if (!value) return ''
+  const ms = new Date(value).getTime()
+  if (!Number.isFinite(ms)) return ''
+  try {
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })
+    let delta = (ms - Date.now()) / 1000
+    for (const { amount, unit } of RELATIVE_DIVISIONS) {
+      if (Math.abs(delta) < amount) return rtf.format(Math.round(delta), unit)
+      delta /= amount
+    }
+    return rtf.format(Math.round(delta), 'year')
+  } catch {
+    return formatDate(value, locale)
+  }
+}
+
 export function plainExcerpt(html, max = 160) {
   const text = normalizeUnicode(
     (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(),

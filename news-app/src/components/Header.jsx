@@ -7,6 +7,7 @@ import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
+import NotificationBell from './NotificationBell'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
 import PerformanceModeToggle from './PerformanceModeToggle'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
@@ -153,7 +154,7 @@ function Header() {
   const showThemeToggle = isReaderRoute || isAgentRoute
   const { t } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
-  const { isAuthed, profile, signOut } = useAuth()
+  const { isAuthed, profile, user, signOut } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -231,6 +232,8 @@ function Header() {
           {isAuthed && <AuthorToolsMenu onNavigate={close} />}
 
           <div className="icue-header__right">
+            {/* Keyed by account so notification state resets on user switch. */}
+            {isAuthed && <NotificationBell key={user?.id} />}
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>

@@ -245,7 +245,36 @@
     "anon": "Anonymous",
     "error": "Something went wrong. Please try again.",
     "views": "{{count}} views",
-    "viewsLabel": "views"
+    "viewsLabel": "views",
+    "translateComments": "Translate {{total}} comment(s)",
+    "translateDownloading": "Preparing on-device translator… {{percent}}%",
+    "translationOnDevice": "On-device translation",
+    "translationOnDeviceHint": "Translated in your browser. Nothing was sent to a server.",
+    "translationHuman": "Translated",
+    "translationHumanHint": "Translation written by the newsroom.",
+    "showTranslated": "Show translation",
+    "addTranslation": "Add translation",
+    "editTranslation": "Edit translation",
+    "saveTranslation": "Save translation",
+    "translationFor": "Translation ({{lang}})",
+    "translationPlaceholder": "Write this comment in the selected language…"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{{total}} unread",
+    "markAllRead": "Mark all read",
+    "empty": "No notifications yet.",
+    "loading": "Loading…",
+    "loadError": "Could not load notifications.",
+    "dismiss": "Dismiss",
+    "untitled": "Untitled article",
+    "published": "“{{title}}” was published",
+    "publishedBy": "{{actor}} published “{{title}}”",
+    "deleted": "“{{title}}” was deleted",
+    "deletedBy": "{{actor}} deleted “{{title}}”",
+    "views": "“{{title}}” passed {{total}} views",
+    "hearts": "“{{title}}” reached {{total}} hearts",
+    "claps": "“{{title}}” reached {{total}} claps"
   },
   "categories": {
     "label": "Categories",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "Captions",
     "empty": "No captions to translate yet. Add caption text under a photo or video in the Media section, save the article, then come back here."
+  },
+  "commentsDrawer": {
+    "title": "Comment translations",
+    "empty": "No comments to translate yet.",
+    "suggest": "Suggest with on-device translation",
+    "suggestHint": "Fills empty boxes using your browser's built-in translator. Nothing is saved until you press Save."
   }
 }

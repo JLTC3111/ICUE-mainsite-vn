@@ -245,7 +245,36 @@
     "anon": "Anonyme",
     "error": "Une erreur s'est produite. Veuillez réessayer.",
     "views": "{{count}} vues",
-    "viewsLabel": "vues"
+    "viewsLabel": "vues",
+    "translateComments": "Traduire {{total}} commentaire(s)",
+    "translateDownloading": "Préparation du traducteur local… {{percent}} %",
+    "translationOnDevice": "Traduction locale",
+    "translationOnDeviceHint": "Traduit dans votre navigateur. Aucune donnée n’a été envoyée à un serveur.",
+    "translationHuman": "Traduit",
+    "translationHumanHint": "Traduction rédigée par la rédaction.",
+    "showTranslated": "Afficher la traduction",
+    "addTranslation": "Ajouter une traduction",
+    "editTranslation": "Modifier la traduction",
+    "saveTranslation": "Enregistrer la traduction",
+    "translationFor": "Traduction ({{lang}})",
+    "translationPlaceholder": "Rédigez ce commentaire dans la langue sélectionnée…"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{{total}} non lues",
+    "markAllRead": "Tout marquer comme lu",
+    "empty": "Aucune notification pour le moment.",
+    "loading": "Chargement…",
+    "loadError": "Impossible de charger les notifications.",
+    "dismiss": "Ignorer",
+    "untitled": "Article sans titre",
+    "published": "« {{title}} » a été publié",
+    "publishedBy": "{{actor}} a publié « {{title}} »",
+    "deleted": "« {{title}} » a été supprimé",
+    "deletedBy": "{{actor}} a supprimé « {{title}} »",
+    "views": "« {{title}} » a dépassé {{total}} vues",
+    "hearts": "« {{title}} » a atteint {{total}} cœurs",
+    "claps": "« {{title}} » a atteint {{total}} applaudissements"
   },
   "categories": {
     "label": "Catégories",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "Légendes",
     "empty": "Aucune légende à traduire pour l'instant. Ajoutez une légende sous une photo ou une vidéo dans la section Médias, enregistrez l'article, puis revenez ici."
+  },
+  "commentsDrawer": {
+    "title": "Traductions des commentaires",
+    "empty": "Aucun commentaire à traduire pour le moment.",
+    "suggest": "Proposer avec la traduction locale",
+    "suggestHint": "Remplit les champs vides avec le traducteur intégré de votre navigateur. Rien n’est enregistré tant que vous n’avez pas cliqué sur Enregistrer."
   }
 }

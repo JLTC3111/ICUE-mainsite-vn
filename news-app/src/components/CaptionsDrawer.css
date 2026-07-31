@@ -194,6 +194,12 @@
   outline-offset: 3px;
 }
 
+/* Second pill (comment translations) stacks above the captions pill. */
+.captions-pill--comments {
+  bottom: 84px;
+  background: var(--icue-blue, #368adf);
+}
+
 .captions-pill__count {
   display: inline-grid;
   place-items: center;

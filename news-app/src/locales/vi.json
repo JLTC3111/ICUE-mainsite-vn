@@ -245,7 +245,36 @@
     "anon": "Ẩn danh",
     "error": "Đã có lỗi xảy ra. Vui lòng thử lại.",
     "views": "{{count}} lượt xem",
-    "viewsLabel": "lượt xem"
+    "viewsLabel": "lượt xem",
+    "translateComments": "Dịch {{total}} bình luận",
+    "translateDownloading": "Đang chuẩn bị trình dịch trên máy… {{percent}}%",
+    "translationOnDevice": "Dịch trên máy",
+    "translationOnDeviceHint": "Được dịch ngay trong trình duyệt của bạn. Không có dữ liệu nào được gửi đi.",
+    "translationHuman": "Đã dịch",
+    "translationHumanHint": "Bản dịch do tòa soạn biên soạn.",
+    "showTranslated": "Xem bản dịch",
+    "addTranslation": "Thêm bản dịch",
+    "editTranslation": "Sửa bản dịch",
+    "saveTranslation": "Lưu bản dịch",
+    "translationFor": "Bản dịch ({{lang}})",
+    "translationPlaceholder": "Viết bình luận này bằng ngôn ngữ đã chọn…"
+  },
+  "notifications": {
+    "title": "Thông Báo",
+    "unread": "{{total}} chưa đọc",
+    "markAllRead": "Đánh dấu đã đọc",
+    "empty": "Chưa có thông báo nào.",
+    "loading": "Đang tải…",
+    "loadError": "Không tải được thông báo.",
+    "dismiss": "Bỏ qua",
+    "untitled": "Bài viết chưa có tiêu đề",
+    "published": "“{{title}}” đã được xuất bản",
+    "publishedBy": "{{actor}} đã xuất bản “{{title}}”",
+    "deleted": "“{{title}}” đã bị xóa",
+    "deletedBy": "{{actor}} đã xóa “{{title}}”",
+    "views": "“{{title}}” đã vượt {{total}} lượt xem",
+    "hearts": "“{{title}}” đã đạt {{total}} lượt thích",
+    "claps": "“{{title}}” đã đạt {{total}} lượt vỗ tay"
   },
   "categories": {
     "label": "Chuyên mục",
@@ -446,5 +475,11 @@
   "captionsDrawer": {
     "title": "Chú thích",
     "empty": "Chưa có chú thích nào để dịch. Hãy thêm chú thích dưới ảnh hoặc video ở mục Media, lưu bài viết, rồi quay lại đây."
+  },
+  "commentsDrawer": {
+    "title": "Dịch bình luận",
+    "empty": "Chưa có bình luận nào để dịch.",
+    "suggest": "Gợi ý bằng bản dịch trên máy",
+    "suggestHint": "Điền vào các ô trống bằng trình dịch có sẵn của trình duyệt. Không có gì được lưu cho đến khi bạn nhấn Lưu."
   }
 }

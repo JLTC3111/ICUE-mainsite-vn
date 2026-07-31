@@ -1,14 +1,10 @@
-import { useLayoutEffect } from 'react'
-import gsap from 'gsap'
+import { useEffect } from 'react'
 
 export function useRainText(textRef, text) {
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = textRef.current
     if (!el || !text) return undefined
 
-    // Hide the server/React text before the first paint. The animation replaces
-    // it in this effect, otherwise users briefly see the unanimated paragraph.
-    el.style.visibility = 'hidden'
     el.textContent = ''
 
     const reduceMotion =
@@ -30,18 +26,23 @@ export function useRainText(textRef, text) {
       el.appendChild(span)
       return span
     })
+    // .home-hero__subtitle ships `visibility: hidden` so the literal React text
+    // never flashes before this effect swaps in the per-character spans. The
+    // en site has no such rule, which is why its copy of this hook omits the
+    // line — dropping it here would leave the subtitle permanently invisible.
     el.style.visibility = 'visible'
 
-    const tweens = spans.map((span, i) =>
-      gsap.fromTo(
-        span,
-        { x: '-50vw', opacity: 0 },
+    const animations = spans.map((span, index) =>
+      span.animate(
+        [
+          { transform: 'translate3d(-50vw, 0, 0)', opacity: 0 },
+          { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+        ],
         {
-          x: 0,
-          opacity: 1,
-          delay: i * 0.05,
-          duration: 0.75,
-          ease: 'bounce.out',
+          delay: index * 50,
+          duration: 750,
+          easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+          fill: 'forwards',
         },
       ),
     )
@@ -55,7 +56,7 @@ export function useRainText(textRef, text) {
 
     return () => {
       window.clearTimeout(safetyId)
-      tweens.forEach((tween) => tween.kill())
+      animations.forEach((animation) => animation.cancel())
       el.textContent = text
     }
   }, [text, textRef])

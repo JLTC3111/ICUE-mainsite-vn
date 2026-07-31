@@ -11,6 +11,7 @@ import EditorSection from './EditorSection'
 import EditorOutlineRail from './EditorOutlineRail'
 import ArticleTranslationsEditor from './ArticleTranslationsEditor'
 import CaptionsDrawer from './CaptionsDrawer'
+import CommentTranslationsDrawer from './CommentTranslationsDrawer'
 import { MessageSquare } from 'lucide-react'
 import { buildArticleTranslateSample } from '../lib/translate'
 import ErrorBoundary from './ErrorBoundary'
@@ -61,6 +62,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [coverAltUrl, setCoverAltUrl] = useState(initial?.cover_image_alt_url || '')
   const [coverInfo, setCoverInfo] = useState(initial?.cover_info || '')
   const [captionsOpen, setCaptionsOpen] = useState(false)
+  const [commentsOpen, setCommentsOpen] = useState(false)
   const [metaOpen, setMetaOpen] = useState(false)
   const [coverOpen, setCoverOpen] = useState(false)
   const [activeSection, setActiveSection] = useState(null)
@@ -92,6 +94,13 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         kind: 'drawer',
         count: captionedMedia.length,
       })
+      // Reader comments arrive after publish and are not part of the form, so
+      // they get a drawer of their own rather than a section in the flow.
+      items.push({
+        id: 'comments',
+        label: t('commentsDrawer.title'),
+        kind: 'drawer',
+      })
     }
     return items
   }, [t, mode, captionedMedia])
@@ -99,9 +108,10 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const handleOutlineNavigate = useCallback((item) => {
     setActiveSection(item.id)
 
-    // Captions live in the drawer, not the page flow — open it, don't scroll.
+    // Drawers live outside the page flow — open them, don't scroll.
     if (item.kind === 'drawer') {
-      setCaptionsOpen(true)
+      if (item.id === 'comments') setCommentsOpen(true)
+      else setCaptionsOpen(true)
       return
     }
 
@@ -532,6 +542,23 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             media={captionedMedia}
             sourceLanguage={initial?.language}
             sourceSample={buildArticleTranslateSample(initial)}
+          />
+
+          <button
+            type="button"
+            className="captions-pill captions-pill--comments"
+            onClick={() => setCommentsOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={commentsOpen}
+          >
+            <MessageSquare size={16} strokeWidth={2} aria-hidden />
+            <span>{t('commentsDrawer.title')}</span>
+          </button>
+
+          <CommentTranslationsDrawer
+            open={commentsOpen}
+            onClose={() => setCommentsOpen(false)}
+            articleId={initial?.id}
           />
         </>
       )}
