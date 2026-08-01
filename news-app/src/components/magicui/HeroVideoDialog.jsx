@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Play, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
@@ -32,11 +32,17 @@ export default function HeroVideoDialog({
   videoSrc,
   thumbnailSrc,
   thumbnailAlt = 'Video thumbnail',
+  nativeVideo = false,
   className,
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [nativeAspectRatio, setNativeAspectRatio] = useState(null)
+  const triggerRef = useRef(null)
+  const panelRef = useRef(null)
+  const closeRef = useRef(null)
+  const activeElementRef = useRef(null)
   const selectedAnimation = ANIMATION_VARIANTS[animationStyle] || ANIMATION_VARIANTS['from-center']
 
   useEffect(() => {
@@ -49,15 +55,43 @@ export default function HeroVideoDialog({
 
   useEffect(() => {
     if (!open) return undefined
+    activeElementRef.current = document.activeElement
+    const triggerElement = triggerRef.current
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     const onKey = (event) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (event.key !== 'Tab') return
+
+      const focusableElements = panelRef.current?.querySelectorAll(
+        'button:not([disabled]), iframe, video[controls], [tabindex]:not([tabindex="-1"])',
+      )
+      if (!focusableElements?.length) return
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
     }
+    const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus())
     window.addEventListener('keydown', onKey)
     return () => {
+      window.cancelAnimationFrame(focusFrame)
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
+      const focusTarget = activeElementRef.current
+      if (focusTarget instanceof HTMLElement && focusTarget.isConnected) {
+        focusTarget.focus({ preventScroll: true })
+      } else {
+        triggerElement?.focus({ preventScroll: true })
+      }
     }
   }, [open])
 
@@ -67,7 +101,32 @@ export default function HeroVideoDialog({
     setOpen(false)
   }, [])
 
-  if (!videoSrc || !thumbnailSrc) return null
+  const commitNativeAspectRatio = useCallback((width, height) => {
+    if (!width || !height) return
+    const nextRatio = width / height
+    setNativeAspectRatio((currentRatio) => (
+      Math.abs((currentRatio ?? 0) - nextRatio) < 0.001 ? currentRatio : nextRatio
+    ))
+  }, [])
+
+  const readNativeAspectRatio = useCallback((event) => {
+    const video = event.currentTarget
+    commitNativeAspectRatio(video.videoWidth, video.videoHeight)
+  }, [commitNativeAspectRatio])
+
+  const readPosterAspectRatio = useCallback((event) => {
+    const image = event.currentTarget
+    commitNativeAspectRatio(image.naturalWidth, image.naturalHeight)
+  }, [commitNativeAspectRatio])
+
+  if (!videoSrc || (!nativeVideo && !thumbnailSrc)) return null
+
+  const nativePanelStyle = nativeAspectRatio
+    ? {
+        '--hero-video-aspect': nativeAspectRatio,
+        '--hero-video-ratio': nativeAspectRatio,
+      }
+    : undefined
 
   const overlay = open ? (
     <motion.div
@@ -80,7 +139,12 @@ export default function HeroVideoDialog({
       role="presentation"
     >
       <motion.div
-        className="hero-video-dialog__panel"
+        ref={panelRef}
+        className={cn(
+          'hero-video-dialog__panel',
+          nativeVideo && 'hero-video-dialog__panel--native',
+        )}
+        style={nativePanelStyle}
         initial={selectedAnimation.initial}
         animate={selectedAnimation.animate}
         exit={selectedAnimation.exit}
@@ -95,6 +159,7 @@ export default function HeroVideoDialog({
         aria-label={t('article.playVideo')}
       >
         <button
+          ref={closeRef}
           type="button"
           className="hero-video-dialog__close"
           onClick={closeDialog}
@@ -102,14 +167,30 @@ export default function HeroVideoDialog({
         >
           <X size={20} strokeWidth={2} />
         </button>
-        <div className="hero-video-dialog__frame">
-          <iframe
-            src={videoSrc}
-            title={thumbnailAlt}
-            allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
+        <div className={cn(
+          'hero-video-dialog__frame',
+          nativeVideo && 'hero-video-dialog__frame--native',
+        )}>
+          {nativeVideo ? (
+            <video
+              src={videoSrc}
+              poster={thumbnailSrc || undefined}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+              aria-label={thumbnailAlt}
+              onLoadedMetadata={readNativeAspectRatio}
+            />
+          ) : (
+            <iframe
+              src={videoSrc}
+              title={thumbnailAlt}
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -118,18 +199,33 @@ export default function HeroVideoDialog({
   return (
     <div className={cn('hero-video-dialog', className)}>
       <button
+        ref={triggerRef}
         type="button"
         className="hero-video-dialog__trigger"
         aria-label={t('article.playVideo')}
         onClick={openDialog}
       >
-        <img
-          src={thumbnailSrc}
-          alt={thumbnailAlt}
-          className="hero-video-dialog__thumb"
-          loading="lazy"
-          decoding="async"
-        />
+        {nativeVideo && !thumbnailSrc ? (
+          <video
+            src={videoSrc}
+            className="hero-video-dialog__thumb"
+            muted
+            playsInline
+            preload="metadata"
+            tabIndex={-1}
+            aria-hidden="true"
+            onLoadedMetadata={readNativeAspectRatio}
+          />
+        ) : (
+          <img
+            src={thumbnailSrc}
+            alt={thumbnailAlt}
+            className="hero-video-dialog__thumb"
+            loading="lazy"
+            decoding="async"
+            onLoad={nativeVideo ? readPosterAspectRatio : undefined}
+          />
+        )}
         <span className="hero-video-dialog__play-wrap" aria-hidden>
           <span className="hero-video-dialog__play-ring">
             <span className="hero-video-dialog__play-btn">

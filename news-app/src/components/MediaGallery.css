@@ -17,11 +17,7 @@
 }
 .media-gallery__videos.is-multi { grid-template-columns: repeat(2, 1fr); }
 .media-gallery__video-item { display: flex; flex-direction: column; gap: 6px; }
-.media-gallery__videos video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--icue-radius);
-  background: #000;
+.media-gallery__video-dialog .hero-video-dialog__thumb {
   box-shadow: var(--icue-shadow-sm);
 }
 .media-gallery__video-info { margin: 0; padding: 0 2px; font-size: 12px; line-height: 1.4; color: var(--icue-text-soft); }
@@ -63,25 +59,42 @@
 
 /* Preserve the visual rhythm of portrait photography in the desktop grid.
    The class is added after the image reports its intrinsic dimensions. */
-@media (min-width: 681px) {
-  .media-gallery__item--portrait {
+@media (min-width: 1025px) {
+  .media-gallery__grid .media-gallery__item--portrait {
     aspect-ratio: 3 / 4;
   }
 
-  .media-gallery__item--portrait img {
+  .media-gallery__grid .media-gallery__item--portrait img {
     object-fit: contain;
     background: var(--icue-surface-2);
   }
 }
 
-@media (max-width: 680px) {
-  .media-gallery__item--mobile.media-gallery__item--portrait {
-    aspect-ratio: 3 / 4;
+/* Phones and tablets get a large, edge-aligned preview with the next image
+   peeking in. Landscape photos fill the preview; tapping reveals the uncropped
+   original in the lightbox. */
+@media (max-width: 1024px) {
+  .media-gallery__item--compact {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    cursor: zoom-in;
   }
 
-  .media-gallery__item--mobile.media-gallery__item--portrait img {
+  .media-gallery__item--compact.media-gallery__item--portrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .media-gallery__item--compact.media-gallery__item--portrait img {
     object-fit: contain;
     background: var(--icue-surface-2);
+  }
+
+  .media-gallery__item--compact.media-gallery__item--landscape img {
+    object-fit: cover;
+  }
+
+  .media-gallery__item--compact .media-gallery__zoom {
+    opacity: 1;
   }
 }
 .media-gallery__item:hover img { transform: scale(1.05); }
@@ -100,12 +113,6 @@
   border-radius: inherit;
 }
 
-.media-gallery__item--mobile {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  cursor: zoom-in;
-}
-
 .media-gallery__zoom {
   position: absolute;
   top: 10px; right: 10px;
@@ -121,7 +128,7 @@
 }
 .media-gallery__item:hover .media-gallery__zoom { opacity: 1; }
 
-/* Mobile inline carousel (legacy article swipe parity) ---------------- */
+/* Compact inline carousel (phone + tablet) ---------------------------- */
 .media-gallery__mobile-swiper {
   margin-bottom: 4px;
   padding-bottom: 28px;
@@ -246,6 +253,32 @@
   pointer-events: none;
 }
 
+@media (max-width: 1024px) {
+  .lightbox {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(20px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .lightbox__stage {
+    width: 100%;
+    height: calc(100vh - 48px);
+    height: calc(100dvh - 48px);
+  }
+
+  .lightbox__img {
+    max-height: calc(100vh - 64px);
+    max-height: calc(100dvh - 64px);
+  }
+
+  .lightbox__close {
+    top: max(12px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+  }
+}
+
 @media (max-width: 680px) {
   .media-gallery__grid,
   .media-gallery__grid--2,
@@ -264,11 +297,32 @@
   .lightbox__stage {
     width: 100%;
     height: calc(100vh - 96px);
+    height: calc(100dvh - 96px);
   }
-  .lightbox__img { max-height: calc(100vh - 120px); }
+  .lightbox__img {
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
+  }
   .lightbox__nav { display: none; }
   .lightbox__count {
     bottom: 36px;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .media-gallery__item:hover img {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-gallery__item img,
+  .media-gallery__zoom,
+  .lightbox,
+  .lightbox__close,
+  .lightbox__nav {
+    animation: none;
+    transition: none;
   }
 }
 
@@ -282,7 +336,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-.icue-app--news-theme-dark .media-gallery__videos video {
+.icue-app--news-theme-dark .media-gallery__video-dialog .hero-video-dialog__thumb {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 

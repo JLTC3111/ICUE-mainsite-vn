@@ -899,7 +899,7 @@ html:lang(vi) .article-detail__subtitle {
   aspect-ratio: 16 / 9;
 }
 
-.article-detail__media-band .media-gallery__item img {
+.article-detail__media-band .media-gallery__grid .media-gallery__item img {
   object-fit: contain;
   object-position: center;
 }

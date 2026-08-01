@@ -289,7 +289,7 @@
   filter: blur(2px) brightness(0.9) saturate(0.92) !important;
   opacity: 0.78;
   transition: filter 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease !important;
-  will-change: filter, opacity;
+  will-change: auto;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
@@ -399,4 +399,16 @@
 .legacy-page .news-coverflow-swiper .swiper-pagination-bullet-active {
   background: #16181d;
   width: 40px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .legacy-page .news-logo-swiper,
+  .legacy-page .news-logo-swiper .swiper-slide img,
+  .legacy-page .news-cards-swiper .card.image-card,
+  .legacy-page .news-cards-swiper .card.image-card img,
+  .legacy-page .news-coverflow-swiper .image-card img,
+  .legacy-page .news-coverflow-swiper .news-coverflow-rank,
+  .legacy-page .news-coverflow-info__btn {
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,25 +1,43 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useSyncExternalStore } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Keyboard, Pagination } from 'swiper/modules'
+import { Keyboard, Pagination, Zoom } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import 'swiper/css/zoom'
 import Lens from './Lens'
+import HeroVideoDialog from './magicui/HeroVideoDialog'
+import { NEWSROOM_COMPACT_QUERY } from '../lib/newsroom'
 import './MediaGallery.css'
 
-function useMobileGallery() {
-  const [isMobile, setIsMobile] = useState(false)
+const COMPACT_GALLERY_BREAKPOINTS = {
+  681: { slidesPerView: 1.28, spaceBetween: 16 },
+  900: { slidesPerView: 1.5, spaceBetween: 18 },
+}
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 680px)')
-    const sync = () => setIsMobile(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
+function getCompactGallerySnapshot() {
+  return typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && window.matchMedia(NEWSROOM_COMPACT_QUERY).matches
+}
 
-  return isMobile
+function subscribeToCompactGallery(onStoreChange) {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return () => {}
+  }
+
+  const mq = window.matchMedia(NEWSROOM_COMPACT_QUERY)
+  mq.addEventListener('change', onStoreChange)
+  return () => mq.removeEventListener('change', onStoreChange)
+}
+
+function useCompactGallery() {
+  return useSyncExternalStore(
+    subscribeToCompactGallery,
+    getCompactGallerySnapshot,
+    () => false,
+  )
 }
 
 // Renders an article's images + videos with a responsive layout and an
@@ -29,7 +47,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
   const [index, setIndex] = useState(null)
   const [orientations, setOrientations] = useState({})
   const lightboxSwiperRef = useRef(null)
-  const isMobile = useMobileGallery()
+  const isCompact = useCompactGallery()
 
   const open = useCallback((i) => setIndex(i), [])
   const close = useCallback(() => setIndex(null), [])
@@ -59,7 +77,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
   if (images.length === 0 && videos.length === 0) return null
 
   const imgCountClass = `media-gallery__grid--${Math.min(images.length, 4)}`
-  const showMobileCarousel = isMobile && images.length > 1
+  const showCompactCarousel = isCompact && images.length > 1
 
   return (
     <section className="media-gallery icue-readw">
@@ -69,12 +87,12 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
         <div className={`media-gallery__videos ${videos.length > 1 ? 'is-multi' : ''}`}>
           {videos.map((v) => (
             <div key={v.id} className="media-gallery__video-item">
-              <video
-                src={v.url}
-                poster={v.poster_url || undefined}
-                controls
-                preload="metadata"
-                playsInline
+              <HeroVideoDialog
+                className="media-gallery__video-dialog"
+                videoSrc={v.url}
+                thumbnailSrc={v.poster_url || undefined}
+                thumbnailAlt={v.info || t('article.playVideo')}
+                nativeVideo
               />
               {v.info && <p className="media-gallery__video-info">{v.info}</p>}
             </div>
@@ -82,21 +100,22 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
         </div>
       )}
 
-      {images.length > 0 && showMobileCarousel && (
+      {images.length > 0 && showCompactCarousel && (
         <Swiper
           className="media-gallery__mobile-swiper"
           modules={[Pagination]}
           spaceBetween={12}
           slidesPerView={1.06}
-          centeredSlides
+          breakpoints={COMPACT_GALLERY_BREAKPOINTS}
           pagination={{ clickable: true }}
           grabCursor
+          watchOverflow
         >
           {images.map((img, i) => (
             <SwiperSlide key={img.id}>
               <button
                 type="button"
-                className={`media-gallery__item media-gallery__item--mobile${orientations[img.id] ? ` media-gallery__item--${orientations[img.id]}` : ''}`}
+                className={`media-gallery__item media-gallery__item--compact${orientations[img.id] ? ` media-gallery__item--${orientations[img.id]}` : ''}`}
                 onClick={() => open(i)}
                 aria-label={t('article.viewImage', { n: i + 1 })}
               >
@@ -111,7 +130,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
         </Swiper>
       )}
 
-      {images.length > 0 && !showMobileCarousel && (
+      {images.length > 0 && !showCompactCarousel && (
         <div className={`media-gallery__grid ${imgCountClass}`}>
           {images.map((img, i) => (
             <button
@@ -169,9 +188,10 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
           <div className="lightbox__stage">
             <Swiper
               className="lightbox__swiper"
-              modules={[Keyboard, Pagination]}
+              modules={[Keyboard, Pagination, Zoom]}
               initialSlide={index}
               keyboard={{ enabled: true }}
+              zoom={{ maxRatio: 3, toggle: true, limitToOriginalSize: true }}
               pagination={images.length > 1 ? { clickable: true } : false}
               grabCursor
               resistanceRatio={0.72}
@@ -188,12 +208,15 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
                   className="lightbox__slide"
                   onClick={close}
                 >
-                  <img
-                    className="lightbox__img"
-                    src={img.url}
-                    alt=""
-                    onClick={(e) => e.stopPropagation()}
-                  />
+                  <div className="swiper-zoom-container">
+                    <img
+                      className="lightbox__img"
+                      src={img.url}
+                      alt=""
+                      decoding="async"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
                 </SwiperSlide>
               ))}
             </Swiper>

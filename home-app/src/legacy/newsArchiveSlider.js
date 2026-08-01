@@ -7,9 +7,13 @@ import './newsArchiveSlider.css'
 
 const STORAGE_KEY = 'newsSliderIndex'
 const MOBILE_QUERY = '(max-width: 1024px)'
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const COVERFLOW_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'Home', 'End'])
 
 const logoState = {
   swiper: null,
+  observer: null,
+  readyFrame: null,
   generation: 0,
 }
 
@@ -25,6 +29,7 @@ const cardsState = {
   mq: null,
   onMqChange: null,
   onKeydown: null,
+  settleFrame: null,
   generation: 0,
 }
 
@@ -43,9 +48,34 @@ function findGrid() {
 }
 
 function readInitialIndex(cardCount) {
-  const raw = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+  let stored = '0'
+  try {
+    stored = localStorage.getItem(STORAGE_KEY) || '0'
+  } catch {
+    // Storage can be unavailable in private browsing or embedded contexts.
+  }
+  const raw = parseInt(stored, 10)
   if (Number.isNaN(raw)) return 0
   return Math.max(0, Math.min(cardCount - 1, raw))
+}
+
+function saveIndex(index) {
+  try {
+    localStorage.setItem(STORAGE_KEY, String(index))
+  } catch {
+    // Carousel navigation should still work when storage is unavailable.
+  }
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches
+}
+
+function prioritizeCardImage(index) {
+  const image = cardsState.cards[index]?.querySelector('img')
+  if (!image) return
+  image.loading = 'eager'
+  image.fetchPriority = 'high'
 }
 
 function cardTitleText(card) {
@@ -114,7 +144,12 @@ function finalizeCoverflowInit(swiper, initialIndex, useLoop) {
   }
   refreshCoverflowLoop(swiper)
   updateCoverflowInfo(swiper)
-  requestAnimationFrame(() => {
+  if (cardsState.settleFrame != null) {
+    cancelAnimationFrame(cardsState.settleFrame)
+  }
+  cardsState.settleFrame = requestAnimationFrame(() => {
+    cardsState.settleFrame = null
+    if (cardsState.swiper !== swiper || swiper.destroyed) return
     refreshCoverflowLoop(swiper)
   })
 }
@@ -128,6 +163,7 @@ function handleCoverflowKeydown(event) {
   if (cardsState.mode !== 'desktop' || !cardsState.swiper || cardsState.swiper.destroyed) return
   if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return
   if (isEditableTarget(event.target)) return
+  if (!COVERFLOW_KEYS.has(event.key)) return
 
   const wrap = cardsState.wrapEl
   if (!wrap) return
@@ -178,54 +214,42 @@ function initLogoSwiper(generation) {
     logoState.swiper = null
   }
 
+  const reduceMotion = prefersReducedMotion()
+
   logoState.swiper = new Swiper(el, {
     modules: [Autoplay, Pagination],
     slidesPerView: 'auto',
     spaceBetween: 28,
-    speed: 600,
+    speed: reduceMotion ? 0 : 600,
     loop: true,
     autoHeight: true,
     grabCursor: true,
     watchOverflow: true,
-    autoplay: {
-      delay: 2200,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },
+    autoplay: reduceMotion
+      ? false
+      : {
+          delay: 2200,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        },
     pagination: {
       el: el.querySelector('.swiper-pagination'),
       clickable: true,
     },
     on: {
       init(swiper) {
-        const images = Array.from(el.querySelectorAll('img'))
-        const imageReady = images.map((image) => {
-          if (image.complete) {
-            return typeof image.decode === 'function' ? image.decode().catch(() => {}) : Promise.resolve()
-          }
-          return new Promise((resolve) => {
-            image.addEventListener('load', resolve, { once: true })
-            image.addEventListener('error', resolve, { once: true })
-            if (image.complete) resolve()
-          })
-        })
-
-        const readyOrTimeout = Promise.race([
-          Promise.all(imageReady),
-          new Promise((resolve) => window.setTimeout(resolve, 1500)),
-        ])
-
-        readyOrTimeout.then(() => {
+        // Slide slots have intrinsic dimensions, so revealing after Swiper's
+        // first layout avoids decoding every logo on the critical path.
+        logoState.readyFrame = requestAnimationFrame(() => {
+          logoState.readyFrame = null
           if (
             generation !== logoState.generation
             || swiper.destroyed
             || !el.isConnected
           ) return
 
-          requestAnimationFrame(() => {
-            el.classList.add('news-logo-ready')
-            el.setAttribute('aria-busy', 'false')
-          })
+          el.classList.add('news-logo-ready')
+          el.setAttribute('aria-busy', 'false')
         })
       },
     },
@@ -235,6 +259,22 @@ function initLogoSwiper(generation) {
       1025: { spaceBetween: 36 },
     },
   })
+
+  if (!reduceMotion && typeof IntersectionObserver === 'function') {
+    logoState.observer = new IntersectionObserver(
+      ([entry]) => {
+        const swiper = logoState.swiper
+        if (generation !== logoState.generation || !swiper || swiper.destroyed) return
+        if (entry?.isIntersecting && document.visibilityState === 'visible') {
+          swiper.autoplay.start()
+        } else {
+          swiper.autoplay.stop()
+        }
+      },
+      { rootMargin: '96px 0px' },
+    )
+    logoState.observer.observe(el)
+  }
 }
 
 function enableMobileCardsSwiper() {
@@ -281,7 +321,8 @@ function enableMobileCardsSwiper() {
     },
     on: {
       slideChange(swiper) {
-        localStorage.setItem(STORAGE_KEY, String(swiper.activeIndex))
+        prioritizeCardImage(swiper.activeIndex)
+        saveIndex(swiper.activeIndex)
       },
     },
   })
@@ -363,6 +404,7 @@ function enableDesktopCoverflow() {
 
   const slideCount = cardsState.cards.length
   const initialIndex = readInitialIndex(slideCount)
+  prioritizeCardImage(initialIndex)
   const useLoop = slideCount > 2
   const loopBuffer = useLoop ? Math.min(4, Math.max(2, slideCount - 2)) : 0
 
@@ -372,7 +414,7 @@ function enableDesktopCoverflow() {
     grabCursor: true,
     centeredSlides: true,
     slidesPerView: 'auto',
-    speed: 320,
+    speed: prefersReducedMotion() ? 0 : 320,
     resistanceRatio: 0.72,
     threshold: 6,
     longSwipesMs: 260,
@@ -398,7 +440,8 @@ function enableDesktopCoverflow() {
       },
       slideChange(swiper) {
         const index = typeof swiper.realIndex === 'number' ? swiper.realIndex : swiper.activeIndex
-        localStorage.setItem(STORAGE_KEY, String(index))
+        prioritizeCardImage(index)
+        saveIndex(index)
       },
       slideChangeTransitionEnd(swiper) {
         updateCoverflowInfo(swiper)
@@ -423,6 +466,11 @@ function disableDesktopCoverflow() {
   if (cardsState.swiper) {
     cardsState.swiper.destroy(true, true)
     cardsState.swiper = null
+  }
+
+  if (cardsState.settleFrame != null) {
+    cancelAnimationFrame(cardsState.settleFrame)
+    cardsState.settleFrame = null
   }
 
   if (cardsState.grid && cardsState.cards.length) {
@@ -472,6 +520,7 @@ export async function initNewsArchiveSlider() {
 
   if (cardsGen !== cardsState.generation) return
 
+  prioritizeCardImage(readInitialIndex(cards.length))
   syncCardsMode()
   cardsState.mq.addEventListener('change', cardsState.onMqChange)
 }
@@ -483,6 +532,16 @@ export function destroyNewsArchiveSlider() {
   const logoEl = findLogoEl()
   logoEl?.classList.remove('news-logo-ready')
   logoEl?.removeAttribute('aria-busy')
+
+  if (logoState.readyFrame != null) {
+    cancelAnimationFrame(logoState.readyFrame)
+    logoState.readyFrame = null
+  }
+
+  if (logoState.observer) {
+    logoState.observer.disconnect()
+    logoState.observer = null
+  }
 
   if (logoState.swiper) {
     logoState.swiper.destroy(true, true)
