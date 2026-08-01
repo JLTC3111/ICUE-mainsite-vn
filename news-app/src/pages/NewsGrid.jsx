@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
@@ -10,6 +10,7 @@ import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
 import NewsroomThemeToggle from '../components/NewsroomThemeToggle'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { usePageResume } from '../hooks/usePageResume'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
@@ -41,14 +42,35 @@ export default function NewsGrid() {
   const loadMoreStep = isCompactLayout ? NEWSROOM_COMPACT_LOAD_MORE_STEP : NEWSROOM_LOAD_MORE_STEP
   const [visibleCount, setVisibleCount] = useState(initialVisible)
   const { isDark } = useNewsroomTheme()
+  const requestIdRef = useRef(0)
+
+  const loadArticles = useCallback(({ background = false } = {}) => {
+    const requestId = requestIdRef.current + 1
+    requestIdRef.current = requestId
+
+    return fetchPublishedArticles({ limit: 120 })
+      .then((data) => {
+        if (requestId !== requestIdRef.current) return
+        setArticles(data)
+        setState('ready')
+      })
+      .catch(() => {
+        if (requestId !== requestIdRef.current) return
+        // A background refresh is best-effort. Keep a successfully rendered
+        // feed visible if the device has not regained a stable connection yet.
+        setState((current) => (background && current === 'ready' ? current : 'error'))
+      })
+  }, [])
 
   useEffect(() => {
-    let active = true
-    fetchPublishedArticles({ limit: 120 })
-      .then((data) => { if (active) { setArticles(data); setState('ready') } })
-      .catch(() => active && setState('error'))
-    return () => { active = false }
-  }, [])
+    loadArticles()
+    return () => { requestIdRef.current += 1 }
+  }, [loadArticles])
+
+  const refreshArticlesOnResume = useCallback(() => {
+    loadArticles({ background: true })
+  }, [loadArticles])
+  usePageResume(refreshArticlesOnResume)
 
   const rotatingTags = useMemo(() => {
     const tags = t('hero.rotatingTags', { returnObjects: true })
