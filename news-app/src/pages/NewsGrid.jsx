@@ -40,7 +40,9 @@ export default function NewsGrid() {
   const isCompactLayout = useMediaQuery(NEWSROOM_COMPACT_QUERY)
   const initialVisible = isCompactLayout ? NEWSROOM_COMPACT_INITIAL_VISIBLE : NEWSROOM_INITIAL_VISIBLE
   const loadMoreStep = isCompactLayout ? NEWSROOM_COMPACT_LOAD_MORE_STEP : NEWSROOM_LOAD_MORE_STEP
-  const [visibleCount, setVisibleCount] = useState(initialVisible)
+  const visibilityKey = `${activeCat}\u0000${searchQuery}\u0000${initialVisible}`
+  const [visibility, setVisibility] = useState({ key: visibilityKey, count: initialVisible })
+  const visibleCount = visibility.key === visibilityKey ? visibility.count : initialVisible
   const { isDark } = useNewsroomTheme()
   const requestIdRef = useRef(0)
 
@@ -87,10 +89,6 @@ export default function NewsGrid() {
     return searchArticles(list, searchQuery)
   }, [articles, activeCat, searchQuery])
 
-  useEffect(() => {
-    setVisibleCount(initialVisible)
-  }, [activeCat, searchQuery, initialVisible])
-
   const visibleArticles = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount],
@@ -134,7 +132,7 @@ export default function NewsGrid() {
               showCompactLabel
               className="animated-theme-toggler--hero news-hero__theme-toggle"
             />
-            <SocialGooeyNav reduceMotion={simplifyHero} />
+            <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
           </div>
         </div>
       </header>
@@ -176,7 +174,10 @@ export default function NewsGrid() {
             <button
               type="button"
               className="news-load-more__btn"
-              onClick={() => setVisibleCount((count) => count + loadMoreStep)}
+              onClick={() => setVisibility((current) => ({
+                key: visibilityKey,
+                count: (current.key === visibilityKey ? current.count : initialVisible) + loadMoreStep,
+              }))}
             >
               {t('news.loadMore')}
             </button>

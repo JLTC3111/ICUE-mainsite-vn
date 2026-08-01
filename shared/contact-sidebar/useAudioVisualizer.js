@@ -6,8 +6,11 @@ function getOrCreateVisualizer() {
   if (typeof window === 'undefined') return null
   if (window.__icueAudioVisualizer) return window.__icueAudioVisualizer
 
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext
+  if (!AudioContextClass) return null
+
   const audio = new Audio(AUDIO_SRC)
-  const ctx = new (window.AudioContext || window.webkitAudioContext)()
+  const ctx = new AudioContextClass()
   const source = ctx.createMediaElementSource(audio)
   const analyser = ctx.createAnalyser()
   source.connect(analyser)
@@ -20,32 +23,59 @@ function getOrCreateVisualizer() {
 export function useAudioVisualizer(barRef) {
   const rafRef = useRef(null)
 
-  const toggle = useCallback(() => {
+  const stopLoop = useCallback(() => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
+    if (barRef.current) barRef.current.style.transform = 'scale(1)'
+  }, [barRef])
+
+  const runLoop = useCallback(function updateVisualizer() {
+    const el = barRef.current
+    const av = window.__icueAudioVisualizer
+    if (!el || !av?.analyser || av.audio.paused || document.hidden) {
+      stopLoop()
+      return
+    }
+
+    av.analyser.getByteFrequencyData(av.freqData)
+    const value = av.freqData[0] || 0
+    const scale = Math.max(0.85, 1 + value / 512)
+    el.style.transform = `scale(${scale})`
+    rafRef.current = requestAnimationFrame(updateVisualizer)
+  }, [barRef, stopLoop])
+
+  const startLoop = useCallback(() => {
+    if (rafRef.current !== null || document.hidden) return
+    rafRef.current = requestAnimationFrame(runLoop)
+  }, [runLoop])
+
+  const toggle = useCallback(async () => {
     const av = getOrCreateVisualizer()
     if (!av) return
-    if (av.ctx.state === 'suspended') av.ctx.resume()
-    if (av.audio.paused) av.audio.play().catch(() => {})
-    else av.audio.pause()
-  }, [])
+    if (av.audio.paused) {
+      if (av.ctx.state === 'suspended') await av.ctx.resume().catch(() => {})
+      await av.audio.play().then(startLoop).catch(() => {})
+    } else {
+      av.audio.pause()
+      stopLoop()
+    }
+  }, [startLoop, stopLoop])
 
   useEffect(() => {
-    getOrCreateVisualizer()
-    const loop = () => {
-      const el = barRef.current
+    const handleVisibilityChange = () => {
       const av = window.__icueAudioVisualizer
-      if (el && av?.analyser) {
-        av.analyser.getByteFrequencyData(av.freqData)
-        const value = av.freqData[0] || 0
-        const scale = Math.max(0.85, 1 + value / 512)
-        el.style.transform = `scale(${scale})`
-      }
-      rafRef.current = requestAnimationFrame(loop)
+      if (document.hidden || !av || av.audio.paused) stopLoop()
+      else startLoop()
     }
-    rafRef.current = requestAnimationFrame(loop)
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      stopLoop()
     }
-  }, [barRef])
+  }, [startLoop, stopLoop])
 
   return { toggle }
 }

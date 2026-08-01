@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import './HyperText.css'
 
@@ -38,20 +38,29 @@ function splitIntoCharacters(text) {
 function groupCharactersIntoWords(chars) {
   const groups = []
   let current = []
+  let startIndex = 0
+  let characterIndex = 0
+
+  const flushWord = () => {
+    if (!current.length) return
+    groups.push({ type: 'word', chars: current, startIndex })
+    current = []
+  }
 
   for (const char of chars) {
     if (/\s/.test(char)) {
-      if (current.length) {
-        groups.push({ type: 'word', chars: current })
-        current = []
-      }
-      groups.push({ type: 'space', char })
+      flushWord()
+      groups.push({ type: 'space', char, startIndex: characterIndex })
+      characterIndex += 1
+      startIndex = characterIndex
       continue
     }
+    if (!current.length) startIndex = characterIndex
     current.push(char)
+    characterIndex += 1
   }
 
-  if (current.length) groups.push({ type: 'word', chars: current })
+  flushWord()
   return groups
 }
 
@@ -78,46 +87,49 @@ export default function HyperText({
   ...props
 }) {
   const MotionComponent = motionElements[Component] || motion.div
-
-  if (reduceMotion) {
-    const PlainComponent = Component
-    return (
-      <PlainComponent className={cn('hyper-text', className)} {...props}>
-        {children}
-      </PlainComponent>
-    )
-  }
-
-  const [displayText, setDisplayText] = useState(() => scrambleText(children, characterSet))
+  const [displayText, setDisplayText] = useState(() => (
+    reduceMotion ? splitIntoCharacters(children) : scrambleText(children, characterSet)
+  ))
   const [isAnimating, setIsAnimating] = useState(false)
   const iterationCount = useRef(0)
   const elementRef = useRef(null)
   const targetChars = useRef(splitIntoCharacters(children))
 
-  const beginAnimation = () => {
+  const beginAnimation = useCallback(() => {
+    if (reduceMotion) return
     targetChars.current = splitIntoCharacters(children)
     iterationCount.current = 0
     setDisplayText(scrambleText(children, characterSet))
     setIsAnimating(true)
-  }
+  }, [characterSet, children, reduceMotion])
 
   useEffect(() => {
-    targetChars.current = splitIntoCharacters(children)
-    iterationCount.current = 0
-    setDisplayText(scrambleText(children, characterSet))
-    setIsAnimating(false)
-  }, [children, characterSet])
+    const frameId = requestAnimationFrame(() => {
+      targetChars.current = splitIntoCharacters(children)
+      iterationCount.current = 0
+      setDisplayText(
+        reduceMotion
+          ? splitIntoCharacters(children)
+          : scrambleText(children, characterSet),
+      )
+      setIsAnimating(false)
+    })
+    return () => cancelAnimationFrame(frameId)
+  }, [children, characterSet, reduceMotion])
 
   useEffect(() => {
+    if (reduceMotion) return undefined
+
     if (!startOnView) {
       const startTimeout = setTimeout(beginAnimation, delay)
       return () => clearTimeout(startTimeout)
     }
 
+    let startTimeout = null
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(beginAnimation, delay)
+          startTimeout = setTimeout(beginAnimation, delay)
           observer.disconnect()
         }
       },
@@ -127,11 +139,14 @@ export default function HyperText({
     const node = elementRef.current
     if (node) observer.observe(node)
 
-    return () => observer.disconnect()
-  }, [children, delay, startOnView, characterSet])
+    return () => {
+      if (startTimeout !== null) clearTimeout(startTimeout)
+      observer.disconnect()
+    }
+  }, [beginAnimation, delay, startOnView, reduceMotion])
 
   const handleAnimationTrigger = () => {
-    if (animateOnHover && !isAnimating) {
+    if (!reduceMotion && animateOnHover && !isAnimating) {
       beginAnimation()
     }
   }
@@ -139,7 +154,7 @@ export default function HyperText({
   useEffect(() => {
     let animationFrameId = null
 
-    if (!isAnimating) return undefined
+    if (reduceMotion || !isAnimating) return undefined
 
     const letters = targetChars.current
     const maxIterations = letters.length
@@ -175,10 +190,18 @@ export default function HyperText({
         cancelAnimationFrame(animationFrameId)
       }
     }
-  }, [duration, isAnimating, characterSet])
+  }, [duration, isAnimating, characterSet, reduceMotion])
+
+  if (reduceMotion) {
+    const PlainComponent = Component
+    return (
+      <PlainComponent className={cn('hyper-text', className)} {...props}>
+        {children}
+      </PlainComponent>
+    )
+  }
 
   const wordGroups = groupCharactersIntoWords(displayText)
-  let charIndex = 0
 
   return (
     <MotionComponent
@@ -190,11 +213,9 @@ export default function HyperText({
       <AnimatePresence>
         {wordGroups.map((group, groupIndex) => {
           if (group.type === 'space') {
-            const index = charIndex
-            charIndex += 1
             return (
               <motion.span
-                key={`space-${groupIndex}-${index}`}
+                key={`space-${groupIndex}-${group.startIndex}`}
                 className="hyper-text__char hyper-text__char--space"
               >
                 {group.char}
@@ -202,14 +223,11 @@ export default function HyperText({
             )
           }
 
-          const startIndex = charIndex
-          charIndex += group.chars.length
-
           return (
-            <span key={`word-${groupIndex}-${startIndex}`} className="hyper-text__word">
+            <span key={`word-${groupIndex}-${group.startIndex}`} className="hyper-text__word">
               {group.chars.map((letter, offset) => (
                 <motion.span
-                  key={`${startIndex + offset}`}
+                  key={`${group.startIndex + offset}`}
                   className="hyper-text__char"
                 >
                   {letter}

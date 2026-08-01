@@ -132,6 +132,7 @@ function CircularText({
           seed={200}
           scale={5}
           speed={reducedMotion ? 0 : 0.05}
+          paused={reducedMotion}
           blur={0.1}
           mouseAnimation={false}
           {...metallicProps}

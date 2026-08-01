@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useId, useRef } from 'react'
 import { flushSync } from 'react-dom'
 import './AnimatedThemeToggler.css'
 
@@ -120,29 +120,55 @@ function getThemeTransitionClipPaths(
   }
 }
 
-function SunIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-      <path
-        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
+function ThemeMorphIcon({ theme }) {
+  const maskId = `theme-morph-moon-${useId().replaceAll(':', '')}`
 
-function MoonIcon() {
+  const handleAnimationEnd = (event) => {
+    if (
+      event.animationName !== 'theme-moon-wax-in'
+      && event.animationName !== 'theme-rays-settle-in'
+    ) {
+      return
+    }
+    const toggle = event.currentTarget.closest('.animated-theme-toggler')
+    if (toggle) delete toggle.dataset.themeMorph
+  }
+
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M20 14.5A8.5 8.5 0 0 1 9.5 4 7 7 0 1 0 20 14.5Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+    <svg
+      className="theme-morph-icon"
+      data-theme={theme}
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      onAnimationEnd={handleAnimationEnd}
+    >
+      <defs>
+        <mask id={maskId}>
+          <rect width="24" height="24" fill="white" />
+          <circle className="theme-morph-icon__cutout" cx="12" cy="12" r="5.7" fill="black" />
+        </mask>
+      </defs>
+
+      <g className="theme-morph-icon__rays" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+        <path className="theme-morph-icon__ray" d="M12 1.75v2.5" />
+        <path className="theme-morph-icon__ray" d="m4.75 4.75 1.77 1.77" />
+        <path className="theme-morph-icon__ray" d="M1.75 12h2.5" />
+        <path className="theme-morph-icon__ray" d="m4.75 19.25 1.77-1.77" />
+        <path className="theme-morph-icon__ray" d="M12 22.25v-2.5" />
+        <path className="theme-morph-icon__ray" d="m19.25 19.25-1.77-1.77" />
+        <path className="theme-morph-icon__ray" d="M22.25 12h-2.5" />
+        <path className="theme-morph-icon__ray" d="m19.25 4.75-1.77 1.77" />
+      </g>
+
+      <circle
+        className="theme-morph-icon__orb"
+        cx="12"
+        cy="12"
+        r="5.25"
+        fill="currentColor"
+        mask={`url(#${maskId})`}
       />
     </svg>
   )
@@ -176,13 +202,24 @@ export default function AnimatedThemeToggler({
       return
     }
 
-    const applyTheme = () => {
+    const applyTheme = (animateIcon = true) => {
+      document
+        .querySelectorAll('.animated-theme-toggler[data-theme-morph]')
+        .forEach((toggle) => delete toggle.dataset.themeMorph)
+      if (animateIcon) button.dataset.themeMorph = isDark ? 'to-light' : 'to-dark'
       onThemeChange?.(isDark ? 'light' : 'dark')
     }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reducedMotion || instant || typeof document.startViewTransition !== 'function') {
-      flushSync(applyTheme)
+    if (reducedMotion || instant) {
+      button.style.setProperty('--theme-morph-delay', '0ms')
+      flushSync(() => applyTheme(false))
+      return
+    }
+
+    if (typeof document.startViewTransition !== 'function') {
+      button.style.setProperty('--theme-morph-delay', '0ms')
+      flushSync(() => applyTheme(true))
       return
     }
 
@@ -219,6 +256,7 @@ export default function AnimatedThemeToggler({
     const root = document.documentElement
     root.dataset.magicuiThemeVt = 'active'
     root.style.setProperty('--magicui-theme-toggle-vt-duration', `${duration}ms`)
+    button.style.setProperty('--theme-morph-delay', `${duration}ms`)
     // Pin collapsed clip-path so Firefox does not paint unclipped between
     // snapshot and the ready.then() JS animation.
     root.style.setProperty('--magicui-theme-vt-clip-from', clipPath[0])
@@ -232,7 +270,7 @@ export default function AnimatedThemeToggler({
 
     isTransitioningRef.current = true
     const transition = document.startViewTransition(() => {
-      flushSync(applyTheme)
+      flushSync(() => applyTheme(true))
     })
 
     if (typeof transition?.finished?.finally === 'function') {
@@ -270,7 +308,9 @@ export default function AnimatedThemeToggler({
       title={title}
       {...props}
     >
-      <span className="animated-theme-toggler__icon">{isDark ? <SunIcon /> : <MoonIcon />}</span>
+      <span className="animated-theme-toggler__icon">
+        <ThemeMorphIcon theme={isDark ? 'dark' : 'light'} />
+      </span>
       {label ? <span className="animated-theme-toggler__label">{label}</span> : null}
     </button>
   )

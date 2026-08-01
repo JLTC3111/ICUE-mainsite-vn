@@ -1,5 +1,30 @@
-import { useRef, useEffect, useState } from 'react'
+import { useCallback, useRef, useEffect, useState } from 'react'
 import './GooeyNav.css'
+
+const randomNoise = (amount = 1) => amount / 2 - Math.random() * amount
+
+const getParticlePosition = (distance, pointIndex, totalPoints) => {
+  const angle = ((360 + randomNoise(8)) / totalPoints) * pointIndex * (Math.PI / 180)
+  return [distance * Math.cos(angle), distance * Math.sin(angle)]
+}
+
+const createParticle = ({ index, time, distances, radius, particleCount, colors }) => {
+  const rotate = randomNoise(radius / 10)
+  return {
+    start: getParticlePosition(distances[0], particleCount - index, particleCount),
+    end: getParticlePosition(
+      distances[1] + randomNoise(7),
+      particleCount - index,
+      particleCount,
+    ),
+    time,
+    scale: 1 + randomNoise(0.2),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    rotate: rotate > 0
+      ? (rotate + radius / 20) * 10
+      : (rotate - radius / 20) * 10,
+  }
+}
 
 export default function GooeyNav({
   items,
@@ -19,28 +44,40 @@ export default function GooeyNav({
   const navRef = useRef(null)
   const filterRef = useRef(null)
   const textRef = useRef(null)
+  const timerIdsRef = useRef(new Set())
+  const frameIdsRef = useRef(new Set())
+  const effectGenerationRef = useRef(0)
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex)
 
-  const noise = (n = 1) => n / 2 - Math.random() * n
+  const clearScheduledEffects = useCallback(() => {
+    timerIdsRef.current.forEach((id) => window.clearTimeout(id))
+    timerIdsRef.current.clear()
+    frameIdsRef.current.forEach((id) => cancelAnimationFrame(id))
+    frameIdsRef.current.clear()
+  }, [])
 
-  const getXY = (distance, pointIndex, totalPoints) => {
-    const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180)
-    return [distance * Math.cos(angle), distance * Math.sin(angle)]
-  }
+  const scheduleTimeout = useCallback((callback, delay) => {
+    const id = window.setTimeout(() => {
+      timerIdsRef.current.delete(id)
+      callback()
+    }, delay)
+    timerIdsRef.current.add(id)
+    return id
+  }, [])
 
-  const createParticle = (i, t, d, r) => {
-    const rotate = noise(r / 10)
-    return {
-      start: getXY(d[0], particleCount - i, particleCount),
-      end: getXY(d[1] + noise(7), particleCount - i, particleCount),
-      time: t,
-      scale: 1 + noise(0.2),
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10,
-    }
-  }
+  const scheduleFrame = useCallback((callback) => {
+    const id = requestAnimationFrame(() => {
+      frameIdsRef.current.delete(id)
+      callback()
+    })
+    frameIdsRef.current.add(id)
+    return id
+  }, [])
 
   const makeParticles = (element) => {
+    clearScheduledEffects()
+    const generation = effectGenerationRef.current + 1
+    effectGenerationRef.current = generation
     if (particleCount <= 0) return
 
     const d = particleDistances
@@ -49,11 +86,19 @@ export default function GooeyNav({
     element.style.setProperty('--time', `${bubbleTime}ms`)
 
     for (let i = 0; i < particleCount; i += 1) {
-      const t = animationTime * 2 + noise(timeVariance * 2)
-      const p = createParticle(i, t, d, r)
+      const t = animationTime * 2 + randomNoise(timeVariance * 2)
+      const p = createParticle({
+        index: i,
+        time: t,
+        distances: d,
+        radius: r,
+        particleCount,
+        colors,
+      })
       element.classList.remove('active')
 
-      setTimeout(() => {
+      scheduleTimeout(() => {
+        if (effectGenerationRef.current !== generation || !element.isConnected) return
         const particle = document.createElement('span')
         const point = document.createElement('span')
         particle.classList.add('particle')
@@ -69,21 +114,21 @@ export default function GooeyNav({
         point.classList.add('point')
         particle.appendChild(point)
         element.appendChild(particle)
-        requestAnimationFrame(() => {
-          element.classList.add('active')
-        })
-        setTimeout(() => {
-          try {
-            element.removeChild(particle)
-          } catch {
-            // ignore cleanup race
+        scheduleFrame(() => {
+          if (effectGenerationRef.current === generation && element.isConnected) {
+            element.classList.add('active')
           }
+        })
+        scheduleTimeout(() => {
+          particle.remove()
         }, t)
       }, 30)
     }
   }
 
   const hideEffects = () => {
+    effectGenerationRef.current += 1
+    clearScheduledEffects()
     if (filterRef.current) {
       filterRef.current.style.width = '0'
       filterRef.current.style.height = '0'
@@ -191,6 +236,11 @@ export default function GooeyNav({
       updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
     }
   }, [activeIndex, items, showTextEffect])
+
+  useEffect(() => () => {
+    effectGenerationRef.current += 1
+    clearScheduledEffects()
+  }, [clearScheduledEffects])
 
   return (
     <div

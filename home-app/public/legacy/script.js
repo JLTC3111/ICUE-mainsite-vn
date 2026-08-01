@@ -5537,7 +5537,28 @@ function initAudioVisualizer(
   }
 
   function enableCursorGradientTrail(color = 'yellow') {
-    document.addEventListener('mousemove', (e) => {
+    window.disableCursorGradientTrail?.();
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (reducedMotion || coarsePointer) return;
+
+    const activeTrails = new Map();
+    let lastTrailAt = 0;
+
+    const removeTrail = (trail) => {
+      const timeoutId = activeTrails.get(trail);
+      if (timeoutId) window.clearTimeout(timeoutId);
+      activeTrails.delete(trail);
+      trail.remove();
+    };
+
+    const handlePointerMove = (e) => {
+      const now = performance.now();
+      if (now - lastTrailAt < 40) return;
+      lastTrailAt = now;
+      if (document.hidden || !document.querySelector('.legacy-page')) return;
+
       const trail = document.createElement('div');
       trail.className = 'cursor-trail';
   
@@ -5549,13 +5570,20 @@ function initAudioVisualizer(
       trail.style.top = `${e.clientY}px`;
   
       document.body.appendChild(trail);
-  
-      setTimeout(() => {
-        trail.remove();
-      }, 500); 
-    });
+
+      trail.addEventListener('animationend', () => removeTrail(trail), { once: true });
+      activeTrails.set(trail, window.setTimeout(() => removeTrail(trail), 650));
+    };
+
+    document.addEventListener('mousemove', handlePointerMove, { passive: true });
+    window.disableCursorGradientTrail = () => {
+      document.removeEventListener('mousemove', handlePointerMove);
+      activeTrails.forEach((_timeoutId, trail) => removeTrail(trail));
+      activeTrails.clear();
+    };
   }
-  
+
+  window.enableCursorGradientTrail = enableCursorGradientTrail;
   enableCursorGradientTrail(); 
 
   window.preloadProfileImages = () => {

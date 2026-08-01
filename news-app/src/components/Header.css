@@ -295,7 +295,7 @@
   margin-left: auto;
   cursor: pointer;
   color: var(--icue-text);
-  border-radius: 8px;
+  border-radius: 0;
   transition: background-color 0.18s ease;
 }
 
@@ -624,6 +624,10 @@
 }
 
 /* Main-site drawer + newsroom burger on dark newsroom home */
+.nav-drawer__toggle {
+  border-radius: 0;
+}
+
 .icue-app--news-theme-dark .nav-drawer__toggle {
   background: rgba(12, 12, 12, 0.92);
   border-color: rgba(255, 255, 255, 0.22);
@@ -640,7 +644,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(12, 12, 12, 0.88);
   color: #f3f4f6;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .icue-app--news-theme-dark .icue-header__burger:hover,

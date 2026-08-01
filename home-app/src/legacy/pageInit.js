@@ -162,10 +162,13 @@ export async function initLegacyPage(pageName) {
     await loadLegacyRuntime()
   }
 
+  window.enableCursorGradientTrail?.()
+
   const init = PAGE_INIT[pageName]
   if (init) await init()
 }
 
 export function cleanupLegacyPage(pageName) {
+  window.disableCursorGradientTrail?.()
   PAGE_CLEANUP[pageName]?.()
 }

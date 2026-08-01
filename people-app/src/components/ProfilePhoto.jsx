@@ -68,8 +68,11 @@ function ProfilePhoto({ person }) {
   const [shownPerson, setShownPerson] = useState(person)
   const [incomingPerson, setIncomingPerson] = useState(person)
   const [trigger, setTrigger] = useState(0)
+  const [displayRevision, setDisplayRevision] = useState(0)
+  const latestPersonRef = useRef(person)
 
   useEffect(() => {
+    latestPersonRef.current = person
     if (person.id === shownPerson.id) return
     setIncomingPerson(person)
     if (reducedMotion.current) {
@@ -80,8 +83,9 @@ function ProfilePhoto({ person }) {
   }, [person, shownPerson.id])
 
   const handleTransitionComplete = useCallback(() => {
-    setShownPerson(incomingPerson)
-  }, [incomingPerson])
+    setShownPerson(latestPersonRef.current)
+    setDisplayRevision((revision) => revision + 1)
+  }, [])
 
   return (
     <BorderGlow
@@ -100,7 +104,7 @@ function ProfilePhoto({ person }) {
           animationStepDuration={0.35}
           disabled={reducedMotion.current}
           onComplete={handleTransitionComplete}
-          displayKey={shownPerson.id}
+          displayKey={`${shownPerson.id}:${displayRevision}`}
           firstContent={<ProfilePhotoImage person={shownPerson} />}
           secondContent={<ProfilePhotoImage person={incomingPerson} />}
         />

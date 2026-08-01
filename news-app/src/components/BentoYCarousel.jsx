@@ -27,6 +27,7 @@ export default function BentoYCarousel({
 
   const sectionRef = useRef(null)
   const wheelLockRef = useRef(false)
+  const unlockTimerRef = useRef(null)
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
   const useLoop = slides.length > 2 && !reduceMotion
@@ -43,6 +44,24 @@ export default function BentoYCarousel({
     duration: reduceMotion ? 0 : 24,
   })
 
+  const unlockWheel = useCallback(() => {
+    if (unlockTimerRef.current !== null) {
+      window.clearTimeout(unlockTimerRef.current)
+      unlockTimerRef.current = null
+    }
+    wheelLockRef.current = false
+  }, [])
+
+  const scheduleUnlock = useCallback(() => {
+    if (unlockTimerRef.current !== null) {
+      window.clearTimeout(unlockTimerRef.current)
+    }
+    unlockTimerRef.current = window.setTimeout(
+      unlockWheel,
+      reduceMotion ? 50 : 450,
+    )
+  }, [reduceMotion, unlockWheel])
+
   const syncControls = useCallback(() => {
     if (!emblaApi) return
     setSelectedIndex(emblaApi.selectedScrollSnap())
@@ -50,11 +69,12 @@ export default function BentoYCarousel({
 
   useEffect(() => {
     if (!emblaApi) return undefined
-    syncControls()
+    const frameId = requestAnimationFrame(syncControls)
     emblaApi.on('select', syncControls)
     emblaApi.on('reInit', syncControls)
     emblaApi.on('init', syncControls)
     return () => {
+      cancelAnimationFrame(frameId)
       emblaApi.off('select', syncControls)
       emblaApi.off('reInit', syncControls)
       emblaApi.off('init', syncControls)
@@ -76,8 +96,6 @@ export default function BentoYCarousel({
 
   useLayoutEffect(() => {
     if (!emblaApi) return undefined
-    emblaApi.reInit()
-    syncControls()
     const id = requestAnimationFrame(() => {
       emblaApi.reInit()
       syncControls()
@@ -92,10 +110,6 @@ export default function BentoYCarousel({
 
     const section = sectionRef.current
     if (!section) return undefined
-
-    const unlockWheel = () => {
-      wheelLockRef.current = false
-    }
 
     const onWheel = (event) => {
       if (Math.abs(event.deltaY) < 8) return
@@ -120,7 +134,7 @@ export default function BentoYCarousel({
       else emblaApi.scrollPrev()
 
       // Fallback if settle never fires (e.g. already at snap with loop glitch).
-      window.setTimeout(unlockWheel, reduceMotion ? 50 : 450)
+      scheduleUnlock()
     }
 
     emblaApi.on('settle', unlockWheel)
@@ -128,36 +142,30 @@ export default function BentoYCarousel({
     return () => {
       emblaApi.off('settle', unlockWheel)
       section.removeEventListener('wheel', onWheel)
-      wheelLockRef.current = false
+      unlockWheel()
     }
-  }, [emblaApi, slides.length, useLoop, reduceMotion])
+  }, [emblaApi, slides.length, useLoop, scheduleUnlock, unlockWheel])
 
   const scrollPrev = useCallback(() => {
     if (!emblaApi || wheelLockRef.current) return
     wheelLockRef.current = true
     emblaApi.scrollPrev()
-    window.setTimeout(() => {
-      wheelLockRef.current = false
-    }, reduceMotion ? 50 : 450)
-  }, [emblaApi, reduceMotion])
+    scheduleUnlock()
+  }, [emblaApi, scheduleUnlock])
 
   const scrollNext = useCallback(() => {
     if (!emblaApi || wheelLockRef.current) return
     wheelLockRef.current = true
     emblaApi.scrollNext()
-    window.setTimeout(() => {
-      wheelLockRef.current = false
-    }, reduceMotion ? 50 : 450)
-  }, [emblaApi, reduceMotion])
+    scheduleUnlock()
+  }, [emblaApi, scheduleUnlock])
 
   const scrollTo = useCallback((index) => {
     if (!emblaApi || wheelLockRef.current) return
     wheelLockRef.current = true
     emblaApi.scrollTo(index)
-    window.setTimeout(() => {
-      wheelLockRef.current = false
-    }, reduceMotion ? 50 : 450)
-  }, [emblaApi, reduceMotion])
+    scheduleUnlock()
+  }, [emblaApi, scheduleUnlock])
 
   const canScrollPrev = useLoop || selectedIndex > 0
   const canScrollNext = useLoop || selectedIndex < slides.length - 1

@@ -104,7 +104,7 @@ export default function NotificationBell() {
 
   const handleItemClick = useCallback(
     (notification) => {
-      markRead(notification.id)
+      void markRead(notification.id, !notification.readAt)
       const link = notificationLink(notification)
       if (!link) return
       setOpen(false)
@@ -184,7 +184,7 @@ export default function NotificationBell() {
                       className="notif__dismiss"
                       aria-label={t('notifications.dismiss')}
                       title={t('notifications.dismiss')}
-                      onClick={() => dismiss(notification.id)}
+                      onClick={() => void dismiss(notification.id, !notification.readAt)}
                     >
                       <X className="notif__dismiss-icon" aria-hidden="true" />
                     </button>

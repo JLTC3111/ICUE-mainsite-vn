@@ -42,15 +42,30 @@ function easeInCubic(x) { return x * x * x }
 function animateValue({
   start = 0, end = 100, duration = 1000, delay = 0, ease = easeOutCubic, onUpdate, onEnd,
 }) {
-  const t0 = performance.now() + delay
-  function tick() {
-    const elapsed = performance.now() - t0
+  let frameId = null
+  let timeoutId = null
+  let cancelled = false
+  let startedAt = 0
+
+  function tick(now) {
+    if (cancelled) return
+    const elapsed = now - startedAt
     const t = Math.min(elapsed / duration, 1)
     onUpdate(start + (end - start) * ease(t))
-    if (t < 1) requestAnimationFrame(tick)
+    if (t < 1) frameId = requestAnimationFrame(tick)
     else if (onEnd) onEnd()
   }
-  setTimeout(() => requestAnimationFrame(tick), delay)
+
+  timeoutId = window.setTimeout(() => {
+    startedAt = performance.now()
+    frameId = requestAnimationFrame(tick)
+  }, delay)
+
+  return () => {
+    cancelled = true
+    window.clearTimeout(timeoutId)
+    if (frameId !== null) cancelAnimationFrame(frameId)
+  }
 }
 
 function BorderGlow({
@@ -117,16 +132,20 @@ function BorderGlow({
     card.classList.add('sweep-active')
     card.style.setProperty('--cursor-angle', `${angleStart}deg`)
 
-    animateValue({ duration: 500, onUpdate: (v) => card.style.setProperty('--edge-proximity', `${v}`) })
-    animateValue({
+    const cancelAnimations = []
+    cancelAnimations.push(animateValue({
+      duration: 500,
+      onUpdate: (v) => card.style.setProperty('--edge-proximity', `${v}`),
+    }))
+    cancelAnimations.push(animateValue({
       ease: easeInCubic,
       duration: 1500,
       end: 50,
       onUpdate: (v) => {
         card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
       },
-    })
-    animateValue({
+    }))
+    cancelAnimations.push(animateValue({
       ease: easeOutCubic,
       delay: 1500,
       duration: 2250,
@@ -135,8 +154,8 @@ function BorderGlow({
       onUpdate: (v) => {
         card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
       },
-    })
-    animateValue({
+    }))
+    cancelAnimations.push(animateValue({
       ease: easeInCubic,
       delay: 2500,
       duration: 1500,
@@ -144,8 +163,12 @@ function BorderGlow({
       end: 0,
       onUpdate: (v) => card.style.setProperty('--edge-proximity', `${v}`),
       onEnd: () => card.classList.remove('sweep-active'),
-    })
-    return undefined
+    }))
+
+    return () => {
+      cancelAnimations.forEach((cancel) => cancel())
+      card.classList.remove('sweep-active')
+    }
   }, [animated])
 
   return (

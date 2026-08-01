@@ -3,10 +3,23 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  --np-inset-bg: var(--icue-surface-2);
+  --np-inset-text: var(--icue-text);
+  --np-shadow-dark: rgba(16, 19, 24, 0.28);
+  --np-shadow-light: #ffffff;
+  --np-inset-shadow:
+    inset 4px 4px 10px rgba(16, 19, 24, 0.1),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.9);
+  --np-inset-shadow-sm:
+    inset 3px 3px 7px rgba(16, 19, 24, 0.1),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+  --np-inset-shadow-pressed:
+    inset 5px 5px 10px rgba(16, 19, 24, 0.15),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.8);
 }
 
 .article-search__shell {
-  border-radius: var(--np-radius);
+  border-radius: 0;
   border: none;
   background-color: var(--np-inset-bg);
   background-image: none;
@@ -14,6 +27,22 @@
   box-shadow: var(--np-inset-shadow);
   overflow: hidden;
   transition: background-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+}
+
+.icue-app--news-theme-dark .article-search {
+  --np-inset-bg: #171717;
+  --np-inset-text: #e7e8e4;
+  --np-shadow-dark: rgba(0, 0, 0, 0.75);
+  --np-shadow-light: rgba(255, 255, 255, 0.12);
+  --np-inset-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.55),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+  --np-inset-shadow-sm:
+    inset 3px 3px 7px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.04);
+  --np-inset-shadow-pressed:
+    inset 5px 5px 10px rgba(0, 0, 0, 0.65),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.04);
 }
 
 /* Collapsed: icon only — no solid pill behind the magnifying glass */

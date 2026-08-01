@@ -13,7 +13,7 @@
   transition: fill 1s ease-in-out;
 }
 
-.interactive-grid-pattern__square.is-hovered {
+.interactive-grid-pattern__square:hover {
   fill: rgba(54, 138, 223, 0.35);
   transition-duration: 100ms;
 }

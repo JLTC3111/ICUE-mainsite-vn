@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './InteractiveGridPattern.css'
 
 /**
@@ -14,7 +13,6 @@ export function InteractiveGridPattern({
   ...props
 }) {
   const [horizontal, vertical] = squares
-  const [hoveredSquare, setHoveredSquare] = useState(null)
 
   return (
     <svg
@@ -34,9 +32,7 @@ export function InteractiveGridPattern({
             y={y}
             width={width}
             height={height}
-            className={`interactive-grid-pattern__square ${hoveredSquare === index ? 'is-hovered' : ''} ${squaresClassName}`.trim()}
-            onMouseEnter={() => setHoveredSquare(index)}
-            onMouseLeave={() => setHoveredSquare(null)}
+            className={`interactive-grid-pattern__square ${squaresClassName}`.trim()}
           />
         )
       })}

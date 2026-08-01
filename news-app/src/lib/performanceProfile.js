@@ -1,4 +1,4 @@
-export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v1'
+export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v2'
 export const PERF_OVERRIDE_STORAGE_KEY = 'icue:perf-override:v1'
 
 export const PERF_TIERS = ['full', 'reduced', 'minimal']
@@ -22,7 +22,6 @@ const LOW_END_GPU_PATTERNS = [
   'intel hd graphics',
   'intel(r) hd graphics',
   'mesa offscreen',
-  'angle (',
 ]
 
 const INTEGRATED_GPU_PATTERNS = [
@@ -67,27 +66,28 @@ function matchesPattern(value, patterns) {
   return patterns.some((pattern) => value.includes(pattern))
 }
 
-/** Detect hardware tier once per session (before sessionStorage cache). */
-export function detectPerformanceTier() {
-  if (typeof window === 'undefined') return 'full'
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return 'minimal'
-  }
-
-  const cores = navigator.hardwareConcurrency || 8
-  const memory = navigator.deviceMemory
-  const renderer = getWebGLRenderer()
-
+export function classifyPerformanceTier({ cores = 8, memory, renderer = '' } = {}) {
+  const normalizedRenderer = String(renderer).toLowerCase()
   if (cores <= 4) return 'minimal'
   if (memory != null && memory <= 4) return 'minimal'
-  if (matchesPattern(renderer, LOW_END_GPU_PATTERNS)) return 'minimal'
+  if (matchesPattern(normalizedRenderer, LOW_END_GPU_PATTERNS)) return 'minimal'
 
   if (cores <= 8) return 'reduced'
   if (memory != null && memory <= 8) return 'reduced'
-  if (matchesPattern(renderer, INTEGRATED_GPU_PATTERNS)) return 'reduced'
+  if (matchesPattern(normalizedRenderer, INTEGRATED_GPU_PATTERNS)) return 'reduced'
 
   return 'full'
+}
+
+/** Detect the hardware tier once per session (before sessionStorage cache). */
+export function detectPerformanceTier() {
+  if (typeof window === 'undefined') return 'full'
+
+  return classifyPerformanceTier({
+    cores: navigator.hardwareConcurrency || 8,
+    memory: navigator.deviceMemory,
+    renderer: getWebGLRenderer(),
+  })
 }
 
 export function readStoredPerformanceTier() {
@@ -138,7 +138,7 @@ export function storePerformanceOverride(value) {
 
 export function resolveEffectiveTier({ autoTier, override }) {
   if (override === 'off') return 'minimal'
-  if (override === 'on' || override == null) return 'full'
+  if (override === 'on') return 'full'
   return PERF_TIERS.includes(autoTier) ? autoTier : 'full'
 }
 
@@ -155,14 +155,12 @@ export function tierToProfile(tier) {
 
   return {
     tier: safeTier,
-    // Lite keeps carousel/hero motion; other flags still cut heavier GPU work.
-    reduceMotion: safeTier === 'reduced',
-    // Lite (minimal) keeps Embla parallax; only mid "reduced" tier disables it.
-    disableParallax: safeTier === 'reduced',
+    reduceMotion: isReduced,
+    disableParallax: isReduced,
     disableBorderBeam: isReduced,
     disableLens: !isFull,
     reduceBlur: isMinimal,
-    // Lite keeps rotating tags + gooey particles; pauses the hero retro grid.
+    // Motion-aware components consume reduceMotion; minimal also pauses the grid.
     simplifyHero: false,
     pauseRetroGrid: isMinimal,
     showScrollProgress: isFull || isMinimal,

@@ -61,6 +61,7 @@ async function resolveMusicBarColor(musicEl) {
 export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
   const [color, setColor] = useState(FALLBACK_COLOR)
   const samplingRef = useRef(false)
+  const mountedRef = useRef(true)
 
   const sample = useCallback(async () => {
     if (!enabled) return
@@ -70,11 +71,13 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     samplingRef.current = true
     try {
       const nextColor = await resolveMusicBarColor(el)
-      setColor((prev) => (prev === nextColor ? prev : nextColor))
+      if (mountedRef.current) {
+        setColor((prev) => (prev === nextColor ? prev : nextColor))
+      }
     } finally {
       samplingRef.current = false
     }
-  }, [barRef, contentKey, enabled])
+  }, [barRef, enabled])
 
   useEffect(() => {
     if (!enabled) return undefined
@@ -83,11 +86,13 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     let lastSampleAt = 0
 
     const runSample = () => {
+      if (document.hidden) return
       lastSampleAt = performance.now()
       void sample()
     }
 
     const scheduleSample = () => {
+      if (document.hidden) return
       const elapsed = performance.now() - lastSampleAt
       if (elapsed >= SAMPLE_THROTTLE_MS) {
         if (sampleTimer !== null) {
@@ -107,11 +112,21 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
 
     runSample()
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (sampleTimer !== null) window.clearTimeout(sampleTimer)
+        sampleTimer = null
+      } else {
+        scheduleSample()
+      }
+    }
+
     window.addEventListener('scroll', scheduleSample, { passive: true, capture: true })
     window.addEventListener('resize', scheduleSample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
     window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
     window.addEventListener('icue:homeVideoEnabled', scheduleSample)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     const viewport = window.visualViewport
     viewport?.addEventListener('resize', scheduleSample)
@@ -144,6 +159,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
       window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       window.removeEventListener('icue:homeVideoEnabled', scheduleSample)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       viewport?.removeEventListener('resize', scheduleSample)
       viewport?.removeEventListener('scroll', scheduleSample)
       observer?.disconnect()
@@ -153,8 +169,11 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     }
   }, [contentKey, enabled, sample])
 
-  useEffect(() => () => {
-    fac.destroy()
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
   }, [])
 
   return color

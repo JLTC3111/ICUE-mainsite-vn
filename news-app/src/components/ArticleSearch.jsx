@@ -34,10 +34,13 @@ export default function ArticleSearch({ open, onOpenChange }) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const isControlled = open !== undefined
   const isOpen = isControlled ? open : uncontrolledOpen
-  const [value, setValue] = useState(params.get('q') || '')
+  const queryValue = params.get('q') || ''
+  const [draft, setDraft] = useState(() => ({ source: queryValue, value: queryValue }))
+  const value = draft.source === queryValue ? draft.value : queryValue
   const inputRef = useRef(null)
   const containerRef = useRef(null)
-  const hasQuery = Boolean(params.get('q')?.trim())
+  const lastQueryRef = useRef(queryValue)
+  const hasQuery = Boolean(queryValue.trim())
 
   const setIsOpen = useCallback((next) => {
     const resolved = typeof next === 'function' ? next(isOpen) : next
@@ -46,8 +49,13 @@ export default function ArticleSearch({ open, onOpenChange }) {
   }, [isControlled, isOpen, onOpenChange])
 
   useEffect(() => {
-    setValue(params.get('q') || '')
-  }, [params])
+    if (lastQueryRef.current === queryValue) return undefined
+    lastQueryRef.current = queryValue
+    const frameId = requestAnimationFrame(() => {
+      setDraft({ source: queryValue, value: queryValue })
+    })
+    return () => cancelAnimationFrame(frameId)
+  }, [queryValue])
 
   useEffect(() => {
     if (isOpen) inputRef.current?.focus()
@@ -76,14 +84,14 @@ export default function ArticleSearch({ open, onOpenChange }) {
   }, [value, location.pathname, navigate, setParams, setIsOpen])
 
   const clear = useCallback(() => {
-    setValue('')
+    setDraft({ source: queryValue, value: '' })
     if (location.pathname === '/') {
       setParams({})
     } else {
       navigate('/')
     }
     inputRef.current?.focus()
-  }, [location.pathname, navigate, setParams])
+  }, [location.pathname, navigate, queryValue, setParams])
 
   return (
     <MotionConfig transition={transition}>
@@ -123,7 +131,7 @@ export default function ArticleSearch({ open, onOpenChange }) {
                       className="article-search__input"
                       placeholder={t('search.placeholder')}
                       value={value}
-                      onChange={(e) => setValue(e.target.value)}
+                      onChange={(e) => setDraft({ source: queryValue, value: e.target.value })}
                       autoComplete="off"
                       enterKeyHint="search"
                       autoFocus

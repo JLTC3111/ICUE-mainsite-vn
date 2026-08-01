@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
   readPerformanceOverride,
   resolveEffectiveTier,
@@ -22,10 +22,28 @@ export function PerformanceProfileProvider({ children }) {
     return resolved
   })
   const [override, setOverride] = useState(() => readPerformanceOverride())
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => (
+    typeof window !== 'undefined'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ))
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = (event) => setPrefersReducedMotion(event.matches)
+    if (typeof query.addEventListener === 'function') {
+      query.addEventListener('change', onChange)
+      return () => query.removeEventListener('change', onChange)
+    }
+    query.addListener(onChange)
+    return () => query.removeListener(onChange)
+  }, [])
 
   const effectiveTier = useMemo(
-    () => resolveEffectiveTier({ autoTier, override }),
-    [autoTier, override],
+    () => resolveEffectiveTier({
+      autoTier: prefersReducedMotion ? 'minimal' : autoTier,
+      override,
+    }),
+    [autoTier, override, prefersReducedMotion],
   )
 
   const setPerformanceFull = useCallback((next) => {

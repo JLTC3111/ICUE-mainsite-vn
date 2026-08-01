@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { useReducedMotion } from 'motion/react'
 
 /**
  * motion-primitives Text Scramble
@@ -19,15 +19,20 @@ export function TextScramble({
   onScrambleComplete,
   ...props
 }) {
-  const MotionComponent = motion.create(Component)
   const [displayText, setDisplayText] = useState(children)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const isAnimatingRef = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
   const text = String(children ?? '')
 
   useEffect(() => {
-    if (!trigger || isAnimating) return undefined
+    if (!trigger || isAnimatingRef.current) return undefined
 
-    setIsAnimating(true)
+    if (prefersReducedMotion) {
+      onScrambleComplete?.()
+      return undefined
+    }
+
+    isAnimatingRef.current = true
     const steps = duration / speed
     let step = 0
 
@@ -53,18 +58,21 @@ export function TextScramble({
       if (step > steps) {
         window.clearInterval(interval)
         setDisplayText(text)
-        setIsAnimating(false)
+        isAnimatingRef.current = false
         onScrambleComplete?.()
       }
     }, speed * 1000)
 
-    return () => window.clearInterval(interval)
+    return () => {
+      window.clearInterval(interval)
+      isAnimatingRef.current = false
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trigger, text, duration, speed, characterSet])
+  }, [trigger, text, duration, speed, characterSet, prefersReducedMotion])
 
   return (
-    <MotionComponent className={className} {...props}>
-      {displayText}
-    </MotionComponent>
+    <Component className={className} {...props}>
+      {prefersReducedMotion ? text : displayText}
+    </Component>
   )
 }

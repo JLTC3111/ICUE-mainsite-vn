@@ -1,11 +1,8 @@
 import { useCallback, useMemo } from 'react'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import './WarpBackground.css'
 
-function Beam({ width, x, delay, duration }) {
-  const hue = Math.floor(Math.random() * 360)
-  const aspectRatio = Math.floor(Math.random() * 10) + 1
-
+function Beam({ width, x, delay, duration, hue, aspectRatio }) {
   return (
     <motion.div
       className="warp-background__beam"
@@ -39,7 +36,8 @@ export default function WarpBackground({
   background = 'linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%)',
   ...props
 }) {
-  const generateBeams = useCallback(() => {
+  const reducedMotion = useReducedMotion()
+  const generateBeams = useCallback((sideSeed) => {
     const beams = []
     const cellsPerSide = Math.floor(100 / beamSize)
     const step = cellsPerSide / beamsPerSide
@@ -47,17 +45,22 @@ export default function WarpBackground({
     for (let i = 0; i < beamsPerSide; i += 1) {
       beams.push({
         x: Math.floor(i * step),
-        delay: Math.random() * (beamDelayMax - beamDelayMin) + beamDelayMin,
+        delay:
+          (((i + 1) * 0.61803398875 + sideSeed * 0.173) % 1)
+          * (beamDelayMax - beamDelayMin)
+          + beamDelayMin,
+        hue: (i * 97 + beamsPerSide * 41 + sideSeed * 53) % 360,
+        aspectRatio: ((i * 7 + beamsPerSide + sideSeed * 3) % 10) + 1,
       })
     }
 
     return beams
   }, [beamDelayMax, beamDelayMin, beamSize, beamsPerSide])
 
-  const topBeams = useMemo(() => generateBeams(), [generateBeams])
-  const rightBeams = useMemo(() => generateBeams(), [generateBeams])
-  const bottomBeams = useMemo(() => generateBeams(), [generateBeams])
-  const leftBeams = useMemo(() => generateBeams(), [generateBeams])
+  const topBeams = useMemo(() => generateBeams(0), [generateBeams])
+  const rightBeams = useMemo(() => generateBeams(1), [generateBeams])
+  const bottomBeams = useMemo(() => generateBeams(2), [generateBeams])
+  const leftBeams = useMemo(() => generateBeams(3), [generateBeams])
 
   const stageStyle = {
     '--warp-perspective': `${perspective}px`,
@@ -75,6 +78,8 @@ export default function WarpBackground({
           x={`${beam.x * beamSize}%`}
           delay={beam.delay}
           duration={beamDuration}
+          hue={beam.hue}
+          aspectRatio={beam.aspectRatio}
         />
       ))}
     </div>
@@ -88,10 +93,14 @@ export default function WarpBackground({
       {...props}
     >
       <div className="warp-background__stage" style={stageStyle}>
-        {renderSide('top', topBeams)}
-        {renderSide('bottom', bottomBeams)}
-        {renderSide('left', leftBeams)}
-        {renderSide('right', rightBeams)}
+        {!reducedMotion ? (
+          <>
+            {renderSide('top', topBeams)}
+            {renderSide('bottom', bottomBeams)}
+            {renderSide('left', leftBeams)}
+            {renderSide('right', rightBeams)}
+          </>
+        ) : null}
       </div>
     </div>
   )

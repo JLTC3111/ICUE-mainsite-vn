@@ -43,7 +43,14 @@ export function MagicBentoSection({
 
   useEffect(() => {
     if (!enableSpotlight || !sectionRef.current) return undefined
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      || window.matchMedia('(pointer: coarse)').matches
+    ) {
+      return undefined
+    }
 
+    const section = sectionRef.current
     const spotlight = document.createElement('div')
     spotlight.className = 'magic-bento-spotlight'
     spotlight.style.setProperty('--mb-glow', glowColor)
@@ -52,26 +59,15 @@ export function MagicBentoSection({
 
     const proximity = spotlightRadius * 0.5
     const fadeDistance = spotlightRadius * 0.75
+    const cards = Array.from(section.querySelectorAll('.magic-bento-card'))
+    let frameId = null
+    let pointerX = 0
+    let pointerY = 0
 
-    const onMove = (e) => {
-      const section = sectionRef.current
+    const renderPointer = () => {
+      frameId = null
       const spot = spotlightRef.current
       if (!section || !spot) return
-
-      const rect = section.getBoundingClientRect()
-      const inside =
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom
-
-      const cards = section.querySelectorAll('.magic-bento-card')
-
-      if (!inside) {
-        spot.style.opacity = '0'
-        cards.forEach((card) => card.style.setProperty('--glow-intensity', '0'))
-        return
-      }
 
       let minDistance = Infinity
       cards.forEach((card) => {
@@ -79,7 +75,7 @@ export function MagicBentoSection({
         const centerX = cardRect.left + cardRect.width / 2
         const centerY = cardRect.top + cardRect.height / 2
         const distance =
-          Math.hypot(e.clientX - centerX, e.clientY - centerY) -
+          Math.hypot(pointerX - centerX, pointerY - centerY) -
           Math.max(cardRect.width, cardRect.height) / 2
         const effective = Math.max(0, distance)
         minDistance = Math.min(minDistance, effective)
@@ -89,11 +85,11 @@ export function MagicBentoSection({
         else if (effective <= fadeDistance) {
           glow = (fadeDistance - effective) / (fadeDistance - proximity)
         }
-        if (enableBorderGlow) updateCardGlow(card, e.clientX, e.clientY, glow, spotlightRadius)
+        if (enableBorderGlow) updateCardGlow(card, pointerX, pointerY, glow, spotlightRadius)
       })
 
-      spot.style.left = `${e.clientX}px`
-      spot.style.top = `${e.clientY}px`
+      spot.style.left = `${pointerX}px`
+      spot.style.top = `${pointerY}px`
       const opacity =
         minDistance <= proximity
           ? 0.55
@@ -103,18 +99,25 @@ export function MagicBentoSection({
       spot.style.opacity = String(opacity)
     }
 
-    const onLeave = () => {
-      if (spotlightRef.current) spotlightRef.current.style.opacity = '0'
-      sectionRef.current
-        ?.querySelectorAll('.magic-bento-card')
-        .forEach((card) => card.style.setProperty('--glow-intensity', '0'))
+    const onMove = (event) => {
+      pointerX = event.clientX
+      pointerY = event.clientY
+      if (frameId === null) frameId = requestAnimationFrame(renderPointer)
     }
 
-    document.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseleave', onLeave)
+    const onLeave = () => {
+      if (frameId !== null) cancelAnimationFrame(frameId)
+      frameId = null
+      if (spotlightRef.current) spotlightRef.current.style.opacity = '0'
+      cards.forEach((card) => card.style.setProperty('--glow-intensity', '0'))
+    }
+
+    section.addEventListener('pointermove', onMove, { passive: true })
+    section.addEventListener('pointerleave', onLeave)
     return () => {
-      document.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseleave', onLeave)
+      if (frameId !== null) cancelAnimationFrame(frameId)
+      section.removeEventListener('pointermove', onMove)
+      section.removeEventListener('pointerleave', onLeave)
       spotlight.remove()
       spotlightRef.current = null
     }

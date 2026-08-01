@@ -274,6 +274,7 @@ export default function MetallicPaint({
   contour = 0.2,
   tintColor = '#feb3ff',
   className = '',
+  paused = false,
 }) {
   const canvasRef = useRef(null);
   const glRef = useRef(null);
@@ -290,6 +291,7 @@ export default function MetallicPaint({
 
   const [ready, setReady] = useState(false);
   const [textureReady, setTextureReady] = useState(false);
+  const [inViewport, setInViewport] = useState(true);
 
   useEffect(() => {
     speedRef.current = speed;
@@ -387,20 +389,49 @@ export default function MetallicPaint({
     const gl = glRef.current;
     if (!canvas || !gl) return;
 
-    const side = 1000 * devicePixelRatio;
-    canvas.width = side;
-    canvas.height = side;
-    gl.viewport(0, 0, side, side);
+    const resizeCanvas = () => {
+      const isCompact = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isCompact ? 1.25 : 2);
+      const cssSide = Math.max(canvas.clientWidth, canvas.clientHeight);
+      const side = Math.min(
+        isCompact ? 720 : 1200,
+        Math.max(256, Math.round((cssSide || (isCompact ? 320 : 512)) * pixelRatio)),
+      );
+      if (canvas.width === side && canvas.height === side) return;
+      canvas.width = side;
+      canvas.height = side;
+      gl.viewport(0, 0, side, side);
+      if (textureRef.current) {
+        gl.uniform1f(uniformsRef.current.u_time, animTimeRef.current);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
+    };
+
+    resizeCanvas();
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+    resizeObserver.observe(canvas);
 
     setReady(true);
 
     return () => {
+      resizeObserver.disconnect();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (textureRef.current && glRef.current) {
         glRef.current.deleteTexture(textureRef.current);
       }
     };
   }, [initGL]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInViewport(entry.isIntersecting),
+      { rootMargin: '120px' },
+    );
+    observer.observe(canvas);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!ready || !imageSrc) return;
@@ -466,13 +497,41 @@ export default function MetallicPaint({
   ]);
 
   useEffect(() => {
-    if (!ready || !textureReady) return;
+    if (!ready || !textureReady || !inViewport) {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      return undefined;
+    }
 
     const gl = glRef.current;
     const u = uniformsRef.current;
     const canvas = canvasRef.current;
     const mouse = mouseRef.current;
     if (!gl || !canvas) return;
+
+    const drawFrame = (time, advance = true) => {
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      if (advance && mouseAnimRef.current) {
+        mouse.x += (mouse.targetX - mouse.x) * 0.08;
+        mouse.y += (mouse.targetY - mouse.y) * 0.08;
+        animTimeRef.current = mouse.x * 3000 + mouse.y * 1500;
+      } else if (advance) {
+        animTimeRef.current += delta * speedRef.current;
+      }
+
+      gl.uniform1f(u.u_time, animTimeRef.current);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
+    lastTimeRef.current = performance.now();
+    if (paused) {
+      drawFrame(lastTimeRef.current, false);
+      return undefined;
+    }
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -483,31 +542,17 @@ export default function MetallicPaint({
     canvas.addEventListener('mousemove', handleMouseMove);
 
     const render = (time) => {
-      const delta = time - lastTimeRef.current;
-      lastTimeRef.current = time;
-
-      if (mouseAnimRef.current) {
-        mouse.x += (mouse.targetX - mouse.x) * 0.08;
-        mouse.y += (mouse.targetY - mouse.y) * 0.08;
-        animTimeRef.current = mouse.x * 3000 + mouse.y * 1500;
-      } else {
-        animTimeRef.current += delta * speedRef.current;
-      }
-
-      gl.uniform1f(u.u_time, animTimeRef.current);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      drawFrame(time);
       rafRef.current = requestAnimationFrame(render);
     };
 
-    lastTimeRef.current = performance.now();
     rafRef.current = requestAnimationFrame(render);
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       canvas.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [ready, textureReady]);
+  }, [ready, textureReady, paused, inViewport]);
 
   return <canvas ref={canvasRef} className={`paint-container ${className}`.trim()} />;
 }
-

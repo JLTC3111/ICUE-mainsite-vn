@@ -497,7 +497,46 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
 }
 
 export function bindBackgroundVideoSampling(onFrame) {
-  const bound = new WeakSet()
+  const bound = new Set()
+  const frameCallbackIds = new Map()
+  let stopped = false
+
+  const unbindOne = (video) => {
+    video.removeEventListener('loadeddata', onFrame)
+    video.removeEventListener('loadedmetadata', onFrame)
+    video.removeEventListener('play', onFrame)
+    video.removeEventListener('seeked', onFrame)
+    video.removeEventListener('timeupdate', onFrame)
+    const callbackId = frameCallbackIds.get(video)
+    if (callbackId !== undefined && typeof video.cancelVideoFrameCallback === 'function') {
+      video.cancelVideoFrameCallback(callbackId)
+    }
+    frameCallbackIds.delete(video)
+    bound.delete(video)
+  }
+
+  const scheduleFrame = (video) => {
+    if (
+      stopped
+      || !video.isConnected
+      || typeof video.requestVideoFrameCallback !== 'function'
+      || frameCallbackIds.has(video)
+    ) {
+      return
+    }
+
+    const callbackId = video.requestVideoFrameCallback(() => {
+      frameCallbackIds.delete(video)
+      if (stopped) return
+      if (!video.isConnected) {
+        unbindOne(video)
+        return
+      }
+      onFrame()
+      scheduleFrame(video)
+    })
+    frameCallbackIds.set(video, callbackId)
+  }
 
   const bindOne = (video) => {
     if (!(video instanceof HTMLVideoElement) || bound.has(video)) return
@@ -506,34 +545,28 @@ export function bindBackgroundVideoSampling(onFrame) {
     video.addEventListener('loadedmetadata', onFrame)
     video.addEventListener('play', onFrame)
     video.addEventListener('seeked', onFrame)
-    video.addEventListener('timeupdate', onFrame)
-
-    if (typeof video.requestVideoFrameCallback === 'function') {
-      const loop = () => {
-        onFrame()
-        if (!video.isConnected) return
-        video.requestVideoFrameCallback(loop)
-      }
-      video.requestVideoFrameCallback(loop)
+    if (typeof video.requestVideoFrameCallback !== 'function') {
+      video.addEventListener('timeupdate', onFrame)
     }
+
+    scheduleFrame(video)
   }
 
   getBackgroundVideos().forEach(bindOne)
 
   const observer = new MutationObserver(() => {
+    bound.forEach((video) => {
+      if (!video.isConnected) unbindOne(video)
+    })
     getBackgroundVideos().forEach(bindOne)
     onFrame()
   })
   observer.observe(document.body, { childList: true, subtree: true })
 
   return () => {
+    stopped = true
     observer.disconnect()
-    getBackgroundVideos().forEach((video) => {
-      video.removeEventListener('loadeddata', onFrame)
-      video.removeEventListener('loadedmetadata', onFrame)
-      video.removeEventListener('play', onFrame)
-      video.removeEventListener('seeked', onFrame)
-      video.removeEventListener('timeupdate', onFrame)
-    })
+    Array.from(bound).forEach(unbindOne)
+    frameCallbackIds.clear()
   }
 }

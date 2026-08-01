@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { bindBackgroundVideoSampling } from './backgroundSampling.js'
 
 const COLOR_PROBE = typeof document !== 'undefined' ? document.createElement('span') : null
 const OPAQUE_ALPHA = 0.72
@@ -246,12 +247,6 @@ function sampleRenderedMediaAt(x, y) {
   return averageRgb(samples)
 }
 
-function readVisibleBackground(x, y, target) {
-  const media = sampleRenderedMediaAt(x, y)
-  if (media) return media
-  return target ? readBackground(target) : null
-}
-
 function sampleBackgroundAt(x, y, excludeRoot) {
   const media = sampleRenderedMediaAt(x, y)
   if (media) return media
@@ -311,48 +306,6 @@ function samplePointsFor(rect, viewWidth) {
   ]
 }
 
-function bindVideoSampling(onFrame) {
-  const bound = new WeakSet()
-
-  const bindOne = (video) => {
-    if (!(video instanceof HTMLVideoElement) || bound.has(video)) return
-    bound.add(video)
-    video.addEventListener('loadeddata', onFrame)
-    video.addEventListener('loadedmetadata', onFrame)
-    video.addEventListener('play', onFrame)
-    video.addEventListener('seeked', onFrame)
-    video.addEventListener('timeupdate', onFrame)
-
-    if (typeof video.requestVideoFrameCallback === 'function') {
-      const loop = () => {
-        onFrame()
-        if (!video.isConnected) return
-        video.requestVideoFrameCallback(loop)
-      }
-      video.requestVideoFrameCallback(loop)
-    }
-  }
-
-  getBackgroundVideos().forEach(bindOne)
-
-  const observer = new MutationObserver(() => {
-    getBackgroundVideos().forEach(bindOne)
-    onFrame()
-  })
-  observer.observe(document.body, { childList: true, subtree: true })
-
-  return () => {
-    observer.disconnect()
-    getBackgroundVideos().forEach((video) => {
-      video.removeEventListener('loadeddata', onFrame)
-      video.removeEventListener('loadedmetadata', onFrame)
-      video.removeEventListener('play', onFrame)
-      video.removeEventListener('seeked', onFrame)
-      video.removeEventListener('timeupdate', onFrame)
-    })
-  }
-}
-
 export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
   const [color, setColor] = useState('#ffffff')
 
@@ -381,28 +334,58 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
 
     if (!samples.length) return
     setColor(pickIconColor(averageRgb(samples)))
-  }, [contentKey, enabled, ref])
+  }, [enabled, ref])
 
   useEffect(() => {
     if (!enabled) return undefined
 
-    let debounceId = null
-    const scheduleSample = () => {
-      if (debounceId) window.clearTimeout(debounceId)
-      debounceId = window.setTimeout(sample, 48)
+    const throttleMs = 120
+    let sampleTimer = null
+    let lastSampleAt = 0
+
+    const runSample = () => {
+      if (document.hidden) return
+      lastSampleAt = performance.now()
+      sample()
     }
 
-    sample()
+    const scheduleSample = () => {
+      if (document.hidden) return
+      const remaining = throttleMs - (performance.now() - lastSampleAt)
+      if (remaining <= 0) {
+        if (sampleTimer !== null) window.clearTimeout(sampleTimer)
+        sampleTimer = null
+        runSample()
+        return
+      }
+      if (sampleTimer !== null) return
+      sampleTimer = window.setTimeout(() => {
+        sampleTimer = null
+        runSample()
+      }, remaining)
+    }
 
-    window.addEventListener('scroll', sample, { passive: true, capture: true })
-    window.addEventListener('resize', sample)
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (sampleTimer !== null) window.clearTimeout(sampleTimer)
+        sampleTimer = null
+      } else {
+        scheduleSample()
+      }
+    }
+
+    runSample()
+
+    window.addEventListener('scroll', scheduleSample, { passive: true, capture: true })
+    window.addEventListener('resize', scheduleSample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
     window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
     window.addEventListener('icue:homeVideoEnabled', scheduleSample)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     const viewport = window.visualViewport
-    viewport?.addEventListener('resize', sample)
-    viewport?.addEventListener('scroll', sample)
+    viewport?.addEventListener('resize', scheduleSample)
+    viewport?.addEventListener('scroll', scheduleSample)
 
     const content = document.getElementById('content')
     const observer = content
@@ -415,18 +398,19 @@ export function useAdaptiveIconColor(ref, enabled = true, contentKey = '') {
       attributeFilter: ['class', 'style'],
     })
 
-    const unbindVideos = bindVideoSampling(scheduleSample)
-    const id = window.setInterval(sample, 500)
+    const unbindVideos = bindBackgroundVideoSampling(scheduleSample)
+    const id = window.setInterval(scheduleSample, 500)
 
     return () => {
-      if (debounceId) window.clearTimeout(debounceId)
-      window.removeEventListener('scroll', sample, true)
-      window.removeEventListener('resize', sample)
+      if (sampleTimer !== null) window.clearTimeout(sampleTimer)
+      window.removeEventListener('scroll', scheduleSample, true)
+      window.removeEventListener('resize', scheduleSample)
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
       window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       window.removeEventListener('icue:homeVideoEnabled', scheduleSample)
-      viewport?.removeEventListener('resize', sample)
-      viewport?.removeEventListener('scroll', sample)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      viewport?.removeEventListener('resize', scheduleSample)
+      viewport?.removeEventListener('scroll', scheduleSample)
       observer?.disconnect()
       unbindVideos()
       window.clearInterval(id)

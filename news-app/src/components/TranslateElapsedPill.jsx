@@ -31,27 +31,32 @@ export default function TranslateElapsedPill({
   useEffect(() => {
     if (active) {
       latestMsRef.current = elapsedMs
-      setDisplayMs(elapsedMs)
     }
   }, [active, elapsedMs])
 
   useEffect(() => {
     if (active) {
       wasActiveRef.current = true
-      setVisible(true)
-      return undefined
+      const frameId = requestAnimationFrame(() => setVisible(true))
+      return () => cancelAnimationFrame(frameId)
     }
 
     if (!wasActiveRef.current) return undefined
 
-    setDisplayMs(latestMsRef.current)
+    const stoppedAt = latestMsRef.current
+    const frameId = requestAnimationFrame(() => setDisplayMs(stoppedAt))
     const timer = setTimeout(() => {
       setVisible(false)
       wasActiveRef.current = false
     }, lingerMs)
 
-    return () => clearTimeout(timer)
+    return () => {
+      cancelAnimationFrame(frameId)
+      clearTimeout(timer)
+    }
   }, [active, lingerMs])
+
+  const shownMs = active ? elapsedMs : displayMs
 
   return (
     <AnimatePresence>
@@ -76,7 +81,7 @@ export default function TranslateElapsedPill({
             {active ? busyLabel : doneLabel}
           </span>
           <span className="translate-elapsed-pill__ms">
-            <SlidingNumber value={displayMs} className="translate-elapsed-pill__number" />
+            <SlidingNumber value={shownMs} className="translate-elapsed-pill__number" />
             <span className="translate-elapsed-pill__unit">{msLabel}</span>
           </span>
         </motion.span>
