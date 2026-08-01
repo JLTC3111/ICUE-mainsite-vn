@@ -319,7 +319,15 @@
     "clear": "クリア",
     "open": "検索を開く",
     "back": "戻る",
-    "showing": "「{{query}}」の検索結果"
+    "showing": "「{{query}}」の検索結果",
+    "resultsCount": "一致する{{total}}件のうち{{shown}}件を表示",
+    "activeFilters": "適用中の記事フィルター",
+    "activeSearch": "検索:「{{query}}」",
+    "activeCategory": "カテゴリー: {{category}}",
+    "clearSearch": "検索フィルター「{{query}}」を解除",
+    "clearCategory": "{{category}}のカテゴリーフィルターを解除",
+    "clearAll": "すべて解除",
+    "noFilteredResults": "選択したフィルターに一致する記事はありません。"
   },
   "gallery": {
     "ariaLabel": "ニュース記事。ベントグリッドを閲覧し、記事をクリックして開きます。",

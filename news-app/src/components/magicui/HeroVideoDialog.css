@@ -27,6 +27,55 @@
   transition: filter 0.2s ease, transform 0.2s ease;
 }
 
+.hero-video-dialog__thumb--fallback {
+  position: relative;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.32);
+  background:
+    radial-gradient(circle at 25% 18%, rgba(29, 183, 255, 0.25), transparent 34%),
+    radial-gradient(circle at 82% 78%, rgba(200, 255, 0, 0.12), transparent 34%),
+    linear-gradient(145deg, #1c2026 0%, #090a0d 74%);
+  pointer-events: none;
+}
+
+.hero-video-dialog__thumb--fallback::before,
+.hero-video-dialog__thumb--fallback::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  height: 10px;
+  opacity: 0.22;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 12px,
+    rgba(255, 255, 255, 0.7) 12px 20px
+  );
+}
+
+.hero-video-dialog__thumb--fallback::before {
+  top: 12px;
+}
+
+.hero-video-dialog__thumb--fallback::after {
+  bottom: 12px;
+}
+
+.hero-video-dialog__fallback-icon {
+  position: absolute;
+  right: clamp(16px, 4vw, 32px);
+  bottom: clamp(28px, 6vw, 48px);
+}
+
+.icue-app--news-theme-dark .hero-video-dialog__thumb--fallback {
+  color: rgba(255, 255, 255, 0.5);
+  background:
+    radial-gradient(circle at 25% 18%, rgba(29, 183, 255, 0.42), transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(200, 255, 0, 0.18), transparent 36%),
+    linear-gradient(145deg, #3b4652 0%, #171c23 78%);
+  outline: 1px solid rgba(255, 255, 255, 0.2);
+  outline-offset: -1px;
+}
+
 video.hero-video-dialog__thumb {
   background: #000;
   pointer-events: none;

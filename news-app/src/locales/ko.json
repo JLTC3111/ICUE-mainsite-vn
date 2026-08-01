@@ -319,7 +319,15 @@
     "clear": "지우기",
     "open": "검색 열기",
     "back": "뒤로",
-    "showing": "“{{query}}” 검색 결과"
+    "showing": "“{{query}}” 검색 결과",
+    "resultsCount": "일치하는 기사 {{total}}개 중 {{shown}}개 표시",
+    "activeFilters": "적용 중인 기사 필터",
+    "activeSearch": "검색: “{{query}}”",
+    "activeCategory": "카테고리: {{category}}",
+    "clearSearch": "검색 필터 “{{query}}” 지우기",
+    "clearCategory": "{{category}} 카테고리 필터 지우기",
+    "clearAll": "모두 지우기",
+    "noFilteredResults": "선택한 필터와 일치하는 기사가 없습니다."
   },
   "gallery": {
     "ariaLabel": "뉴스 기사. 벤토 그리드를 탐색하고 기사를 클릭하여 엽니다.",

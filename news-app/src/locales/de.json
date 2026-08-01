@@ -319,7 +319,15 @@
     "clear": "Löschen",
     "open": "Suche öffnen",
     "back": "Zurück",
-    "showing": "Ergebnisse für „{{query}}“"
+    "showing": "Ergebnisse für „{{query}}“",
+    "resultsCount": "{{shown}} von {{total}} passenden Artikeln werden angezeigt",
+    "activeFilters": "Aktive Artikelfilter",
+    "activeSearch": "Suche: „{{query}}“",
+    "activeCategory": "Kategorie: {{category}}",
+    "clearSearch": "Suchfilter „{{query}}“ entfernen",
+    "clearCategory": "Kategoriefilter {{category}} entfernen",
+    "clearAll": "Alle entfernen",
+    "noFilteredResults": "Keine Artikel entsprechen den ausgewählten Filtern."
   },
   "gallery": {
     "ariaLabel": "Nachrichtenartikel. Durchsuchen Sie das Bento-Raster und klicken Sie auf einen Artikel, um ihn zu öffnen.",

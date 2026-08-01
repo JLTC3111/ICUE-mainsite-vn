@@ -93,6 +93,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
                 thumbnailSrc={v.poster_url || undefined}
                 thumbnailAlt={v.info || t('article.playVideo')}
                 nativeVideo
+                posterlessPlaceholder={isCompact}
               />
               {v.info && <p className="media-gallery__video-info">{v.info}</p>}
             </div>

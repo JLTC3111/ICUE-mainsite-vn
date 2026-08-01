@@ -319,7 +319,15 @@
     "clear": "Effacer",
     "open": "Ouvrir la recherche",
     "back": "Retour",
-    "showing": "Résultats pour « {{query}} »"
+    "showing": "Résultats pour « {{query}} »",
+    "resultsCount": "Affichage de {{shown}} résultats sur {{total}}",
+    "activeFilters": "Filtres d’articles actifs",
+    "activeSearch": "Recherche : « {{query}} »",
+    "activeCategory": "Catégorie : {{category}}",
+    "clearSearch": "Effacer le filtre de recherche « {{query}} »",
+    "clearCategory": "Effacer le filtre de catégorie {{category}}",
+    "clearAll": "Tout effacer",
+    "noFilteredResults": "Aucun article ne correspond aux filtres sélectionnés."
   },
   "gallery": {
     "ariaLabel": "Articles. Parcourez la grille bento et cliquez sur un article pour l'ouvrir.",

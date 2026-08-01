@@ -1,21 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { motion, MotionConfig } from 'motion/react'
 import { ArrowLeft, Search, X } from 'lucide-react'
 import useClickOutside from '../hooks/useClickOutside'
 import './ArticleSearch.css'
 
-const transition = {
-  type: 'spring',
-  bounce: 0.1,
-  duration: 0.2,
-}
-
-function ToolbarButton({ children, onClick, disabled, ariaLabel, type = 'button' }) {
+function ToolbarButton({ children, onClick, disabled, ariaLabel, type = 'button', className = '' }) {
   return (
     <button
-      className="article-search__btn"
+      className={`article-search__btn${className ? ` ${className}` : ''}`}
       type={type}
       onClick={onClick}
       disabled={disabled}
@@ -76,80 +69,87 @@ export default function ArticleSearch({ open, onOpenChange }) {
     e?.preventDefault()
     const q = value.trim()
     if (location.pathname === '/') {
-      setParams(q ? { q } : {})
+      const nextParams = new URLSearchParams(params)
+      if (q) nextParams.set('q', q)
+      else nextParams.delete('q')
+      setParams(nextParams)
     } else {
       navigate(q ? `/?q=${encodeURIComponent(q)}` : '/')
     }
     setIsOpen(false)
-  }, [value, location.pathname, navigate, setParams, setIsOpen])
+  }, [value, location.pathname, navigate, params, setParams, setIsOpen])
 
   const clear = useCallback(() => {
     setDraft({ source: queryValue, value: '' })
     if (location.pathname === '/') {
-      setParams({})
+      const nextParams = new URLSearchParams(params)
+      nextParams.delete('q')
+      setParams(nextParams, { replace: true })
     } else {
       navigate('/')
     }
     inputRef.current?.focus()
-  }, [location.pathname, navigate, queryValue, setParams])
+  }, [location.pathname, navigate, params, queryValue, setParams])
 
   return (
-    <MotionConfig transition={transition}>
-      <div
-        ref={containerRef}
-        className={`article-search${isOpen ? ' is-open' : ''}${hasQuery ? ' has-query' : ''}`}
-      >
-        <div className="article-search__shell">
-          <motion.div
-            className="article-search__motion"
-            animate={{ width: isOpen ? 300 : 36 }}
-            initial={false}
-          >
-            <div className="article-search__inner">
-              {!isOpen ? (
-                <div className="article-search__row">
-                  <ToolbarButton
-                    onClick={() => setIsOpen(true)}
-                    ariaLabel={t('search.open')}
-                  >
-                    <Search className="article-search__icon" strokeWidth={2} aria-hidden />
-                  </ToolbarButton>
-                </div>
-              ) : (
-                <form className="article-search__row" onSubmit={submit} role="search">
-                  <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
-                    <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
-                  </ToolbarButton>
-                  <div className="article-search__field">
-                    <label className="visually-hidden" htmlFor="article-search-input">
-                      {t('search.label')}
-                    </label>
-                    <input
-                      ref={inputRef}
-                      id="article-search-input"
-                      type="search"
-                      className="article-search__input"
-                      placeholder={t('search.placeholder')}
-                      value={value}
-                      onChange={(e) => setDraft({ source: queryValue, value: e.target.value })}
-                      autoComplete="off"
-                      enterKeyHint="search"
-                      autoFocus
-                    />
-                    <div className="article-search__field-actions">
-                      {value ? (
-                        <ToolbarButton onClick={clear} ariaLabel={t('search.clear')}>
-                          <X className="article-search__icon article-search__icon--sm" strokeWidth={2} aria-hidden />
-                        </ToolbarButton>
-                      ) : null}
-                    </div>
+    <div
+      ref={containerRef}
+      className={`article-search${isOpen ? ' is-open' : ''}${hasQuery ? ' has-query' : ''}`}
+    >
+      <div className="article-search__shell">
+        <div className="article-search__motion">
+          <div className="article-search__inner">
+            {!isOpen ? (
+              <div className="article-search__row">
+                <ToolbarButton
+                  onClick={() => setIsOpen(true)}
+                  ariaLabel={t('search.open')}
+                >
+                  <Search className="article-search__icon" strokeWidth={2} aria-hidden />
+                  {hasQuery && <span className="article-search__active-dot" aria-hidden="true" />}
+                </ToolbarButton>
+              </div>
+            ) : (
+              <form className="article-search__row" onSubmit={submit} role="search">
+                <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
+                  <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
+                </ToolbarButton>
+                <div className="article-search__field">
+                  <label className="visually-hidden" htmlFor="article-search-input">
+                    {t('search.label')}
+                  </label>
+                  <input
+                    ref={inputRef}
+                    id="article-search-input"
+                    type="search"
+                    className="article-search__input"
+                    placeholder={t('search.placeholder')}
+                    value={value}
+                    onChange={(e) => setDraft({ source: queryValue, value: e.target.value })}
+                    autoComplete="off"
+                    enterKeyHint="search"
+                    autoFocus
+                  />
+                  <div className="article-search__field-actions">
+                    {value ? (
+                      <ToolbarButton onClick={clear} ariaLabel={t('search.clear')}>
+                        <X className="article-search__icon article-search__icon--sm" strokeWidth={2} aria-hidden />
+                      </ToolbarButton>
+                    ) : null}
+                    <ToolbarButton
+                      type="submit"
+                      className="article-search__btn--submit"
+                      ariaLabel={t('search.submit')}
+                    >
+                      <Search className="article-search__icon article-search__icon--sm" strokeWidth={2.2} aria-hidden />
+                    </ToolbarButton>
                   </div>
-                </form>
-              )}
-            </div>
-          </motion.div>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
-    </MotionConfig>
+    </div>
   )
 }

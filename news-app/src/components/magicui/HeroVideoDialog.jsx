@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Play, X } from 'lucide-react'
+import { Film, Play, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import './HeroVideoDialog.css'
@@ -33,6 +33,7 @@ export default function HeroVideoDialog({
   thumbnailSrc,
   thumbnailAlt = 'Video thumbnail',
   nativeVideo = false,
+  posterlessPlaceholder = false,
   className,
 }) {
   const { t } = useTranslation()
@@ -205,7 +206,14 @@ export default function HeroVideoDialog({
         aria-label={t('article.playVideo')}
         onClick={openDialog}
       >
-        {nativeVideo && !thumbnailSrc ? (
+        {nativeVideo && !thumbnailSrc && posterlessPlaceholder ? (
+          <span
+            className="hero-video-dialog__thumb hero-video-dialog__thumb--fallback"
+            aria-hidden="true"
+          >
+            <Film className="hero-video-dialog__fallback-icon" size={64} strokeWidth={1.35} />
+          </span>
+        ) : nativeVideo && !thumbnailSrc ? (
           <video
             src={videoSrc}
             className="hero-video-dialog__thumb"

@@ -319,7 +319,15 @@
     "clear": "Clear",
     "open": "Open search",
     "back": "Back",
-    "showing": "Showing results for “{{query}}”"
+    "showing": "Showing results for “{{query}}”",
+    "resultsCount": "Showing {{shown}} of {{total}} matching articles",
+    "activeFilters": "Active article filters",
+    "activeSearch": "Search: “{{query}}”",
+    "activeCategory": "Category: {{category}}",
+    "clearSearch": "Clear search filter “{{query}}”",
+    "clearCategory": "Clear category filter {{category}}",
+    "clearAll": "Clear all",
+    "noFilteredResults": "No articles match the selected filters."
   },
   "gallery": {
     "ariaLabel": "News articles. Browse the bento grid and click an article to open it.",

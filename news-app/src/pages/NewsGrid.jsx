@@ -32,7 +32,7 @@ export default function NewsGrid() {
   const { t } = useTranslation()
   const profile = usePerformanceProfile()
   const { reduceMotion, simplifyHero, pauseRetroGrid } = profile
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
@@ -95,6 +95,20 @@ export default function NewsGrid() {
   )
 
   const hasMoreArticles = filtered.length > visibleArticles.length
+  const hasSearchFilter = Boolean(searchQuery.trim())
+  const hasCategoryFilter = activeCat !== NEWSROOM_DEFAULT_CATEGORY
+  const hasActiveFilters = hasSearchFilter || hasCategoryFilter
+
+  const clearSearchFilter = useCallback(() => {
+    const nextParams = new URLSearchParams(searchParams)
+    nextParams.delete('q')
+    setSearchParams(nextParams, { replace: true })
+  }, [searchParams, setSearchParams])
+
+  const clearAllFilters = useCallback(() => {
+    setActiveCat(NEWSROOM_DEFAULT_CATEGORY)
+    if (hasSearchFilter) clearSearchFilter()
+  }, [clearSearchFilter, hasSearchFilter])
 
   return (
     <div className={`news-page${isDark ? ' news-page--dark' : ''}`}>
@@ -141,6 +155,73 @@ export default function NewsGrid() {
         <CategoryFilter value={activeCat} onChange={setActiveCat} />
       )}
 
+      {state === 'ready' && (
+        <div className="icue-container news-results-bar">
+          <div className={`news-results-bar__surface${hasActiveFilters ? ' has-filters' : ''}`}>
+            <p
+              className="news-results-bar__count"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {hasActiveFilters
+                ? t('search.resultsCount', {
+                    shown: visibleArticles.length,
+                    total: filtered.length,
+                  })
+                : t('news.showingCount', {
+                    shown: visibleArticles.length,
+                    total: filtered.length,
+                  })}
+            </p>
+
+            {hasActiveFilters && (
+              <div
+                className="news-results-bar__filters"
+                role="group"
+                aria-label={t('search.activeFilters')}
+              >
+                {hasSearchFilter && (
+                  <button
+                    type="button"
+                    className="news-filter-chip"
+                    onClick={clearSearchFilter}
+                    aria-label={t('search.clearSearch', { query: searchQuery.trim() })}
+                  >
+                    <span>{t('search.activeSearch', { query: searchQuery.trim() })}</span>
+                    <span className="news-filter-chip__remove" aria-hidden="true">×</span>
+                  </button>
+                )}
+                {hasCategoryFilter && (
+                  <button
+                    type="button"
+                    className="news-filter-chip news-filter-chip--category"
+                    onClick={() => setActiveCat(NEWSROOM_DEFAULT_CATEGORY)}
+                    aria-label={t('search.clearCategory', {
+                      category: t(`categories.${activeCat}`),
+                    })}
+                  >
+                    <span>{t('search.activeCategory', {
+                      category: t(`categories.${activeCat}`),
+                    })}</span>
+                    <span className="news-filter-chip__remove" aria-hidden="true">×</span>
+                  </button>
+                )}
+                {hasSearchFilter && hasCategoryFilter && (
+                  <button
+                    type="button"
+                    className="news-results-bar__clear"
+                    onClick={clearAllFilters}
+                  >
+                    {t('search.clearAll')}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div
         className={`icue-container${
           isCompactLayout ? ' icue-container--compact-gallery' : ' icue-container--bento-gallery'
@@ -151,7 +232,9 @@ export default function NewsGrid() {
         )}
 
         {(state === 'ready' && filtered.length === 0) && (
-          <p className="news-empty">{searchQuery ? t('search.noResults') : t('news.empty')}</p>
+          <p className="news-empty">
+            {hasActiveFilters ? t('search.noFilteredResults') : t('news.empty')}
+          </p>
         )}
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
@@ -165,12 +248,6 @@ export default function NewsGrid() {
 
         {state === 'ready' && hasMoreArticles && (
           <div className="news-load-more">
-            <p className="news-load-more__count">
-              {t('news.showingCount', {
-                shown: visibleArticles.length,
-                total: filtered.length,
-              })}
-            </p>
             <button
               type="button"
               className="news-load-more__btn"

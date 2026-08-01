@@ -77,10 +77,6 @@ function AuthorToolsMenu({ onNavigate }) {
     }
   }, [menuOpen])
 
-  useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
-
   const go = useCallback(() => {
     setMenuOpen(false)
     onNavigate?.()
@@ -229,7 +225,7 @@ function Header() {
             </a>
           </div>
 
-          {isAuthed && <AuthorToolsMenu onNavigate={close} />}
+          {isAuthed && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
             {/* Keyed by account so notification state resets on user switch. */}
@@ -241,7 +237,7 @@ function Header() {
                 <span className="icue-header__logout-label">{t('nav.logout')}</span>
               </button>
             ) : (
-              <Link to="/login" className="btn btn-primary btn-sm" onClick={close}>
+              <Link to="/login" className="btn btn-sm icue-header__login-btn" onClick={close}>
                 {t('nav.login')}
               </Link>
             )}

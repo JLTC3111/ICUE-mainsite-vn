@@ -2,6 +2,8 @@ import { memo, useCallback, useId, useState } from 'react'
 import { Play, Upload, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { MEDIA_LIMITS } from '../lib/supabase'
+import { NEWSROOM_COMPACT_QUERY } from '../lib/newsroom'
+import useMediaQuery from '../hooks/useMediaQuery'
 import { ImageMediaIcon, VideoMediaIcon } from './MediaUploadIcons'
 import './MediaUploader.css'
 
@@ -21,6 +23,7 @@ function MediaUploader({ items, onChange }) {
   const [dragging, setDragging] = useState(false)
   const [notice, setNotice] = useState('')
   const [preview, setPreview] = useState(null)
+  const isCompact = useMediaQuery(NEWSROOM_COMPACT_QUERY)
 
   const images = items.filter((m) => m.kind === 'image')
   const videos = items.filter((m) => m.kind === 'video')
@@ -132,7 +135,15 @@ function MediaUploader({ items, onChange }) {
                 </button>
               ) : (
                 <>
-                  <video src={m.url} muted playsInline preload="metadata" />
+                  {m.poster_url ? (
+                    <img src={m.poster_url} alt="" loading="lazy" decoding="async" />
+                  ) : isCompact ? (
+                    <span className="media-thumb__video-fallback" aria-hidden>
+                      <VideoMediaIcon size={30} />
+                    </span>
+                  ) : (
+                    <video src={m.url} muted playsInline preload="metadata" />
+                  )}
                   <span className="media-thumb__play" aria-hidden>
                     <Play size={18} strokeWidth={2} fill="currentColor" />
                   </span>

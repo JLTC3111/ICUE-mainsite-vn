@@ -319,7 +319,15 @@
     "clear": "Xóa",
     "open": "Mở tìm kiếm",
     "back": "Quay lại",
-    "showing": "Kết quả cho “{{query}}”"
+    "showing": "Kết quả cho “{{query}}”",
+    "resultsCount": "Đang hiển thị {{shown}} / {{total}} bài viết phù hợp",
+    "activeFilters": "Bộ lọc bài viết đang áp dụng",
+    "activeSearch": "Tìm kiếm: “{{query}}”",
+    "activeCategory": "Danh mục: {{category}}",
+    "clearSearch": "Xóa bộ lọc tìm kiếm “{{query}}”",
+    "clearCategory": "Xóa bộ lọc danh mục {{category}}",
+    "clearAll": "Xóa tất cả",
+    "noFilteredResults": "Không có bài viết nào phù hợp với các bộ lọc đã chọn."
   },
   "gallery": {
     "ariaLabel": "Danh sách bài viết. Duyệt lưới bento và nhấp vào bài để mở.",
