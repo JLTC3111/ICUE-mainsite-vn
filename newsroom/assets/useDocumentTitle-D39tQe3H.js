@@ -1,1 +1,0 @@
-import{a as e}from"./rolldown-runtime-Cyuzqnbw.js";import{b as t}from"./editor-C2xcefAX.js";var n=e(t(),1),r=`ICUE News`;function i(e){(0,n.useEffect)(()=>{e&&(document.title=`${e} · ${r}`)},[e])}export{i as t};

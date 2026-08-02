@@ -659,18 +659,6 @@
 }
 
 @media (max-width: 480px) {
-  .icue-header__inner {
-    gap: 8px;
-    padding-inline: 12px;
-  }
-
-  .icue-header__theme-toggle--mobile.newsroom-theme-toggle--compact-label {
-    width: 40px;
-    height: 40px;
-    margin-right: 0;
-    padding: 0;
-  }
-
   .icue-header__theme-toggle--mobile .animated-theme-toggler__label {
     display: none;
   }
@@ -678,7 +666,7 @@
 
 /* Main-site drawer + newsroom burger on dark newsroom home */
 .nav-drawer__toggle {
-  border-radius: 0;
+  border-radius: 15px;
 }
 
 .icue-app--news-theme-dark .nav-drawer__toggle {

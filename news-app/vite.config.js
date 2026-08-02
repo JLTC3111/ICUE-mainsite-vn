@@ -51,14 +51,45 @@ export default defineConfig(({ mode }) => {
       reportCompressedSize: false,
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (!id.includes('node_modules')) return
-            if (id.includes('@tiptap') || id.includes('prosemirror')) return 'editor'
-            if (id.includes('@supabase')) return 'supabase'
-            if (id.includes('i18next') || id.includes('react-i18next')) return 'i18n'
-            if (id.includes('motion') || id.includes('framer-motion')) return 'motion'
-            if (id.includes('react') || id.includes('scheduler')) return 'react'
-            return 'vendor'
+          // advancedChunks, not manualChunks: under rolldown the manualChunks
+          // compat layer ignored our placement for CommonJS-wrapped packages,
+          // so React landed inside the `editor` chunk and dragged all of
+          // TipTap/ProseMirror (~480 kB) into the entry graph on every page.
+          // Priorities make React its own base chunk that `editor` depends on.
+          advancedChunks: {
+            groups: [
+              {
+                name: 'react',
+                test: /node_modules[/\\](react|react-dom|scheduler|use-sync-external-store)[/\\]/,
+                priority: 100,
+              },
+              {
+                name: 'editor',
+                test: /node_modules[/\\](@tiptap|prosemirror-|linkifyjs|orderedmap|rope-sequence|w3c-keyname)/,
+                priority: 90,
+              },
+              {
+                name: 'supabase',
+                test: /node_modules[/\\](@supabase|iceberg-js)/,
+                priority: 80,
+              },
+              {
+                name: 'i18n',
+                test: /node_modules[/\\](i18next|react-i18next|i18next-browser-languagedetector)[/\\]/,
+                priority: 70,
+              },
+              {
+                name: 'motion',
+                test: /node_modules[/\\](motion|motion-dom|motion-utils|framer-motion)[/\\]/,
+                priority: 60,
+              },
+              {
+                name: 'router',
+                test: /node_modules[/\\]react-router/,
+                priority: 50,
+              },
+              { name: 'vendor', test: /node_modules/, priority: 1 },
+            ],
           },
         },
       },
