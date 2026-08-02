@@ -182,14 +182,22 @@ function Header() {
           )}
           <a href={base} className="icue-header__brand" onClick={close} aria-label={`${t('brand')} — icue.vn`}>
             <span className="icue-header__logo">{t('brand')}</span>
-            <span className="icue-header__tag">{t('brandBadge')}</span>
           </a>
+          <NavLink
+            to="/"
+            end
+            className="icue-header__tag"
+            onClick={close}
+            aria-label={t('nav.news')}
+          >
+            {t('brandBadge')}
+          </NavLink>
         </div>
 
-        {isReaderRoute && pathname.startsWith('/article/') && (
+        {isReaderRoute && (
           <NewsroomThemeToggle
             showCompactLabel
-            className="animated-theme-toggler--header icue-header__theme-toggle icue-header__theme-toggle--article-mobile"
+            className="animated-theme-toggler--header icue-header__theme-toggle icue-header__theme-toggle--mobile"
           />
         )}
 

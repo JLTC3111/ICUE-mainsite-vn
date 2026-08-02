@@ -1,11 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, Search, X } from 'lucide-react'
+import { ArrowLeft, X } from 'lucide-react'
+import DevIcon218 from './icons/DevIcon218'
 import useClickOutside from '../hooks/useClickOutside'
 import './ArticleSearch.css'
 
-function ToolbarButton({ children, onClick, disabled, ariaLabel, type = 'button', className = '' }) {
+function ToolbarButton({
+  children,
+  onClick,
+  disabled,
+  ariaLabel,
+  type = 'button',
+  className = '',
+  ...buttonProps
+}) {
   return (
     <button
       className={`article-search__btn${className ? ` ${className}` : ''}`}
@@ -13,6 +22,7 @@ function ToolbarButton({ children, onClick, disabled, ariaLabel, type = 'button'
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
+      {...buttonProps}
     >
       {children}
     </button>
@@ -103,14 +113,24 @@ export default function ArticleSearch({ open, onOpenChange }) {
               <div className="article-search__row">
                 <ToolbarButton
                   onClick={() => setIsOpen(true)}
-                  ariaLabel={t('search.open')}
+                  ariaLabel={hasQuery
+                    ? `${t('search.open')}. ${t('search.showing', { query: queryValue.trim() })}`
+                    : t('search.open')}
+                  aria-expanded={isOpen}
+                  aria-controls="article-search-form"
                 >
-                  <Search className="article-search__icon" strokeWidth={2} aria-hidden />
+                  <DevIcon218 className="article-search__icon article-search__icon--lens" />
                   {hasQuery && <span className="article-search__active-dot" aria-hidden="true" />}
                 </ToolbarButton>
               </div>
             ) : (
-              <form className="article-search__row" onSubmit={submit} role="search">
+              <form
+                id="article-search-form"
+                className="article-search__row"
+                onSubmit={submit}
+                role="search"
+                aria-label={t('search.label')}
+              >
                 <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
                   <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
                 </ToolbarButton>
@@ -141,7 +161,7 @@ export default function ArticleSearch({ open, onOpenChange }) {
                       className="article-search__btn--submit"
                       ariaLabel={t('search.submit')}
                     >
-                      <Search className="article-search__icon article-search__icon--sm" strokeWidth={2.2} aria-hidden />
+                      <DevIcon218 className="article-search__icon article-search__icon--lens article-search__icon--sm" />
                     </ToolbarButton>
                   </div>
                 </div>

@@ -8,7 +8,6 @@ import ArticleMasonry from '../components/ArticleMasonry'
 import ArticleParallaxCarousel from '../components/ArticleParallaxCarousel'
 import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
-import NewsroomThemeToggle from '../components/NewsroomThemeToggle'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { usePageResume } from '../hooks/usePageResume'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
@@ -142,10 +141,6 @@ export default function NewsGrid() {
             <p className="news-hero__subtitle">{t('news.subtitle')}</p>
           </div>
           <div className="news-hero__actions">
-            <NewsroomThemeToggle
-              showCompactLabel
-              className="animated-theme-toggler--hero news-hero__theme-toggle"
-            />
             <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
           </div>
         </div>

@@ -87,7 +87,7 @@
   color: #1877f2;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .news-social-gooey {
     width: 100%;
   }
