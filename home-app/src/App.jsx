@@ -6,6 +6,7 @@ import Footer from '@icue/site-footer/Footer'
 import ContactSidebar from '@icue/contact-sidebar'
 import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import PillSiteHeader from './components/PillSiteHeader'
+import RouteHead from './components/RouteHead'
 import HomePage from './pages/HomePage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
@@ -43,6 +44,7 @@ function AppShell() {
   return (
     <>
       <ScrollToTop />
+      <RouteHead />
       <NavSync />
       <MainSiteNav
         variant="standalone"
