@@ -150,69 +150,62 @@ export default function NewsGrid() {
         <CategoryFilter value={activeCat} onChange={setActiveCat} />
       )}
 
-      {state === 'ready' && (
+      {state === 'ready' && hasActiveFilters && (
         <div className="icue-container news-results-bar">
-          <div className={`news-results-bar__surface${hasActiveFilters ? ' has-filters' : ''}`}>
+          <div className="news-results-bar__surface has-filters">
             <p
               className="news-results-bar__count"
               role="status"
               aria-live="polite"
               aria-atomic="true"
             >
-              {hasActiveFilters
-                ? t('search.resultsCount', {
-                    shown: visibleArticles.length,
-                    total: filtered.length,
-                  })
-                : t('news.showingCount', {
-                    shown: visibleArticles.length,
-                    total: filtered.length,
-                  })}
+              {t('search.resultsCount', {
+                shown: visibleArticles.length,
+                total: filtered.length,
+              })}
             </p>
 
-            {hasActiveFilters && (
-              <div
-                className="news-results-bar__filters"
-                role="group"
-                aria-label={t('search.activeFilters')}
-              >
-                {hasSearchFilter && (
-                  <button
-                    type="button"
-                    className="news-filter-chip"
-                    onClick={clearSearchFilter}
-                    aria-label={t('search.clearSearch', { query: searchQuery.trim() })}
-                  >
-                    <span>{t('search.activeSearch', { query: searchQuery.trim() })}</span>
-                    <span className="news-filter-chip__remove" aria-hidden="true">×</span>
-                  </button>
-                )}
-                {hasCategoryFilter && (
-                  <button
-                    type="button"
-                    className="news-filter-chip news-filter-chip--category"
-                    onClick={() => setActiveCat(NEWSROOM_DEFAULT_CATEGORY)}
-                    aria-label={t('search.clearCategory', {
-                      category: t(`categories.${activeCat}`),
-                    })}
-                  >
-                    <span>{t('search.activeCategory', {
-                      category: t(`categories.${activeCat}`),
-                    })}</span>
-                    <span className="news-filter-chip__remove" aria-hidden="true">×</span>
-                  </button>
-                )}
-                {hasSearchFilter && hasCategoryFilter && (
-                  <button
-                    type="button"
-                    className="news-results-bar__clear"
-                    onClick={clearAllFilters}
-                  >
-                    {t('search.clearAll')}
-                  </button>
-                )}
-              </div>
-            )}
+            <div
+              className="news-results-bar__filters"
+              role="group"
+              aria-label={t('search.activeFilters')}
+            >
+              {hasSearchFilter && (
+                <button
+                  type="button"
+                  className="news-filter-chip"
+                  onClick={clearSearchFilter}
+                  aria-label={t('search.clearSearch', { query: searchQuery.trim() })}
+                >
+                  <span>{t('search.activeSearch', { query: searchQuery.trim() })}</span>
+                  <span className="news-filter-chip__remove" aria-hidden="true">×</span>
+                </button>
+              )}
+              {hasCategoryFilter && (
+                <button
+                  type="button"
+                  className="news-filter-chip news-filter-chip--category"
+                  onClick={() => setActiveCat(NEWSROOM_DEFAULT_CATEGORY)}
+                  aria-label={t('search.clearCategory', {
+                    category: t(`categories.${activeCat}`),
+                  })}
+                >
+                  <span>{t('search.activeCategory', {
+                    category: t(`categories.${activeCat}`),
+                  })}</span>
+                  <span className="news-filter-chip__remove" aria-hidden="true">×</span>
+                </button>
+              )}
+              {hasSearchFilter && hasCategoryFilter && (
+                <button
+                  type="button"
+                  className="news-results-bar__clear"
+                  onClick={clearAllFilters}
+                >
+                  {t('search.clearAll')}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

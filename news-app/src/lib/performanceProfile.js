@@ -1,4 +1,4 @@
-export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v2'
+export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v3'
 export const PERF_OVERRIDE_STORAGE_KEY = 'icue:perf-override:v1'
 
 export const PERF_TIERS = ['full', 'reduced', 'minimal']
@@ -12,6 +12,7 @@ export const PERF_OVERRIDES = ['on', 'off']
  * - Chrome DevTools → Performance, 4× CPU throttle on NewsGrid
  * - Chrome --use-gl=swiftshader (software WebGL → minimal tier)
  * - ≤4 logical cores or ≤4 GB deviceMemory → minimal
+ * - DevTools device emulation (coarse pointer) → full, see MOBILE_LOW_MEMORY_GB
  */
 
 const LOW_END_GPU_PATTERNS = [
@@ -31,6 +32,15 @@ const INTEGRATED_GPU_PATTERNS = [
   'radeon vega',
   'amd radeon(tm) graphics',
 ]
+
+/**
+ * Phones and tablets report 4–8 logical cores by design, so the desktop
+ * thresholds below flag every one of them as low-end and switch off motion the
+ * hardware handles fine (Embla's parallax is a composited translate3d). Touch
+ * devices are judged on the signals that still mean something there: a software
+ * renderer, or a genuinely memory-starved budget device.
+ */
+const MOBILE_LOW_MEMORY_GB = 2
 
 let cachedRenderer = null
 
@@ -66,17 +76,29 @@ function matchesPattern(value, patterns) {
   return patterns.some((pattern) => value.includes(pattern))
 }
 
-export function classifyPerformanceTier({ cores = 8, memory, renderer = '' } = {}) {
+export function classifyPerformanceTier({ cores = 8, memory, renderer = '', mobile = false } = {}) {
   const normalizedRenderer = String(renderer).toLowerCase()
+  if (matchesPattern(normalizedRenderer, LOW_END_GPU_PATTERNS)) return 'minimal'
+
+  if (mobile) {
+    if (memory != null && memory <= MOBILE_LOW_MEMORY_GB) return 'minimal'
+    return 'full'
+  }
+
   if (cores <= 4) return 'minimal'
   if (memory != null && memory <= 4) return 'minimal'
-  if (matchesPattern(normalizedRenderer, LOW_END_GPU_PATTERNS)) return 'minimal'
 
   if (cores <= 8) return 'reduced'
   if (memory != null && memory <= 8) return 'reduced'
   if (matchesPattern(normalizedRenderer, INTEGRATED_GPU_PATTERNS)) return 'reduced'
 
   return 'full'
+}
+
+/** Phone/tablet check by input capability rather than user-agent sniffing. */
+export function isTouchPrimaryDevice() {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
+  return window.matchMedia('(pointer: coarse) and (hover: none)').matches
 }
 
 /** Detect the hardware tier once per session (before sessionStorage cache). */
@@ -87,6 +109,7 @@ export function detectPerformanceTier() {
     cores: navigator.hardwareConcurrency || 8,
     memory: navigator.deviceMemory,
     renderer: getWebGLRenderer(),
+    mobile: isTouchPrimaryDevice(),
   })
 }
 

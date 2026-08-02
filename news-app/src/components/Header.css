@@ -658,12 +658,6 @@
   }
 }
 
-@media (max-width: 480px) {
-  .icue-header__theme-toggle--mobile .animated-theme-toggler__label {
-    display: none;
-  }
-}
-
 /* Main-site drawer + newsroom burger on dark newsroom home */
 .nav-drawer__toggle {
   border-radius: 15px;

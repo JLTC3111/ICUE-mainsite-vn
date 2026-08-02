@@ -24,6 +24,41 @@ test('hardware detection does not treat every ANGLE renderer as low end', () => 
   }), 'minimal')
 })
 
+test('phones and tablets keep full motion despite low core counts', () => {
+  // The desktop thresholds read a phone's 4-8 cores as a low-end PC, which
+  // switched the newsroom's Embla parallax off on every mobile device.
+  assert.equal(classifyPerformanceTier({
+    cores: 4,
+    memory: undefined,
+    renderer: 'apple gpu',
+    mobile: true,
+  }), 'full')
+  assert.equal(classifyPerformanceTier({
+    cores: 8,
+    memory: 8,
+    renderer: 'angle (qualcomm, adreno (tm) 740)',
+    mobile: true,
+  }), 'full')
+  assert.equal(classifyPerformanceTier({
+    cores: 8,
+    memory: 4,
+    renderer: 'mali-g52',
+    mobile: true,
+  }), 'full')
+})
+
+test('genuinely low end devices stay optimized on both form factors', () => {
+  assert.equal(classifyPerformanceTier({ cores: 4, memory: 2, mobile: true }), 'minimal')
+  assert.equal(classifyPerformanceTier({
+    cores: 8,
+    memory: 8,
+    renderer: 'angle (google, vulkan 1.3 swiftshader device)',
+    mobile: true,
+  }), 'minimal')
+  assert.equal(classifyPerformanceTier({ cores: 4, memory: 8 }), 'minimal')
+  assert.equal(classifyPerformanceTier({ cores: 8, memory: 16 }), 'reduced')
+})
+
 test('automatic performance tier is used when there is no manual override', () => {
   assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: null }), 'reduced')
   assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: null }), 'minimal')

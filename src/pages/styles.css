@@ -840,16 +840,30 @@ h3:hover {
   animation: modelHomeCenterIn 3s ease-in-out;
 }
 
+/* #content is static, so this box resolves against the viewport rather than the
+   hero it overlays. At width:100%/left:25% it ran from 25% to 125% of the
+   screen: a horizontal scrollbar, and a 600px band of invisible model-viewer
+   swallowing drags meant for the carousel underneath. Keep the old visual
+   centre (25% + half of 100% = 75%) but bound the box to the crane itself. */
 .model-crane{
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap; /* Optional: stack on small screens */
-  top: 0;
-  left: 25%;
+  top: 15%;
+  left: 75%;
+  width: min(40vw, 520px);
+  height: clamp(260px, 42vh, 460px);
+  transform: translateX(-50%);
   animation: slideDownFromTop 3s ease-in-out;
   z-index: 11;
+}
+
+/* Declared at top level: the only other copy lived inside the ≤1024px block,
+   where .model-crane is display:none, so the intro never actually played. */
+@keyframes slideDownFromTop {
+  from { transform: translate(-50%, -100%); }
+  to   { transform: translate(-50%, 0); }
 }
 
 
@@ -2359,14 +2373,6 @@ body.loaded #app {
 
   .model-crane{
     display:none;
-  }
-  @keyframes slideDownFromTop {
-    0% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(0);
-    }
   }
 }
 
