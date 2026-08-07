@@ -272,10 +272,41 @@
 /* ---------- responsive ---------- */
 
 @media (max-width: 1024px) {
-  /* Every nav destination is also in the drawer, so drop the pill rather than
-     letting six labels crush the bar. */
   .ow-header__nav {
     display: none;
+  }
+
+  .ow-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+
+    width: fit-content;
+    margin-inline: auto;
+
+    background: var(--icue-gradient-dark);
+    border: 1px solid var(--icue-chrome-border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .ow-header__logo {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .ow-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0;
+
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 }
 
@@ -286,9 +317,11 @@
   }
 
   .ow-header__bar {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.4rem;
+    width: fit-content;
+    max-width: 100%;
+    justify-content: flex-start;
+    gap: 0;
+    margin-inline: auto;
   }
 
   .ow-header__tag {

@@ -3,3 +3,24 @@
 netlify/functions/private-env.cjs
 # Dependencies are installed by the build (npm ci) — never commit them.
 node_modules/
+dist
+dist-ssr
+*.local
+
+# Environment (secrets — never commit)
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+!public/fonts/.gitkeep
