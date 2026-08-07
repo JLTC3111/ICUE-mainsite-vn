@@ -62,7 +62,6 @@ function AppShell() {
           <Route path={ROUTE_PATHS.home} element={<HomePage />} />
           <Route path={ROUTE_PATHS.contact} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.ourWork} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />

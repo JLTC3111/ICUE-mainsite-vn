@@ -43,6 +43,7 @@ if (!fs.existsSync(homeDist)) {
 copyDir(path.join(root, 'newsroom'), path.join(homeDist, 'newsroom'));
 copyDir(path.join(root, 'people'), path.join(homeDist, 'people'));
 copyDir(path.join(root, 'structure'), path.join(homeDist, 'structure'));
+copyDir(path.join(root, 'our-work'), path.join(homeDist, 'our-work'));
 copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
@@ -82,6 +83,7 @@ const rootDirsFromHome = [
   'newsroom',
   'people',
   'structure',
+  'our-work',
   'public',
 ];
 

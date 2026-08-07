@@ -20,7 +20,7 @@
   background: var(--icue-surface-2, var(--icue-surface));
 }
 
-.lang-switcher__text,
+.lang-switcher__value,
 .lang-switcher__select {
   grid-area: 1 / 1;
   margin: 0;
@@ -32,9 +32,17 @@
   color: var(--icue-text);
 }
 
-.lang-switcher__text {
+.lang-switcher__value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   pointer-events: none;
   z-index: 1;
+}
+
+.lang-switcher__text {
+  font: inherit;
+  color: inherit;
 }
 
 .lang-switcher__scramble {

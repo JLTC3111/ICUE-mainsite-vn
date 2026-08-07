@@ -6,7 +6,9 @@ import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
 import './PillSiteHeader.css';
 
-const INTERNAL_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'aboutUs']);
+// ourWork is a separate app at /our-work — it must be a real navigation, not
+// a client-side route inside this SPA.
+const INTERNAL_PAGES = new Set(['Home', 'pastProjects', 'aboutUs']);
 const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
 const COMPACT_LABELS = {
   Home: 'Trang Chủ',

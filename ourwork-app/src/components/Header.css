@@ -1,0 +1,99 @@
+/* §5.1 — header mount: padding 22px 44px 0, no wrapper styling of its own. */
+
+.ow-header {
+  position: relative;
+  z-index: 20;
+  max-width: var(--ow-maxw);
+  margin-inline: auto;
+  padding: 22px var(--ow-pad) 0;
+}
+
+.ow-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ow-header__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+}
+
+.ow-header__logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.ow-header__tag {
+  font-family: var(--ow-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ow-accent-text);
+}
+
+.ow-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.ow-header__link {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ow-text-2);
+  transition: color 0.25s ease;
+}
+
+.ow-header__link:hover {
+  color: var(--ow-accent-text);
+}
+
+/* The drawer toggle ships with the site's blue-on-white pill. Re-skin just the
+   button for the 1B ground; the panel itself stays site-standard. */
+.ow-header .nav-drawer__toggle {
+  border-radius: 0;
+  border-color: var(--ow-hairline);
+  background: transparent;
+  color: var(--ow-text);
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  min-height: 38px;
+}
+
+.ow-header .nav-drawer__toggle:hover {
+  border-color: var(--ow-accent-line);
+  background: transparent;
+  color: var(--ow-accent-text);
+}
+
+/* Square the switcher pill to match the badges, chips and theme toggle. */
+.ow-header .lang-switcher__field {
+  border-radius: 0;
+}
+
+.ow-header .lang-switcher__value {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 7px 11px;
+}
+
+@media (max-width: 900px) {
+  .ow-header__nav {
+    gap: 14px;
+  }
+
+  .ow-header__link {
+    display: none;
+  }
+}

@@ -31,7 +31,7 @@ const MIME = {
 // IMPORTANT: Run `npm run build:newsroom` after news-app changes when using the
 // root `npm run dev`. For live HMR while editing the newsroom, use
 // `npm run dev:newsroom` (http://localhost:5173/newsroom/) instead.
-function spaDevFallback({ name, basePath, outDirName }) {
+function spaDevFallback({ name, basePath, outDirName, buildScript }) {
   const root = process.cwd();
   const appDir = path.resolve(root, outDirName);
   return {
@@ -60,7 +60,7 @@ function spaDevFallback({ name, basePath, outDirName }) {
           // Never SPA-fallback missing static assets — returning HTML breaks module scripts.
           res.statusCode = 404;
           res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-          res.end(`Asset not found: ${urlPath}. Rebuild with npm run build:newsroom.`);
+          res.end(`Asset not found: ${urlPath}. Rebuild with npm run ${buildScript}.`);
           return;
         }
 
@@ -81,7 +81,7 @@ function spaDevFallback({ name, basePath, outDirName }) {
 function homeDevFallback() {
   const root = process.cwd();
   const appDir = path.resolve(root, 'dist-home');
-  const siblingPrefixes = ['/newsroom', '/people', '/structure'];
+  const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
@@ -216,9 +216,10 @@ export default {
   plugins: [
     react(),
     marketApiPlugin(),
-    spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom' }),
-    spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people' }),
-    spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure' }),
+    spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom', buildScript: 'build:newsroom' }),
+    spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people', buildScript: 'build:people' }),
+    spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure', buildScript: 'build:structure' }),
+    spaDevFallback({ name: 'ourwork-dev-fallback', basePath: '/our-work', outDirName: 'our-work', buildScript: 'build:ourwork' }),
     homeDevFallback(),
   ],
   resolve: {

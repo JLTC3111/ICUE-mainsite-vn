@@ -33,23 +33,27 @@ function LanguageSwitcher({
       onBlur={() => setHovered(false)}
     >
       <span className="visually-hidden">{ariaLabel}</span>
-      <FlagIcon lang={value} className="lang-switcher__flag" />
       <span className="lang-switcher__field">
-        <span className="lang-switcher__text" aria-hidden="true">
-          {hovered ? (
-            <TextScramble
-              key={scrambleKey}
-              as="span"
-              className="lang-switcher__scramble"
-              duration={0.7}
-              speed={0.035}
-              trigger
-            >
-              {currentLabel}
-            </TextScramble>
-          ) : (
-            currentLabel
-          )}
+        {/* Flag and label share one grid cell with the select overlaid on top,
+            so the flag sits inside the bordered box rather than beside it. */}
+        <span className="lang-switcher__value" aria-hidden="true">
+          <FlagIcon lang={value} className="lang-switcher__flag" />
+          <span className="lang-switcher__text">
+            {hovered ? (
+              <TextScramble
+                key={scrambleKey}
+                as="span"
+                className="lang-switcher__scramble"
+                duration={0.7}
+                speed={0.035}
+                trigger
+              >
+                {currentLabel}
+              </TextScramble>
+            ) : (
+              currentLabel
+            )}
+          </span>
         </span>
         <select
           className="lang-switcher__select"

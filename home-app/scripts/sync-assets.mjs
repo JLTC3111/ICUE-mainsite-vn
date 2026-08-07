@@ -44,7 +44,6 @@ const ASSET_DIRS = [
 const LEGACY_PAGES = [
   'Contact.html',
   'aboutUs.html',
-  'ourWork.html',
   'pastProjects.html',
   'recruitment.html',
   'News.html',

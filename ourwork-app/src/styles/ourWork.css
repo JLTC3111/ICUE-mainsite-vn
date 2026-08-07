@@ -1,0 +1,525 @@
+/* Our Work — direction 1B (Technical Index).
+   Section numbers below refer to the build spec. Designed at 1440; content is
+   capped at 1240 so 1440–1920 just adds side air. */
+
+.our-work {
+  background: var(--ow-bg);
+}
+
+.ow-section {
+  max-width: var(--ow-maxw);
+  margin-inline: auto;
+  padding-inline: var(--ow-pad);
+}
+
+/* ── §5.2 Hero + scope index ─────────────────────────────────────────── */
+
+.ow-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  padding-top: 80px;
+}
+
+.ow-eyebrow {
+  font-family: var(--ow-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ow-accent-text);
+  margin-bottom: 22px;
+}
+
+.ow-hero__title {
+  font-size: 52px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 22px;
+  text-wrap: pretty;
+}
+
+.ow-hero__lead {
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--ow-text-2);
+  max-width: 520px;
+}
+
+.ow-index__label {
+  font-family: var(--ow-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ow-text-faint);
+  margin-bottom: 14px;
+}
+
+.ow-index__list {
+  border-top: 1px solid var(--ow-hairline);
+}
+
+.ow-index__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 17px 2px;
+  border-bottom: 1px solid var(--ow-hairline);
+  transition: color 0.25s ease, padding-left 0.3s ease;
+}
+
+.ow-index__row:hover,
+.ow-index__row:focus-visible {
+  color: var(--ow-accent-text);
+  padding-left: 12px;
+}
+
+.ow-index__num {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ow-accent-text);
+}
+
+.ow-index__title {
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+/* flex:1 + a dotted bottom border is the leader rule; it must not be a
+   background-image or it loses the baseline on sub-pixel row heights. */
+.ow-index__leader {
+  flex: 1;
+  height: 1px;
+  border-bottom: 1px dotted var(--ow-leader);
+}
+
+.ow-index__count {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  color: var(--ow-text-dim);
+}
+
+/* ── §5.3 Scope cards ────────────────────────────────────────────────── */
+
+.ow-scopes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding-top: 72px;
+}
+
+.ow-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ow-surface);
+  border: 1px solid var(--ow-hairline-soft);
+  scroll-margin-top: 96px;
+  transition: transform 0.35s var(--ow-ease), border-color 0.35s ease;
+}
+
+.ow-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--ow-accent-line);
+}
+
+/* At 1440 the four cards sit side by side, so scrolling to one of them barely
+   moves the page and the index row reads as a dead link. Mark the target
+   instead — that is the feedback the row is actually promising. */
+.ow-card:target {
+  border-color: var(--ow-accent-line);
+  box-shadow: 0 0 0 1px var(--ow-accent-line);
+}
+
+.ow-card:target .ow-card__badge {
+  animation: ow-target-pulse 1.4s var(--ow-ease) 2;
+}
+
+@keyframes ow-target-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.ow-card__well {
+  position: relative;
+  height: 158px;
+  overflow: hidden;
+  background: var(--ow-image-bg);
+}
+
+/* Deliberately oversized: 126% height against 34px of parallax travel keeps
+   the well covered at both extremes. Change one and change the other. */
+.ow-card__img {
+  position: absolute;
+  left: 0;
+  top: -13%;
+  width: 100%;
+  height: 126%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* Print-plate reference — square, flush to the corner. Do not round. */
+.ow-card__badge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 5px 9px;
+  background: var(--ow-accent);
+  background: var(--ow-accent-grad);
+  color: var(--ow-on-accent);
+  font-family: var(--ow-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.ow-card__body {
+  padding: 22px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ow-card__title {
+  font-size: 19px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 7px;
+}
+
+.ow-card__sub {
+  font-family: var(--ow-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ow-text-faint);
+  margin-bottom: 16px;
+}
+
+.ow-card__desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ow-text-mute);
+  margin-bottom: 22px;
+}
+
+.ow-card__items-label {
+  font-family: var(--ow-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ow-text-faint);
+  margin-bottom: 4px;
+}
+
+.ow-card__items {
+  margin-bottom: 18px;
+}
+
+.ow-card__item {
+  display: flex;
+  gap: 9px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ow-hairline-soft);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ow-text-strong);
+}
+
+.ow-card__dash {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  color: var(--ow-accent-text);
+}
+
+/* `margin: auto 0 0` is what keeps the four cards' bottom rules flush despite
+   unequal description lengths — do not replace it with a fixed height. */
+.ow-card__std {
+  margin: auto 0 0;
+  font-family: var(--ow-mono);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--ow-text-3);
+}
+
+/* ── §5.4 Process strip ──────────────────────────────────────────────── */
+
+.ow-process {
+  padding-top: 80px;
+}
+
+.ow-process__label {
+  font-family: var(--ow-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--ow-accent-text);
+  margin-bottom: 26px;
+}
+
+.ow-process__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.ow-step {
+  padding: 22px 20px 24px;
+  background: var(--ow-surface-alt);
+  border: 1px solid var(--ow-hairline-soft);
+  border-left: 2px solid var(--ow-accent-text);
+}
+
+.ow-step__k {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ow-accent-text);
+}
+
+.ow-step__t {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.ow-step__d {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ow-text-mute);
+  margin-top: 6px;
+}
+
+/* ── §5.5 Proof band ─────────────────────────────────────────────────── */
+
+.ow-proof {
+  padding-top: 80px;
+}
+
+.ow-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 34px 0;
+  border-top: 1px solid var(--ow-hairline);
+  border-bottom: 1px solid var(--ow-hairline);
+}
+
+/* Mono, not serif — 1A sets these in Instrument Serif at 58px; the two
+   directions are not interchangeable. */
+.ow-stat__n {
+  font-family: var(--ow-mono);
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  /* Solid first: if background-clip:text is unsupported the number still
+     paints, because `color: transparent` below only applies alongside it. */
+  color: var(--ow-accent-text);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .ow-stat__n {
+    background: linear-gradient(135deg, var(--ow-accent-text) 0%, var(--ow-accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    width: fit-content;
+  }
+}
+
+.ow-stat__l {
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ow-text-dim);
+  margin-top: 8px;
+}
+
+.ow-certs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+/* Square corners in 1B — 1A uses pills. */
+.ow-cert {
+  padding: 9px 15px;
+  border: 1px solid var(--ow-chip-border);
+  font-family: var(--ow-mono);
+  font-size: 11px;
+  color: var(--ow-chip-text);
+}
+
+/* ── §5.6 Close ──────────────────────────────────────────────────────── */
+
+.ow-close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding-top: 76px;
+  padding-bottom: 90px;
+}
+
+.ow-close__title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  max-width: 640px;
+}
+
+.ow-close__lead {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ow-text-mute);
+  max-width: 560px;
+}
+
+.ow-close__actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.ow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--ow-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ow-btn__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ow-btn--primary {
+  padding: 15px 26px;
+  background: var(--ow-accent);
+  background: var(--ow-accent-grad);
+  color: var(--ow-on-accent);
+  transition: opacity 0.25s ease;
+}
+
+.ow-btn--primary:hover {
+  opacity: 0.82;
+}
+
+.ow-btn--primary:hover .ow-btn__icon {
+  animation: ow-btn-nudge 0.5s var(--ow-ease);
+}
+
+@keyframes ow-btn-nudge {
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+.ow-btn--ghost {
+  border-bottom: 1px solid var(--ow-chip-border);
+  padding-bottom: 3px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.ow-btn--ghost:hover {
+  color: var(--ow-accent-text);
+  border-color: var(--ow-accent-line);
+}
+
+/* ── §6 Reveal ───────────────────────────────────────────────────────── */
+
+.ow-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--ow-ease), transform 0.7s var(--ow-ease);
+}
+
+.ow-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── §7 Responsive ───────────────────────────────────────────────────── */
+
+@media (max-width: 1280px) {
+  :root {
+    --ow-pad: 32px;
+  }
+
+  .ow-hero {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .ow-scopes,
+  .ow-process__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .ow-hero {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ow-index {
+    margin-top: 48px;
+  }
+
+  .ow-hero__title {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --ow-pad: 22px;
+  }
+
+  .ow-scopes,
+  .ow-process__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ow-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 18px;
+  }
+
+  /* Taller well on a single-column card; parallax drops to 26px to match. */
+  .ow-card__well {
+    height: 190px;
+  }
+
+  .ow-close {
+    padding-bottom: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ow-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ow-card:hover {
+    transform: none;
+  }
+}

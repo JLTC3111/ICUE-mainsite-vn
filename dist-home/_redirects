@@ -2,7 +2,6 @@
 /                     /index.html                              200
 /contact              /route-shells/contact.html               200
 /about-us             /route-shells/about-us.html              200
-/our-work             /route-shells/our-work.html              200
 /past-projects        /route-shells/past-projects.html         200
 /recruitment          /route-shells/recruitment.html           200
 /news-archive         /route-shells/news-archive.html          200
@@ -54,6 +53,15 @@
 /structure           /structure/index.html   200
 /structure/*         /structure/index.html   200
 
+# Our Work React app (history routing) lives at /our-work. It replaces both the
+# vi and en legacy carousel pages, and serves all six UI languages itself.
+/our-work            /our-work/index.html    200
+/our-work/*          /our-work/index.html    200
+
+# Legacy Our Work page → the app.
+/src/pages/ourWork.html       /our-work   301
+/legacy/pages/ourWork.html    /our-work   301
+
 # Legacy org structure hash page and HTML stub → new Structure app.
 /src/pages/orgStructure.html  /structure/  301
 
@@ -66,6 +74,7 @@
 /src/article.js      /public/article.js              200
 /profilePhotos/*     /public/profilePhotos/:splat    200
 /flags/*             /public/flags/:splat            200
+/docs/*              /public/docs/:splat             200
 /models/*            /public/models/:splat           200
 /aboutUs/*           /public/aboutUs/:splat          200
 

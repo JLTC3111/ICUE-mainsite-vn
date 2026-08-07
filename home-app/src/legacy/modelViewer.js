@@ -1,4 +1,4 @@
-const PAGES_WITH_MODEL_VIEWER = new Set(['aboutUs', 'ourWork'])
+const PAGES_WITH_MODEL_VIEWER = new Set(['aboutUs'])
 
 let loadPromise = null
 

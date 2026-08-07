@@ -1724,10 +1724,6 @@ window.loadPage = (page) => {
               case 'Contact':
                 initPostMethod();
                 break;
-              case 'ourWork':
-                activateModelViewers(content);
-                initializeCarousel();
-                break;
               case 'pastProjects':
                 initMobileProjectsSlider();
                 handleAOSByScreenSize();
@@ -5252,102 +5248,6 @@ const form = document.getElementById("contactForm");
     });
   }
 
-   
-//Work-Page Script
-window.initializeCarousel = () => {
-  const nextButton = document.getElementById("work-next");
-  const prevButton = document.getElementById("work-prev");
-  const carousel = document.querySelector(".work-carousel");
-
-  if (!nextButton || !prevButton || !carousel) {
-    console.warn("Carousel initialization failed. Missing key DOM elements.");
-    return;
-  }
-
-  const slider = carousel.querySelector(".work-list");
-  const thumbnails = carousel.querySelector(".work-thumbnail");
-  const timeBar = carousel.querySelector(".work-time");
-
-  if (!slider || !thumbnails || !timeBar) {
-    console.warn("Carousel structure incomplete.");
-    return;
-  }
-
-  let autoAdvanceTimeout;
-  let animationTimeout;
-  const timeRunning = 10000;
-  const timeAutoNext = 11000;
-
-  const resetAutoAdvance = () => {
-    clearTimeout(autoAdvanceTimeout);
-    autoAdvanceTimeout = setTimeout(() => nextButton.click(), timeAutoNext);
-  };
-
-  const showSlide = (direction) => {
-    const items = slider.querySelectorAll(".work-item");
-    const thumbs = thumbnails.querySelectorAll(".work-item");
-
-    if (direction === "work-next") {
-      slider.appendChild(items[0]);
-      thumbnails.appendChild(thumbs[0]);
-      carousel.classList.add("work-next");
-    } else if (direction === "work-prev") {
-      slider.prepend(items[items.length - 1]);
-      thumbnails.prepend(thumbs[thumbs.length - 1]);
-      carousel.classList.add("work-prev");
-    }
-    clearTimeout(animationTimeout);
-    animationTimeout = setTimeout(() => {
-      carousel.classList.remove("work-next", "work-prev");
-    }, timeRunning);
-
-    resetAutoAdvance();
-  };
-
-  const goToSlide = (targetIndex) => {
-  const currentSlide = slider.querySelector(".work-item");
-  const currentIndex = parseInt(currentSlide.dataset.index, 10);
-
-  if (targetIndex === currentIndex) return; // already active
-
-  let steps = targetIndex - currentIndex;
-  const totalItems = slider.querySelectorAll(".work-item").length;
-
-  // Handle wrap-around (shortest path logic)
-  if (steps < 0) steps += totalItems;
-
-  for (let i = 0; i < steps; i++) {
-    slider.appendChild(slider.firstElementChild);
-    thumbnails.appendChild(thumbnails.firstElementChild);
-  }
-
-  carousel.classList.add("work-jump");
-
-  clearTimeout(animationTimeout);
-  animationTimeout = setTimeout(() => {
-    carousel.classList.remove("work-jump");
-  }, timeRunning);
-
-  resetAutoAdvance();
-};
-
-  // Add click events to thumbnails
-const initThumbnailClick = () => {
-  const thumbItems = Array.from(thumbnails.querySelectorAll(".work-item"));
-    thumbItems.forEach((thumb, index) => {
-      thumb.addEventListener("click", () => {
-        goToSlide(index);
-      });
-    });
-  };
-
-  initThumbnailClick();
-  resetAutoAdvance();
-
-  nextButton.onclick = () => showSlide("work-next");
-  prevButton.onclick = () => showSlide("work-prev");
-  carousel.setAttribute('data-loaded', 'true');
-};
 
 window.updateCalendarSvgTime = () => {
     const calendarMonthElement = document.getElementById('calendar-month');

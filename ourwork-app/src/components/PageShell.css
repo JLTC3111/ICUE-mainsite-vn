@@ -1,0 +1,17 @@
+.ow-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--ow-bg);
+}
+
+.ow-shell__main {
+  flex: 1 0 auto;
+}
+
+/* The close section already ends with 90px of air (spec §5.6); the shared
+   footer's own 80px top margin would double it into a dead band. */
+.ow-shell .icue-footer {
+  margin-top: 0;
+}

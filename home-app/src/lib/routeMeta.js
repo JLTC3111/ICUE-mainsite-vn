@@ -12,6 +12,9 @@
  * Titles/descriptions here mirror route-shells/*.html verbatim — keep them
  * in sync if the shells change. Keep pageFile in sync with LEGACY_PAGE_FILES
  * in ./routes.js.
+ *
+ * /our-work is absent on purpose: it is served by ourwork-app, which owns its
+ * own <head>. This list covers client-side navigation inside home-app only.
  */
 export const ROUTE_META = [
   {
@@ -29,14 +32,6 @@ export const ROUTE_META = [
     pageFile: 'aboutUs.html',
     title: 'Về chúng tôi | ICUE Vietnam',
     description: 'Tìm hiểu sứ mệnh, kinh nghiệm, đội ngũ và định hướng đổi mới của Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị.',
-  },
-  {
-    slug: 'our-work',
-    path: '/our-work',
-    pageName: 'ourWork',
-    pageFile: 'ourWork.html',
-    title: 'Lĩnh vực hoạt động | ICUE Vietnam',
-    description: 'Khám phá các lĩnh vực nghiên cứu, tư vấn, quy hoạch, chuyển giao công nghệ và phát triển đô thị của ICUE Vietnam.',
   },
   {
     slug: 'past-projects',

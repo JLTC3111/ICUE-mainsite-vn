@@ -6,8 +6,13 @@ import './Footer.css'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
-function Footer({ linkMode = 'hash' }) {
-  const labels = FOOTER_LABELS
+/**
+ * `labels` lets a localized app (the six-language Our Work page) reuse this
+ * markup with its own copy. Omit it and you get the Vietnamese defaults the
+ * home app has always used.
+ */
+function Footer({ linkMode = 'hash', labels: labelOverrides }) {
+  const labels = labelOverrides ? { ...FOOTER_LABELS, ...labelOverrides } : FOOTER_LABELS
   const links = getFooterLinks(linkMode)
   const year = new Date().getFullYear()
 
@@ -17,7 +22,6 @@ function Footer({ linkMode = 'hash' }) {
         <div className="icue-footer__col">
           <h4>{labels.company}</h4>
           <a href={links.notableAwards}>{labels.awards}</a>
-          <a href={links.communityActivities}>{labels.community}</a>
           <a href={links.news}>{labels.news}</a>
           <a href={links.archive}>{labels.archive}</a>
         </div>

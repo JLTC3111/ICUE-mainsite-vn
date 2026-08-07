@@ -3,8 +3,6 @@ let pastProjectsSliderApi = null
 let pastProjectsSliderPromise = null
 let newsArchiveSliderApi = null
 let newsArchiveSliderPromise = null
-let ourWorkCarouselApi = null
-let ourWorkCarouselPromise = null
 let aboutUsPageApi = null
 let aboutUsPagePromise = null
 
@@ -39,16 +37,6 @@ function getNewsArchiveSlider() {
     })
   }
   return newsArchiveSliderPromise
-}
-
-function getOurWorkCarousel() {
-  if (!ourWorkCarouselPromise) {
-    ourWorkCarouselPromise = import('./ourWorkCarousel').then((api) => {
-      ourWorkCarouselApi = api
-      return api
-    })
-  }
-  return ourWorkCarouselPromise
 }
 
 function getAboutUsPage() {
@@ -92,10 +80,6 @@ const PAGE_INIT = {
     const aboutUsPage = await getAboutUsPage()
     aboutUsPage.initAboutUsPage()
   },
-  ourWork: async () => {
-    const carousel = await getOurWorkCarousel()
-    carousel.initOurWorkCarousel()
-  },
   pastProjects: async () => {
     // Skip the sluggish custom touch slider in legacy/script.js —
     // Swiper is initialized from LegacyHtmlPage after HTML is painted.
@@ -127,9 +111,6 @@ const PAGE_CLEANUP = {
   aboutUs: () => {
     aboutUsPageApi?.destroyAboutUsPage()
   },
-  ourWork: () => {
-    ourWorkCarouselApi?.destroyOurWorkCarousel()
-  },
   pastProjects: () => {
     pastProjectsAosApi?.destroyPastProjectsAos?.()
     if (!pastProjectsAosApi) {
@@ -158,7 +139,7 @@ export async function initLegacyPage(pageName) {
 
   // These pages have route-specific initializers and do not need the 291 KB
   // all-pages legacy runtime.
-  if (!['aboutUs', 'ourWork', 'pastProjects', 'newsArchive'].includes(pageName)) {
+  if (!['aboutUs', 'pastProjects', 'newsArchive'].includes(pageName)) {
     await loadLegacyRuntime()
   }
 

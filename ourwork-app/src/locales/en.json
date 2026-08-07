@@ -1,0 +1,53 @@
+{
+  "brandBadge": "Scope",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "language": "Language",
+  "skipToContent": "Skip to main content",
+  "meta": {
+    "title": "ICUE — Our Scope of Work",
+    "description": "ICUE's four service groups — building assessment, quantity surveying, infrastructure analysis and aerial documentation."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "people": "Our People",
+    "org": "Organization",
+    "mainAria": "ICUE — back to home",
+    "mainNav": "Main navigation"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "close": "Close menu",
+    "home": "Home",
+    "org": "Organization & Structure",
+    "work": "Our Work",
+    "projects": "Research & Projects",
+    "newsEvents": "News & Events",
+    "about": "About Us",
+    "contact": "Contact",
+    "people": "Our People",
+    "experts": "Our Experts",
+    "coreTeam": "Core Team"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
+  }
+}

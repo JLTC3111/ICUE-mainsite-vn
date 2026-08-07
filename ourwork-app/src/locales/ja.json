@@ -1,0 +1,53 @@
+{
+  "brandBadge": "業務範囲",
+  "instituteName": "建設経済・都市計画研究所",
+  "language": "言語",
+  "skipToContent": "本文へスキップ",
+  "meta": {
+    "title": "ICUE — 業務範囲",
+    "description": "ICUE の 4 つのサービス領域 — 建物調査、測量・積算、インフラ分析、空撮記録。"
+  },
+  "nav": {
+    "home": "ホーム",
+    "projects": "プロジェクト",
+    "people": "人材",
+    "org": "組織",
+    "mainAria": "ICUE — ホームへ",
+    "mainNav": "メインナビゲーション"
+  },
+  "drawer": {
+    "menu": "メニュー",
+    "close": "メニューを閉じる",
+    "home": "ホーム",
+    "org": "組織構造",
+    "work": "私たちの仕事",
+    "projects": "研究・プロジェクト",
+    "newsEvents": "ニュース・イベント",
+    "about": "私たちについて",
+    "contact": "お問い合わせ",
+    "people": "人材",
+    "experts": "専門家",
+    "coreTeam": "コアスタッフ"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "受賞歴",
+    "news": "ニュース",
+    "archive": "アーカイブ",
+    "faqs": "FAQ",
+    "recruitment": "採用",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "パートナーになる",
+    "rights": "著作権はICUEに帰属します。"
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "switchToLight": "ライトテーマに切り替え",
+    "switchToDark": "ダークテーマに切り替え"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "brandBadge": "업무 범위",
+  "instituteName": "건설경제·도시계획연구소",
+  "language": "언어",
+  "skipToContent": "본문으로 건너뛰기",
+  "meta": {
+    "title": "ICUE — 업무 범위",
+    "description": "ICUE의 네 가지 서비스 영역 — 건축물 평가, 측량 및 적산, 인프라 분석, 항공 기록."
+  },
+  "nav": {
+    "home": "홈",
+    "projects": "프로젝트",
+    "people": "인력",
+    "org": "조직",
+    "mainAria": "ICUE — 홈으로",
+    "mainNav": "주요 탐색"
+  },
+  "drawer": {
+    "menu": "메뉴",
+    "close": "메뉴 닫기",
+    "home": "홈",
+    "org": "조직 구조",
+    "work": "업무",
+    "projects": "연구·프로젝트",
+    "newsEvents": "뉴스·이벤트",
+    "about": "소개",
+    "contact": "문의",
+    "people": "인력",
+    "experts": "전문가",
+    "coreTeam": "핵심 인력"
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "기타 페이지",
+    "awards": "수상 실적",
+    "news": "뉴스",
+    "archive": "뉴스 아카이브",
+    "faqs": "FAQ",
+    "recruitment": "채용",
+    "privacy": "개인정보",
+    "terms": "약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "파트너십 문의",
+    "rights": "저작권은 ICUE에 있습니다."
+  },
+  "theme": {
+    "light": "라이트",
+    "dark": "다크",
+    "switchToLight": "라이트 테마로 전환",
+    "switchToDark": "다크 테마로 전환"
+  }
+}

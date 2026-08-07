@@ -1,0 +1,53 @@
+{
+  "brandBadge": "Leistungen",
+  "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "language": "Sprache",
+  "skipToContent": "Zum Hauptinhalt springen",
+  "meta": {
+    "title": "ICUE — Unsere Leistungen",
+    "description": "Die vier Leistungsbereiche von ICUE — Bauwerksbewertung, Vermessung, Infrastrukturanalyse und Luftbilddokumentation."
+  },
+  "nav": {
+    "home": "Startseite",
+    "projects": "Projekte",
+    "people": "Unser Team",
+    "org": "Organisation",
+    "mainAria": "ICUE — zur Startseite",
+    "mainNav": "Hauptnavigation"
+  },
+  "drawer": {
+    "menu": "Menü",
+    "close": "Menü schließen",
+    "home": "Startseite",
+    "org": "Organisation & Struktur",
+    "work": "Unsere Arbeit",
+    "projects": "Forschung & Projekte",
+    "newsEvents": "News & Veranstaltungen",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "people": "Unser Team",
+    "experts": "Unsere Experten",
+    "coreTeam": "Kernteam"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Aktuelles",
+    "archive": "Archiv",
+    "faqs": "FAQ",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Partner werden",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  },
+  "theme": {
+    "light": "Hell",
+    "dark": "Dunkel",
+    "switchToLight": "Zum hellen Design wechseln",
+    "switchToDark": "Zum dunklen Design wechseln"
+  }
+}

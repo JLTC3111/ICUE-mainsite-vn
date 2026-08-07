@@ -43,6 +43,10 @@ const routes = [
   {
     key: 'our-work',
     path: '/our-work',
+    // Served by ourwork-app, which ships its own index.html with the same meta.
+    // Kept in this list so the other shells' noscript nav and the sitemap still
+    // carry the route — just don't generate a shell that would shadow the app.
+    standalone: true,
     title: 'Lĩnh vực hoạt động | ICUE Vietnam',
     description:
       'Khám phá các lĩnh vực nghiên cứu, tư vấn, quy hoạch, chuyển giao công nghệ và phát triển đô thị của ICUE Vietnam.',
@@ -284,13 +288,16 @@ const baseHtml = fs.readFileSync(indexPath, 'utf8')
 fs.rmSync(shellDir, { recursive: true, force: true })
 fs.mkdirSync(shellDir, { recursive: true })
 
+let shellCount = 0
 for (const route of routes) {
+  if (route.standalone) continue
   const html = renderShell(baseHtml, route)
   if (route.path === '/') {
     fs.writeFileSync(indexPath, html)
   } else {
     fs.writeFileSync(path.join(shellDir, `${route.key}.html`), html)
   }
+  shellCount += 1
 }
 
 const sitemapUrls = routes
@@ -320,4 +327,4 @@ Sitemap: ${siteUrl}/sitemap.xml
 `,
 )
 
-console.log(`Generated ${routes.length} route-specific HTML shells, sitemap.xml, and robots.txt.`)
+console.log(`Generated ${shellCount} route-specific HTML shells, sitemap.xml, and robots.txt.`)

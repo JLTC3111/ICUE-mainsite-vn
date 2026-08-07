@@ -4,7 +4,6 @@ function buildFooterLinks() {
   const p = MAIN_SITE_PAGE_PATHS
   return {
     notableAwards: p.notableAwards,
-    communityActivities: p.communityActivities,
     news: p.News,
     archive: '/news-archive',
     faqs: p.FAQs,

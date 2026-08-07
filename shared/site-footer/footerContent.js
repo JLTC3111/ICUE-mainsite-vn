@@ -3,7 +3,6 @@ export const FOOTER_LABELS = {
   company: 'Công Ty',
   otherPages: 'Các Trang Khác',
   awards: 'Giải Thưởng Nổi Bật',
-  community: 'Hoạt Động Cộng Đồng',
   news: 'Bản Tin',
   archive: 'Tin Cũ',
   faqs: 'Câu Hỏi Thường Gặp',

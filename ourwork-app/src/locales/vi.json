@@ -1,0 +1,53 @@
+{
+  "brandBadge": "Phạm Vi",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "language": "Ngôn ngữ",
+  "skipToContent": "Tới nội dung chính",
+  "meta": {
+    "title": "ICUE — Phạm Vi Công Việc",
+    "description": "Bốn nhóm dịch vụ của ICUE — đánh giá công trình, khảo sát đo lường, phân tích hạ tầng và chụp ảnh không gian."
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "projects": "Dự án",
+    "people": "Nhân lực",
+    "org": "Cơ cấu tổ chức",
+    "mainAria": "ICUE — về trang chủ",
+    "mainNav": "Điều hướng chính"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "close": "Đóng menu",
+    "home": "Trang Chủ",
+    "org": "Cơ Cấu & Tổ Chức",
+    "work": "Công Việc",
+    "projects": "Đề Tài, Dự Án",
+    "newsEvents": "Tin Tức & Sự Kiện",
+    "about": "Về Chúng Tôi",
+    "contact": "Liên Hệ",
+    "people": "Nhân Lực",
+    "experts": "Chuyên Gia",
+    "coreTeam": "Cán Bộ"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "switchToLight": "Chuyển sang giao diện sáng",
+    "switchToDark": "Chuyển sang giao diện tối"
+  }
+}

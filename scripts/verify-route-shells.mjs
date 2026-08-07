@@ -10,7 +10,6 @@ const routes = [
   ['/', 'index.html'],
   ['/contact', 'route-shells/contact.html'],
   ['/about-us', 'route-shells/about-us.html'],
-  ['/our-work', 'route-shells/our-work.html'],
   ['/past-projects', 'route-shells/past-projects.html'],
   ['/recruitment', 'route-shells/recruitment.html'],
   ['/news-archive', 'route-shells/news-archive.html'],
@@ -93,6 +92,16 @@ for (const [label, set] of Object.entries(values)) {
   if (set.size !== routes.length) {
     throw new Error(`Route shells do not have unique ${label} values`)
   }
+}
+
+// /our-work is served by ourwork-app, not by a route shell. Assert the app is
+// actually there and reachable, since dropping it from `routes` above removed
+// it from every other check in this file.
+if (!/^\/our-work\s+\/our-work\/index\.html\s+200$/m.test(redirects)) {
+  throw new Error('/our-work: missing Netlify rewrite to the Our Work app')
+}
+if (!fs.existsSync(path.join(dist, 'our-work/index.html'))) {
+  throw new Error('/our-work: ourwork-app build output is missing from dist-home')
 }
 
 const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8')

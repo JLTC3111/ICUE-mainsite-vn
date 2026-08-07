@@ -1,0 +1,53 @@
+{
+  "brandBadge": "Prestations",
+  "instituteName": "Institut d'économie de la construction et d'urbanisme",
+  "language": "Langue",
+  "skipToContent": "Aller au contenu principal",
+  "meta": {
+    "title": "ICUE — Nos prestations",
+    "description": "Les quatre domaines de prestation d'ICUE — évaluation d'ouvrages, relevés et métrés, analyse d'infrastructures et documentation aérienne."
+  },
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "people": "Notre équipe",
+    "org": "Organisation",
+    "mainAria": "ICUE — retour à l'accueil",
+    "mainNav": "Navigation principale"
+  },
+  "drawer": {
+    "menu": "Menu",
+    "close": "Fermer le menu",
+    "home": "Accueil",
+    "org": "Organisation & Structure",
+    "work": "Notre travail",
+    "projects": "Recherche & Projets",
+    "newsEvents": "Actualités & Événements",
+    "about": "À propos",
+    "contact": "Contact",
+    "people": "Notre équipe",
+    "experts": "Nos experts",
+    "coreTeam": "Équipe permanente"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Actualités",
+    "archive": "Archives",
+    "faqs": "FAQ",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Devenir partenaire",
+    "rights": "Tous droits réservés, ICUE."
+  },
+  "theme": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "switchToLight": "Passer au thème clair",
+    "switchToDark": "Passer au thème sombre"
+  }
+}
