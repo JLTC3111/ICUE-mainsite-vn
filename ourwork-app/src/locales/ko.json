@@ -10,8 +10,11 @@
   "nav": {
     "home": "홈",
     "projects": "프로젝트",
+    "news": "뉴스",
+    "about": "소개",
     "people": "인력",
     "org": "조직",
+    "work": "업무",
     "mainAria": "ICUE — 홈으로",
     "mainNav": "주요 탐색"
   },

@@ -1,6 +1,16 @@
-/* §5.1 — header mount: padding 22px 44px 0, no wrapper styling of its own. */
+/* The main site's pill nav (home-app PillSiteHeader), rebuilt against this
+   app's tokens: six-language labels, the theme toggle in the slot the video
+   toggle occupies there, and the flag button promoted to a switcher.
+   §5.1 keeps the 22px/44px header inset.
+
+   Ground and ink are the --icue-chrome-* set, the same surface the site footer
+   renders on, so the two ends of the page match in both themes. --icue-accent
+   is re-pinned for the same reason it is on the footer: the page-level value
+   flips to a dark blue that would sink into this chrome. */
 
 .ow-header {
+  --ow-nav-h: 3.25rem;
+  --icue-accent: var(--icue-chrome-accent);
   position: relative;
   z-index: 20;
   max-width: var(--ow-maxw);
@@ -8,92 +18,299 @@
   padding: 22px var(--ow-pad) 0;
 }
 
-.ow-header__inner {
+.ow-header__bar {
   display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: 0.55rem;
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+  color: var(--icue-chrome-text);
+}
+
+.ow-header__logo,
+.ow-header__nav,
+.ow-header__actions {
+  min-height: var(--ow-nav-h);
+  border: 1px solid var(--icue-chrome-border);
+  border-radius: 999px;
+  background: var(--icue-gradient-dark);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+}
+
+/* ---------- brand pill ---------- */
+
+.ow-header__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  height: var(--ow-nav-h);
+  padding: 0.38rem 0.85rem 0.38rem 0.42rem;
+  flex-shrink: 0;
+  transition: transform 240ms var(--ow-ease), border-color 240ms ease;
+}
+
+.ow-header__logo img {
+  width: 2.35rem;
+  height: 2.35rem;
+  align-self: center;
+  object-fit: contain;
+  line-height: 1;
+  border-radius: 50%;
+  transition: transform 500ms var(--ow-ease);
+}
+
+.ow-header__logo:hover {
+  transform: translateY(-1px);
+  border-color: var(--icue-chrome-accent);
+}
+
+.ow-header__logo:hover img {
+  transform: rotate(18deg) scale(1.04);
 }
 
 .ow-header__brand {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-right: auto;
-}
-
-.ow-header__logo {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--icue-chrome-text-strong);
 }
 
 .ow-header__tag {
   font-family: var(--ow-mono);
   font-size: 10px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ow-accent-text);
+  color: var(--icue-chrome-accent);
 }
 
+/* ---------- nav pill ---------- */
+
 .ow-header__nav {
+  height: var(--ow-nav-h);
+  padding: 0.22rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ow-header__list {
   display: flex;
-  align-items: center;
-  gap: 22px;
+  align-items: stretch;
+  gap: 0.15rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ow-header__list > li {
+  display: flex;
+  height: 100%;
 }
 
 .ow-header__link {
-  font-family: var(--ow-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ow-text-2);
-  transition: color 0.25s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 clamp(0.68rem, 1.05vw, 1rem);
+  overflow: hidden;
+  border-radius: 999px;
+  color: var(--icue-chrome-text-mute);
+  font-size: clamp(0.68rem, 0.72vw, 0.78rem);
+  font-weight: 650;
+  letter-spacing: 0.015em;
+  line-height: 1.2;
+  white-space: nowrap;
+  isolation: isolate;
+  transition: color 280ms ease, background-color 280ms ease;
 }
 
-.ow-header__link:hover {
-  color: var(--ow-accent-text);
+/* The accent disc that sweeps up from below the pill on hover. */
+.ow-header__link::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -160%;
+  width: 150%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--icue-chrome-accent);
+  transform: translate3d(-50%, 0, 0) scale(0);
+  transform-origin: 50% 100%;
+  transition: transform 460ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* The drawer toggle ships with the site's blue-on-white pill. Re-skin just the
-   button for the 1B ground; the panel itself stays site-standard. */
-.ow-header .nav-drawer__toggle {
-  border-radius: 0;
-  border-color: var(--ow-hairline);
+.ow-header__label-stack {
+  position: relative;
+  display: block;
+  min-height: 1.2em;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.ow-header__label {
+  display: block;
+  transform: translate3d(0, 0, 0);
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease;
+}
+
+.ow-header__label--hover {
+  position: absolute;
+  inset: 0;
+  color: #0a1628;
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+}
+
+.ow-header__link:hover::before,
+.ow-header__link:focus-visible::before {
+  transform: translate3d(-50%, 0, 0) scale(1.15);
+}
+
+.ow-header__link:hover .ow-header__label:not(.ow-header__label--hover),
+.ow-header__link:focus-visible .ow-header__label:not(.ow-header__label--hover) {
+  transform: translate3d(0, -100%, 0);
+}
+
+.ow-header__link:hover .ow-header__label--hover,
+.ow-header__link:focus-visible .ow-header__label--hover {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.ow-header__link.is-active {
+  background: var(--icue-chrome-accent);
+  color: #0a1628;
+}
+
+.ow-header__link.is-active::before {
+  display: none;
+}
+
+.ow-header__link.is-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0.22rem;
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+  opacity: 0.65;
+}
+
+.ow-header__link:focus-visible,
+.ow-header__logo:focus-visible {
+  outline: 2px solid var(--icue-chrome-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- actions pill ---------- */
+
+.ow-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  height: var(--ow-nav-h);
+  padding: 0.25rem 0.4rem;
+  flex-shrink: 0;
+}
+
+/* Both controls ship square-and-hairlined for the page ground (§8). Round them
+   onto the chrome so they sit with the flag disc. */
+.ow-header__actions .animated-theme-toggler {
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  border-color: var(--icue-chrome-border);
+  color: var(--icue-chrome-text);
+}
+
+.ow-header__actions .animated-theme-toggler:hover {
+  border-color: var(--icue-chrome-accent);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--icue-chrome-accent);
+}
+
+.ow-header__actions .nav-drawer__toggle,
+.ow-header__actions .nav-drawer__toggle-placeholder {
+  width: 2.3rem;
+  min-width: 2.3rem;
+  height: 2.3rem;
+  min-height: 2.3rem;
+}
+
+.ow-header__actions .nav-drawer__toggle {
+  padding: 0.5rem;
+  gap: 4px;
+  border-radius: 50%;
+  border-color: var(--icue-chrome-border);
   background: transparent;
-  color: var(--ow-text);
-  width: 38px;
-  min-width: 38px;
-  height: 38px;
-  min-height: 38px;
+  color: var(--icue-chrome-text);
 }
 
-.ow-header .nav-drawer__toggle:hover {
-  border-color: var(--ow-accent-line);
-  background: transparent;
-  color: var(--ow-accent-text);
+.ow-header__actions .nav-drawer__toggle:hover {
+  border-color: var(--icue-chrome-accent);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--icue-chrome-accent);
 }
 
-/* Square the switcher pill to match the badges, chips and theme toggle. */
-.ow-header .lang-switcher__field {
-  border-radius: 0;
+.ow-header__actions .nav-drawer__toggle:focus-visible,
+.ow-header__actions .animated-theme-toggler:focus-visible {
+  outline: 2px solid var(--icue-chrome-accent);
+  outline-offset: 2px;
 }
 
-.ow-header .lang-switcher__value {
-  font-family: var(--ow-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 7px 11px;
-}
+/* ---------- responsive ---------- */
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
+  /* Every nav destination is also in the drawer, so drop the pill rather than
+     letting six labels crush the bar. */
   .ow-header__nav {
-    gap: 14px;
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .ow-header {
+    --ow-nav-h: 3rem;
+    padding-inline: 20px;
   }
 
-  .ow-header__link {
+  .ow-header__bar {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.4rem;
+  }
+
+  .ow-header__tag {
     display: none;
+  }
+
+  .ow-header__logo img {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .ow-header__actions .animated-theme-toggler,
+  .ow-header__actions .nav-drawer__toggle,
+  .ow-header__actions .nav-drawer__toggle-placeholder {
+    width: 2.15rem;
+    min-width: 2.15rem;
+    height: 2.15rem;
+    min-height: 2.15rem;
+  }
+
+  .ow-header__logo:active,
+  .ow-header__actions .nav-drawer__toggle:active {
+    transform: scale(0.96);
   }
 }

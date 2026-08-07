@@ -10,8 +10,11 @@
   "nav": {
     "home": "ホーム",
     "projects": "プロジェクト",
+    "news": "ニュース",
+    "about": "紹介",
     "people": "人材",
     "org": "組織",
+    "work": "仕事",
     "mainAria": "ICUE — ホームへ",
     "mainNav": "メインナビゲーション"
   },

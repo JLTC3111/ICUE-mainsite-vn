@@ -10,8 +10,11 @@
   "nav": {
     "home": "Trang chủ",
     "projects": "Dự án",
+    "news": "Tin tức",
+    "about": "Giới thiệu",
     "people": "Nhân lực",
     "org": "Cơ cấu tổ chức",
+    "work": "Công việc",
     "mainAria": "ICUE — về trang chủ",
     "mainNav": "Điều hướng chính"
   },

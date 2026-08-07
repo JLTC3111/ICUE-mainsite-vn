@@ -54,6 +54,20 @@
      page's tokens. Without these the switcher's border and background resolve
      to invalid values and the control renders as bare text. */
   --icue-maxw: var(--ow-maxw);
+
+  /* Dark chrome: the ground and ink shared by the header pills and the site
+     footer, so the two ends of the page read as one surface. The ramp is the
+     one the other apps use; the ink values mirror shared/site-footer/Footer.css,
+     which hard-codes them. None of it flips with the theme — the footer's ink
+     is fixed light, so a light ground would erase it, and the header follows
+     the footer. --icue-accent is re-pinned per-consumer because the page-level
+     value is picked for contrast against the page, not against this chrome. */
+  --icue-gradient-dark: linear-gradient(135deg, #0a1628 0%, #1a2a42 100%);
+  --icue-chrome-border: rgba(255, 255, 255, 0.12);
+  --icue-chrome-text: #cfd2cc;
+  --icue-chrome-text-strong: #ffffff;
+  --icue-chrome-text-mute: #9aa0a6;
+  --icue-chrome-accent: #5cc8ff;
   --icue-accent: var(--ow-accent-text);
   --icue-border: var(--ow-hairline);
   --icue-surface: transparent;

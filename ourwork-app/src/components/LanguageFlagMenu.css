@@ -1,0 +1,131 @@
+/* Trigger geometry and the white glow are the main site's flag button
+   (.main-site-nav .flag-icon, sized down by .pill-site-header__language). The
+   menu repeats the same disc so the five alternates read as the same control. */
+
+.ow-lang {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ow-lang__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.4s var(--ow-ease);
+}
+
+.ow-lang__trigger:hover {
+  transform: scale(1.05);
+}
+
+.ow-lang__trigger:focus-visible {
+  outline: 2px solid var(--icue-chrome-accent);
+  outline-offset: 3px;
+}
+
+.ow-lang__flag {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 2px 4px 12px #fff;
+  user-select: none;
+}
+
+.ow-lang__menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  z-index: 1240;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: max-content;
+  padding: 0.4rem;
+  border: 1px solid var(--icue-chrome-border);
+  border-radius: 1.15rem;
+  background: var(--icue-gradient-dark);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, -0.4rem, 0) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 200ms ease,
+    visibility 200ms ease,
+    transform 260ms var(--ow-ease);
+}
+
+.ow-lang__menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.ow-lang__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.28rem 0.7rem 0.28rem 0.28rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--icue-chrome-text-mute);
+  font-family: var(--ow-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+/* The trigger's glow would stack into a haze down a column of six; the ring
+   keeps the same disc silhouette at rest. */
+.ow-lang__menu .ow-lang__flag {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28);
+  transition: box-shadow 180ms ease, transform 260ms var(--ow-ease);
+}
+
+.ow-lang__item:hover,
+.ow-lang__item:focus-visible {
+  color: var(--icue-chrome-text-strong);
+  border-color: var(--icue-chrome-border);
+  background: rgba(255, 255, 255, 0.07);
+  outline: none;
+}
+
+.ow-lang__item:hover .ow-lang__flag,
+.ow-lang__item:focus-visible .ow-lang__flag {
+  box-shadow: 2px 4px 12px #fff;
+  transform: scale(1.04);
+}
+
+.ow-lang__item:focus-visible {
+  border-color: var(--icue-chrome-accent);
+}
+
+@media (max-width: 768px) {
+  .ow-lang__trigger {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .ow-lang__flag {
+    width: 2rem;
+    height: 2rem;
+  }
+}

@@ -11,7 +11,12 @@
 }
 
 /* The close section already ends with 90px of air (spec §5.6); the shared
-   footer's own 80px top margin would double it into a dead band. */
+   footer's own 80px top margin would double it into a dead band.
+
+   The footer keeps its near-black ground in both themes, so --icue-accent is
+   re-pinned to the dark-ground blue here: the :root light-theme value (#1257a0)
+   is picked for contrast against a pale page and would sink into this one. */
 .ow-shell .icue-footer {
   margin-top: 0;
+  --icue-accent: var(--icue-chrome-accent);
 }

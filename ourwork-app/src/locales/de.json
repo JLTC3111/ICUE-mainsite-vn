@@ -10,8 +10,11 @@
   "nav": {
     "home": "Startseite",
     "projects": "Projekte",
+    "news": "News",
+    "about": "Über uns",
     "people": "Unser Team",
     "org": "Organisation",
+    "work": "Arbeit",
     "mainAria": "ICUE — zur Startseite",
     "mainNav": "Hauptnavigation"
   },
