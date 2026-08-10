@@ -95,11 +95,21 @@
   },
   "newsroom": {
     "thisMonth": "ce mois-ci",
+    "today": "Aujourd’hui",
     "lastUpdated": "Dernière mise à jour",
     "featured": "À la une",
+    "featuredReporting": "Reportage à la une",
+    "motto": "Une revue d’idées, de preuves & de lieux",
     "topStories": "À ne pas manquer",
     "briefs": "En bref",
-    "moreStories": "Autres articles"
+    "moreStories": "Autres articles",
+    "latest": "Dernières nouvelles",
+    "fromInstitute": "Depuis l’institut",
+    "instituteCalloutTitle": "Recherches, rapports et événements pour de meilleurs territoires.",
+    "instituteCalloutCopy": "Suivez les nouvelles recherches, les activités de terrain et les échanges qui façonnent le travail d’ICUE.",
+    "instituteReports": "Rapports et recherches",
+    "instituteEvents": "Événements et activités",
+    "instituteNewsletter": "Suivre la lettre d’ICUE"
   },
   "theme": {
     "dark": "Sombre",

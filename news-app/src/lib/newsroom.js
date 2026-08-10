@@ -16,10 +16,9 @@ export const NEWSROOM_COMPACT_LOAD_MORE_STEP = 6
 /** Mobile + tablet breakpoint — the front page collapses to list rows below this width. */
 export const NEWSROOM_COMPACT_QUERY = '(max-width: 1024px)'
 
-/* Front page bands: one lead story, then a 3-up, then a 3-column brief strip,
-   then dense rows for everything else. Ordering is editorial, not a CMS field. */
+/* Front page bands: one lead story, a calm 3-up, then the unified latest
+   stream. Ordering is editorial, not a CMS field. */
 export const NEWSROOM_TOP_COUNT = 3
-export const NEWSROOM_BRIEF_COUNT = 3
 
 /**
  * View counts are off on the index. A story showing "3 lượt xem" next to a

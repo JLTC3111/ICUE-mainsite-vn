@@ -2,10 +2,10 @@
   position: sticky;
   top: var(--icue-chrome-top);
   z-index: 15;
-  margin: -40px 0 24px;
-  background: #fff;
+  margin: 0;
+  background: var(--newsroom-gallery-bg, #f6f7f5);
   border-top: 1px solid var(--icue-border);
-  border-bottom: 1px solid var(--icue-border);
+  border-bottom: 0;
 }
 
 .section-nav__inner {
@@ -17,15 +17,15 @@
 .section-nav__desktop {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 12px 0;
+  gap: 28px;
+  min-height: 86px;
+  padding: 0;
 }
 
 .section-nav__scroll {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
-  /* Vertical padding keeps pill borders and focus rings off the clip edge. */
-  padding: 3px 0;
+  padding: 0;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -36,21 +36,24 @@
 .section-nav__list {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 32px;
   min-width: min-content;
 }
 
 .section-nav__item {
   flex: none;
-  padding: 7px 16px;
-  border: 1px solid var(--icue-border);
-  border-radius: 999px;
+  position: relative;
+  min-height: 86px;
+  padding: 3px 0 0;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--icue-text-soft);
   font: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
   transition:
@@ -60,21 +63,67 @@
 }
 
 .section-nav__item:hover {
-  color: var(--icue-text);
-  border-color: var(--icue-text-soft);
+  color: var(--news-rotating-green, #15803d);
 }
 
-/* Near-black fill rather than the raw lime accent — white on lime is
-   unreadable, and the ink pill matches the rest of the brand chrome. */
+/* Magic UI Animated Shiny Text stays typographically neutral until the
+   category itself is hovered or keyboard-focused. */
+.section-nav__shiny.animated-shiny-text {
+  margin: 0;
+  max-width: none;
+  background-image: none;
+  color: inherit;
+  animation: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.section-nav__item:is(:hover, :focus-visible) .section-nav__shiny.animated-shiny-text,
+.section-nav__menu-item:is(:hover, :focus-visible) .section-nav__shiny.animated-shiny-text {
+  --shiny-muted: var(--news-rotating-green, #15803d);
+  --shiny-bright: #ecffd9;
+  background-image:
+    linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--shiny-bright) 88%, transparent) 50%,
+      transparent
+    ),
+    linear-gradient(to right, var(--shiny-muted), var(--shiny-muted));
+  background-size: var(--shiny-width) 100%, 100% 100%;
+  background-position: calc(-100% - var(--shiny-width)) 0, 0 0;
+  background-repeat: no-repeat, no-repeat;
+  -webkit-background-clip: text, text;
+  background-clip: text, text;
+  color: transparent;
+  animation: shiny-text 1.15s cubic-bezier(0.4, 0, 0.2, 1) 1;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-nav__item::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--news-rotating-green, #15803d);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.45);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
 .section-nav__item.is-active {
-  border-color: var(--icue-ink);
-  background: var(--icue-ink);
-  color: var(--icue-surface);
+  background: transparent;
+  color: var(--news-rotating-green, #15803d);
 }
 
 .section-nav__item.is-active:hover {
-  color: var(--icue-surface);
-  border-color: var(--icue-ink);
+  color: var(--news-rotating-green, #15803d);
+}
+
+.section-nav__item.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .section-nav__more-wrap {
@@ -86,6 +135,19 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.section-nav__tagline {
+  flex: 1 0 auto;
+  margin: 0 0 0 auto;
+  color: var(--icue-text-faint);
+  font-family: var(--icue-display-serif, var(--icue-serif));
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .section-nav__chev {
@@ -180,8 +242,18 @@
   box-shadow: 0 0 0 3px rgba(29, 183, 255, 0.18);
 }
 
+@media (max-width: 1100px) {
+  .section-nav__desktop,
+  .section-nav__list {
+    gap: 24px;
+  }
+
+  .section-nav__tagline {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
-  .section-nav { margin-top: -28px; }
   .section-nav__inner { padding-left: 16px; padding-right: 16px; }
   .section-nav__desktop { display: none; }
   .section-nav__mobile { display: block; }
@@ -193,13 +265,11 @@
 
 /* Light newsroom home — match gallery backdrop, remove white seams */
 .news-page:not(.news-page--dark) .section-nav {
-  margin: 0 0 24px;
   background: var(--newsroom-gallery-bg, #f6f7f5);
 }
 
 /* Dark newsroom home --------------------------------------------------- */
 .news-page.news-page--dark .section-nav {
-  margin: 0 0 24px;
   background: rgba(10, 10, 10, 0.72);
   backdrop-filter: saturate(160%) blur(14px);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
@@ -208,22 +278,38 @@
 }
 
 .news-page.news-page--dark .section-nav__item {
-  border-color: rgba(255, 255, 255, 0.16);
   color: #9aa0a6;
 }
 
 .news-page.news-page--dark .section-nav__item:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--news-rotating-green, #4ade80);
+  background: transparent;
 }
 
-/* Inverted pill — near-white fill, page-dark text. */
 .news-page.news-page--dark .section-nav__item.is-active,
 .news-page.news-page--dark .section-nav__item.is-active:hover {
-  border-color: #f0f1ed;
-  background: #f0f1ed;
-  color: #101215;
+  background: transparent;
+  color: var(--news-rotating-green, #4ade80);
+}
+
+.news-page.news-page--dark
+  .section-nav__item:is(:hover, :focus-visible)
+  .section-nav__shiny.animated-shiny-text,
+.news-page.news-page--dark
+  .section-nav__menu-item:is(:hover, :focus-visible)
+  .section-nav__shiny.animated-shiny-text {
+  --shiny-muted: var(--news-rotating-green, #4ade80);
+  --shiny-bright: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-nav__item:is(:hover, :focus-visible) .section-nav__shiny.animated-shiny-text,
+  .section-nav__menu-item:is(:hover, :focus-visible) .section-nav__shiny.animated-shiny-text {
+    background-image: none;
+    color: inherit;
+    animation: none;
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 .news-page.news-page--dark .section-nav__menu {

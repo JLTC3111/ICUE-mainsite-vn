@@ -95,11 +95,21 @@
   },
   "newsroom": {
     "thisMonth": "this month",
+    "today": "Today",
     "lastUpdated": "Last updated",
     "featured": "Featured",
+    "featuredReporting": "Featured reporting",
+    "motto": "A journal of ideas, evidence & place",
     "topStories": "Top stories",
     "briefs": "In brief",
-    "moreStories": "More stories"
+    "moreStories": "More stories",
+    "latest": "Latest",
+    "fromInstitute": "From the institute",
+    "instituteCalloutTitle": "Research, reports and events for better places.",
+    "instituteCalloutCopy": "Follow new research, field activity and the conversations shaping ICUE's work.",
+    "instituteReports": "Reports & research",
+    "instituteEvents": "Events & activity",
+    "instituteNewsletter": "Follow the ICUE briefing"
   },
   "theme": {
     "dark": "Dark",

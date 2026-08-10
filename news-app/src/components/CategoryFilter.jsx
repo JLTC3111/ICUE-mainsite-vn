@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CATEGORY_SLUGS } from '../lib/categories'
+import { AnimatedShinyText } from './magicui/AnimatedShinyText'
 import './CategoryFilter.css'
 
 // Desktop: scrollable primary tabs + separate "More" control (dropdown must sit
 // outside the overflow scroll container or it gets clipped).
 const PRIMARY_SLUGS = [
-  'world', 'politics', 'economics', 'urban', 'technology', 'projects', 'social', 'health',
+  'world', 'politics', 'economics', 'urban',
 ]
 const OVERFLOW_SLUGS = CATEGORY_SLUGS.filter((s) => !PRIMARY_SLUGS.includes(s))
 
-export default function CategoryFilter({ value, onChange }) {
+export default function CategoryFilter({ value, onChange, tagline = '' }) {
   const { t } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const rootRef = useRef(null)
@@ -48,7 +49,9 @@ export default function CategoryFilter({ value, onChange }) {
                 className={`section-nav__item${value === 'all' ? ' is-active' : ''}`}
                 onClick={() => pick('all')}
               >
-                {t('categories.all')}
+                <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                  {t('categories.all')}
+                </AnimatedShinyText>
               </button>
               {PRIMARY_SLUGS.map((slug) => (
                 <button
@@ -59,7 +62,9 @@ export default function CategoryFilter({ value, onChange }) {
                   className={`section-nav__item${value === slug ? ' is-active' : ''}`}
                   onClick={() => pick(slug)}
                 >
-                  {t(`categories.${slug}`)}
+                  <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                    {t(`categories.${slug}`)}
+                  </AnimatedShinyText>
                 </button>
               ))}
             </div>
@@ -73,7 +78,9 @@ export default function CategoryFilter({ value, onChange }) {
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
             >
-              {overflowActive ? t(`categories.${value}`) : t('categories.more')}
+              <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                {overflowActive ? t(`categories.${value}`) : t('categories.more')}
+              </AnimatedShinyText>
               <svg
                 className="section-nav__chev"
                 viewBox="0 0 12 12"
@@ -100,13 +107,17 @@ export default function CategoryFilter({ value, onChange }) {
                       className={`section-nav__menu-item${value === slug ? ' is-active' : ''}`}
                       onClick={() => pick(slug)}
                     >
-                      {t(`categories.${slug}`)}
+                      <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                        {t(`categories.${slug}`)}
+                      </AnimatedShinyText>
                     </button>
                   </li>
                 ))}
               </ul>
             )}
           </div>
+
+          {tagline && <p className="section-nav__tagline">{tagline}</p>}
         </div>
 
         <label className="section-nav__mobile">

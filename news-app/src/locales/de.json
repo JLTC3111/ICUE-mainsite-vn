@@ -95,11 +95,21 @@
   },
   "newsroom": {
     "thisMonth": "diesen Monat",
+    "today": "Heute",
     "lastUpdated": "Zuletzt aktualisiert",
     "featured": "Im Fokus",
+    "featuredReporting": "Reportage im Fokus",
+    "motto": "Ein Journal für Ideen, Evidenz & Orte",
     "topStories": "Top-Themen",
     "briefs": "Kurz gemeldet",
-    "moreStories": "Weitere Beiträge"
+    "moreStories": "Weitere Beiträge",
+    "latest": "Neueste Beiträge",
+    "fromInstitute": "Aus dem Institut",
+    "instituteCalloutTitle": "Forschung, Berichte und Veranstaltungen für bessere Orte.",
+    "instituteCalloutCopy": "Verfolgen Sie neue Forschung, Feldarbeit und die Gespräche, die die Arbeit von ICUE prägen.",
+    "instituteReports": "Berichte & Forschung",
+    "instituteEvents": "Veranstaltungen & Aktivitäten",
+    "instituteNewsletter": "ICUE-Briefing verfolgen"
   },
   "theme": {
     "dark": "Dunkel",

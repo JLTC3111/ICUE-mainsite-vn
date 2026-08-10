@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import RotatingText from '../components/RotatingText'
+import WordRotate from '../components/WordRotate'
 import CategoryFilter from '../components/CategoryFilter'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useMainSite } from '../hooks/useMainSite'
 import { usePageResume } from '../hooks/usePageResume'
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
@@ -13,10 +14,9 @@ import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
 import { categoryColor, isCategory } from '../lib/categories'
 import { resolveArticleCoverComparison } from '../lib/mediaComparison'
-import { formatCalendarDate, formatDate, normalizeUnicode, plainExcerpt } from '../lib/helpers'
+import { formatDate, normalizeUnicode, plainExcerpt, resolveIntlLocale } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import {
-  NEWSROOM_BRIEF_COUNT,
   NEWSROOM_COMPACT_QUERY,
   NEWSROOM_COMPACT_INITIAL_VISIBLE,
   NEWSROOM_COMPACT_LOAD_MORE_STEP,
@@ -41,7 +41,19 @@ function localDateTimeValue(date) {
   return `${year}-${month}-${day}`
 }
 
-function LocalizedCalendarDate({ locale }) {
+function formatMastheadDate(value, locale) {
+  try {
+    return new Intl.DateTimeFormat(resolveIntlLocale(locale), {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    }).format(value)
+  } catch {
+    return ''
+  }
+}
+
+function LocalizedCalendarDate({ locale, t }) {
   const [today, setToday] = useState(() => new Date())
 
   useEffect(() => {
@@ -80,7 +92,8 @@ function LocalizedCalendarDate({ locale }) {
         </svg>
       </span>
       <span className="newsroom-masthead__calendar-date">
-        {formatCalendarDate(today, locale)}
+        <span className="newsroom-masthead__calendar-label">{t('newsroom.today')}</span>
+        <span>{formatMastheadDate(today, locale)}</span>
       </span>
     </time>
   )
@@ -179,21 +192,20 @@ function LeadStory({ card, locale, t }) {
         className="news-lead__link"
         aria-label={card.title || undefined}
       >
-        {card.cover && (
-          <div className="news-lead__media">
-            <img src={card.cover} alt="" decoding="async" />
-          </div>
-        )}
         <div className="news-lead__body">
           <div className="news-lead__kicker">
-            <CategoryTag category={card.category} t={t} />
-            <span className="news-lead__featured">{t('newsroom.featured')}</span>
+            <span className="news-lead__featured">{t('newsroom.featuredReporting')}</span>
           </div>
           <Headline card={card} as="h2" className="news-lead__title" />
           {card.subtitle && <p className="news-lead__subtitle">{card.subtitle}</p>}
           {excerpt && <p className="news-lead__standfirst">{excerpt}</p>}
           <StoryMeta card={card} locale={locale} t={t} showAvatar />
         </div>
+        {card.cover && (
+          <div className="news-lead__media">
+            <img src={card.cover} alt="" decoding="async" />
+          </div>
+        )}
       </Link>
     </article>
   )
@@ -218,27 +230,6 @@ function StoryCard({ card, locale, t }) {
           {card.subtitle && <p className="news-card__subtitle">{card.subtitle}</p>}
           <StoryMeta card={card} locale={locale} t={t} />
         </div>
-      </Link>
-    </article>
-  )
-}
-
-function BriefStory({ card, locale, t }) {
-  return (
-    <article className="news-brief">
-      <Link
-        to={`/article/${card.slug}`}
-        className="news-brief__link"
-        aria-label={card.title || undefined}
-      >
-        <div className="news-brief__kicker">{t(`categories.${card.category}`)}</div>
-        <Headline card={card} as="h3" className="news-brief__title" />
-        {card.subtitle && <p className="news-brief__subtitle">{card.subtitle}</p>}
-        {card.date && (
-          <time className="news-brief__date" dateTime={card.date}>
-            {formatDate(card.date, locale)}
-          </time>
-        )}
       </Link>
     </article>
   )
@@ -271,6 +262,35 @@ function StoryRow({ card, locale, t }) {
   )
 }
 
+function InstituteCallout({ links, t }) {
+  return (
+    <aside className="news-institute" aria-labelledby="news-institute-title">
+      <div className="news-institute__intro">
+        <p className="news-institute__eyebrow">{t('newsroom.fromInstitute')}</p>
+        <h2 className="news-institute__title" id="news-institute-title">
+          {t('newsroom.instituteCalloutTitle')}
+        </h2>
+        <p className="news-institute__copy">{t('newsroom.instituteCalloutCopy')}</p>
+      </div>
+      <nav className="news-institute__links" aria-label={t('newsroom.fromInstitute')}>
+        <a href={links.work}>{t('newsroom.instituteReports')}<span aria-hidden="true">↗</span></a>
+        <a href={links.events}>{t('newsroom.instituteEvents')}<span aria-hidden="true">↗</span></a>
+        <a href={links.contact}>{t('newsroom.instituteNewsletter')}<span aria-hidden="true">↗</span></a>
+      </nav>
+    </aside>
+  )
+}
+
+function EditorialFooter({ archiveHref, t }) {
+  return (
+    <footer className="news-editorial-footer">
+      <p className="news-editorial-footer__mark">ICUE <span>/</span> {t('nav.news')}</p>
+      <p className="news-editorial-footer__motto">{t('newsroom.motto')}</p>
+      <a href={archiveHref}>{t('nav.archive')} <span aria-hidden="true">→</span></a>
+    </footer>
+  )
+}
+
 export default function NewsGrid() {
   const { t, i18n } = useTranslation()
   const profile = usePerformanceProfile()
@@ -287,6 +307,7 @@ export default function NewsGrid() {
   const [visibility, setVisibility] = useState({ key: visibilityKey, count: initialVisible })
   const visibleCount = visibility.key === visibilityKey ? visibility.count : initialVisible
   const { isDark } = useNewsroomTheme()
+  const { archiveLink, hashLink } = useMainSite()
   const requestIdRef = useRef(0)
   const locale = i18n.resolvedLanguage
 
@@ -351,12 +372,16 @@ export default function NewsGrid() {
     [visibleArticles, titles, subtitles, isTitlePending, fallbackByline],
   )
 
-  const briefStart = 1 + NEWSROOM_TOP_COUNT
-  const moreStart = briefStart + NEWSROOM_BRIEF_COUNT
+  const latestStart = 1 + NEWSROOM_TOP_COUNT
   const lead = cards[0] || null
-  const topStories = cards.slice(1, briefStart)
-  const briefs = cards.slice(briefStart, moreStart)
-  const moreStories = cards.slice(moreStart)
+  const topStories = cards.slice(1, latestStart)
+  const latestStories = cards.slice(latestStart)
+
+  const instituteLinks = {
+    work: hashLink('ourWork'),
+    events: hashLink('communityActivities'),
+    contact: hashLink('Contact'),
+  }
 
   const lastUpdated = articles[0]?.published_at || articles[0]?.article_date || ''
 
@@ -381,20 +406,16 @@ export default function NewsGrid() {
       <header className="newsroom-masthead">
         <div className="icue-container icue-container--newsroom newsroom-masthead__inner">
           <div className="newsroom-masthead__text">
-            <p className="newsroom-masthead__eyebrow">{t('instituteName')}</p>
             <h1 className="newsroom-masthead__title">
               <span className="newsroom-masthead__name">{t('nav.news')}</span>
+              <span className="newsroom-masthead__divider" aria-hidden="true" />
               {simplifyHero ? (
                 <span className="newsroom-masthead__rotating">{heroTags[0]}</span>
               ) : (
-                <RotatingText
-                  texts={heroTags}
-                  mainClassName="newsroom-masthead__rotating"
-                  splitBy="words"
-                  rotationInterval={3200}
-                  staggerDuration={0.07}
-                  staggerFrom="first"
-                  auto={!reduceMotion}
+                <WordRotate
+                  words={reduceMotion ? [heroTags[0]] : heroTags}
+                  className="newsroom-masthead__rotating"
+                  duration={3200}
                 />
               )}
             </h1>
@@ -402,10 +423,10 @@ export default function NewsGrid() {
           </div>
 
           <div className="newsroom-masthead__aside">
-            <LocalizedCalendarDate locale={locale} />
+            <LocalizedCalendarDate locale={locale} t={t} />
             {lastUpdated && (
               <p className="newsroom-masthead__updated">
-                {t('newsroom.lastUpdated')} · {formatDate(lastUpdated, locale)}
+                <span>{t('newsroom.lastUpdated')}</span> {formatDate(lastUpdated, locale)}
               </p>
             )}
           </div>
@@ -413,7 +434,11 @@ export default function NewsGrid() {
       </header>
 
       {state === 'ready' && (
-        <CategoryFilter value={activeCat} onChange={setActiveCat} />
+        <CategoryFilter
+          value={activeCat}
+          onChange={setActiveCat}
+          tagline={t('newsroom.motto')}
+        />
       )}
 
       {state === 'ready' && hasActiveFilters && (
@@ -505,26 +530,13 @@ export default function NewsGrid() {
           </section>
         )}
 
-        {state === 'ready' && briefs.length > 0 && (
-          <section className="news-band news-band--briefs" aria-labelledby="news-band-briefs">
-            <h2 className="news-band__heading" id="news-band-briefs">
-              {t('newsroom.briefs')}
-            </h2>
-            <div className="news-band__strip">
-              {briefs.map((card) => (
-                <BriefStory key={card.id} card={card} locale={locale} t={t} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {state === 'ready' && moreStories.length > 0 && (
-          <section className="news-band news-band--more" aria-labelledby="news-band-more">
-            <h2 className="news-band__heading" id="news-band-more">
-              {t('newsroom.moreStories')}
+        {state === 'ready' && latestStories.length > 0 && (
+          <section className="news-band news-band--latest" aria-labelledby="news-band-latest">
+            <h2 className="news-band__heading" id="news-band-latest">
+              {t('newsroom.latest')}
             </h2>
             <div className="news-band__rows">
-              {moreStories.map((card) => (
+              {latestStories.map((card) => (
                 <StoryRow key={card.id} card={card} locale={locale} t={t} />
               ))}
             </div>
@@ -545,6 +557,12 @@ export default function NewsGrid() {
             </button>
           </div>
         )}
+
+        {state === 'ready' && (
+          <InstituteCallout links={instituteLinks} t={t} />
+        )}
+
+        <EditorialFooter archiveHref={archiveLink()} t={t} />
       </div>
     </div>
   )

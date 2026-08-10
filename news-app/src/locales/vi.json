@@ -95,11 +95,21 @@
   },
   "newsroom": {
     "thisMonth": "tháng này",
+    "today": "Hôm nay",
     "lastUpdated": "Cập nhật lần cuối",
     "featured": "Tin nổi bật",
+    "featuredReporting": "Báo cáo nổi bật",
+    "motto": "Một tạp chí về ý tưởng, bằng chứng & thiết kế",
     "topStories": "Tin đáng chú ý",
     "briefs": "Tin vắn",
-    "moreStories": "Tin khác"
+    "moreStories": "Tin khác",
+    "latest": "Mới nhất",
+    "fromInstitute": "Từ viện",
+    "instituteCalloutTitle": "Nghiên cứu, báo cáo và sự kiện cho những đô thị tốt đẹp hơn.",
+    "instituteCalloutCopy": "Theo dõi các nghiên cứu mới, hoạt động chuyên môn và những cuộc trao đổi đang định hình công việc của ICUE.",
+    "instituteReports": "Báo cáo & nghiên cứu",
+    "instituteEvents": "Sự kiện & hoạt động",
+    "instituteNewsletter": "Theo dõi bản tin ICUE"
   },
   "theme": {
     "dark": "Tối",

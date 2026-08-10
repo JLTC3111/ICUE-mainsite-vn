@@ -10,6 +10,7 @@ import ArticleSearch from './ArticleSearch'
 import NotificationBell from './NotificationBell'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
 import PerformanceModeToggle from './PerformanceModeToggle'
+import { AnimatedShinyText } from './magicui/AnimatedShinyText'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 
@@ -221,13 +222,19 @@ function Header() {
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
           <div className="icue-header__primary-links" aria-hidden={searchOpen || undefined}>
             <a href={base} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
-              {t('nav.mainSite')}
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
+                {t('nav.mainSite')}
+              </AnimatedShinyText>
             </a>
             <NavLink to="/" end className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
-              {t('nav.news')}
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
+                {t('nav.news')}
+              </AnimatedShinyText>
             </NavLink>
             <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
-              {t('nav.archive')}
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
+                {t('nav.archive')}
+              </AnimatedShinyText>
             </a>
           </div>
 
