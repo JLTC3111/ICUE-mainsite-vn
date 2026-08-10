@@ -316,6 +316,7 @@ export default function ArticleDetail() {
   const displayCoverInfo = normalizeUnicode(
     (usingTranslation && translation.cover_info) || article.cover_info || '',
   )
+  const hasCover = coverComparisonPairs.length > 0 || Boolean(article.cover_image_url)
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || coverComparisonPairs.length > 0 || images.length > 0
   const showLensToggle = lensCapable && hasLensPhotos
@@ -331,6 +332,12 @@ export default function ArticleDetail() {
   const category = isCategory(article.category) ? article.category : 'general'
   const translatedSources = usingTranslation ? translation?.sources : null
   const translatedMedia = usingTranslation ? translation?.media : null
+  const renderOwnerActions = (className) => canEdit ? (
+    <div className={className}>
+      <Link to={`/edit/${article.id}`} className="btn btn-ghost btn-sm">{t('common.edit')}</Link>
+      <button type="button" className="btn btn-danger btn-sm" onClick={handleDelete}>{t('common.delete')}</button>
+    </div>
+  ) : null
 
   return (
     <article
@@ -416,12 +423,7 @@ export default function ArticleDetail() {
               <div className="article-detail__social-nav">
                 <SocialGooeyNav reduceMotion={reduceMotion} />
               </div>
-              {canEdit && (
-                <div className="article-detail__owner-actions">
-                  <Link to={`/edit/${article.id}`} className="btn btn-ghost btn-sm">{t('common.edit')}</Link>
-                  <button className="btn btn-danger btn-sm" onClick={handleDelete}>{t('common.delete')}</button>
-                </div>
-              )}
+              {!hasCover && renderOwnerActions('article-detail__owner-actions')}
             </div>
           </div>
         </div>
@@ -459,6 +461,7 @@ export default function ArticleDetail() {
 
       {coverComparisonPairs.length > 0 ? (
         <figure className="article-detail__cover article-detail__cover--comparison">
+          {renderOwnerActions('article-detail__cover-actions')}
           <ArticleComparisonCarousel
             pairs={coverComparisonPairs}
             fitContent
@@ -470,6 +473,7 @@ export default function ArticleDetail() {
         </figure>
       ) : article.cover_image_url ? (
         <figure className="article-detail__cover">
+          {renderOwnerActions('article-detail__cover-actions')}
           <Lens
             className="article-detail__cover-lens"
             zoomFactor={1.4}

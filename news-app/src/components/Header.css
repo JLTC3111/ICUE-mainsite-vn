@@ -92,6 +92,9 @@
 }
 
 .icue-header__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 0;
   font-size: 14px;
   font-weight: 600;
   color: var(--icue-text-soft);
@@ -124,7 +127,7 @@
   content: '';
   position: absolute;
   left: 25%;
-  bottom: -5px;
+  bottom: 1px;
   width: 50%;
   height: 1px;
   background: var(--icue-nav-hover-line);

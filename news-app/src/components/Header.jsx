@@ -11,6 +11,7 @@ import NotificationBell from './NotificationBell'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
 import PerformanceModeToggle from './PerformanceModeToggle'
 import { AnimatedShinyText } from './magicui/AnimatedShinyText'
+import useMediaQuery from '../hooks/useMediaQuery'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 
@@ -155,6 +156,8 @@ function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const showExpandedSearch = useMediaQuery('(min-width: 1360px)')
+  const compactSearchOpen = searchOpen && !showExpandedSearch
 
   const close = useCallback(() => setOpen(false), [])
   const handleSearchOpenChange = useCallback((next) => {
@@ -167,7 +170,7 @@ function Header() {
   }, [signOut, close, navigate])
 
   return (
-    <header className={`icue-header${searchOpen ? ' is-search-open' : ''}`}>
+    <header className={`icue-header${compactSearchOpen ? ' is-search-open' : ''}`}>
       <div className="icue-header__inner icue-container">
         <DrawerMenu
           hashLink={hashLink}
@@ -220,18 +223,18 @@ function Header() {
         </button>
 
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
-          <div className="icue-header__primary-links" aria-hidden={searchOpen || undefined}>
-            <a href={base} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+          <div className="icue-header__primary-links" aria-hidden={compactSearchOpen || undefined}>
+            <a href={base} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
                 {t('nav.mainSite')}
               </AnimatedShinyText>
             </a>
-            <NavLink to="/" end className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+            <NavLink to="/" end className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
                 {t('nav.news')}
               </AnimatedShinyText>
             </NavLink>
-            <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={searchOpen ? -1 : undefined}>
+            <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
                 {t('nav.archive')}
               </AnimatedShinyText>
@@ -241,7 +244,11 @@ function Header() {
           {isAuthed && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
-            <ArticleSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
+            <ArticleSearch
+              open={searchOpen}
+              expanded={showExpandedSearch}
+              onOpenChange={handleSearchOpenChange}
+            />
             {/* Keyed by account so notification state resets on user switch. */}
             {isAuthed && <NotificationBell key={user?.id} />}
             <LanguageSwitcher />

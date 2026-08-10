@@ -29,14 +29,14 @@ function ToolbarButton({
   )
 }
 
-export default function ArticleSearch({ open, onOpenChange }) {
+export default function ArticleSearch({ open, expanded = false, onOpenChange }) {
   const { t } = useTranslation()
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const isControlled = open !== undefined
-  const isOpen = isControlled ? open : uncontrolledOpen
+  const isOpen = expanded || (isControlled ? open : uncontrolledOpen)
   const queryValue = params.get('q') || ''
   const [draft, setDraft] = useState(() => ({ source: queryValue, value: queryValue }))
   const value = draft.source === queryValue ? draft.value : queryValue
@@ -61,19 +61,21 @@ export default function ArticleSearch({ open, onOpenChange }) {
   }, [queryValue])
 
   useEffect(() => {
-    if (isOpen) inputRef.current?.focus()
-  }, [isOpen])
+    if (isOpen && !expanded) inputRef.current?.focus()
+  }, [expanded, isOpen])
 
-  const close = useCallback(() => setIsOpen(false), [setIsOpen])
+  const close = useCallback(() => {
+    if (!expanded) setIsOpen(false)
+  }, [expanded, setIsOpen])
 
   useClickOutside(containerRef, close)
 
   useEffect(() => {
-    if (!isOpen) return undefined
+    if (!isOpen || expanded) return undefined
     const onKey = (e) => e.key === 'Escape' && close()
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [isOpen, close])
+  }, [expanded, isOpen, close])
 
   const submit = useCallback((e) => {
     e?.preventDefault()
@@ -104,7 +106,7 @@ export default function ArticleSearch({ open, onOpenChange }) {
   return (
     <div
       ref={containerRef}
-      className={`article-search${isOpen ? ' is-open' : ''}${hasQuery ? ' has-query' : ''}`}
+      className={`article-search${isOpen ? ' is-open' : ''}${expanded ? ' is-expanded' : ''}${hasQuery ? ' has-query' : ''}`}
     >
       <div className="article-search__shell">
         <div className="article-search__motion">
@@ -131,9 +133,15 @@ export default function ArticleSearch({ open, onOpenChange }) {
                 role="search"
                 aria-label={t('search.label')}
               >
-                <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
-                  <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
-                </ToolbarButton>
+                {expanded ? (
+                  <span className="article-search__leading-icon" aria-hidden="true">
+                    <DevIcon218 className="article-search__icon article-search__icon--lens" />
+                  </span>
+                ) : (
+                  <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
+                    <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
+                  </ToolbarButton>
+                )}
                 <div className="article-search__field">
                   <label className="visually-hidden" htmlFor="article-search-input">
                     {t('search.label')}
@@ -148,7 +156,7 @@ export default function ArticleSearch({ open, onOpenChange }) {
                     onChange={(e) => setDraft({ source: queryValue, value: e.target.value })}
                     autoComplete="off"
                     enterKeyHint="search"
-                    autoFocus
+                    autoFocus={!expanded}
                   />
                   <div className="article-search__field-actions">
                     {value ? (

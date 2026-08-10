@@ -4,8 +4,10 @@
    only the page-local accent ink is defined here. */
 .news-page {
   --newsroom-gallery-bg: #f6f7f5;
+  --news-accent-ink: #1a5fb4;
   --news-rotating-green: #15803d;
   --news-link-green: #0f6b32;
+  --news-contrast-ink: #111316;
   --news-masthead-mono: #111316;
   --news-masthead-inverse: #f6f7f5;
   --news-focus: var(--news-link-green);
@@ -20,8 +22,10 @@
 
 .news-page--dark {
   --newsroom-gallery-bg: #0a0a0a;
+  --news-accent-ink: #7cc4ff;
   --news-rotating-green: #4ade80;
   --news-link-green: #62dc88;
+  --news-contrast-ink: #f4f5f1;
   --news-masthead-mono: #f4f5f1;
   --news-masthead-inverse: #0a0a0a;
   --news-focus: var(--news-link-green);
@@ -246,14 +250,6 @@
 }
 .news-tag--sm { font-size: 10.5px; letter-spacing: 0.1em; }
 
-.news-tag--sm {
-  color: var(--news-link-green);
-}
-
-.news-tag--sm::before {
-  background: var(--news-link-green);
-}
-
 /* Shared card link + focus --------------------------------------------- */
 .news-lead__link,
 .news-card__link,
@@ -354,13 +350,61 @@
   transition: color 0.18s ease;
 }
 
+.news-lead__title-shiny.animated-shiny-text {
+  display: inline;
+  max-width: none;
+  margin: 0;
+  background-image: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  animation: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.news-lead__link:hover .news-lead__title-shiny.animated-shiny-text {
+  --shiny-base: var(--news-contrast-ink);
+  --shiny-bright: var(--news-rotating-green);
+  background-image:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      color-mix(in srgb, var(--shiny-bright) 62%, transparent) 24%,
+      color-mix(in srgb, var(--shiny-bright) 96%, white) 43%,
+      #ffffff 50%,
+      color-mix(in srgb, var(--shiny-bright) 96%, white) 57%,
+      color-mix(in srgb, var(--shiny-bright) 62%, transparent) 76%,
+      transparent 100%
+    ),
+    linear-gradient(to right, var(--shiny-base), var(--shiny-base));
+  background-size: var(--shiny-width) 100%, 100% 100%;
+  background-position: calc(-100% - var(--shiny-width)) 0, 0 0;
+  background-repeat: no-repeat, no-repeat;
+  background-clip: text, text;
+  color: transparent;
+  animation: shiny-text 1.35s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--shiny-bright) 24%, transparent));
+  -webkit-background-clip: text, text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-lead__link:hover .news-lead__title-shiny.animated-shiny-text {
+    background-image: none;
+    color: inherit;
+    animation: none;
+    filter: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
 .news-lead__subtitle {
   margin: 0 auto 12px;
   max-width: 760px;
   font-size: 21px;
   font-weight: 500;
   line-height: 1.35;
-  color: var(--news-link-green);
+  color: var(--news-accent-ink);
 }
 
 .news-lead__standfirst {
@@ -433,7 +477,7 @@
   font-size: 14.5px;
   font-weight: 500;
   line-height: 1.4;
-  color: var(--news-link-green);
+  color: var(--news-accent-ink);
 }
 
 /* Latest — two-column, text-led rows ------------------------------------ */
@@ -485,7 +529,7 @@
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--news-link-green);
+  color: var(--icue-text-faint);
 }
 
 .news-row__title {
@@ -533,7 +577,7 @@
 
 .news-institute__eyebrow {
   margin: 0 0 16px;
-  color: var(--news-link-green);
+  color: var(--news-contrast-ink);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -543,7 +587,7 @@
 .news-institute__title {
   max-width: 760px;
   margin: 0;
-  color: var(--icue-ink);
+  color: var(--news-contrast-ink);
   font-family: var(--icue-display-serif, var(--icue-serif));
   font-size: clamp(34px, 4vw, 58px);
   font-weight: 500;
@@ -570,13 +614,13 @@
   gap: 20px;
   padding: 15px 0;
   border-bottom: 1px solid var(--icue-border);
-  color: var(--news-link-green);
+  color: var(--news-contrast-ink);
   font-size: 14px;
   font-weight: 700;
 }
 
 .news-institute__links a:hover {
-  color: var(--icue-ink);
+  color: var(--news-link-green);
 }
 
 /* Editorial sign-off --------------------------------------------------- */
@@ -615,12 +659,12 @@
 
 .news-editorial-footer a {
   justify-self: end;
-  color: var(--news-link-green);
+  color: var(--news-contrast-ink);
   font-weight: 800;
 }
 
 .news-editorial-footer a:hover {
-  color: var(--icue-ink);
+  color: var(--news-link-green);
 }
 
 /* Byline / date / read time -------------------------------------------- */

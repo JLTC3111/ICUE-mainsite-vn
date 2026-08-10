@@ -283,7 +283,47 @@ html:lang(vi) .article-detail__subtitle {
   color: var(--icue-blue, #368adf);
 }
 
-.article-detail__cover { margin: 32px auto; max-width: 1127px; padding: 0 24px; }
+.article-detail__cover { position: relative; margin: 32px auto; max-width: 1127px; padding: 0 24px; }
+.article-detail__cover-actions {
+  position: absolute;
+  z-index: 8;
+  top: 16px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(10, 12, 14, 0.78);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+.article-detail .article-detail__cover-actions .btn {
+  min-width: 0;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.article-detail .article-detail__cover-actions .btn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.article-detail .article-detail__cover-actions .btn-danger {
+  border-color: rgba(255, 157, 162, 0.5);
+  color: #ffd4d6;
+}
+
+.article-detail .article-detail__cover-actions .btn-danger:hover:not(:disabled) {
+  border-color: rgba(255, 157, 162, 0.82);
+  background: rgba(229, 72, 77, 0.24);
+  color: #fff;
+}
 .article-detail__cover-lens {
   border-radius: var(--icue-radius);
   box-shadow: var(--icue-shadow-md);
@@ -858,6 +898,11 @@ html:lang(vi) .article-detail__subtitle {
   padding: 0;
 }
 
+.article-detail__cover-actions {
+  top: clamp(14px, 1.5vw, 22px);
+  left: clamp(14px, 1.5vw, 22px);
+}
+
 .article-detail__cover-lens,
 .article-detail__cover img,
 .article-detail__cover--comparison .article-comparison-parallax {
@@ -1219,6 +1264,18 @@ html:lang(vi) .article-detail__subtitle {
 
   .article-detail__cover {
     margin-block: 26px 34px;
+  }
+
+  .article-detail__cover-actions {
+    top: 10px;
+    left: 10px;
+    gap: 5px;
+    padding: 4px;
+  }
+
+  .article-detail .article-detail__cover-actions .btn {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 
   .article-detail__cover-lens,

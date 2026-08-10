@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WordRotate from '../components/WordRotate'
+import { AnimatedShinyText } from '../components/magicui/AnimatedShinyText'
 import CategoryFilter from '../components/CategoryFilter'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
@@ -147,7 +148,7 @@ function CategoryTag({ category, t, className = 'news-tag' }) {
  * Vietnamese headlines run long and the cards are sized to grow, so nothing
  * here clamps or ellipsises.
  */
-function Headline({ card, as: Tag, className, skeletonLines = 2 }) {
+function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = false }) {
   if (card.titlePending) {
     return (
       <Tag className={className}>
@@ -155,7 +156,15 @@ function Headline({ card, as: Tag, className, skeletonLines = 2 }) {
       </Tag>
     )
   }
-  return <Tag className={`${className} translation-reveal`}>{card.title}</Tag>
+  return (
+    <Tag className={`${className} translation-reveal`}>
+      {shinyOnHover ? (
+        <AnimatedShinyText className="news-lead__title-shiny" shimmerWidth={420}>
+          {card.title}
+        </AnimatedShinyText>
+      ) : card.title}
+    </Tag>
+  )
 }
 
 function StoryMeta({ card, locale, t, showAvatar = false }) {
@@ -196,7 +205,7 @@ function LeadStory({ card, locale, t }) {
           <div className="news-lead__kicker">
             <span className="news-lead__featured">{t('newsroom.featuredReporting')}</span>
           </div>
-          <Headline card={card} as="h2" className="news-lead__title" />
+          <Headline card={card} as="h2" className="news-lead__title" shinyOnHover />
           {card.subtitle && <p className="news-lead__subtitle">{card.subtitle}</p>}
           {excerpt && <p className="news-lead__standfirst">{excerpt}</p>}
           <StoryMeta card={card} locale={locale} t={t} showAvatar />
