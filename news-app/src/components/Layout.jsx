@@ -3,8 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
 import Footer from './Footer'
-import MarketTicker from './MarketTicker'
-import VnMarketTicker from './VnMarketTicker'
+import MarketStrip from './MarketStrip'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'
@@ -33,8 +32,7 @@ function Layout() {
       }`}
     >
       <Header />
-      {!isAgentRoute && <MarketTicker />}
-      {!isAgentRoute && <VnMarketTicker />}
+      {!isAgentRoute && <MarketStrip />}
       <main className="icue-main">
         <Outlet />
       </main>

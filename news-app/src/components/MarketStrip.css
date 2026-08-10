@@ -1,0 +1,135 @@
+/* Single market row — replaces the stacked MarketTicker + VnMarketTicker.
+   Fixed 38px in every state (loading, error, loaded) so the page below never
+   shifts. Content is clipped rather than scrolled: the instrument lists in
+   MarketStrip.jsx are sized to the width budget, and the media queries below
+   drop from the tail as the viewport narrows. */
+.market-strip {
+  /* Direction colours live as tokens so the theme owns them and no hex is
+     written at the usage site. */
+  --market-up: #15803d;
+  --market-down: #b91c1c;
+
+  position: sticky;
+  top: var(--icue-header-h);
+  z-index: 49;
+  display: flex;
+  align-items: center;
+  height: var(--icue-ticker-h);
+  padding: 0 40px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--icue-border);
+  background: var(--icue-surface-2);
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+.icue-app--news-theme-dark .market-strip {
+  --market-up: #4ade80;
+  --market-down: #f87171;
+}
+
+.market-strip__inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.market-strip__group {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-width: 0;
+}
+
+.market-strip__label {
+  flex: none;
+  color: var(--icue-text-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.market-strip__divider {
+  flex: none;
+  width: 1px;
+  height: 15px;
+  background: var(--icue-border);
+}
+
+.market-strip__quote {
+  display: inline-flex;
+  align-items: baseline;
+  flex: none;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.market-strip__name {
+  color: var(--icue-text);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.market-strip__price {
+  color: var(--icue-text-soft);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.market-strip__change {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.market-strip__quote.is-up .market-strip__change { color: var(--market-up); }
+.market-strip__quote.is-down .market-strip__change { color: var(--market-down); }
+
+.market-strip__note {
+  color: var(--icue-text-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Narrower viewports drop instruments from the tail (Oil, then Gold, then the
+   whole global group), never shrinking the type below 12.5px or the gap below
+   22px. Breakpoints are measured against the rendered row, not guessed — the
+   full six only fit from 1440 up. */
+@media (max-width: 1439px) {
+  .market-strip__inner,
+  .market-strip__group { gap: 22px; }
+  .market-strip__group--global .market-strip__quote--3 { display: none; }
+}
+
+@media (max-width: 1199px) {
+  .market-strip__group--global .market-strip__quote--2 { display: none; }
+}
+
+@media (max-width: 1023px) {
+  .market-strip { padding: 0 24px; }
+  .market-strip__divider,
+  .market-strip__group--global { display: none; }
+}
+
+@media (max-width: 899px) {
+  .market-strip { padding: 0 16px; }
+}
+
+@media (max-width: 679px) {
+  .market-strip__label { display: none; }
+}
+
+/* Below 560 the row keeps two quotes — a 390px row overflows at three. */
+@media (max-width: 559px) {
+  .market-strip__group--vn .market-strip__quote--3 { display: none; }
+}
+
+/* Narrower than the 390px reference phone, even two overflow. */
+@media (max-width: 389px) {
+  .market-strip__group--vn .market-strip__quote--2 { display: none; }
+}
