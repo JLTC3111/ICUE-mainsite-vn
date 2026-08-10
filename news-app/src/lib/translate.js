@@ -18,6 +18,17 @@ const TRANSLATION_COLUMNS = 'title,subtitle,content_html,cover_info,sources,medi
 
 const memoryCache = new Map()
 
+function normalizeTranslationRow(row = {}) {
+  return {
+    title: row.title || '',
+    subtitle: row.subtitle || '',
+    content_html: row.content_html || '',
+    cover_info: row.cover_info || '',
+    sources: row.sources || [],
+    media: row.media || [],
+  }
+}
+
 function cacheKey(articleId, locale) {
   return `${articleId}::${locale}`
 }
@@ -82,25 +93,27 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
 export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
   const target = normalizeLang(targetLocale)
   const ids = [...new Set((articleIds || []).map(String).filter(Boolean))]
-  if (!target || !ids.length) return { locale: target, titles: {} }
+  if (!target || !ids.length) return { locale: target, titles: {}, subtitles: {} }
 
   const key = `titles::${target}::${[...ids].sort().join('|')}`
   if (memoryCache.has(key)) return memoryCache.get(key)
 
   const { data, error } = await supabase
     .from('article_translations')
-    .select('article_id,title')
+    .select('article_id,title,subtitle')
     .eq('locale', target)
     .in('article_id', ids)
 
-  if (error) return { locale: target, titles: {} }
+  if (error) return { locale: target, titles: {}, subtitles: {} }
 
   const titles = {}
+  const subtitles = {}
   for (const row of data || []) {
     if (row.title) titles[row.article_id] = row.title
+    if (row.subtitle) subtitles[row.article_id] = row.subtitle
   }
 
-  const result = { locale: target, titles }
+  const result = { locale: target, titles, subtitles }
   memoryCache.set(key, result)
   return result
 }
@@ -117,15 +130,34 @@ export async function fetchArticleTranslations(articleId) {
   if (error) throw error
 
   return Object.fromEntries(
-    (data || []).map((row) => [row.locale, {
-      title: row.title || '',
-      subtitle: row.subtitle || '',
-      content_html: row.content_html || '',
-      cover_info: row.cover_info || '',
-      sources: row.sources || [],
-      media: row.media || [],
-    }]),
+    (data || []).map((row) => [row.locale, normalizeTranslationRow(row)]),
   )
+}
+
+/** Translation rows for an article dashboard, grouped article → locale. */
+export async function fetchArticleTranslationsForArticles(articleIds) {
+  const ids = [...new Set((articleIds || []).map(String).filter(Boolean))]
+  if (!ids.length) return {}
+
+  const chunks = []
+  for (let index = 0; index < ids.length; index += 100) {
+    chunks.push(ids.slice(index, index + 100))
+  }
+
+  const responses = await Promise.all(chunks.map((chunk) => supabase
+    .from('article_translations')
+    .select(`article_id,locale,${TRANSLATION_COLUMNS}`)
+    .in('article_id', chunk)))
+
+  const grouped = {}
+  for (const { data, error } of responses) {
+    if (error) throw error
+    for (const row of data || []) {
+      if (!grouped[row.article_id]) grouped[row.article_id] = {}
+      grouped[row.article_id][row.locale] = normalizeTranslationRow(row)
+    }
+  }
+  return grouped
 }
 
 export async function saveArticleTranslation(articleId, locale, payload = {}) {

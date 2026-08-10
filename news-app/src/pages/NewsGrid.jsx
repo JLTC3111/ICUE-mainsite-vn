@@ -13,7 +13,7 @@ import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
 import { categoryColor, isCategory } from '../lib/categories'
 import { resolveArticleCoverComparison } from '../lib/mediaComparison'
-import { formatDate, normalizeUnicode, plainExcerpt } from '../lib/helpers'
+import { formatCalendarDate, formatDate, normalizeUnicode, plainExcerpt } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import {
   NEWSROOM_BRIEF_COUNT,
@@ -34,6 +34,58 @@ const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & E
 /** Lead standfirst length. Cut on a word boundary — never mid-syllable. */
 const LEAD_EXCERPT_CHARS = 160
 
+function localDateTimeValue(date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function LocalizedCalendarDate({ locale }) {
+  const [today, setToday] = useState(() => new Date())
+
+  useEffect(() => {
+    let timeoutId
+
+    const scheduleNextDay = () => {
+      window.clearTimeout(timeoutId)
+      const now = new Date()
+      setToday(now)
+      const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+      timeoutId = window.setTimeout(scheduleNextDay, Math.max(1000, nextDay.getTime() - now.getTime() + 1000))
+    }
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') scheduleNextDay()
+    }
+
+    scheduleNextDay()
+    document.addEventListener('visibilitychange', refreshWhenVisible)
+    return () => {
+      window.clearTimeout(timeoutId)
+      document.removeEventListener('visibilitychange', refreshWhenVisible)
+    }
+  }, [])
+
+  return (
+    <time
+      className="newsroom-masthead__calendar"
+      dateTime={localDateTimeValue(today)}
+    >
+      <span className="newsroom-masthead__calendar-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M6.75 3v3M17.25 3v3M3.75 9h16.5" strokeLinecap="round" />
+          <rect x="3.75" y="4.5" width="16.5" height="16" rx="3" />
+          <path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01" strokeLinecap="round" strokeWidth="2.4" />
+        </svg>
+      </span>
+      <span className="newsroom-masthead__calendar-date">
+        {formatCalendarDate(today, locale)}
+      </span>
+    </time>
+  )
+}
+
 function wordSafeExcerpt(html, max = LEAD_EXCERPT_CHARS) {
   const text = plainExcerpt(html, 4000)
   if (text.length <= max) return text
@@ -48,7 +100,7 @@ function wordSafeExcerpt(html, max = LEAD_EXCERPT_CHARS) {
  * the headline can hold its space with a skeleton instead of flashing the
  * Vietnamese original and then swapping.
  */
-function buildCard(article, { titles, isTitlePending, fallbackByline }) {
+function buildCard(article, { titles, subtitles, isTitlePending, fallbackByline }) {
   const author = article.author || {}
   const titlePending = isTitlePending(article.id)
   const comparison = resolveArticleCoverComparison(article)
@@ -58,7 +110,7 @@ function buildCard(article, { titles, isTitlePending, fallbackByline }) {
     slug: article.slug,
     title: titlePending ? '' : (titles[article.id] || normalizeUnicode(article.title)),
     titlePending,
-    subtitle: normalizeUnicode(article.subtitle || ''),
+    subtitle: normalizeUnicode(subtitles[article.id] || article.subtitle || ''),
     contentHtml: article.content_html || '',
     cover: article.cover_image_url || comparison?.before?.url || '',
     category: isCategory(article.category) ? article.category : 'general',
@@ -208,6 +260,7 @@ function StoryRow({ card, locale, t }) {
         <div className="news-row__copy">
           <div className="news-row__kicker">{t(`categories.${card.category}`)}</div>
           <Headline card={card} as="h3" className="news-row__title" skeletonLines={1} />
+          {card.subtitle && <p className="news-row__subtitle">{card.subtitle}</p>}
           <div className="news-row__meta">
             {card.date ? formatDate(card.date, locale) : ''}
             {card.readMinutes > 0 ? ` · ${card.readMinutes} ${t('news.minRead')}` : ''}
@@ -285,16 +338,17 @@ export default function NewsGrid() {
     [filtered, visibleCount],
   )
 
-  const { titles, isTitlePending } = useArticleTitleTranslations(visibleArticles, locale)
+  const { titles, subtitles, isTitlePending } = useArticleTitleTranslations(visibleArticles, locale)
 
   const fallbackByline = t('brand')
   const cards = useMemo(
     () => visibleArticles.map((article) => buildCard(article, {
       titles,
+      subtitles,
       isTitlePending,
       fallbackByline,
     })),
-    [visibleArticles, titles, isTitlePending, fallbackByline],
+    [visibleArticles, titles, subtitles, isTitlePending, fallbackByline],
   )
 
   const briefStart = 1 + NEWSROOM_TOP_COUNT
@@ -303,18 +357,6 @@ export default function NewsGrid() {
   const topStories = cards.slice(1, briefStart)
   const briefs = cards.slice(briefStart, moreStart)
   const moreStories = cards.slice(moreStart)
-
-  // Counter + "last updated" read the same fetch — no second endpoint.
-  const publishedThisMonth = useMemo(() => {
-    const now = new Date()
-    return articles.filter((article) => {
-      const raw = article.published_at || article.article_date
-      if (!raw) return false
-      const date = new Date(raw)
-      if (Number.isNaN(date.getTime())) return false
-      return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
-    }).length
-  }, [articles])
 
   const lastUpdated = articles[0]?.published_at || articles[0]?.article_date || ''
 
@@ -359,19 +401,14 @@ export default function NewsGrid() {
             <p className="newsroom-masthead__standfirst">{t('news.subtitle')}</p>
           </div>
 
-          {state === 'ready' && articles.length > 0 && (
-            <div className="newsroom-masthead__aside">
-              <div className="newsroom-masthead__counter">
-                <span className="newsroom-masthead__count">{publishedThisMonth}</span>
-                <span className="newsroom-masthead__count-label">{t('newsroom.thisMonth')}</span>
-              </div>
-              {lastUpdated && (
-                <p className="newsroom-masthead__updated">
-                  {t('newsroom.lastUpdated')} · {formatDate(lastUpdated, locale)}
-                </p>
-              )}
-            </div>
-          )}
+          <div className="newsroom-masthead__aside">
+            <LocalizedCalendarDate locale={locale} />
+            {lastUpdated && (
+              <p className="newsroom-masthead__updated">
+                {t('newsroom.lastUpdated')} · {formatDate(lastUpdated, locale)}
+              </p>
+            )}
+          </div>
         </div>
       </header>
 

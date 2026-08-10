@@ -355,6 +355,8 @@
     "loading": "시장 데이터 로딩 중…",
     "unavailable": "시장 데이터를 일시적으로 불러올 수 없습니다",
     "vnLabel": "베트남",
+    "gold": "금",
+    "oil": "원유",
     "vnLoading": "베트남 시장 로딩 중…",
     "ohlc": "시가 / 고가 / 저가"
   },
@@ -485,7 +487,16 @@
     "kind_image": "이미지",
     "kind_video": "동영상",
     "languageMismatch": "참고: 이 기사는 “{{declared}}”로 저장되어 있지만 본문은 “{{detected}}”로 보입니다. 아래 탭은 감지된 언어를 기준으로 합니다. 잘못되었다면 기사의 언어 항목을 수정하세요.",
-    "fieldCoverInfo": "커버 이미지 출처"
+    "fieldCoverInfo": "커버 이미지 출처",
+    "completionSummary": "{{total}}개 언어 중 {{complete}}개 완료",
+    "complete": "번역 완료",
+    "missingItems": "필수 요소 {{count}}개 누락",
+    "articleComplete": "모든 번역 완료",
+    "articleIncomplete": "번역 미완료 · {{complete}}/{{total}}개 언어",
+    "sources": "출처 텍스트",
+    "sourcesHint": "각 출처 이름과 발행처를 번역하세요. URL과 열람일은 그대로 유지됩니다.",
+    "sourceLabel": "출처 이름",
+    "sourcePublisher": "발행처"
   },
   "captionsDrawer": {
     "title": "캡션",

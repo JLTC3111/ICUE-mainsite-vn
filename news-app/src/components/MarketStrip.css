@@ -10,12 +10,12 @@
   --market-down: #b91c1c;
 
   position: sticky;
-  top: var(--icue-header-h);
-  z-index: 49;
+  top: 0;
+  z-index: 51;
   display: flex;
   align-items: center;
   height: var(--icue-ticker-h);
-  padding: 0 40px;
+  padding: 0;
   overflow: hidden;
   border-bottom: 1px solid var(--icue-border);
   background: var(--icue-surface-2);
@@ -33,6 +33,9 @@
   align-items: center;
   gap: 28px;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
   min-width: 0;
   overflow: hidden;
 }
@@ -111,13 +114,13 @@
 }
 
 @media (max-width: 1023px) {
-  .market-strip { padding: 0 24px; }
+  .market-strip__inner { padding: 0 24px; }
   .market-strip__divider,
   .market-strip__group--global { display: none; }
 }
 
 @media (max-width: 899px) {
-  .market-strip { padding: 0 16px; }
+  .market-strip__inner { padding: 0 16px; }
 }
 
 @media (max-width: 679px) {

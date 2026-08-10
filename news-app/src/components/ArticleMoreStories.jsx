@@ -47,13 +47,13 @@ export default function ArticleMoreStories({ article, profile }) {
     () => (relatedState.articleId === article?.id ? relatedState.rows : []),
     [article?.id, relatedState],
   )
-  const { titles, isTitlePending } = useArticleTitleTranslations(
+  const { titles, subtitles, isTitlePending } = useArticleTitleTranslations(
     articles,
     i18n.resolvedLanguage,
   )
   const items = useMemo(
-    () => buildBentoItems(articles, normalizeUnicode, titles, isTitlePending),
-    [articles, titles, isTitlePending],
+    () => buildBentoItems(articles, normalizeUnicode, titles, isTitlePending, subtitles),
+    [articles, titles, subtitles, isTitlePending],
   )
 
   if (!isDesktop || article?.status !== 'published' || !items.length) return null

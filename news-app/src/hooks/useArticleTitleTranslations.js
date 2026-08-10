@@ -6,8 +6,7 @@ import {
 } from '../lib/translate'
 
 export function useArticleTitleTranslations(articles, locale) {
-  const [titles, setTitles] = useState({})
-  const [pending, setPending] = useState(false)
+  const [result, setResult] = useState({ key: '', titles: {}, subtitles: {} })
   const uiLang = normalizeLang(locale)
 
   const translateIds = useMemo(() => {
@@ -18,39 +17,45 @@ export function useArticleTitleTranslations(articles, locale) {
   }, [articles, uiLang])
 
   const idsKey = translateIds.join(',')
+  const requestKey = idsKey ? `${uiLang}:${idsKey}` : ''
 
   useEffect(() => {
-    if (!idsKey) {
-      setTitles({})
-      setPending(false)
-      return undefined
-    }
+    if (!idsKey) return undefined
 
     const articleIds = idsKey.split(',')
     let active = true
-    setTitles({})
-    setPending(true)
 
     fetchArticleTitleTranslations(articleIds, uiLang)
       .then((result) => {
-        if (active) setTitles(result.titles || {})
+        if (!active) return
+        setResult({
+          key: requestKey,
+          titles: result.titles || {},
+          subtitles: result.subtitles || {},
+        })
       })
       .catch(() => {
-        if (active) setTitles({})
-      })
-      .finally(() => {
-        if (active) setPending(false)
+        if (!active) return
+        setResult({ key: requestKey, titles: {}, subtitles: {} })
       })
 
     return () => {
       active = false
     }
-  }, [idsKey, uiLang])
+  }, [idsKey, requestKey, uiLang])
+
+  const isCurrent = result.key === requestKey
+  const titles = useMemo(() => (isCurrent ? result.titles : {}), [isCurrent, result.titles])
+  const subtitles = useMemo(
+    () => (isCurrent ? result.subtitles : {}),
+    [isCurrent, result.subtitles],
+  )
+  const pending = Boolean(requestKey && !isCurrent)
 
   const isTitlePending = useCallback(
     (articleId) => pending && translateIds.includes(articleId) && !titles[articleId],
     [pending, translateIds, titles],
   )
 
-  return { titles, isTitlePending, pending }
+  return { titles, subtitles, isTitlePending, pending }
 }

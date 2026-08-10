@@ -18,6 +18,7 @@ export function BentoGrid({ children, className = '', ...props }) {
 export function BentoCard({
   name,
   titlePending = false,
+  subtitle,
   description,
   background,
   cta,
@@ -66,6 +67,9 @@ export function BentoCard({
             />
           ) : null}
           {!titlePending && name ? <h2 className="bento-card__title translation-reveal">{name}</h2> : null}
+          {!titlePending && subtitle ? (
+            <p className="bento-card__subtitle translation-reveal">{subtitle}</p>
+          ) : null}
         </div>
         {cta ? (
           <span className="bento-card__cta">

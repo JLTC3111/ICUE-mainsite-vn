@@ -21,6 +21,27 @@
   color: var(--icue-text-faint);
 }
 
+.translations-editor__completion,
+.translations-editor__locale-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.translations-editor__completion.is-complete,
+.translations-editor__locale-status.is-complete {
+  color: #1a7f37;
+}
+
+.translations-editor__completion.is-incomplete,
+.translations-editor__locale-status.is-incomplete {
+  color: #9a6700;
+}
+
 .translations-editor__tabs {
   display: flex;
   flex-wrap: wrap;
@@ -44,6 +65,12 @@
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 .translations-editor__tab:hover { color: var(--icue-text); }
+.translations-editor__tab.is-complete {
+  border-color: color-mix(in srgb, #1a7f37 36%, var(--icue-border));
+}
+.translations-editor__tab.is-incomplete {
+  border-color: color-mix(in srgb, #d29922 48%, var(--icue-border));
+}
 .translations-editor__tab.is-active {
   color: #111;
   border-color: var(--icue-accent-ink, #1db7ff);
@@ -53,6 +80,14 @@
 .translations-editor__tab.is-active svg { color: #111; }
 
 .translations-editor__panel { display: grid; gap: 16px; }
+
+.translations-editor__locale-status {
+  margin: 0;
+  padding: 9px 11px;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
 
 .translations-editor__status {
   margin: 0;
@@ -100,6 +135,27 @@
   gap: 12px;
   padding-top: 4px;
   border-top: 1px solid var(--icue-border);
+}
+
+.translations-editor__sources {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid var(--icue-border);
+}
+
+.translations-editor__source {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--icue-border);
+  border-radius: 10px;
+  background: var(--icue-surface);
+}
+
+.translations-editor__source .field:only-child {
+  grid-column: 1 / -1;
 }
 .translations-editor__captions-label {
   margin: 12px 0 0;
@@ -153,4 +209,10 @@
   line-height: 1.4;
   color: var(--icue-text-faint);
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .translations-editor__source {
+    grid-template-columns: 1fr;
+  }
 }

@@ -15,6 +15,10 @@ import './MarketStrip.css'
  */
 const VN_SYMBOLS = ['VNINDEX', 'VN30', 'HNX']
 const GLOBAL_SYMBOLS = ['^GSPC', 'GC=F', 'CL=F']
+const GLOBAL_LABEL_KEYS = {
+  'GC=F': 'market.gold',
+  'CL=F': 'market.oil',
+}
 
 const VN_POLL_MS = 60 * 1000
 const GLOBAL_POLL_MS = 5 * 60 * 1000
@@ -58,13 +62,13 @@ function pickQuotes(quotes, symbols) {
 
 const PRICE_FORMAT = { minimumFractionDigits: 2, maximumFractionDigits: 2 }
 
-function Quote({ quote, locale, position }) {
+function Quote({ quote, locale, position, label = quote.label }) {
   const up = quote.changePct >= 0
   return (
     <span
       className={`market-strip__quote market-strip__quote--${position}${up ? ' is-up' : ' is-down'}`}
     >
-      <b className="market-strip__name">{quote.label}</b>
+      <b className="market-strip__name">{label}</b>
       <span className="market-strip__price">
         {quote.price.toLocaleString(locale, PRICE_FORMAT)}
       </span>
@@ -129,7 +133,15 @@ export default function MarketStrip() {
           <div className="market-strip__group market-strip__group--global">
             <span className="market-strip__label">{t('market.label')}</span>
             {globalQuotes.map((quote, index) => (
-              <Quote key={quote.symbol} quote={quote} locale={locale} position={index + 1} />
+              <Quote
+                key={quote.symbol}
+                quote={quote}
+                locale={locale}
+                position={index + 1}
+                label={GLOBAL_LABEL_KEYS[quote.symbol]
+                  ? t(GLOBAL_LABEL_KEYS[quote.symbol])
+                  : quote.label}
+              />
             ))}
           </div>
         )}

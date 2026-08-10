@@ -6,7 +6,6 @@
   --search-lens-bg: linear-gradient(145deg, #1559a7, #167dbd);
   --search-lens-ink: #ffffff;
   --search-status: var(--icue-nav-hover-line);
-  /* Collapsed trigger renders bare on the header — ink only, no pill */
   --search-trigger-ink: var(--icue-black);
   --search-dot-ring: var(--icue-surface);
   --np-inset-bg: var(--icue-surface-2);
@@ -55,7 +54,7 @@
     inset -3px -3px 8px rgba(255, 255, 255, 0.04);
 }
 
-/* Collapsed: icon only — no solid pill behind the magnifying glass */
+/* Closed by default: a bare magnifying-glass control in the header. */
 .article-search:not(.is-open) .article-search__shell {
   background: transparent;
   box-shadow: none;
@@ -296,7 +295,7 @@
 
   .article-search.is-open .article-search__shell {
     position: fixed;
-    top: calc(var(--icue-header-h) + 10px);
+    top: calc(var(--icue-chrome-top) + 10px);
     left: 50%;
     right: auto;
     z-index: 60;

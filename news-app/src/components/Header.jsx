@@ -158,7 +158,6 @@ function Header() {
   const close = useCallback(() => setOpen(false), [])
   const handleSearchOpenChange = useCallback((next) => {
     setSearchOpen(next)
-    if (next) setOpen(false)
   }, [])
   const handleSignOut = useCallback(async () => {
     await signOut()
@@ -174,7 +173,6 @@ function Header() {
           peopleLink={peopleLink}
           orgHref={structureLink()}
         />
-        <ArticleSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
 
         <div className="icue-header__brand-box">
           {isReaderRoute && (
@@ -236,6 +234,7 @@ function Header() {
           {isAuthed && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
+            <ArticleSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
             {/* Keyed by account so notification state resets on user switch. */}
             {isAuthed && <NotificationBell key={user?.id} />}
             <LanguageSwitcher />

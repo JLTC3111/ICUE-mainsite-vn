@@ -7,6 +7,7 @@
   /* Raw --icue-blue fails contrast for body-size copy on white; this is the
      text-safe version. Chrome and large type may still use the raw accent. */
   --news-accent-ink: #1a5fb4;
+  --news-rotating-green: #15803d;
   --news-focus: var(--news-accent-ink);
   background: var(--newsroom-gallery-bg);
 }
@@ -18,6 +19,7 @@
 .news-page--dark {
   --newsroom-gallery-bg: #0a0a0a;
   --news-accent-ink: #7cc4ff;
+  --news-rotating-green: #4ade80;
   --news-focus: var(--icue-accent);
   background: var(--newsroom-gallery-bg);
   color: #e7e8e4;
@@ -99,7 +101,7 @@
   line-height: 1.35;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--news-accent-ink);
+  color: var(--news-rotating-green);
 }
 
 .newsroom-masthead__rotating .text-rotate-word {
@@ -127,34 +129,40 @@
   gap: 10px;
 }
 
-.newsroom-masthead__counter {
-  display: flex;
-  flex-direction: column;
+.newsroom-masthead__calendar {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
-  gap: 2px;
-  width: 92px;
-  height: 92px;
-  border: 1px solid color-mix(in srgb, var(--icue-blue) 28%, transparent);
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--icue-blue) 12%, transparent);
+  gap: 11px;
+  width: min(224px, 100%);
+  min-height: 68px;
+  padding: 11px 14px;
+  border: 1px solid color-mix(in srgb, var(--news-rotating-green) 32%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--news-rotating-green) 10%, transparent);
+  color: var(--icue-text);
 }
 
-.newsroom-masthead__count {
-  font-size: 30px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--icue-ink);
+.newsroom-masthead__calendar-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--news-rotating-green);
+  color: #fff;
 }
 
-.newsroom-masthead__count-label {
-  padding-inline: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.03em;
-  text-align: center;
-  color: var(--icue-text-soft);
+.newsroom-masthead__calendar-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.newsroom-masthead__calendar-date {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .newsroom-masthead__updated {
@@ -489,6 +497,14 @@
   transition: color 0.18s ease;
 }
 
+.news-row__subtitle {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--icue-text-soft);
+  overflow-wrap: anywhere;
+}
+
 .news-row__meta {
   font-size: 12.5px;
   color: var(--icue-text-faint);
@@ -695,11 +711,6 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-.news-page--dark .newsroom-masthead__counter {
-  border-color: rgba(124, 196, 255, 0.3);
-  background: rgba(124, 196, 255, 0.1);
-}
-
 .news-page--dark .news-load-more__btn {
   border-color: rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.04);
@@ -799,13 +810,15 @@
   }
 
   .newsroom-masthead__aside {
+    width: 100%;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: 14px;
   }
 
-  .newsroom-masthead__counter { width: 74px; height: 74px; }
-  .newsroom-masthead__count { font-size: 24px; }
+  .newsroom-masthead__calendar { width: min(210px, 62%); }
+  .newsroom-masthead__updated { text-align: right; }
   .newsroom-masthead__standfirst { font-size: 15px; }
 
   .news-front.icue-container { gap: 30px; padding-bottom: 40px; }
@@ -853,6 +866,21 @@
 
   .news-row__thumb { width: 84px; height: 63px; }
   .news-row__title { font-size: 15.5px; }
+}
+
+@media (max-width: 520px) {
+  .newsroom-masthead__aside {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .newsroom-masthead__calendar {
+    width: 100%;
+  }
+
+  .newsroom-masthead__updated {
+    text-align: left;
+  }
 }
 
 @media (max-width: 760px) {

@@ -31,8 +31,8 @@ function Layout() {
         reduceBlur ? ' icue-app--perf-minimal' : tier === 'reduced' ? ' icue-app--perf-reduced' : ''
       }`}
     >
-      <Header />
       {!isAgentRoute && <MarketStrip />}
+      <Header />
       <main className="icue-main">
         <Outlet />
       </main>

@@ -2,6 +2,14 @@
 
 import { normalizeHtmlUnicode, normalizeUnicode } from '@icue/text/normalizeUnicode'
 import { sanitizeArticleHtml, sanitizePlainText } from '@icue/text/sanitizeArticleHtml'
+import { formatDate, formatDateTime } from './dateFormatting.js'
+
+export {
+  formatCalendarDate,
+  formatDate,
+  formatDateTime,
+  resolveIntlLocale,
+} from './dateFormatting.js'
 
 export function slugify(text) {
   return (text || '')
@@ -29,19 +37,6 @@ export function readMinutes(html) {
   return Math.max(1, Math.round(words / 200))
 }
 
-export function formatDate(value, locale = 'vi') {
-  if (!value) return ''
-  try {
-    return new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(value))
-  } catch {
-    return ''
-  }
-}
-
 /** Publish / display date for an article (server stamp, else author form date). */
 export function articlePublishDate(article) {
   return article?.published_at || article?.article_date || null
@@ -60,21 +55,6 @@ export function articleEditedDate(article, { minDiffMs = 60_000 } = {}) {
   if (!Number.isFinite(pubMs) || !Number.isFinite(editMs)) return null
   if (editMs - pubMs < minDiffMs) return null
   return article.updated_at
-}
-
-export function formatDateTime(value, locale = 'vi') {
-  if (!value) return ''
-  try {
-    return new Intl.DateTimeFormat(locale === 'vi' ? 'vi-VN' : 'en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(value))
-  } catch {
-    return ''
-  }
 }
 
 const RELATIVE_DIVISIONS = [

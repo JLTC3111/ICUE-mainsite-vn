@@ -24,6 +24,7 @@ export default function BentoArticleGrid({
         <BentoCard
           key={item.id}
           name={item.titlePending ? null : item.title}
+          subtitle={item.subtitle}
           titlePending={item.titlePending}
           spanCols={item.spanCols}
           spanRows={item.spanRows}

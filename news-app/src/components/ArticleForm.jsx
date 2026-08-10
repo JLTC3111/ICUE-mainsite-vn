@@ -33,9 +33,10 @@ const todayStr = () => new Date().toISOString().slice(0, 10)
 const nowTime = () => new Date().toTimeString().slice(0, 5)
 
 export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { profile } = useAuth()
   const navigate = useNavigate()
+  const articleLanguage = initial?.language || 'vi'
 
   const goBack = useCallback(() => {
     if (window.history.length > 1) navigate(-1)
@@ -72,6 +73,18 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const captionedMedia = useMemo(
     () => (initial?.media || []).filter((m) => m?.id && String(m.info || '').trim()),
     [initial],
+  )
+
+  const translationMedia = useMemo(
+    () => items
+      .filter((item) => !item.isNew && (item.dbId || item.id))
+      .map((item, position) => ({
+        id: item.dbId || item.id,
+        kind: item.kind,
+        info: item.info || '',
+        position: position + 1,
+      })),
+    [items],
   )
 
   const outlineItems = useMemo(() => {
@@ -271,7 +284,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             coverImageUrl: coverUrl || null,
             coverInfo: coverInfo || null,
             coverImageAltUrl: coverAltUrl || null,
-            language: initial?.language || 'vi',
+            language: articleLanguage,
             category,
           },
           items,
@@ -284,7 +297,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, onSubmit, mode, t, initial?.language],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, articleLanguage, onSubmit, mode, t],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -325,7 +338,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           onNavigate={handleOutlineNavigate}
         />
 
-      <div className="article-form__canvas" lang={initial?.language || 'vi'}>
+      <div className="article-form__canvas" lang={articleLanguage}>
         {error && <p className="article-form__error">{error}</p>}
 
         <EditorSection
@@ -511,10 +524,14 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           <div id="edit-translations">
             <ArticleTranslationsEditor
               articleId={initial.id}
-              sourceLanguage={initial.language}
-              sourceSample={buildArticleTranslateSample(initial)}
-              coverInfo={initial.cover_info || ''}
-              media={initial.media}
+              sourceLanguage={articleLanguage}
+              sourceSample={buildArticleTranslateSample({ title, subtitle, content_html: contentHtml })}
+              sourceTitle={title}
+              sourceSubtitle={subtitle}
+              sourceContentHtml={contentHtml}
+              coverInfo={coverInfo}
+              sources={sources}
+              media={translationMedia}
             />
           </div>
         )}
@@ -540,7 +557,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             onClose={() => setCaptionsOpen(false)}
             articleId={initial?.id}
             media={captionedMedia}
-            sourceLanguage={initial?.language}
+            sourceLanguage={articleLanguage}
             sourceSample={buildArticleTranslateSample(initial)}
           />
 

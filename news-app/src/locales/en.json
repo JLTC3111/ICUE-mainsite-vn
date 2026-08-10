@@ -355,6 +355,8 @@
     "loading": "Loading markets…",
     "unavailable": "Market data temporarily unavailable",
     "vnLabel": "Vietnam",
+    "gold": "Gold",
+    "oil": "Oil",
     "vnLoading": "Loading VN markets…",
     "ohlc": "Open / High / Low"
   },
@@ -485,7 +487,16 @@
     "kind_image": "Image",
     "kind_video": "Video",
     "languageMismatch": "Heads up: this article is saved as “{{declared}}” but its text looks like “{{detected}}”. Tabs below are based on the detected language. Fix the article's Language field if that's wrong.",
-    "fieldCoverInfo": "Cover image source"
+    "fieldCoverInfo": "Cover image source",
+    "completionSummary": "{{complete}} of {{total}} languages complete",
+    "complete": "Translation complete",
+    "missingItems": "{{count}} required elements missing",
+    "articleComplete": "Translations complete",
+    "articleIncomplete": "Translation incomplete · {{complete}}/{{total}} languages",
+    "sources": "Source text",
+    "sourcesHint": "Translate every source label and publisher. URLs and access dates remain unchanged.",
+    "sourceLabel": "Source label",
+    "sourcePublisher": "Publisher"
   },
   "captionsDrawer": {
     "title": "Captions",

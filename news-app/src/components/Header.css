@@ -1,6 +1,6 @@
 .icue-header {
   position: sticky;
-  top: 0;
+  top: var(--icue-ticker-h);
   z-index: 50;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: saturate(180%) blur(12px);
@@ -9,10 +9,16 @@
 }
 
 .icue-header__inner {
+  max-width: 1440px;
+  padding-inline: 40px;
   height: var(--icue-header-h);
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.icue-app--agent {
+  --icue-ticker-h: 0px;
 }
 
 .icue-header__brand-box {
@@ -336,10 +342,14 @@
 }
 
 @media (max-width: 860px) {
+  .icue-header__inner {
+    padding-inline: 16px;
+  }
+
   .icue-header__burger { display: flex; }
   .icue-header__nav {
     position: fixed;
-    inset: var(--icue-header-h) 0 auto 0;
+    inset: var(--icue-chrome-top) 0 auto 0;
     flex-direction: column;
     align-items: stretch;
     gap: 4px;

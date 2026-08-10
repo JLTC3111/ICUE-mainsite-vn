@@ -1,8 +1,12 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Check, CircleAlert } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { fetchMyArticles, deleteArticle } from '../lib/articles'
+import { fetchArticleTranslationsForArticles } from '../lib/translate'
+import { SUPPORTED_LANGUAGES } from '../lib/i18n'
+import { getArticleTranslationCompleteness } from '../lib/translationCompleteness'
 import { formatDate, articlePublishDate, articleEditedDate } from '../lib/helpers'
 import ArticleThumbnail from '../components/ArticleThumbnail'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -14,15 +18,50 @@ export default function Dashboard() {
   const { user, isAdmin } = useAuth()
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading')
+  const [translations, setTranslations] = useState({})
+  const [translationsState, setTranslationsState] = useState('loading')
 
-  const load = useCallback(() => {
-    if (!user) return
+  useEffect(() => {
+    if (!user) return undefined
+    let live = true
+
     fetchMyArticles(user.id, { includeAll: isAdmin })
-      .then((data) => { setArticles(data); setState('ready') })
-      .catch(() => setState('error'))
+      .then((data) => {
+        if (!live) return
+        setArticles(data)
+        setState('ready')
+
+        fetchArticleTranslationsForArticles(data.map((article) => article.id))
+          .then((rows) => {
+            if (!live) return
+            setTranslations(rows)
+            setTranslationsState('ready')
+          })
+          .catch(() => {
+            if (!live) return
+            setTranslations({})
+            setTranslationsState('error')
+          })
+      })
+      .catch(() => {
+        if (!live) return
+        setState('error')
+        setTranslationsState('error')
+      })
+
+    return () => { live = false }
   }, [user, isAdmin])
 
-  useEffect(() => { load() }, [load])
+  const translationStatuses = useMemo(() => Object.fromEntries(
+    articles.map((article) => [
+      article.id,
+      getArticleTranslationCompleteness(
+        article,
+        translations[article.id] || {},
+        SUPPORTED_LANGUAGES,
+      ),
+    ]),
+  ), [articles, translations])
 
   const handleDelete = async (id) => {
     if (!window.confirm(t('common.confirmDelete'))) return
@@ -48,6 +87,7 @@ export default function Dashboard() {
             const locale = i18n.resolvedLanguage
             const publishedLabel = published ? formatDate(published, locale) : ''
             const editedLabel = edited ? formatDate(edited, locale) : ''
+            const translationStatus = translationStatuses[a.id]
             return (
               <li key={a.id} className="dash__row">
                 <div className="dash__thumb">
@@ -58,6 +98,25 @@ export default function Dashboard() {
                     {a.status === 'published' ? t('common.published') : t('common.draft')}
                   </span>
                   <Link to={`/article/${a.slug}`} className="dash__title">{a.title}</Link>
+                  {a.subtitle && <p className="dash__subtitle">{a.subtitle}</p>}
+                  {translationsState === 'ready' && translationStatus && (
+                    <span
+                      className={`dash__translation dash__translation--${translationStatus.complete ? 'complete' : 'incomplete'}`}
+                      title={translationStatus.incompleteLocales.join(', ')}
+                    >
+                      {translationStatus.complete ? (
+                        <Check size={13} strokeWidth={2.5} aria-hidden />
+                      ) : (
+                        <CircleAlert size={13} strokeWidth={2.2} aria-hidden />
+                      )}
+                      {translationStatus.complete
+                        ? t('translationsEditor.articleComplete')
+                        : t('translationsEditor.articleIncomplete', {
+                          complete: translationStatus.completedLocales,
+                          total: translationStatus.totalLocales,
+                        })}
+                    </span>
+                  )}
                   <span className="dash__date">
                     {a.status === 'published' && publishedLabel
                       ? (

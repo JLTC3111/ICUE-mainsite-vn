@@ -9,7 +9,13 @@ import {
 
 const PLACEHOLDER_COVER = `${import.meta.env.BASE_URL}favicon.svg`
 
-export function buildBentoItems(articles, normalizeUnicode, titleTranslations = {}, isTitlePending = () => false) {
+export function buildBentoItems(
+  articles,
+  normalizeUnicode,
+  titleTranslations = {},
+  isTitlePending = () => false,
+  subtitleTranslations = {},
+) {
   return articles.map((article, index) => {
     const titlePending = isTitlePending(article.id)
     const title = titlePending
@@ -26,6 +32,7 @@ export function buildBentoItems(articles, normalizeUnicode, titleTranslations = 
       img: coverUrl || PLACEHOLDER_COVER,
       comparison,
       title,
+      subtitle: normalizeUnicode(subtitleTranslations[article.id] || article.subtitle || ''),
       titlePending,
       category:
         isCategory(article.category) && article.category !== 'general'

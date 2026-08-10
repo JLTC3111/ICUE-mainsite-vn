@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Check, Trash2 } from 'lucide-react'
+import { Check, CircleAlert, Trash2 } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
+import { normalizeSources } from '../lib/articleSources'
+import {
+  getArticleTranslationCompleteness,
+  getLocaleTranslationCompleteness,
+} from '../lib/translationCompleteness'
 import {
   deleteArticleTranslation,
   fetchArticleTranslations,
@@ -23,6 +28,18 @@ function captionsOf(entry) {
   return map
 }
 
+function sourcesOf(entry) {
+  const map = {}
+  for (const source of entry?.sources || []) {
+    if (source?.id == null) continue
+    map[String(source.id)] = {
+      label: source.label || '',
+      publisher: source.publisher || '',
+    }
+  }
+  return map
+}
+
 /**
  * Per-locale translations authored by hand. Whatever is saved here is what
  * readers see when they switch language — there is no machine translation
@@ -33,7 +50,11 @@ export default function ArticleTranslationsEditor({
   articleId,
   sourceLanguage,
   sourceSample = '',
+  sourceTitle = '',
+  sourceSubtitle = '',
+  sourceContentHtml = '',
   coverInfo = '',
+  sources = [],
   media = [],
 }) {
   const { t } = useTranslation()
@@ -57,6 +78,18 @@ export default function ArticleTranslationsEditor({
       .sort((a, b) => (a.position || 0) - (b.position || 0)),
     [media],
   )
+
+  const sourceRows = useMemo(() => normalizeSources(sources), [sources])
+
+  const sourceArticle = useMemo(() => ({
+    title: sourceTitle,
+    subtitle: sourceSubtitle,
+    content_html: sourceContentHtml,
+    cover_info: coverInfo,
+    sources: sourceRows,
+    media,
+    language: sourceLang,
+  }), [sourceTitle, sourceSubtitle, sourceContentHtml, coverInfo, sourceRows, media, sourceLang])
 
   const locales = useMemo(
     () => SUPPORTED_LANGUAGES.filter((l) => l.code !== sourceLang),
@@ -97,6 +130,7 @@ export default function ArticleTranslationsEditor({
   }, [active])
 
   const currentCaptions = useMemo(() => captionsOf(current), [current])
+  const currentSources = useMemo(() => sourcesOf(current), [current])
 
   const updateCaption = useCallback((mediaId, value) => {
     setSaved('')
@@ -115,6 +149,29 @@ export default function ArticleTranslationsEditor({
     })
   }, [active, captionSources])
 
+  const updateSource = useCallback((sourceId, field, value) => {
+    setSaved('')
+    setDrafts((prev) => {
+      const entry = prev[active] || EMPTY
+      const existing = Array.isArray(entry.sources) ? entry.sources : []
+      const source = sourceRows.find((row) => String(row.id) === String(sourceId))
+      const index = existing.findIndex((row) => String(row?.id) === String(sourceId))
+      const next = [...existing]
+      const base = {
+        id: sourceId,
+        label: '',
+        publisher: '',
+        ...(index >= 0 ? existing[index] : {}),
+        url: source?.url || existing[index]?.url || '',
+        accessed_at: source?.accessed_at || existing[index]?.accessed_at || null,
+      }
+      const updated = { ...base, [field]: value }
+      if (index >= 0) next[index] = updated
+      else next.push(updated)
+      return { ...prev, [active]: { ...entry, sources: next } }
+    })
+  }, [active, sourceRows])
+
   const isDirty = useMemo(() => {
     const base = stored[active] || EMPTY
     return base.title !== current.title
@@ -122,7 +179,17 @@ export default function ArticleTranslationsEditor({
       || base.content_html !== current.content_html
       || (base.cover_info || '') !== (current.cover_info || '')
       || JSON.stringify(captionsOf(base)) !== JSON.stringify(currentCaptions)
-  }, [stored, active, current, currentCaptions])
+      || JSON.stringify(sourcesOf(base)) !== JSON.stringify(currentSources)
+  }, [stored, active, current, currentCaptions, currentSources])
+
+  const storedCompleteness = useMemo(
+    () => getArticleTranslationCompleteness(sourceArticle, stored, locales),
+    [sourceArticle, stored, locales],
+  )
+  const currentCompleteness = useMemo(
+    () => getLocaleTranslationCompleteness(sourceArticle, current),
+    [sourceArticle, current],
+  )
 
   const handleSave = useCallback(async () => {
     setBusy(true)
@@ -167,6 +234,19 @@ export default function ArticleTranslationsEditor({
       <div className="translations-editor__head">
         <h3 className="translations-editor__title">{t('translationsEditor.title')}</h3>
         <p className="translations-editor__hint">{t('translationsEditor.hint')}</p>
+        {state === 'ready' && (
+          <p className={`translations-editor__completion${storedCompleteness.complete ? ' is-complete' : ' is-incomplete'}`}>
+            {storedCompleteness.complete ? (
+              <Check size={15} strokeWidth={2.5} aria-hidden />
+            ) : (
+              <CircleAlert size={15} strokeWidth={2.2} aria-hidden />
+            )}
+            {t('translationsEditor.completionSummary', {
+              complete: storedCompleteness.completedLocales,
+              total: storedCompleteness.totalLocales,
+            })}
+          </p>
+        )}
         {languageMismatch && (
           <p className="translations-editor__warning">
             {t('translationsEditor.languageMismatch', {
@@ -179,18 +259,23 @@ export default function ArticleTranslationsEditor({
 
       <div className="translations-editor__tabs" role="tablist">
         {locales.map((l) => {
-          const hasContent = Boolean(stored[l.code]?.title || stored[l.code]?.content_html)
+          const localeStatus = storedCompleteness.locales[l.code]
+          const complete = state === 'ready' && localeStatus?.complete
           return (
             <button
               key={l.code}
               type="button"
               role="tab"
               aria-selected={active === l.code}
-              className={`translations-editor__tab${active === l.code ? ' is-active' : ''}`}
+              className={`translations-editor__tab${active === l.code ? ' is-active' : ''}${state === 'ready' ? complete ? ' is-complete' : ' is-incomplete' : ''}`}
               onClick={() => { setActive(l.code); setSaved('') }}
             >
               {l.label}
-              {hasContent && <Check size={14} strokeWidth={2.5} aria-hidden />}
+              {complete ? (
+                <Check size={14} strokeWidth={2.5} aria-hidden />
+              ) : state === 'ready' ? (
+                <CircleAlert size={14} strokeWidth={2.2} aria-hidden />
+              ) : null}
             </button>
           )
         })}
@@ -203,6 +288,17 @@ export default function ArticleTranslationsEditor({
 
       {state === 'ready' && (
         <div className="translations-editor__panel" role="tabpanel">
+          <p className={`translations-editor__locale-status${currentCompleteness.complete ? ' is-complete' : ' is-incomplete'}`}>
+            {currentCompleteness.complete ? (
+              <Check size={15} strokeWidth={2.5} aria-hidden />
+            ) : (
+              <CircleAlert size={15} strokeWidth={2.2} aria-hidden />
+            )}
+            {currentCompleteness.complete
+              ? t('translationsEditor.complete')
+              : t('translationsEditor.missingItems', { count: currentCompleteness.missingCount })}
+          </p>
+
           <div className="field">
             <label htmlFor={`tr-title-${active}`}>{t('translationsEditor.fieldTitle')}</label>
             <input
@@ -283,6 +379,51 @@ export default function ArticleTranslationsEditor({
                     onChange={(e) => updateCaption(m.id, e.target.value)}
                     placeholder={m.info}
                   />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {sourceRows.length > 0 && (
+            <div className="translations-editor__sources">
+              <p className="translations-editor__captions-label">
+                {t('translationsEditor.sources')}
+              </p>
+              <p className="translations-editor__hint">{t('translationsEditor.sourcesHint')}</p>
+
+              {sourceRows.map((source) => (
+                <div className="translations-editor__source" key={source.id}>
+                  <div className="field">
+                    <label htmlFor={`tr-source-label-${active}-${source.id}`}>
+                      {t('translationsEditor.sourceLabel')}
+                      <span className="translations-editor__original">{source.label}</span>
+                    </label>
+                    <input
+                      id={`tr-source-label-${active}-${source.id}`}
+                      className="input"
+                      type="text"
+                      value={currentSources[String(source.id)]?.label || ''}
+                      onChange={(event) => updateSource(source.id, 'label', event.target.value)}
+                      placeholder={source.label}
+                    />
+                  </div>
+
+                  {source.publisher && (
+                    <div className="field">
+                      <label htmlFor={`tr-source-publisher-${active}-${source.id}`}>
+                        {t('translationsEditor.sourcePublisher')}
+                        <span className="translations-editor__original">{source.publisher}</span>
+                      </label>
+                      <input
+                        id={`tr-source-publisher-${active}-${source.id}`}
+                        className="input"
+                        type="text"
+                        value={currentSources[String(source.id)]?.publisher || ''}
+                        onChange={(event) => updateSource(source.id, 'publisher', event.target.value)}
+                        placeholder={source.publisher}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

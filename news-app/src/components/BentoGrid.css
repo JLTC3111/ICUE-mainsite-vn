@@ -181,6 +181,19 @@
   min-height: 2.6em;
 }
 
+.bento-card__subtitle {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(12px, 0.7rem + 0.16vw, 14px);
+  font-weight: 500;
+  line-height: 1.42;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.72);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .bento-card__date {
   font-size: 11px;
   font-weight: 600;
@@ -240,6 +253,11 @@
   font-size: clamp(13px, 0.72rem + 0.18vw, 15px);
   line-height: 1.45;
   -webkit-line-clamp: 2;
+}
+
+.bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__subtitle {
+  font-size: 11.5px;
+  -webkit-line-clamp: 1;
 }
 
 .bento-card--span-cols-1:not(.bento-card--span-rows-2) .bento-card__meta .article-view-counter__label {

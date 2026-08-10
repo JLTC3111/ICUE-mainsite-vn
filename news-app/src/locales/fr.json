@@ -355,6 +355,8 @@
     "loading": "Chargement des marchés…",
     "unavailable": "Données de marché temporairement indisponibles",
     "vnLabel": "Vietnam",
+    "gold": "Or",
+    "oil": "Pétrole",
     "vnLoading": "Chargement des marchés VN…",
     "ohlc": "Ouverture / Haut / Bas"
   },
@@ -485,7 +487,16 @@
     "kind_image": "Image",
     "kind_video": "Vidéo",
     "languageMismatch": "Remarque : cet article est enregistré en « {{declared}} » mais son texte semble être en « {{detected}} ». Les onglets ci-dessous suivent la langue détectée. Corrigez le champ Langue si c'est incorrect.",
-    "fieldCoverInfo": "Source de l'image de couverture"
+    "fieldCoverInfo": "Source de l'image de couverture",
+    "completionSummary": "{{complete}} langue(s) complète(s) sur {{total}}",
+    "complete": "Traduction complète",
+    "missingItems": "{{count}} éléments obligatoires manquants",
+    "articleComplete": "Traductions complètes",
+    "articleIncomplete": "Traduction incomplète · {{complete}}/{{total}} langues",
+    "sources": "Texte des sources",
+    "sourcesHint": "Traduisez chaque libellé de source et éditeur. Les URL et dates de consultation restent inchangées.",
+    "sourceLabel": "Libellé de la source",
+    "sourcePublisher": "Éditeur"
   },
   "captionsDrawer": {
     "title": "Légendes",

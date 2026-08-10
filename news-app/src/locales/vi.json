@@ -355,6 +355,8 @@
     "loading": "Đang tải thị trường…",
     "unavailable": "Dữ liệu thị trường tạm thời không khả dụng",
     "vnLabel": "Việt Nam",
+    "gold": "Vàng",
+    "oil": "Dầu",
     "vnLoading": "Đang tải TTCK Việt Nam…",
     "ohlc": "Mở / Cao / Thấp"
   },
@@ -485,7 +487,16 @@
     "kind_image": "Ảnh",
     "kind_video": "Video",
     "languageMismatch": "Lưu ý: bài viết được lưu là “{{declared}}” nhưng nội dung có vẻ là “{{detected}}”. Các tab bên dưới dựa trên ngôn ngữ phát hiện được. Hãy sửa trường Ngôn ngữ của bài viết nếu chưa đúng.",
-    "fieldCoverInfo": "Nguồn ảnh bìa"
+    "fieldCoverInfo": "Nguồn ảnh bìa",
+    "completionSummary": "Đã hoàn tất {{complete}}/{{total}} ngôn ngữ",
+    "complete": "Bản dịch đầy đủ",
+    "missingItems": "Còn thiếu {{count}} thành phần bắt buộc",
+    "articleComplete": "Đã dịch đầy đủ",
+    "articleIncomplete": "Bản dịch chưa đầy đủ · {{complete}}/{{total}} ngôn ngữ",
+    "sources": "Nội dung nguồn tham khảo",
+    "sourcesHint": "Dịch tên nguồn và nhà xuất bản. URL và ngày truy cập được giữ nguyên.",
+    "sourceLabel": "Tên nguồn",
+    "sourcePublisher": "Nhà xuất bản"
   },
   "captionsDrawer": {
     "title": "Chú thích",

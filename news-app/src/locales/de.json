@@ -355,6 +355,8 @@
     "loading": "Märkte werden geladen…",
     "unavailable": "Marktdaten vorübergehend nicht verfügbar",
     "vnLabel": "Vietnam",
+    "gold": "Gold",
+    "oil": "Öl",
     "vnLoading": "VN-Märkte werden geladen…",
     "ohlc": "Eröffnung / Hoch / Tief"
   },
@@ -485,7 +487,16 @@
     "kind_image": "Bild",
     "kind_video": "Video",
     "languageMismatch": "Hinweis: Dieser Artikel ist als „{{declared}}“ gespeichert, sein Text wirkt aber wie „{{detected}}“. Die Tabs unten richten sich nach der erkannten Sprache. Korrigieren Sie das Sprachfeld, falls das falsch ist.",
-    "fieldCoverInfo": "Quelle des Titelbilds"
+    "fieldCoverInfo": "Quelle des Titelbilds",
+    "completionSummary": "{{complete}} von {{total}} Sprachen vollständig",
+    "complete": "Übersetzung vollständig",
+    "missingItems": "{{count}} erforderliche Elemente fehlen",
+    "articleComplete": "Übersetzungen vollständig",
+    "articleIncomplete": "Übersetzung unvollständig · {{complete}}/{{total}} Sprachen",
+    "sources": "Quellentext",
+    "sourcesHint": "Übersetzen Sie alle Quellenbezeichnungen und Herausgeber. URLs und Abrufdaten bleiben unverändert.",
+    "sourceLabel": "Quellenbezeichnung",
+    "sourcePublisher": "Herausgeber"
   },
   "captionsDrawer": {
     "title": "Bildunterschriften",
