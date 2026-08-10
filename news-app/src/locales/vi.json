@@ -93,6 +93,14 @@
     "editedOn": "Chỉnh sửa {{date}}",
     "articleDetails": "Thông tin bài viết"
   },
+  "newsroom": {
+    "thisMonth": "tháng này",
+    "lastUpdated": "Cập nhật lần cuối",
+    "featured": "Tin nổi bật",
+    "topStories": "Tin đáng chú ý",
+    "briefs": "Tin vắn",
+    "moreStories": "Tin khác"
+  },
   "theme": {
     "dark": "Tối",
     "light": "Sáng",

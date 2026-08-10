@@ -3,6 +3,147 @@
 .article-detail { padding: 48px 0 40px; }
 .article-detail__head { max-width: var(--icue-readw); }
 
+/* Newsroom banner ------------------------------------------------------
+   Moved here from the newsroom index: the dark retro-grid masthead now opens
+   every article instead of the front page. It sits flush to the top of the
+   route, so the article's own top padding is dropped while it is present. */
+.article-detail.article-detail--has-hero { padding-top: 0; }
+
+.news-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--icue-gradient-dark);
+  color: #fff;
+  padding: 64px 0 56px;
+}
+
+.article-hero { margin-bottom: 44px; }
+
+/* Line the banner up with the article's editorial frame, not the narrower
+   1200px container the newsroom index uses. */
+.article-hero .news-hero__inner {
+  width: min(var(--article-frame-width), calc(100% - var(--article-frame-gutter)));
+  max-width: none;
+  padding-inline: 0;
+}
+
+.news-hero__grid {
+  z-index: 0;
+}
+
+.news-hero__grid .retro-grid__fade {
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.72) 0%,
+    rgba(10, 10, 10, 0.18) 42%,
+    transparent 78%
+  );
+}
+
+.news-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.news-hero__text { flex: 1 1 420px; min-width: 0; }
+
+.news-hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.news-hero__eyebrow {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--icue-accent);
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.news-hero__institute {
+  display: block;
+  max-width: 100%;
+}
+
+.news-hero__rotating {
+  display: flex;
+  font-size: clamp(18px, 3.2vw, 30px);
+  font-weight: 800;
+  /* Tall enough for uppercase Vietnamese diacritics — the per-word mask below
+     clips to the line box. */
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  min-height: 1.35em;
+  flex-wrap: wrap;
+  gap: 0.28em 0.42em;
+}
+
+.news-hero__rotating .text-rotate-word {
+  overflow: hidden;
+  display: inline-flex;
+}
+
+.news-hero__rotating .text-rotate-element {
+  display: inline-block;
+}
+
+.news-hero__subtitle {
+  margin: 0;
+  font-size: clamp(15px, 2.2vw, 18px);
+  color: #aab0b6;
+  max-width: 620px;
+}
+
+@media (max-width: 860px) {
+  .news-hero__actions {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .news-hero { padding: 36px 0 30px; }
+  .article-hero { margin-bottom: 30px; }
+}
+
+@media (max-width: 640px) {
+  .news-hero__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .news-hero__actions {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .news-hero__text { flex: 0 0 auto; width: 100%; }
+  .news-hero__eyebrow { font-size: clamp(22px, 6.6vw, 32px); line-height: 1.2; margin-bottom: 8px; }
+  .news-hero__rotating { font-size: clamp(14px, 4.2vw, 20px); }
+  .news-hero__subtitle { font-size: 14px; line-height: 1.5; }
+}
+
+@media (max-width: 400px) {
+  .news-hero { padding: 28px 0 24px; }
+}
+
 .article-detail__badge {
   display: inline-block;
   font-size: 12px; font-weight: 700; letter-spacing: 0.05em;

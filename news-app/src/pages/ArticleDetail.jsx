@@ -7,6 +7,10 @@ import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { recordArticleView } from '../lib/engagement'
 import { formatDate, articlePublishDate, articleEditedDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
+import RetroGrid from '../components/RetroGrid'
+import RotatingText from '../components/RotatingText'
+import AnimatedShinyText from '../components/AnimatedShinyText'
+import SocialGooeyNav from '../components/SocialGooeyNav'
 import MediaGallery from '../components/MediaGallery'
 import ArticleComparisonCarousel from '../components/ArticleComparisonCarousel'
 import ArticleSources from '../components/ArticleSources'
@@ -32,6 +36,8 @@ import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './ArticleDetail.css'
 
 const LENS_PREF_KEY = 'icue-article-lens-enabled'
+
+const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
 
 function useLensCapable(disableLens = false) {
   const [capable, setCapable] = useState(false)
@@ -79,7 +85,15 @@ export default function ArticleDetail() {
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
   const profile = usePerformanceProfile()
-  const { disableLens, showScrollProgress, hyperTextScramble, disableParallax } = profile
+  const {
+    disableLens,
+    showScrollProgress,
+    hyperTextScramble,
+    disableParallax,
+    reduceMotion,
+    simplifyHero,
+    pauseRetroGrid,
+  } = profile
   const lensCapable = useLensCapable(disableLens)
   const [lensOn, setLensOn] = useState(readLensPreference)
 
@@ -257,6 +271,13 @@ export default function ArticleDetail() {
     })
   }, [])
 
+  const rotatingTags = useMemo(() => {
+    const tags = t('hero.rotatingTags', { returnObjects: true })
+    return Array.isArray(tags) && tags.length ? tags : DEFAULT_ROTATING_TAGS
+  }, [t])
+
+  const heroTags = simplifyHero ? [rotatingTags[0]] : rotatingTags
+
   const handlePageChange = useCallback((pageIndex, totalPages) => {
     if (totalPages <= 1) {
       setPageProgress(null)
@@ -325,12 +346,50 @@ export default function ArticleDetail() {
 
   return (
     <article
-      className={`article-detail${isViContent ? ' article-detail--vi' : ''}`}
+      className={`article-detail article-detail--has-hero${isViContent ? ' article-detail--vi' : ''}`}
       lang={contentLang}
     >
       {showScrollProgress ? (
         <ScrollProgress progress={pageProgress ?? undefined} />
       ) : null}
+
+      {/* Newsroom banner — the masthead the index used to carry. The page's
+          only <h1> is the article title below, so this stays a <p>. */}
+      <header className="news-hero article-hero">
+        <RetroGrid
+          className="news-hero__grid"
+          lineColor="rgba(255, 255, 255, 0.38)"
+          opacity={0.78}
+          reduceMotion={reduceMotion || pauseRetroGrid}
+        />
+        <div className="icue-container news-hero__inner">
+          <div className="news-hero__text">
+            <p className="news-hero__eyebrow">
+              <AnimatedShinyText className="news-hero__institute" shimmerWidth={140}>
+                {t('instituteName')}
+              </AnimatedShinyText>
+              {simplifyHero ? (
+                <span className="news-hero__rotating">{heroTags[0]}</span>
+              ) : (
+                <RotatingText
+                  texts={heroTags}
+                  mainClassName="news-hero__rotating"
+                  splitBy="words"
+                  rotationInterval={3200}
+                  staggerDuration={0.07}
+                  staggerFrom="first"
+                  auto={!reduceMotion}
+                />
+              )}
+            </p>
+            <p className="news-hero__subtitle">{t('news.subtitle')}</p>
+          </div>
+          <div className="news-hero__actions">
+            <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
+          </div>
+        </div>
+      </header>
+
       <div className="article-detail__head icue-container">
         <div className="article-detail__eyebrow">
           <span

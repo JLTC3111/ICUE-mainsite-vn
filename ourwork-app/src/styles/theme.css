@@ -46,7 +46,15 @@
   --ow-maxw: 1240px;
   --ow-pad: 44px;
 
-  --ow-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* Be Vietnam Pro over Poppins: Poppins ships no `vietnamese` subset on Google
+     Fonts (latin / latin-ext / devanagari only), so every ế ộ ữ ơ ừ in the
+     Vietnamese copy fell back to a system face mid-word. Be Vietnam Pro is cut
+     for Vietnamese — tone marks are drawn at their own weight instead of being
+     stacked on top of a Latin glyph — and stays geometric enough that the page
+     keeps the shape Poppins gave it. The fallbacks are the two system faces
+     that do cover Vietnamese properly. */
+  --ow-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   --ow-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Consumed by the shared site footer, drawer menu and language switcher,

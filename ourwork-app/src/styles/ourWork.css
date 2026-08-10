@@ -200,6 +200,19 @@
   margin-bottom: 16px;
 }
 
+/* Now that this line is translated, KO and JA land CJK in a 10px letterspaced
+   mono plate. JetBrains Mono carries no CJK, so it falls through to a system
+   face that has no small-size hinting to spare, and `uppercase` does nothing
+   for it anyway. Hand those two locales the sans at a readable size instead —
+   `document.documentElement.lang` is kept current by App.jsx's LangSync. */
+:lang(ko) .ow-card__sub,
+:lang(ja) .ow-card__sub {
+  font-family: var(--ow-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
 .ow-card__desc {
   font-size: 13.5px;
   line-height: 1.6;

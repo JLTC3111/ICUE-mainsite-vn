@@ -4,6 +4,7 @@ import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageFlagMenu from './LanguageFlagMenu'
 import ThemeToggle from './ThemeToggle'
 import { useMainSite } from '../hooks/useMainSite'
+import { useScrolled } from '../hooks/useScrolled'
 import './Header.css'
 
 const SELF_HREF = import.meta.env.BASE_URL
@@ -12,6 +13,7 @@ const LOGO_MARK = `${import.meta.env.BASE_URL}favicon.png`
 function Header() {
   const { t } = useTranslation()
   const { base, hashLink, peopleLink, structureLink, newsroomHref } = useMainSite()
+  const scrolled = useScrolled()
 
   // The main site's pill nav, same six destinations in the same order. This app
   // *is* the Our Work page, so that pill is the active one and links to itself.
@@ -25,13 +27,19 @@ function Header() {
   ]
 
   return (
-    <header className="ow-header">
+    /* `is-top` is the expanded state: at scroll zero the bar runs the full width
+       of the viewport and the three groups sit at the far edges. Scrolling
+       contracts it back into the floating pill cluster, which then stays put —
+       see Header.css for how the two states interpolate. */
+    <header className={`ow-header${scrolled ? '' : ' is-top'}`}>
       <div className="ow-header__bar">
         <a href={base} className="ow-header__logo" aria-label={t('nav.mainAria')}>
           <img src={LOGO_MARK} alt="" aria-hidden="true" decoding="async" />
           <span className="ow-header__brand">ICUE</span>
           <span className="ow-header__tag">{t('brandBadge')}</span>
         </a>
+
+        <span className="ow-header__spacer" aria-hidden="true" />
 
         <nav className="ow-header__nav" aria-label={t('nav.mainNav')}>
           <ul className="ow-header__list">
@@ -55,6 +63,8 @@ function Header() {
             ))}
           </ul>
         </nav>
+
+        <span className="ow-header__spacer" aria-hidden="true" />
 
         <div className="ow-header__actions">
           <ThemeToggle className="ow-header__theme" />

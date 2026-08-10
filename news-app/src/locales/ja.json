@@ -93,6 +93,14 @@
     "editedOn": "更新 {{date}}",
     "articleDetails": "記事の詳細"
   },
+  "newsroom": {
+    "thisMonth": "今月",
+    "lastUpdated": "最終更新",
+    "featured": "注目記事",
+    "topStories": "主要ニュース",
+    "briefs": "短信",
+    "moreStories": "その他の記事"
+  },
   "theme": {
     "dark": "ダーク",
     "light": "ライト",

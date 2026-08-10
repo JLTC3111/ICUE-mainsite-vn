@@ -10,33 +10,143 @@
 
 .ow-header {
   --ow-nav-h: 3.25rem;
+  /* The gap between the viewport top and the pills. Constant across both
+     states — only the horizontal spread changes — so the header's height never
+     moves and cannot shift the document under its own sticky positioning. */
+  --ow-inset: 22px;
   --icue-accent: var(--icue-chrome-accent);
-  position: relative;
+
+  /* ---- state channel ----------------------------------------------------
+     Everything that differs between expanded (at the top of the page) and
+     contracted (scrolled) is a custom property set here and consumed below, so
+     each design is declared once rather than smeared across a pile of
+     `.is-top .foo` overrides.
+
+     Custom properties do not themselves animate, but the declarations that read
+     them do: when `--ow-bar-minw` flips, the resolved `min-width` on the bar
+     changes and that element's own `transition` picks it up. Defaults are the
+     CONTRACTED state, so a first paint with JS not yet mounted lands on the
+     design the page spends most of its life in.
+
+     The three pills stay three pills throughout — they never merge into a
+     single bar. `--ow-bar-*` sizes the invisible track they slide along.
+
+     `--ow-bar-minw` is the load-bearing one. The bar is `width: fit-content`,
+     so at `100%` it is stretched edge to edge and the spacers have room to
+     grow; at `0` it collapses onto its content. Both ends are
+     <length-percentage>, which is the only reason this interpolates at all —
+     animating to `max-content` or `fit-content` would not. */
+  --ow-bar-minw: 0px;
+  --ow-bar-padx: 0px;
+  --ow-bar-chrome: 0;
+  --ow-pill-chrome: 1;
+  --ow-spacer-grow: 0;
+  --ow-header-padx: var(--ow-pad);
+
+  position: sticky;
+  top: 0;
   z-index: 20;
-  max-width: var(--ow-maxw);
-  margin-inline: auto;
-  padding: 22px var(--ow-pad) 0;
+  padding: var(--ow-inset) var(--ow-header-padx) 0;
+  transition: padding 520ms var(--ow-ease);
+}
+
+/* The pills float clear of the page, so content scrolls through the gaps
+   between them and through the inset above them — legible enough over the
+   images but not against the deliverable lists. This fades the page out under
+   the header and back in just below it, in both states.
+
+   Masked rather than merely gradient-filled so the fade is honest at the bottom
+   edge; `--ow-bg` follows the theme, so it works in both. */
+.ow-header::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -26px;
+  z-index: -1;
+  background: var(--ow-bg);
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Expanded: the same three pills, thrown to the far edges of the screen. Only
+   the track widens and the spacers open — no chrome changes hands at all above
+   1024px, because there is nothing to merge into. */
+.ow-header.is-top {
+  --ow-bar-minw: 100%;
+  --ow-bar-padx: clamp(0.85rem, 2.4vw, 2rem);
+  --ow-spacer-grow: 1;
+  --ow-header-padx: 0px;
 }
 
 .ow-header__bar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  width: max-content;
+  width: fit-content;
+  min-width: var(--ow-bar-minw);
   max-width: 100%;
   margin-inline: auto;
+  padding-inline: var(--ow-bar-padx);
   color: var(--icue-chrome-text);
+  isolation: isolate;
+  transition: min-width 520ms var(--ow-ease), padding 520ms var(--ow-ease);
+}
+
+/* Only ever visible below 1024px, where the two remaining groups merge into a
+   single pill once contracted. It is a separate layer rather than a background
+   on the bar because the transition crosses a gradient — `linear-gradient` does
+   not interpolate to `transparent`, but a plate's opacity does. */
+.ow-header__bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid transparent;
+  border-radius: 1.75rem;
+  background: var(--icue-gradient-dark);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+  opacity: var(--ow-bar-chrome);
+  transition: opacity 420ms var(--ow-ease);
+}
+
+/* The two flexible gaps between the three groups. `flex-grow` is a plain number
+   and animates cleanly, so sweeping it 1 → 0 is what actually slides the groups
+   from the screen edges into the centred cluster. */
+.ow-header__spacer {
+  flex-grow: var(--ow-spacer-grow);
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 0;
+  align-self: stretch;
+  transition: flex-grow 520ms var(--ow-ease);
 }
 
 .ow-header__logo,
 .ow-header__nav,
 .ow-header__actions {
+  position: relative;
   min-height: var(--ow-nav-h);
+  isolation: isolate;
+}
+
+/* Contracted chrome: the same plate trick, one per group, cross-fading against
+   the bar's. Borders and shadows live here too so nothing paints while the
+   groups are meant to read as bare content on the full-bleed bar. */
+.ow-header__logo::before,
+.ow-header__nav::before,
+.ow-header__actions::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   border: 1px solid var(--icue-chrome-border);
   border-radius: 999px;
   background: var(--icue-gradient-dark);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+  opacity: var(--ow-pill-chrome);
+  transition: opacity 420ms var(--ow-ease), border-color 240ms ease;
 }
 
 /* ---------- brand pill ---------- */
@@ -63,6 +173,10 @@
 
 .ow-header__logo:hover {
   transform: translateY(-1px);
+}
+
+/* The border moved onto the chrome plate, so the hover accent follows it. */
+.ow-header__logo:hover::before {
   border-color: var(--icue-chrome-accent);
 }
 
@@ -94,9 +208,13 @@
   height: var(--ow-nav-h);
   padding: 0.22rem;
   min-width: 0;
-  overflow: hidden;
+  border-radius: 999px;
 }
 
+/* The overflow clip that used to sit on the nav lives here instead: the nav's
+   drop shadow is now painted by its chrome plate, and `overflow: hidden` on the
+   nav would have clipped that shadow away. Each link already clips its own
+   accent sweep, so this only has to catch the list when the pill is squeezed. */
 .ow-header__list {
   display: flex;
   align-items: stretch;
@@ -105,6 +223,8 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .ow-header__list > li {
@@ -271,57 +391,61 @@
 
 /* ---------- responsive ---------- */
 
+/* Below 1024 the nav pill is gone and the contracted design merges brand and
+   actions into a single pill — which is exactly the one thing the expanded
+   state cannot do, since the two are then at opposite edges of the screen. So
+   this is the only breakpoint where chrome changes hands: expanded they are two
+   separate pills like everywhere else, contracted the bar's plate takes over
+   and hugs them both.
+
+   Note this is the inverse of what the plate is for structurally: it fades IN
+   as the header contracts, not out. */
 @media (max-width: 1024px) {
+  .ow-header {
+    --ow-bar-chrome: 1;
+    --ow-pill-chrome: 0;
+  }
+
+  .ow-header.is-top {
+    --ow-bar-chrome: 0;
+    --ow-pill-chrome: 1;
+  }
+
   .ow-header__nav {
     display: none;
   }
 
+  /* Zero gap so the merged pill has no seam down its middle; expanded, the
+     spacers supply all the separation the two pills need. */
   .ow-header__bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
     gap: 0;
-
-    width: fit-content;
-    margin-inline: auto;
-
-    background: var(--icue-gradient-dark);
-    border: 1px solid var(--icue-chrome-border);
-    border-radius: 999px;
-    overflow: hidden;
   }
 
-  .ow-header__logo {
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+  /* The plate now only ever draws as a compact pill, so it takes the full
+     outline rather than the full-bleed bar's bottom hairline. */
+  .ow-header__bar::before {
+    border: 1px solid var(--icue-chrome-border);
   }
 
   .ow-header__actions {
     display: flex;
     align-items: center;
     gap: 0;
-
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
   }
 }
 
 @media (max-width: 768px) {
+  /* Retune through the state channel, not `padding-inline` — a flat override
+     here would also pin the expanded state's edge-to-edge zero. The tighter
+     inset keeps the contracted pill from eating the top of a phone screen. */
   .ow-header {
     --ow-nav-h: 3rem;
-    padding-inline: 20px;
+    --ow-inset: 16px;
+    --ow-header-padx: 20px;
   }
 
-  .ow-header__bar {
-    width: fit-content;
-    max-width: 100%;
-    justify-content: flex-start;
-    gap: 0;
-    margin-inline: auto;
+  .ow-header.is-top {
+    --ow-bar-padx: 16px;
   }
 
   .ow-header__tag {

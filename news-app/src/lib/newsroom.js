@@ -13,8 +13,21 @@ export const NEWSROOM_COMPACT_INITIAL_VISIBLE = 10
 /** Additional carousel cards per "Load more" on mobile/tablet. */
 export const NEWSROOM_COMPACT_LOAD_MORE_STEP = 6
 
-/** Mobile + tablet breakpoint — horizontal parallax carousel below this width; bento grid above. */
+/** Mobile + tablet breakpoint — the front page collapses to list rows below this width. */
 export const NEWSROOM_COMPACT_QUERY = '(max-width: 1024px)'
+
+/* Front page bands: one lead story, then a 3-up, then a 3-column brief strip,
+   then dense rows for everything else. Ordering is editorial, not a CMS field. */
+export const NEWSROOM_TOP_COUNT = 3
+export const NEWSROOM_BRIEF_COUNT = 3
+
+/**
+ * View counts are off on the index. A story showing "3 lượt xem" next to a
+ * provincial planning report reads as low-traffic, which works against the
+ * page's job. Views still increment and still show on ArticleDetail — flip
+ * this to bring them back to the cards.
+ */
+export const NEWSROOM_SHOW_VIEW_COUNTS = false
 
 /** Desktop bento vertical carousel — first page size and min-width gate. */
 export const NEWSROOM_BENTO_CAROUSEL_QUERY = '(min-width: 1025px)'

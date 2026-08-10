@@ -1,6 +1,6 @@
 .section-nav {
   position: sticky;
-  top: calc(var(--icue-header-h) + var(--icue-ticker-h) + var(--icue-vn-ticker-h));
+  top: var(--icue-chrome-top);
   z-index: 15;
   margin: -40px 0 24px;
   background: #fff;
@@ -13,15 +13,19 @@
   padding-bottom: 0;
 }
 
-/* Desktop tabs --------------------------------------------------------- */
+/* Desktop pills -------------------------------------------------------- */
 .section-nav__desktop {
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 0;
 }
 
 .section-nav__scroll {
   flex: 1;
   min-width: 0;
+  /* Vertical padding keeps pill borders and focus rings off the clip edge. */
+  padding: 3px 0;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -31,20 +35,20 @@
 
 .section-nav__list {
   display: flex;
-  align-items: stretch;
-  gap: 0;
+  align-items: center;
+  gap: 9px;
   min-width: min-content;
 }
 
 .section-nav__item {
   flex: none;
-  padding: 14px 18px;
-  border: none;
-  border-bottom: 2px solid transparent;
-  background: none;
+  padding: 7px 16px;
+  border: 1px solid var(--icue-border);
+  border-radius: 999px;
+  background: transparent;
   color: var(--icue-text-soft);
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -57,30 +61,31 @@
 
 .section-nav__item:hover {
   color: var(--icue-text);
-  background: rgba(245, 158, 11, 0.06);
-  border-bottom-color: var(--icue-nav-hover-line);
+  border-color: var(--icue-text-soft);
 }
 
+/* Near-black fill rather than the raw lime accent — white on lime is
+   unreadable, and the ink pill matches the rest of the brand chrome. */
 .section-nav__item.is-active {
-  color: var(--icue-ink);
-  border-bottom-color: var(--icue-ink);
+  border-color: var(--icue-ink);
+  background: var(--icue-ink);
+  color: var(--icue-surface);
 }
 
 .section-nav__item.is-active:hover {
-  background: rgba(245, 158, 11, 0.06);
+  color: var(--icue-surface);
+  border-color: var(--icue-ink);
 }
 
 .section-nav__more-wrap {
   position: relative;
   flex: none;
-  border-left: 1px solid var(--icue-border);
 }
 
 .section-nav__more {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 100%;
 }
 
 .section-nav__chev {
@@ -203,26 +208,22 @@
 }
 
 .news-page.news-page--dark .section-nav__item {
+  border-color: rgba(255, 255, 255, 0.16);
   color: #9aa0a6;
 }
 
 .news-page.news-page--dark .section-nav__item:hover {
   color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.05);
-  border-bottom-color: var(--icue-nav-hover-line);
 }
 
-.news-page.news-page--dark .section-nav__item.is-active {
-  color: #fff;
-  border-bottom-color: var(--icue-blue-2);
-}
-
+/* Inverted pill — near-white fill, page-dark text. */
+.news-page.news-page--dark .section-nav__item.is-active,
 .news-page.news-page--dark .section-nav__item.is-active:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.news-page.news-page--dark .section-nav__more-wrap {
-  border-left-color: rgba(255, 255, 255, 0.1);
+  border-color: #f0f1ed;
+  background: #f0f1ed;
+  color: #101215;
 }
 
 .news-page.news-page--dark .section-nav__menu {

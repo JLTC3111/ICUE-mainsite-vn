@@ -93,6 +93,14 @@
     "editedOn": "Bearbeitet {{date}}",
     "articleDetails": "Artikeldetails"
   },
+  "newsroom": {
+    "thisMonth": "diesen Monat",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "featured": "Im Fokus",
+    "topStories": "Top-Themen",
+    "briefs": "Kurz gemeldet",
+    "moreStories": "Weitere Beiträge"
+  },
   "theme": {
     "dark": "Dunkel",
     "light": "Hell",

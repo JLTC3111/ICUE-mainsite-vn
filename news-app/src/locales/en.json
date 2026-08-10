@@ -93,6 +93,14 @@
     "editedOn": "Edited {{date}}",
     "articleDetails": "Article details"
   },
+  "newsroom": {
+    "thisMonth": "this month",
+    "lastUpdated": "Last updated",
+    "featured": "Featured",
+    "topStories": "Top stories",
+    "briefs": "In brief",
+    "moreStories": "More stories"
+  },
   "theme": {
     "dark": "Dark",
     "light": "Light",

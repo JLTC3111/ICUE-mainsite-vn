@@ -93,6 +93,14 @@
     "editedOn": "수정 {{date}}",
     "articleDetails": "기사 정보"
   },
+  "newsroom": {
+    "thisMonth": "이번 달",
+    "lastUpdated": "마지막 업데이트",
+    "featured": "헤드라인",
+    "topStories": "주요 기사",
+    "briefs": "간추린 소식",
+    "moreStories": "다른 기사"
+  },
   "theme": {
     "dark": "다크",
     "light": "라이트",

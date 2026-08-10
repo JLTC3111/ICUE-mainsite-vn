@@ -1,36 +1,227 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import RotatingText from '../components/RotatingText'
-import RetroGrid from '../components/RetroGrid'
-import AnimatedShinyText from '../components/AnimatedShinyText'
-import ArticleMasonry from '../components/ArticleMasonry'
-import ArticleParallaxCarousel from '../components/ArticleParallaxCarousel'
-import SocialGooeyNav from '../components/SocialGooeyNav'
 import CategoryFilter from '../components/CategoryFilter'
+import ArticleViewCounter from '../components/ArticleViewCounter'
+import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { usePageResume } from '../hooks/usePageResume'
+import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
-import { isCategory } from '../lib/categories'
+import { categoryColor, isCategory } from '../lib/categories'
+import { resolveArticleCoverComparison } from '../lib/mediaComparison'
+import { formatDate, normalizeUnicode, plainExcerpt } from '../lib/helpers'
+import { DEFAULT_AVATAR } from '../lib/defaults'
 import {
+  NEWSROOM_BRIEF_COUNT,
   NEWSROOM_COMPACT_QUERY,
+  NEWSROOM_COMPACT_INITIAL_VISIBLE,
+  NEWSROOM_COMPACT_LOAD_MORE_STEP,
   NEWSROOM_DEFAULT_CATEGORY,
   NEWSROOM_INITIAL_VISIBLE,
   NEWSROOM_LOAD_MORE_STEP,
-  NEWSROOM_COMPACT_INITIAL_VISIBLE,
-  NEWSROOM_COMPACT_LOAD_MORE_STEP,
+  NEWSROOM_SHOW_VIEW_COUNTS,
+  NEWSROOM_TOP_COUNT,
 } from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
 import './NewsGrid.css'
 
 const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
 
+/** Lead standfirst length. Cut on a word boundary — never mid-syllable. */
+const LEAD_EXCERPT_CHARS = 160
+
+function wordSafeExcerpt(html, max = LEAD_EXCERPT_CHARS) {
+  const text = plainExcerpt(html, 4000)
+  if (text.length <= max) return text
+  const cut = text.slice(0, max)
+  const lastSpace = cut.lastIndexOf(' ')
+  const kept = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut
+  return `${kept.trim()}…`
+}
+
+/**
+ * One article → one card. `title` is empty while a translation is in flight so
+ * the headline can hold its space with a skeleton instead of flashing the
+ * Vietnamese original and then swapping.
+ */
+function buildCard(article, { titles, isTitlePending, fallbackByline }) {
+  const author = article.author || {}
+  const titlePending = isTitlePending(article.id)
+  const comparison = resolveArticleCoverComparison(article)
+
+  return {
+    id: article.id,
+    slug: article.slug,
+    title: titlePending ? '' : (titles[article.id] || normalizeUnicode(article.title)),
+    titlePending,
+    subtitle: normalizeUnicode(article.subtitle || ''),
+    contentHtml: article.content_html || '',
+    cover: article.cover_image_url || comparison?.before?.url || '',
+    category: isCategory(article.category) ? article.category : 'general',
+    date: article.published_at || article.article_date || '',
+    readMinutes: Number(article.read_minutes) || 0,
+    byline: article.author_name || author.display_name || author.full_name || fallbackByline,
+    avatar: author.avatar_url || DEFAULT_AVATAR,
+    viewCount: article.view_count ?? 0,
+  }
+}
+
+function CategoryTag({ category, t, className = 'news-tag' }) {
+  return (
+    <span className={className} style={{ '--cat-color': categoryColor(category) }}>
+      {t(`categories.${category}`)}
+    </span>
+  )
+}
+
+/**
+ * Vietnamese headlines run long and the cards are sized to grow, so nothing
+ * here clamps or ellipsises.
+ */
+function Headline({ card, as: Tag, className, skeletonLines = 2 }) {
+  if (card.titlePending) {
+    return (
+      <Tag className={className}>
+        <TranslationLineSkeleton lines={skeletonLines} />
+      </Tag>
+    )
+  }
+  return <Tag className={`${className} translation-reveal`}>{card.title}</Tag>
+}
+
+function StoryMeta({ card, locale, t, showAvatar = false }) {
+  return (
+    <div className="news-meta">
+      {showAvatar && (
+        <img className="news-meta__avatar" src={card.avatar} alt="" loading="lazy" decoding="async" />
+      )}
+      <span className="news-meta__byline">{card.byline}</span>
+      {card.date && (
+        <>
+          <span className="news-meta__dot" aria-hidden>·</span>
+          <time dateTime={card.date}>{formatDate(card.date, locale)}</time>
+        </>
+      )}
+      {card.readMinutes > 0 && (
+        <>
+          <span className="news-meta__dot" aria-hidden>·</span>
+          <span>{card.readMinutes} {t('news.minRead')}</span>
+        </>
+      )}
+      {NEWSROOM_SHOW_VIEW_COUNTS && <ArticleViewCounter count={card.viewCount} compact />}
+    </div>
+  )
+}
+
+function LeadStory({ card, locale, t }) {
+  const excerpt = useMemo(() => wordSafeExcerpt(card.contentHtml), [card.contentHtml])
+
+  return (
+    <article className={`news-lead${card.cover ? '' : ' news-lead--no-image'}`}>
+      <Link
+        to={`/article/${card.slug}`}
+        className="news-lead__link"
+        aria-label={card.title || undefined}
+      >
+        {card.cover && (
+          <div className="news-lead__media">
+            <img src={card.cover} alt="" decoding="async" />
+          </div>
+        )}
+        <div className="news-lead__body">
+          <div className="news-lead__kicker">
+            <CategoryTag category={card.category} t={t} />
+            <span className="news-lead__featured">{t('newsroom.featured')}</span>
+          </div>
+          <Headline card={card} as="h2" className="news-lead__title" />
+          {card.subtitle && <p className="news-lead__subtitle">{card.subtitle}</p>}
+          {excerpt && <p className="news-lead__standfirst">{excerpt}</p>}
+          <StoryMeta card={card} locale={locale} t={t} showAvatar />
+        </div>
+      </Link>
+    </article>
+  )
+}
+
+function StoryCard({ card, locale, t }) {
+  return (
+    <article className={`news-card${card.cover ? '' : ' news-card--no-image'}`}>
+      <Link
+        to={`/article/${card.slug}`}
+        className="news-card__link"
+        aria-label={card.title || undefined}
+      >
+        {card.cover && (
+          <div className="news-card__media">
+            <img src={card.cover} alt="" loading="lazy" decoding="async" />
+          </div>
+        )}
+        <div className="news-card__body">
+          <CategoryTag category={card.category} t={t} className="news-tag news-tag--sm" />
+          <Headline card={card} as="h3" className="news-card__title" />
+          {card.subtitle && <p className="news-card__subtitle">{card.subtitle}</p>}
+          <StoryMeta card={card} locale={locale} t={t} />
+        </div>
+      </Link>
+    </article>
+  )
+}
+
+function BriefStory({ card, locale, t }) {
+  return (
+    <article className="news-brief">
+      <Link
+        to={`/article/${card.slug}`}
+        className="news-brief__link"
+        aria-label={card.title || undefined}
+      >
+        <div className="news-brief__kicker">{t(`categories.${card.category}`)}</div>
+        <Headline card={card} as="h3" className="news-brief__title" />
+        {card.subtitle && <p className="news-brief__subtitle">{card.subtitle}</p>}
+        {card.date && (
+          <time className="news-brief__date" dateTime={card.date}>
+            {formatDate(card.date, locale)}
+          </time>
+        )}
+      </Link>
+    </article>
+  )
+}
+
+function StoryRow({ card, locale, t }) {
+  return (
+    <article className="news-row">
+      <Link
+        to={`/article/${card.slug}`}
+        className="news-row__link"
+        aria-label={card.title || undefined}
+      >
+        {card.cover && (
+          <div className="news-row__thumb">
+            <img src={card.cover} alt="" loading="lazy" decoding="async" />
+          </div>
+        )}
+        <div className="news-row__copy">
+          <div className="news-row__kicker">{t(`categories.${card.category}`)}</div>
+          <Headline card={card} as="h3" className="news-row__title" skeletonLines={1} />
+          <div className="news-row__meta">
+            {card.date ? formatDate(card.date, locale) : ''}
+            {card.readMinutes > 0 ? ` · ${card.readMinutes} ${t('news.minRead')}` : ''}
+          </div>
+        </div>
+      </Link>
+    </article>
+  )
+}
+
 export default function NewsGrid() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const profile = usePerformanceProfile()
-  const { reduceMotion, simplifyHero, pauseRetroGrid } = profile
+  const { reduceMotion, simplifyHero } = profile
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   const [articles, setArticles] = useState([])
@@ -44,6 +235,7 @@ export default function NewsGrid() {
   const visibleCount = visibility.key === visibilityKey ? visibility.count : initialVisible
   const { isDark } = useNewsroomTheme()
   const requestIdRef = useRef(0)
+  const locale = i18n.resolvedLanguage
 
   const loadArticles = useCallback(({ background = false } = {}) => {
     const requestId = requestIdRef.current + 1
@@ -75,10 +267,10 @@ export default function NewsGrid() {
 
   const rotatingTags = useMemo(() => {
     const tags = t('hero.rotatingTags', { returnObjects: true })
-    return Array.isArray(tags) ? tags : DEFAULT_ROTATING_TAGS
+    return Array.isArray(tags) && tags.length ? tags : DEFAULT_ROTATING_TAGS
   }, [t])
 
-  const heroTags = simplifyHero ? [rotatingTags[0] || DEFAULT_ROTATING_TAGS[0]] : rotatingTags
+  const heroTags = simplifyHero ? [rotatingTags[0]] : rotatingTags
 
   const filtered = useMemo(() => {
     let list = articles
@@ -92,6 +284,39 @@ export default function NewsGrid() {
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount],
   )
+
+  const { titles, isTitlePending } = useArticleTitleTranslations(visibleArticles, locale)
+
+  const fallbackByline = t('brand')
+  const cards = useMemo(
+    () => visibleArticles.map((article) => buildCard(article, {
+      titles,
+      isTitlePending,
+      fallbackByline,
+    })),
+    [visibleArticles, titles, isTitlePending, fallbackByline],
+  )
+
+  const briefStart = 1 + NEWSROOM_TOP_COUNT
+  const moreStart = briefStart + NEWSROOM_BRIEF_COUNT
+  const lead = cards[0] || null
+  const topStories = cards.slice(1, briefStart)
+  const briefs = cards.slice(briefStart, moreStart)
+  const moreStories = cards.slice(moreStart)
+
+  // Counter + "last updated" read the same fetch — no second endpoint.
+  const publishedThisMonth = useMemo(() => {
+    const now = new Date()
+    return articles.filter((article) => {
+      const raw = article.published_at || article.article_date
+      if (!raw) return false
+      const date = new Date(raw)
+      if (Number.isNaN(date.getTime())) return false
+      return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
+    }).length
+  }, [articles])
+
+  const lastUpdated = articles[0]?.published_at || articles[0]?.article_date || ''
 
   const hasMoreArticles = filtered.length > visibleArticles.length
   const hasSearchFilter = Boolean(searchQuery.trim())
@@ -111,25 +336,18 @@ export default function NewsGrid() {
 
   return (
     <div className={`news-page${isDark ? ' news-page--dark' : ''}`}>
-      <header className="news-hero">
-        <RetroGrid
-          className="news-hero__grid"
-          lineColor="rgba(255, 255, 255, 0.38)"
-          opacity={0.78}
-          reduceMotion={reduceMotion || pauseRetroGrid}
-        />
-        <div className="icue-container news-hero__inner">
-          <div className="news-hero__text">
-            <h1 className="news-hero__eyebrow">
-              <AnimatedShinyText className="news-hero__institute" shimmerWidth={140}>
-                {t('instituteName')}
-              </AnimatedShinyText>
+      <header className="newsroom-masthead">
+        <div className="icue-container icue-container--newsroom newsroom-masthead__inner">
+          <div className="newsroom-masthead__text">
+            <p className="newsroom-masthead__eyebrow">{t('instituteName')}</p>
+            <h1 className="newsroom-masthead__title">
+              <span className="newsroom-masthead__name">{t('nav.news')}</span>
               {simplifyHero ? (
-                <span className="news-hero__rotating">{heroTags[0]}</span>
+                <span className="newsroom-masthead__rotating">{heroTags[0]}</span>
               ) : (
                 <RotatingText
                   texts={heroTags}
-                  mainClassName="news-hero__rotating"
+                  mainClassName="newsroom-masthead__rotating"
                   splitBy="words"
                   rotationInterval={3200}
                   staggerDuration={0.07}
@@ -138,11 +356,22 @@ export default function NewsGrid() {
                 />
               )}
             </h1>
-            <p className="news-hero__subtitle">{t('news.subtitle')}</p>
+            <p className="newsroom-masthead__standfirst">{t('news.subtitle')}</p>
           </div>
-          <div className="news-hero__actions">
-            <SocialGooeyNav reduceMotion={reduceMotion || simplifyHero} />
-          </div>
+
+          {state === 'ready' && articles.length > 0 && (
+            <div className="newsroom-masthead__aside">
+              <div className="newsroom-masthead__counter">
+                <span className="newsroom-masthead__count">{publishedThisMonth}</span>
+                <span className="newsroom-masthead__count-label">{t('newsroom.thisMonth')}</span>
+              </div>
+              {lastUpdated && (
+                <p className="newsroom-masthead__updated">
+                  {t('newsroom.lastUpdated')} · {formatDate(lastUpdated, locale)}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
@@ -151,7 +380,7 @@ export default function NewsGrid() {
       )}
 
       {state === 'ready' && hasActiveFilters && (
-        <div className="icue-container news-results-bar">
+        <div className="icue-container icue-container--newsroom news-results-bar">
           <div className="news-results-bar__surface has-filters">
             <p
               className="news-results-bar__count"
@@ -210,11 +439,7 @@ export default function NewsGrid() {
         </div>
       )}
 
-      <div
-        className={`icue-container${
-          isCompactLayout ? ' icue-container--compact-gallery' : ' icue-container--bento-gallery'
-        }`}
-      >
+      <div className="icue-container icue-container--newsroom news-front">
         {state === 'loading' && (
           <div className="news-gallery-skeleton" aria-hidden />
         )}
@@ -226,12 +451,47 @@ export default function NewsGrid() {
         )}
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
-        {state === 'ready' && visibleArticles.length > 0 && (
-          isCompactLayout ? (
-            <ArticleParallaxCarousel articles={visibleArticles} profile={profile} />
-          ) : (
-            <ArticleMasonry articles={visibleArticles} profile={profile} />
-          )
+        {state === 'ready' && lead && (
+          <LeadStory card={lead} locale={locale} t={t} />
+        )}
+
+        {state === 'ready' && topStories.length > 0 && (
+          <section className="news-band news-band--top" aria-labelledby="news-band-top">
+            <h2 className="news-band__heading news-band__heading--rule" id="news-band-top">
+              {t('newsroom.topStories')}
+            </h2>
+            <div className="news-band__grid">
+              {topStories.map((card) => (
+                <StoryCard key={card.id} card={card} locale={locale} t={t} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {state === 'ready' && briefs.length > 0 && (
+          <section className="news-band news-band--briefs" aria-labelledby="news-band-briefs">
+            <h2 className="news-band__heading" id="news-band-briefs">
+              {t('newsroom.briefs')}
+            </h2>
+            <div className="news-band__strip">
+              {briefs.map((card) => (
+                <BriefStory key={card.id} card={card} locale={locale} t={t} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {state === 'ready' && moreStories.length > 0 && (
+          <section className="news-band news-band--more" aria-labelledby="news-band-more">
+            <h2 className="news-band__heading" id="news-band-more">
+              {t('newsroom.moreStories')}
+            </h2>
+            <div className="news-band__rows">
+              {moreStories.map((card) => (
+                <StoryRow key={card.id} card={card} locale={locale} t={t} />
+              ))}
+            </div>
+          </section>
         )}
 
         {state === 'ready' && hasMoreArticles && (

@@ -16,9 +16,11 @@
  *   anything breaks the composition — change the grid deliberately if content
  *   grows. `assertOurWorkShape` below fails loudly in dev if this drifts.
  *
- * `sub` is deliberately English in every locale: it is a decorative plate line,
- * uppercased by CSS, kept in sentence case here so screen readers don't spell
- * it out.
+ * `sub` is the small plate line under each card title, uppercased by CSS and
+ * kept in sentence case here so screen readers don't spell it out. It is
+ * translated per locale like everything else. It reads as a compressed echo of
+ * the card's own title — that is what it is for, and it is why the two are
+ * worded close but never identical in any locale.
  *
  * ⚠️ PENDING REAL FIGURES: `stats` and `certs` are placeholders carried over
  * from the spec, and the per-scope `std` lines name plausible standards that
@@ -52,11 +54,45 @@ const STD = {
   ae: 'ISO 21384-3 · ISO 9001:2015',
 }
 
+/* Keyed locale → scope code. Each line is a shortened restatement of that
+   locale's own card title, so it never repeats the title verbatim. */
 const SUB = {
-  as: 'Assessment & reporting',
-  sv: 'Surveying & structural engineering',
-  pm: 'Infrastructure analysis & project management',
-  ae: 'Aerial & spatial documentation',
+  vi: {
+    as: 'Đánh giá & lập báo cáo',
+    sv: 'Đo đạc & kỹ thuật kết cấu',
+    pm: 'Hạ tầng & quản lý dự án',
+    ae: 'Không ảnh & tư liệu không gian',
+  },
+  en: {
+    as: 'Assessment & reporting',
+    sv: 'Surveying & structural engineering',
+    pm: 'Infrastructure & project management',
+    ae: 'Aerial & spatial documentation',
+  },
+  de: {
+    as: 'Bewertung & Berichterstattung',
+    sv: 'Aufmaß & Tragwerksplanung',
+    pm: 'Infrastruktur & Projektsteuerung',
+    ae: 'Luftbild & Raumdokumentation',
+  },
+  fr: {
+    as: 'Évaluation & rapports',
+    sv: 'Relevés & ingénierie structure',
+    pm: 'Infrastructures & gestion de projet',
+    ae: 'Vues aériennes & documentation spatiale',
+  },
+  ko: {
+    as: '평가 및 보고',
+    sv: '측량 및 구조 엔지니어링',
+    pm: '인프라 및 사업 관리',
+    ae: '드론 촬영 및 공간 기록',
+  },
+  ja: {
+    as: '評価とレポート',
+    sv: '測量と構造エンジニアリング',
+    pm: 'インフラとプロジェクト管理',
+    ae: '空撮と空間ドキュメント',
+  },
 }
 
 export const OUR_WORK = {
@@ -79,7 +115,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '04 hạng mục',
         title: 'Đánh giá & báo cáo công trình',
-        sub: SUB.as,
+        sub: SUB.vi.as,
         desc: 'Khảo sát hiện trạng, đánh giá mức độ an toàn và lập báo cáo kỹ thuật cho công trình đang khai thác hoặc chuẩn bị cải tạo.',
         items: [
           'Khảo sát hiện trạng và ghi nhận khuyết tật',
@@ -95,7 +131,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '04 hạng mục',
         title: 'Khảo sát đo lường & kỹ thuật kết cấu',
-        sub: SUB.sv,
+        sub: SUB.vi.sv,
         desc: 'Đo đạc hiện trường, bóc tách khối lượng và dựng mô hình BIM làm cơ sở cho thiết kế, dự toán và thi công.',
         items: [
           'Đo đạc và định vị công trình',
@@ -111,7 +147,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '04 hạng mục',
         title: 'Phân tích hạ tầng & quản lý dự án',
-        sub: SUB.pm,
+        sub: SUB.vi.pm,
         desc: 'Phân tích khoảng trống hạ tầng, dự toán chi phí và kiểm soát ngân sách từ giai đoạn lập kế hoạch đến khi nghiệm thu.',
         items: [
           'Phân tích khoảng trống hạ tầng',
@@ -127,7 +163,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '04 hạng mục',
         title: 'Chụp ảnh & tư liệu không gian',
-        sub: SUB.ae,
+        sub: SUB.vi.ae,
         desc: 'Bay chụp drone, lập bản đồ trực ảnh và tư liệu hoá công trình phục vụ đánh giá đất đai, giám sát và hồ sơ dự án.',
         items: [
           'Bay chụp drone và ảnh trên không',
@@ -179,7 +215,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '04 deliverables',
         title: 'Building assessment & reporting',
-        sub: SUB.as,
+        sub: SUB.en.as,
         desc: 'Condition surveys, structural safety assessment and technical reporting for buildings in service or awaiting refurbishment.',
         items: [
           'Condition survey and defect recording',
@@ -195,7 +231,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '04 deliverables',
         title: 'Quantity surveying & structural engineering',
-        sub: SUB.sv,
+        sub: SUB.en.sv,
         desc: 'Site measurement, quantity take-off and BIM modelling that give design, costing and construction a single source of truth.',
         items: [
           'Site measurement and setting out',
@@ -211,7 +247,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '04 deliverables',
         title: 'Infrastructure analysis & project management',
-        sub: SUB.pm,
+        sub: SUB.en.pm,
         desc: 'Infrastructure gap analysis, cost estimation and budget control from the planning stage through to final acceptance.',
         items: [
           'Infrastructure gap analysis',
@@ -227,7 +263,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '04 deliverables',
         title: 'Aerial photography & spatial documentation',
-        sub: SUB.ae,
+        sub: SUB.en.ae,
         desc: 'Drone capture, orthophoto mapping and project documentation for land assessment, progress monitoring and project records.',
         items: [
           'Drone capture and aerial photography',
@@ -279,7 +315,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '04 Leistungen',
         title: 'Bauwerksbewertung & Berichte',
-        sub: SUB.as,
+        sub: SUB.de.as,
         desc: 'Zustandserfassung, Beurteilung der Tragsicherheit und technische Berichte für Bauwerke im Betrieb oder vor der Sanierung.',
         items: [
           'Zustandserfassung und Schadensaufnahme',
@@ -295,7 +331,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '04 Leistungen',
         title: 'Vermessung & Tragwerksplanung',
-        sub: SUB.sv,
+        sub: SUB.de.sv,
         desc: 'Aufmaß vor Ort, Mengenermittlung und BIM-Modellierung als gemeinsame Datengrundlage für Planung, Kalkulation und Ausführung.',
         items: [
           'Aufmaß und Absteckung',
@@ -311,7 +347,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '04 Leistungen',
         title: 'Infrastrukturanalyse & Projektsteuerung',
-        sub: SUB.pm,
+        sub: SUB.de.pm,
         desc: 'Analyse von Infrastrukturlücken, Kostenschätzung und Budgetkontrolle von der Planungsphase bis zur Abnahme.',
         items: [
           'Analyse von Infrastrukturlücken',
@@ -327,7 +363,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '04 Leistungen',
         title: 'Luftbilder & räumliche Dokumentation',
-        sub: SUB.ae,
+        sub: SUB.de.ae,
         desc: 'Drohnenbefliegung, Orthofoto-Kartierung und Projektdokumentation für Flächenbewertung, Baufortschritt und Projektakten.',
         items: [
           'Drohnenbefliegung und Luftaufnahmen',
@@ -379,7 +415,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '04 livrables',
         title: "Évaluation d'ouvrages & rapports",
-        sub: SUB.as,
+        sub: SUB.fr.as,
         desc: "Relevé de l'état existant, évaluation de la sécurité structurelle et rapports techniques pour les ouvrages en service ou à réhabiliter.",
         items: [
           "Relevé de l'état existant et des désordres",
@@ -395,7 +431,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '04 livrables',
         title: 'Relevés, métrés & ingénierie structure',
-        sub: SUB.sv,
+        sub: SUB.fr.sv,
         desc: "Relevés sur site, métrés et maquettes BIM qui donnent à la conception, au chiffrage et au chantier une base de données unique.",
         items: [
           'Relevés et implantation',
@@ -411,7 +447,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '04 livrables',
         title: "Analyse d'infrastructures & gestion de projet",
-        sub: SUB.pm,
+        sub: SUB.fr.pm,
         desc: "Analyse des manques d'infrastructure, estimation des coûts et maîtrise du budget, de la phase d'études jusqu'à la réception.",
         items: [
           "Analyse des manques d'infrastructure",
@@ -427,7 +463,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '04 livrables',
         title: 'Prises de vue & documentation spatiale',
-        sub: SUB.ae,
+        sub: SUB.fr.ae,
         desc: "Vols drone, cartographie orthophoto et documentation de projet pour l'évaluation foncière, le suivi de chantier et les archives.",
         items: [
           'Vols drone et photographie aérienne',
@@ -478,7 +514,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '4개 산출물',
         title: '건축물 평가 및 보고',
-        sub: SUB.as,
+        sub: SUB.ko.as,
         desc: '사용 중이거나 리모델링을 앞둔 건축물에 대한 현황 조사, 구조 안전성 평가 및 기술 보고서 작성.',
         items: [
           '현황 조사 및 결함 기록',
@@ -494,7 +530,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '4개 산출물',
         title: '측량·적산 및 구조 엔지니어링',
-        sub: SUB.sv,
+        sub: SUB.ko.sv,
         desc: '현장 실측, 물량 산출, BIM 모델링으로 설계·적산·시공이 하나의 데이터를 공유하도록 합니다.',
         items: [
           '현장 실측 및 기준점 설정',
@@ -510,7 +546,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '4개 산출물',
         title: '인프라 분석 및 사업 관리',
-        sub: SUB.pm,
+        sub: SUB.ko.pm,
         desc: '기획 단계부터 준공까지 인프라 격차 분석, 공사비 산정 및 예산 관리를 수행합니다.',
         items: [
           '인프라 격차 분석',
@@ -526,7 +562,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '4개 산출물',
         title: '항공 촬영 및 공간 기록',
-        sub: SUB.ae,
+        sub: SUB.ko.ae,
         desc: '토지 평가, 공정 모니터링, 프로젝트 기록을 위한 드론 촬영, 정사영상 지도 제작 및 문서화.',
         items: [
           '드론 촬영 및 항공 사진',
@@ -577,7 +613,7 @@ export const OUR_WORK = {
         code: 'AS',
         count: '4 項目',
         title: '建物の調査・報告',
-        sub: SUB.as,
+        sub: SUB.ja.as,
         desc: '供用中または改修を控えた建物を対象とした現況調査、構造安全性の評価、技術報告書の作成。',
         items: [
           '現況調査と損傷の記録',
@@ -593,7 +629,7 @@ export const OUR_WORK = {
         code: 'SV',
         count: '4 項目',
         title: '測量・積算と構造エンジニアリング',
-        sub: SUB.sv,
+        sub: SUB.ja.sv,
         desc: '現地実測、数量拾い、BIM モデリングにより、設計・積算・施工が同一のデータを共有できるようにします。',
         items: [
           '現地実測と墨出し',
@@ -609,7 +645,7 @@ export const OUR_WORK = {
         code: 'PM',
         count: '4 項目',
         title: 'インフラ分析とプロジェクト管理',
-        sub: SUB.pm,
+        sub: SUB.ja.pm,
         desc: '計画段階から竣工検査まで、インフラの不足分析、工事費の算定、予算管理を行います。',
         items: [
           'インフラの不足分析',
@@ -625,7 +661,7 @@ export const OUR_WORK = {
         code: 'AE',
         count: '4 項目',
         title: '空撮と空間記録',
-        sub: SUB.ae,
+        sub: SUB.ja.ae,
         desc: '土地評価、進捗監視、プロジェクト記録のためのドローン撮影、オルソ画像地図の作成、資料化。',
         items: [
           'ドローン撮影と航空写真',
