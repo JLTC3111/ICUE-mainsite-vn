@@ -206,6 +206,11 @@
 .article-form__subtitle { font-size: 24px; color: var(--icue-text-soft); margin-bottom: 26px; }
 .article-form__subtitle::placeholder { color: #ccd0c8; }
 
+.article-form__canvas[lang="vi"] .article-form__subtitle {
+  font-family: var(--icue-vi-sans);
+  letter-spacing: normal;
+}
+
 @media (max-width: 600px) {
   .article-form__title { font-size: 32px; }
   .article-form__subtitle { font-size: 19px; }

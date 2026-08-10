@@ -48,3 +48,25 @@ export function buildArticleTranslateSample(article) {
     .join('\n')
     .slice(0, 1200)
 }
+
+/** Resolve the featured grid copy without mixing source and target languages. */
+export function resolveArticlePreviewText(article, translation, pending = false) {
+  if (pending) return { title: '', subtitle: '', contentHtml: '' }
+
+  const source = article || {}
+  if (!translation) {
+    return {
+      title: source.title || '',
+      subtitle: source.subtitle || '',
+      contentHtml: source.content_html || '',
+    }
+  }
+
+  return {
+    title: translation.title || source.title || '',
+    // An intentionally empty translated subtitle must not reveal the source.
+    subtitle: translation.subtitle || '',
+    // Match ArticleDetail: an incomplete translated body falls back to source.
+    contentHtml: translation.content_html || source.content_html || '',
+  }
+}

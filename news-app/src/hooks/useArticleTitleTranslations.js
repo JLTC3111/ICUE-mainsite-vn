@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  fetchArticleTranslation,
   fetchArticleTitleTranslations,
   normalizeLang,
   shouldTranslateArticle,
@@ -58,4 +59,41 @@ export function useArticleTitleTranslations(articles, locale) {
   )
 
   return { titles, subtitles, isTitlePending, pending }
+}
+
+/** Full selected-locale text for the one article that owns the grid excerpt. */
+export function useArticlePreviewTranslation(article, locale) {
+  const [result, setResult] = useState({ key: '', translation: null })
+  const uiLang = normalizeLang(locale)
+  const needsTranslation = Boolean(
+    article?.id && shouldTranslateArticle(article.language, uiLang, article.title),
+  )
+  const requestKey = needsTranslation ? `${article.id}:${uiLang}` : ''
+
+  useEffect(() => {
+    if (!requestKey) return undefined
+
+    let active = true
+    fetchArticleTranslation(article.id, uiLang)
+      .then((translation) => {
+        if (!active) return
+        setResult({
+          key: requestKey,
+          translation: translation.original ? null : translation,
+        })
+      })
+      .catch(() => {
+        if (active) setResult({ key: requestKey, translation: null })
+      })
+
+    return () => {
+      active = false
+    }
+  }, [article?.id, requestKey, uiLang])
+
+  const isCurrent = result.key === requestKey
+  return {
+    translation: isCurrent ? result.translation : null,
+    pending: Boolean(requestKey && !isCurrent),
+  }
 }

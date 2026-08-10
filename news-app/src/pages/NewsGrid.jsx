@@ -9,7 +9,10 @@ import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useMainSite } from '../hooks/useMainSite'
 import { usePageResume } from '../hooks/usePageResume'
-import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
+import {
+  useArticlePreviewTranslation,
+  useArticleTitleTranslations,
+} from '../hooks/useArticleTitleTranslations'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
@@ -28,6 +31,7 @@ import {
   NEWSROOM_TOP_COUNT,
 } from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
+import { resolveArticlePreviewText } from '../lib/translateUtils'
 import './NewsGrid.css'
 
 const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
@@ -114,18 +118,38 @@ function wordSafeExcerpt(html, max = LEAD_EXCERPT_CHARS) {
  * the headline can hold its space with a skeleton instead of flashing the
  * Vietnamese original and then swapping.
  */
-function buildCard(article, { titles, subtitles, isTitlePending, fallbackByline }) {
+function buildCard(article, {
+  titles,
+  subtitles,
+  isTitlePending,
+  fallbackByline,
+  featuredArticleId,
+  featuredTranslation,
+  featuredTranslationPending,
+}) {
   const author = article.author || {}
-  const titlePending = isTitlePending(article.id)
+  const isFeatured = article.id === featuredArticleId
+  const titlePending = isTitlePending(article.id) || (isFeatured && featuredTranslationPending)
+  const featuredText = isFeatured
+    ? resolveArticlePreviewText(article, featuredTranslation, featuredTranslationPending)
+    : null
   const comparison = resolveArticleCoverComparison(article)
 
   return {
     id: article.id,
     slug: article.slug,
-    title: titlePending ? '' : (titles[article.id] || normalizeUnicode(article.title)),
+    title: normalizeUnicode(
+      isFeatured
+        ? featuredText.title
+        : titlePending ? '' : (titles[article.id] || article.title),
+    ),
     titlePending,
-    subtitle: normalizeUnicode(subtitles[article.id] || article.subtitle || ''),
-    contentHtml: article.content_html || '',
+    subtitle: normalizeUnicode(
+      isFeatured
+        ? featuredText.subtitle
+        : titlePending ? '' : (subtitles[article.id] || article.subtitle || ''),
+    ),
+    contentHtml: isFeatured ? featuredText.contentHtml : (article.content_html || ''),
     cover: article.cover_image_url || comparison?.before?.url || '',
     category: isCategory(article.category) ? article.category : 'general',
     date: article.published_at || article.article_date || '',
@@ -369,6 +393,11 @@ export default function NewsGrid() {
   )
 
   const { titles, subtitles, isTitlePending } = useArticleTitleTranslations(visibleArticles, locale)
+  const featuredArticle = visibleArticles[0] || null
+  const {
+    translation: featuredTranslation,
+    pending: featuredTranslationPending,
+  } = useArticlePreviewTranslation(featuredArticle, locale)
 
   const fallbackByline = t('brand')
   const cards = useMemo(
@@ -377,8 +406,20 @@ export default function NewsGrid() {
       subtitles,
       isTitlePending,
       fallbackByline,
+      featuredArticleId: featuredArticle?.id,
+      featuredTranslation,
+      featuredTranslationPending,
     })),
-    [visibleArticles, titles, subtitles, isTitlePending, fallbackByline],
+    [
+      visibleArticles,
+      titles,
+      subtitles,
+      isTitlePending,
+      fallbackByline,
+      featuredArticle?.id,
+      featuredTranslation,
+      featuredTranslationPending,
+    ],
   )
 
   const latestStart = 1 + NEWSROOM_TOP_COUNT

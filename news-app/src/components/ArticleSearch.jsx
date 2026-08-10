@@ -133,11 +133,7 @@ export default function ArticleSearch({ open, expanded = false, onOpenChange }) 
                 role="search"
                 aria-label={t('search.label')}
               >
-                {expanded ? (
-                  <span className="article-search__leading-icon" aria-hidden="true">
-                    <DevIcon218 className="article-search__icon article-search__icon--lens" />
-                  </span>
-                ) : (
+                {!expanded && (
                   <ToolbarButton onClick={close} ariaLabel={t('search.back')}>
                     <ArrowLeft className="article-search__icon" strokeWidth={2} aria-hidden />
                   </ToolbarButton>

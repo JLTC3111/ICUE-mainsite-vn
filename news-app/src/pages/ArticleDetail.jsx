@@ -316,7 +316,6 @@ export default function ArticleDetail() {
   const displayCoverInfo = normalizeUnicode(
     (usingTranslation && translation.cover_info) || article.cover_info || '',
   )
-  const hasCover = coverComparisonPairs.length > 0 || Boolean(article.cover_image_url)
   const lensEnabled = lensCapable && lensOn
   const hasLensPhotos = Boolean(article.cover_image_url) || coverComparisonPairs.length > 0 || images.length > 0
   const showLensToggle = lensCapable && hasLensPhotos
@@ -326,7 +325,7 @@ export default function ArticleDetail() {
     || translateError
     || Boolean(translatedLang && translation)
     || (showOriginal && Boolean(translatedLang))
-  const showToolsBar = showLensToggle || showTranslatorBar || (isMobileLayout && needsTranslation)
+  const showToolsBar = canEdit || showLensToggle || showTranslatorBar || (isMobileLayout && needsTranslation)
   const contentLang = usingTranslation && translatedLang ? translatedLang : article.language
   const isViContent = String(contentLang || '').startsWith('vi')
   const category = isCategory(article.category) ? article.category : 'general'
@@ -423,7 +422,6 @@ export default function ArticleDetail() {
               <div className="article-detail__social-nav">
                 <SocialGooeyNav reduceMotion={reduceMotion} />
               </div>
-              {!hasCover && renderOwnerActions('article-detail__owner-actions')}
             </div>
           </div>
         </div>
@@ -442,26 +440,28 @@ export default function ArticleDetail() {
               onRetry={retryTranslation}
             />
           )}
-          {showLensToggle && (
-            <button
-              type="button"
-              className={`article-detail__lens-toggle${lensOn ? ' is-on' : ''}`}
-              onClick={toggleLens}
-              aria-pressed={lensOn}
-            >
-              <ScanSearch size={16} strokeWidth={2} aria-hidden />
-              <span>{t('article.lensToggle')}</span>
-              <span className="article-detail__lens-state">
-                {lensOn ? t('article.lensOn') : t('article.lensOff')}
-              </span>
-            </button>
-          )}
+          <div className="article-detail__tools-actions">
+            {renderOwnerActions('article-detail__owner-actions')}
+            {showLensToggle && (
+              <button
+                type="button"
+                className={`article-detail__lens-toggle${lensOn ? ' is-on' : ''}`}
+                onClick={toggleLens}
+                aria-pressed={lensOn}
+              >
+                <ScanSearch size={16} strokeWidth={2} aria-hidden />
+                <span>{t('article.lensToggle')}</span>
+                <span className="article-detail__lens-state">
+                  {lensOn ? t('article.lensOn') : t('article.lensOff')}
+                </span>
+              </button>
+            )}
+          </div>
         </div>
       )}
 
       {coverComparisonPairs.length > 0 ? (
         <figure className="article-detail__cover article-detail__cover--comparison">
-          {renderOwnerActions('article-detail__cover-actions')}
           <ArticleComparisonCarousel
             pairs={coverComparisonPairs}
             fitContent
@@ -473,7 +473,6 @@ export default function ArticleDetail() {
         </figure>
       ) : article.cover_image_url ? (
         <figure className="article-detail__cover">
-          {renderOwnerActions('article-detail__cover-actions')}
           <Lens
             className="article-detail__cover-lens"
             zoomFactor={1.4}

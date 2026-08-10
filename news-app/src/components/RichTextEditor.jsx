@@ -1,4 +1,4 @@
-import { useEffect, memo, useCallback, useRef } from 'react'
+import { useEffect, memo, useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   AlignCenter,
@@ -6,6 +6,7 @@ import {
   Eraser,
   Link as LinkIcon,
   Quote,
+  Sparkles,
   Table2,
   TableProperties,
   X,
@@ -28,6 +29,7 @@ import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
 import { Table, TableRow, TableCell, TableHeader } from '@tiptap/extension-table'
 import { LineHeight } from '../lib/tiptapLineHeight'
+import { detectImportantPhraseRanges, IMPORTANT_PHRASE_STYLES } from '../lib/importantPhrases'
 import './RichTextEditor.css'
 
 const ICON = { size: 16, strokeWidth: 2 }
@@ -101,6 +103,7 @@ function ToolbarButton({ active, onClick, label, children, disabled }) {
 function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' }) {
   const { t } = useTranslation()
   const lastEmitted = useRef(value || '')
+  const [smartHighlightMessage, setSmartHighlightMessage] = useState('')
 
   const editor = useEditor({
     extensions: extensions(placeholder),
@@ -160,6 +163,70 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     editor.commands.setContent(clean, false)
     onChange?.({ html: clean, json: editor.getJSON() })
   }, [editor, onChange])
+
+  const highlightImportantPhrases = useCallback(() => {
+    if (!editor) return
+
+    const candidates = []
+    editor.state.doc.descendants((node, position) => {
+      if (!node.isTextblock || node.type.name === 'codeBlock' || node.type.name === 'heading') return
+
+      // Build a block string while counting inline atoms as one document
+      // position. This keeps ranges accurate even when existing marks split a
+      // sentence into several text nodes.
+      let blockText = ''
+      node.forEach((child) => {
+        if (child.isText) blockText += child.text
+        else if (child.type.name === 'hardBreak') blockText += '\n'
+        else blockText += ' '.repeat(child.nodeSize)
+      })
+
+      for (const range of detectImportantPhraseRanges(blockText)) {
+        candidates.push({
+          ...range,
+          from: position + 1 + range.start,
+          to: position + 1 + range.end,
+        })
+      }
+
+      return false
+    })
+
+    const selected = candidates
+      .sort((a, b) => b.score - a.score || a.from - b.from)
+      .slice(0, 12)
+      .sort((a, b) => a.from - b.from)
+
+    if (!selected.length) {
+      setSmartHighlightMessage(t('editor.smartHighlightNone'))
+      return
+    }
+
+    const { schema } = editor.state
+    let transaction = editor.state.tr
+    for (const range of selected) {
+      const style = IMPORTANT_PHRASE_STYLES[range.kind]
+      if (style.bold && schema.marks.bold) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.bold.create())
+      }
+      if (style.italic && schema.marks.italic) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.italic.create())
+      }
+      if (style.underline && schema.marks.underline) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.underline.create())
+      }
+      if (style.color && schema.marks.textStyle) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.textStyle.create({ color: style.color }))
+      }
+      if (style.highlight && schema.marks.highlight) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.highlight.create({ color: style.highlight }))
+      }
+    }
+
+    editor.view.dispatch(transaction)
+    editor.commands.focus()
+    setSmartHighlightMessage(t('editor.smartHighlightDone', { count: selected.length }))
+  }, [editor, t])
 
   const activeHighlight = editor?.getAttributes('highlight').color
   const activeColor = editor?.getAttributes('textStyle').color
@@ -244,6 +311,16 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>
           <AlignCenter {...ICON} />
         </ToolbarButton>
+        <span className="rte-sep" />
+        <ToolbarButton
+          label={t('editor.smartHighlight')}
+          onClick={highlightImportantPhrases}
+        >
+          <Sparkles {...ICON} />
+        </ToolbarButton>
+        {smartHighlightMessage && (
+          <span className="rte-smart-status" role="status">{smartHighlightMessage}</span>
+        )}
         <span className="rte-sep" />
         <ToolbarButton
           label={t('editor.cleanFormatting')}
