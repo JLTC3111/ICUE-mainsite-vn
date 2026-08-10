@@ -3,6 +3,7 @@ import { Play, Upload, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { MEDIA_LIMITS } from '../lib/supabase'
 import { NEWSROOM_COMPACT_QUERY } from '../lib/newsroom'
+import { MEDIA_CAPTION_MAX_LENGTH } from '../lib/mediaTranslations'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { ImageMediaIcon, VideoMediaIcon } from './MediaUploadIcons'
 import './MediaUploader.css'
@@ -162,7 +163,7 @@ function MediaUploader({ items, onChange }) {
                 className="media-thumb__info"
                 type="text"
                 value={m.info || ''}
-                maxLength={240}
+                maxLength={MEDIA_CAPTION_MAX_LENGTH}
                 placeholder={t('editor.mediaInfoPlaceholder')}
                 aria-label={t('editor.mediaInfo')}
                 onChange={(event) => onChange(items.map((item) => (

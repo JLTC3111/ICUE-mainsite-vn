@@ -162,7 +162,7 @@
     "needContent": "Please enter some content for the article.",
     "cleanFormatting": "Clean formatting",
     "cleanFormattingDone": "Formatting cleaned",
-    "smartHighlight": "Highlight important phrases",
+    "smartHighlight": "Auto-highlight",
     "smartHighlightDone": "Highlighted {{count}} important phrases",
     "smartHighlightNone": "No important phrases detected",
     "sourcesTitle": "Sources",

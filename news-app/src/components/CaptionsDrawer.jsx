@@ -6,9 +6,12 @@ import {
   fetchArticleTranslations,
   inferSourceLanguage,
   normalizeLang,
-  saveArticleTranslation,
+  saveArticleCaptionTranslations,
 } from '../lib/translate'
+import { MEDIA_CAPTION_MAX_LENGTH } from '../lib/mediaTranslations'
 import './CaptionsDrawer.css'
+
+const COVER_INFO_KEY = '__cover_info__'
 
 /**
  * Slide-in panel for translating media captions from anywhere on the edit page.
@@ -18,17 +21,16 @@ import './CaptionsDrawer.css'
  * entire body editor and losing your place. This is reachable at any scroll
  * position and restores it on close.
  *
- * IMPORTANT — saving merges, it does not replace. A translation row holds the
- * title, subtitle, body and cover info for that locale too; saving only the
- * captions would wipe all of it, since saveArticleTranslation() upserts the
- * whole row. Every save therefore starts from the stored row and overlays just
- * the caption edits.
+ * IMPORTANT — a translation row also holds the title, subtitle, body, sources,
+ * and cover info for that locale. This drawer uses a caption-only persistence
+ * path so saving here cannot replace article text loaded by another editor.
  */
 export default function CaptionsDrawer({
   open,
   onClose,
   articleId,
   media = [],
+  coverInfo = '',
   sourceLanguage,
   sourceSample = '',
 }) {
@@ -70,7 +72,10 @@ export default function CaptionsDrawer({
         setEdits(Object.fromEntries(
           Object.entries(data).map(([locale, row]) => [
             locale,
-            Object.fromEntries((row.media || []).map((m) => [String(m.id), m.info || ''])),
+            {
+              [COVER_INFO_KEY]: row.cover_info || '',
+              ...Object.fromEntries((row.media || []).map((m) => [String(m.id), m.info || ''])),
+            },
           ]),
         ))
         setState('ready')
@@ -107,10 +112,12 @@ export default function CaptionsDrawer({
     const stored = Object.fromEntries(
       ((rows[active]?.media) || []).map((m) => [String(m.id), m.info || '']),
     )
-    return captionSources.some(
+    const coverDirty = String(coverInfo || '').trim()
+      && (currentEdits[COVER_INFO_KEY] || '') !== (rows[active]?.cover_info || '')
+    return Boolean(coverDirty) || captionSources.some(
       (m) => (currentEdits[String(m.id)] || '') !== (stored[String(m.id)] || ''),
     )
-  }, [rows, active, currentEdits, captionSources])
+  }, [rows, active, currentEdits, captionSources, coverInfo])
 
   const handleSave = useCallback(async () => {
     setBusy(true)
@@ -126,17 +133,19 @@ export default function CaptionsDrawer({
         existing.set(key, { ...(prev || { id: source.id, kind: source.kind }), info: text })
       }
 
-      // Spread the stored row first so title/subtitle/body/cover_info survive.
-      const merged = { ...stored, media: [...existing.values()] }
-      await saveArticleTranslation(articleId, active, merged)
-      setRows((prev) => ({ ...prev, [active]: merged }))
+      const captionPatch = { media: [...existing.values()] }
+      if (String(coverInfo || '').trim()) {
+        captionPatch.cover_info = currentEdits[COVER_INFO_KEY] || ''
+      }
+      const persisted = await saveArticleCaptionTranslations(articleId, active, captionPatch)
+      setRows((prev) => ({ ...prev, [active]: persisted }))
       setSaved(active)
     } catch {
       setSaved('error')
     } finally {
       setBusy(false)
     }
-  }, [rows, active, currentEdits, captionSources, articleId])
+  }, [rows, active, currentEdits, captionSources, articleId, coverInfo])
 
   if (!open) return null
 
@@ -185,8 +194,27 @@ export default function CaptionsDrawer({
             <p className="captions-drawer__status is-error">{t('translationsEditor.loadError')}</p>
           )}
 
-          {state === 'ready' && captionSources.length === 0 && (
+          {state === 'ready' && captionSources.length === 0 && !String(coverInfo || '').trim() && (
             <p className="captions-drawer__status">{t('captionsDrawer.empty')}</p>
+          )}
+
+          {state === 'ready' && String(coverInfo || '').trim() && (
+            <div className="captions-drawer__item">
+              <div className="captions-drawer__item-head">
+                <span className="captions-drawer__kind">
+                  {t('translationsEditor.fieldCoverInfo')}
+                </span>
+                <span className="captions-drawer__original">{coverInfo}</span>
+              </div>
+              <input
+                className="input"
+                type="text"
+                maxLength={MEDIA_CAPTION_MAX_LENGTH}
+                value={currentEdits[COVER_INFO_KEY] || ''}
+                onChange={(e) => setCaption(COVER_INFO_KEY, e.target.value)}
+                placeholder={coverInfo}
+              />
+            </div>
           )}
 
           {state === 'ready' && captionSources.map((m) => (
@@ -200,7 +228,7 @@ export default function CaptionsDrawer({
               <input
                 className="input"
                 type="text"
-                maxLength={240}
+                maxLength={MEDIA_CAPTION_MAX_LENGTH}
                 value={currentEdits[String(m.id)] || ''}
                 onChange={(e) => setCaption(m.id, e.target.value)}
                 placeholder={m.info}

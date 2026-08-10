@@ -16,6 +16,7 @@ import { MessageSquare } from 'lucide-react'
 import { buildArticleTranslateSample } from '../lib/translate'
 import ErrorBoundary from './ErrorBoundary'
 import { normalizeSources } from '../lib/articleSources'
+import { MEDIA_CAPTION_MAX_LENGTH } from '../lib/mediaTranslations'
 import {
   coverComparisonToEditorIds,
   COVER_COMPARISON_ID,
@@ -74,6 +75,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
     () => (initial?.media || []).filter((m) => m?.id && String(m.info || '').trim()),
     [initial],
   )
+  const captionCount = captionedMedia.length + (String(coverInfo || '').trim() ? 1 : 0)
 
   const translationMedia = useMemo(
     () => items
@@ -105,7 +107,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         id: 'captions',
         label: t('captionsDrawer.title'),
         kind: 'drawer',
-        count: captionedMedia.length,
+        count: captionCount,
       })
       // Reader comments arrive after publish and are not part of the form, so
       // they get a drawer of their own rather than a section in the flow.
@@ -116,7 +118,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       })
     }
     return items
-  }, [t, mode, captionedMedia])
+  }, [t, mode, captionCount])
 
   const handleOutlineNavigate = useCallback((item) => {
     setActiveSection(item.id)
@@ -462,7 +464,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
               className="input"
               type="text"
               value={coverInfo}
-              maxLength={240}
+              maxLength={MEDIA_CAPTION_MAX_LENGTH}
               placeholder={t('editor.coverInfoPlaceholder')}
               onChange={(e) => setCoverInfo(e.target.value)}
             />
@@ -506,7 +508,12 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
 
         <div id="edit-body">
           <ErrorBoundary>
-            <RichTextEditor value={contentHtml} onChange={onEditorChange} placeholder={t('editor.storyPlaceholder')} />
+            <RichTextEditor
+              value={contentHtml}
+              onChange={onEditorChange}
+              placeholder={t('editor.storyPlaceholder')}
+              locale={articleLanguage}
+            />
           </ErrorBoundary>
         </div>
 
@@ -549,7 +556,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           >
             <MessageSquare size={16} strokeWidth={2} aria-hidden />
             <span>{t('captionsDrawer.title')}</span>
-            <span className="captions-pill__count">{captionedMedia.length}</span>
+            <span className="captions-pill__count">{captionCount}</span>
           </button>
 
           <CaptionsDrawer
@@ -557,6 +564,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             onClose={() => setCaptionsOpen(false)}
             articleId={initial?.id}
             media={captionedMedia}
+            coverInfo={coverInfo}
             sourceLanguage={articleLanguage}
             sourceSample={buildArticleTranslateSample(initial)}
           />

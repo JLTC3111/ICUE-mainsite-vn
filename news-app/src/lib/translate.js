@@ -5,6 +5,7 @@
 
 import { supabase } from './supabase'
 import { normalizeLang } from './translateUtils.js'
+import { sanitizeArticleHtml } from '@icue/text/sanitizeArticleHtml'
 
 export {
   inferSourceLanguage,
@@ -164,7 +165,7 @@ export async function saveArticleTranslation(articleId, locale, payload = {}) {
   const target = normalizeLang(locale)
   if (!articleId || !target) throw new Error('invalid_request')
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('article_translations')
     .upsert({
       article_id: articleId,
@@ -172,15 +173,64 @@ export async function saveArticleTranslation(articleId, locale, payload = {}) {
       provider: 'manual',
       title: payload.title || '',
       subtitle: payload.subtitle || null,
-      content_html: payload.content_html || '',
+      content_html: sanitizeArticleHtml(payload.content_html || ''),
       cover_info: payload.cover_info || null,
       sources: payload.sources || [],
       media: payload.media || [],
       updated_at: new Date().toISOString(),
     }, { onConflict: 'article_id,locale' })
+    .select(TRANSLATION_COLUMNS)
+    .single()
 
   if (error) throw error
   clearTranslateCache(articleId, target)
+  return normalizeTranslationRow(data)
+}
+
+/**
+ * Save only caption-related fields without replacing an existing translation's
+ * title, subtitle, body, or sources with state from another editor panel.
+ */
+export async function saveArticleCaptionTranslations(articleId, locale, payload = {}) {
+  const target = normalizeLang(locale)
+  if (!articleId || !target) throw new Error('invalid_request')
+
+  const patch = {
+    provider: 'manual',
+    media: Array.isArray(payload.media) ? payload.media : [],
+    updated_at: new Date().toISOString(),
+  }
+  if (Object.hasOwn(payload, 'cover_info')) {
+    patch.cover_info = payload.cover_info || null
+  }
+
+  const { data: updated, error: updateError } = await supabase
+    .from('article_translations')
+    .update(patch)
+    .eq('article_id', articleId)
+    .eq('locale', target)
+    .select(TRANSLATION_COLUMNS)
+    .maybeSingle()
+
+  if (updateError) throw updateError
+
+  let data = updated
+  if (!data) {
+    const { data: inserted, error: insertError } = await supabase
+      .from('article_translations')
+      .insert({
+        article_id: articleId,
+        locale: target,
+        ...patch,
+      })
+      .select(TRANSLATION_COLUMNS)
+      .single()
+    if (insertError) throw insertError
+    data = inserted
+  }
+
+  clearTranslateCache(articleId, target)
+  return normalizeTranslationRow(data)
 }
 
 export async function deleteArticleTranslation(articleId, locale) {

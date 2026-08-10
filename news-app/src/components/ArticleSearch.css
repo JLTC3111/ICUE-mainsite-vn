@@ -21,6 +21,8 @@
   --np-inset-shadow-pressed:
     inset 5px 5px 10px rgba(16, 19, 24, 0.15),
     inset -4px -4px 9px rgba(255, 255, 255, 0.8);
+  --search-expanded-width: 270px;
+  --search-mobile-max-width: 31.8rem;
 }
 
 .article-search__shell {
@@ -91,7 +93,7 @@
 }
 
 .article-search.is-open .article-search__motion {
-  width: 284px;
+  width: var(--search-expanded-width);
 }
 
 .article-search__inner {
@@ -299,7 +301,7 @@
     left: 50%;
     right: auto;
     z-index: 60;
-    width: min(calc(36rem - 40px), calc(100vw - 24px));
+    width: min(var(--search-mobile-max-width), calc(100vw - 24px));
     border: 1px solid color-mix(in srgb, var(--icue-blue) 30%, var(--icue-border));
     background: color-mix(in srgb, var(--icue-surface) 95%, var(--icue-blue) 5%);
     box-shadow: 0 18px 48px rgba(16, 19, 24, 0.2), 0 2px 8px rgba(16, 19, 24, 0.1);

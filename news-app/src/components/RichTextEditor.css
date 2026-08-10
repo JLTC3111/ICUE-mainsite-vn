@@ -37,8 +37,37 @@
 .rte-btn:disabled { opacity: 0.35; cursor: default; }
 .rte-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
 .rte-btn:active:not(:disabled) { transform: scale(0.94); }
-.rte-btn.is-active { background: var(--icue-accent); color: var(--icue-accent-ink); }
+.rte-btn.is-active {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+.rte-btn.is-active:hover:not(:disabled) { background: rgba(255, 255, 255, 0.24); }
 .rte-btn svg { display: block; }
+.rte-btn--smart {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: auto;
+  max-width: min(100%, 240px);
+  min-height: 32px;
+  height: auto;
+  padding: 6px 11px;
+  border: 1px solid rgba(200, 255, 0, 0.36);
+  background: rgba(200, 255, 0, 0.14);
+  color: #f2ffd0;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: left;
+  white-space: normal;
+}
+.rte-btn--smart:hover:not(:disabled) {
+  border-color: rgba(200, 255, 0, 0.62);
+  background: rgba(200, 255, 0, 0.22);
+  color: #fff;
+}
+.rte-btn--smart svg { flex: 0 0 auto; }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
 
 .rte-colors,
@@ -215,5 +244,6 @@
   .rte-textcolor { width: 24px; height: 24px; font-size: 12px; }
   .rte-swatch { width: 20px; height: 20px; }
   .rte-smart-status { max-width: 130px; }
+  .rte-btn--smart { max-width: min(100%, 210px); }
   .rte-content, .rte .ProseMirror { padding: 18px 16px; font-size: 18px; }
 }

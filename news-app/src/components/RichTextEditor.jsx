@@ -1,4 +1,4 @@
-import { useEffect, memo, useCallback, useRef, useState } from 'react'
+import { useEffect, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   AlignCenter,
@@ -84,11 +84,11 @@ const extensions = (placeholder) => [
   Placeholder.configure({ placeholder }),
 ]
 
-function ToolbarButton({ active, onClick, label, children, disabled }) {
+function ToolbarButton({ active, onClick, label, children, disabled, className = '' }) {
   return (
     <button
       type="button"
-      className={`rte-btn ${active ? 'is-active' : ''}`}
+      className={`rte-btn${className ? ` ${className}` : ''}${active ? ' is-active' : ''}`}
       onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       disabled={disabled}
@@ -100,8 +100,12 @@ function ToolbarButton({ active, onClick, label, children, disabled }) {
   )
 }
 
-function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' }) {
-  const { t } = useTranslation()
+function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', locale }) {
+  const { t, i18n } = useTranslation()
+  const highlightLocale = String(locale || i18n.resolvedLanguage || i18n.language || 'vi')
+    .split('-')[0]
+    .toLowerCase()
+  const highlightT = useMemo(() => i18n.getFixedT(highlightLocale), [highlightLocale, i18n])
   const lastEmitted = useRef(value || '')
   const [smartHighlightMessage, setSmartHighlightMessage] = useState('')
 
@@ -114,7 +118,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
       const html = sanitizeArticleHtml(raw)
       if (html !== raw) {
         lastEmitted.current = html
-        editor.commands.setContent(html, false)
+        editor.commands.setContent(html, { emitUpdate: false })
         onChange?.({ html, json: editor.getJSON() })
         return
       }
@@ -138,7 +142,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     if (value === lastEmitted.current) return
     try {
       lastEmitted.current = value
-      editor.commands.setContent(value, false)
+      editor.commands.setContent(value, { emitUpdate: false })
     } catch {
       /* editor not ready */
     }
@@ -160,7 +164,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
     if (!editor) return
     const clean = sanitizeArticleHtml(editor.getHTML())
     lastEmitted.current = clean
-    editor.commands.setContent(clean, false)
+    editor.commands.setContent(clean, { emitUpdate: false })
     onChange?.({ html: clean, json: editor.getJSON() })
   }, [editor, onChange])
 
@@ -198,7 +202,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
       .sort((a, b) => a.from - b.from)
 
     if (!selected.length) {
-      setSmartHighlightMessage(t('editor.smartHighlightNone'))
+      setSmartHighlightMessage(highlightT('editor.smartHighlightNone'))
       return
     }
 
@@ -225,8 +229,8 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
 
     editor.view.dispatch(transaction)
     editor.commands.focus()
-    setSmartHighlightMessage(t('editor.smartHighlightDone', { count: selected.length }))
-  }, [editor, t])
+    setSmartHighlightMessage(highlightT('editor.smartHighlightDone', { count: selected.length }))
+  }, [editor, highlightT])
 
   const activeHighlight = editor?.getAttributes('highlight').color
   const activeColor = editor?.getAttributes('textStyle').color
@@ -235,8 +239,20 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
   if (!editor) return <div className="rte rte--loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
 
   return (
-    <div className="rte">
+    <div className="rte" lang={highlightLocale}>
       <div className="rte-toolbar" role="toolbar" aria-label="Formatting">
+        <ToolbarButton
+          className="rte-btn--smart"
+          label={highlightT('editor.smartHighlight')}
+          onClick={highlightImportantPhrases}
+        >
+          <Sparkles {...ICON} aria-hidden />
+          <span>{highlightT('editor.smartHighlight')}</span>
+        </ToolbarButton>
+        {smartHighlightMessage && (
+          <span className="rte-smart-status" role="status">{smartHighlightMessage}</span>
+        )}
+        <span className="rte-sep" />
         <ToolbarButton label="Bold" active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}><b>B</b></ToolbarButton>
         <ToolbarButton label="Italic" active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()}><i>i</i></ToolbarButton>
         <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>U</u></ToolbarButton>
@@ -311,16 +327,6 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…' })
         <ToolbarButton label="Align center" active={editor.isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()}>
           <AlignCenter {...ICON} />
         </ToolbarButton>
-        <span className="rte-sep" />
-        <ToolbarButton
-          label={t('editor.smartHighlight')}
-          onClick={highlightImportantPhrases}
-        >
-          <Sparkles {...ICON} />
-        </ToolbarButton>
-        {smartHighlightMessage && (
-          <span className="rte-smart-status" role="status">{smartHighlightMessage}</span>
-        )}
         <span className="rte-sep" />
         <ToolbarButton
           label={t('editor.cleanFormatting')}

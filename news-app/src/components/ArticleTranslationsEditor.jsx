@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Check, CircleAlert, Trash2 } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import { normalizeSources } from '../lib/articleSources'
+import { MEDIA_CAPTION_MAX_LENGTH } from '../lib/mediaTranslations'
 import {
   getArticleTranslationCompleteness,
   getLocaleTranslationCompleteness,
@@ -195,8 +196,8 @@ export default function ArticleTranslationsEditor({
     setBusy(true)
     setSaved('')
     try {
-      await saveArticleTranslation(articleId, active, current)
-      setStored((prev) => ({ ...prev, [active]: { ...current } }))
+      const persisted = await saveArticleTranslation(articleId, active, current)
+      setStored((prev) => ({ ...prev, [active]: persisted }))
       setSaved(active)
     } catch {
       setSaved('error')
@@ -328,6 +329,7 @@ export default function ArticleTranslationsEditor({
             <RichTextEditor
               key={active}
               value={current.content_html}
+              locale={active}
               /* RichTextEditor emits { html, json } — destructure it. Passing the
                  whole object stored it as content_html, which the editor's sync
                  effect then fed back into setContent(); that threw inside its
@@ -347,7 +349,7 @@ export default function ArticleTranslationsEditor({
                 id={`tr-cover-${active}`}
                 className="input"
                 type="text"
-                maxLength={240}
+                maxLength={MEDIA_CAPTION_MAX_LENGTH}
                 value={current.cover_info || ''}
                 onChange={(e) => update('cover_info', e.target.value)}
                 placeholder={coverInfo}
@@ -374,7 +376,7 @@ export default function ArticleTranslationsEditor({
                     id={`tr-cap-${active}-${m.id}`}
                     className="input"
                     type="text"
-                    maxLength={240}
+                    maxLength={MEDIA_CAPTION_MAX_LENGTH}
                     value={currentCaptions[String(m.id)] || ''}
                     onChange={(e) => updateCaption(m.id, e.target.value)}
                     placeholder={m.info}

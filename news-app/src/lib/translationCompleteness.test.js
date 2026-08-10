@@ -74,3 +74,26 @@ test('marks an article complete only when every target locale is complete', () =
   assert.deepEqual(result.incompleteLocales, ['de'])
   assert.equal(result.complete, false)
 })
+
+test('reports 0/5 when every saved locale is missing only the required cover caption', () => {
+  const languages = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
+  const withoutCoverCaption = { ...COMPLETE, cover_info: '' }
+  const translations = Object.fromEntries(
+    languages.slice(1).map((locale) => [locale, withoutCoverCaption]),
+  )
+
+  const incomplete = getArticleTranslationCompleteness(ARTICLE, translations, languages)
+
+  assert.equal(incomplete.completedLocales, 0)
+  assert.equal(incomplete.totalLocales, 5)
+  assert.deepEqual(incomplete.incompleteLocales, ['en', 'de', 'fr', 'ko', 'ja'])
+  for (const locale of incomplete.incompleteLocales) {
+    assert.deepEqual(incomplete.locales[locale].missing, [{ kind: 'cover_info' }])
+  }
+
+  const complete = getArticleTranslationCompleteness(ARTICLE, Object.fromEntries(
+    languages.slice(1).map((locale) => [locale, COMPLETE]),
+  ), languages)
+  assert.equal(complete.completedLocales, 5)
+  assert.equal(complete.complete, true)
+})

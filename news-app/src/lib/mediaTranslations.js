@@ -22,6 +22,10 @@
  * Both failed with no console error. See mediaTranslations.test.js.
  */
 
+// Keep authoring and translation inputs aligned. The database stores these
+// values as text/JSONB, so this is a UI guard rather than a schema constraint.
+export const MEDIA_CAPTION_MAX_LENGTH = 1000
+
 /**
  * Overlay translated captions onto the original media list.
  *
@@ -67,4 +71,3 @@ export function findUntranslatedCaptions(originals = [], translated = null) {
     return !(typeof caption === 'string' && caption.trim())
   })
 }
-
