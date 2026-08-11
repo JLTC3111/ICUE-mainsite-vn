@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "title": "お問い合わせ | ICUE Vietnam",
+    "description": "プロジェクト、入札、採用、取材のご相談は ICUE Vietnam へ — 一通のメッセージが担当部署に直接届き、営業時間で24時間以内にご返信します。"
+  },
+  "skipToContent": "フォームへ移動",
+  "instituteName": "建設経済・都市開発研究所",
+  "lang": {
+    "label": "ページの言語"
+  },
+  "masthead": {
+    "place": "ハノイ · ベトナム",
+    "hours": "月–金 08:30–17:30 ICT"
+  },
+  "hero": {
+    "eyebrow": "お問い合わせ",
+    "title": "プロジェクトについてお聞かせください。",
+    "lead": "ひとつのフォーム、四つの窓口。ご用件をお選びいただくと、担当チームへ直接届きます — 新規案件、入札、採用、取材のご依頼。右側には、フォームを使わずにご連絡いただく方法をまとめてあります。"
+  },
+  "promise": {
+    "figure": "24",
+    "unit": "時間",
+    "body": "最初の返信までの目安で、営業時間で数えています。現場でお急ぎの用件はお電話のほうが早く届きます。"
+  },
+  "skipForm": {
+    "label": "フォームを使わずに",
+    "note": "受付 — 一度お取り次ぎすれば担当者に届きます。"
+  },
+  "form": {
+    "title": "メッセージを送る",
+    "lead": "• の付いた四つの欄だけで十分です。ほかの欄は、担当部署へお回しするための手がかりです。",
+    "topicLabel": "ご用件は",
+    "requiredAria": "必須",
+    "topics": {
+      "new-project": "新規案件",
+      "tender": "入札",
+      "careers": "採用",
+      "press": "取材",
+      "other": "その他"
+    },
+    "fields": {
+      "name": { "label": "お名前", "placeholder": "Nguyễn Văn A" },
+      "org": { "label": "所属", "placeholder": "会社名または団体名" },
+      "email": { "label": "メールアドレス", "placeholder": "you@company.co.jp" },
+      "phone": { "label": "電話または Zalo", "placeholder": "+84 …" },
+      "location": {
+        "label": "場所と、現在の段階",
+        "placeholder": "例：Hoà Bình — 実現可能性調査の段階、第4四半期に入札"
+      },
+      "message": {
+        "label": "ご希望の内容",
+        "placeholder": "範囲・場所・時期を三行いただければ十分です — 残りはこちらからお尋ねします。"
+      }
+    },
+    "consent": "この内容を下記の担当部署へ送ります。社外には出さず、リストにも追加しません。",
+    "submit": "メッセージを送信",
+    "submitting": "送信中…",
+    "hintMissing": "あと{{list}}が必要です。",
+    "hintReady": "{{desk}}へお送りします。メールでご確認いたします。",
+    "missing": {
+      "name": "お名前",
+      "email": "メールアドレス",
+      "message": "ご用件の一行",
+      "consent": "同意のチェック"
+    },
+    "errors": {
+      "name": "ご返信の宛名にお名前が必要です。",
+      "email": "このアドレスは形式が正しくないようです — なければご返信できません。",
+      "message": "ご希望の内容を一行でもお書きください。",
+      "consent": "お取り次ぎできるよう、チェックをお願いします。"
+    },
+    "success": {
+      "title": "送信しました。ありがとうございます。",
+      "body": "メッセージは{{desk}}に届いています。担当者から、通常は営業時間で24時間以内にご返信します。",
+      "again": "別のメッセージを書く"
+    },
+    "failure": {
+      "title": "送信できませんでした。",
+      "body": "こちらとサーバーの間のどこかで失われたようです。お書きいただいた内容はフォームに残っています — メールでお送りいただくか、もう一度お試しください。",
+      "mail": "メールで送る",
+      "retry": "もう一度試す"
+    }
+  },
+  "rail": {
+    "directLines": "各窓口の連絡先",
+    "office": "ハノイ事務所",
+    "chat": "短いご連絡なら",
+    "faster": "フォームより早い方法"
+  },
+  "desks": {
+    "project": { "title": "新規のお仕事・案件", "note": "受付 · 当日中にお取り次ぎ" },
+    "tender": { "title": "入札・資格審査", "note": "契約担当 · 書類はご請求に応じて" },
+    "careers": { "title": "採用", "note": "人事チーム · 毎週金曜に書類を確認" },
+    "press": { "title": "取材・講演", "note": "広報 · 締切を守ります" }
+  },
+  "office": {
+    "line1": "20番地、114路地、Hoàng Ngân、",
+    "line2": "Trung Hoà、Cầu Giấy、ハノイ",
+    "hours": "月曜日から金曜日、08:30–17:30 ICT。",
+    "visitors": "お越しの際は事前にお約束いただければ、担当者がお迎えします。",
+    "maps": "Google マップで開く"
+  },
+  "chat": {
+    "zalo": "Zalo — {{number}}",
+    "messenger": "Messenger — Facebook の ICUE",
+    "note": "どちらも営業時間内に受付でお答えしています。"
+  },
+  "shortcuts": {
+    "capability": "会社案内 (PDF)",
+    "roles": "募集中の職種",
+    "faqs": "よくあるご質問"
+  },
+  "map": {
+    "title": "アクセス",
+    "larger": "大きな地図",
+    "directions": "経路",
+    "frameTitle": "ハノイ市 Cầu Giấy 区 Trung Hoà、Hoàng Ngân 周辺の地図",
+    "caption": "ピンは Hoàng Ngân 通りを示しています — 事務所はそこから入る114路地の中にあります。",
+    "attribution": "地図データ © OpenStreetMap コントリビューター"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "主な受賞",
+    "news": "ニュース",
+    "archive": "過去のニュース",
+    "faqs": "よくあるご質問",
+    "recruitment": "採用",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "協業について",
+    "rights": "ICUE, All rights reserved."
+  }
+}

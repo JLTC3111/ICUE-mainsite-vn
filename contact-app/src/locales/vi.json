@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "title": "Liên hệ | ICUE Vietnam",
+    "description": "Gửi thư cho ICUE Vietnam về một dự án, một gói thầu, một vị trí tuyển dụng hay yêu cầu báo chí — một tin nhắn, một đầu mối, phản hồi trong 24 giờ làm việc."
+  },
+  "skipToContent": "Tới biểu mẫu",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "lang": {
+    "label": "Ngôn ngữ trang"
+  },
+  "masthead": {
+    "place": "Hà Nội · Việt Nam",
+    "hours": "T2–T6 08:30–17:30"
+  },
+  "hero": {
+    "eyebrow": "Liên hệ",
+    "title": "Kể cho chúng tôi về dự án của bạn.",
+    "lead": "Một biểu mẫu, bốn đầu mối. Chọn đúng việc bạn cần và thư sẽ tới thẳng bộ phận phụ trách — dự án mới, gói thầu, tuyển dụng hay yêu cầu báo chí. Bên phải là những cách liên hệ khác, nếu bạn không muốn dùng biểu mẫu."
+  },
+  "promise": {
+    "figure": "24",
+    "unit": "giờ",
+    "body": "Thời gian phản hồi đầu tiên thường thấy, tính theo giờ làm việc. Việc gấp ngoài công trường, gọi điện vẫn nhanh hơn."
+  },
+  "skipForm": {
+    "label": "Hoặc bỏ qua biểu mẫu",
+    "note": "Lễ tân — chuyển một lần là tới đúng bàn."
+  },
+  "form": {
+    "title": "Viết cho chúng tôi",
+    "lead": "Bốn ô đánh dấu • là đủ. Những ô còn lại chỉ giúp chúng tôi chuyển thư đúng chỗ.",
+    "topicLabel": "Về việc gì?",
+    "requiredAria": "bắt buộc",
+    "topics": {
+      "new-project": "Dự án mới",
+      "tender": "Đấu thầu",
+      "careers": "Tuyển dụng",
+      "press": "Báo chí",
+      "other": "Việc khác"
+    },
+    "fields": {
+      "name": {
+        "label": "Tên của bạn",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "org": {
+        "label": "Đơn vị",
+        "placeholder": "Công ty hoặc tổ chức"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "ban@congty.vn"
+      },
+      "phone": {
+        "label": "Điện thoại hoặc Zalo",
+        "placeholder": "+84 …"
+      },
+      "location": {
+        "label": "Ở đâu, và đang tới bước nào?",
+        "placeholder": "VD: Hoà Bình — giai đoạn khả thi, đấu thầu quý IV"
+      },
+      "message": {
+        "label": "Bạn cần gì?",
+        "placeholder": "Phạm vi, địa điểm và tiến độ trong ba dòng là đủ — phần còn lại chúng tôi sẽ hỏi thêm."
+      }
+    },
+    "consent": "Gửi nội dung này tới bộ phận bên dưới. Chúng tôi giữ riêng — không danh sách, không chuyển tiếp.",
+    "submit": "Gửi tin nhắn",
+    "submitting": "Đang gửi…",
+    "hintMissing": "Còn thiếu {{list}}.",
+    "hintReady": "Thư sẽ tới bộ phận “{{desk}}”. Chúng tôi xác nhận qua email.",
+    "missing": {
+      "name": "tên của bạn",
+      "email": "địa chỉ email",
+      "message": "một dòng về công việc",
+      "consent": "dấu tích đồng ý"
+    },
+    "errors": {
+      "name": "Chúng tôi cần một cái tên để ghi vào thư trả lời.",
+      "email": "Địa chỉ này chưa đúng — không có nó thì không thể hồi âm.",
+      "message": "Cho chúng tôi biết bạn cần gì, một dòng cũng được.",
+      "consent": "Đánh dấu ô này để chúng tôi được phép chuyển thư đi."
+    },
+    "success": {
+      "title": "Đã gửi. Cảm ơn bạn.",
+      "body": "Thư đang ở bộ phận “{{desk}}”. Sẽ có người trả lời, thường trong 24 giờ làm việc.",
+      "again": "Viết một thư khác"
+    },
+    "failure": {
+      "title": "Thư chưa gửi được.",
+      "body": "Có gì đó giữa đây và máy chủ đã làm rơi mất. Nội dung của bạn vẫn còn trong biểu mẫu — hãy gửi bằng email, hoặc thử lại.",
+      "mail": "Gửi bằng email",
+      "retry": "Thử lại"
+    }
+  },
+  "rail": {
+    "directLines": "Đầu mối trực tiếp",
+    "office": "Văn phòng Hà Nội",
+    "chat": "Nếu bạn muốn nhắn nhanh",
+    "faster": "Nhanh hơn biểu mẫu"
+  },
+  "desks": {
+    "project": {
+      "title": "Việc mới & dự án",
+      "note": "Lễ tân · chuyển ngay trong ngày"
+    },
+    "tender": {
+      "title": "Đấu thầu & hồ sơ năng lực",
+      "note": "Phòng hợp đồng · gửi tài liệu khi cần"
+    },
+    "careers": {
+      "title": "Tuyển dụng",
+      "note": "Phòng nhân sự · đọc hồ sơ mỗi thứ Sáu"
+    },
+    "press": {
+      "title": "Báo chí & diễn giả",
+      "note": "Truyền thông · tôn trọng hạn bài"
+    }
+  },
+  "office": {
+    "line1": "Số 20, Ngõ 114, Hoàng Ngân,",
+    "line2": "Trung Hoà, Cầu Giấy, Hà Nội",
+    "hours": "Thứ Hai đến thứ Sáu, 08:30–17:30.",
+    "visitors": "Xin hẹn trước để chúng tôi bố trí đúng người tiếp bạn.",
+    "maps": "Mở trong Google Maps"
+  },
+  "chat": {
+    "zalo": "Zalo — {{number}}",
+    "messenger": "Messenger — ICUE trên Facebook",
+    "note": "Cả hai đều được trả lời trong giờ làm việc, tại bàn lễ tân."
+  },
+  "shortcuts": {
+    "capability": "Hồ sơ năng lực (PDF)",
+    "roles": "Vị trí đang tuyển",
+    "faqs": "Câu hỏi thường gặp"
+  },
+  "map": {
+    "title": "Tìm đường",
+    "larger": "Bản đồ lớn hơn",
+    "directions": "Chỉ đường",
+    "frameTitle": "Bản đồ khu vực Hoàng Ngân, Trung Hoà, Cầu Giấy, Hà Nội",
+    "caption": "Ghim đánh dấu phố Hoàng Ngân — văn phòng nằm trong Ngõ 114, rẽ từ phố này.",
+    "attribution": "Dữ liệu bản đồ © những người đóng góp OpenStreetMap"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  }
+}

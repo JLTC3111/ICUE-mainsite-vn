@@ -52,6 +52,7 @@ export default function MainSiteNav({
   onNavigate,
   PillHeaderComponent,
   pillOverflowItems = [],
+  LanguageControl,
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -445,6 +446,7 @@ export default function MainSiteNav({
           onNavigate={onNavigate}
           PillHeaderComponent={PillHeaderComponent}
           pillOverflowItems={pillOverflowItems}
+          {...(LanguageControl ? { LanguageControl } : {})}
         />
       </nav>
 

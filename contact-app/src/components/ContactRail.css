@@ -1,0 +1,179 @@
+.ct-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+/* ── Response time ───────────────────────────────────────────────────── */
+
+/* Figure and unit share one line and the sentence sits under both, so the unit
+   does not hang off the side of a tall glyph. */
+.ct-promise__headline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 9px;
+}
+
+/* The page's one polychrome mark. The gradient is painted through the glyphs;
+   browsers without background-clip: text keep the solid colour underneath,
+   which is why the fallback is declared first and never removed. */
+.ct-promise__figure {
+  font-family: var(--ct-display);
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  /* Lining figures: Archivo's default digits sit on the baseline already, but
+     saying so keeps the number the same height as the unit beside it whatever
+     the font falls back to. */
+  font-variant-numeric: lining-nums;
+  color: var(--ct-figure-solid);
+  background: var(--ct-figure-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ct-promise__figure {
+    color: transparent;
+  }
+}
+
+.ct-promise__unit {
+  font-family: var(--ct-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ct-promise__body {
+  margin-top: 9px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ct-ink-2);
+  max-width: 32ch;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+
+.ct-rail__section {
+  margin-top: 34px;
+  width: 100%;
+}
+
+/* Opens the break between the hero's half of the rail and the half that runs
+   alongside the form, so the two columns start their second movement together. */
+.ct-rail__section--spaced {
+  margin-top: 78px;
+}
+
+.ct-rail__email {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--ct-display);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ct-accent);
+  transition: color 0.2s ease;
+}
+
+.ct-rail__email:hover {
+  color: var(--ct-accent-hover);
+}
+
+.ct-rail__phone {
+  display: block;
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--ct-ink);
+  transition: color 0.2s ease;
+}
+
+.ct-rail__phone:hover {
+  color: var(--ct-accent);
+}
+
+.ct-rail__note {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ct-ink-3);
+  max-width: 34ch;
+}
+
+.ct-rail__address {
+  margin-top: 12px;
+  font-family: var(--ct-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.ct-rail__link {
+  display: block;
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ct-accent);
+  border-bottom: 1px solid transparent;
+  width: fit-content;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.ct-rail__link:hover {
+  color: var(--ct-accent-hover);
+  border-bottom-color: currentColor;
+}
+
+.ct-arrow {
+  margin-left: 4px;
+  font-size: 0.85em;
+}
+
+/* ── Direct lines ────────────────────────────────────────────────────── */
+
+.ct-desks {
+  margin-top: 14px;
+}
+
+.ct-desk + .ct-desk {
+  margin-top: 20px;
+}
+
+.ct-desk__title {
+  font-family: var(--ct-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.ct-desk__mail {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 13.5px;
+  color: var(--ct-accent);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.ct-desk__mail:hover {
+  color: var(--ct-accent-hover);
+  border-bottom-color: currentColor;
+}
+
+.ct-desk__note {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ct-ink-3);
+}
+
+/* Stacked under the form, the rail no longer needs to reach for the hero. */
+@media (max-width: 900px) {
+  .ct-rail__section--spaced {
+    margin-top: 40px;
+  }
+}

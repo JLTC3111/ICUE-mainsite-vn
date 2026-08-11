@@ -41,8 +41,12 @@ const ASSET_DIRS = [
   'flags',
 ]
 
+// Contact.html, ourWork.html and orgStructure.html are deliberately absent:
+// those three pages are their own apps now (contact-app, ourwork-app,
+// structure-app). `copyFile` below is unguarded, so re-adding a name here
+// without the file in src/pages/ fails the build rather than silently
+// shipping nothing.
 const LEGACY_PAGES = [
-  'Contact.html',
   'aboutUs.html',
   'pastProjects.html',
   'recruitment.html',

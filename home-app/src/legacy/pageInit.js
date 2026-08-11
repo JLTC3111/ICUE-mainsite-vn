@@ -73,9 +73,6 @@ function loadLegacyRuntime() {
 }
 
 const PAGE_INIT = {
-  Contact: async () => {
-    window.initPostMethod?.()
-  },
   aboutUs: async () => {
     const aboutUsPage = await getAboutUsPage()
     aboutUsPage.initAboutUsPage()

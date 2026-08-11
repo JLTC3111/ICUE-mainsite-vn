@@ -101,6 +101,10 @@ export default function PillSiteHeader({
   flagLinkRef,
   onNavigate,
   overflowItems = [],
+  /* Defaults to the icue.vn ↔ en.icue.vn flag link every main-site page uses.
+     An app that carries its own UI languages passes a control of its own here
+     instead — see contact-app, which swaps in the six-language flag menu. */
+  LanguageControl = LanguageFlagLink,
 }) {
   const mode = useResponsiveMode();
   const [overflowOpen, setOverflowOpen] = useState(false);
@@ -277,7 +281,7 @@ export default function PillSiteHeader({
         )}
 
         <div className="pill-site-header__language" ref={flagLinkRef}>
-          <LanguageFlagLink />
+          <LanguageControl />
         </div>
 
         <DockIcon

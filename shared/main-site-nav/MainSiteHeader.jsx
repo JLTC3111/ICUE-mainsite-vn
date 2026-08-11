@@ -31,6 +31,9 @@ export default function MainSiteHeader({
   onNavigate,
   PillHeaderComponent,
   pillOverflowItems = [],
+  /* Optional replacement for the flag link. Left undefined, each header keeps
+     its own default, which is the icue.vn ↔ en.icue.vn switch. */
+  LanguageControl = LanguageFlagLink,
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
@@ -64,6 +67,7 @@ export default function MainSiteHeader({
         flagLinkRef={flagLinkRef}
         onNavigate={onNavigate}
         overflowItems={pillOverflowItems}
+        LanguageControl={LanguageControl}
       />
     );
   }
@@ -226,7 +230,7 @@ export default function MainSiteHeader({
 
           <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--flag">
             <div className="language-switcher" ref={flagLinkRef}>
-              <LanguageFlagLink />
+              <LanguageControl />
             </div>
           </DockIcon>
         </div>

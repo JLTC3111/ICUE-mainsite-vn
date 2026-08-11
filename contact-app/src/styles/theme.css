@@ -1,0 +1,295 @@
+/* ICUE Contact — tokens and reset.
+ *
+ * The page is an editorial layout on paper: a warm off-white ground, hairline
+ * rules, Archivo for everything that is words and a mono for anything that is a
+ * label. That is the opposite of the other ICUE apps, which are dark-first
+ * with a toggle — so this file is light-first and carries no toggle. A reader
+ * whose system asks for dark still gets a considered version of the same page
+ * rather than an inverted accident; `data-theme` is honoured too, in case the
+ * site ever grows a shared switch.
+ *
+ * Three blues, and they are not interchangeable:
+ *   --ct-accent        text: links, eyebrows, the big address. 6.5:1 on paper.
+ *   --ct-accent-fill   a ground with white on top: the live topic tab, the
+ *                      ready submit button. Never set text in it.
+ *   --ct-accent-quiet  the submit button before the form is complete. Muted
+ *                      enough to read as "not yet", dark enough (4.7:1) that
+ *                      the label on it is still legible.
+ */
+
+:root {
+  --ct-paper: #f3f3f0;
+  --ct-paper-raised: #ffffff;
+  --ct-field: #e7e7e3;
+  --ct-field-focus: #ecece9;
+
+  --ct-ink: #16181a;
+  --ct-ink-2: #55585c;
+  --ct-ink-3: #85888c;
+
+  --ct-rule: rgba(22, 24, 26, 0.22);
+  --ct-rule-soft: rgba(22, 24, 26, 0.12);
+  --ct-dashed: rgba(22, 24, 26, 0.26);
+
+  --ct-accent: #17619f;
+  --ct-accent-hover: #0f4676;
+  --ct-accent-fill: #1f68ad;
+  --ct-accent-quiet: #557697;
+  --ct-on-accent: #ffffff;
+
+  --ct-danger: #a8352b;
+
+  /* The one polychrome mark on the page: the response-time numeral. Kept as a
+     token so the gradient and its solid fallback stay in step. */
+  --ct-figure-grad: linear-gradient(148deg, #b0356f 0%, #3c7d55 48%, #c08a1c 100%);
+  --ct-figure-solid: #3c7d55;
+
+  /* Archivo throughout — it ships a Vietnamese subset, checked before adoption,
+     and its width axis keeps the long Vietnamese headlines on two lines without
+     shrinking the type. --ct-display and --ct-sans resolve to the same family
+     on purpose: the seam between headline and body is weight and tracking here,
+     not typeface, and keeping two tokens means a display face could be
+     reintroduced in one line. The mono is the one deliberate exception, and it
+     is only ever used for the letterspaced micro-caps labels. */
+  --ct-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --ct-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --ct-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ct-maxw: 1180px;
+  --ct-pad: clamp(20px, 4.5vw, 44px);
+  --ct-col-gap: clamp(40px, 5.5vw, 84px);
+  --ct-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Consumed by the shared chrome — the pill nav, drawer, site footer and
+     language switcher are styled against the main site's --icue-* / --nav-*
+     names, which live in the root styles.css this app deliberately does not
+     load. Without these the footer's gradient and the switcher's border
+     resolve to invalid values and both render as bare text. Only the handful
+     with no built-in fallback are listed; the rest already degrade.
+
+     None of it flips with the theme: the nav and footer keep their near-black
+     ground in both, and their ink is fixed light, so a light ground would
+     erase it. --icue-accent is re-pinned to the on-dark blue for that reason. */
+  --icue-maxw: var(--ct-maxw);
+  --icue-gradient-dark: linear-gradient(135deg, #0a1628 0%, #1a2a42 100%);
+  --icue-accent: #5cc8ff;
+  --icue-border: rgba(255, 255, 255, 0.12);
+  --icue-surface: transparent;
+  --icue-surface-2: rgba(255, 255, 255, 0.06);
+  --icue-text: #ffffff;
+  --icue-text-faint: rgba(255, 255, 255, 0.55);
+  --nav-text: #cfd2cc;
+
+  color-scheme: light;
+}
+
+/* The flag menu opens against the nav's near-black ground, so it wants the
+   dark-chrome ink rather than the page's. These are the names shared/i18n
+   falls back on; binding them here keeps it identical to the Our Work menu. */
+.icue-lang {
+  --icue-chrome-border: rgba(255, 255, 255, 0.12);
+  --icue-chrome-text-mute: #9aa0a6;
+  --icue-chrome-text-strong: #ffffff;
+  --icue-chrome-accent: #5cc8ff;
+  --icue-ease: var(--ct-ease);
+}
+
+/* Guarded so an explicit light choice still wins under a dark system setting. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ct-paper: #111315;
+    --ct-paper-raised: #181b1e;
+    --ct-field: #1e2226;
+    --ct-field-focus: #23282d;
+
+    --ct-ink: #f1f0ed;
+    --ct-ink-2: rgba(241, 240, 237, 0.68);
+    --ct-ink-3: rgba(241, 240, 237, 0.46);
+
+    --ct-rule: rgba(241, 240, 237, 0.2);
+    --ct-rule-soft: rgba(241, 240, 237, 0.11);
+    --ct-dashed: rgba(241, 240, 237, 0.24);
+
+    --ct-accent: #6fbeff;
+    --ct-accent-hover: #a2d6ff;
+    --ct-accent-fill: #1f6fc0;
+    --ct-accent-quiet: #3f5a74;
+
+    --ct-danger: #ef8b80;
+
+    --ct-figure-grad: linear-gradient(148deg, #e57aab 0%, #6cc490 48%, #e8bb55 100%);
+    --ct-figure-solid: #6cc490;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --ct-paper: #111315;
+  --ct-paper-raised: #181b1e;
+  --ct-field: #1e2226;
+  --ct-field-focus: #23282d;
+
+  --ct-ink: #f1f0ed;
+  --ct-ink-2: rgba(241, 240, 237, 0.68);
+  --ct-ink-3: rgba(241, 240, 237, 0.46);
+
+  --ct-rule: rgba(241, 240, 237, 0.2);
+  --ct-rule-soft: rgba(241, 240, 237, 0.11);
+  --ct-dashed: rgba(241, 240, 237, 0.24);
+
+  --ct-accent: #6fbeff;
+  --ct-accent-hover: #a2d6ff;
+  --ct-accent-fill: #1f6fc0;
+  --ct-accent-quiet: #3f5a74;
+
+  --ct-danger: #ef8b80;
+
+  --ct-figure-grad: linear-gradient(148deg, #e57aab 0%, #6cc490 48%, #e8bb55 100%);
+  --ct-figure-solid: #6cc490;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ct-paper);
+  color: var(--ct-ink);
+  font-family: var(--ct-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+/* `height: auto` is load-bearing, not tidiness: the width/height attributes on
+   an <img> are presentational hints that set a used height, and a used height
+   makes the element ignore any aspect-ratio the layout asks for. */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+figure,
+fieldset {
+  margin: 0;
+}
+
+fieldset {
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ct-accent);
+  outline-offset: 3px;
+}
+
+.ct-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ct-skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--ct-accent-fill);
+  color: var(--ct-on-accent);
+  font-family: var(--ct-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: top 0.2s ease;
+}
+
+.ct-skip-link:focus {
+  top: 12px;
+}
+
+/* Rendered only with JavaScript off, when no component CSS is in play. */
+.ct-noscript {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 72px var(--ct-pad);
+  font-family: var(--ct-display);
+  line-height: 1.7;
+}
+
+.ct-noscript h1 {
+  font-size: 44px;
+  font-weight: 400;
+  margin: 8px 0 20px;
+}
+
+.ct-noscript a {
+  color: var(--ct-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

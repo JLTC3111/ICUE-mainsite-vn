@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "title": "Contact | ICUE Vietnam",
+    "description": "Write to ICUE Vietnam about a project, a tender, a role or a press request — one message, one desk, a reply inside 24 working hours."
+  },
+  "skipToContent": "Skip to the form",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "lang": {
+    "label": "Page language"
+  },
+  "masthead": {
+    "place": "Hà Nội · Việt Nam",
+    "hours": "Mon–Fri 08:30–17:30 ICT"
+  },
+  "hero": {
+    "eyebrow": "Contact",
+    "title": "Tell us about the project.",
+    "lead": "One form, four desks. Say what it is about and the message goes straight to the team that handles it — new work, a tender, a role, or a press deadline. Everything on the right is a way round the form, if you would rather not use it."
+  },
+  "promise": {
+    "figure": "24",
+    "unit": "hours",
+    "body": "Typical time to a first reply, counted in working hours. Something urgent on site is faster by phone."
+  },
+  "skipForm": {
+    "label": "Or skip the form",
+    "note": "Reception — one hop to the right desk."
+  },
+  "form": {
+    "title": "Write to us",
+    "lead": "Four fields marked • are all we need. Everything else just helps us route it.",
+    "topicLabel": "What is it about?",
+    "requiredAria": "required",
+    "topics": {
+      "new-project": "New project",
+      "tender": "Tender & bidding",
+      "careers": "Careers",
+      "press": "Press",
+      "other": "Something else"
+    },
+    "fields": {
+      "name": {
+        "label": "Your name",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "org": {
+        "label": "Organisation",
+        "placeholder": "Company or institution"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "you@company.vn"
+      },
+      "phone": {
+        "label": "Phone or Zalo",
+        "placeholder": "+84 …"
+      },
+      "location": {
+        "label": "Where is it, and how far along?",
+        "placeholder": "e.g. Hoà Bình — feasibility stage, tender in Q4"
+      },
+      "message": {
+        "label": "What do you need?",
+        "placeholder": "Scope, site and timeline in three lines is plenty — we'll ask the rest."
+      }
+    },
+    "consent": "Send this to the desk below. We keep it to ourselves — no lists, no forwarding.",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "hintMissing": "Still needs {{list}}.",
+    "hintReady": "Goes to {{desk}}. We'll confirm by email.",
+    "missing": {
+      "name": "a name",
+      "email": "an email",
+      "message": "a line about the work",
+      "consent": "the tick"
+    },
+    "errors": {
+      "name": "We need a name to put on the reply.",
+      "email": "That address doesn't look right — we can't reply without it.",
+      "message": "Tell us what you need, even in one line.",
+      "consent": "Tick the box so we can pass this on."
+    },
+    "success": {
+      "title": "Sent. Thank you.",
+      "body": "It's with {{desk}} now. Expect a reply from a person, usually inside 24 working hours.",
+      "again": "Write another message"
+    },
+    "failure": {
+      "title": "That didn't send.",
+      "body": "Something between here and our server dropped it. Your words are still in the form — send them as an email instead, or try again.",
+      "mail": "Email it instead",
+      "retry": "Try again"
+    }
+  },
+  "rail": {
+    "directLines": "Direct lines",
+    "office": "Hà Nội office",
+    "chat": "If you'd rather chat",
+    "faster": "Faster than a form"
+  },
+  "desks": {
+    "project": {
+      "title": "New work & projects",
+      "note": "Front desk · routed the same day"
+    },
+    "tender": {
+      "title": "Tenders & prequalification",
+      "note": "Contract office · documents on request"
+    },
+    "careers": {
+      "title": "Careers",
+      "note": "People team · CVs read every Friday"
+    },
+    "press": {
+      "title": "Press & speaking",
+      "note": "Communications · deadlines respected"
+    }
+  },
+  "office": {
+    "line1": "No. 20, Lane 114, Hoàng Ngân,",
+    "line2": "Trung Hoà, Cầu Giấy, Hà Nội",
+    "hours": "Monday to Friday, 08:30–17:30 ICT.",
+    "visitors": "Do arrange a time in advance, so the right person is there to meet you.",
+    "maps": "Open in Google Maps"
+  },
+  "chat": {
+    "zalo": "Zalo — {{number}}",
+    "messenger": "Messenger — ICUE on Facebook",
+    "note": "Both answered in office hours, by the front desk."
+  },
+  "shortcuts": {
+    "capability": "Capability statement (PDF)",
+    "roles": "Open roles",
+    "faqs": "FAQs"
+  },
+  "map": {
+    "title": "Finding us",
+    "larger": "Larger map",
+    "directions": "Directions",
+    "frameTitle": "Map of Hoàng Ngân and Trung Hoà, Cầu Giấy, Hà Nội",
+    "caption": "The pin marks Hoàng Ngân itself — the office is inside Ngõ 114, which opens off it.",
+    "attribution": "Map data © OpenStreetMap contributors"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
+  }
+}

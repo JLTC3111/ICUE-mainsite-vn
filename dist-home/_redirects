@@ -1,6 +1,6 @@
 # Public main-site routes use dedicated crawlable HTML shells.
+# /contact is the exception — it is served by contact-app (see below).
 /                     /index.html                              200
-/contact              /route-shells/contact.html               200
 /about-us             /route-shells/about-us.html              200
 /past-projects        /route-shells/past-projects.html         200
 /recruitment          /route-shells/recruitment.html           200
@@ -58,9 +58,19 @@
 /our-work            /our-work/index.html    200
 /our-work/*          /our-work/index.html    200
 
+# Contact React app lives at /contact. It replaces the legacy Contact.html page
+# and the crawlable route shell — its own index.html carries the meta, the
+# structured data and a no-JS fallback with the address and the number.
+/contact             /contact/index.html     200
+/contact/*           /contact/index.html     200
+
 # Legacy Our Work page → the app.
 /src/pages/ourWork.html       /our-work   301
 /legacy/pages/ourWork.html    /our-work   301
+
+# Legacy Contact page → the app.
+/src/pages/Contact.html       /contact    301
+/legacy/pages/Contact.html    /contact    301
 
 # Legacy org structure hash page and HTML stub → new Structure app.
 /src/pages/orgStructure.html  /structure/  301

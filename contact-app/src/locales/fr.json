@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "title": "Contact | ICUE Vietnam",
+    "description": "Écrivez à ICUE Vietnam pour un projet, un appel d'offres, un poste ou une demande presse — un message, un interlocuteur, une réponse en 24 heures ouvrées."
+  },
+  "skipToContent": "Aller au formulaire",
+  "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
+  "lang": {
+    "label": "Langue de la page"
+  },
+  "masthead": {
+    "place": "Hà Nội · Viêt Nam",
+    "hours": "Lun–Ven 08:30–17:30 ICT"
+  },
+  "hero": {
+    "eyebrow": "Contact",
+    "title": "Parlez-nous de votre projet.",
+    "lead": "Un formulaire, quatre interlocuteurs. Dites de quoi il s'agit et le message part directement à l'équipe concernée — nouveau projet, appel d'offres, poste ou échéance presse. À droite figurent tous les moyens de nous joindre sans passer par le formulaire."
+  },
+  "promise": {
+    "figure": "24",
+    "unit": "heures",
+    "body": "Délai habituel avant une première réponse, compté en heures ouvrées. Pour une urgence sur chantier, le téléphone est plus rapide."
+  },
+  "skipForm": {
+    "label": "Ou sans le formulaire",
+    "note": "Accueil — un seul transfert et vous êtes au bon endroit."
+  },
+  "form": {
+    "title": "Écrivez-nous",
+    "lead": "Les quatre champs marqués • suffisent. Le reste nous aide seulement à orienter votre message.",
+    "topicLabel": "De quoi s'agit-il ?",
+    "requiredAria": "obligatoire",
+    "topics": {
+      "new-project": "Nouveau projet",
+      "tender": "Appel d'offres",
+      "careers": "Recrutement",
+      "press": "Presse",
+      "other": "Autre chose"
+    },
+    "fields": {
+      "name": {
+        "label": "Votre nom",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "org": {
+        "label": "Organisation",
+        "placeholder": "Entreprise ou institution"
+      },
+      "email": {
+        "label": "E-mail",
+        "placeholder": "vous@entreprise.fr"
+      },
+      "phone": {
+        "label": "Téléphone ou Zalo",
+        "placeholder": "+84 …"
+      },
+      "location": {
+        "label": "Où est-ce, et à quel stade ?",
+        "placeholder": "ex. Hoà Bình — étude de faisabilité, appel d'offres au 4e trimestre"
+      },
+      "message": {
+        "label": "De quoi avez-vous besoin ?",
+        "placeholder": "Périmètre, site et calendrier en trois lignes suffisent — nous demanderons le reste."
+      }
+    },
+    "consent": "Envoyer ce message à l'interlocuteur indiqué ci-dessous. Nous le gardons pour nous — aucune liste, aucune transmission.",
+    "submit": "Envoyer le message",
+    "submitting": "Envoi en cours…",
+    "hintMissing": "Il manque encore : {{list}}.",
+    "hintReady": "Destination : {{desk}}. Nous confirmons par e-mail.",
+    "missing": {
+      "name": "un nom",
+      "email": "une adresse e-mail",
+      "message": "une ligne sur le projet",
+      "consent": "la case cochée"
+    },
+    "errors": {
+      "name": "Il nous faut un nom à mettre sur la réponse.",
+      "email": "Cette adresse semble incorrecte — sans elle, pas de réponse possible.",
+      "message": "Dites-nous ce dont vous avez besoin, une ligne suffit.",
+      "consent": "Cochez la case pour que nous puissions transmettre le message."
+    },
+    "success": {
+      "title": "Envoyé. Merci.",
+      "body": "Le message est maintenant chez {{desk}}. Une personne vous répondra, en général sous 24 heures ouvrées.",
+      "again": "Écrire un autre message"
+    },
+    "failure": {
+      "title": "L'envoi a échoué.",
+      "body": "Quelque chose entre ici et notre serveur a perdu le message. Votre texte est toujours dans le formulaire — envoyez-le par e-mail, ou réessayez.",
+      "mail": "Envoyer par e-mail",
+      "retry": "Réessayer"
+    }
+  },
+  "rail": {
+    "directLines": "Contacts directs",
+    "office": "Bureau de Hà Nội",
+    "chat": "Si vous préférez écrire vite",
+    "faster": "Plus rapide qu'un formulaire"
+  },
+  "desks": {
+    "project": {
+      "title": "Nouveaux projets",
+      "note": "Accueil · transmis le jour même"
+    },
+    "tender": {
+      "title": "Appels d'offres & qualification",
+      "note": "Service contrats · documents sur demande"
+    },
+    "careers": {
+      "title": "Recrutement",
+      "note": "Ressources humaines · CV lus chaque vendredi"
+    },
+    "press": {
+      "title": "Presse & interventions",
+      "note": "Communication · délais respectés"
+    }
+  },
+  "office": {
+    "line1": "N° 20, ruelle 114, Hoàng Ngân,",
+    "line2": "Trung Hoà, Cầu Giấy, Hà Nội",
+    "hours": "Du lundi au vendredi, 08:30–17:30 ICT.",
+    "visitors": "Merci de convenir d'un horaire à l'avance, pour que la bonne personne vous reçoive.",
+    "maps": "Ouvrir dans Google Maps"
+  },
+  "chat": {
+    "zalo": "Zalo — {{number}}",
+    "messenger": "Messenger — ICUE sur Facebook",
+    "note": "Les deux sont relevés aux heures de bureau, par l'accueil."
+  },
+  "shortcuts": {
+    "capability": "Dossier de références (PDF)",
+    "roles": "Postes ouverts",
+    "faqs": "Questions fréquentes"
+  },
+  "map": {
+    "title": "Nous trouver",
+    "larger": "Carte agrandie",
+    "directions": "Itinéraire",
+    "frameTitle": "Carte de Hoàng Ngân et Trung Hoà, Cầu Giấy, Hà Nội",
+    "caption": "Le repère indique la rue Hoàng Ngân — le bureau se trouve dans la ruelle 114 qui en part.",
+    "attribution": "Données cartographiques © les contributeurs d'OpenStreetMap"
+  },
+  "footer": {
+    "company": "Société",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Actualités",
+    "archive": "Archives",
+    "faqs": "Questions fréquentes",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Travailler avec nous",
+    "rights": "Tous droits réservés, ICUE."
+  }
+}

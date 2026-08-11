@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Quyền GDPR - ICUE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="/public/logoIcons/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #01714e 0%, #10b981 100%);
+            padding: 80px 20px 60px;
+            text-align: center;
+            margin-top: 7.5%;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header div {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: white;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: clamp(1.25rem, 2.75vw, 1.7rem);
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content div {
+            font-size: clamp(0.8rem, 2vw, 1.05rem);
+            margin-bottom: 16px;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: #475569;
+        }
+
+        .section-content ul {
+            font-size: clamp(0.7rem, 2vw, 0.95rem);
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box div {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .right-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .right-card::before {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #10b981;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: clamp(12px, 2.5vw, 14px);
+        }
+
+        .right-card h3 {
+            color: #059669;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        }
+
+        .right-card div {
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .right-card ul {
+            margin-left: 20px;
+        }
+
+        .right-card li {
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .contact-info {
+            letter-spacing: 0.75px;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+            margin-bottom: 15px;
+        }
+
+        .contact-info div {
+            font-size: clamp(0.75rem, 2vw, 0.95rem);;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #64748b;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .request-form {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .request-form h3 {
+            color: #059669;
+            margin-bottom: 20px;
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: clamp(0.75rem, 2vw, 0.95rem);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .timeline {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .timeline-number {
+            background: #10b981;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            color: #059669;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content div {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 60px 15px 40px;
+                margin-top: 15%;
+            }
+
+            .header h1 {
+                font-size: clamp(1.25rem, 3.5vw, 2rem);
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: clamp(1.15rem, 3vw, 1.5rem);
+            }
+
+            .request-form {
+                padding: 20px;
+            }
+            
+            svg {
+                width: 16px !important;
+                height: 16px !important;
+            }
+
+            .contact-info {
+                font-size: clamp(0.7rem, 3.5vw, 1rem);
+            }
+        }
+    </style>
+</head>
+<body data-footer="true" class="with-footer">
+    <div class="header">
+        <h1>Quyền GDPR</h1>
+        <div>Tìm hiểu và thực hiện các quyền của bạn theo Quy định Bảo vệ Dữ liệu Chung (GDPR)</div>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <h2 class="section-title">
+                <!-- icon -->
+                GDPR là gì?
+            </h2>
+            <div class="section-content">
+                <div>Quy định Bảo vệ Dữ liệu Chung (GDPR) là luật về quyền riêng tư và bảo vệ dữ liệu của Liên minh Châu Âu (EU), có hiệu lực từ ngày 25 tháng 5 năm 2018.</div>
+                
+                <div class="highlight-box">
+                    <div><svg style="transform: translateY(3px)" width="20px" height="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 130 120" enable-background="new 0 0 130 120" xml:space="preserve">
+<g id="Infos">
+	<rect id="BG" x="-500" y="-1160" fill="#D8D8D8" width="2180" height="1700"/>
+</g>
+<g id="Others">
+</g>
+<g id="Europe">
+	<g id="Row_5">
+		<g>
+			<rect fill="#2A66B7" width="130" height="120"/>
+			<polygon fill="#FCBE1F" points="65,11 67.8,16.9 74,17.9 69.5,22.5 70.6,29 65,25.9 59.4,29 60.5,22.5 56,17.9 62.2,16.9 			"/>
+			<polygon fill="#FCBE1F" points="65,91 67.8,96.9 74,97.9 69.5,102.5 70.6,109 65,105.9 59.4,109 60.5,102.5 56,97.9 62.2,96.9 
+							"/>
+			<polygon fill="#FCBE1F" points="105,51 107.8,56.9 114,57.9 109.5,62.5 110.6,69 105,65.9 99.4,69 100.5,62.5 96,57.9 
+				102.2,56.9 			"/>
+			<polygon fill="#FCBE1F" points="25,51 27.8,56.9 34,57.9 29.5,62.5 30.6,69 25,65.9 19.4,69 20.5,62.5 16,57.9 22.2,56.9 			"/>
+			<polygon fill="#FCBE1F" points="35.5,23 38.3,28.9 44.5,29.9 40,34.5 41.1,41 35.5,37.9 29.9,41 31,34.5 26.5,29.9 32.7,28.9 			
+				"/>
+			<polygon fill="#FCBE1F" points="94.5,23 97.3,28.9 103.5,29.9 99,34.5 100.1,41 94.5,37.9 88.9,41 90,34.5 85.5,29.9 91.7,28.9 
+							"/>
+			<polygon fill="#FCBE1F" points="35.5,77.5 38.3,83.4 44.5,84.4 40,89 41.1,95.5 35.5,92.4 29.9,95.5 31,89 26.5,84.4 32.7,83.4 
+							"/>
+			<polygon fill="#FCBE1F" points="94.5,77.5 97.3,83.4 103.5,84.4 99,89 100.1,95.5 94.5,92.4 88.9,95.5 90,89 85.5,84.4 
+				91.7,83.4 			"/>
+		</g>
+	</g>
+	<g id="Row_4">
+	</g>
+	<g id="Row_3">
+	</g>
+	<g id="Row_2">
+	</g>
+	<g id="Row_1">
+	</g>
+</g>
+</svg> GDPR áp dụng cho mọi tổ chức xử lý dữ liệu cá nhân của công dân EU, bất kể tổ chức đó đặt trụ sở ở đâu.</div>
+                </div>
+
+                <div>Tại ICUE, chúng tôi cam kết tuân thủ đầy đủ các quy định GDPR để bảo vệ quyền riêng tư và dữ liệu cá nhân của bạn, đặc biệt trong hợp tác quốc tế với các đối tác EU.</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Quyền GDPR của bạn</h2>
+            <div class="section-content">
+                <div>Theo GDPR, bạn có 8 quyền cơ bản liên quan đến dữ liệu cá nhân của mình:</div>
+
+                <div class="right-card">
+                    <h3>1. Quyền được Thông tin</h3>
+                    <div>Bạn có quyền biết:</div>
+                    <ul>
+                        <li>Loại dữ liệu cá nhân nào được thu thập</li>
+                        <li>Mục đích sử dụng dữ liệu</li>
+                        <li>Thời gian lưu trữ dữ liệu</li>
+                        <li>Bên thứ ba nào có thể truy cập dữ liệu</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>2. Quyền Truy cập</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Yêu cầu xác nhận việc xử lý dữ liệu</li>
+                        <li>Nhận bản sao dữ liệu cá nhân của bạn</li>
+                        <li>Biết dữ liệu của bạn đang được xử lý như thế nào</li>
+                        <li>Nhận thông tin này miễn phí (trừ khi yêu cầu lặp lại hoặc quá mức)</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>3. Quyền Chỉnh sửa</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Yêu cầu sửa dữ liệu không chính xác</li>
+                        <li>Bổ sung thông tin nếu còn thiếu</li>
+                        <li>Cập nhật thông tin đã lỗi thời</li>
+                        <li>Nhận phản hồi trong vòng 1 tháng</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>4. Quyền Xóa Dữ liệu / “Quyền được Quên”</h3>
+                    <div>Bạn có thể yêu cầu xóa dữ liệu khi:</div>
+                    <ul>
+                        <li>Dữ liệu không còn cần thiết cho mục đích ban đầu</li>
+                        <li>Bạn rút lại sự đồng ý</li>
+                        <li>Dữ liệu được xử lý trái pháp luật</li>
+                        <li>Việc xóa là cần thiết để tuân thủ pháp luật</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>5. Quyền Hạn chế Xử lý</h3>
+                    <div>Bạn có thể tạm dừng xử lý dữ liệu khi:</div>
+                    <ul>
+                        <li>Có tranh chấp về tính chính xác của dữ liệu</li>
+                        <li>Việc xử lý là trái pháp luật nhưng bạn không muốn xóa</li>
+                        <li>Dữ liệu cần cho mục đích pháp lý</li>
+                        <li>Đang chờ xác minh phản đối</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>6. Quyền Chuyển đổi Dữ liệu</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Nhận dữ liệu của mình ở định dạng phổ biến, có cấu trúc</li>
+                        <li>Chuyển dữ liệu sang nhà cung cấp dịch vụ khác</li>
+                        <li>Yêu cầu chuyển trực tiếp (nếu khả thi về kỹ thuật)</li>
+                        <li>Áp dụng cho dữ liệu được xử lý tự động</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>7. Quyền Phản đối</h3>
+                    <div>Bạn có thể phản đối:</div>
+                    <ul>
+                        <li>Việc xử lý cho mục đích tiếp thị trực tiếp</li>
+                        <li>Việc xử lý dựa trên lợi ích hợp pháp</li>
+                        <li>Việc xử lý cho nghiên cứu khoa học</li>
+                        <li>Việc lập hồ sơ tự động</li>
+                    </ul>
+                </div>
+
+                <div class="right-card">
+                    <h3>8. Quyền liên quan đến Quyết định Tự động</h3>
+                    <div>Bạn có quyền:</div>
+                    <ul>
+                        <li>Không bị quyết định hoàn toàn tự động chi phối</li>
+                        <li>Hiểu rõ logic phía sau việc tự động hóa</li>
+                        <li>Yêu cầu có sự can thiệp của con người</li>
+                        <li>Thách thức quyết định tự động</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Cách Thực hiện Quyền của Bạn</h2>
+            <div class="section-content">
+                <div>Để thực hiện quyền GDPR, bạn có thể liên hệ với chúng tôi qua các bước sau:</div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-number">1</div>
+                        <div class="timeline-content">
+                            <h4>Xác định Yêu cầu</h4>
+                            <div>Chọn quyền GDPR bạn muốn thực hiện và chuẩn bị thông tin cần thiết.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">2</div>
+                        <div class="timeline-content">
+                            <h4>Gửi Yêu cầu</h4>
+                            <div>Sử dụng mẫu bên dưới hoặc gửi email đến info@icue.vn kèm chi tiết.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">3</div>
+                        <div class="timeline-content">
+                            <h4>Xác minh Danh tính</h4>
+                            <div>Chúng tôi có thể yêu cầu xác minh ID để bảo vệ dữ liệu của bạn.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">4</div>
+                        <div class="timeline-content">
+                            <h4>Xử lý</h4>
+                            <div>Chúng tôi sẽ xử lý trong vòng 30 ngày (có thể gia hạn đến 60 ngày với trường hợp phức tạp).</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number">5</div>
+                        <div class="timeline-content">
+                            <h4>Nhận Phản hồi</h4>
+                            <div>Bạn sẽ nhận được phản hồi chi tiết về kết quả yêu cầu.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Gửi Yêu cầu GDPR</h2>
+            <div class="section-content">
+                <div class="request-form">
+                    <h3>Mẫu Yêu cầu Quyền GDPR</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="requestType">Loại Yêu cầu *</label>
+                            <select id="requestType" required>
+                                <option value="">Chọn loại yêu cầu</option>
+                                <option value="access">Quyền Truy cập</option>
+                                <option value="rectification">Quyền Chỉnh sửa</option>
+                                <option value="erasure">Quyền Xóa dữ liệu</option>
+                                <option value="restrict">Quyền Hạn chế Xử lý</option>
+                                <option value="portability">Quyền Chuyển đổi Dữ liệu</option>
+                                <option value="object">Quyền Phản đối</option>
+                                <option value="automated">Quyền liên quan đến Tự động hóa</option>
+                                <option value="other">Khác</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullName">Họ và Tên *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Số Điện thoại</label>
+                            <input type="tel" id="phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="details">Chi tiết Yêu cầu *</label>
+                            <textarea id="details" placeholder="Vui lòng mô tả chi tiết yêu cầu của bạn. Bao gồm: loại dữ liệu, khoảng thời gian, mục đích, và các thông tin liên quan khác." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="identification">Xác minh Danh tính</label>
+                            <textarea id="identification" placeholder="Để bảo vệ dữ liệu của bạn, vui lòng cung cấp thông tin xác minh (ví dụ: số CMND/Hộ chiếu, mã số thuế, hoặc thông tin khác đã cung cấp cho ICUE)."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Gửi Yêu cầu GDPR</button>
+                    </form>
+                </div>
+
+                <div class="highlight-box">
+                    <div><svg style="transform:translateY(3px)" width="17px" height="17px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="48" height="48" fill="white" fill-opacity="0.01"/>
+                    <path d="M4 39H44V24V9H24H4V24V39Z" fill="#2F88FF" stroke="#000000" stroke-width="4" stroke-linejoin="round"/>
+                    <path d="M4 9L24 24L44 9" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M24 9H4V24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M44 24V9H24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg> Bạn cũng có thể gửi yêu cầu trực tiếp qua email tới <strong>info@icue.vn</strong> với tiêu đề “[GDPR Request] - [Loại Yêu cầu]”</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Thời gian Xử lý & Phí</h2>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-number"><svg width="20px" height="20px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fxemoji" preserveAspectRatio="xMidYMid meet"><path fill="#6B8DA1" d="M275.816 58.999v123.14c0 10.899-8.917 19.816-19.816 19.816s-19.816-8.917-19.816-19.816V58.999c0-10.899 8.917-19.816 19.816-19.816s19.816 8.917 19.816 19.816zm91.749 103.044c7.738 7.738 20.284 7.739 28.022.001l50.586-50.586c7.738-7.738 7.738-20.285 0-28.023c-7.738-7.738-20.285-7.738-28.023 0l-50.586 50.586c-7.737 7.738-7.736 20.285.001 28.022m-223.123.001c7.738-7.738 7.739-20.284.001-28.022L93.857 83.436c-7.738-7.738-20.285-7.738-28.023 0c-7.738 7.738-7.738 20.285 0 28.023l50.586 50.586c7.738 7.737 20.284 7.737 28.022-.001m258.984 320.575c7.706-7.706 7.706-20.317 0-28.023l-87.073-87.073c-7.706-7.706-20.317-7.706-28.023 0c-7.706 7.706-7.706 20.317 0 28.023l87.073 87.073c7.706 7.706 20.317 7.706 28.023 0zm-266.829 0l87.073-87.073c7.706-7.706 7.706-20.317 0-28.023c-7.706-7.706-20.317-7.706-28.023 0l-87.073 87.073c-7.706 7.706-7.706 20.317 0 28.023c7.706 7.706 20.317 7.706 28.023 0z"></path><path fill="#FFB636" d="M354.319 45.692c36.12-30.974 90.561-29.384 124.768 4.823c34.242 34.242 35.8 88.76 4.727 124.879a8.761 8.761 0 0 1-9.46.405L353.826 55.271a8.758 8.758 0 0 1 .493-9.579zM37.669 175.783L158.197 55.255a8.759 8.759 0 0 0-.405-9.46c-36.12-31.073-90.637-29.515-124.879 4.727C-1.293 84.729-2.883 139.17 28.091 175.29a8.754 8.754 0 0 0 9.578.493z"></path><path fill="#FFD469" d="M477.511 108.534c-4.411 0-8.386-3.056-9.377-7.541c-2.136-9.668-6.91-18.579-13.807-25.772c-6.88-7.176-15.559-12.318-25.098-14.871c-5.128-1.372-8.173-6.643-6.801-11.771c1.373-5.128 6.643-8.173 11.771-6.801c12.934 3.461 24.693 10.425 34.005 20.137c9.338 9.739 15.805 21.818 18.702 34.931c1.145 5.184-2.129 10.314-7.313 11.46a9.655 9.655 0 0 1-2.082.228zM42.749 100.38c2.553-9.539 7.695-18.218 14.871-25.098c7.193-6.897 16.105-11.671 25.772-13.807c5.184-1.145 8.458-6.276 7.313-11.46c-1.145-5.184-6.276-8.458-11.46-7.313c-13.112 2.897-25.191 9.364-34.931 18.702c-9.713 9.313-16.676 21.071-20.137 34.005a9.613 9.613 0 0 0 9.292 12.1c4.245.001 8.13-2.833 9.28-7.129z"></path><path fill="#FB5046" d="M256 64.394c-117.011 0-211.863 94.852-211.863 211.863S138.989 488.129 256 488.129s211.863-94.861 211.863-211.872c0-117.011-94.852-211.863-211.863-211.863"></path><path fill="#F9F9F8" d="M83.765 276.261c0 94.973 77.267 172.239 172.239 172.239s172.23-77.267 172.23-172.239c0-94.972-77.258-172.239-172.23-172.239S83.765 181.289 83.765 276.261"></path><path fill="#6B8DA1" d="M256 289.451h123.172c6.11 0 11.071-4.96 11.071-11.079c0-6.11-4.961-11.07-11.071-11.07H256c-6.119 0-11.08 4.961-11.08 11.07c0 6.118 4.961 11.079 11.08 11.079"></path><path fill="#6B8DA1" d="M256 289.451c6.119 0 11.08-4.96 11.08-11.079V157.844c0-6.119-4.961-11.08-11.08-11.08s-11.08 4.961-11.08 11.08v120.527c0 6.119 4.961 11.08 11.08 11.08"></path></svg></div>
+                        <div class="timeline-content">
+                            <h4>Thời gian tiêu chuẩn</h4>
+                            <div>Chúng tôi sẽ phản hồi trong vòng <strong>30 ngày</strong> kể từ khi nhận yêu cầu.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number"><svg width="20px" height="20px" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#E0E7EC" d="M36 32a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v23z"></path><path d="M23.657 19.12H17.87c-1.22 0-1.673-.791-1.673-1.56c0-.791.429-1.56 1.673-1.56h8.184c1.154 0 1.628 1.04 1.628 1.628c0 .452-.249.927-.52 1.492l-5.607 11.395c-.633 1.266-.882 1.717-1.899 1.717c-1.244 0-1.877-.949-1.877-1.605c0-.271.068-.474.226-.791l5.652-10.716zM10.889 19h-.5c-1.085 0-1.538-.731-1.538-1.5c0-.792.565-1.5 1.538-1.5h2.015c.972 0 1.515.701 1.515 1.605V30.47c0 1.13-.558 1.763-1.53 1.763s-1.5-.633-1.5-1.763V19z" fill="#66757F"></path><path fill="#DD2F45" d="M34 0h-3.277c.172.295.277.634.277 1a2 2 0 0 1-4 0c0-.366.105-.705.277-1H8.723C8.895.295 9 .634 9 1a2 2 0 0 1-4 0c0-.366.105-.705.277-1H2a2 2 0 0 0-2 2v11h36V2a2 2 0 0 0-2-2z"></path><path d="M13.182 4.604c0-.5.32-.78.75-.78c.429 0 .749.28.749.78v5.017h1.779c.51 0 .73.38.72.72a.7.7 0 0 1-.72.659h-2.498c-.49 0-.78-.319-.78-.819V4.604zm-6.91 0c0-.5.32-.78.75-.78s.75.28.75.78v3.488c0 .92.589 1.649 1.539 1.649c.909 0 1.529-.769 1.529-1.649V4.604c0-.5.319-.78.749-.78s.75.28.75.78v3.568c0 1.679-1.38 2.949-3.028 2.949c-1.669 0-3.039-1.25-3.039-2.949V4.604zM5.49 9.001c0 1.679-1.069 2.119-1.979 2.119c-.689 0-1.839-.27-1.839-1.14c0-.269.23-.609.56-.609c.4 0 .75.37 1.199.37c.56 0 .56-.52.56-.84V4.604c0-.5.32-.78.749-.78c.431 0 .75.28.75.78v4.397z" fill="#F5F8FA"></path><path d="M32 10a1 1 0 1 0 2 0a1 1 0 0 0-2 0m0-3a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3 3a1 1 0 1 0 2 0a1 1 0 0 0-2 0m0-3a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3 3a1 1 0 1 0 2 0a1 1 0 0 0-2 0m0-3a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m0 3a1 1 0 1 0 2 0a1 1 0 0 0-2 0" fill="#F4ABBA"></path></svg></div>
+                        <div class="timeline-content">
+                            <h4>Gia hạn khi cần thiết</h4>
+                            <div>Với trường hợp phức tạp, có thể gia hạn đến <strong>60 ngày</strong> và thông báo lý do.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-number"><svg width="20px" height="20px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fxemoji" preserveAspectRatio="xMidYMid meet"><path fill="#EDCE83" d="M446.93 303.162c-4.767-6.76-6.503-15.149-4.712-23.225a66.307 66.307 0 0 0 1.57-14.376c0-26.88-16.042-50.111-39.339-61.207c-5.232-2.492-9.655-6.421-12.498-11.47c-21.55-38.27-48.807-67.372-84.6-81.145c16.419-31.108 40.537-59.02 60.568-79.165C379.907 20.516 371.416 0 354.412 0H168.935c-16.949 0-25.422 20.37-13.582 32.498c18.479 18.928 39.89 45.296 54.169 76.837c-42.403 13.594-62.967 49.997-94.425 119.688c-3.236 7.169-9.285 12.663-16.707 15.268c-34.198 12.003-58.637 43.782-58.637 81.104c0 18.49 6.001 35.619 16.213 49.658c3.264 4.488 4.98 9.886 5.174 15.432c2.386 68.375 57.921 121.592 197.165 121.592c131.117 0 180.512-44.445 189.025-107.16c.51-3.755 1.66-7.402 3.571-10.673c7.321-12.532 11.504-27.017 11.504-42.451c-.001-18.042-5.712-34.788-15.475-48.631z"></path><path fill="#AA8F4D" d="M257.954 133.694c-14.867 0-28.824-1.189-39.3-3.348c-6.111-1.259-24.706-5.092-24.706-18.932a9.685 9.685 0 0 1 9.685-9.685c4.304 0 7.952 2.808 9.213 6.691c4.58 2.565 20.732 5.904 45.107 5.904c24.377 0 40.529-3.339 45.108-5.904c1.261-3.883 4.909-6.691 9.213-6.691a9.685 9.685 0 0 1 9.685 9.685c0 13.84-18.595 17.672-24.705 18.932c-10.475 2.158-24.432 3.348-39.3 3.348z"></path><path fill="#AA8F4D" d="M281.907 232.611c12.506 2.426 22.662 7.557 31.331 15.02c1.97 1.696 2.165 4.688.481 6.668l-11.265 13.245c-1.635 1.922-4.469 2.204-6.498.702c-9.36-6.93-19.046-10.232-30.202-10.232c-12.56 0-20.468 5.35-20.468 14.886c0 9.768 5.815 13.723 29.772 21.166c29.307 9.304 46.054 21.631 46.054 50.008c0 22.674-14.447 40.037-39.482 46.404c-2.092.532-3.548 2.433-3.548 4.592v28.212a4.759 4.759 0 0 1-4.759 4.759h-17.23a4.76 4.76 0 0 1-4.759-4.759v-26.313c0-2.386-1.772-4.414-4.14-4.709c-18.275-2.272-32.347-9.238-42.761-18.163c-2.022-1.733-2.168-4.817-.375-6.787l12.572-13.814c1.688-1.855 4.514-2.059 6.483-.505c10.12 7.986 21.629 12.482 35.199 12.482c15.118 0 24.19-6.977 24.19-18.608c0-11.164-5.584-16.282-27.912-23.259c-34.889-10.7-47.217-25.12-47.217-47.915c0-22.555 16.187-38.383 40.168-43.286a4.745 4.745 0 0 0 3.793-4.648v-25.46a4.76 4.76 0 0 1 4.759-4.759h17.23a4.76 4.76 0 0 1 4.759 4.759v25.658a4.738 4.738 0 0 0 3.825 4.656z"></path></svg></div>
+                        <div class="timeline-content">
+                            <h4>Phí</h4>
+                            <div>Hầu hết các yêu cầu GDPR được xử lý <strong>miễn phí</strong>. Phí có thể áp dụng cho yêu cầu quá mức hoặc lặp lại.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <div><svg style="transform:translate(-3px, 3px)" width="22px" height="22px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fxemoji" preserveAspectRatio="xMidYMid meet"><path fill="#FFB636" d="M459.866 218.346l-186.7.701c-4.619.017-7.618-4.861-5.517-8.975L370.845 8.024c3.103-6.075-4.493-11.949-9.592-7.417L39.948 286.141c-4.221 3.751-1.602 10.732 4.045 10.78l170.444 1.457c4.443.038 7.391 4.619 5.583 8.679L133.317 501.73c-2.688 6.035 4.709 11.501 9.689 7.16l320.937-279.725c4.307-3.753 1.637-10.84-4.077-10.819z"></path></svg> Yêu cầu khẩn cấp: Nếu hợp lý, chúng tôi sẽ ưu tiên xử lý nhanh hơn.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Cơ quan Giám sát & Khiếu nại</h2>
+            <div class="section-content">
+                <div>Nếu bạn không hài lòng với cách chúng tôi xử lý yêu cầu GDPR, bạn có quyền:</div>
+
+                <ul>
+                    <li><strong>Khiếu nại nội bộ:</strong> Liên hệ với Nhân viên Bảo vệ Dữ liệu (DPO) của ICUE</li>
+                    <li><strong>Khiếu nại với cơ quan quản lý:</strong> Gửi khiếu nại đến cơ quan bảo vệ dữ liệu có thẩm quyền</li>
+                    <li><strong>Khởi kiện:</strong> Đưa vụ việc ra tòa nếu cần thiết</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div><svg style="transform:translateY(3px)" width="24px" height="24px" viewBox="0 0 6.82666 6.82666" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style type="text/css">  .str0 {stroke:#373435;stroke-width:0.00694488;stroke-linecap:round;stroke-linejoin:round} .fil4 {fill:none} .fil1 {fill:#9CCC65} .fil2 {fill:#C3AE7E} .fil3 {fill:#EDEAE3} .fil0 {fill:black;fill-rule:nonzero}  </style> </defs> <g id="Layer_x0020_1"> <g id="_411836824"> <path class="fil0" d="M4.53369 3.55406c-0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346 0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346l1.12719 0 0 2.03319 -4.49509 0 0 -2.03319 1.12719 0c0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346 0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346l-1.18052 0c-0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346l0 2.13986c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346l4.60176 0c0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -2.13986c0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346l-1.18053 0z" id="_411837976"></path> <path class="fil0" d="M2.23964 5.74726c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346 0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -2.63503c0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346 -0.00159055,0 -0.00316142,7.87402e-005 -0.00471654,0.000212598l-0.506776 0.000279528 1.63185 -1.06033 1.63185 1.06033 -0.511472 -0.000279528 0 -0.000204724c-0.0294528,-1.1811e-005 -0.0533465,0.0238504 -0.0533583,0.0533031l0 2.75591e-005 -3.93701e-006 0 0 2.63502c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346 0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -2.58187 0.632866 0.000346457c0.0190394,0.00169685 0.0383622,-0.00692126 0.0495,-0.024063 0.0160472,-0.0246969 0.00903543,-0.0577323 -0.0156614,-0.0737795l-0.0290591 0.0447205 0.0289567 -0.0445827 -1.80763 -1.17455c-0.0174331,-0.0135 -0.042185,-0.0152362 -0.0617165,-0.00254331l9.44882e-005 0.000141732 -1.80767 1.17458c-0.0166969,0.00901575 -0.0280354,0.0266772 -0.0280276,0.0469843 1.1811e-005,0.0294528 0.0239055,0.053315 0.0533583,0.0533031l0 -0.000204724 0.637614 -0.000354331 0 2.58187z" id="_411838360"></path> <g> <path class="fil0" d="M3.46667 1.0794c0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346 -0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346l0 0.856256c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346 0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -0.856256z" id="_411839320"></path> <path class="fil0" d="M3.4331 1.03003c-0.0272677,-0.0109291 -0.0582362,0.00231496 -0.0691654,0.0295827 -0.0109291,0.0272677 0.00231496,0.0582362 0.0295827,0.0691654l0.366118 0.146449 -0.366118 0.146445c-0.0272677,0.0109291 -0.0405118,0.0418976 -0.0295827,0.0691654 0.0109291,0.0272677 0.0418976,0.0405118 0.0691654,0.0295827l0.485902 -0.194358c0.0146693,-0.00466929 0.0272165,-0.0156181 0.033378,-0.0310276 0.010937,-0.0273465 -0.00236614,-0.0583898 -0.0297126,-0.0693268l-5.11811e-005 0.000129921 -0.489516 -0.195807z" id="_411837256"></path> </g> <path class="fil0" d="M2.29297 3.05743c-0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346 0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346l2.24072 0c0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346 0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346l-2.24072 0z" id="_411838744"></path> <path class="fil0" d="M2.67189 3.11076c0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346 -0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346l0 2.6365c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346 0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -2.6365z" id="_411835288"></path> <path class="fil0" d="M4.26143 3.11076c0,-0.0294528 -0.0238819,-0.0533346 -0.0533346,-0.0533346 -0.0294528,0 -0.0533346,0.0238819 -0.0533346,0.0533346l0 2.6365c0,0.0294528 0.0238819,0.0533346 0.0533346,0.0533346 0.0294528,0 0.0533346,-0.0238819 0.0533346,-0.0533346l0 -2.6365z" id="_411836224"></path> <path class="fil0" d="M2.92378 3.93625l0.979102 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 1.75767c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.979102 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -1.75767c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.925768 0.106669l-0.872433 0 0 1.651 0.872433 0 0 -1.651z" id="_411837112"></path> <path class="fil0" d="M2.23964 3.44695l-1.22609 0c-0.0146693,0 -0.0280512,0.00604331 -0.0377795,0.0157717 -0.00972835,0.00972835 -0.0157717,0.0231102 -0.0157717,0.0377795l0 7.87402e-006c0,0.0146693 0.00604331,0.0280512 0.0157717,0.0377795 0.00972835,0.00972835 0.0231102,0.0157717 0.0377795,0.0157717l1.22609 0 0 -0.10711zm-1.22609 -0.106669l1.27943 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.21378c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-1.27943 0c-0.0441142,0 -0.084189,-0.0180118 -0.113197,-0.0470236 -0.0290118,-0.0290118 -0.0470236,-0.0690827 -0.0470236,-0.113197l0 -7.87402e-006c0,-0.0441142 0.0180118,-0.084185 0.0470236,-0.113197 0.0290079,-0.0290118 0.0690827,-0.0470236 0.113197,-0.0470236z" id="_411841888"></path> <path class="fil0" d="M4.53369 3.34028l1.27942 0c0.0441181,0 0.084189,0.0180118 0.113201,0.0470236 0.0290118,0.0290079 0.0470236,0.0690827 0.0470236,0.113197l0 7.87402e-006c0,0.0441142 -0.0180118,0.084189 -0.0470236,0.113197 -0.0290118,0.0290118 -0.0690827,0.0470236 -0.113201,0.0470236l-1.27942 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.21378c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm1.27942 0.106669l-1.22609 0 0 0.10711 1.22609 0c0.0146732,0 0.0280551,-0.00604331 0.0377835,-0.0157717 0.00972835,-0.00972835 0.0157717,-0.0231102 0.0157717,-0.0377795l0 -7.87402e-006c0,-0.0146693 -0.00604331,-0.0280512 -0.0157717,-0.0377795 -0.00972835,-0.00972835 -0.0231102,-0.0157717 -0.0377835,-0.0157717z" id="_411840232"></path> <path class="fil0" d="M2.97711 3.60826l0.872433 0 0 -0.222894 -0.872433 0 0 0.222894zm0.925768 0.106669l-0.979102 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.329563c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346l0.979102 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.329563c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346z" id="_411841744"></path> <path class="fil0" d="M2.70836 2.82054l1.40994 0 -0.704972 -0.458071 -0.704972 0.458071zm1.58959 0.106669l-1.76887 0 -0.000377953 0c-0.017437,-1.1811e-005 -0.0345157,-0.00856693 -0.0447205,-0.0242756 -0.0160472,-0.0246969 -0.00903543,-0.0577323 0.0156614,-0.0737795l0.0290591 0.0447205 -0.0289567 -0.0445827 0.880921 -0.572398c0.0174331,-0.0135 0.042185,-0.0152362 0.0617165,-0.00254331l-9.44882e-005 0.000141732 0.880933 0.572409c0.0167047,0.00901181 0.0280591,0.0266654 0.0280591,0.0469724 0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346z" id="_411839944"></path> <g> <path class="fil0" d="M1.36049 3.92068l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.17226 0.577772 0 0 -0.17226z" id="_411838912"></path> <path class="fil0" d="M1.36049 4.48453l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.17226 0.577772 0 0 -0.17226z" id="_411842704"></path> <path class="fil0" d="M1.36049 5.04837l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278925c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278925c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.172256 0.577772 0 0 -0.172256z" id="_411840784"></path> </g> <g> <path class="fil0" d="M4.78173 3.92068l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.17226 0.577772 0 0 -0.17226z" id="_411841624"></path> <path class="fil0" d="M4.78173 4.48453l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.17226 0.577772 0 0 -0.17226z" id="_411839656"></path> <path class="fil0" d="M4.78173 5.04837l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278925c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278925c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0.631106 0.106669l-0.577772 0 0 0.172256 0.577772 0 0 -0.172256z" id="_411835192"></path> </g> </g> <polygon class="fil1 str0" points="3.46667,1.39241 3.75964,1.27522 3.46667,1.15804 "></polygon> <path class="fil2 str0" d="M3.90288 3.71493l-0.979102 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.329563c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346l0.979102 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.329563c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346zm0.0533346 0.274654l0 1.70433 0.198547 0 0 -2.52983 -1.48287 0 0 2.52983 0.198551 0 0 -1.70433c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346l0.979102 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346z"></path> <path class="fil2 str0" d="M4.78173 3.92068l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm-0.194709 -0.259949l0 2.03319 1.07386 0 0 -2.03319 -1.07386 0zm0.194709 0.823795l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0 0.563846l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278925c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278925c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346z"></path> <path class="fil2 str0" d="M2.23964 5.69392l0 -2.03319 -1.07385 0 0 2.03319 1.07385 0zm-0.87915 -1.77324l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0 0.563846l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278929c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278929c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346zm0 0.563846l0.684441 0c0.0294528,0 0.0533346,0.0238819 0.0533346,0.0533346l0 0.278925c0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-0.684441 0c-0.0294528,0 -0.0533346,-0.0238819 -0.0533346,-0.0533346l0 -0.278925c0,-0.0294528 0.0238819,-0.0533346 0.0533346,-0.0533346z"></path> <polygon class="fil2 str0" points="4.26143,3.16409 4.26143,5.69392 4.48035,5.69392 4.48035,3.6074 4.48035,3.39362 4.48035,3.16409 "></polygon> <polygon class="fil2 str0" points="2.56522,5.69392 2.56522,3.16409 2.34631,3.16409 2.34631,3.39362 2.3463,3.6074 2.34631,5.69392 "></polygon> <path class="fil2 str0" d="M1.11245 3.55406l1.12719 0 0 -0.10711 -1.22609 0c-0.0146693,0 -0.0280512,0.00604331 -0.0377795,0.0157717 -0.00972835,0.00972835 -0.0157717,0.0231102 -0.0157717,0.0377874 0,0.0146693 0.00604331,0.0280512 0.0157717,0.0377795 0.00972835,0.00972835 0.0231102,0.0157717 0.0377795,0.0157717l0.0989016 0z"></path> <path class="fil2 str0" d="M4.58702 3.44695l0 0.10711 1.12719 0 0.0988937 0c0.0146732,0 0.0280551,-0.00604331 0.0377835,-0.0157717 0.00972835,-0.00972835 0.0157717,-0.0231102 0.0157717,-0.0377874 0,-0.0146693 -0.00604331,-0.0280512 -0.0157717,-0.0377795 -0.00972835,-0.00972835 -0.0231102,-0.0157717 -0.0377835,-0.0157717l-1.22609 0z"></path> <path class="fil2 str0" d="M2.49975 2.8293l0.880921 -0.572398c0.0174331,-0.0135 0.042185,-0.0152362 0.0617165,-0.00254331l-9.44882e-005 0.000141732 0.880933 0.572409c0.0167047,0.00901181 0.0280591,0.0266654 0.0280591,0.0469724 0,0.0294528 -0.0238819,0.0533346 -0.0533346,0.0533346l-1.76887 0 -0.000377953 0c-0.017437,-1.1811e-005 -0.0345157,-0.00856693 -0.0447205,-0.0242756 -0.0160472,-0.0246969 -0.00903543,-0.0577323 0.0156614,-0.0737795l0.000102362 0.000137795zm0.118807 0.22813l1.58954 0 0.325587 0c0.00461417,0 0.00909449,0.000586614 0.0133622,0.00168898l0.498138 0.000271654 -1.63185 -1.06033 -1.63185 1.06033 0.498134 -0.000275591c0.00426772,-0.00109843 0.00874409,-0.00168504 0.0133543,-0.00168504l0.325591 0z"></path> <polygon class="fil2 str0" points="3.41333,2.36247 2.70836,2.82054 4.1183,2.82054 "></polygon> <g id="_413072504"> <polygon class="fil3 str0" id="_411842608" points="3.84955,4.04292 2.97711,4.04292 2.97711,5.69392 3.84955,5.69392 "></polygon> <polygon class="fil3 str0" id="_411835792" points="1.41382,4.19961 1.99159,4.19961 1.99159,4.02735 1.41382,4.02735 "></polygon> <polygon class="fil3 str0" id="_413076656" points="1.99159,4.5912 1.41382,4.5912 1.41382,4.76346 1.99159,4.76346 "></polygon> <polygon class="fil3 str0" id="_413073248" points="1.99159,5.15504 1.41382,5.15504 1.41382,5.3273 1.99159,5.3273 "></polygon> <polygon class="fil3 str0" id="_413076032" points="4.83506,4.02735 4.83506,4.19961 5.41283,4.19961 5.41283,4.02735 "></polygon> <polygon class="fil3 str0" id="_413078936" points="5.41283,4.5912 4.83506,4.5912 4.83506,4.76346 5.41283,4.76346 "></polygon> <polygon class="fil3 str0" id="_413073848" points="5.41283,5.15504 4.83506,5.15504 4.83506,5.3273 5.41283,5.3273 "></polygon> <polygon class="fil3 str0" id="_413072048" points="3.84955,3.38537 2.97711,3.38537 2.97711,3.60826 3.84955,3.60826 "></polygon> </g> </g> <rect class="fil4" height="6.82666" width="6.82666"></rect> </g></svg> Với yêu cầu GDPR liên quan đến công dân EU, bạn có thể gửi khiếu nại đến cơ quan bảo vệ dữ liệu quốc gia của quốc gia EU liên quan.</div>
+                </div>
+
+                <div>Danh sách cơ quan bảo vệ dữ liệu EU có tại: <a href="https://edpb.europa.eu/about-edpb/board/members_en" target="_blank">European Data Protection Board</a></div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>Liên hệ Nhân viên Bảo vệ Dữ liệu (DPO)</h3>
+            <div>Để được hỗ trợ về vấn đề GDPR:</div>
+            <div><strong>Email:</strong> <a href="mailto:info@icue.vn">info@icue.vn</a></div>
+            <div><strong>Điện thoại:</strong> <a href="tel:+842437728485">+84 24 3772 8485</a></div>
+            <div><strong>Địa chỉ:</strong> Viện Nghiên cứu Kinh tế, Đô thị và Xây dựng, 124 Hoàng Ngân, Cầu Giấy, HN</div>
+            <div>Chúng tôi cam kết xử lý yêu cầu của bạn một cách nhanh chóng và minh bạch.</div>
+        </div>
+
+        <div class="last-updated">
+            <div>Trang này được cập nhật lần cuối: <strong>18 tháng 8, 2025</strong></div>
+            <div>Tuân thủ GDPR (EU) 2016/679 và các quy định liên quan</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

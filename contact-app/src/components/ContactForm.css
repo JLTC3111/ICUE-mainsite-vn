@@ -1,0 +1,275 @@
+.ct-write__title {
+  font-family: var(--ct-display);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+
+.ct-write__lead {
+  margin-top: 7px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ct-ink-3);
+  max-width: 46ch;
+}
+
+.ct-form {
+  margin-top: 26px;
+}
+
+/* ── Topic strip ─────────────────────────────────────────────────────── */
+
+.ct-topics__legend {
+  /* A <legend> is not a flex item and ignores the eyebrow's block spacing, so
+     the gap under it is set here rather than on .ct-eyebrow. */
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.ct-topics__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* One contiguous strip: the shared edge is a single hairline, not two. */
+.ct-topic + .ct-topic {
+  margin-left: -1px;
+}
+
+.ct-topic {
+  padding: 8px 15px;
+  border: 1px solid var(--ct-rule-soft);
+  background: var(--ct-paper-raised);
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--ct-ink-2);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.ct-topic:hover {
+  color: var(--ct-ink);
+  border-color: var(--ct-rule);
+  /* Lift the hovered edge above its neighbour's border. */
+  position: relative;
+  z-index: 1;
+}
+
+.ct-topic.is-active {
+  position: relative;
+  z-index: 2;
+  background: var(--ct-accent-fill);
+  border-color: var(--ct-accent-fill);
+  color: var(--ct-on-accent);
+  font-weight: 500;
+}
+
+/* The radio itself is visually hidden, so the focus ring has to be drawn by
+   the label that stands in for it. */
+.ct-topic:has(:focus-visible) {
+  outline: 2px solid var(--ct-accent);
+  outline-offset: 2px;
+  z-index: 3;
+}
+
+/* ── Fields ──────────────────────────────────────────────────────────── */
+
+.ct-form__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 22px;
+}
+
+.ct-field {
+  margin-top: 18px;
+  min-width: 0;
+}
+
+.ct-form__pair .ct-field {
+  margin-top: 18px;
+}
+
+.ct-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--ct-ink-2);
+}
+
+.ct-field__input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: var(--ct-field);
+  font-family: var(--ct-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ct-ink);
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.ct-field__input::placeholder {
+  color: var(--ct-ink-3);
+  opacity: 1;
+}
+
+.ct-field__input:hover {
+  background: var(--ct-field-focus);
+}
+
+.ct-field__input:focus {
+  background: var(--ct-field-focus);
+  outline-offset: 0;
+}
+
+.ct-field__input.has-error {
+  border-color: var(--ct-danger);
+}
+
+textarea.ct-field__input {
+  min-height: 118px;
+  resize: vertical;
+}
+
+.ct-field__error {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ct-danger);
+}
+
+/* ── Consent ─────────────────────────────────────────────────────────── */
+
+.ct-consent {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 11px;
+  margin-top: 26px;
+}
+
+.ct-consent input {
+  width: 15px;
+  height: 15px;
+  margin: 3px 0 0;
+  accent-color: var(--ct-accent-fill);
+  cursor: pointer;
+}
+
+.ct-consent label {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ct-ink-2);
+  cursor: pointer;
+}
+
+.ct-consent.has-error label {
+  color: var(--ct-ink);
+}
+
+.ct-consent .ct-field__error {
+  grid-column: 2;
+}
+
+/* ── Send ────────────────────────────────────────────────────────────── */
+
+.ct-send {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 24px;
+}
+
+.ct-send__button {
+  padding: 11px 22px;
+  background: var(--ct-accent-quiet);
+  color: var(--ct-on-accent);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: background 0.22s var(--ct-ease);
+}
+
+.ct-send__button.is-ready {
+  background: var(--ct-accent-fill);
+}
+
+.ct-send__button:hover {
+  background: var(--ct-accent-hover);
+}
+
+.ct-send__hint {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ct-ink-3);
+  max-width: 42ch;
+}
+
+/* ── After sending ───────────────────────────────────────────────────── */
+
+.ct-failure {
+  margin-top: 22px;
+  padding-left: 14px;
+  border-left: 2px solid var(--ct-danger);
+}
+
+.ct-failure__title {
+  font-family: var(--ct-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ct-failure__body {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ct-ink-2);
+  max-width: 52ch;
+}
+
+.ct-failure__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.ct-sent {
+  margin-top: 28px;
+  padding: 30px 32px 32px;
+  background: var(--ct-paper-raised);
+  border: 1px solid var(--ct-rule-soft);
+}
+
+.ct-sent__title {
+  font-family: var(--ct-display);
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ct-sent__body {
+  margin: 10px 0 18px;
+  font-family: var(--ct-display);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ct-ink-2);
+  max-width: 46ch;
+}
+
+@media (max-width: 620px) {
+  .ct-form__pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .ct-sent {
+    padding: 24px 20px 26px;
+  }
+}

@@ -60,7 +60,10 @@ function AppShell() {
       <main id="content">
         <Routes>
           <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-          <Route path={ROUTE_PATHS.contact} element={<LegacyHtmlPage />} />
+          {/* No /contact route: like /our-work, it is a separate app now, and
+              a client-side route here would shadow it on in-app navigation.
+              ROUTE_PATHS.contact stays — the drawer and footer still link to
+              it, as a real navigation. */}
           <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />

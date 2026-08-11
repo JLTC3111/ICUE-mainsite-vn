@@ -23,6 +23,11 @@ const routes = [
   {
     key: 'contact',
     path: '/contact',
+    // Served by contact-app, which ships its own index.html with the same meta
+    // and a no-JS fallback of its own. Kept in this list so the other shells'
+    // noscript nav and the sitemap still carry the route — just don't generate
+    // a shell that would shadow the app.
+    standalone: true,
     title: 'Liên hệ | ICUE Vietnam',
     description:
       'Liên hệ ICUE Vietnam để trao đổi về nghiên cứu, tư vấn quy hoạch, phát triển đô thị, hợp tác chuyên môn và truyền thông.',

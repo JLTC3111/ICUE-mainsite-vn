@@ -1,0 +1,215 @@
+/* ICUE Contact — page layout.
+ *
+ * Two columns on a 1180 measure: the argument and the form on the left, the
+ * ways round the form on the right. Everything is set on hairlines and air, so
+ * the only structural rules in the whole page are the two under the masthead
+ * and the one over the footer.
+ */
+
+.ct-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* The shared pill nav is fixed to the top of the viewport, so the first thing
+   on the page has to clear it rather than start under it. */
+.ct-main {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: var(--ct-maxw);
+  margin-inline: auto;
+  padding: clamp(96px, 11vw, 132px) var(--ct-pad) clamp(52px, 7vw, 84px);
+}
+
+.ct-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 348px);
+  gap: var(--ct-col-gap);
+  align-items: start;
+}
+
+.ct-grid__form {
+  margin-top: clamp(46px, 5.5vw, 66px);
+}
+
+/* ── Shared marks ────────────────────────────────────────────────────── */
+
+.ct-eyebrow {
+  display: block;
+  font-family: var(--ct-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ct-accent);
+}
+
+/* The • beside the four fields we actually need. Decorative — the real
+   requirement is announced by aria-required and the hidden label text. */
+.ct-req {
+  margin-left: 0.4em;
+  font-size: 0.85em;
+  color: var(--ct-accent);
+}
+
+.ct-textlink,
+.ct-textbutton {
+  font-size: 13px;
+  color: var(--ct-accent);
+  border-bottom: 1px solid currentColor;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.ct-textlink:hover,
+.ct-textbutton:hover {
+  color: var(--ct-accent-hover);
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+
+/* Archivo is a grotesque, so it carries more weight per point than the serif
+   this page was drawn with — sizes come down a little and the display weight
+   goes up, or the headline shouts. */
+.ct-hero__title {
+  margin-top: 16px;
+  font-family: var(--ct-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  /* An em measure, not a ch one: the Vietnamese headline is a third longer
+     than the English and both have to break into two lines. */
+  max-width: 9.6em;
+  text-wrap: balance;
+}
+
+.ct-hero__lead {
+  margin-top: 20px;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--ct-ink-2);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+/* ── Map ─────────────────────────────────────────────────────────────── */
+
+.ct-map {
+  margin-top: clamp(56px, 8vw, 96px);
+}
+
+.ct-map__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin-bottom: 12px;
+}
+
+.ct-map__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.ct-map__links a {
+  color: var(--ct-accent);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.ct-map__links a:hover {
+  color: var(--ct-accent-hover);
+  border-bottom-color: currentColor;
+}
+
+.ct-map__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3.3 / 1;
+  border: 1px solid var(--ct-rule-soft);
+  background: var(--ct-field);
+}
+
+.ct-map__caption {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ct-ink-3);
+}
+
+.ct-map__caption a {
+  border-bottom: 1px solid var(--ct-rule-soft);
+}
+
+.ct-map__caption a:hover {
+  color: var(--ct-accent);
+}
+
+/* ── Reveal ──────────────────────────────────────────────────────────── */
+
+.ct-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s var(--ct-ease), transform 0.6s var(--ct-ease);
+}
+
+.ct-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Narrow ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .ct-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 52px;
+  }
+
+  /* Below the form the rail becomes two tracks rather than one very long
+     stack. Multi-column, not a grid: the blocks are wildly different heights,
+     and grid would align them into rows and leave a hole under every short one.
+     Columns just flow and balance. */
+  .ct-rail {
+    display: block;
+    columns: 2;
+    column-gap: 44px;
+  }
+
+  .ct-rail > * {
+    break-inside: avoid;
+  }
+
+  .ct-promise {
+    column-span: all;
+  }
+}
+
+@media (max-width: 620px) {
+  .ct-rail {
+    columns: 1;
+  }
+
+  .ct-map__frame {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* The site footer is a dark band with 80px of its own top margin; the map
+   already ends the page with air, and the two together read as a dead gap. */
+.ct-page .icue-footer {
+  margin-top: 0;
+}

@@ -13,18 +13,11 @@
  * in sync if the shells change. Keep pageFile in sync with LEGACY_PAGE_FILES
  * in ./routes.js.
  *
- * /our-work is absent on purpose: it is served by ourwork-app, which owns its
- * own <head>. This list covers client-side navigation inside home-app only.
+ * /our-work and /contact are absent on purpose: they are served by ourwork-app
+ * and contact-app, which own their own <head>. This list covers client-side
+ * navigation inside home-app only.
  */
 export const ROUTE_META = [
-  {
-    slug: 'contact',
-    path: '/contact',
-    pageName: 'Contact',
-    pageFile: 'Contact.html',
-    title: 'Liên hệ | ICUE Vietnam',
-    description: 'Liên hệ ICUE Vietnam để trao đổi về nghiên cứu, tư vấn quy hoạch, phát triển đô thị, hợp tác chuyên môn và truyền thông.',
-  },
   {
     slug: 'about-us',
     path: '/about-us',

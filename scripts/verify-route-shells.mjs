@@ -8,7 +8,6 @@ const redirects = fs.readFileSync(path.join(root, '_redirects'), 'utf8')
 
 const routes = [
   ['/', 'index.html'],
-  ['/contact', 'route-shells/contact.html'],
   ['/about-us', 'route-shells/about-us.html'],
   ['/past-projects', 'route-shells/past-projects.html'],
   ['/recruitment', 'route-shells/recruitment.html'],
@@ -94,14 +93,36 @@ for (const [label, set] of Object.entries(values)) {
   }
 }
 
-// /our-work is served by ourwork-app, not by a route shell. Assert the app is
-// actually there and reachable, since dropping it from `routes` above removed
-// it from every other check in this file.
-if (!/^\/our-work\s+\/our-work\/index\.html\s+200$/m.test(redirects)) {
-  throw new Error('/our-work: missing Netlify rewrite to the Our Work app')
+// /our-work and /contact are served by their own apps, not by a route shell.
+// Assert each app is actually there and reachable, since dropping them from
+// `routes` above removed them from every other check in this file.
+const standaloneApps = [
+  ['/our-work', 'our-work', 'ourwork-app'],
+  ['/contact', 'contact', 'contact-app'],
+]
+
+for (const [route, dir, appName] of standaloneApps) {
+  const rewrite = new RegExp(`^${route}\\s+${route}/index\\.html\\s+200$`, 'm')
+  if (!rewrite.test(redirects)) {
+    throw new Error(`${route}: missing Netlify rewrite to the ${appName} build`)
+  }
+  if (!fs.existsSync(path.join(dist, `${dir}/index.html`))) {
+    throw new Error(`${route}: ${appName} build output is missing from dist-home`)
+  }
 }
-if (!fs.existsSync(path.join(dist, 'our-work/index.html'))) {
-  throw new Error('/our-work: ourwork-app build output is missing from dist-home')
+
+// The contact form is submitted over fetch, so Netlify only knows the form
+// exists because contact-app/index.html declares it in static HTML. Lose that
+// declaration and the page still looks and behaves correctly while every
+// message posted to it is discarded — which is why it is asserted here.
+const contactHtml = fs.readFileSync(path.join(dist, 'contact/index.html'), 'utf8')
+if (!/<form[^>]+name="contact"[^>]+data-netlify="true"/.test(contactHtml)) {
+  throw new Error('/contact: the static Netlify form declaration is missing')
+}
+for (const field of ['name', 'email', 'message', 'topic', 'consent', 'bot-field']) {
+  if (!contactHtml.includes(`name="${field}"`)) {
+    throw new Error(`/contact: the Netlify form declaration is missing the "${field}" field`)
+  }
 }
 
 const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8')

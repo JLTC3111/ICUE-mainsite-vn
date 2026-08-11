@@ -30,9 +30,9 @@
     "vite": "^6.3.2"
   },
   "scripts": {
-    "dev": "npm run build:home && npm run build:newsroom && npm run build:ourwork && node scripts/sync-home-dev.mjs && vite",
-    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix home-app",
-    "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && node scripts/postbuild.mjs",
+    "dev": "npm run build:home && npm run build:newsroom && npm run build:ourwork && npm run build:contact && node scripts/sync-home-dev.mjs && vite",
+    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix contact-app && npm ci --prefix home-app",
+    "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && node scripts/postbuild.mjs",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",
     "preview": "vite preview",
     "server": "node server.js",
@@ -44,6 +44,8 @@
     "build:structure": "npm run build --prefix structure-app",
     "build:ourwork": "npm run build --prefix ourwork-app",
     "dev:ourwork": "npm run dev --prefix ourwork-app",
+    "build:contact": "npm run build --prefix contact-app",
+    "dev:contact": "npm run dev --prefix contact-app",
     "verify:routes": "node scripts/verify-route-shells.mjs",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",

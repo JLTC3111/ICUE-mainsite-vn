@@ -41,10 +41,14 @@ export const PAGE_TO_PATH = Object.fromEntries(
   Object.entries(PATH_TO_PAGE).map(([path, page]) => [page, path]),
 )
 
+/**
+ * Legacy pages this SPA still injects. Contact, ourWork and orgStructure are
+ * absent because their HTML is deleted — each is served by its own app now.
+ * Links to them from the pages below are rewritten by `hashToPath` in
+ * prepareLegacyHtml, which still carries all three.
+ */
 export const LEGACY_PAGE_FILES = {
-  Contact: 'Contact.html',
   aboutUs: 'aboutUs.html',
-  ourWork: 'ourWork.html',
   pastProjects: 'pastProjects.html',
   recruitment: 'recruitment.html',
   newsArchive: 'News.html',

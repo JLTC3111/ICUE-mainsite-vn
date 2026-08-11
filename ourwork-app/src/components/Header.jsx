@@ -1,8 +1,9 @@
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DrawerMenu } from '@icue/drawer-menu'
-import LanguageFlagMenu from './LanguageFlagMenu'
+import LanguageFlagMenu from '@icue/i18n/LanguageFlagMenu'
 import ThemeToggle from './ThemeToggle'
+import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import { useMainSite } from '../hooks/useMainSite'
 import { useScrolled } from '../hooks/useScrolled'
 import './Header.css'
@@ -11,7 +12,7 @@ const SELF_HREF = import.meta.env.BASE_URL
 const LOGO_MARK = `${import.meta.env.BASE_URL}favicon.png`
 
 function Header() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { base, hashLink, peopleLink, structureLink, newsroomHref } = useMainSite()
   const scrolled = useScrolled()
 
@@ -68,7 +69,12 @@ function Header() {
 
         <div className="ow-header__actions">
           <ThemeToggle className="ow-header__theme" />
-          <LanguageFlagMenu />
+          <LanguageFlagMenu
+            languages={SUPPORTED_LANGUAGES}
+            value={i18n.resolvedLanguage || i18n.language}
+            onChange={(code) => i18n.changeLanguage(code)}
+            ariaLabel={t('language')}
+          />
           <DrawerMenu
             hashLink={hashLink}
             peopleLink={peopleLink}
