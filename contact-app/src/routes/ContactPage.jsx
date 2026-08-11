@@ -47,6 +47,11 @@ export default function ContactPage() {
     [t, lang],
   )
 
+  // Same idea for the nav: the drawer, the pill and every aria string in the
+  // injected shell come from this page's copy rather than the shared
+  // Vietnamese defaults.
+  const navLabels = useMemo(() => t('nav', { returnObjects: true }), [t, lang])
+
   return (
     <div className="ct-page" ref={rootRef}>
       <a className="ct-skip-link" href="#write">
@@ -66,6 +71,7 @@ export default function ContactPage() {
         drawerLinks={STANDALONE_DRAWER_LINKS}
         pillOverflowItems={PEOPLE_SUBMENU.items}
         homeHref={base}
+        labels={navLabels}
       />
 
       <main className="ct-main" id="content">

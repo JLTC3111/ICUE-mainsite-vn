@@ -1,0 +1,165 @@
+{
+  "instituteName": "건설경제·도시계획연구소",
+  "lang": {
+    "label": "페이지 언어"
+  },
+  "nav": {
+    "pages": {
+      "Home": "홈",
+      "orgStructure": "조직 구성",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트·연구",
+      "News": "뉴스·행사",
+      "aboutUs": "소개",
+      "Contact": "문의",
+      "ourPeople": "인력",
+      "meetOurExperts": "전문가 소개",
+      "coreTeam": "핵심 인력"
+    },
+    "compact": {
+      "Home": "홈",
+      "orgStructure": "조직",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트",
+      "News": "뉴스",
+      "aboutUs": "소개"
+    },
+    "aria": {
+      "nav": "사이트 탐색",
+      "home": "홈으로 이동",
+      "more": "추가 탐색 항목 열기",
+      "moreLabel": "더보기",
+      "overflow": "추가 탐색 항목",
+      "openMenu": "전체 메뉴 열기",
+      "toggleMenu": "탐색 메뉴 열기/닫기",
+      "closeMenu": "탐색 메뉴 닫기",
+      "resizeMenu": "탐색 메뉴 크기 조절",
+      "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
+      "homeVideo": "배경 영상 켜기/끄기",
+      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)"
+    },
+    "contactWordmark": "소개"
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "기타 페이지",
+    "awards": "수상 실적",
+    "news": "뉴스",
+    "archive": "뉴스 아카이브",
+    "faqs": "FAQ",
+    "recruitment": "채용",
+    "privacy": "개인정보",
+    "terms": "약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "파트너십 문의",
+    "rights": "저작권은 ICUE에 있습니다."
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "홈 대표 영역",
+      "bannerLabel": "최신 소식",
+      "title": "건설경제·도시계획연구소",
+      "subtitle": "더 나은 미래를 위한 지역사회 주도의 시도와 현실에 맞는 해법.",
+      "actions": {
+        "contact": "문의하기",
+        "pastProjects": "프로젝트·연구"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "주요 프로젝트",
+        "description": "여러 분야가 함께한 협력과 지역사회에서 시작된 사업 가운데 주요 사례입니다.",
+        "linkLabel": "전체 프로젝트 보기 →",
+        "cards": {
+          "laoCai": {
+            "title": "라오까이시 도시기본계획 조정",
+            "description": "계획 면적 28,162.64ha, 2045년을 목표 연도로 합니다.",
+            "imageAlt": "라오까이시 도시기본계획"
+          },
+          "subdivision6b": {
+            "title": "6B 지구단위계획(응우옌아이꾸옥동)",
+            "description": "기반시설을 고르게 갖추고 생태 공간을 넓히는 것을 목표로 한 계획입니다.",
+            "imageAlt": "응우옌아이꾸옥동 6B 지구단위계획"
+          },
+          "dongYen": {
+            "title": "박장현 동옌 도시기본계획",
+            "description": "필요한 기능을 두루 갖춘 스마트 위성도시를 목표로 하는 사업입니다.",
+            "imageAlt": "박장현 동옌 도시기본계획"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "연구 및 기술 보고서",
+        "description": "도시 기반시설과 운영 데이터에 대한 심층 분석과 기술 보고서를 실행 가능한 제안과 함께 제공합니다.",
+        "linkLabel": "전체 업무 보기 →",
+        "cards": {
+          "evaluation": {
+            "title": "시설물 평가 및 보고",
+            "description": "신뢰할 수 있는 디지털 기반시설을 위한 데이터 설계와 평가입니다. 보고서는 데이터를 모으고 부족한 지점을 짚어 해법을 제시합니다.",
+            "imageAlt": "시설물 평가 및 보고"
+          },
+          "survey": {
+            "title": "측량 및 물량 산출",
+            "description": "기반시설·건설 사업의 기획과 평가, 시행을 뒷받침하는 전문 서비스를 제공합니다",
+            "imageAlt": "현장 측량 작업"
+          },
+          "infrastructure": {
+            "title": "기반시설 분석",
+            "description": "기획 단계부터 준공까지 정확한 공사비 산정과 예산 관리를 수행합니다.",
+            "imageAlt": "도시 기반시설 분석"
+          },
+          "aerial": {
+            "title": "항공 공간 촬영",
+            "description": "항공 촬영 — 드론(Mavis Pro)으로 얻은 영상과 지도를 토지 평가와 모니터링에 활용합니다.",
+            "imageAlt": "드론을 이용한 항공 촬영"
+          }
+        }
+      },
+      "news": {
+        "title": "최신 소식",
+        "description": "iCUE Vietnam의 공지와 행사, 관점을 전합니다.",
+        "linkLabel": "전체 소식 읽기 →",
+        "cards": {
+          "auCoPark": {
+            "title": "어우꺼 공원 준공 및 인계식",
+            "description": "건설경제·도시계획연구소(ICUE)가 호이안시 인민위원회와 함께 진행했습니다. 꽝남성 인민위원장 레반중 위원장이 참석했습니다.",
+            "imageAlt": "어우꺼 공원 준공 및 인계식"
+          },
+          "conservationForum": {
+            "title": "아시아 지역 보전 포럼",
+            "description": "세계자연보전연맹(IUCN)이 태국 방콕에서 포럼을 열었습니다. 정부 대표와 비정부기구, 후원기관과 협력기관, 학계와 민간 부문 등 역내 보전 분야 인사 약 600명이 참여했습니다.",
+            "imageAlt": "방콕에서 열린 아시아 지역 보전 포럼"
+          },
+          "yagi": {
+            "title": "태풍 야기 피해 이웃 돕기",
+            "description": "베트남 조국전선 중앙위원회의 호소에 따라, 연구소는 임직원과 협력기관, 후원자들에게 태풍 야기 피해 주민을 돕는 성금 모금에 함께해 줄 것을 요청했습니다.",
+            "imageAlt": "태풍 야기 피해 지역 지원 활동"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "채용",
+        "description": "혁신과 사회적 기여를 지향하는 팀에 함께해 주세요.",
+        "linkLabel": "채용 중인 직무 보기 →",
+        "cards": {
+          "culture": {
+            "title": "협업하는 문화",
+            "description": "연구자, 디자이너, 지역사회를 일구는 사람들과 함께 일합니다.",
+            "imageAlt": "ICUE 사무 공간"
+          },
+          "growth": {
+            "title": "학습과 성장",
+            "description": "워크숍과 멘토링을 통해 꾸준히 배웁니다.",
+            "imageAlt": "ICUE 내부 워크숍"
+          },
+          "impact": {
+            "title": "변화를 만들기",
+            "description": "실제 변화를 만드는 사업에 기여합니다.",
+            "imageAlt": "현장 조사 중인 ICUE 직원"
+          }
+        }
+      }
+    }
+  }
+}

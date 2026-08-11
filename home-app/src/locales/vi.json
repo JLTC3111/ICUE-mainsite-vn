@@ -1,0 +1,165 @@
+{
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "lang": {
+    "label": "Ngôn ngữ trang"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu & Tổ Chức",
+      "ourWork": "Công Việc",
+      "pastProjects": "Đề Tài, Dự Án",
+      "News": "Tin Tức & Sự Kiện",
+      "aboutUs": "Về Chúng Tôi",
+      "Contact": "Liên Hệ",
+      "ourPeople": "Nhân Lực",
+      "meetOurExperts": "Chuyên Gia",
+      "coreTeam": "Cán Bộ"
+    },
+    "compact": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu",
+      "ourWork": "Công Việc",
+      "pastProjects": "Dự Án",
+      "News": "Tin Tức",
+      "aboutUs": "Giới Thiệu"
+    },
+    "aria": {
+      "nav": "Điều hướng trang",
+      "home": "Về trang chủ",
+      "more": "Mở thêm mục điều hướng",
+      "moreLabel": "Thêm",
+      "overflow": "Thêm mục điều hướng",
+      "openMenu": "Mở trình đơn đầy đủ",
+      "toggleMenu": "Bật/tắt trình đơn điều hướng",
+      "closeMenu": "Đóng trình đơn điều hướng",
+      "resizeMenu": "Thay đổi kích thước trình đơn",
+      "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
+      "homeVideo": "Bật/tắt video nền",
+      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)"
+    },
+    "contactWordmark": "GIỚI THIỆU"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Giới thiệu trang chủ",
+      "bannerLabel": "Tin tức mới nhất",
+      "title": "Viện Nghiên Cứu Kinh Tế, Xây Dựng và Đô Thị",
+      "subtitle": "Sáng kiến cộng đồng và các giải pháp thực tiễn vì một tương lai tốt đẹp hơn.",
+      "actions": {
+        "contact": "Liên hệ",
+        "pastProjects": "Dự Án & Đề Tài"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Dự án tiêu biểu",
+        "description": "Điểm nổi bật từ các hợp tác liên ngành và sáng kiến phát triển do cộng đồng khởi xướng.",
+        "linkLabel": "Xem tất cả dự án →",
+        "cards": {
+          "laoCai": {
+            "title": "Điều chỉnh quy hoạch chung thành phố Lào Cai",
+            "description": "Tổng diện tích quy hoạch lên đến 28.162,64 ha, với mục tiêu hoàn thành vào năm 2045.",
+            "imageAlt": "Quy hoạch chung thành phố Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Quy Hoạch Phân Khu 6B (Phường Nguyễn Ái Quốc)",
+            "description": "Quy hoạch này hướng đến phát triển đồng bộ hạ tầng kỹ thuật, mở rộng không gian sinh thái.",
+            "imageAlt": "Quy hoạch phân khu 6B, phường Nguyễn Ái Quốc"
+          },
+          "dongYen": {
+            "title": "Quy Hoạch Chung Đô Thị Đông Yên, Huyện Bắc Giang",
+            "description": "Dự án nhắm đến việc xây dựng một đô thị vệ tinh thông minh, hội tụ đầy đủ các chức năng.",
+            "imageAlt": "Quy hoạch chung đô thị Đông Yên, huyện Bắc Giang"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Nghiên cứu & Báo cáo Kỹ thuật",
+        "description": "Cung cấp phân tích chuyên sâu và báo cáo kỹ thuật về hạ tầng đô thị và dữ liệu hoạt động, kèm đề xuất giải pháp thực tiễn.",
+        "linkLabel": "Xem tất cả công việc →",
+        "cards": {
+          "evaluation": {
+            "title": "Đánh Giá, Báo Cáo Công Trình",
+            "description": "Thiết kế và đánh giá dữ liệu cho hạ tầng số đáng tin cậy. Các báo cáo tổng hợp dữ liệu, xác định điểm thiếu sót và đưa ra giải pháp.",
+            "imageAlt": "Đánh giá và báo cáo công trình"
+          },
+          "survey": {
+            "title": "Khảo Sát Đo Lường",
+            "description": "Cung cấp các dịch vụ chuyên biệt để hỗ trợ việc phát triển, đánh giá và triển khai các dự án hạ tầng và xây dựng",
+            "imageAlt": "Khảo sát đo lường tại hiện trường"
+          },
+          "infrastructure": {
+            "title": "Phân Tích Cơ Sở Hạ Tầng",
+            "description": "Ước tính chi phí chính xác và kiểm soát ngân sách từ giai đoạn lập kế hoạch đến khi hoàn thành dự án.",
+            "imageAlt": "Phân tích cơ sở hạ tầng"
+          },
+          "aerial": {
+            "title": "Chụp Ảnh Kiến Trúc Không Gian",
+            "description": "Chụp ảnh trên không – Hình ảnh và bản đồ từ thiết bị bay không người lái (Mavis Pro) phục vụ đánh giá và giám sát đất đai.",
+            "imageAlt": "Ảnh chụp trên không bằng thiết bị bay không người lái"
+          }
+        }
+      },
+      "news": {
+        "title": "Tin tức mới nhất",
+        "description": "Thông báo, sự kiện và góc nhìn từ iCUE Vietnam.",
+        "linkLabel": "Đọc tất cả tin tức →",
+        "cards": {
+          "auCoPark": {
+            "title": "Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ",
+            "description": "Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An. Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng",
+            "imageAlt": "Lễ khánh thành và bàn giao công viên Âu Cơ"
+          },
+          "conservationForum": {
+            "title": "Diễn đàn Bảo tồn Khu vực Châu Á",
+            "description": "Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.",
+            "imageAlt": "Diễn đàn Bảo tồn Khu vực Châu Á tại Bangkok"
+          },
+          "yagi": {
+            "title": "Giúp đỡ đồng bào ảnh hưởng do bão Yagi",
+            "description": "Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.",
+            "imageAlt": "Hoạt động hỗ trợ đồng bào chịu ảnh hưởng bởi bão Yagi"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Tuyển dụng",
+        "description": "Tham gia đội ngũ theo sứ mệnh, tập trung vào đổi mới và tác động xã hội.",
+        "linkLabel": "Xem vị trí tuyển dụng →",
+        "cards": {
+          "culture": {
+            "title": "Văn Hóa Hợp tác",
+            "description": "Làm việc cùng nhà nghiên cứu, nhà thiết kế và người xây dựng cộng đồng.",
+            "imageAlt": "Văn phòng làm việc của ICUE"
+          },
+          "growth": {
+            "title": "Học Hỏi & Phát triển",
+            "description": "Học tập liên tục qua hội thảo và chương trình cố vấn.",
+            "imageAlt": "Hội thảo nội bộ của ICUE"
+          },
+          "impact": {
+            "title": "Tạo Ra Khác biệt",
+            "description": "Góp phần vào các chương trình tạo ra thay đổi thực sự.",
+            "imageAlt": "Cán bộ ICUE khảo sát thực địa"
+          }
+        }
+      }
+    }
+  }
+}

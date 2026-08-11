@@ -178,7 +178,13 @@ function buildTargetPath(targetPageName, targetSite) {
   return targetPageName === 'Home' ? '#/Home' : `#/${targetPageName}`;
 }
 
-export function buildLanguageSwitchTarget() {
+/**
+ * `currentSiteLanguage` names which of the two sites we are on ('vi' | 'en').
+ * Pass it when the app knows: with UI languages beyond the two domains,
+ * `<html lang>` no longer tracks the site, and the localhost fallback below
+ * reads it. Omit it and the host decides, as it always has.
+ */
+export function buildLanguageSwitchTarget({ currentSiteLanguage } = {}) {
   let currentHost = window.location.host;
   const currentSearch = window.location.search;
   const currentProtocol = window.location.protocol;
@@ -197,7 +203,10 @@ export function buildLanguageSwitchTarget() {
   let currentSite;
   let targetSite;
 
-  if (currentHost.startsWith('en.') || currentHost === SITE_CONFIG.english.domain) {
+  if (currentSiteLanguage === 'en' || currentSiteLanguage === 'vi') {
+    currentSite = currentSiteLanguage === 'en' ? SITE_CONFIG.english : SITE_CONFIG.vietnamese;
+    targetSite = currentSiteLanguage === 'en' ? SITE_CONFIG.vietnamese : SITE_CONFIG.english;
+  } else if (currentHost.startsWith('en.') || currentHost === SITE_CONFIG.english.domain) {
     currentSite = SITE_CONFIG.english;
     targetSite = SITE_CONFIG.vietnamese;
   } else {

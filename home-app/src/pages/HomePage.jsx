@@ -1,5 +1,6 @@
 import { createRef, useEffect, useMemo, useRef } from 'react'
-import { HERO, HOME_SECTIONS } from '../data/homeContent'
+import { useTranslation } from 'react-i18next'
+import { buildHero, buildHomeSections, CARD_COUNTS, SECTION_COUNT } from '../data/homeContent'
 import HomeHero from '../components/HomeHero'
 import HomeSection from '../components/HomeSection'
 import HomeBeamNetwork from '../components/HomeBeamNetwork'
@@ -11,6 +12,8 @@ import { debugLog } from '../lib/debugLog'
 export default function HomePage() {
   useHomeBackgroundVideo()
   const effectsTier = useVisualEffectsTier()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
 
   useEffect(() => {
     // #region agent log
@@ -21,19 +24,24 @@ export default function HomePage() {
   const containerRef = useRef(null)
   const heroRef = useRef(null)
 
+  const hero = useMemo(() => buildHero(t), [t, lang])
+  const sections = useMemo(() => buildHomeSections(t), [t, lang])
+
+  // Refs are keyed off the layout, not the copy, so switching language does not
+  // hand the beam network a fresh set of nodes to re-measure.
   const sectionRefs = useMemo(
-    () => HOME_SECTIONS.map(() => createRef()),
+    () => Array.from({ length: SECTION_COUNT }, () => createRef()),
     [],
   )
 
   const cardRefs = useMemo(
-    () => HOME_SECTIONS.map((section) => section.cards.map(() => createRef())),
+    () => CARD_COUNTS.map((count) => Array.from({ length: count }, () => createRef())),
     [],
   )
 
   return (
     <div className="home-page" ref={containerRef}>
-      <HomeHero hero={HERO} beamRef={heroRef} />
+      <HomeHero hero={hero} beamRef={heroRef} />
       <ErrorBoundary fallback={null}>
         <HomeBeamNetwork
           tier={effectsTier}
@@ -43,7 +51,7 @@ export default function HomePage() {
           cardRefs={cardRefs}
         />
       </ErrorBoundary>
-      {HOME_SECTIONS.map((section, sectionIndex) => (
+      {sections.map((section, sectionIndex) => (
         <HomeSection
           key={section.id}
           {...section}

@@ -11,7 +11,7 @@ export default function HomeHero({ hero, beamRef }) {
   useRainText(subtitleRef, hero.subtitle)
 
   return (
-    <section className="home-hero" aria-label="Home hero" ref={beamRef}>
+    <section className="home-hero" aria-label={hero.ariaLabel} ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
         {!bgVideoEnabled ? <WarpBackground className="home-hero__warp" /> : null}
         <div className="home-hero__overlay" />

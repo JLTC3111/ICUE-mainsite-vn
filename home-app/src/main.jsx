@@ -6,6 +6,7 @@ import App from './App.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 import { installGlobalDebugHandlers } from './lib/debugLog'
+import './lib/i18n'
 import '../../styles.css'
 import './styles/footer-theme.css'
 

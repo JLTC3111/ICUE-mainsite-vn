@@ -1,0 +1,165 @@
+{
+  "instituteName": "Institut d'économie de la construction et d'urbanisme",
+  "lang": {
+    "label": "Langue de la page"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Accueil",
+      "orgStructure": "Structure & organisation",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets & études",
+      "News": "Actualités & événements",
+      "aboutUs": "À propos",
+      "Contact": "Contact",
+      "ourPeople": "Notre équipe",
+      "meetOurExperts": "Nos experts",
+      "coreTeam": "Équipe permanente"
+    },
+    "compact": {
+      "Home": "Accueil",
+      "orgStructure": "Structure",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets",
+      "News": "Actualités",
+      "aboutUs": "À propos"
+    },
+    "aria": {
+      "nav": "Navigation du site",
+      "home": "Retour à l'accueil",
+      "more": "Ouvrir les autres liens de navigation",
+      "moreLabel": "Plus",
+      "overflow": "Autres liens de navigation",
+      "openMenu": "Ouvrir le menu complet",
+      "toggleMenu": "Afficher ou masquer le menu de navigation",
+      "closeMenu": "Fermer le menu de navigation",
+      "resizeMenu": "Redimensionner le menu de navigation",
+      "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
+      "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
+      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)"
+    },
+    "contactWordmark": "À PROPOS"
+  },
+  "footer": {
+    "company": "Entreprise",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Actualités",
+    "archive": "Archives",
+    "faqs": "FAQ",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Devenir partenaire",
+    "rights": "Tous droits réservés, ICUE."
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Ouverture de la page d'accueil",
+      "bannerLabel": "Dernières actualités",
+      "title": "Institut d'économie de la construction et d'urbanisme",
+      "subtitle": "Des initiatives portées par les territoires et des solutions concrètes pour un avenir meilleur.",
+      "actions": {
+        "contact": "Contact",
+        "pastProjects": "Projets & études"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Projets marquants",
+        "description": "Extraits de collaborations pluridisciplinaires et d'initiatives nées des territoires eux-mêmes.",
+        "linkLabel": "Voir tous les projets →",
+        "cards": {
+          "laoCai": {
+            "title": "Révision du plan directeur de la ville de Lào Cai",
+            "description": "Un périmètre de 28 162,64 ha, à l'horizon 2045.",
+            "imageAlt": "Plan directeur de la ville de Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Plan de secteur 6B (quartier Nguyễn Ái Quốc)",
+            "description": "Le plan vise un développement homogène des infrastructures techniques et l'extension des espaces écologiques.",
+            "imageAlt": "Plan de secteur 6B, quartier Nguyễn Ái Quốc"
+          },
+          "dongYen": {
+            "title": "Plan directeur de la ville de Đông Yên, district de Bắc Giang",
+            "description": "Le projet dessine une ville satellite intelligente dotée de l'ensemble des fonctions urbaines.",
+            "imageAlt": "Plan directeur de la ville de Đông Yên, district de Bắc Giang"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Recherche & rapports techniques",
+        "description": "Analyses approfondies et rapports techniques sur les infrastructures urbaines et les données d'exploitation, assortis de recommandations applicables.",
+        "linkLabel": "Voir tous nos travaux →",
+        "cards": {
+          "evaluation": {
+            "title": "Évaluation et rapports d'ouvrage",
+            "description": "Conception et évaluation des données au service d'une infrastructure numérique fiable. Les rapports rassemblent les données, identifient les manques et proposent des solutions.",
+            "imageAlt": "Évaluation d'ouvrage et rapports"
+          },
+          "survey": {
+            "title": "Relevés et métrés",
+            "description": "Des prestations spécialisées pour accompagner le développement, l'évaluation et la mise en œuvre de projets d'infrastructure et de construction",
+            "imageAlt": "Relevés effectués sur le terrain"
+          },
+          "infrastructure": {
+            "title": "Analyse des infrastructures",
+            "description": "Estimation fine des coûts et maîtrise du budget, de la phase d'études jusqu'à la réception du projet.",
+            "imageAlt": "Analyse des infrastructures urbaines"
+          },
+          "aerial": {
+            "title": "Prises de vues aériennes",
+            "description": "Photographie aérienne – images et cartes issues de drones (Mavis Pro), pour l'évaluation et le suivi du foncier.",
+            "imageAlt": "Prise de vue aérienne par drone"
+          }
+        }
+      },
+      "news": {
+        "title": "Dernières actualités",
+        "description": "Annonces, événements et points de vue d'iCUE Vietnam.",
+        "linkLabel": "Lire toutes les actualités →",
+        "cards": {
+          "auCoPark": {
+            "title": "Inauguration et remise du parc Âu Cơ",
+            "description": "L'Institut d'économie de la construction et d'urbanisme (ICUE), en partenariat avec la municipalité de Hội An. En présence de M. Lê Văn Dũng, président du comité populaire de la province de Quảng Nam.",
+            "imageAlt": "Inauguration et remise du parc Âu Cơ"
+          },
+          "conservationForum": {
+            "title": "Forum régional asiatique de la conservation",
+            "description": "L'Union internationale pour la conservation de la nature (UICN) a ouvert le forum à Bangkok, en Thaïlande. Près de 600 responsables de la conservation venus de toute la région y participaient : représentants gouvernementaux, ONG, bailleurs et partenaires, monde académique et secteur privé, parmi d'autres parties prenantes.",
+            "imageAlt": "Forum régional asiatique de la conservation à Bangkok"
+          },
+          "yagi": {
+            "title": "Aide aux populations touchées par le typhon Yagi",
+            "description": "Répondant à l'appel du comité central du Front de la patrie du Vietnam, l'Institut a invité son personnel, ses partenaires et ses donateurs à contribuer ensemble à l'aide aux populations touchées par le typhon Yagi.",
+            "imageAlt": "Action de soutien aux populations touchées par le typhon Yagi"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Recrutement",
+        "description": "Rejoignez une équipe engagée, tournée vers l'innovation et l'utilité sociale.",
+        "linkLabel": "Voir les postes ouverts →",
+        "cards": {
+          "culture": {
+            "title": "Une culture de la collaboration",
+            "description": "Travaillez aux côtés de chercheurs, de concepteurs et d'acteurs de terrain.",
+            "imageAlt": "Les bureaux d'ICUE"
+          },
+          "growth": {
+            "title": "Apprentissage & progression",
+            "description": "Se former en continu, par des ateliers et le mentorat.",
+            "imageAlt": "Atelier interne chez ICUE"
+          },
+          "impact": {
+            "title": "Avoir un impact",
+            "description": "Contribuez à des programmes qui produisent un changement réel.",
+            "imageAlt": "Personnel d'ICUE en relevé de terrain"
+          }
+        }
+      }
+    }
+  }
+}

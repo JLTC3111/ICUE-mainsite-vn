@@ -67,6 +67,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, '..'),
       '@icue/main-site-nav': path.resolve(__dirname, '../shared/main-site-nav'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
+      '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
+      '@icue/text': path.resolve(__dirname, '../shared/text'),
       '@icue/home-layout': path.resolve(__dirname, '../shared/home-layout'),
       '@icue/ui': path.resolve(__dirname, '../shared/ui'),
       '@icue/site-footer': path.resolve(__dirname, '../shared/site-footer'),

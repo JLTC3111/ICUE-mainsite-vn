@@ -3,6 +3,7 @@ import VideoToggle from './VideoToggle';
 import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
+import { NAV_LABELS } from './navContent';
 
 export default function MainSiteHeader({
   drawerOpen,
@@ -34,6 +35,9 @@ export default function MainSiteHeader({
   /* Optional replacement for the flag link. Left undefined, each header keeps
      its own default, which is the icue.vn ↔ en.icue.vn switch. */
   LanguageControl = LanguageFlagLink,
+  /* Already resolved by MainSiteNav; the default only matters when this header
+     is rendered on its own. */
+  labels = NAV_LABELS,
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
@@ -68,6 +72,7 @@ export default function MainSiteHeader({
         onNavigate={onNavigate}
         overflowItems={pillOverflowItems}
         LanguageControl={LanguageControl}
+        labels={labels}
       />
     );
   }
@@ -82,7 +87,7 @@ export default function MainSiteHeader({
               href={homeHref}
               id="logo-link"
               className="logo-link"
-              aria-label="Go to homepage"
+              aria-label={labels.aria.home}
             >
               <img
                 className="logo-mark"
@@ -113,7 +118,7 @@ export default function MainSiteHeader({
               type="button"
               className="menu-toggle"
               id="menuToggle"
-              aria-label="Toggle navigation menu"
+              aria-label={labels.aria.toggleMenu}
               aria-expanded={drawerOpen}
               onClick={(e) => {
                 e.stopPropagation();
@@ -135,7 +140,7 @@ export default function MainSiteHeader({
                       id="homeVideoToggleContainerMobile"
                       inputId="homeVideoToggleMobile"
                       variant="navbar"
-                      label="Bật/tắt video nền"
+                      label={labels.aria.homeVideo}
                       showLabel={false}
                       visible
                       animated
@@ -149,6 +154,7 @@ export default function MainSiteHeader({
                       id="homeVideoToggleContainerDesktop"
                       inputId="homeVideoToggleDesktop"
                       variant="nav"
+                      label={labels.aria.homeVideo}
                       showLabel={false}
                       visible
                       animated
@@ -167,7 +173,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerMobile"
                       inputId="aboutUsVideoToggleMobile"
                       variant="navbar"
-                      label="Bật/tắt video nền (Giới thiệu)"
+                      label={labels.aria.aboutUsVideo}
                       showLabel={false}
                       visible
                       animated
@@ -181,7 +187,7 @@ export default function MainSiteHeader({
                       id="aboutUsVideoToggleContainerDesktop"
                       inputId="aboutUsVideoToggleDesktop"
                       variant="nav"
-                      label="Bật/tắt video nền (Giới thiệu)"
+                      label={labels.aria.aboutUsVideo}
                       showLabel={false}
                       visible
                       animated
@@ -221,7 +227,7 @@ export default function MainSiteHeader({
                     textX="3%"
                     as="span"
                   >
-                    GIỚI THIỆU
+                    {labels.contactWordmark}
                   </VideoText>
                 </a>
               )}

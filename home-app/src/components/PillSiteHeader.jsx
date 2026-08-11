@@ -4,20 +4,13 @@ import VideoText from '@icue/ui/VideoText';
 import LanguageFlagLink from '@icue/main-site-nav/LanguageFlagLink';
 import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
+import { NAV_LABELS } from '@icue/main-site-nav/navContent';
 import './PillSiteHeader.css';
 
 // ourWork is a separate app at /our-work — it must be a real navigation, not
 // a client-side route inside this SPA.
 const INTERNAL_PAGES = new Set(['Home', 'pastProjects', 'aboutUs']);
 const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
-const COMPACT_LABELS = {
-  Home: 'Trang Chủ',
-  orgStructure: 'Cơ Cấu',
-  ourWork: 'Công Việc',
-  pastProjects: 'Dự Án',
-  News: 'Tin Tức',
-  aboutUs: 'Giới Thiệu',
-};
 
 function getResponsiveMode() {
   if (window.matchMedia('(max-width: 768px)').matches) return 'mobile';
@@ -43,9 +36,9 @@ function useResponsiveMode() {
   return mode;
 }
 
-function PillLink({ item, active, linkRef, onNavigate }) {
+function PillLink({ item, active, linkRef, onNavigate, compactLabels }) {
   const className = `pill-site-header__link${active ? ' is-active' : ''}`;
-  const label = COMPACT_LABELS[item.page] || item.label;
+  const label = compactLabels[item.page] || item.label;
   const content = (
     <span className="pill-site-header__label-stack">
       <span className="pill-site-header__label">{label}</span>
@@ -105,7 +98,12 @@ export default function PillSiteHeader({
      An app that carries its own UI languages passes a control of its own here
      instead — see contact-app, which swaps in the six-language flag menu. */
   LanguageControl = LanguageFlagLink,
+  /* Resolved upstream by MainSiteNav. The default keeps this header usable on
+     its own and matches what icue.vn showed before it took copy as a prop. */
+  labels = NAV_LABELS,
 }) {
+  const compactLabels = labels.compact;
+  const aria = labels.aria;
   const mode = useResponsiveMode();
   const [overflowOpen, setOverflowOpen] = useState(false);
   const overflowRootRef = useRef(null);
@@ -161,7 +159,7 @@ export default function PillSiteHeader({
         ref={logoLinkRef}
         href={homeHref}
         className="pill-site-header__logo"
-        aria-label="Về trang chủ"
+        aria-label={aria.home}
         onClick={onNavigate
           ? (event) => {
               event.preventDefault();
@@ -203,6 +201,7 @@ export default function PillSiteHeader({
                     active={active}
                     linkRef={item.page === 'aboutUs' ? contactLinkRef : undefined}
                     onNavigate={onNavigate}
+                    compactLabels={compactLabels}
                   />
                 </li>
               );
@@ -213,12 +212,12 @@ export default function PillSiteHeader({
                     ref={moreButtonRef}
                     type="button"
                     className="pill-site-header__link pill-site-header__more"
-                    aria-label="Mở thêm mục điều hướng"
+                    aria-label={aria.more}
                     aria-expanded={overflowOpen}
                     aria-controls="pillSiteTabletOverflow"
                     onClick={() => setOverflowOpen((open) => !open)}
                   >
-                    <span className="pill-site-header__more-label">Thêm</span>
+                    <span className="pill-site-header__more-label">{aria.moreLabel}</span>
                   </button>
                 </li>
               )}
@@ -230,7 +229,7 @@ export default function PillSiteHeader({
               id="pillSiteTabletOverflow"
               className={`pill-site-header__overflow${overflowOpen ? ' is-open' : ''}`}
               role="menu"
-              aria-label="Thêm mục điều hướng"
+              aria-label={aria.overflow}
               aria-hidden={!overflowOpen}
             >
               {tabletOverflowItems.map((item) => (
@@ -241,7 +240,7 @@ export default function PillSiteHeader({
                   className={`pill-site-header__overflow-link${item.page === activePage ? ' is-active' : ''}`}
                   onClick={(event) => handleOverflowLink(event, item)}
                 >
-                  {COMPACT_LABELS[item.page] || item.label}
+                  {compactLabels[item.page] || item.label}
                 </a>
               ))}
             </div>
@@ -255,7 +254,7 @@ export default function PillSiteHeader({
             id={`homeVideoToggleContainer${toggleSuffix}`}
             inputId={`homeVideoToggle${toggleSuffix}`}
             variant={isMobile ? 'navbar' : 'nav'}
-            label="Bật/tắt video nền"
+            label={aria.homeVideo}
             showLabel={false}
             visible
             animated
@@ -270,7 +269,7 @@ export default function PillSiteHeader({
             id={`aboutUsVideoToggleContainer${toggleSuffix}`}
             inputId={`aboutUsVideoToggle${toggleSuffix}`}
             variant={isMobile ? 'navbar' : 'nav'}
-            label="Bật/tắt video nền (Giới thiệu)"
+            label={aria.aboutUsVideo}
             showLabel={false}
             visible
             animated
@@ -295,7 +294,7 @@ export default function PillSiteHeader({
             type="button"
             className="menu-toggle pill-site-header__menu"
             id="menuToggle"
-            aria-label="Mở trình đơn đầy đủ"
+            aria-label={drawerOpen ? aria.closeMenu : aria.openMenu}
             aria-expanded={drawerOpen}
             onClick={(event) => {
               event.stopPropagation();

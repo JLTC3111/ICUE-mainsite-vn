@@ -8,6 +8,43 @@
   "lang": {
     "label": "페이지 언어"
   },
+  "nav": {
+    "pages": {
+      "Home": "홈",
+      "orgStructure": "조직 구성",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트·연구",
+      "News": "뉴스·행사",
+      "aboutUs": "소개",
+      "Contact": "문의",
+      "ourPeople": "인력",
+      "meetOurExperts": "전문가 소개",
+      "coreTeam": "핵심 인력"
+    },
+    "compact": {
+      "Home": "홈",
+      "orgStructure": "조직",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트",
+      "News": "뉴스",
+      "aboutUs": "소개"
+    },
+    "aria": {
+      "nav": "사이트 탐색",
+      "home": "홈으로 이동",
+      "more": "추가 탐색 항목 열기",
+      "moreLabel": "더보기",
+      "overflow": "추가 탐색 항목",
+      "openMenu": "전체 메뉴 열기",
+      "toggleMenu": "탐색 메뉴 열기/닫기",
+      "closeMenu": "탐색 메뉴 닫기",
+      "resizeMenu": "탐색 메뉴 크기 조절",
+      "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
+      "homeVideo": "배경 영상 켜기/끄기",
+      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)"
+    },
+    "contactWordmark": "소개"
+  },
   "masthead": {
     "place": "하노이 · 베트남",
     "hours": "월–금 08:30–17:30 ICT"
@@ -39,10 +76,22 @@
       "other": "기타"
     },
     "fields": {
-      "name": { "label": "성함", "placeholder": "Nguyễn Văn A" },
-      "org": { "label": "소속", "placeholder": "회사 또는 기관" },
-      "email": { "label": "이메일", "placeholder": "you@company.com" },
-      "phone": { "label": "전화 또는 Zalo", "placeholder": "+84 …" },
+      "name": {
+        "label": "성함",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "org": {
+        "label": "소속",
+        "placeholder": "회사 또는 기관"
+      },
+      "email": {
+        "label": "이메일",
+        "placeholder": "you@company.com"
+      },
+      "phone": {
+        "label": "전화 또는 Zalo",
+        "placeholder": "+84 …"
+      },
       "location": {
         "label": "어디이고, 어느 단계인가요?",
         "placeholder": "예: Hoà Bình — 타당성 검토 단계, 4분기 입찰"
@@ -88,10 +137,22 @@
     "faster": "양식보다 빠른 길"
   },
   "desks": {
-    "project": { "title": "신규 업무 및 프로젝트", "note": "안내 데스크 · 당일 전달" },
-    "tender": { "title": "입찰 및 자격 심사", "note": "계약 부서 · 요청 시 서류 송부" },
-    "careers": { "title": "채용", "note": "인사팀 · 매주 금요일 서류 검토" },
-    "press": { "title": "언론 및 강연", "note": "커뮤니케이션 · 마감 시간 준수" }
+    "project": {
+      "title": "신규 업무 및 프로젝트",
+      "note": "안내 데스크 · 당일 전달"
+    },
+    "tender": {
+      "title": "입찰 및 자격 심사",
+      "note": "계약 부서 · 요청 시 서류 송부"
+    },
+    "careers": {
+      "title": "채용",
+      "note": "인사팀 · 매주 금요일 서류 검토"
+    },
+    "press": {
+      "title": "언론 및 강연",
+      "note": "커뮤니케이션 · 마감 시간 준수"
+    }
   },
   "office": {
     "line1": "20번지, 114골목, Hoàng Ngân,",

@@ -12,8 +12,14 @@ import { pageFromPathname } from './languageSwitcher';
 import {
   buildMainSiteDrawerNav,
   DRAWER_LINKS,
+  PEOPLE_SUBMENU,
   STANDALONE_DRAWER_LINKS,
 } from './buildDrawerNav';
+import {
+  localizeNavLinks,
+  localizePeopleSubmenu,
+  resolveNavLabels,
+} from './navContent';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
@@ -53,6 +59,11 @@ export default function MainSiteNav({
   PillHeaderComponent,
   pillOverflowItems = [],
   LanguageControl,
+  /* Chrome copy. Left undefined the nav speaks Vietnamese, which is what every
+     page on icue.vn that has not been localized still wants. An app with UI
+     languages of its own passes its current translation here — see
+     navContent.js for the shape. */
+  labels: labelOverrides,
 }) {
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
@@ -272,17 +283,34 @@ export default function MainSiteNav({
     setDrawerOpen(false);
   }, []);
 
-  const drawerLinkConfig = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
+  const labels = useMemo(() => resolveNavLabels(labelOverrides), [labelOverrides]);
+
+  const sourceLinks = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
+  const drawerLinkConfig = useMemo(
+    () => localizeNavLinks(sourceLinks, labels),
+    [labels, sourceLinks],
+  );
+  const peopleSubmenu = useMemo(
+    () => localizePeopleSubmenu(PEOPLE_SUBMENU, labels),
+    [labels],
+  );
+  // The pill's tablet overflow is usually the People pair, which the caller
+  // reads off the untranslated export — re-label it here too.
+  const localizedOverflowItems = useMemo(
+    () => localizeNavLinks(pillOverflowItems, labels),
+    [labels, pillOverflowItems],
+  );
 
   const { navLinks, people } = useMemo(
     () => buildMainSiteDrawerNav({
       activePage,
       onClose: handleCloseDrawer,
       links: drawerLinkConfig,
+      peopleSubmenu,
       peopleOpen,
       onPeopleToggle: () => setPeopleOpen((open) => !open),
     }),
-    [activePage, drawerLinkConfig, handleCloseDrawer, peopleOpen],
+    [activePage, drawerLinkConfig, handleCloseDrawer, peopleOpen, peopleSubmenu],
   );
 
   const drawerOpenRef = useRef(drawerOpen);
@@ -418,7 +446,7 @@ export default function MainSiteNav({
 
   return (
     <div className={navClass} ref={navRootRef} data-active-page={activePage}>
-      <nav className={barClass} aria-label="Site">
+      <nav className={barClass} aria-label={labels.aria.nav}>
         <MainSiteHeader
           drawerOpen={drawerOpen}
           onToggleDrawer={handleToggleDrawer}
@@ -445,7 +473,8 @@ export default function MainSiteNav({
           pillItems={drawerLinkConfig}
           onNavigate={onNavigate}
           PillHeaderComponent={PillHeaderComponent}
-          pillOverflowItems={pillOverflowItems}
+          pillOverflowItems={localizedOverflowItems}
+          labels={labels}
           {...(LanguageControl ? { LanguageControl } : {})}
         />
       </nav>
@@ -463,8 +492,11 @@ export default function MainSiteNav({
         overlayId="mainSiteDrawerOverlay"
         menuToggleId="menuToggle"
         drawerClassName="main-site-drawer"
-        menuLabel="Toggle navigation menu"
-        closeLabel="Close navigation menu"
+        menuLabel={labels.aria.toggleMenu}
+        closeLabel={labels.aria.closeMenu}
+        navLabel={labels.aria.nav}
+        resizeLabel={labels.aria.resizeMenu}
+        resizeTitle={labels.aria.resizeMenuTitle}
       />
     </div>
   );

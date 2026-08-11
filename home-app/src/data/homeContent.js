@@ -2,161 +2,97 @@ import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
 import { newsroomUrl } from '../../../shared/site-routes/mainSitePaths.js'
 
-export const HERO = {
-  bannerLabel: 'Tin tức mới nhất',
-  bannerHref: newsroomUrl('vi'),
-  title: 'Viện Nghiên Cứu Kinh Tế, Xây Dựng và Đô Thị',
-  subtitle:
-    'Sáng kiến cộng đồng và các giải pháp thực tiễn vì một tương lai tốt đẹp hơn.',
-  actions: [
-    { label: 'Liên hệ', href: ROUTE_PATHS.contact, variant: 'primary' },
-    { label: 'Dự Án & Đề Tài', href: ROUTE_PATHS.pastProjects, variant: 'ghost' },
-  ],
-}
-
-export const HOME_SECTIONS = [
+/**
+ * Structure here, words in the locale files.
+ *
+ * Everything below — ids, images, hrefs, which section is `alt`, which cards
+ * are image-only — is layout and does not change with language. The titles,
+ * descriptions, link labels and alt text all come from `home.*` in
+ * src/locales/, so a reader on the Korean or German page gets the whole home
+ * page rather than a translated menu on top of Vietnamese copy.
+ *
+ * The card keys (`laoCai`, `auCoPark`, …) are the join between the two: rename
+ * one here and the same key has to move in all five locale files.
+ */
+const SECTION_LAYOUT = [
   {
     id: 'home-past-projects',
-    title: 'Dự án tiêu biểu',
-    description:
-      'Điểm nổi bật từ các hợp tác liên ngành và sáng kiến phát triển do cộng đồng khởi xướng.',
-    linkLabel: 'Xem tất cả dự án →',
+    key: 'pastProjects',
     linkHref: ROUTE_PATHS.pastProjects,
     cards: [
-      {
-        image: '/pastProjects/pp_1.webp',
-        imageAlt: 'Project preview 1',
-        href: projectCardUrl(1),
-        title: 'Điều chỉnh quy hoạch chung thành phố Lào Cai',
-        description:
-          'Tổng diện tích quy hoạch lên đến 28.162,64 ha, với mục tiêu hoàn thành vào năm 2045.',
-      },
-      {
-        image: '/pastProjects/pp_3.webp',
-        imageAlt: 'Project preview 2',
-        href: projectCardUrl(3),
-        title: 'Quy Hoạch Phân Khu 6B (Phường Nguyễn Ái Quốc)',
-        description:
-          'Quy hoạch này hướng đến phát triển đồng bộ hạ tầng kỹ thuật, mở rộng không gian sinh thái.',
-      },
-      {
-        image: '/pastProjects/pp_5.jpg',
-        imageAlt: 'Project preview 3',
-        href: projectCardUrl(5),
-        title: 'Quy Hoạch Chung Đô Thị Đông Yên, Huyện Bắc Giang',
-        description:
-          'Dự án nhắm đến việc xây dựng một đô thị vệ tinh thông minh, hội tụ đầy đủ các chức năng.',
-      },
+      { key: 'laoCai', image: '/pastProjects/pp_1.webp', href: projectCardUrl(1) },
+      { key: 'subdivision6b', image: '/pastProjects/pp_3.webp', href: projectCardUrl(3) },
+      { key: 'dongYen', image: '/pastProjects/pp_5.jpg', href: projectCardUrl(5) },
     ],
   },
   {
     id: 'home-our-work',
+    key: 'ourWork',
     alt: true,
-    title: 'Nghiên cứu & Báo cáo Kỹ thuật',
-    description:
-      'Cung cấp phân tích chuyên sâu và báo cáo kỹ thuật về hạ tầng đô thị và dữ liệu hoạt động, kèm đề xuất giải pháp thực tiễn.',
-    linkLabel: 'Xem tất cả công việc →',
     linkHref: ROUTE_PATHS.ourWork,
     cards: [
-      {
-        image: '/work/ourWork_img1.webp',
-        imageAlt: 'Our work preview 1',
-        href: ROUTE_PATHS.ourWork,
-        title: 'Đánh Giá, Báo Cáo Công Trình',
-        description:
-          'Thiết kế và đánh giá dữ liệu cho hạ tầng số đáng tin cậy. Các báo cáo tổng hợp dữ liệu, xác định điểm thiếu sót và đưa ra giải pháp.',
-      },
-      {
-        image: '/work/ourWork_img2.webp',
-        imageAlt: 'Our work preview 2',
-        href: ROUTE_PATHS.ourWork,
-        title: 'Khảo Sát Đo Lường',
-        description:
-          'Cung cấp các dịch vụ chuyên biệt để hỗ trợ việc phát triển, đánh giá và triển khai các dự án hạ tầng và xây dựng',
-      },
-      {
-        image: '/work/ourWork_img3.webp',
-        imageAlt: 'Our work preview 3',
-        href: ROUTE_PATHS.ourWork,
-        title: 'Phân Tích Cơ Sở Hạ Tầng',
-        description:
-          'Ước tính chi phí chính xác và kiểm soát ngân sách từ giai đoạn lập kế hoạch đến khi hoàn thành dự án.',
-      },
-      {
-        image: '/work/ourWork_img4.jpg',
-        imageAlt: 'Our work preview 4',
-        href: ROUTE_PATHS.ourWork,
-        title: 'Chụp Ảnh Kiến Trúc Không Gian',
-        description:
-          'Chụp ảnh trên không – Hình ảnh và bản đồ từ thiết bị bay không người lái (Mavis Pro) phục vụ đánh giá và giám sát đất đai.',
-      },
+      { key: 'evaluation', image: '/work/ourWork_img1.webp', href: ROUTE_PATHS.ourWork },
+      { key: 'survey', image: '/work/ourWork_img2.webp', href: ROUTE_PATHS.ourWork },
+      { key: 'infrastructure', image: '/work/ourWork_img3.webp', href: ROUTE_PATHS.ourWork },
+      { key: 'aerial', image: '/work/ourWork_img4.jpg', href: ROUTE_PATHS.ourWork },
     ],
   },
   {
     id: 'home-news',
-    title: 'Tin tức mới nhất',
-    description: 'Thông báo, sự kiện và góc nhìn từ iCUE Vietnam.',
-    linkLabel: 'Đọc tất cả tin tức →',
+    key: 'news',
     linkHref: newsroomUrl('vi'),
     cards: [
-      {
-        image: '/news/articles/Card_1.webp',
-        imageAlt: 'News preview 1',
-        href: articleUrl(1),
-        title: 'Lễ Khánh Thành, Bàn Giao Công Viên Âu Cơ',
-        description:
-          'Viện Nghiên Cứu Kinh tế Xây dựng và Đô thị (ICUE), phối hợp cùng UBND thành phố Hội An. Với Sự Tham Dự Của Chủ Tịch UBND Tỉnh Quảng Nam - Ông Lê Văn Dũng',
-      },
-      {
-        image: '/news/articles/Card_2.webp',
-        imageAlt: 'News preview 2',
-        href: articleUrl(2),
-        title: 'Diễn đàn Bảo tồn Khu vực Châu Á',
-        description:
-          'Liên minh Bảo tồn Thiên nhiên Quốc tế (IUCN) đã khai mạc tại Bangkok, Thái Lan. Sự kiện quy tụ gần 600 nhà lãnh đạo trong lĩnh vực bảo tồn từ khắp khu vực, bao gồm đại diện chính phủ, tổ chức phi chính phủ, nhà tài trợ và đối tác, học viện và khu vực tư nhân, cùng nhiều bên liên quan.',
-      },
-      {
-        image: '/news/articles/Card_3.jpg',
-        imageAlt: 'News preview 3',
-        href: articleUrl(3),
-        title: 'Giúp đỡ đồng bào ảnh hưởng do bão Yagi',
-        description:
-          'Làm theo lời kêu gọi của Uỷ ban Trung ương Mặt trận Tổ quốc Việt Nam, Viện NCKTXD&ĐT đã có thông báo kêu gọi cán bộ và các đối tác cùng các nhà hảo tâm chung tay đóng góp, giúp đỡ đồng bào bị ảnh hưởng bởi bão Yagi.',
-      },
+      { key: 'auCoPark', image: '/news/articles/Card_1.webp', href: articleUrl(1) },
+      { key: 'conservationForum', image: '/news/articles/Card_2.webp', href: articleUrl(2) },
+      { key: 'yagi', image: '/news/articles/Card_3.jpg', href: articleUrl(3) },
     ],
   },
   {
     id: 'home-recruitment',
+    key: 'recruitment',
     alt: true,
-    title: 'Tuyển dụng',
-    description: 'Tham gia đội ngũ theo sứ mệnh, tập trung vào đổi mới và tác động xã hội.',
-    linkLabel: 'Xem vị trí tuyển dụng →',
     linkHref: ROUTE_PATHS.recruitment,
     cards: [
-      {
-        image: '/recruitment/office.webp',
-        imageAlt: 'Recruitment preview 1',
-        href: ROUTE_PATHS.recruitment,
-        title: 'Văn Hóa Hợp tác',
-        description: 'Làm việc cùng nhà nghiên cứu, nhà thiết kế và người xây dựng cộng đồng.',
-        imageOnly: true,
-      },
-      {
-        image: '/recruitment/event.webp',
-        imageAlt: 'Recruitment preview 2',
-        href: ROUTE_PATHS.recruitment,
-        title: 'Học Hỏi & Phát triển',
-        description: 'Học tập liên tục qua hội thảo và chương trình cố vấn.',
-        imageOnly: true,
-      },
-      {
-        image: '/recruitment/survey.webp',
-        imageAlt: 'Recruitment preview 3',
-        href: ROUTE_PATHS.recruitment,
-        title: 'Tạo Ra Khác biệt',
-        description: 'Góp phần vào các chương trình tạo ra thay đổi thực sự.',
-        imageOnly: true,
-      },
+      { key: 'culture', image: '/recruitment/office.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'growth', image: '/recruitment/event.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'impact', image: '/recruitment/survey.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
     ],
   },
 ]
+
+export function buildHero(t) {
+  return {
+    bannerLabel: t('home.hero.bannerLabel'),
+    bannerHref: newsroomUrl('vi'),
+    title: t('home.hero.title'),
+    subtitle: t('home.hero.subtitle'),
+    ariaLabel: t('home.hero.ariaLabel'),
+    actions: [
+      { label: t('home.hero.actions.contact'), href: ROUTE_PATHS.contact, variant: 'primary' },
+      { label: t('home.hero.actions.pastProjects'), href: ROUTE_PATHS.pastProjects, variant: 'ghost' },
+    ],
+  }
+}
+
+export function buildHomeSections(t) {
+  return SECTION_LAYOUT.map((section) => ({
+    id: section.id,
+    alt: section.alt,
+    linkHref: section.linkHref,
+    title: t(`home.sections.${section.key}.title`),
+    description: t(`home.sections.${section.key}.description`),
+    linkLabel: t(`home.sections.${section.key}.linkLabel`),
+    cards: section.cards.map((card) => ({
+      image: card.image,
+      href: card.href,
+      imageOnly: card.imageOnly,
+      title: t(`home.sections.${section.key}.cards.${card.key}.title`),
+      description: t(`home.sections.${section.key}.cards.${card.key}.description`),
+      imageAlt: t(`home.sections.${section.key}.cards.${card.key}.imageAlt`),
+    })),
+  }))
+}
+
+/** Stable across languages — the beam network only needs the shape. */
+export const SECTION_COUNT = SECTION_LAYOUT.length
+export const CARD_COUNTS = SECTION_LAYOUT.map((section) => section.cards.length)

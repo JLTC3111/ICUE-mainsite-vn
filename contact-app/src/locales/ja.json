@@ -8,6 +8,43 @@
   "lang": {
     "label": "ページの言語"
   },
+  "nav": {
+    "pages": {
+      "Home": "ホーム",
+      "orgStructure": "組織構成",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト・研究",
+      "News": "ニュース・イベント",
+      "aboutUs": "私たちについて",
+      "Contact": "お問い合わせ",
+      "ourPeople": "人材",
+      "meetOurExperts": "専門家紹介",
+      "coreTeam": "中核メンバー"
+    },
+    "compact": {
+      "Home": "ホーム",
+      "orgStructure": "組織",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト",
+      "News": "ニュース",
+      "aboutUs": "紹介"
+    },
+    "aria": {
+      "nav": "サイトナビゲーション",
+      "home": "ホームへ移動",
+      "more": "その他のナビゲーション項目を開く",
+      "moreLabel": "その他",
+      "overflow": "その他のナビゲーション項目",
+      "openMenu": "全メニューを開く",
+      "toggleMenu": "ナビゲーションメニューの開閉",
+      "closeMenu": "ナビゲーションメニューを閉じる",
+      "resizeMenu": "ナビゲーションメニューの幅を変更",
+      "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
+      "homeVideo": "背景動画のオン/オフ",
+      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）"
+    },
+    "contactWordmark": "私たちについて"
+  },
   "masthead": {
     "place": "ハノイ · ベトナム",
     "hours": "月–金 08:30–17:30 ICT"
@@ -39,10 +76,22 @@
       "other": "その他"
     },
     "fields": {
-      "name": { "label": "お名前", "placeholder": "Nguyễn Văn A" },
-      "org": { "label": "所属", "placeholder": "会社名または団体名" },
-      "email": { "label": "メールアドレス", "placeholder": "you@company.co.jp" },
-      "phone": { "label": "電話または Zalo", "placeholder": "+84 …" },
+      "name": {
+        "label": "お名前",
+        "placeholder": "Nguyễn Văn A"
+      },
+      "org": {
+        "label": "所属",
+        "placeholder": "会社名または団体名"
+      },
+      "email": {
+        "label": "メールアドレス",
+        "placeholder": "you@company.co.jp"
+      },
+      "phone": {
+        "label": "電話または Zalo",
+        "placeholder": "+84 …"
+      },
       "location": {
         "label": "場所と、現在の段階",
         "placeholder": "例：Hoà Bình — 実現可能性調査の段階、第4四半期に入札"
@@ -88,10 +137,22 @@
     "faster": "フォームより早い方法"
   },
   "desks": {
-    "project": { "title": "新規のお仕事・案件", "note": "受付 · 当日中にお取り次ぎ" },
-    "tender": { "title": "入札・資格審査", "note": "契約担当 · 書類はご請求に応じて" },
-    "careers": { "title": "採用", "note": "人事チーム · 毎週金曜に書類を確認" },
-    "press": { "title": "取材・講演", "note": "広報 · 締切を守ります" }
+    "project": {
+      "title": "新規のお仕事・案件",
+      "note": "受付 · 当日中にお取り次ぎ"
+    },
+    "tender": {
+      "title": "入札・資格審査",
+      "note": "契約担当 · 書類はご請求に応じて"
+    },
+    "careers": {
+      "title": "採用",
+      "note": "人事チーム · 毎週金曜に書類を確認"
+    },
+    "press": {
+      "title": "取材・講演",
+      "note": "広報 · 締切を守ります"
+    }
   },
   "office": {
     "line1": "20番地、114路地、Hoàng Ngân、",

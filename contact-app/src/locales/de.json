@@ -8,6 +8,43 @@
   "lang": {
     "label": "Sprache der Seite"
   },
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur & Organisation",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte & Forschung",
+      "News": "News & Veranstaltungen",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Unser Team",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Menü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "ÜBER UNS"
+  },
   "masthead": {
     "place": "Hà Nội · Vietnam",
     "hours": "Mo–Fr 08:30–17:30 ICT"

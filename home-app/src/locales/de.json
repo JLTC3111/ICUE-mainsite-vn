@@ -1,0 +1,165 @@
+{
+  "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "lang": {
+    "label": "Seitensprache"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur & Organisation",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte & Forschung",
+      "News": "News & Veranstaltungen",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Unser Team",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Menü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "ÜBER UNS"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Aktuelles",
+    "archive": "Archiv",
+    "faqs": "FAQ",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Partner werden",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Einstieg der Startseite",
+      "bannerLabel": "Aktuelle Nachrichten",
+      "title": "Institut für Bauökonomie und Stadtentwicklung",
+      "subtitle": "Initiativen für das Gemeinwesen und praxistaugliche Lösungen für eine bessere Zukunft.",
+      "actions": {
+        "contact": "Kontakt",
+        "pastProjects": "Projekte & Forschung"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Ausgewählte Projekte",
+        "description": "Höhepunkte aus fachübergreifenden Kooperationen und Vorhaben, die aus den Gemeinden selbst entstanden sind.",
+        "linkLabel": "Alle Projekte ansehen →",
+        "cards": {
+          "laoCai": {
+            "title": "Fortschreibung des Flächennutzungsplans der Stadt Lào Cai",
+            "description": "Planungsgebiet von 28.162,64 ha mit Zielhorizont 2045.",
+            "imageAlt": "Flächennutzungsplan der Stadt Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Teilgebietsplanung 6B (Stadtteil Nguyễn Ái Quốc)",
+            "description": "Die Planung zielt auf eine durchgängig ausgebaute technische Infrastruktur und mehr zusammenhängende Grünflächen.",
+            "imageAlt": "Teilgebietsplanung 6B im Stadtteil Nguyễn Ái Quốc"
+          },
+          "dongYen": {
+            "title": "Rahmenplan für die Stadt Đông Yên, Kreis Bắc Giang",
+            "description": "Das Vorhaben entwickelt eine smarte Satellitenstadt mit vollständigem Funktionsangebot.",
+            "imageAlt": "Rahmenplan für die Stadt Đông Yên, Kreis Bắc Giang"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Forschung & technische Berichte",
+        "description": "Vertiefte Analysen und technische Berichte zu städtischer Infrastruktur und Betriebsdaten, jeweils mit umsetzbaren Empfehlungen.",
+        "linkLabel": "Alle Arbeiten ansehen →",
+        "cards": {
+          "evaluation": {
+            "title": "Bauwerksprüfung & Berichte",
+            "description": "Planung und Bewertung von Daten für eine verlässliche digitale Infrastruktur. Die Berichte führen die Daten zusammen, benennen die Lücken und schlagen Lösungen vor.",
+            "imageAlt": "Bauwerksprüfung und Berichterstattung"
+          },
+          "survey": {
+            "title": "Vermessung & Aufmaß",
+            "description": "Fachleistungen für die Entwicklung, Bewertung und Umsetzung von Infrastruktur- und Bauvorhaben",
+            "imageAlt": "Vermessungsarbeiten vor Ort"
+          },
+          "infrastructure": {
+            "title": "Infrastrukturanalyse",
+            "description": "Belastbare Kostenschätzung und Budgetkontrolle von der Planungsphase bis zur Fertigstellung.",
+            "imageAlt": "Analyse städtischer Infrastruktur"
+          },
+          "aerial": {
+            "title": "Luftbild & Raumaufnahme",
+            "description": "Luftaufnahmen – Bilder und Karten aus Drohnenbefliegung (Mavis Pro) für Flächenbewertung und -überwachung.",
+            "imageAlt": "Drohnenaufnahme aus der Luft"
+          }
+        }
+      },
+      "news": {
+        "title": "Aktuelle Nachrichten",
+        "description": "Mitteilungen, Veranstaltungen und Einblicke von iCUE Vietnam.",
+        "linkLabel": "Alle Nachrichten lesen →",
+        "cards": {
+          "auCoPark": {
+            "title": "Einweihung und Übergabe des Âu-Cơ-Parks",
+            "description": "Das Institut für Bauökonomie und Stadtentwicklung (ICUE) gemeinsam mit der Stadtverwaltung Hội An. In Anwesenheit des Vorsitzenden des Volkskomitees der Provinz Quảng Nam, Herrn Lê Văn Dũng.",
+            "imageAlt": "Einweihung und Übergabe des Âu-Cơ-Parks"
+          },
+          "conservationForum": {
+            "title": "Regionalforum für Naturschutz in Asien",
+            "description": "Die Internationale Naturschutzunion (IUCN) eröffnete das Forum in Bangkok, Thailand. Es versammelte fast 600 führende Fachleute des Naturschutzes aus der gesamten Region – Regierungsvertretungen, Nichtregierungsorganisationen, Geldgeber und Partner, Hochschulen und Privatwirtschaft sowie weitere Beteiligte.",
+            "imageAlt": "Regionalforum für Naturschutz in Asien in Bangkok"
+          },
+          "yagi": {
+            "title": "Hilfe für die vom Taifun Yagi betroffenen Menschen",
+            "description": "Dem Aufruf des Zentralkomitees der Vaterländischen Front Vietnams folgend, hat das Institut seine Mitarbeitenden, Partner und Förderer gebeten, gemeinsam für die vom Taifun Yagi betroffenen Menschen zu spenden.",
+            "imageAlt": "Hilfsaktion für die vom Taifun Yagi betroffenen Gemeinden"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Karriere",
+        "description": "Kommen Sie in ein Team mit klarer Aufgabe – Innovation und gesellschaftliche Wirkung.",
+        "linkLabel": "Offene Stellen ansehen →",
+        "cards": {
+          "culture": {
+            "title": "Kultur der Zusammenarbeit",
+            "description": "Arbeiten Sie Seite an Seite mit Forschenden, Gestaltenden und Menschen, die Gemeinwesen aufbauen.",
+            "imageAlt": "Büroräume von ICUE"
+          },
+          "growth": {
+            "title": "Lernen & Entwicklung",
+            "description": "Kontinuierliches Lernen durch Workshops und Mentoring.",
+            "imageAlt": "Interner Workshop bei ICUE"
+          },
+          "impact": {
+            "title": "Wirkung erzielen",
+            "description": "Wirken Sie an Programmen mit, die echte Veränderung schaffen.",
+            "imageAlt": "ICUE-Mitarbeitende bei einer Erhebung vor Ort"
+          }
+        }
+      }
+    }
+  }
+}

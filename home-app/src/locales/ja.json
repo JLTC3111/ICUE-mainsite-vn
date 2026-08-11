@@ -1,0 +1,165 @@
+{
+  "instituteName": "建設経済・都市計画研究所",
+  "lang": {
+    "label": "ページの言語"
+  },
+  "nav": {
+    "pages": {
+      "Home": "ホーム",
+      "orgStructure": "組織構成",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト・研究",
+      "News": "ニュース・イベント",
+      "aboutUs": "私たちについて",
+      "Contact": "お問い合わせ",
+      "ourPeople": "人材",
+      "meetOurExperts": "専門家紹介",
+      "coreTeam": "中核メンバー"
+    },
+    "compact": {
+      "Home": "ホーム",
+      "orgStructure": "組織",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト",
+      "News": "ニュース",
+      "aboutUs": "紹介"
+    },
+    "aria": {
+      "nav": "サイトナビゲーション",
+      "home": "ホームへ移動",
+      "more": "その他のナビゲーション項目を開く",
+      "moreLabel": "その他",
+      "overflow": "その他のナビゲーション項目",
+      "openMenu": "全メニューを開く",
+      "toggleMenu": "ナビゲーションメニューの開閉",
+      "closeMenu": "ナビゲーションメニューを閉じる",
+      "resizeMenu": "ナビゲーションメニューの幅を変更",
+      "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
+      "homeVideo": "背景動画のオン/オフ",
+      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）"
+    },
+    "contactWordmark": "私たちについて"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "受賞歴",
+    "news": "ニュース",
+    "archive": "アーカイブ",
+    "faqs": "FAQ",
+    "recruitment": "採用",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "パートナーになる",
+    "rights": "著作権はICUEに帰属します。"
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "ホームのメインビジュアル",
+      "bannerLabel": "最新のニュース",
+      "title": "建設経済・都市計画研究所",
+      "subtitle": "地域から生まれる取り組みと、より良い未来のための実践的な解決策。",
+      "actions": {
+        "contact": "お問い合わせ",
+        "pastProjects": "プロジェクト・研究"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "主なプロジェクト",
+        "description": "分野を横断した協働と、地域から立ち上がった取り組みの中から主なものを紹介します。",
+        "linkLabel": "すべてのプロジェクトを見る →",
+        "cards": {
+          "laoCai": {
+            "title": "ラオカイ市都市マスタープランの改定",
+            "description": "計画区域は28,162.64ha、目標年次は2045年です。",
+            "imageAlt": "ラオカイ市都市マスタープラン"
+          },
+          "subdivision6b": {
+            "title": "第6B地区計画（グエン・アイ・クオック地区）",
+            "description": "都市基盤を一体的に整備し、緑地・生態空間を広げることを目指す計画です。",
+            "imageAlt": "グエン・アイ・クオック地区の第6B地区計画"
+          },
+          "dongYen": {
+            "title": "バクザン県ドンイエン都市マスタープラン",
+            "description": "必要な機能を一通り備えたスマートな衛星都市をめざす事業です。",
+            "imageAlt": "バクザン県ドンイエン都市マスタープラン"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "調査研究・技術報告",
+        "description": "都市インフラと運用データに関する詳細な分析と技術報告を、実行に移せる提言とともにお届けします。",
+        "linkLabel": "すべての業務を見る →",
+        "cards": {
+          "evaluation": {
+            "title": "施設の評価・報告",
+            "description": "信頼できるデジタル基盤のためのデータ設計と評価です。報告書はデータをまとめ、不足している点を示し、解決策を提案します。",
+            "imageAlt": "施設の評価と報告"
+          },
+          "survey": {
+            "title": "測量・数量調査",
+            "description": "インフラ・建設事業の計画、評価、実施を支える専門サービスを提供します",
+            "imageAlt": "現場での測量作業"
+          },
+          "infrastructure": {
+            "title": "インフラ分析",
+            "description": "計画段階から竣工まで、精度の高い概算と予算管理を行います。",
+            "imageAlt": "都市インフラの分析"
+          },
+          "aerial": {
+            "title": "空間撮影・航空写真",
+            "description": "空撮 — ドローン（Mavis Pro）による画像と地図を、土地の評価とモニタリングに活用します。",
+            "imageAlt": "ドローンによる空撮"
+          }
+        }
+      },
+      "news": {
+        "title": "最新のニュース",
+        "description": "iCUE Vietnamからのお知らせ、イベント、視点をお届けします。",
+        "linkLabel": "すべてのニュースを読む →",
+        "cards": {
+          "auCoPark": {
+            "title": "アウコー公園の竣工・引渡し式",
+            "description": "建設経済・都市計画研究所（ICUE）がホイアン市人民委員会と共同で実施しました。クアンナム省人民委員会委員長のレ・ヴァン・ズン氏が出席しました。",
+            "imageAlt": "アウコー公園の竣工・引渡し式"
+          },
+          "conservationForum": {
+            "title": "アジア地域保全フォーラム",
+            "description": "国際自然保護連合（IUCN）がタイ・バンコクで開幕しました。政府関係者、NGO、資金提供機関やパートナー、学術界、民間部門など、域内の保全分野からおよそ600名が参加しました。",
+            "imageAlt": "バンコクで開かれたアジア地域保全フォーラム"
+          },
+          "yagi": {
+            "title": "台風ヤギの被災者支援",
+            "description": "ベトナム祖国戦線中央委員会の呼びかけを受け、研究所は職員、パートナー、支援者に対し、台風ヤギの被災者を支える募金への協力を呼びかけました。",
+            "imageAlt": "台風ヤギの被災地域への支援活動"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "採用",
+        "description": "革新と社会への貢献を軸に据えたチームに加わりませんか。",
+        "linkLabel": "募集中の職種を見る →",
+        "cards": {
+          "culture": {
+            "title": "協働する文化",
+            "description": "研究者、デザイナー、地域をつくる人たちと肩を並べて働きます。",
+            "imageAlt": "ICUEのオフィス"
+          },
+          "growth": {
+            "title": "学びと成長",
+            "description": "ワークショップとメンタリングを通じて学び続けます。",
+            "imageAlt": "ICUEの社内ワークショップ"
+          },
+          "impact": {
+            "title": "変化を生む",
+            "description": "実際の変化を生む事業に携わります。",
+            "imageAlt": "現地調査を行うICUEの職員"
+          }
+        }
+      }
+    }
+  }
+}
