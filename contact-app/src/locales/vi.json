@@ -15,7 +15,7 @@
   "hero": {
     "eyebrow": "Liên hệ",
     "title": "Kể cho chúng tôi về dự án của bạn.",
-    "lead": "Một biểu mẫu, bốn đầu mối. Chọn đúng việc bạn cần và thư sẽ tới thẳng bộ phận phụ trách — dự án mới, gói thầu, tuyển dụng hay yêu cầu báo chí. Bên phải là những cách liên hệ khác, nếu bạn không muốn dùng biểu mẫu."
+    "lead": "Một biểu mẫu, bốn đầu mối. Mô tả yêu cầu của bạn và thư sẽ tới thẳng bộ phận phụ trách — dự án mới, gói thầu, tuyển dụng hay yêu cầu báo chí. Cột bên phải là những cách liên hệ khác, nếu bạn không muốn dùng biểu mẫu."
   },
   "promise": {
     "figure": "24",
@@ -24,7 +24,7 @@
   },
   "skipForm": {
     "label": "Hoặc bỏ qua biểu mẫu",
-    "note": "Lễ tân — chuyển một lần là tới đúng bàn."
+    "note": "Lễ tân — Liên Hệ Trực Tiếp"
   },
   "form": {
     "title": "Viết cho chúng tôi",
