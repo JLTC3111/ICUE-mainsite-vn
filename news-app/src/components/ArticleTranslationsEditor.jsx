@@ -366,12 +366,12 @@ export default function ArticleTranslationsEditor({
 
               {captionSources.map((m) => (
                 <div className="field translations-editor__caption" key={m.id}>
-                  <label htmlFor={`tr-cap-${active}-${m.id}`}>
-                    <span className="translations-editor__caption-kind">
+                  <div className="translations-editor__caption-head">
+                    <label htmlFor={`tr-cap-${active}-${m.id}`} className="translations-editor__caption-kind">
                       {t(`translationsEditor.kind_${m.kind}`)}
-                    </span>
+                    </label>
                     <span className="translations-editor__caption-original">{m.info}</span>
-                  </label>
+                  </div>
                   <input
                     id={`tr-cap-${active}-${m.id}`}
                     className="input"
@@ -398,8 +398,8 @@ export default function ArticleTranslationsEditor({
                   <div className="field">
                     <label htmlFor={`tr-source-label-${active}-${source.id}`}>
                       {t('translationsEditor.sourceLabel')}
-                      <span className="translations-editor__original">{source.label}</span>
                     </label>
+                    <span className="translations-editor__original">{source.label}</span>
                     <input
                       id={`tr-source-label-${active}-${source.id}`}
                       className="input"
@@ -414,8 +414,8 @@ export default function ArticleTranslationsEditor({
                     <div className="field">
                       <label htmlFor={`tr-source-publisher-${active}-${source.id}`}>
                         {t('translationsEditor.sourcePublisher')}
-                        <span className="translations-editor__original">{source.publisher}</span>
                       </label>
+                      <span className="translations-editor__original">{source.publisher}</span>
                       <input
                         id={`tr-source-publisher-${active}-${source.id}`}
                         className="input"

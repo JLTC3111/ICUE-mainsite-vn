@@ -5,6 +5,7 @@ import WordRotate from '../components/WordRotate'
 import { AnimatedShinyText } from '../components/magicui/AnimatedShinyText'
 import CategoryFilter from '../components/CategoryFilter'
 import ArticleViewCounter from '../components/ArticleViewCounter'
+import AuthorLink from '../components/AuthorLink'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useMainSite } from '../hooks/useMainSite'
@@ -18,8 +19,7 @@ import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
 import { categoryColor, isCategory } from '../lib/categories'
 import { resolveArticleCoverComparison } from '../lib/mediaComparison'
-import { formatDate, normalizeUnicode, plainExcerpt, resolveIntlLocale } from '../lib/helpers'
-import { DEFAULT_AVATAR } from '../lib/defaults'
+import { formatDate, normalizeUnicode, resolveIntlLocale } from '../lib/helpers'
 import {
   NEWSROOM_COMPACT_QUERY,
   NEWSROOM_COMPACT_INITIAL_VISIBLE,
@@ -35,9 +35,6 @@ import { resolveArticlePreviewText } from '../lib/translateUtils'
 import './NewsGrid.css'
 
 const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
-
-/** Lead standfirst length. Cut on a word boundary — never mid-syllable. */
-const LEAD_EXCERPT_CHARS = 160
 
 function localDateTimeValue(date) {
   const year = date.getFullYear()
@@ -104,15 +101,6 @@ function LocalizedCalendarDate({ locale, t }) {
   )
 }
 
-function wordSafeExcerpt(html, max = LEAD_EXCERPT_CHARS) {
-  const text = plainExcerpt(html, 4000)
-  if (text.length <= max) return text
-  const cut = text.slice(0, max)
-  const lastSpace = cut.lastIndexOf(' ')
-  const kept = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut
-  return `${kept.trim()}…`
-}
-
 /**
  * One article → one card. `title` is empty while a translation is in flight so
  * the headline can hold its space with a skeleton instead of flashing the
@@ -149,13 +137,11 @@ function buildCard(article, {
         ? featuredText.subtitle
         : titlePending ? '' : (subtitles[article.id] || article.subtitle || ''),
     ),
-    contentHtml: isFeatured ? featuredText.contentHtml : (article.content_html || ''),
     cover: article.cover_image_url || comparison?.before?.url || '',
     category: isCategory(article.category) ? article.category : 'general',
     date: article.published_at || article.article_date || '',
     readMinutes: Number(article.read_minutes) || 0,
     byline: article.author_name || author.display_name || author.full_name || fallbackByline,
-    avatar: author.avatar_url || DEFAULT_AVATAR,
     viewCount: article.view_count ?? 0,
   }
 }
@@ -191,13 +177,10 @@ function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = 
   )
 }
 
-function StoryMeta({ card, locale, t, showAvatar = false }) {
+function StoryMeta({ card, locale, t }) {
   return (
     <div className="news-meta">
-      {showAvatar && (
-        <img className="news-meta__avatar" src={card.avatar} alt="" loading="lazy" decoding="async" />
-      )}
-      <span className="news-meta__byline">{card.byline}</span>
+      <AuthorLink name={card.byline} className="news-meta__byline" />
       {card.date && (
         <>
           <span className="news-meta__dot" aria-hidden>·</span>
@@ -215,9 +198,7 @@ function StoryMeta({ card, locale, t, showAvatar = false }) {
   )
 }
 
-function LeadStory({ card, locale, t }) {
-  const excerpt = useMemo(() => wordSafeExcerpt(card.contentHtml), [card.contentHtml])
-
+function LeadStory({ card, t }) {
   return (
     <article className={`news-lead${card.cover ? '' : ' news-lead--no-image'}`}>
       <Link
@@ -231,8 +212,6 @@ function LeadStory({ card, locale, t }) {
           </div>
           <Headline card={card} as="h2" className="news-lead__title" shinyOnHover />
           {card.subtitle && <p className="news-lead__subtitle">{card.subtitle}</p>}
-          {excerpt && <p className="news-lead__standfirst">{excerpt}</p>}
-          <StoryMeta card={card} locale={locale} t={t} showAvatar />
         </div>
         {card.cover && (
           <div className="news-lead__media">
@@ -247,23 +226,27 @@ function LeadStory({ card, locale, t }) {
 function StoryCard({ card, locale, t }) {
   return (
     <article className={`news-card${card.cover ? '' : ' news-card--no-image'}`}>
-      <Link
-        to={`/article/${card.slug}`}
-        className="news-card__link"
-        aria-label={card.title || undefined}
-      >
+      <div className="news-card__link">
         {card.cover && (
-          <div className="news-card__media">
-            <img src={card.cover} alt="" loading="lazy" decoding="async" />
-          </div>
+          <Link
+            to={`/article/${card.slug}`}
+            className="news-card__media-link"
+            aria-label={card.title || undefined}
+          >
+            <div className="news-card__media">
+              <img src={card.cover} alt="" loading="lazy" decoding="async" />
+            </div>
+          </Link>
         )}
         <div className="news-card__body">
           <CategoryTag category={card.category} t={t} className="news-tag news-tag--sm" />
-          <Headline card={card} as="h3" className="news-card__title" />
+          <Link to={`/article/${card.slug}`} className="news-card__headline-link">
+            <Headline card={card} as="h3" className="news-card__title" />
+          </Link>
           {card.subtitle && <p className="news-card__subtitle">{card.subtitle}</p>}
           <StoryMeta card={card} locale={locale} t={t} />
         </div>
-      </Link>
+      </div>
     </article>
   )
 }
@@ -317,7 +300,9 @@ function InstituteCallout({ links, t }) {
 function EditorialFooter({ archiveHref, t }) {
   return (
     <footer className="news-editorial-footer">
-      <p className="news-editorial-footer__mark">ICUE <span>/</span> {t('nav.news')}</p>
+      <a className="news-editorial-footer__mark" href="#newsroom-top">
+        ICUE <span>/</span> {t('nav.news')}
+      </a>
       <p className="news-editorial-footer__motto">{t('newsroom.motto')}</p>
       <a href={archiveHref}>{t('nav.archive')} <span aria-hidden="true">→</span></a>
     </footer>
@@ -452,7 +437,7 @@ export default function NewsGrid() {
   }, [clearSearchFilter, hasSearchFilter])
 
   return (
-    <div className={`news-page${isDark ? ' news-page--dark' : ''}`}>
+    <div id="newsroom-top" className={`news-page${isDark ? ' news-page--dark' : ''}`}>
       <header className="newsroom-masthead">
         <div className="icue-container icue-container--newsroom newsroom-masthead__inner">
           <div className="newsroom-masthead__text">
@@ -564,7 +549,7 @@ export default function NewsGrid() {
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
         {state === 'ready' && lead && (
-          <LeadStory card={lead} locale={locale} t={t} />
+          <LeadStory card={lead} t={t} />
         )}
 
         {state === 'ready' && topStories.length > 0 && (

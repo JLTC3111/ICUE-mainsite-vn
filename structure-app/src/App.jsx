@@ -26,6 +26,7 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<StructurePage />} />
+        <Route path="/profile/:profileId" element={<StructurePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

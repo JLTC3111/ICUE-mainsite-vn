@@ -20,12 +20,13 @@ function legacyNewsArchiveLink(siteLang) {
 
 export function useMainSite() {
   const { i18n } = useTranslation()
-  const uiLang = i18n.resolvedLanguage || i18n.language
+  const uiLang = String(i18n.resolvedLanguage || i18n.language || 'en').split('-')[0]
   const siteLang = siteLangFromUi(uiLang)
   const base = getMainSiteBase(siteLang)
 
   return {
     base,
+    uiLang,
     siteLang,
     hashLink: (page) => mainSiteLink(page, siteLang),
     peopleLink: (path) => peopleSiteLink(path),

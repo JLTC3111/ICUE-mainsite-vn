@@ -124,7 +124,15 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
                 <span className="media-gallery__zoom" aria-hidden>
                   <Maximize2 size={15} strokeWidth={2} />
                 </span>
-                {img.info && <span className="media-gallery__info">{img.info}</span>}
+                {img.info && (
+                  <span
+                    className="media-gallery__info"
+                    onClick={(event) => event.stopPropagation()}
+                    onPointerDown={(event) => event.stopPropagation()}
+                  >
+                    {img.info}
+                  </span>
+                )}
               </button>
             </SwiperSlide>
           ))}
@@ -154,7 +162,15 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
                   <Maximize2 size={15} strokeWidth={2} />
                 </span>
               )}
-              {img.info && <span className="media-gallery__info">{img.info}</span>}
+              {img.info && (
+                <span
+                  className="media-gallery__info"
+                  onClick={(event) => event.stopPropagation()}
+                  onPointerDown={(event) => event.stopPropagation()}
+                >
+                  {img.info}
+                </span>
+              )}
             </button>
           ))}
         </div>

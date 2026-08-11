@@ -12,6 +12,7 @@ import SocialGooeyNav from '../components/SocialGooeyNav'
 import MediaGallery from '../components/MediaGallery'
 import ArticleComparisonCarousel from '../components/ArticleComparisonCarousel'
 import ArticleSources from '../components/ArticleSources'
+import AuthorLink from '../components/AuthorLink'
 import HeartButton from '../components/HeartButton'
 import ClapButton from '../components/ClapButton'
 import CommentSection from '../components/CommentSection'
@@ -397,7 +398,7 @@ export default function ArticleDetail() {
           <div className="article-detail__byline">
             <img src={author.avatar_url || DEFAULT_AVATAR} alt="" className="article-detail__avatar" />
             <div className="article-detail__byline-text">
-              <span className="article-detail__author">{byline}</span>
+              <AuthorLink name={byline} className="article-detail__author" />
               <span className="article-detail__meta">
                 <span className="article-detail__meta-item">
                   {formatDate(publishDate, i18n.resolvedLanguage)}

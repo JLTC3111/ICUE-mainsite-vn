@@ -104,23 +104,47 @@
 }
 
 .icue-header__shiny.animated-shiny-text {
-  --shiny-muted: #5f6670;
-  --shiny-bright: #dff7e5;
+  --shiny-muted: #060b12;
+  --shiny-bright: #63836d;
   max-width: none;
   margin: 0;
   color: inherit;
   font: inherit;
   letter-spacing: inherit;
+  animation-duration: 8.5s;
 }
 
 .icue-header__link:hover .icue-header__shiny.animated-shiny-text {
-  --shiny-muted: #20252b;
-  --shiny-bright: #c8f3d2;
+  --shiny-muted: #02060b;
+  --shiny-bright: #467452;
 }
 
 .icue-header__link.active .icue-header__shiny.animated-shiny-text {
-  --shiny-muted: var(--news-rotating-green, #15803d);
-  --shiny-bright: #ecffd9;
+  --shiny-muted: #074b21;
+  --shiny-bright: #4f805c;
+}
+
+/* Keep the light-reader links above the generic animated-text theme rules. */
+.icue-app:not(.icue-app--news-theme-dark) .icue-header__shiny.animated-shiny-text {
+  --shiny-muted: #060b12;
+  --shiny-bright: #63836d;
+  animation-duration: 8.5s;
+}
+
+.icue-app:not(.icue-app--news-theme-dark) .icue-header__link:hover .icue-header__shiny.animated-shiny-text {
+  --shiny-muted: #02060b;
+  --shiny-bright: #467452;
+}
+
+.icue-app:not(.icue-app--news-theme-dark) .icue-header__link.active .icue-header__shiny.animated-shiny-text {
+  --shiny-muted: #074b21;
+  --shiny-bright: #4f805c;
+}
+
+@media (min-width: 835px) and (max-width: 1175px) {
+  .icue-header__primary-links {
+    display: none;
+  }
 }
 
 .icue-header__link::after {
@@ -527,6 +551,7 @@
 .icue-app--news-theme-dark .icue-header__shiny.animated-shiny-text {
   --shiny-muted: #a6abb2;
   --shiny-bright: #f4fff7;
+  animation-duration: 2.8s;
 }
 
 .icue-app--news-theme-dark .icue-header__link:hover .icue-header__shiny.animated-shiny-text {

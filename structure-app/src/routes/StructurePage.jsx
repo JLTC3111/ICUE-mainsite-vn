@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { orgProfiles, orgChartLevels } from '../data/orgProfiles'
 import { departments } from '../data/departments'
 import { documentCategories, downloadDocument } from '../data/documents'
@@ -35,8 +35,10 @@ const TAB_PANEL_VARIANTS = {
 
 export default function StructurePage() {
   const { t, i18n } = useTranslation()
+  const { profileId = '' } = useParams()
   const [searchParams] = useSearchParams()
   const searchTerm = searchParams.get('q') || ''
+  const requestedProfileId = profileId || searchParams.get('profile') || ''
   const [activeTab, setActiveTab] = useState('org-chart')
   const [selectedProfile, setSelectedProfile] = useState(null)
   const [badgeProfile, setBadgeProfile] = useState(null)
@@ -53,6 +55,15 @@ export default function StructurePage() {
   useEffect(() => {
     if (searchTerm.trim()) setActiveTab('documents')
   }, [searchTerm])
+
+  useEffect(() => {
+    if (!requestedProfileId) return
+    const requestedProfile = orgProfiles.find((profile) => profile.id === requestedProfileId)
+    if (!requestedProfile) return
+    setActiveTab('org-chart')
+    setBadgeProfile(requestedProfile)
+    setSelectedProfile(requestedProfile)
+  }, [requestedProfileId])
 
   const profileById = useMemo(() => {
     const map = new Map()

@@ -163,7 +163,7 @@
   font-weight: 800;
   letter-spacing: 0.02em;
 }
-.translations-editor__caption label {
+.translations-editor__caption-head {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -187,6 +187,9 @@
   font-weight: 400;
   color: var(--icue-text-faint);
   overflow-wrap: anywhere;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .translations-editor__warning {
@@ -209,6 +212,9 @@
   line-height: 1.4;
   color: var(--icue-text-faint);
   overflow-wrap: anywhere;
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 @media (max-width: 600px) {

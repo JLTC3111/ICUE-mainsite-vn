@@ -3,8 +3,9 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  --search-lens-bg: linear-gradient(145deg, #1559a7, #167dbd);
+  --search-lens-bg: #111316;
   --search-lens-ink: #ffffff;
+  --search-lens-shadow: rgba(17, 19, 22, 0.22);
   --search-status: var(--icue-nav-hover-line);
   --search-trigger-ink: var(--icue-black);
   --search-dot-ring: var(--icue-surface);
@@ -37,8 +38,9 @@
 }
 
 .icue-app--news-theme-dark .article-search {
-  --search-lens-bg: linear-gradient(145deg, #78d8ff, #1db7ff);
-  --search-lens-ink: #071018;
+  --search-lens-bg: #ffffff;
+  --search-lens-ink: #111316;
+  --search-lens-shadow: rgba(0, 0, 0, 0.42);
   --search-trigger-ink: var(--icue-text);
   --search-dot-ring: #0a0a0a;
   --np-inset-bg: #171717;
@@ -276,7 +278,7 @@
 .article-search.is-open .article-search__btn--submit {
   background: var(--search-lens-bg);
   color: var(--search-lens-ink);
-  box-shadow: 0 3px 10px rgba(54, 138, 223, 0.3);
+  box-shadow: 0 3px 10px var(--search-lens-shadow);
 }
 
 .article-search.is-open .article-search__btn--submit:hover {
