@@ -209,7 +209,14 @@
 }
 
 /* The site footer is a dark band with 80px of its own top margin; the map
-   already ends the page with air, and the two together read as a dead gap. */
+   already ends the page with air, and the two together read as a dead gap.
+ *
+ * The two --icue-* tokens are the home app's footer variant: a near-black
+ * ground and the lime hover. They are re-bound on the footer itself rather
+ * than at :root, because the same names dress the pill nav above, which keeps
+ * the navy this page's theme gives it. */
 .ct-page .icue-footer {
+  --icue-gradient-dark: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  --icue-accent: #c8ff00;
   margin-top: 0;
 }
