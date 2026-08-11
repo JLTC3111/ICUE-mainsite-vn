@@ -6,6 +6,7 @@ import { useOurWorkMotion } from '../hooks/useOurWorkMotion'
 import { useMainSite } from '../hooks/useMainSite'
 import CountUp from '../components/reactbits/CountUp'
 import SpotlightCard from '../components/reactbits/SpotlightCard'
+import { SplitFlapHeadline } from '../components/reactbits/SplitFlapText'
 import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
 import '../styles/ourWork.css'
 
@@ -79,7 +80,10 @@ export default function OurWorkPage() {
       <section className="ow-section ow-hero">
         <div className="ow-hero__left">
           <p className="ow-eyebrow ow-reveal">{content.eyebrow}</p>
-          <h1 className="ow-hero__title ow-reveal">{content.heroTitle}</h1>
+          <SplitFlapHeadline
+            className="ow-hero__title ow-reveal"
+            text={content.heroTitle}
+          />
           <p className="ow-hero__lead ow-reveal">{content.heroLead}</p>
         </div>
 

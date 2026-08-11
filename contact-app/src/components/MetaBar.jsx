@@ -3,7 +3,8 @@ import { PHONE_DISPLAY, PHONE_TEL } from '../data/contactChannels'
 import './MetaBar.css'
 
 /**
- * The standing head: where we are, when we answer, and the number.
+ * The standing head: what this line describes, where we are, when we answer,
+ * and the number.
  *
  * No page name and no language control — the nav above already marks Contact
  * as the current page, and the flag in it is the language menu.
@@ -13,6 +14,7 @@ export default function MetaBar() {
 
   return (
     <div className="ct-meta">
+      <span>{t('masthead.office')}</span>
       <span>{t('masthead.place')}</span>
       <span>{t('masthead.hours')}</span>
       <a href={`tel:${PHONE_TEL}`} className="ct-meta__phone">

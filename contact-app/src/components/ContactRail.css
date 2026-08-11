@@ -1,38 +1,41 @@
-/* Set flush right. The rail column ends on the same edge as the masthead's
-   phone number, so ranging the rail right hangs the whole column off that one
-   line instead of leaving it floating in the middle of the measure. */
 .ct-rail {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
+  align-items: flex-start;
+  text-align: left;
 }
 
 /* ── Response time ───────────────────────────────────────────────────── */
 
-/* Figure and unit share one line and the sentence sits under both, so the unit
-   does not hang off the side of a tall glyph. */
-.ct-promise__headline {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 2px 9px;
+.ct-promise {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 22px;
 }
 
-/* The page's one polychrome mark. The gradient is painted through the glyphs;
-   browsers without background-clip: text keep the solid colour underneath,
-   which is why the fallback is declared first and never removed. */
+.ct-promise__copy {
+  padding-top: 5px;
+}
+
+.ct-promise__headline {
+  display: block;
+}
+
+/* A drop-case response figure: the numeral occupies both rows of copy. Keep
+   the page's one polychrome treatment inside the glyphs so the figure stays
+   crisp against the paper instead of reading as misregistered shadows. */
 .ct-promise__figure {
   font-family: var(--ct-display);
-  font-size: 50px;
+  font-size: clamp(72px, 7.4vw, 94px);
   font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  /* Lining figures: Archivo's default digits sit on the baseline already, but
-     saying so keeps the number the same height as the unit beside it whatever
-     the font falls back to. */
+  line-height: 0.82;
+  letter-spacing: -0.08em;
+  /* This is also the non-canvas fallback used for reduced motion. */
   font-variant-numeric: lining-nums;
+}
+
+.ct-promise__figure .ct-particle-text__fallback {
   color: var(--ct-figure-solid);
   background: var(--ct-figure-grad);
   -webkit-background-clip: text;
@@ -40,27 +43,25 @@
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .ct-promise__figure {
+  .ct-promise__figure .ct-particle-text__fallback {
     color: transparent;
   }
 }
 
 .ct-promise__unit {
   font-family: var(--ct-display);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
 }
 
-/* Measured blocks are narrower than the column, so their own box has to be
-   pushed over before the ranged-right text lands on the column edge. */
 .ct-promise__body {
-  margin-top: 9px;
-  margin-left: auto;
-  font-size: 12.5px;
+  margin-top: 10px;
+  font-size: 13px;
   line-height: 1.55;
   color: var(--ct-ink-2);
-  max-width: 32ch;
+  max-width: 29ch;
 }
 
 /* ── Sections ────────────────────────────────────────────────────────── */
@@ -74,6 +75,18 @@
    alongside the form, so the two columns start their second movement together. */
 .ct-rail__section--spaced {
   margin-top: 78px;
+}
+
+/* Rail section titles are real headings, not field labels. Keep the compact
+   blue treatment, but give them enough size and weight to establish the
+   hierarchy above addresses, desk names and shortcuts. */
+.ct-rail__heading {
+  font-family: var(--ct-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--ct-accent);
 }
 
 .ct-rail__email {
@@ -106,7 +119,6 @@
 
 .ct-rail__note {
   margin-top: 6px;
-  margin-left: auto;
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--ct-ink-3);
@@ -121,12 +133,9 @@
   line-height: 1.45;
 }
 
-/* fit-content so the underline only runs under the words; auto to the left of
-   it so those words sit at the right-hand edge. */
 .ct-rail__link {
   display: block;
   margin-top: 12px;
-  margin-left: auto;
   font-size: 13.5px;
   line-height: 1.5;
   color: var(--ct-accent);
@@ -183,25 +192,19 @@
   color: var(--ct-ink-3);
 }
 
-/* Stacked under the form, the rail no longer needs to reach for the hero — and
-   it is no longer beside the masthead's right-hand edge either, so the ranged
-   right setting goes back to left with the rest of the page. */
+/* Stacked under the form, the rail no longer needs to reach for the hero. */
 @media (max-width: 900px) {
   .ct-rail__section--spaced {
     margin-top: 40px;
   }
+}
 
-  .ct-rail {
-    text-align: left;
+@media (max-width: 420px) {
+  .ct-promise {
+    column-gap: 16px;
   }
 
-  .ct-promise__headline {
-    justify-content: flex-start;
-  }
-
-  .ct-promise__body,
-  .ct-rail__note,
-  .ct-rail__link {
-    margin-left: 0;
+  .ct-promise__figure {
+    font-size: 68px;
   }
 }

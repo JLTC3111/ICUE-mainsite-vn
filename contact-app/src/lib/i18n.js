@@ -1,15 +1,10 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
-import { detectInitialLanguage } from './detectLanguage'
+import { detectInitialLanguage, LANGUAGE_STORAGE_KEY } from './detectLanguage'
 
 import en from '../locales/en.json'
 import vi from '../locales/vi.json'
-import de from '../locales/de.json'
-import fr from '../locales/fr.json'
-import ko from '../locales/ko.json'
-import ja from '../locales/ja.json'
 
 /**
  * The same six the newsroom and Our Work carry, in the same order, so the flag
@@ -32,29 +27,58 @@ const normalizePostProcessor = {
   process: (value) => normalizeDeep(value),
 }
 
-i18n
+const localeLoaders = {
+  de: () => import('../locales/de.json'),
+  fr: () => import('../locales/fr.json'),
+  ko: () => import('../locales/ko.json'),
+  ja: () => import('../locales/ja.json'),
+}
+
+/**
+ * Vietnamese and English cover the normal entry paths and stay in the first
+ * bundle. The other four complete translations are fetched only when a reader
+ * arrives with that preference or selects it from the flag menu.
+ */
+const lazyLocaleBackend = {
+  type: 'backend',
+  init() {},
+  read(language, _namespace, done) {
+    const load = localeLoaders[language]
+    if (!load) {
+      done(new Error(`Unsupported contact locale: ${language}`), false)
+      return
+    }
+
+    load()
+      .then((module) => done(null, normalizeDeep(module.default)))
+      .catch((error) => done(error, false))
+  },
+}
+
+export const i18nReady = i18n
   .use(normalizePostProcessor)
-  .use(LanguageDetector)
+  .use(lazyLocaleBackend)
   .use(initReactI18next)
   .init({
     resources: {
       en: { translation: normalizeDeep(en) },
       vi: { translation: normalizeDeep(vi) },
-      de: { translation: normalizeDeep(de) },
-      fr: { translation: normalizeDeep(fr) },
-      ko: { translation: normalizeDeep(ko) },
-      ja: { translation: normalizeDeep(ja) },
     },
+    partialBundledLanguages: true,
     fallbackLng: ['en', 'vi'],
     lng: detectInitialLanguage(),
+    load: 'languageOnly',
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     postProcess: ['normalizeUnicode'],
     interpolation: { escapeValue: false },
-    detection: {
-      order: ['localStorage'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'icue_news_lang',
-    },
   })
+
+i18n.on('languageChanged', (language) => {
+  try {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
+  } catch {
+    // Storage may be unavailable in privacy-restricted browsing contexts.
+  }
+})
 
 export default i18n

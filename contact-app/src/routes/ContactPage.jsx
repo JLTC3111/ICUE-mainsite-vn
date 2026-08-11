@@ -1,10 +1,9 @@
-import { useMemo, useRef } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import { STANDALONE_DRAWER_LINKS, PEOPLE_SUBMENU } from '@icue/main-site-nav/navLinks'
 import PillSiteHeader from '@icue/pill-header'
 import Footer from '@icue/site-footer/Footer'
-import ContactSidebar from '@icue/contact-sidebar'
 import { useDocumentMeta } from '@icue/site-meta/useDocumentMeta'
 import MetaBar from '../components/MetaBar'
 import PageLanguageMenu from '../components/PageLanguageMenu'
@@ -14,6 +13,35 @@ import OfficeMap from '../components/OfficeMap'
 import { useMainSite } from '../hooks/useMainSite'
 import { useReveal } from '../hooks/useReveal'
 import '../styles/contact.css'
+
+const ContactSidebar = lazy(() => import('@icue/contact-sidebar'))
+
+function DeferredContactSidebar() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const reveal = () => setReady(true)
+    const idleId = typeof window.requestIdleCallback === 'function'
+      ? window.requestIdleCallback(reveal, { timeout: 1200 })
+      : window.setTimeout(reveal, 0)
+
+    return () => {
+      if (typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId)
+      } else {
+        window.clearTimeout(idleId)
+      }
+    }
+  }, [])
+
+  if (!ready) return null
+
+  return (
+    <Suspense fallback={null}>
+      <ContactSidebar contentKey="contact" />
+    </Suspense>
+  )
+}
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation()
@@ -97,7 +125,7 @@ export default function ContactPage() {
       </main>
 
       <Footer linkMode="standalone" labels={footerLabels} />
-      <ContactSidebar contentKey="contact" />
+      <DeferredContactSidebar />
     </div>
   )
 }

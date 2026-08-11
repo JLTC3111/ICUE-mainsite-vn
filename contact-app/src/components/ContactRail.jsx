@@ -9,6 +9,7 @@ import {
   PHONE_TEL,
   SHORTCUTS,
 } from '../data/contactChannels'
+import { CompactFlapText, ParticleText } from './MotionText'
 import './ContactRail.css'
 
 function Arrow() {
@@ -27,15 +28,23 @@ export default function ContactRail() {
       {/* How long a reply takes, said in the largest type on the page after the
           headline — it is the question every contact form is really asked. */}
       <div className="ct-promise ct-reveal">
-        <p className="ct-promise__headline">
-          <span className="ct-promise__figure">{t('promise.figure')}</span>
-          <span className="ct-promise__unit">{t('promise.unit')}</span>
-        </p>
-        <p className="ct-promise__body">{t('promise.body')}</p>
+        <ParticleText
+          className="ct-promise__figure"
+          text={t('promise.figure')}
+        />
+        <div className="ct-promise__copy">
+          <p className="ct-promise__headline">
+            <CompactFlapText
+              className="ct-promise__unit"
+              text={t('promise.unit')}
+            />
+          </p>
+          <p className="ct-promise__body">{t('promise.body')}</p>
+        </div>
       </div>
 
       <section className="ct-rail__section ct-reveal">
-        <h2 className="ct-eyebrow">{t('skipForm.label')}</h2>
+        <h2 className="ct-rail__heading">{t('skipForm.label')}</h2>
         <a className="ct-rail__email" href={`mailto:${GENERAL_EMAIL}`}>
           {GENERAL_EMAIL}
         </a>
@@ -46,7 +55,7 @@ export default function ContactRail() {
       </section>
 
       <section className="ct-rail__section ct-rail__section--spaced ct-reveal">
-        <h2 className="ct-eyebrow">{t('rail.directLines')}</h2>
+        <h2 className="ct-rail__heading">{t('rail.directLines')}</h2>
         <ul className="ct-desks">
           {DESKS.map((desk) => (
             <li key={desk.id} className="ct-desk">
@@ -66,7 +75,7 @@ export default function ContactRail() {
       </section>
 
       <section className="ct-rail__section ct-reveal">
-        <h2 className="ct-eyebrow">{t('rail.office')}</h2>
+        <h2 className="ct-rail__heading">{t('rail.office')}</h2>
         <p className="ct-rail__address">
           {t('office.line1')}
           <br />
@@ -89,7 +98,7 @@ export default function ContactRail() {
       </section>
 
       <section className="ct-rail__section ct-reveal">
-        <h2 className="ct-eyebrow">{t('rail.chat')}</h2>
+        <h2 className="ct-rail__heading">{t('rail.chat')}</h2>
         {/* zalo.me bounces desktop browsers to a login wall; the shared helper
             hands those visitors the app deep link instead. */}
         <a
@@ -111,7 +120,7 @@ export default function ContactRail() {
       </section>
 
       <section className="ct-rail__section ct-reveal">
-        <h2 className="ct-eyebrow">{t('rail.faster')}</h2>
+        <h2 className="ct-rail__heading">{t('rail.faster')}</h2>
         {SHORTCUTS.map((item) => (
           <a
             key={item.id}

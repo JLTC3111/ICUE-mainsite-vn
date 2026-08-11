@@ -24,7 +24,7 @@
   color: var(--ct-accent);
 }
 
-/* Three cells justified across a full-width rule look sparse once the row is
+/* Four cells justified across a full-width rule look sparse once the row is
    narrower than the type wants; below this they stack left instead. */
 @media (max-width: 620px) {
   .ct-meta {

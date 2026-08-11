@@ -181,7 +181,9 @@ export default function ContactForm() {
             className={`ct-send__button${ready ? ' is-ready' : ''}`}
             aria-describedby="ct-send-hint"
           >
-            {sending ? t('form.submitting') : t('form.submit')}
+            <span className="ct-send__label">
+              {sending ? t('form.submitting') : t('form.submit')}
+            </span>
           </button>
           <p className="ct-send__hint" id="ct-send-hint" aria-live="polite">
             {hint}

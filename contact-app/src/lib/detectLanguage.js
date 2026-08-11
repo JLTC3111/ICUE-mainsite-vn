@@ -1,4 +1,4 @@
-const LANG_KEY = 'icue_news_lang'
+export const LANGUAGE_STORAGE_KEY = 'icue_news_lang'
 
 /** Must match SUPPORTED_LANGUAGES in ./i18n.js. */
 const SUPPORTED = new Set(['vi', 'en', 'de', 'fr', 'ko', 'ja'])
@@ -16,10 +16,8 @@ function isEnReferrer() {
 
 /**
  * The storage key is shared with the other ICUE apps, so a reader who picked a
- * language on the newsroom or Our Work keeps it here. Those apps carry six
- * languages and this one carries two: an unsupported stored value (ko, ja, …)
- * is dropped rather than passed to i18next, which would otherwise resolve it
- * through `fallbackLng` and quietly rewrite the shared key on the next write.
+ * language on the newsroom or Our Work keeps it here. All three apps carry the
+ * same six languages; anything else in the shared key falls back to English.
  */
 export function detectInitialLanguage() {
   const params = new URLSearchParams(window.location.search)
@@ -28,16 +26,16 @@ export function detectInitialLanguage() {
   // both sites, so an explicit request must not lose to an older preference.
   const requested = params.get('lang')
   if (requested && SUPPORTED.has(requested)) {
-    localStorage.setItem(LANG_KEY, requested)
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, requested)
     return requested
   }
 
-  const saved = localStorage.getItem(LANG_KEY)
+  const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY)
   if (saved && SUPPORTED.has(saved)) return saved
   if (saved) return 'en'
 
   if (params.get('site') === 'en' || params.get('from') === 'en-news' || isEnReferrer()) {
-    localStorage.setItem(LANG_KEY, 'en')
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en')
     return 'en'
   }
 

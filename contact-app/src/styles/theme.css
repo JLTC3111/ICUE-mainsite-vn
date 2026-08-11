@@ -3,10 +3,9 @@
  * The page is an editorial layout on paper: a warm off-white ground, hairline
  * rules, Archivo for everything that is words and a mono for anything that is a
  * label. That is the opposite of the other ICUE apps, which are dark-first
- * with a toggle — so this file is light-first and carries no toggle. A reader
- * whose system asks for dark still gets a considered version of the same page
- * rather than an inverted accident; `data-theme` is honoured too, in case the
- * site ever grows a shared switch.
+ * with a toggle — so this file has one fixed light theme and carries no toggle.
+ * `color-scheme: light` also keeps browser-native form controls in step with
+ * the page when the reader's system preference is dark.
  *
  * Three blues, and they are not interchangeable:
  *   --ct-accent        text: links, eyebrows, the big address. 6.5:1 on paper.
@@ -94,63 +93,6 @@
   --icue-chrome-text-strong: #ffffff;
   --icue-chrome-accent: #5cc8ff;
   --icue-ease: var(--ct-ease);
-}
-
-/* Guarded so an explicit light choice still wins under a dark system setting. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --ct-paper: #111315;
-    --ct-paper-raised: #181b1e;
-    --ct-field: #1e2226;
-    --ct-field-focus: #23282d;
-
-    --ct-ink: #f1f0ed;
-    --ct-ink-2: rgba(241, 240, 237, 0.68);
-    --ct-ink-3: rgba(241, 240, 237, 0.46);
-
-    --ct-rule: rgba(241, 240, 237, 0.2);
-    --ct-rule-soft: rgba(241, 240, 237, 0.11);
-    --ct-dashed: rgba(241, 240, 237, 0.24);
-
-    --ct-accent: #6fbeff;
-    --ct-accent-hover: #a2d6ff;
-    --ct-accent-fill: #1f6fc0;
-    --ct-accent-quiet: #3f5a74;
-
-    --ct-danger: #ef8b80;
-
-    --ct-figure-grad: linear-gradient(148deg, #e57aab 0%, #6cc490 48%, #e8bb55 100%);
-    --ct-figure-solid: #6cc490;
-
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme='dark'] {
-  --ct-paper: #111315;
-  --ct-paper-raised: #181b1e;
-  --ct-field: #1e2226;
-  --ct-field-focus: #23282d;
-
-  --ct-ink: #f1f0ed;
-  --ct-ink-2: rgba(241, 240, 237, 0.68);
-  --ct-ink-3: rgba(241, 240, 237, 0.46);
-
-  --ct-rule: rgba(241, 240, 237, 0.2);
-  --ct-rule-soft: rgba(241, 240, 237, 0.11);
-  --ct-dashed: rgba(241, 240, 237, 0.24);
-
-  --ct-accent: #6fbeff;
-  --ct-accent-hover: #a2d6ff;
-  --ct-accent-fill: #1f6fc0;
-  --ct-accent-quiet: #3f5a74;
-
-  --ct-danger: #ef8b80;
-
-  --ct-figure-grad: linear-gradient(148deg, #e57aab 0%, #6cc490 48%, #e8bb55 100%);
-  --ct-figure-solid: #6cc490;
-
-  color-scheme: dark;
 }
 
 *,

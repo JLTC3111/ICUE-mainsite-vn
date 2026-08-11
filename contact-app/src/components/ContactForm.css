@@ -196,6 +196,35 @@ textarea.ct-field__input {
   transition: background 0.22s var(--ct-ease);
 }
 
+/* Magic UI's Animated Shiny Text pattern, constrained to the ready state so
+   the form's affordance gets one quiet cue instead of a permanent light show. */
+.ct-send__label {
+  display: inline-block;
+}
+
+.ct-send__button.is-ready .ct-send__label {
+  color: transparent;
+  background: linear-gradient(
+    110deg,
+    var(--ct-on-accent) 36%,
+    rgba(255, 255, 255, 0.58) 47%,
+    var(--ct-on-accent) 58%
+  );
+  background-size: 230% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: ct-send-shine 2.8s linear infinite;
+}
+
+@keyframes ct-send-shine {
+  from {
+    background-position: 110% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
 .ct-send__button.is-ready {
   background: var(--ct-accent-fill);
 }
@@ -271,5 +300,13 @@ textarea.ct-field__input {
 
   .ct-sent {
     padding: 24px 20px 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-send__button.is-ready .ct-send__label {
+    color: var(--ct-on-accent);
+    background: none;
+    animation: none;
   }
 }

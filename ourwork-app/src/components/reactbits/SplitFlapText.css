@@ -1,0 +1,168 @@
+.split-flap-text {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--split-flap-gap, 8px);
+  color: var(--split-flap-text-color, #f8fafc);
+  font-family: var(--ow-mono, 'JetBrains Mono', ui-monospace, monospace);
+  font-size: var(--split-flap-font-size, 52px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+.split-flap-text__tile {
+  position: relative;
+  flex: 0 0 auto;
+  min-width: 1.9em;
+  height: 1.46em;
+  padding-inline: 0.34em;
+  overflow: hidden;
+  border-radius: var(--split-flap-radius, 6px);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.16), transparent 44%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--split-flap-tile-color, #111827) 82%, white),
+      var(--split-flap-tile-color, #111827)
+    );
+  box-shadow:
+    0 0.035em 0.08em rgba(255, 255, 255, 0.08) inset,
+    0 -0.05em 0.1em rgba(0, 0, 0, 0.38) inset,
+    0 0.16em 0.38em rgba(0, 0, 0, 0.28);
+  perspective: 520px;
+  transform-origin: 50% 0;
+  isolation: isolate;
+  animation: split-flap-word-in var(--split-flap-flip-duration, 0.48s)
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--split-flap-delay, 0ms);
+}
+
+.split-flap-text__tile::before {
+  content: '';
+  position: absolute;
+  z-index: 8;
+  top: calc(50% - 0.5px);
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18) 18%,
+    rgba(0, 0, 0, 0.64) 50%,
+    rgba(255, 255, 255, 0.14) 82%,
+    transparent
+  );
+  box-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.split-flap-text__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: inherit;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  pointer-events: none;
+}
+
+/* The invisible copy gives each absolute split face the exact width of its
+   whole word. It also avoids character-count assumptions for CJK scripts. */
+.split-flap-text__measure {
+  visibility: hidden;
+  display: block;
+  white-space: nowrap;
+  line-height: 1.46;
+}
+
+.split-flap-text__half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 34%),
+    var(--split-flap-tile-color, #111827);
+  backface-visibility: hidden;
+}
+
+.split-flap-text__half--top {
+  top: 0;
+}
+
+.split-flap-text__half--bottom {
+  bottom: 0;
+  background:
+    linear-gradient(0deg, rgba(255, 255, 255, 0.06), transparent 38%),
+    color-mix(in srgb, var(--split-flap-tile-color, #111827) 92%, black);
+}
+
+.split-flap-text__word {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.09em 0.34em 0;
+  color: var(--split-flap-text-color, #f8fafc);
+  line-height: 1.18;
+  white-space: nowrap;
+  text-shadow:
+    0 0.025em 0 rgba(255, 255, 255, 0.16),
+    0 0.09em 0.16em rgba(0, 0, 0, 0.42);
+}
+
+.split-flap-text__half--top .split-flap-text__word {
+  top: 0;
+}
+
+.split-flap-text__half--bottom .split-flap-text__word {
+  bottom: 0;
+}
+
+@keyframes split-flap-word-in {
+  0% {
+    opacity: 0;
+    transform: rotateX(-88deg) translateY(-0.12em);
+  }
+  62% {
+    opacity: 1;
+    transform: rotateX(7deg) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+}
+
+.ow-hero-flap__visual {
+  display: block;
+}
+
+.ow-hero-flap__board {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ow-hero-flap__board {
+    --split-flap-gap: 7px !important;
+    --split-flap-font-size: clamp(21px, 5.4vw, 28px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-flap-text__tile {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
