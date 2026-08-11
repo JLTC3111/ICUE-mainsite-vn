@@ -8,6 +8,7 @@ import ArticleViewCounter from '../components/ArticleViewCounter'
 import AuthorLink from '../components/AuthorLink'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useMainSite } from '../hooks/useMainSite'
 import { usePageResume } from '../hooks/usePageResume'
 import {
@@ -310,6 +311,7 @@ function EditorialFooter({ archiveHref, t }) {
 }
 
 export default function NewsGrid() {
+  useDocumentTitle()
   const { t, i18n } = useTranslation()
   const profile = usePerformanceProfile()
   const { reduceMotion, simplifyHero } = profile

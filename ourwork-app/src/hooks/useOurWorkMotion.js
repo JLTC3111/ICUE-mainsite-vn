@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const REVEAL_FALLBACK_MS = 2600
 const PARALLAX_MARGIN = 400
@@ -17,8 +17,18 @@ const MOBILE_PARALLAX = 26
  *
  * `is-revealed` is added imperatively. That is safe because React renders a
  * constant className on these nodes and so never rewrites the attribute.
+ *
+ * `onReveal` fires once per element as it is revealed, from inside this same
+ * pass — including from `revealAll`, so reduced-motion and the fallback timer
+ * both still deliver it. It exists so scroll-triggered content (the CountUp
+ * stats) can start without a second observer, which note 1 above rules out.
  */
-export function useOurWorkMotion(rootRef, resetKey) {
+export function useOurWorkMotion(rootRef, resetKey, onReveal) {
+  const onRevealRef = useRef(onReveal)
+  useEffect(() => {
+    onRevealRef.current = onReveal
+  })
+
   useEffect(() => {
     const root = rootRef.current
     if (!root) return undefined
@@ -26,8 +36,13 @@ export function useOurWorkMotion(rootRef, resetKey) {
     const pending = [...root.querySelectorAll('.ow-reveal:not(.is-revealed)')]
     const images = [...root.querySelectorAll('[data-para]')]
 
+    const reveal = (el) => {
+      el.classList.add('is-revealed')
+      onRevealRef.current?.(el)
+    }
+
     const revealAll = () => {
-      for (const el of pending) el.classList.add('is-revealed')
+      for (const el of pending) reveal(el)
       pending.length = 0
     }
 
@@ -58,7 +73,7 @@ export function useOurWorkMotion(rootRef, resetKey) {
         const el = pending[i]
         const r = el.getBoundingClientRect()
         if (r.top < vh * 0.94 && r.bottom > -80) {
-          el.classList.add('is-revealed')
+          reveal(el)
           pending.splice(i, 1)
         }
       }

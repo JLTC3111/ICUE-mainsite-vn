@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import ContactSidebar from '@icue/contact-sidebar'
 import Footer from '@icue/site-footer/Footer'
 import Header from './Header'
+import ScrollProgress from './magicui/ScrollProgress'
 import './PageShell.css'
 
 export default function PageShell({ children }) {
@@ -36,6 +37,7 @@ export default function PageShell({ children }) {
       <a className="ow-skip-link" href="#content">
         {t('skipToContent')}
       </a>
+      <ScrollProgress />
       <Header />
       <main id="content" className="ow-shell__main">
         {children}

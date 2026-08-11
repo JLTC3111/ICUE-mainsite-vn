@@ -1,0 +1,26 @@
+/* Magic UI Scroll Progress — ICUE port.
+
+   Pinned to the viewport's top edge rather than under the header: .ow-header is
+   inset from the top and floats as a pill cluster, so there is no bar underside
+   to hang this off. z-index clears the header's own 20. */
+
+.ow-scroll-progress__track {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 21;
+  height: 2px;
+  pointer-events: none;
+  background: var(--ow-hairline-soft);
+}
+
+.ow-scroll-progress__bar {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  /* The plate gradient, so the rule reads as the same ink as the card badges
+     and the primary button. Not --ow-accent-text: that one is tuned for text
+     contrast and goes pale blue on the dark ground. */
+  background: var(--ow-accent);
+  background: var(--ow-accent-grad);
+}

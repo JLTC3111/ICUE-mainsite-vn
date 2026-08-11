@@ -18,6 +18,7 @@ import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
 import { WordRotate } from '../components/magicui/WordRotate'
 import { RippleButton } from '../components/magicui/RippleButton'
 import { TransitionPanel } from '../components/motion-primitives/TransitionPanel'
+import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
 
 const TAB_IDS = [
   { id: 'org-chart', labelKey: 'tabs.orgChart' },
@@ -48,9 +49,7 @@ export default function StructurePage() {
     TAB_IDS.findIndex((tab) => tab.id === activeTab),
   )
 
-  useEffect(() => {
-    document.title = t('meta.title')
-  }, [t, i18n.language])
+  useDocumentMeta({ title: t('meta.title'), description: t('meta.description') })
 
   useEffect(() => {
     if (searchTerm.trim()) setActiveTab('documents')

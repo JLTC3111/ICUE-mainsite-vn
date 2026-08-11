@@ -1,19 +1,17 @@
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import people from '../data/people.js'
 import PageShell from '../components/PageShell'
 import ProfileCarousel from '../components/ProfileCarousel'
 import { useBackgroundVideo } from '../hooks/useBackgroundVideo'
+import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
 
 const experts = people.filter((p) => p.group === 'experts')
 
 export default function ExpertsPage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { enabled, toggle, canToggle } = useBackgroundVideo()
 
-  useEffect(() => {
-    document.title = t('meta.expertsTitle')
-  }, [t, i18n.language])
+  useDocumentMeta({ title: t('meta.expertsTitle'), description: t('meta.description') })
 
   return (
     <PageShell

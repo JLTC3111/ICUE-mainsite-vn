@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "Actualités",
   "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
+  "meta": {
+    "siteName": "ICUE Actualités",
+    "description": "ICUE — Salle de presse et dernières actualités"
+  },
   "hero": {
     "rotatingTags": [
       "DERNIÈRES NOUVELLES",
@@ -221,6 +225,7 @@
     "outlineTranslations": "Traductions"
   },
   "profile": {
+    "title": "Profil",
     "displayName": "Nom affiché",
     "fullName": "Nom complet",
     "bio": "Biographie",

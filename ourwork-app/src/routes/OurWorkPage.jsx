@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getOurWorkContent, IMAGE_SIZES } from '../data/ourWorkScopes'
 import { assetUrl } from '../lib/assets'
 import { useOurWorkMotion } from '../hooks/useOurWorkMotion'
 import { useMainSite } from '../hooks/useMainSite'
+import CountUp from '../components/reactbits/CountUp'
+import SpotlightCard from '../components/reactbits/SpotlightCard'
+import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
 import '../styles/ourWork.css'
 
 /**
@@ -12,6 +15,18 @@ import '../styles/ourWork.css'
  */
 const CAPABILITY_STATEMENT_URL = '/docs/capability_statement.pdf'
 
+/**
+ * Stats are authored as display strings ('120+', '18') so each locale keeps
+ * control of its own suffix. Split off the numeral for CountUp and hand the
+ * rest back as prefix/suffix; anything that does not parse (a locale that
+ * writes its figure in words) falls through to plain text unanimated.
+ */
+function splitStat(raw) {
+  const match = /^(\D*)(\d+(?:[.,]\d+)?)(.*)$/.exec(raw)
+  if (!match) return null
+  return { prefix: match[1], value: Number(match[2].replace(',', '.')), suffix: match[3] }
+}
+
 export default function OurWorkPage() {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
@@ -19,13 +34,21 @@ export default function OurWorkPage() {
   const { hashLink } = useMainSite()
   const rootRef = useRef(null)
 
-  useOurWorkMotion(rootRef, lang)
+  // The proof band's counters start when the band itself is revealed, off the
+  // same rAF pass — see useOurWorkMotion's note on why there is no observer.
+  const [statsLive, setStatsLive] = useState(false)
+  const handleReveal = useCallback((el) => {
+    if (el.classList.contains('ow-stats')) setStatsLive(true)
+  }, [])
 
-  useEffect(() => {
-    document.title = t('meta.title')
-    const desc = document.querySelector('meta[name="description"]')
-    if (desc) desc.setAttribute('content', t('meta.description'))
-  }, [t, lang])
+  // At 1440 all four cards are already on screen, so clicking an index row
+  // barely moves the page. Lighting the matching card on hover/focus is the
+  // feedback that makes the row read as a live control before it is clicked.
+  const [linkedScope, setLinkedScope] = useState(null)
+
+  useOurWorkMotion(rootRef, lang, handleReveal)
+
+  useDocumentMeta({ title: t('meta.title'), description: t('meta.description') })
 
   // The browser resolves #scope-0N before React has rendered the cards, so a
   // shared or reloaded deep link lands at the top of the page. Re-apply the
@@ -55,16 +78,24 @@ export default function OurWorkPage() {
       {/* §5.2 Hero + scope index */}
       <section className="ow-section ow-hero">
         <div className="ow-hero__left">
-          <p className="ow-eyebrow">{content.eyebrow}</p>
-          <h1 className="ow-hero__title">{content.heroTitle}</h1>
-          <p className="ow-hero__lead">{content.heroLead}</p>
+          <p className="ow-eyebrow ow-reveal">{content.eyebrow}</p>
+          <h1 className="ow-hero__title ow-reveal">{content.heroTitle}</h1>
+          <p className="ow-hero__lead ow-reveal">{content.heroLead}</p>
         </div>
 
-        <nav className="ow-index" aria-label={content.indexTitle}>
+        <nav className="ow-index ow-reveal" aria-label={content.indexTitle}>
           <p className="ow-index__label">{content.indexTitle}</p>
           <div className="ow-index__list">
             {content.scopes.map((scope) => (
-              <a key={scope.num} className="ow-index__row" href={`#scope-${scope.num}`}>
+              <a
+                key={scope.num}
+                className="ow-index__row"
+                href={`#scope-${scope.num}`}
+                onMouseEnter={() => setLinkedScope(scope.num)}
+                onMouseLeave={() => setLinkedScope(null)}
+                onFocus={() => setLinkedScope(scope.num)}
+                onBlur={() => setLinkedScope(null)}
+              >
                 <span className="ow-index__num">{scope.num}</span>
                 <span className="ow-index__title">{scope.title}</span>
                 <span className="ow-index__leader" aria-hidden="true" />
@@ -78,7 +109,13 @@ export default function OurWorkPage() {
       {/* §5.3 Scope cards */}
       <section className="ow-section ow-scopes">
         {content.scopes.map((scope, i) => (
-          <article key={scope.num} id={`scope-${scope.num}`} className="ow-card ow-reveal">
+          <SpotlightCard
+            as="article"
+            key={scope.num}
+            id={`scope-${scope.num}`}
+            className="ow-card ow-reveal"
+            data-linked={linkedScope === scope.num || undefined}
+          >
             <div className="ow-card__well">
               <img
                 className="ow-card__img"
@@ -113,7 +150,7 @@ export default function OurWorkPage() {
 
               <p className="ow-card__std">{scope.std}</p>
             </div>
-          </article>
+          </SpotlightCard>
         ))}
       </section>
 
@@ -133,13 +170,35 @@ export default function OurWorkPage() {
 
       {/* §5.5 Proof band */}
       <section className="ow-section ow-proof">
-        <div className="ow-stats">
-          {content.stats.map((stat) => (
-            <div key={stat.l} className="ow-stat">
-              <p className="ow-stat__n">{stat.n}</p>
-              <p className="ow-stat__l">{stat.l}</p>
-            </div>
-          ))}
+        <div className="ow-stats ow-reveal">
+          {content.stats.map((stat, i) => {
+            const parsed = splitStat(stat.n)
+            return (
+              <div key={stat.l} className="ow-stat">
+                {/* The counter runs on a text node inside .ow-stat__n, so the
+                    figure keeps its gradient and its `fit-content` width. The
+                    written-out value stays in the DOM for screen readers,
+                    which would otherwise announce every intermediate tick. */}
+                <p className="ow-stat__n" aria-hidden={parsed ? 'true' : undefined}>
+                  {parsed ? (
+                    <CountUp
+                      to={parsed.value}
+                      prefix={parsed.prefix}
+                      suffix={parsed.suffix}
+                      startWhen={statsLive}
+                      duration={1.6}
+                      delay={i * 0.09}
+                      locale={lang}
+                    />
+                  ) : (
+                    stat.n
+                  )}
+                </p>
+                {parsed ? <span className="visually-hidden">{stat.n}</span> : null}
+                <p className="ow-stat__l">{stat.l}</p>
+              </div>
+            )
+          })}
         </div>
         <ul className="ow-certs">
           {content.certs.map((cert) => (

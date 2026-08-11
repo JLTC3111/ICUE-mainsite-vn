@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "ニュース",
   "instituteName": "建設経済・都市計画研究所",
+  "meta": {
+    "siteName": "ICUE ニュース",
+    "description": "ICUE — ニュースルームと最新情報"
+  },
   "hero": {
     "rotatingTags": [
       "最新ニュース",
@@ -221,6 +225,7 @@
     "outlineTranslations": "翻訳"
   },
   "profile": {
+    "title": "プロフィール",
     "displayName": "表示名",
     "fullName": "氏名",
     "bio": "自己紹介",

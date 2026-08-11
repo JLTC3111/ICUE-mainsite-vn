@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "News",
   "instituteName": "Institute of Economics and Urban Planning",
+  "meta": {
+    "siteName": "ICUE News",
+    "description": "ICUE — Newsroom and latest updates"
+  },
   "hero": {
     "rotatingTags": [
       "LATEST NEWS",
@@ -221,6 +225,7 @@
     "outlineTranslations": "Translations"
   },
   "profile": {
+    "title": "Profile",
     "displayName": "Display name",
     "fullName": "Full name",
     "bio": "Bio",

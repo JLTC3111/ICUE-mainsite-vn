@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "Bản Tin",
   "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "meta": {
+    "siteName": "ICUE Bản Tin",
+    "description": "ICUE — Bản tin & tin tức mới nhất"
+  },
   "hero": {
     "rotatingTags": [
       "TIN MỚI NHẤT",
@@ -221,6 +225,7 @@
     "outlineTranslations": "Bản dịch"
   },
   "profile": {
+    "title": "Hồ sơ cá nhân",
     "displayName": "Tên hiển thị",
     "fullName": "Họ và tên",
     "bio": "Giới thiệu",

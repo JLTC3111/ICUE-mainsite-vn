@@ -5,10 +5,12 @@ import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { uploadAvatar } from '../lib/articles'
 import { DEFAULT_AVATAR } from '../lib/defaults'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import './Profile.css'
 
 export default function Profile() {
   const { t } = useTranslation()
+  useDocumentTitle(t('profile.title'))
   const { user, profile, refreshProfile } = useAuth()
   const navigate = useNavigate()
 

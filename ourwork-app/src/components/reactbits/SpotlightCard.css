@@ -1,0 +1,46 @@
+/* React Bits Spotlight Card — ICUE port. Mechanism only: the host element
+   keeps its own border, ground and corner radius (1B's are square). */
+
+.ow-spotlight {
+  position: relative;
+  /* Centre is the resting position — see handlePointerLeave, and it is where
+     the keyboard and index-linked states light the card from. */
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  --spotlight-color: color-mix(in srgb, var(--ow-accent-text) 22%, transparent);
+}
+
+/* An element rather than ::before: the glow and .ow-card__body are then both
+   positioned with z-index:auto, so DOM order alone puts the copy on top. Adding
+   a z-index here instead would drag .ow-card into a stacking context and pull
+   the :target ring underneath it. */
+.ow-spotlight__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: radial-gradient(
+    340px circle at var(--spotlight-x) var(--spotlight-y),
+    var(--spotlight-color),
+    transparent 72%
+  );
+}
+
+.ow-spotlight:hover > .ow-spotlight__glow,
+.ow-spotlight:focus-within > .ow-spotlight__glow,
+.ow-spotlight[data-linked='true'] > .ow-spotlight__glow {
+  opacity: 1;
+}
+
+/* The light ground is far less forgiving: the same alpha that reads as a soft
+   wash on #0b0d10 turns into a visible grey smudge on #ffffff. */
+:root[data-theme='light'] .ow-spotlight {
+  --spotlight-color: color-mix(in srgb, var(--ow-accent-text) 10%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ow-spotlight__glow {
+    transition: none;
+  }
+}

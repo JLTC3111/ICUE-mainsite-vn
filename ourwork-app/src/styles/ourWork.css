@@ -119,9 +119,17 @@
   transition: transform 0.35s var(--ow-ease), border-color 0.35s ease;
 }
 
+/* `data-linked` is set by the scope index on hover/focus — the card is that
+   row's preview. It deliberately stops short of :hover's lift: the pointer is
+   up in the index, and four cards jumping in turn as it travels the list is
+   noise, not feedback. Only the edge and the spotlight answer. */
+.ow-card:hover,
+.ow-card[data-linked='true'] {
+  border-color: var(--ow-accent-line);
+}
+
 .ow-card:hover {
   transform: translateY(-6px);
-  border-color: var(--ow-accent-line);
 }
 
 /* At 1440 the four cards sit side by side, so scrolling to one of them barely
@@ -176,7 +184,11 @@
   letter-spacing: 0.12em;
 }
 
+/* `position: relative` is load-bearing, not cosmetic: it puts the copy in the
+   same painting step as SpotlightCard's glow, which is absolutely positioned
+   and comes first in the DOM. Drop it and the wash tints the text. */
 .ow-card__body {
+  position: relative;
   padding: 22px 20px 24px;
   display: flex;
   flex-direction: column;
@@ -458,7 +470,23 @@
 .ow-reveal {
   opacity: 0;
   transform: translateY(26px);
-  transition: opacity 0.7s var(--ow-ease), transform 0.7s var(--ow-ease);
+  transition: opacity 0.7s var(--ow-ease) var(--ow-delay, 0s),
+    transform 0.7s var(--ow-ease) var(--ow-delay, 0s);
+}
+
+/* The hero is above the fold, so its whole block reveals on the first pass and
+   --ow-delay is what turns that into a sequence. Everything further down the
+   page is staggered by when you reach it and wants no delay. */
+.ow-hero__title {
+  --ow-delay: 0.08s;
+}
+
+.ow-hero__lead {
+  --ow-delay: 0.16s;
+}
+
+.ow-index {
+  --ow-delay: 0.24s;
 }
 
 .ow-reveal.is-revealed {

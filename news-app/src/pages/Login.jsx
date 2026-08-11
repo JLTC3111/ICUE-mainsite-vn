@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { getAuthRedirectUrl, isPasswordRecoveryUrl } from '../lib/authRedirect'
 import { authErrorKey, sendPasswordResetEmail } from '../lib/authReset'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import './Login.css'
 
@@ -13,6 +14,7 @@ const MIN_PASSWORD_LEN = 8
 
 export default function Login() {
   const { t } = useTranslation()
+  useDocumentTitle(t('login.title'))
   const { signIn } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

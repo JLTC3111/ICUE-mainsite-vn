@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "Aktuelles",
   "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "meta": {
+    "siteName": "ICUE Aktuelles",
+    "description": "ICUE — Newsroom und aktuelle Meldungen"
+  },
   "hero": {
     "rotatingTags": [
       "NEUESTE NACHRICHTEN",
@@ -221,6 +225,7 @@
     "outlineTranslations": "Übersetzungen"
   },
   "profile": {
+    "title": "Profil",
     "displayName": "Anzeigename",
     "fullName": "Vollständiger Name",
     "bio": "Biografie",

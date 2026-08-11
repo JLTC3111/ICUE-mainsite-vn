@@ -2,6 +2,10 @@
   "brand": "ICUE",
   "brandBadge": "뉴스",
   "instituteName": "건설경제 및 도시계획 연구원",
+  "meta": {
+    "siteName": "ICUE 뉴스",
+    "description": "ICUE — 뉴스룸 및 최신 소식"
+  },
   "hero": {
     "rotatingTags": [
       "최신 뉴스",
@@ -221,6 +225,7 @@
     "outlineTranslations": "번역"
   },
   "profile": {
+    "title": "프로필",
     "displayName": "표시 이름",
     "fullName": "전체 이름",
     "bio": "소개",
