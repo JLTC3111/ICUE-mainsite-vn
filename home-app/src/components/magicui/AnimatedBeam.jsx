@@ -95,18 +95,46 @@ export default function AnimatedBeam({
       const endX = rectB.left - containerRect.left + rectB.width / 2 + endXOffset
       const endY = rectB.top - containerRect.top + rectB.height / 2 + endYOffset
 
-      setLayout(buildBeamLayout({
+      const next = buildBeamLayout({
         startX,
         startY,
         endX,
         endY,
         curvature,
         pathWidth,
-      }))
+      })
+
+      // Bail out when nothing moved. ResizeObserver fires for changes that do
+      // not affect this beam (a sibling growing, a scrollbar appearing), and
+      // re-rendering an identical <path> just to produce the same `d` string
+      // was the bulk of this component's cost during window resizes.
+      setLayout((current) => (
+        current
+          && current.pathD === next.pathD
+          && current.x === next.x
+          && current.y === next.y
+          && current.width === next.width
+          && current.height === next.height
+          ? current
+          : next
+      ))
       return true
     }
 
-    const resizeObserver = new ResizeObserver(() => updatePath())
+    /*
+     * Coalesce the observer to one measurement per frame. A single layout
+     * change usually fires the callback once per observed node (container,
+     * from, to), and each fire measured three rects and set state — three
+     * layouts and up to three renders for one visual change.
+     */
+    let measureFrame = 0
+    const resizeObserver = new ResizeObserver(() => {
+      if (measureFrame) return
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0
+        updatePath()
+      })
+    })
 
     const retryUntilReady = () => {
       if (cancelled) return
@@ -128,6 +156,7 @@ export default function AnimatedBeam({
     return () => {
       cancelled = true
       cancelAnimationFrame(rafId)
+      if (measureFrame) cancelAnimationFrame(measureFrame)
       resizeObserver.disconnect()
     }
   }, [

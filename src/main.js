@@ -397,13 +397,13 @@ footer {
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-left">
-                    <a href="/src/pages/privacy.html">Bảo Mật</a>
+                    <a href="/legal/privacy">Bảo Mật</a>
                     <span>|</span>
-                    <a href="/src/pages/terms.html">Điều Khoản</a>
+                    <a href="/legal/terms">Điều Khoản</a>
                     <span>|</span>
-                    <a href="/src/pages/gdpr.html">GDPR</a>
+                    <a href="/legal/gdpr">GDPR</a>
                     <span>|</span>
-                    <a href="/src/pages/cookies.html">Cookies</a>
+                    <a href="/legal/cookies">Cookies</a>
                 </div>
                 <div class="footer-bottom-right">
                     <a href="/contact" class="company-deck">

@@ -1,8 +1,7 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import './EmployeeLanyard.css'
 
-const Lanyard = lazy(() => import('./reactbits/Lanyard/Lanyard'))
 export const EMPLOYEE_LANYARD_PHONE_QUERY =
   '(max-width: 450px), (max-width: 520px) and (pointer: coarse), (max-height: 520px) and (pointer: coarse)'
 
@@ -213,6 +212,38 @@ function StaticBadge({ profile, displayName, title, genericLabel, onOpen }) {
   )
 }
 
+/**
+ * The badge on its lanyard.
+ *
+ * This used to be a WebGL scene: three.js + @react-three/fiber + drei, a
+ * rapier physics rig and a meshline strap, so the card could be dragged and
+ * swung. It cost roughly 3 MB of JavaScript, held a live renderer and a
+ * physics step on a page that is mostly an org chart, and re-mounted whenever
+ * a visitor picked a different person.
+ *
+ * The badge artwork was never 3D — it is composited to a canvas by
+ * createBadgeImage and mapped onto a flat card. So the same picture hangs here
+ * from a CSS strap with a transform-only sway. Nothing animates on the main
+ * thread, the sway stops for `prefers-reduced-motion`, and hovering lifts the
+ * card the way grabbing it used to.
+ */
+function HangingBadge({ image, label, onOpen, interactive }) {
+  const Tag = interactive ? 'button' : 'div'
+
+  return (
+    <div className="employee-badge-hang">
+      <span className="employee-badge-hang__strap" aria-hidden="true" />
+      <span className="employee-badge-hang__clip" aria-hidden="true" />
+      <Tag
+        {...(interactive ? { type: 'button', onClick: onOpen } : {})}
+        className="employee-badge-hang__card"
+      >
+        <img src={image} alt={label} draggable="false" />
+      </Tag>
+    </div>
+  )
+}
+
 export default function EmployeeLanyard({ profile, onOpen }) {
   const { t, i18n } = useTranslation()
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -255,8 +286,18 @@ export default function EmployeeLanyard({ profile, onOpen }) {
         <span>{t('orgChart.badgeLabel')}</span>
       </div>
 
-      <div className="employee-lanyard__stage">
-        {reducedMotion ? (
+      <div
+        className={`employee-lanyard__stage${tabletLayout ? ' is-compact' : ''}`}
+        data-motion={reducedMotion ? 'reduced' : 'full'}
+      >
+        {badgeImage ? (
+          <HangingBadge
+            image={badgeImage}
+            label={displayName || genericLabel}
+            onOpen={onOpen}
+            interactive={Boolean(profile)}
+          />
+        ) : (
           <StaticBadge
             profile={profile}
             displayName={displayName}
@@ -264,30 +305,6 @@ export default function EmployeeLanyard({ profile, onOpen }) {
             genericLabel={genericLabel}
             onOpen={onOpen}
           />
-        ) : (
-          <Suspense fallback={<div className="employee-lanyard__loading" aria-hidden="true" />}>
-            <Lanyard
-              /*
-               * Key on the profile only. Including the badge-image load state
-               * tore down and rebuilt the whole WebGL scene (renderer, physics
-               * rig, textures) a second time the moment the canvas-composited
-               * badge finished generating — the "loads twice on profile change".
-               * `frontImage` is already reactive inside Lanyard via useTexture,
-               * so the texture swaps in place without a remount.
-               */
-              key={profile?.id || 'generic'}
-              position={[0, 0, 26]}
-              gravity={[0, -34, 0]}
-              fov={22}
-              frontImage={badgeImage}
-              imageFit="cover"
-              lanyardWidth={0.82}
-              segmentLength={0.5}
-              cardScale={tabletLayout ? 2.8 : 3.05}
-              rigPosition={[0, 3.3, 0]}
-              onCardClick={profile ? onOpen : undefined}
-            />
-          </Suspense>
         )}
       </div>
 

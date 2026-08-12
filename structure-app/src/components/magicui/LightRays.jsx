@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'motion/react'
+import { memo, useMemo } from 'react'
 import './LightRays.css'
 
 /**
@@ -31,31 +30,35 @@ function createRays(count, cycle) {
   })
 }
 
+/*
+ * A ray is a static element with per-instance custom properties; the sweep and
+ * fade come from one shared @keyframes in LightRays.css.
+ *
+ * Previously each ray was a motion.div running an infinite JS-driven animation
+ * over `opacity` and `rotate`. Seven of those meant motion/react ticking
+ * fourteen animated values on the main thread forever, on a purely decorative
+ * backdrop that is often scrolled out of view. As CSS the browser runs them on
+ * the compositor and pauses them when the element is off-screen, and the global
+ * reduced-motion rule in shared/styles/motion.css switches them off for free.
+ */
 function Ray({ left, rotate, width, swing, delay, duration, intensity }) {
   return (
-    <motion.div
+    <div
       className="light-rays__ray"
       style={{
         '--ray-left': `${left}%`,
         '--ray-width': `${width}px`,
-      }}
-      initial={{ rotate }}
-      animate={{
-        opacity: [0, intensity, 0],
-        rotate: [rotate - swing, rotate + swing, rotate - swing],
-      }}
-      transition={{
-        duration,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay,
-        repeatDelay: duration * 0.1,
+        '--ray-rotate': `${rotate}deg`,
+        '--ray-swing': `${swing}deg`,
+        '--ray-delay': `${delay}s`,
+        '--ray-duration': `${duration}s`,
+        '--ray-intensity': intensity,
       }}
     />
   )
 }
 
-export function LightRays({
+function LightRaysImpl({
   className = '',
   style,
   count = 7,
@@ -65,12 +68,14 @@ export function LightRays({
   length = '70vh',
   ...props
 }) {
-  const [rays, setRays] = useState([])
   const cycleDuration = Math.max(speed, 0.1)
 
-  useEffect(() => {
-    setRays(createRays(count, cycleDuration))
-  }, [count, cycleDuration])
+  // Built during render rather than in an effect: the old version mounted with
+  // zero rays and then set state, costing an extra render and a visible pop.
+  const rays = useMemo(
+    () => createRays(count, cycleDuration),
+    [count, cycleDuration],
+  )
 
   return (
     <div
@@ -94,3 +99,6 @@ export function LightRays({
     </div>
   )
 }
+
+export const LightRays = memo(LightRaysImpl)
+export default LightRays

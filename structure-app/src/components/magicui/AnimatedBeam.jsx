@@ -55,7 +55,13 @@ export function AnimatedBeam({
 
       const svgWidth = containerRect.width
       const svgHeight = containerRect.height
-      setSvgDimensions({ width: svgWidth, height: svgHeight })
+      // Skip the state write when the box has not actually changed size —
+      // ResizeObserver also fires for changes that leave this container alone.
+      setSvgDimensions((current) => (
+        current.width === svgWidth && current.height === svgHeight
+          ? current
+          : { width: svgWidth, height: svgHeight }
+      ))
 
       const startX =
         rectA.left - containerRect.left + rectA.width / 2 + startXOffset
@@ -68,14 +74,32 @@ export function AnimatedBeam({
 
       const controlY = startY - curvature
       const d = `M ${startX},${startY} Q ${(startX + endX) / 2},${controlY} ${endX},${endY}`
-      setPathD(d)
+      // Same reasoning: an identical `d` string means the beam has not moved,
+      // so re-rendering the <path> would produce byte-identical output.
+      setPathD((current) => (current === d ? current : d))
     }
 
-    const resizeObserver = new ResizeObserver(() => updatePath())
+    /*
+     * Coalesce the observer to one measurement per frame. A single layout
+     * change usually fires the callback once per observed node (container,
+     * from, to), and each fire measured three rects and set state — three
+     * layouts and up to three renders for one visual change.
+     */
+    let measureFrame = 0
+    const resizeObserver = new ResizeObserver(() => {
+      if (measureFrame) return
+      measureFrame = requestAnimationFrame(() => {
+        measureFrame = 0
+        updatePath()
+      })
+    })
     if (containerRef.current) resizeObserver.observe(containerRef.current)
     updatePath()
 
-    return () => resizeObserver.disconnect()
+    return () => {
+      if (measureFrame) cancelAnimationFrame(measureFrame)
+      resizeObserver.disconnect()
+    }
   }, [
     containerRef,
     fromRef,

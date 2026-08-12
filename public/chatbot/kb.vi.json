@@ -227,10 +227,10 @@
       "phrases": ["chính sách bảo mật", "gdpr", "điều khoản sử dụng", "cookies"],
       "answer": "Bạn có thể xem các trang chính sách (Bảo mật, GDPR, Điều khoản, Cookies). Nếu bạn nói rõ bạn quan tâm mục nào, mình sẽ chỉ đúng trang.",
       "links": [
-        {"label": "Bảo mật", "url": "#/privacy"},
-        {"label": "GDPR", "url": "#/gdpr"},
-        {"label": "Điều khoản", "url": "#/terms"},
-        {"label": "Cookies", "url": "#/cookies"}
+        {"label": "Bảo mật", "url": "/legal/privacy"},
+        {"label": "GDPR", "url": "/legal/gdpr"},
+        {"label": "Điều khoản", "url": "/legal/terms"},
+        {"label": "Cookies", "url": "/legal/cookies"}
       ]
     },
     {

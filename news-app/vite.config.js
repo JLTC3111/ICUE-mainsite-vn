@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
 import { marketApiPlugin } from './vite-market-api-plugin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -23,7 +24,7 @@ export default defineConfig(({ mode }) => {
   return {
     // Distinct from legacy #/News — served at icue.vn/newsroom/
     base: '/newsroom/',
-    plugins: [react(), marketApiPlugin()],
+    plugins: [react(), marketApiPlugin(), serveSiteFonts(path.resolve(__dirname, '..'))],
     define: {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(url),
       'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(anonKey),
@@ -32,6 +33,7 @@ export default defineConfig(({ mode }) => {
       dedupe: ['react', 'react-dom'],
       alias: {
         '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
+        '@icue/styles': path.resolve(__dirname, '../shared/styles'),
         '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
         '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
         '@icue/text': path.resolve(__dirname, '../shared/text'),

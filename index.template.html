@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Self-hosted Noto Sans (see shared/fonts/fonts.css). Preload only the
+         Latin + Vietnamese slices; every other subset is unicode-range gated
+         and fetched on demand. No font request leaves our origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-vietnamese.woff2" crossorigin />
   <title>ICUE-Vietnam</title>
   <meta name="description" content="Website chính thức của ICUE Vietnam, Viện Nghiên Cứu Kinh Tế Xây Dựng Và Đô Thị, Trung Tâm Sáng Tạo, Đổi Mới. Khám phá các dự án, hoạt động cộng đồng, tin tức và thông tin liên hệ." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://icue.vn/" />
   
   <!-- Resource hints for faster loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   
@@ -40,9 +42,6 @@
   </script>
   <link rel="icon" type="image/png" href="public/logoIcons/favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Audiowide&family=Poppins&family=Space+Mono&family=Playfair+Display&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
   <script type="module" src="/src/app-entry.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">

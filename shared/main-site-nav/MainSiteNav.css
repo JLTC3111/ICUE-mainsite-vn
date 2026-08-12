@@ -166,7 +166,7 @@
 .main-site-nav__dock-icon--menu {
   padding: 0;
   cursor: pointer;
-  border-radius: 0.75rem;
+  border-radius: 0.75rem !important;
 }
 
 .main-site-nav__dock-icon--menu .menu-toggle {
@@ -365,7 +365,7 @@
     max-width: 46%;
     padding: 0.3rem clamp(0.55rem, 2.6vw, 0.85rem) 0.3rem clamp(0.4rem, 2vw, 0.6rem);
     background: rgba(255, 255, 255, 0.13);
-    border-radius: 9999px;
+    border-radius: 9999px !important;
   }
 
   .main-site-nav__dock-slot--brand .logo-wordmark {
@@ -395,7 +395,7 @@
   background-color: transparent;
   justify-content: center;
   align-items: center;
-  border-radius: 25px;
+  border-radius: 25px !important;
   cursor: pointer;
   transition: transform 0.75s;
 }
@@ -411,7 +411,7 @@
   background-repeat: no-repeat;
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   box-shadow: 2px 4px 12px #fff;
 }
 
@@ -437,7 +437,7 @@
   background: transparent;
   border: none;
   padding: 0.35rem;
-  border-radius: 50px;
+  border-radius: 50px !important;
   transition: color 200ms ease, background 200ms ease;
   animation: none;
   opacity: 1;
@@ -674,11 +674,11 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.35rem 0.6rem;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.92);
-  font-family: "Poppins", sans-serif;
+  font-family: var(--icue-font-stack);
   font-size: 0.78rem;
   letter-spacing: 0.01em;
   user-select: none;
@@ -703,7 +703,7 @@
   display: inline-block;
   width: 2.5rem;
   height: 1.35rem;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.35);
   transition: background 200ms ease, border-color 200ms ease;
@@ -716,7 +716,7 @@
   left: 3px;
   width: 1rem;
   height: 1rem;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: #fff;
   transform: translateY(-50%);
   transition: transform 200ms ease, background 200ms ease;
@@ -844,7 +844,7 @@
   transform: translateY(-50%);
   width: 3px;
   height: 52px;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: rgba(255, 255, 255, 0.28);
   transition: background 0.2s ease, height 0.2s ease;
 }
@@ -1281,7 +1281,7 @@
     max-width: 100%;
     margin-inline: 0;
     border: none;
-    border-radius: 0 0 1.35rem 1.35rem;
+    border-radius: 0 0 1.35rem 1.35rem !important;
     justify-content: space-between;
     --dock-gap: clamp(0.75rem, 1.4vw, 1.15rem);
     padding: 0.75rem clamp(2rem, 5vw, 4rem);
@@ -1356,7 +1356,7 @@
     width: max-content;
     max-width: min(100%, calc(100vw - 1.5rem));
     margin-inline: auto;
-    border-radius: 9999px;
+    border-radius: 9999px !important;
     justify-content: center;
     gap: 0;
     padding: 0.5rem clamp(1.05rem, 4.2vw, 1.45rem);

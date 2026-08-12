@@ -64,7 +64,10 @@ function spaDevFallback({ name, basePath, outDirName, buildScript }) {
           return;
         }
 
-        const indexPath = path.join(appDir, 'index.html');
+        const routeIndexPath = path.join(filePath, 'index.html');
+        const indexPath = fs.existsSync(routeIndexPath)
+          ? routeIndexPath
+          : path.join(appDir, 'index.html');
         if (fs.existsSync(indexPath)) {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -85,21 +88,17 @@ function homeDevFallback() {
   // this middleware answers with the home SPA's index.html, the SPA finds no
   // route for it and its catch-all redirects to `/`, so the link just appears
   // to do nothing.
-  const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work', '/contact'];
+  const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work', '/contact', '/legal'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
     '/src/pages/notableAwards.html',
     '/src/pages/communityActivities.html',
     '/src/pages/FAQs.html',
-    '/src/pages/privacy.html',
-    '/src/pages/terms.html',
-    '/src/pages/gdpr.html',
-    '/src/pages/cookies.html',
   ]);
 
-  // Mirrors the 301s in _redirects. The three pages that became their own apps
-  // have no HTML left to serve, so in dev these are pure redirects — without
+  // Mirrors the 301s in _redirects. Pages that became standalone apps have no
+  // legacy HTML left to serve, so in dev these are pure redirects — without
   // them a legacy URL 404s here while working fine in production.
   const legacyPageRedirects = {
     '/legacy/pages/Contact.html': '/contact',
@@ -108,10 +107,10 @@ function homeDevFallback() {
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/FAQs.html': '/faqs',
-    '/legacy/pages/privacy.html': '/privacy',
-    '/legacy/pages/terms.html': '/terms',
-    '/legacy/pages/gdpr.html': '/gdpr',
-    '/legacy/pages/cookies.html': '/cookies',
+    '/legacy/pages/privacy.html': '/legal/privacy',
+    '/legacy/pages/terms.html': '/legal/terms',
+    '/legacy/pages/gdpr.html': '/legal/gdpr',
+    '/legacy/pages/cookies.html': '/legal/cookies',
   };
 
   const staticSrcRedirects = {
@@ -121,10 +120,17 @@ function homeDevFallback() {
     '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
     '/src/pages/FAQs.html': '/faqs',
-    '/src/pages/privacy.html': '/privacy',
-    '/src/pages/terms.html': '/terms',
-    '/src/pages/gdpr.html': '/gdpr',
-    '/src/pages/cookies.html': '/cookies',
+    '/src/pages/privacy.html': '/legal/privacy',
+    '/src/pages/terms.html': '/legal/terms',
+    '/src/pages/gdpr.html': '/legal/gdpr',
+    '/src/pages/cookies.html': '/legal/cookies',
+  };
+
+  const retiredLegalRoutes = {
+    '/privacy': '/legal/privacy',
+    '/terms': '/legal/terms',
+    '/gdpr': '/legal/gdpr',
+    '/cookies': '/legal/cookies',
   };
 
   return {
@@ -138,6 +144,13 @@ function homeDevFallback() {
           return next();
         }
         if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
+
+        if (retiredLegalRoutes[urlPath]) {
+          res.statusCode = 302;
+          res.setHeader('Location', retiredLegalRoutes[urlPath]);
+          res.end();
+          return;
+        }
 
         const rel = urlPath.replace(/^\//, '');
         const filePath = path.join(appDir, rel);
@@ -233,6 +246,7 @@ export default {
     spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure', buildScript: 'build:structure' }),
     spaDevFallback({ name: 'ourwork-dev-fallback', basePath: '/our-work', outDirName: 'our-work', buildScript: 'build:ourwork' }),
     spaDevFallback({ name: 'contact-dev-fallback', basePath: '/contact', outDirName: 'contact', buildScript: 'build:contact' }),
+    spaDevFallback({ name: 'legal-dev-fallback', basePath: '/legal', outDirName: 'legal', buildScript: 'build:legal' }),
     // Must stay last: this one claims every remaining extensionless URL.
     homeDevFallback(),
   ],

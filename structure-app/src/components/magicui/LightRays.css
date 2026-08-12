@@ -41,8 +41,9 @@
   left: var(--ray-left);
   width: var(--ray-width);
   height: var(--light-rays-length);
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(calc(var(--ray-rotate) - var(--ray-swing)));
   transform-origin: top center;
+  animation: light-rays-sweep var(--ray-duration) ease-in-out var(--ray-delay) infinite;
   border-radius: 9999px;
   background: linear-gradient(
     to bottom,
@@ -52,4 +53,20 @@
   mix-blend-mode: screen;
   filter: blur(var(--light-rays-blur));
   opacity: 0;
+}
+
+/*
+ * One shared keyframe drives every ray; the per-ray custom properties set on
+ * the element decide its angle, swing, timing and peak opacity. Only transform
+ * and opacity animate, so this stays on the compositor.
+ */
+@keyframes light-rays-sweep {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-50%) rotate(calc(var(--ray-rotate) - var(--ray-swing)));
+  }
+  50% {
+    opacity: var(--ray-intensity);
+    transform: translateX(-50%) rotate(calc(var(--ray-rotate) + var(--ray-swing)));
+  }
 }

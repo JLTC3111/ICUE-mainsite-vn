@@ -1,0 +1,92 @@
+{
+  "skipToContent": "Bỏ qua đến nội dung",
+  "hero": {
+    "updated": "Cập nhật {{date}}",
+    "version": "Phiên bản {{version}}"
+  },
+  "toc": {
+    "heading": "Tài liệu này",
+    "aria": "Mục lục {{title}}"
+  },
+  "article": {
+    "lastUpdated": "Cập nhật lần cuối:"
+  },
+  "contact": {
+    "eyebrow": "Cần hỗ trợ?"
+  },
+  "gdpr": {
+    "channel": "Kênh yêu cầu chính thức",
+    "title": "Gửi email cho đầu mối dữ liệu của ICUE",
+    "body": "Ghi rõ quyền bạn muốn thực hiện, dữ liệu hoặc khoảng thời gian liên quan và thông tin giúp ICUE xác minh danh tính. Không gửi bản chụp giấy tờ tùy thân nếu chưa được yêu cầu qua kênh bảo mật.",
+    "cta": "Soạn email"
+  },
+  "cookies": {
+    "intro": "Công cụ này lưu lựa chọn trên trình duyệt hiện tại. Các tích hợp tùy chọn của ICUE có thể đọc lựa chọn qua sự kiện <0>{{event}}</0>.",
+    "categories": {
+      "essential": {
+        "title": "Cookie cần thiết",
+        "description": "Bắt buộc cho bảo mật và chức năng cốt lõi."
+      },
+      "performance": {
+        "title": "Cookie hiệu suất",
+        "description": "Hỗ trợ đo lường và cải thiện website."
+      },
+      "functional": {
+        "title": "Cookie chức năng",
+        "description": "Ghi nhớ ngôn ngữ và lựa chọn giao diện."
+      },
+      "marketing": {
+        "title": "Cookie marketing",
+        "description": "Đo lường chiến dịch và nội dung quảng bá."
+      }
+    },
+    "actions": {
+      "reject": "Từ chối tùy chọn",
+      "save": "Lưu lựa chọn"
+    },
+    "status": {
+      "saved": "Đã lưu tùy chọn trên thiết bị này.",
+      "blocked": "Trình duyệt đang chặn bộ nhớ cục bộ. Không thể lưu tùy chọn."
+    }
+  },
+  "notice": {
+    "title": "Bản tiếng Việt là bản có hiệu lực",
+    "body": "Giao diện trang này hiển thị theo ngôn ngữ bạn chọn, nhưng nội dung pháp lý bên dưới giữ nguyên bản tiếng Việt đã được thẩm định. Đây là bản ICUE chịu ràng buộc."
+  },
+  "documents": {
+    "privacy": {
+      "tabLabel": "Quyền riêng tư",
+      "eyebrow": "Bảo vệ dữ liệu",
+      "title": "Chính sách quyền riêng tư",
+      "summary": "Cách ICUE thu thập, sử dụng, lưu trữ và bảo vệ thông tin cá nhân khi bạn làm việc với chúng tôi hoặc sử dụng website.",
+      "description": "Chính sách quyền riêng tư và cách ICUE Vietnam thu thập, sử dụng và bảo vệ thông tin cá nhân."
+    },
+    "terms": {
+      "tabLabel": "Điều khoản",
+      "eyebrow": "Quy tắc sử dụng",
+      "title": "Điều khoản sử dụng",
+      "summary": "Các điều kiện áp dụng khi truy cập website, sử dụng nội dung và làm việc với các dịch vụ trực tuyến của ICUE.",
+      "description": "Điều khoản và điều kiện áp dụng khi truy cập, sử dụng website và nội dung của ICUE Vietnam."
+    },
+    "gdpr": {
+      "tabLabel": "GDPR",
+      "eyebrow": "Quyền dữ liệu",
+      "title": "Quyền của bạn theo GDPR",
+      "summary": "Tìm hiểu tám quyền dữ liệu cơ bản và cách gửi yêu cầu đến ICUE theo Quy định Bảo vệ Dữ liệu Chung của Liên minh Châu Âu.",
+      "description": "Thông tin về quyền dữ liệu cá nhân theo GDPR và cách gửi yêu cầu liên quan đến dữ liệu cho ICUE Vietnam."
+    },
+    "cookies": {
+      "tabLabel": "Cookie",
+      "eyebrow": "Lưu trữ trên thiết bị",
+      "title": "Chính sách cookie",
+      "summary": "Cookie là gì, những nhóm cookie website có thể sử dụng và cách bạn kiểm soát lựa chọn của mình.",
+      "description": "Chính sách cookie giải thích cách website ICUE Vietnam sử dụng cookie và các công nghệ lưu trữ tương tự."
+    }
+  },
+  "lang": {
+    "label": "Chọn ngôn ngữ"
+  },
+  "tabs": {
+    "aria": "Tài liệu pháp lý"
+  }
+}

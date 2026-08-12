@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
+import { useReducedMotion } from 'motion/react';
 import './MagicBento.css';
 
 const DEFAULT_PARTICLE_COUNT = 12;
@@ -76,6 +77,16 @@ const ParticleCard = ({
     magnetismAnimationRef.current?.kill();
 
     particlesRef.current.forEach(particle => {
+      /*
+       * Kill the drift and pulse tweens before starting the exit.
+       *
+       * Both are `repeat: -1`, and gsap keeps ticking a tween whether or not
+       * its target is still in the document — so the old code, which removed
+       * the node in an onComplete without killing them, left two infinite
+       * tweens per particle running for the life of the page. Hovering a grid
+       * of cards a few times was enough to pile up hundreds of them.
+       */
+      gsap.killTweensOf(particle);
       gsap.to(particle, {
         scale: 0,
         opacity: 0,
@@ -466,7 +477,14 @@ const MagicBento = ({
 }) => {
   const gridRef = useRef(null);
   const isMobile = useMobileDetection();
-  const shouldDisableAnimations = disableAnimations || isMobile;
+  /*
+   * gsap does not consult the OS motion preference the way motion/react does,
+   * so the app-level <MotionConfig reducedMotion="user"> never reached the
+   * particle, tilt and magnetism tweens below. Folding it into the existing
+   * disable switch turns the whole effect off rather than merely shortening it.
+   */
+  const prefersReducedMotion = useReducedMotion();
+  const shouldDisableAnimations = disableAnimations || isMobile || prefersReducedMotion;
 
   return (
     <>

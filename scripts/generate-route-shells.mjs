@@ -121,7 +121,9 @@ const routes = [
   },
   {
     key: 'privacy',
-    path: '/privacy',
+    path: '/legal/privacy',
+    // Served by legal-app. Kept here for sitemap and no-JS navigation data.
+    standalone: true,
     title: 'Chính sách quyền riêng tư | ICUE Vietnam',
     description:
       'Chính sách quyền riêng tư và cách ICUE Vietnam thu thập, sử dụng và bảo vệ thông tin cá nhân.',
@@ -131,7 +133,8 @@ const routes = [
   },
   {
     key: 'terms',
-    path: '/terms',
+    path: '/legal/terms',
+    standalone: true,
     title: 'Điều khoản sử dụng | ICUE Vietnam',
     description:
       'Điều khoản và điều kiện áp dụng khi truy cập, sử dụng website và nội dung của ICUE Vietnam.',
@@ -141,7 +144,8 @@ const routes = [
   },
   {
     key: 'gdpr',
-    path: '/gdpr',
+    path: '/legal/gdpr',
+    standalone: true,
     title: 'Quyền dữ liệu GDPR | ICUE Vietnam',
     description:
       'Thông tin về quyền dữ liệu cá nhân theo GDPR và cách gửi yêu cầu liên quan đến dữ liệu cho ICUE Vietnam.',
@@ -151,7 +155,8 @@ const routes = [
   },
   {
     key: 'cookies',
-    path: '/cookies',
+    path: '/legal/cookies',
+    standalone: true,
     title: 'Chính sách cookie | ICUE Vietnam',
     description:
       'Chính sách cookie giải thích cách website ICUE Vietnam sử dụng cookie và các công nghệ lưu trữ tương tự.',
@@ -306,7 +311,6 @@ for (const route of routes) {
 }
 
 const sitemapUrls = routes
-  .filter((route) => !['privacy', 'terms', 'gdpr', 'cookies'].includes(route.key))
   .map((route) => {
     const pathname = route.canonicalPath || route.path
     const url = `${siteUrl}${pathname === '/' ? '/' : pathname}`

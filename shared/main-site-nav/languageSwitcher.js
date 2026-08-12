@@ -59,10 +59,10 @@ export const MIGRATED_PAGE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   FAQs: '/faqs',
-  privacy: '/privacy',
-  terms: '/terms',
-  gdpr: '/gdpr',
-  cookies: '/cookies',
+  privacy: '/legal/privacy',
+  terms: '/legal/terms',
+  gdpr: '/legal/gdpr',
+  cookies: '/legal/cookies',
 };
 
 const PATH_TO_PAGE = Object.fromEntries(

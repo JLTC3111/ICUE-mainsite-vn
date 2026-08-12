@@ -2,16 +2,18 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   base: '/people/',
-  plugins: [react()],
+  plugins: [react(), serveSiteFonts(path.resolve(__dirname, '..'))],
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
+      '@icue/styles': path.resolve(__dirname, '../shared/styles'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),

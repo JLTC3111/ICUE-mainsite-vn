@@ -1,0 +1,131 @@
+/*
+ * One typeface for the whole site — Noto Sans, served from our own /fonts.
+ *
+ * Every app used to pick its own stack (Inter here, Archivo there, Poppins and
+ * JetBrains Mono sprinkled through components) and pull the display faces from
+ * Google at runtime. This file collapses all of that onto a single family and
+ * re-points the per-app tokens at it, so a page renders in one voice no matter
+ * which app served it.
+ *
+ * Import this AFTER an app's own theme.css — these definitions deliberately
+ * overwrite the app-local token values.
+ *
+ * The locale stacks differ only in which Noto member leads: Latin/Vietnamese
+ * text uses "Noto Sans", Japanese "Noto Sans JP", Korean "Noto Sans KR". The
+ * system fallbacks after each are kept as a safety net for glyphs outside the
+ * subsets we ship (see shared/fonts/fonts.css).
+ */
+
+:root {
+  --icue-font-stack: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --icue-font-stack-ja: "Noto Sans JP", "Noto Sans", "Hiragino Sans", "Yu Gothic",
+    Meiryo, system-ui, sans-serif;
+  --icue-font-stack-ko: "Noto Sans KR", "Noto Sans", "Apple SD Gothic Neo",
+    "Malgun Gothic", system-ui, sans-serif;
+
+  /* Shared ICUE tokens */
+  --icue-sans: var(--icue-font-stack);
+  --icue-serif: var(--icue-font-stack);
+  --icue-display-serif: var(--icue-font-stack);
+  --icue-mono: var(--icue-font-stack);
+  --icue-vi-sans: var(--icue-font-stack);
+  --icue-vi-serif: var(--icue-font-stack);
+  --icue-ja-sans: var(--icue-font-stack-ja);
+  --icue-ko-sans: var(--icue-font-stack-ko);
+
+  /* our-work app tokens */
+  --ow-sans: var(--icue-font-stack);
+  --ow-mono: var(--icue-font-stack);
+
+  /* contact app tokens */
+  --ct-sans: var(--icue-font-stack);
+  --ct-display: var(--icue-font-stack);
+  --ct-mono: var(--icue-font-stack);
+}
+
+html {
+  font-family: var(--icue-font-stack);
+  font-synthesis-weight: none;
+}
+
+body {
+  font-family: var(--icue-font-stack);
+}
+
+/*
+ * Locale switches swap the leading family only. Noto's members share metrics,
+ * so changing language never reflows the layout around the text.
+ */
+html:lang(ja),
+html:lang(ja) body {
+  font-family: var(--icue-font-stack-ja);
+}
+
+html:lang(ko),
+html:lang(ko) body {
+  font-family: var(--icue-font-stack-ko);
+}
+
+html:lang(ja) {
+  --icue-sans: var(--icue-font-stack-ja);
+  --icue-serif: var(--icue-font-stack-ja);
+  --icue-display-serif: var(--icue-font-stack-ja);
+}
+
+html:lang(ko) {
+  --icue-sans: var(--icue-font-stack-ko);
+  --icue-serif: var(--icue-font-stack-ko);
+  --icue-display-serif: var(--icue-font-stack-ko);
+}
+
+/*
+ * Form controls do not inherit the document face on their own, and neither do
+ * the handful of components that hard-code a family. `font: inherit` on the
+ * controls plus an explicit stack on everything else keeps one voice without
+ * having to chase every component stylesheet.
+ *
+ * `.icue-icon-font` is the opt-out for genuine icon fonts (Phosphor, Swiper's
+ * arrows) whose glyphs are not letters and must keep their own family.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+  font-family: var(--icue-font-stack);
+}
+
+html:lang(ja) button,
+html:lang(ja) input,
+html:lang(ja) optgroup,
+html:lang(ja) select,
+html:lang(ja) textarea {
+  font-family: var(--icue-font-stack-ja);
+}
+
+html:lang(ko) button,
+html:lang(ko) input,
+html:lang(ko) optgroup,
+html:lang(ko) select,
+html:lang(ko) textarea {
+  font-family: var(--icue-font-stack-ko);
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--icue-font-stack);
+}
+
+[class*="swiper-button"]::after,
+[class*="swiper-button"]::before,
+.icue-icon-font,
+.icue-icon-font::after,
+.icue-icon-font::before,
+[class^="ph-"],
+[class*=" ph-"] {
+  font-family: revert;
+}

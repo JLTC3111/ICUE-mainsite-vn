@@ -83,10 +83,10 @@ export const MAIN_SITE_PAGE_PATHS = {
   communityActivities: '/community-activities',
   FAQs: '/faqs',
   faqs: '/faqs',
-  privacy: '/privacy',
-  terms: '/terms',
-  gdpr: '/gdpr',
-  cookies: '/cookies',
+  privacy: '/legal/privacy',
+  terms: '/legal/terms',
+  gdpr: '/legal/gdpr',
+  cookies: '/legal/cookies',
   orgStructure: '/structure/',
 }
 

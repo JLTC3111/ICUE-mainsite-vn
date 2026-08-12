@@ -703,7 +703,7 @@
 
 .agent__msg-body code,
 .agent__msg-body pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--icue-font-stack);
   font-size: 12.5px;
 }
 

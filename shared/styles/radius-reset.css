@@ -1,0 +1,55 @@
+/*
+ * Square corners everywhere.
+ *
+ * The site is deliberately flat: no element carries a rounded corner except the
+ * injected shell chrome — the main site nav (including its drawer) and the site
+ * footer. That includes the shapes people usually treat as untouchable, so
+ * avatars, flag icons, profile photos and pill buttons all render as squares.
+ *
+ * WHY `!important` ON `*`:
+ * `*` has zero specificity, so a plain reset would lose to literally every
+ * authored rule — and there are ~500 radius declarations spread across seven
+ * apps plus injected legacy HTML we do not control. Marking the reset
+ * `!important` is what makes it actually win. It also beats inline styles that
+ * components set from JS.
+ *
+ * HOW THE SHELL CHROME OPTS OUT:
+ * An `!important` declaration on a class selector outranks an `!important`
+ * declaration on `*`, because specificity still breaks ties between two
+ * important author rules. So the nav and drawer keep their corners simply by
+ * marking their own radii `!important` in MainSiteNav.css and DrawerMenu.css.
+ * Anything in `shared/site-footer/Footer.css` that needs a corner in future
+ * must do the same — the footer currently declares none.
+ *
+ * This is the single place corner radius is decided. Do not add radii to app
+ * stylesheets expecting them to survive.
+ */
+
+:root {
+  /* Legacy radius tokens are flattened at the source so component CSS that
+     still reads them stays honest rather than silently overridden. */
+  --icue-radius: 0px;
+  --icue-radius-sm: 0px;
+  --icue-radius-lg: 0px;
+  --np-radius: 0px;
+  --radius: 0px;
+  --ow-radius: 0px;
+  --ct-radius: 0px;
+}
+
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
+/*
+ * Injected legacy pages arrive as raw HTML with their own <style> blocks; the
+ * universal rule above already covers them, but SVG/canvas-clipped shapes can
+ * also round via these presentation attributes. Flatten those too.
+ */
+rect[rx],
+rect[ry] {
+  rx: 0 !important;
+  ry: 0 !important;
+}

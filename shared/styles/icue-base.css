@@ -1,0 +1,12 @@
+/*
+ * The shared look every ICUE app ends with: one self-hosted typeface and
+ * square corners.
+ *
+ * Import this LAST in an app's entry module, after the app's own theme.css.
+ * typography.css re-points the per-app font tokens, so it has to land after
+ * the values it is replacing.
+ */
+@import "../fonts/fonts.css";
+@import "./typography.css";
+@import "./radius-reset.css";
+@import "./motion.css";

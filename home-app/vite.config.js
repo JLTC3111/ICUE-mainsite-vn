@@ -2,6 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -9,10 +10,6 @@ const LEGACY_SHELL_SRC_PAGES = new Set([
   '/src/pages/notableAwards.html',
   '/src/pages/communityActivities.html',
   '/src/pages/FAQs.html',
-  '/src/pages/privacy.html',
-  '/src/pages/terms.html',
-  '/src/pages/gdpr.html',
-  '/src/pages/cookies.html',
 ])
 
 const LEGACY_PAGE_REDIRECTS = {
@@ -20,22 +17,37 @@ const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/FAQs.html': '/faqs',
-  '/legacy/pages/privacy.html': '/privacy',
-  '/legacy/pages/terms.html': '/terms',
-  '/legacy/pages/gdpr.html': '/gdpr',
-  '/legacy/pages/cookies.html': '/cookies',
+  '/legacy/pages/privacy.html': '/legal/privacy',
+  '/legacy/pages/terms.html': '/legal/terms',
+  '/legacy/pages/gdpr.html': '/legal/gdpr',
+  '/legacy/pages/cookies.html': '/legal/cookies',
+}
+
+const RETIRED_LEGAL_ROUTES = {
+  '/privacy': '/legal/privacy',
+  '/terms': '/legal/terms',
+  '/gdpr': '/legal/gdpr',
+  '/cookies': '/legal/cookies',
 }
 
 export default defineConfig({
   base: '/',
   assetsInclude: ['**/*.glb'],
   plugins: [
+    serveSiteFonts(path.resolve(__dirname, '..')),
     react(),
     {
       name: 'legacy-pages-spa',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0]
+
+          if (RETIRED_LEGAL_ROUTES[urlPath]) {
+            res.statusCode = 302
+            res.setHeader('Location', RETIRED_LEGAL_ROUTES[urlPath])
+            res.end()
+            return
+          }
 
           if (LEGACY_SHELL_SRC_PAGES.has(urlPath)) {
             req.url = '/index.html'
@@ -66,6 +78,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, '..'),
       '@icue/main-site-nav': path.resolve(__dirname, '../shared/main-site-nav'),
+      '@icue/styles': path.resolve(__dirname, '../shared/styles'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),

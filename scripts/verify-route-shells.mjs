@@ -15,10 +15,6 @@ const routes = [
   ['/notable-awards', 'route-shells/notable-awards.html'],
   ['/community-activities', 'route-shells/community-activities.html'],
   ['/faqs', 'route-shells/faqs.html'],
-  ['/privacy', 'route-shells/privacy.html'],
-  ['/terms', 'route-shells/terms.html'],
-  ['/gdpr', 'route-shells/gdpr.html'],
-  ['/cookies', 'route-shells/cookies.html'],
 ]
 
 const values = {
@@ -93,7 +89,7 @@ for (const [label, set] of Object.entries(values)) {
   }
 }
 
-// /our-work and /contact are served by their own apps, not by a route shell.
+// /our-work, /contact and /legal are served by their own apps, not by a route shell.
 // Assert each app is actually there and reachable, since dropping them from
 // `routes` above removed them from every other check in this file.
 const standaloneApps = [
@@ -101,6 +97,7 @@ const standaloneApps = [
   ['/structure', 'structure', 'structure-app'],
   ['/our-work', 'our-work', 'ourwork-app'],
   ['/contact', 'contact', 'contact-app'],
+  ['/legal', 'legal', 'legal-app'],
 ]
 
 for (const [route, dir, appName] of standaloneApps) {
@@ -133,9 +130,40 @@ for (const field of ['name', 'email', 'message', 'topic', 'consent', 'bot-field'
   }
 }
 
+const legalHtml = fs.readFileSync(path.join(dist, 'legal/index.html'), 'utf8')
+for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {
+  if (!legalHtml.includes(`href="/legal/${slug}"`)) {
+    throw new Error(`/legal/${slug}: missing from the legal app no-JS navigation`)
+  }
+  const legalRouteFile = path.join(dist, `legal/${slug}/index.html`)
+  if (!fs.existsSync(legalRouteFile)) {
+    throw new Error(`/legal/${slug}: route-specific legal shell is missing`)
+  }
+  const legalRouteHtml = fs.readFileSync(legalRouteFile, 'utf8')
+  if (
+    !legalRouteHtml.includes(`href="https://icue.vn/legal/${slug}"`)
+    || !legalRouteHtml.includes('"@type":"WebPage"')
+  ) {
+    throw new Error(`/legal/${slug}: canonical metadata is incomplete`)
+  }
+  if (
+    !new RegExp(`^/legal/${slug}\\s+/legal/${slug}/index\\.html\\s+200$`, 'm')
+      .test(redirects)
+  ) {
+    throw new Error(`/legal/${slug}: missing route-specific Netlify rewrite`)
+  }
+  if (!new RegExp(`^/${slug}\\s+/legal/${slug}\\s+301$`, 'm').test(redirects)) {
+    throw new Error(`/${slug}: missing permanent redirect to the legal app`)
+  }
+}
+
 const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8')
 const robots = fs.readFileSync(path.join(dist, 'robots.txt'), 'utf8')
-if (!sitemap.includes('<urlset') || !sitemap.includes('https://icue.vn/about-us')) {
+if (
+  !sitemap.includes('<urlset')
+  || !sitemap.includes('https://icue.vn/about-us')
+  || !sitemap.includes('https://icue.vn/legal/privacy')
+) {
   throw new Error('sitemap.xml is missing expected routes')
 }
 if (!robots.includes('Sitemap: https://icue.vn/sitemap.xml')) {

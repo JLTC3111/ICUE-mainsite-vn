@@ -199,9 +199,17 @@ function Galaxy({
   const targetMouseActive = useRef(0.0)
   const smoothMouseActive = useRef(0.0)
   const activeRef = useRef(active)
+  /*
+   * Handles onto the render loop so toggling `active` can wake it again. The
+   * loop now stops scheduling frames when it has nothing to draw, so unlike the
+   * old always-on version it cannot notice a flag change by itself.
+   */
+  const loopRef = useRef(null)
 
   useEffect(() => {
     activeRef.current = active
+    if (active) loopRef.current?.start()
+    else loopRef.current?.stop()
   }, [active])
 
   useEffect(() => {
@@ -269,15 +277,28 @@ function Galaxy({
     })
 
     const mesh = new Mesh(gl, { geometry, program })
-    let animateId
+    let animateId = 0
 
-    function update(t) {
-      animateId = requestAnimationFrame(update)
+    /*
+     * The loop used to run forever: it kept calling requestAnimationFrame even
+     * when `activeRef` was false, and nothing stopped it when the page was in a
+     * background tab or the background had been scrolled past. That is a
+     * full-screen fragment shader burning GPU and battery behind content.
+     *
+     * Now the loop only runs while the canvas is genuinely on screen, the tab
+     * is foregrounded, and the app has the background switched on. It also
+     * renders a single frame and stops for visitors who ask for reduced motion,
+     * so they get the artwork without the animation.
+     */
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let onScreen = true
 
-      if (activeRef.current) {
-        program.uniforms.uTime.value = t * 0.001
-        program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0
-      }
+    const shouldRun = () =>
+      activeRef.current && onScreen && document.visibilityState === 'visible'
+
+    function renderFrame(t) {
+      program.uniforms.uTime.value = t * 0.001
+      program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0
 
       const lerpFactor = 0.05
       smoothMousePos.current.x += (targetMousePos.current.x - smoothMousePos.current.x) * lerpFactor
@@ -288,12 +309,60 @@ function Galaxy({
       program.uniforms.uMouse.value[1] = smoothMousePos.current.y
       program.uniforms.uMouseActiveFactor.value = smoothMouseActive.current
 
-      if (activeRef.current) {
-        renderer.render({ scene: mesh })
-      }
+      renderer.render({ scene: mesh })
     }
 
-    animateId = requestAnimationFrame(update)
+    function update(t) {
+      if (!shouldRun()) {
+        animateId = 0
+        return
+      }
+      animateId = requestAnimationFrame(update)
+      renderFrame(t)
+    }
+
+    function start() {
+      if (animateId || !shouldRun()) return
+      if (reduceMotion.matches) {
+        // One still frame, then stop.
+        renderFrame(performance.now())
+        return
+      }
+      animateId = requestAnimationFrame(update)
+    }
+
+    function stop() {
+      if (!animateId) return
+      cancelAnimationFrame(animateId)
+      animateId = 0
+    }
+
+    const observer =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(
+            ([entry]) => {
+              onScreen = entry.isIntersecting
+              if (onScreen) start()
+              else stop()
+            },
+            { rootMargin: '120px' },
+          )
+    observer?.observe(ctn)
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') start()
+      else stop()
+    }
+    const handleMotionPreference = () => {
+      stop()
+      start()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    reduceMotion.addEventListener('change', handleMotionPreference)
+
+    loopRef.current = { start, stop }
+    start()
     ctn.appendChild(gl.canvas)
 
     function handleMouseMove(e) {
@@ -314,7 +383,11 @@ function Galaxy({
     }
 
     return () => {
-      cancelAnimationFrame(animateId)
+      stop()
+      loopRef.current = null
+      observer?.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibility)
+      reduceMotion.removeEventListener('change', handleMotionPreference)
       window.removeEventListener('resize', resize)
       if (useMouse) {
         window.removeEventListener('mousemove', handleMouseMove)

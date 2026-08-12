@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react'
+import { memo, useRef, useCallback, useEffect, useMemo } from 'react'
 import './BorderGlow.css'
 
 function parseHSL(hslStr) {
@@ -83,45 +83,60 @@ function BorderGlow({
   fillOpacity = 0.35,
 }) {
   const cardRef = useRef(null)
+  const pointerRef = useRef({ x: 0, y: 0 })
+  const frameRef = useRef(0)
 
-  const getCenterOfElement = useCallback((el) => {
-    const { width, height } = el.getBoundingClientRect()
-    return [width / 2, height / 2]
-  }, [])
-
-  const getEdgeProximity = useCallback((el, x, y) => {
-    const [cx, cy] = getCenterOfElement(el)
-    const dx = x - cx
-    const dy = y - cy
-    let kx = Infinity
-    let ky = Infinity
-    if (dx !== 0) kx = cx / Math.abs(dx)
-    if (dy !== 0) ky = cy / Math.abs(dy)
-    return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1)
-  }, [getCenterOfElement])
-
-  const getCursorAngle = useCallback((el, x, y) => {
-    const [cx, cy] = getCenterOfElement(el)
-    const dx = x - cx
-    const dy = y - cy
-    if (dx === 0 && dy === 0) return 0
-    const radians = Math.atan2(dy, dx)
-    let degrees = radians * (180 / Math.PI) + 90
-    if (degrees < 0) degrees += 360
-    return degrees
-  }, [getCenterOfElement])
-
-  const handlePointerMove = useCallback((e) => {
+  /*
+   * One rect read per animation frame, not three per event.
+   *
+   * The original called getBoundingClientRect() once in the handler and again
+   * inside each of getEdgeProximity and getCursorAngle. Every pointermove
+   * therefore forced three synchronous layouts, and pointermove fires at
+   * device sample rate — on a grid of these cards that was the single most
+   * expensive thing on the page.
+   *
+   * Now the event only records coordinates; the measure-and-write happens once
+   * in a rAF callback, and both values come from the same rect.
+   */
+  const applyPointer = useCallback(() => {
+    frameRef.current = 0
     const card = cardRef.current
     if (!card) return
 
     const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    if (!rect.width || !rect.height) return
 
-    card.style.setProperty('--edge-proximity', `${(getEdgeProximity(card, x, y) * 100).toFixed(3)}`)
-    card.style.setProperty('--cursor-angle', `${getCursorAngle(card, x, y).toFixed(3)}deg`)
-  }, [getEdgeProximity, getCursorAngle])
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    const dx = pointerRef.current.x - rect.left - cx
+    const dy = pointerRef.current.y - rect.top - cy
+
+    let kx = Infinity
+    let ky = Infinity
+    if (dx !== 0) kx = cx / Math.abs(dx)
+    if (dy !== 0) ky = cy / Math.abs(dy)
+    const proximity = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1)
+
+    let angle = 0
+    if (dx !== 0 || dy !== 0) {
+      angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90
+      if (angle < 0) angle += 360
+    }
+
+    card.style.setProperty('--edge-proximity', (proximity * 100).toFixed(3))
+    card.style.setProperty('--cursor-angle', `${angle.toFixed(3)}deg`)
+  }, [])
+
+  const handlePointerMove = useCallback((event) => {
+    pointerRef.current.x = event.clientX
+    pointerRef.current.y = event.clientY
+    if (frameRef.current) return
+    frameRef.current = requestAnimationFrame(applyPointer)
+  }, [applyPointer])
+
+  useEffect(() => () => {
+    if (frameRef.current) cancelAnimationFrame(frameRef.current)
+  }, [])
 
   useEffect(() => {
     if (!animated || !cardRef.current) return undefined
@@ -171,21 +186,36 @@ function BorderGlow({
     }
   }, [animated])
 
+  /*
+   * The gradient and glow variables are pure functions of the colour props, but
+   * building them allocates fourteen strings and two objects. Recomputing that
+   * on every parent render — for every card in a grid — was pointless churn,
+   * and a fresh `style` object identity also defeated DOM diffing.
+   *
+   * `colors` is an array, so it is keyed on its contents rather than identity;
+   * callers overwhelmingly pass an inline literal.
+   */
+  const colorKey = colors.join('|')
+  const styleVars = useMemo(() => ({
+    '--card-bg': backgroundColor,
+    '--edge-sensitivity': edgeSensitivity,
+    '--border-radius': `${borderRadius}px`,
+    '--glow-padding': `${glowRadius}px`,
+    '--cone-spread': coneSpread,
+    '--fill-opacity': fillOpacity,
+    ...buildGlowVars(glowColor, glowIntensity),
+    ...buildGradientVars(colorKey.split('|')),
+  }), [
+    backgroundColor, edgeSensitivity, borderRadius, glowRadius, coneSpread,
+    fillOpacity, glowColor, glowIntensity, colorKey,
+  ])
+
   return (
     <div
       ref={cardRef}
       onPointerMove={handlePointerMove}
       className={`border-glow-card ${className}`.trim()}
-      style={{
-        '--card-bg': backgroundColor,
-        '--edge-sensitivity': edgeSensitivity,
-        '--border-radius': `${borderRadius}px`,
-        '--glow-padding': `${glowRadius}px`,
-        '--cone-spread': coneSpread,
-        '--fill-opacity': fillOpacity,
-        ...buildGlowVars(glowColor, glowIntensity),
-        ...buildGradientVars(colors),
-      }}
+      style={styleVars}
     >
       <span className="edge-light" aria-hidden="true" />
       <div className="border-glow-inner">
@@ -195,4 +225,9 @@ function BorderGlow({
   )
 }
 
-export default BorderGlow
+/*
+ * Memoised because these are laid out in grids: DepartmentsGrid, MagicBento and
+ * the profile panels each render many at once, and a parent state change (a
+ * hover, a filter, a locale switch) otherwise re-rendered every card.
+ */
+export default memo(BorderGlow)

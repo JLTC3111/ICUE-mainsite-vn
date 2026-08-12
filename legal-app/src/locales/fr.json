@@ -1,0 +1,92 @@
+{
+  "skipToContent": "Aller au contenu",
+  "hero": {
+    "updated": "Mis à jour le {{date}}",
+    "version": "Version {{version}}"
+  },
+  "toc": {
+    "heading": "Dans ce document",
+    "aria": "Sommaire de {{title}}"
+  },
+  "article": {
+    "lastUpdated": "Dernière mise à jour :"
+  },
+  "contact": {
+    "eyebrow": "Besoin d'aide ?"
+  },
+  "gdpr": {
+    "channel": "Canal officiel de demande",
+    "title": "Écrire au référent données d'ICUE",
+    "body": "Précisez le droit que vous souhaitez exercer, les données ou la période concernées, ainsi que les éléments permettant à ICUE de vérifier votre identité. N'envoyez pas de copie de pièce d'identité tant que nous ne l'avons pas demandée par un canal sécurisé.",
+    "cta": "Rédiger un e-mail"
+  },
+  "cookies": {
+    "intro": "Cet outil enregistre votre choix dans le navigateur que vous utilisez actuellement. Les intégrations optionnelles d'ICUE peuvent le lire via l'événement <0>{{event}}</0>.",
+    "categories": {
+      "essential": {
+        "title": "Cookies essentiels",
+        "description": "Nécessaires à la sécurité et aux fonctions de base."
+      },
+      "performance": {
+        "title": "Cookies de performance",
+        "description": "Nous aident à mesurer et à améliorer le site."
+      },
+      "functional": {
+        "title": "Cookies fonctionnels",
+        "description": "Mémorisent votre langue et vos préférences d'affichage."
+      },
+      "marketing": {
+        "title": "Cookies marketing",
+        "description": "Mesurent les campagnes et les contenus promotionnels."
+      }
+    },
+    "actions": {
+      "reject": "Refuser les optionnels",
+      "save": "Enregistrer mes choix"
+    },
+    "status": {
+      "saved": "Vos choix sont enregistrés sur cet appareil.",
+      "blocked": "Votre navigateur bloque le stockage local : vos choix n'ont pas pu être enregistrés."
+    }
+  },
+  "notice": {
+    "title": "La version vietnamienne fait foi",
+    "body": "L'interface de cette page suit la langue que vous avez choisie, mais le texte juridique ci-dessous reste l'original vietnamien validé. C'est la version qui engage ICUE."
+  },
+  "documents": {
+    "privacy": {
+      "tabLabel": "Confidentialité",
+      "eyebrow": "Protection des données",
+      "title": "Politique de confidentialité",
+      "summary": "Comment ICUE collecte, utilise, conserve et protège les informations personnelles lorsque vous travaillez avec nous ou utilisez le site.",
+      "description": "La politique de confidentialité décrivant comment ICUE Vietnam collecte, utilise et protège les informations personnelles."
+    },
+    "terms": {
+      "tabLabel": "Conditions",
+      "eyebrow": "Règles d'utilisation",
+      "title": "Conditions d'utilisation",
+      "summary": "Les conditions applicables lorsque vous consultez le site, utilisez ses contenus et recourez aux services en ligne d'ICUE.",
+      "description": "Conditions générales applicables à l'accès au site d'ICUE Vietnam et à l'utilisation de ses contenus."
+    },
+    "gdpr": {
+      "tabLabel": "RGPD",
+      "eyebrow": "Droits sur les données",
+      "title": "Vos droits au titre du RGPD",
+      "summary": "Les huit droits fondamentaux sur les données et la manière d'adresser une demande à ICUE au titre du Règlement général sur la protection des données.",
+      "description": "Informations sur les droits relatifs aux données personnelles au titre du RGPD et sur l'envoi d'une demande à ICUE Vietnam."
+    },
+    "cookies": {
+      "tabLabel": "Cookies",
+      "eyebrow": "Stockés sur votre appareil",
+      "title": "Politique relative aux cookies",
+      "summary": "Ce que sont les cookies, les catégories que ce site peut utiliser et comment vous gardez la maîtrise de vos choix.",
+      "description": "La politique relative aux cookies explique comment le site d'ICUE Vietnam utilise les cookies et technologies de stockage similaires."
+    }
+  },
+  "lang": {
+    "label": "Choisir la langue"
+  },
+  "tabs": {
+    "aria": "Documents juridiques"
+  }
+}

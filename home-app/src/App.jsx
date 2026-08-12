@@ -108,10 +108,6 @@ function AppShell() {
           <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.privacy} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.terms} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.gdpr} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.cookies} element={<LegacyHtmlPage />} />
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>

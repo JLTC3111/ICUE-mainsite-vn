@@ -1,5 +1,5 @@
 # Public main-site routes use dedicated crawlable HTML shells.
-# /contact is the exception — it is served by contact-app (see below).
+# /contact and /legal are served by standalone React apps (see below).
 /                     /index.html                              200
 /about-us             /route-shells/about-us.html              200
 /past-projects        /route-shells/past-projects.html         200
@@ -8,10 +8,12 @@
 /notable-awards       /route-shells/notable-awards.html        200
 /community-activities /route-shells/community-activities.html  200
 /faqs                 /route-shells/faqs.html                  200
-/privacy              /route-shells/privacy.html               200
-/terms                /route-shells/terms.html                 200
-/gdpr                 /route-shells/gdpr.html                  200
-/cookies              /route-shells/cookies.html               200
+
+# Former legal-page URLs permanently move to the consolidated legal app.
+/privacy              /legal/privacy  301
+/terms                /legal/terms    301
+/gdpr                 /legal/gdpr     301
+/cookies              /legal/cookies  301
 
 # Legacy News archive URL → canonical route.
 /src/pages/News.html  /news-archive  301
@@ -20,10 +22,14 @@
 /src/pages/notableAwards.html       /notable-awards         301
 /src/pages/communityActivities.html /community-activities   301
 /src/pages/FAQs.html                /faqs                   301
-/src/pages/privacy.html             /privacy                301
-/src/pages/terms.html               /terms                  301
-/src/pages/gdpr.html                /gdpr                   301
-/src/pages/cookies.html             /cookies                301
+/src/pages/privacy.html             /legal/privacy         301
+/src/pages/terms.html               /legal/terms           301
+/src/pages/gdpr.html                /legal/gdpr            301
+/src/pages/cookies.html             /legal/cookies         301
+/legacy/pages/privacy.html          /legal/privacy         301
+/legacy/pages/terms.html            /legal/terms           301
+/legacy/pages/gdpr.html             /legal/gdpr            301
+/legacy/pages/cookies.html          /legal/cookies         301
 
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.
@@ -64,6 +70,15 @@
 # structured data and a no-JS fallback with the address and the number.
 /contact             /contact/index.html     200
 /contact/*           /contact/index.html     200
+
+# Consolidated legal React app. All four documents share one bundle and use
+# route-aware tabs at /legal/privacy, /legal/terms, /legal/gdpr and /legal/cookies.
+/legal               /legal/index.html       200
+/legal/privacy       /legal/privacy/index.html  200
+/legal/terms         /legal/terms/index.html    200
+/legal/gdpr          /legal/gdpr/index.html     200
+/legal/cookies       /legal/cookies/index.html  200
+/legal/*             /legal/index.html       200
 
 # Legacy Our Work page → the app.
 /src/pages/ourWork.html       /our-work   301

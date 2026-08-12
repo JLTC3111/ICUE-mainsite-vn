@@ -245,7 +245,7 @@
 
 .editorial-trending__rank {
   color: var(--icue-text-faint);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--icue-font-stack);
   font-size: 12px;
   font-weight: 750;
 }

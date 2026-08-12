@@ -13,9 +13,8 @@
  * in sync if the shells change. Keep pageFile in sync with LEGACY_PAGE_FILES
  * in ./routes.js.
  *
- * /our-work and /contact are absent on purpose: they are served by ourwork-app
- * and contact-app, which own their own <head>. This list covers client-side
- * navigation inside home-app only.
+ * /our-work, /contact and /legal/* are absent on purpose: standalone apps own
+ * their <head>. This list covers client-side navigation inside home-app only.
  */
 export const ROUTE_META = [
   {
@@ -73,38 +72,6 @@ export const ROUTE_META = [
     pageFile: 'FAQs.html',
     title: 'Câu hỏi thường gặp | ICUE Vietnam',
     description: 'Giải đáp những câu hỏi thường gặp về ICUE Vietnam, lĩnh vực hoạt động, dự án, hợp tác và liên hệ.',
-  },
-  {
-    slug: 'privacy',
-    path: '/privacy',
-    pageName: 'privacy',
-    pageFile: 'privacy.html',
-    title: 'Chính sách quyền riêng tư | ICUE Vietnam',
-    description: 'Chính sách quyền riêng tư và cách ICUE Vietnam thu thập, sử dụng và bảo vệ thông tin cá nhân.',
-  },
-  {
-    slug: 'terms',
-    path: '/terms',
-    pageName: 'terms',
-    pageFile: 'terms.html',
-    title: 'Điều khoản sử dụng | ICUE Vietnam',
-    description: 'Điều khoản và điều kiện áp dụng khi truy cập, sử dụng website và nội dung của ICUE Vietnam.',
-  },
-  {
-    slug: 'gdpr',
-    path: '/gdpr',
-    pageName: 'gdpr',
-    pageFile: 'gdpr.html',
-    title: 'Quyền dữ liệu GDPR | ICUE Vietnam',
-    description: 'Thông tin về quyền dữ liệu cá nhân theo GDPR và cách gửi yêu cầu liên quan đến dữ liệu cho ICUE Vietnam.',
-  },
-  {
-    slug: 'cookies',
-    path: '/cookies',
-    pageName: 'cookies',
-    pageFile: 'cookies.html',
-    title: 'Chính sách cookie | ICUE Vietnam',
-    description: 'Chính sách cookie giải thích cách website ICUE Vietnam sử dụng cookie và các công nghệ lưu trữ tương tự.',
   },
 ]
 

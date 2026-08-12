@@ -1,0 +1,37 @@
+/*
+ * Site-wide reduced-motion contract.
+ *
+ * The magicui / reactbits components were each vendored in with their own
+ * animation and none of them checked the visitor's preference. Rather than add
+ * a guard to thirty components, the CSS half is settled once here: any
+ * animation or transition collapses to a single immediate frame.
+ *
+ * `0.01ms` rather than `none` on purpose — components that rely on
+ * `animationend` / `transitionend` to advance state (particle bursts, the
+ * gooey tab pips, carousel handoffs) still receive their event and do not
+ * stall half-finished.
+ *
+ * The JS half is handled separately: each app root wraps its tree in
+ * <MotionConfig reducedMotion="user">, which makes motion/react honour the same
+ * preference for animations that never touch CSS.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /*
+   * Decorative loops have no end state worth showing — a single frame of a
+   * shimmer or beam sweep is just a bright stripe parked mid-element. Stop
+   * these outright instead.
+   */
+  [data-decorative-motion],
+  .icue-decorative-motion {
+    animation: none !important;
+  }
+}

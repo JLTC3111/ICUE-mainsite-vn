@@ -19,20 +19,19 @@
     <meta name="twitter:title" content="Liên hệ | ICUE Vietnam" />
     <meta name="twitter:description" content="Liên hệ ICUE Vietnam — một tin nhắn đến đúng bộ phận phụ trách: dự án mới, hồ sơ dự thầu, tuyển dụng hoặc báo chí. Phản hồi trong 24 giờ làm việc." />
     <meta name="twitter:image" content="https://icue.vn/preview.jpg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Archivo carries the whole page, JetBrains Mono only the letterspaced
          micro-caps. Both ship a Vietnamese subset — checked before adoption,
          because Poppins' missing one is what broke the tone marks on the other
          pages. -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    />
+    <!-- Self-hosted Noto Sans (see shared/fonts/fonts.css). Preload only the
+         Latin + Vietnamese slices; every other subset is unicode-range gated
+         and fetched on demand. No font request leaves our origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-vietnamese.woff2" crossorigin />
     <title>Liên hệ | ICUE Vietnam</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","@id":"https://icue.vn/contact#webpage","url":"https://icue.vn/contact","name":"Liên hệ | ICUE Vietnam","description":"Liên hệ ICUE Vietnam — một tin nhắn đến đúng bộ phận phụ trách: dự án mới, hồ sơ dự thầu, tuyển dụng hoặc báo chí.","inLanguage":"vi-VN","isPartOf":{"@type":"WebSite","@id":"https://icue.vn/#website","url":"https://icue.vn/","name":"ICUE Vietnam"},"about":{"@type":"Organization","name":"ICUE Vietnam","email":"info@icue.vn","telephone":"+842437728485","address":{"@type":"PostalAddress","streetAddress":"Số 20, Ngõ 114, Hoàng Ngân, Trung Hoà","addressLocality":"Cầu Giấy","addressRegion":"Hà Nội","addressCountry":"VN"}}}</script>
-    <script type="module" crossorigin src="/contact/assets/index-C8_VPZ5k.js"></script>
-    <link rel="stylesheet" crossorigin href="/contact/assets/index-B0Y8Lwxh.css">
+    <script type="module" crossorigin src="/contact/assets/index-BOVth73q.js"></script>
+    <link rel="stylesheet" crossorigin href="/contact/assets/index-CLL4JAYs.css">
   </head>
   <body>
     <div id="root">

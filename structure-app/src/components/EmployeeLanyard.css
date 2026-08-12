@@ -203,3 +203,96 @@
     display: none;
   }
 }
+
+/*
+ * The badge hanging from its strap.
+ *
+ * Replaces the three.js + rapier lanyard. The card artwork is the same canvas
+ * composite that scene used as a texture, so this is the same picture with the
+ * renderer and physics step removed. Everything here animates transform only,
+ * stays on the compositor, and stops entirely for reduced-motion visitors.
+ */
+.employee-badge-hang {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.employee-lanyard__stage[data-motion="full"] .employee-badge-hang {
+  animation: employee-badge-sway 6.5s ease-in-out infinite;
+}
+
+.employee-badge-hang__strap {
+  width: 26px;
+  height: 130px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(128, 236, 255, 0.5),
+      rgba(41, 122, 176, 0.85) 45%,
+      rgba(18, 58, 92, 0.95)
+    );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+}
+
+.employee-badge-hang__clip {
+  width: 46px;
+  height: 16px;
+  margin-top: -2px;
+  background: linear-gradient(180deg, #dbe9f5, #8fa6bb);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.employee-badge-hang__card {
+  display: block;
+  width: 300px;
+  max-width: 78vw;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: 0 26px 48px rgba(0, 0, 0, 0.42);
+  transition: transform 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.employee-lanyard__stage.is-compact .employee-badge-hang__card {
+  width: 268px;
+}
+
+button.employee-badge-hang__card {
+  cursor: pointer;
+}
+
+button.employee-badge-hang__card:hover,
+button.employee-badge-hang__card:focus-visible {
+  transform: translateY(-6px) rotate(-1.2deg);
+}
+
+.employee-badge-hang__card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+@keyframes employee-badge-sway {
+  0%, 100% { transform: translateX(-50%) rotate(-2.1deg); }
+  50%      { transform: translateX(-50%) rotate(2.1deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .employee-lanyard__stage[data-motion="full"] .employee-badge-hang {
+    animation: none;
+  }
+
+  button.employee-badge-hang__card:hover,
+  button.employee-badge-hang__card:focus-visible {
+    transform: none;
+  }
+}

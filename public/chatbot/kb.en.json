@@ -227,10 +227,10 @@
       "phrases": ["privacy policy", "terms of use", "cookies"],
       "answer": "You can review our policy pages (Privacy, GDPR, Terms, Cookies). Tell me which one you need and I’ll point you there.",
       "links": [
-        {"label": "Privacy", "url": "#/privacy"},
-        {"label": "GDPR", "url": "#/gdpr"},
-        {"label": "Terms", "url": "#/terms"},
-        {"label": "Cookies", "url": "#/cookies"}
+        {"label": "Privacy", "url": "/legal/privacy"},
+        {"label": "GDPR", "url": "/legal/gdpr"},
+        {"label": "Terms", "url": "/legal/terms"},
+        {"label": "Cookies", "url": "/legal/cookies"}
       ]
     },
     {

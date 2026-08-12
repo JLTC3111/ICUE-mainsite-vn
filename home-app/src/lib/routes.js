@@ -13,10 +13,10 @@ export const ROUTE_PATHS = {
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   faqs: '/faqs',
-  privacy: '/privacy',
-  terms: '/terms',
-  gdpr: '/gdpr',
-  cookies: '/cookies',
+  privacy: '/legal/privacy',
+  terms: '/legal/terms',
+  gdpr: '/legal/gdpr',
+  cookies: '/legal/cookies',
 }
 
 /** Maps React path -> legacy page id used by script.js init + nav state. */
@@ -42,10 +42,9 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 
 /**
- * Legacy pages this SPA still injects. Contact, ourWork and orgStructure are
- * absent because their HTML is deleted — each is served by its own app now.
- * Links to them from the pages below are rewritten by `hashToPath` in
- * prepareLegacyHtml, which still carries all three.
+ * Legacy pages this SPA still injects. Contact, Our Work, Structure and the
+ * four legal documents are absent because each is served by a dedicated app.
+ * Links to them are still rewritten by `hashToPath`.
  */
 export const LEGACY_PAGE_FILES = {
   aboutUs: 'aboutUs.html',
@@ -55,10 +54,6 @@ export const LEGACY_PAGE_FILES = {
   notableAwards: 'notableAwards.html',
   communityActivities: 'communityActivities.html',
   FAQs: 'FAQs.html',
-  privacy: 'privacy.html',
-  terms: 'terms.html',
-  gdpr: 'gdpr.html',
-  cookies: 'cookies.html',
 }
 
 export function pageFromPathname(pathname) {

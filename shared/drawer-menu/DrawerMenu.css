@@ -16,7 +16,7 @@
   min-height: 42px;
   padding: 9px;
   border: 1px solid var(--icue-accent-light, var(--icue-blue, #368adf));
-  border-radius: 12px;
+  border-radius: 12px !important;
   background: rgba(255, 255, 255, 0.95);
   color: var(--icue-accent-light, var(--icue-blue, #368adf));
   cursor: pointer;
@@ -46,7 +46,7 @@
   min-height: 2px;
   width: 100%;
   min-width: 18px;
-  border-radius: 2px;
+  border-radius: 2px !important;
   background: currentColor;
   transition: transform 0.35s ease, opacity 0.25s ease, background 0.2s ease;
   transform-origin: center;
@@ -173,7 +173,7 @@
      background-image that background-color alone would not clear. */
   background: transparent;
   border: 0;
-  border-radius: 6px;
+  border-radius: 6px !important;
   cursor: pointer;
   box-shadow: none;
 }
@@ -281,7 +281,7 @@
 
 .nav-drawer__index {
   flex: none;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--icue-font-stack);
   font-size: 0.72em;
   letter-spacing: 0.06em;
   opacity: calc(0.45 + var(--effect, 0) * 0.55);
@@ -420,7 +420,7 @@
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.95rem;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 4px !important;
   background-color: transparent;
   box-shadow: none;
 }

@@ -1,3 +1,9 @@
+/*
+ * Grid lines are two repeating gradients on one element rather than one <rect>
+ * per cell. The lit cell lives on ::after so its fade is independent of the
+ * rules underneath — `--grid-cell-x/y` are written by the component from a rAF
+ * callback, so moving the highlight only repaints that one layer.
+ */
 .interactive-grid-pattern {
   position: absolute;
   inset: 0;
@@ -5,17 +11,39 @@
   height: 100%;
   border: 1px solid rgba(148, 163, 184, 0.28);
   pointer-events: auto;
+
+  --grid-cell-x: -9999px;
+  --grid-cell-y: -9999px;
+  --grid-cell-opacity: 0;
+
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(148, 163, 184, 0.28) 0 1px,
+      transparent 1px var(--grid-cell-w)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(148, 163, 184, 0.28) 0 1px,
+      transparent 1px var(--grid-cell-h)
+    );
 }
 
-.interactive-grid-pattern__square {
-  stroke: rgba(148, 163, 184, 0.28);
-  fill: transparent;
-  transition: fill 1s ease-in-out;
-}
+.interactive-grid-pattern::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grid-cell-opacity);
+  transition: opacity 220ms ease-out;
 
-.interactive-grid-pattern__square:hover {
-  fill: rgba(54, 138, 223, 0.35);
-  transition-duration: 100ms;
+  background-image: linear-gradient(
+    rgba(54, 138, 223, 0.35),
+    rgba(54, 138, 223, 0.35)
+  );
+  background-repeat: no-repeat;
+  background-size: var(--grid-cell-w) var(--grid-cell-h);
+  background-position: var(--grid-cell-x) var(--grid-cell-y);
 }
 
 .interactive-grid-pattern--hero {
@@ -25,4 +53,10 @@
   transform: skewY(8deg);
   mask-image: radial-gradient(420px circle at center, white, transparent);
   -webkit-mask-image: radial-gradient(420px circle at center, white, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-grid-pattern::after {
+    transition: none;
+  }
 }
