@@ -1,4 +1,10 @@
-import { newsroomUrl, resolveMainSiteLink, SITES } from '@icue/site-routes/mainSitePaths.js'
+import {
+  mainSiteOriginForLocale,
+  newsroomUrl,
+  resolveMainSiteLink,
+  SITES,
+  withLocale,
+} from '@icue/site-routes/mainSitePaths.js'
 
 export { SITES }
 
@@ -58,7 +64,7 @@ export function getMainSiteBase(lang) {
       return window.location.origin
     }
   }
-  return lang === 'vi' ? SITES.vi : SITES.en
+  return mainSiteOriginForLocale(lang)
 }
 
 export function mainSiteLink(page, lang) {
@@ -66,15 +72,15 @@ export function mainSiteLink(page, lang) {
 }
 
 /** The Structure app lives only on icue.vn. */
-export function viOnlyLink(path) {
+export function viOnlyLink(path, lang) {
   const normalized = path.replace(/^\//, '')
   if (typeof window !== 'undefined') {
     const host = window.location.hostname.toLowerCase()
     if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      return `${window.location.origin}/${normalized}`
+      return withLocale(`${window.location.origin}/${normalized}`, lang)
     }
   }
-  return `${SITES.vi}/${normalized}`
+  return withLocale(`${SITES.vi}/${normalized}`, lang)
 }
 
 export function newsroomLink(lang) {

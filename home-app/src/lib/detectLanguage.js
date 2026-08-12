@@ -1,3 +1,5 @@
+import { normalizeUiLocale } from '../../../shared/site-routes/mainSitePaths.js'
+
 /** Shared with the newsroom, Our Work and Contact, so a choice made on one
     of them survives the walk back to the home page. */
 const LANG_KEY = 'icue_news_lang'
@@ -30,7 +32,7 @@ function store(code) {
 export function detectInitialLanguage() {
   const params = new URLSearchParams(window.location.search)
 
-  const requested = params.get('lang')
+  const requested = normalizeUiLocale(params.get('lang'))
   if (requested && UI_CODES.has(requested)) {
     store(requested)
     return requested

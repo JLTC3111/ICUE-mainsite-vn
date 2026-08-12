@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageFlagMenu from '@icue/i18n/LanguageFlagMenu'
+import { withLocale } from '@icue/site-routes/mainSitePaths.js'
 import ThemeToggle from './ThemeToggle'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import { useMainSite } from '../hooks/useMainSite'
@@ -15,13 +16,14 @@ function Header() {
   const { t, i18n } = useTranslation()
   const { base, hashLink, peopleLink, structureLink, newsroomHref } = useMainSite()
   const scrolled = useScrolled()
+  const selfHref = withLocale(SELF_HREF, i18n.resolvedLanguage || i18n.language)
 
   // The main site's pill nav, same six destinations in the same order. This app
   // *is* the Our Work page, so that pill is the active one and links to itself.
   const items = [
     { key: 'home', href: hashLink('Home'), label: t('nav.home') },
     { key: 'org', href: structureLink(), label: t('nav.org') },
-    { key: 'work', href: SELF_HREF, label: t('nav.work'), active: true },
+    { key: 'work', href: selfHref, label: t('nav.work'), active: true },
     { key: 'projects', href: hashLink('pastProjects'), label: t('nav.projects') },
     { key: 'news', href: newsroomHref, label: t('nav.news') },
     { key: 'about', href: hashLink('aboutUs'), label: t('nav.about') },

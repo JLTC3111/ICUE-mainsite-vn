@@ -1,3 +1,5 @@
+import { normalizeUiLocale } from '../../../shared/site-routes/mainSitePaths.js'
+
 const LANG_KEY = 'icue_news_lang'
 
 function isEnReferrer() {
@@ -12,13 +14,18 @@ function isEnReferrer() {
 }
 
 export function detectInitialLanguage() {
-  const saved = localStorage.getItem(LANG_KEY)
+  const params = new URLSearchParams(window.location.search)
+  const requested = normalizeUiLocale(params.get('lang'))
+  if (requested) {
+    localStorage.setItem(LANG_KEY, requested)
+    return requested
+  }
+
+  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
   if (saved) return saved
 
-  const params = new URLSearchParams(window.location.search)
   if (
-    params.get('lang') === 'en'
-    || params.get('from') === 'en-news'
+    params.get('from') === 'en-news'
     || params.get('site') === 'en'
     || isEnReferrer()
   ) {

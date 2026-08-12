@@ -90,6 +90,7 @@ function AppShell() {
         PillHeaderComponent={PillSiteHeader}
         pillOverflowItems={PEOPLE_SUBMENU.items}
         LanguageControl={SiteLanguageMenu}
+        locale={lang}
         labels={navLabels}
       />
       <HomeLayoutGuard />
@@ -114,7 +115,7 @@ function AppShell() {
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>
-      <Footer linkMode="standalone" labels={footerLabels} />
+      <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
       <ContactSidebar contentKey={pathname} />
     </>
   )

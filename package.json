@@ -47,6 +47,7 @@
     "build:contact": "npm run build --prefix contact-app",
     "dev:contact": "npm run dev --prefix contact-app",
     "verify:routes": "node scripts/verify-route-shells.mjs",
+    "verify:locales": "node scripts/verify-locale-routing.mjs",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",
     "dev:structure": "npm run dev --prefix structure-app"

@@ -1,5 +1,5 @@
 /** Path routes for migrated main-site pages. */
-import { newsroomUrl } from '../../../shared/site-routes/mainSitePaths.js'
+import { newsroomUrl, withLocale } from '../../../shared/site-routes/mainSitePaths.js'
 
 export const ROUTE_PATHS = {
   home: '/',
@@ -70,7 +70,7 @@ export function pathFromPage(page) {
 }
 
 /** Rewrite legacy hash links and public/ asset paths inside injected HTML. */
-export function prepareLegacyHtml(rawHtml) {
+export function prepareLegacyHtml(rawHtml, locale) {
   const doc = new DOMParser().parseFromString(rawHtml, 'text/html')
   // Scope document-level selectors so injected page CSS cannot clip fixed nav/footer
   // (mobile WebKit clips position:fixed when html/body have overflow-x:hidden).
@@ -115,18 +115,27 @@ export function prepareLegacyHtml(rawHtml) {
     .replace(/(["'(=\s])public\//g, '$1/public/')
     .replace(/(^|[^:/])\/{2,}public\//g, '$1/public/')
   for (const [hash, path] of Object.entries(hashToPath)) {
-    bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${path}"`)
-    bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${path}'`)
-    bodyHtml = bodyHtml.replaceAll(`href="/${hash.slice(1)}"`, `href="${path}"`)
-    bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${path}'`)
+    const localizedPath = withLocale(path, locale)
+    bodyHtml = bodyHtml.replaceAll(`href="${hash}"`, `href="${localizedPath}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='${hash}'`, `href='${localizedPath}'`)
+    bodyHtml = bodyHtml.replaceAll(`href="/${hash.slice(1)}"`, `href="${localizedPath}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${localizedPath}'`)
   }
 
   for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
     const route = PAGE_TO_PATH[pageId]
     if (!route) continue
-    bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${route}"`)
-    bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${route}'`)
+    const localizedRoute = withLocale(route, locale)
+    bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${localizedRoute}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${localizedRoute}'`)
   }
+
+  // A few legacy pages contain absolute app URLs rather than their old hash
+  // equivalents. Localize those too so they cannot bypass the app hand-off.
+  bodyHtml = bodyHtml.replace(
+    /href=(["'])(https:\/\/icue\.vn\/newsroom\/?[^"']*)\1/gi,
+    (_match, quote, href) => `href=${quote}${withLocale(href, locale)}${quote}`,
+  )
 
   // Newsroom lives on icue.vn only — rewrite relative links for en.icue.vn visitors.
   bodyHtml = bodyHtml.replace(/href="(\/newsroom\/[^"]*)"/g, `href="https://icue.vn$1"`)

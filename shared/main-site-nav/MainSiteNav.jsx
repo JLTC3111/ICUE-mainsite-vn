@@ -20,6 +20,12 @@ import {
   localizePeopleSubmenu,
   resolveNavLabels,
 } from './navContent';
+import {
+  MAIN_SITE_PAGE_PATHS,
+  mainSiteOriginForLocale,
+  resolveMainSiteLink,
+  withLocale,
+} from '../site-routes/mainSitePaths.js';
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
@@ -33,6 +39,34 @@ function isDesktopDockViewport() {
 
 function shouldExpandDock(scrollY = 0) {
   return isDesktopDockViewport() && scrollY <= DOCK_EXPAND_SCROLL_THRESHOLD;
+}
+
+function localeHrefForNavLink(link, locale) {
+  if (typeof window === 'undefined' || !locale || !MAIN_SITE_PAGE_PATHS[link.page]) {
+    return withLocale(link.href, locale);
+  }
+
+  const host = window.location.hostname.toLowerCase();
+  if (host.includes('localhost') || host.includes('127.0.0.1')) {
+    return withLocale(link.href, locale);
+  }
+
+  const target = resolveMainSiteLink(
+    link.page,
+    locale,
+    mainSiteOriginForLocale(locale),
+  );
+
+  // Keep same-origin destinations relative so Home's React Router can handle
+  // its own pages without a document reload; cross-origin links stay absolute.
+  if (target.startsWith('http')) {
+    const url = new URL(target);
+    if (url.origin === window.location.origin) {
+      return `${url.pathname}${url.search}${url.hash}`;
+    }
+  }
+
+  return target;
 }
 
 function getPageFromHash() {
@@ -59,6 +93,7 @@ export default function MainSiteNav({
   PillHeaderComponent,
   pillOverflowItems = [],
   LanguageControl,
+  locale,
   /* Chrome copy. Left undefined the nav speaks Vietnamese, which is what every
      page on icue.vn that has not been localized still wants. An app with UI
      languages of its own passes its current translation here — see
@@ -287,19 +322,42 @@ export default function MainSiteNav({
 
   const sourceLinks = drawerLinks ?? (isStandalone ? STANDALONE_DRAWER_LINKS : DRAWER_LINKS);
   const drawerLinkConfig = useMemo(
-    () => localizeNavLinks(sourceLinks, labels),
-    [labels, sourceLinks],
+    () => localizeNavLinks(
+      sourceLinks.map((link) => ({
+        ...link,
+        href: localeHrefForNavLink(link, locale),
+      })),
+      labels,
+    ),
+    [labels, locale, sourceLinks],
   );
   const peopleSubmenu = useMemo(
-    () => localizePeopleSubmenu(PEOPLE_SUBMENU, labels),
-    [labels],
+    () => {
+      const localized = localizePeopleSubmenu(PEOPLE_SUBMENU, labels);
+      return {
+        ...localized,
+        items: localized.items.map((item) => ({
+          ...item,
+          href: withLocale(item.href, locale),
+        })),
+      };
+    },
+    [labels, locale],
   );
   // The pill's tablet overflow is usually the People pair, which the caller
   // reads off the untranslated export — re-label it here too.
   const localizedOverflowItems = useMemo(
-    () => localizeNavLinks(pillOverflowItems, labels),
-    [labels, pillOverflowItems],
+    () => localizeNavLinks(
+      pillOverflowItems.map((item) => ({
+        ...item,
+        href: withLocale(item.href, locale),
+      })),
+      labels,
+    ),
+    [labels, locale, pillOverflowItems],
   );
+  const localizedHomeHref = withLocale(homeHref, locale);
+  const localizedContactHref = withLocale(contactHref, locale);
 
   const { navLinks, people } = useMemo(
     () => buildMainSiteDrawerNav({
@@ -453,8 +511,8 @@ export default function MainSiteNav({
           showContactLink={showContactLink}
           showHomeVideoToggle={showHomeVideoToggle}
           showAboutUsVideoToggle={showAboutUsVideoToggle}
-          homeHref={homeHref}
-          contactHref={contactHref}
+          homeHref={localizedHomeHref}
+          contactHref={localizedContactHref}
           isStandalone={isStandalone}
           assetPrefix={isStandalone ? '/' : 'public/'}
           homeVideoEnabled={homeVideoEnabled}

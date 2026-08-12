@@ -1,4 +1,5 @@
 import { referrerSiteHint } from './siteOrigin'
+import { normalizeUiLocale } from '../../../shared/site-routes/mainSitePaths.js'
 
 const LANG_KEY = 'icue_news_lang'
 
@@ -8,8 +9,10 @@ function querySiteHint() {
   const lang = params.get('lang')
   const site = params.get('site')
 
-  if (from === 'en-news' || lang === 'en' || site === 'en') return 'en'
-  if (from === 'vi-news' || lang === 'vi' || site === 'vi') return 'vi'
+  const requested = normalizeUiLocale(lang)
+  if (requested) return requested
+  if (from === 'en-news' || site === 'en') return 'en'
+  if (from === 'vi-news' || site === 'vi') return 'vi'
   return null
 }
 
@@ -25,12 +28,11 @@ function persistLang(lang) {
  */
 export function detectInitialLanguage() {
   const fromEntry = querySiteHint() || referrerSiteHint()
-  if (fromEntry === 'en' || fromEntry === 'vi') {
+  if (fromEntry) {
     return persistLang(fromEntry)
   }
 
-  const saved = localStorage.getItem(LANG_KEY)
-  if (saved === 'en' || saved === 'vi') return saved
+  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
   if (saved) return saved
 
   return 'vi'

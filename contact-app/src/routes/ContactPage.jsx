@@ -99,6 +99,7 @@ export default function ContactPage() {
         drawerLinks={STANDALONE_DRAWER_LINKS}
         pillOverflowItems={PEOPLE_SUBMENU.items}
         homeHref={base}
+        locale={lang}
         labels={navLabels}
       />
 
@@ -124,7 +125,7 @@ export default function ContactPage() {
         <OfficeMap />
       </main>
 
-      <Footer linkMode="standalone" labels={footerLabels} />
+      <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
       <DeferredContactSidebar />
     </div>
   )

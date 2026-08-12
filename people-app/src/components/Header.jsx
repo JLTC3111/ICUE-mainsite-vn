@@ -9,7 +9,7 @@ import './Header.css'
 function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const { base, hashLink, structureLink } = useMainSite()
+  const { base, hashLink, peopleLink, structureLink } = useMainSite()
   const currentPage = pathname.includes('/experts')
     ? 'experts'
     : pathname.includes('/core-team')
@@ -21,7 +21,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle })
       <div className="people-header__inner icue-container">
         <DrawerMenu
           hashLink={hashLink}
-          peopleLink={(path) => `/people/${path}`}
+          peopleLink={peopleLink}
           orgHref={structureLink()}
           currentPage={currentPage}
         />

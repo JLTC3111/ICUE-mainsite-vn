@@ -1,4 +1,10 @@
-import { newsroomUrl, resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+import {
+  mainSiteOriginForLocale,
+  normalizeUiLocale,
+  newsroomUrl,
+  resolveMainSiteLink,
+  withLocale,
+} from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
   vi: 'https://icue.vn',
@@ -40,14 +46,17 @@ export function referrerSiteHint() {
 
 /** Capture entry-site hint once per session (referrer / ?site= / ?from=). */
 export function detectEntrySite() {
-  const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
-  if (cached === 'en' || cached === 'vi') return cached
-
   const params = new URLSearchParams(window.location.search)
+  const requestedLocale = normalizeUiLocale(params.get('lang'))
+  if (requestedLocale) {
+    const requestedSite = requestedLocale === 'en' ? 'en' : 'vi'
+    sessionStorage.setItem(ENTRY_SITE_KEY, requestedSite)
+    return requestedSite
+  }
+
   if (
     params.get('site') === 'en'
     || params.get('from') === 'en-news'
-    || params.get('lang') === 'en'
   ) {
     sessionStorage.setItem(ENTRY_SITE_KEY, 'en')
     return 'en'
@@ -55,11 +64,13 @@ export function detectEntrySite() {
   if (
     params.get('site') === 'vi'
     || params.get('from') === 'vi-news'
-    || params.get('lang') === 'vi'
   ) {
     sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
     return 'vi'
   }
+
+  const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
+  if (cached === 'en' || cached === 'vi') return cached
 
   const fromReferrer = referrerSiteHint()
   if (fromReferrer) {
@@ -72,7 +83,7 @@ export function detectEntrySite() {
 }
 
 export function getMainSiteBase(siteLang) {
-  return siteLang === 'vi' ? SITES.vi : SITES.en
+  return mainSiteOriginForLocale(siteLang)
 }
 
 export function mainSiteLink(page, siteLang) {
@@ -80,14 +91,14 @@ export function mainSiteLink(page, siteLang) {
 }
 
 /** People app lives only on icue.vn — not on en.icue.vn. */
-export function peopleSiteLink(path) {
-  return `${SITES.vi}/people/${path}`
+export function peopleSiteLink(path, locale) {
+  return withLocale(`${SITES.vi}/people/${path}`, locale)
 }
 
 /** Structure app lives only on icue.vn — not on en.icue.vn. */
-export function structureSiteLink(path = '') {
+export function structureSiteLink(path = '', locale) {
   const suffix = path ? `/${String(path).replace(/^\//, '')}` : '/'
-  return `${SITES.vi}/structure${suffix === '/' ? '/' : suffix}`
+  return withLocale(`${SITES.vi}/structure${suffix === '/' ? '/' : suffix}`, locale)
 }
 
 export function newsroomLink(siteLang) {

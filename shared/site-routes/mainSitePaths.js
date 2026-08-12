@@ -3,12 +3,71 @@ export const SITES = {
   en: 'https://en.icue.vn',
 }
 
+export const SUPPORTED_UI_LOCALES = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
+
+const SUPPORTED_UI_LOCALE_SET = new Set(SUPPORTED_UI_LOCALES)
+const LOCALE_ALIASES = {
+  vn: 'vi',
+  gb: 'en',
+  uk: 'en',
+  kr: 'ko',
+  jp: 'ja',
+}
+
+/**
+ * Turn browser/flag/country variants into the locale codes used by i18next.
+ * `kr` and `jp` are accepted at URL boundaries even though the canonical
+ * language codes stored by the apps are `ko` and `ja`.
+ */
+export function normalizeUiLocale(value, fallback = null) {
+  const raw = String(value || '').trim().toLowerCase().replaceAll('_', '-')
+  const base = raw.split('-')[0]
+  const normalized = LOCALE_ALIASES[raw] || LOCALE_ALIASES[base] || base
+
+  if (SUPPORTED_UI_LOCALE_SET.has(normalized)) return normalized
+  if (fallback == null) return null
+
+  const fallbackRaw = String(fallback || '').trim().toLowerCase().replaceAll('_', '-')
+  const fallbackBase = fallbackRaw.split('-')[0]
+  const normalizedFallback = LOCALE_ALIASES[fallbackRaw]
+    || LOCALE_ALIASES[fallbackBase]
+    || fallbackBase
+  return SUPPORTED_UI_LOCALE_SET.has(normalizedFallback) ? normalizedFallback : 'vi'
+}
+
+/** English keeps its dedicated host; every other localized home lives on icue.vn. */
+export function mainSiteOriginForLocale(locale = 'vi') {
+  return normalizeUiLocale(locale, 'vi') === 'en' ? SITES.en : SITES.vi
+}
+
+/**
+ * Add or replace the explicit locale on an internal link without disturbing
+ * its other query parameters or hash. This is the hand-off contract between
+ * independently bootstrapped ICUE apps and therefore works across origins.
+ */
+export function withLocale(url, locale) {
+  const normalized = normalizeUiLocale(locale)
+  const value = String(url || '')
+  if (!normalized || !value || value.startsWith('#')) return value
+  if (/^(?:mailto|tel|sms|javascript):/i.test(value)) return value
+
+  const hashAt = value.indexOf('#')
+  const beforeHash = hashAt >= 0 ? value.slice(0, hashAt) : value
+  const hash = hashAt >= 0 ? value.slice(hashAt) : ''
+  const queryAt = beforeHash.indexOf('?')
+  const path = queryAt >= 0 ? beforeHash.slice(0, queryAt) : beforeHash
+  const params = new URLSearchParams(queryAt >= 0 ? beforeHash.slice(queryAt + 1) : '')
+
+  params.set('lang', normalized)
+  return `${path}?${params.toString()}${hash}`
+}
+
 /** Newsroom is hosted only on icue.vn (not en.icue.vn). */
-export const NEWSROOM_VI_URL = `${SITES.vi}/newsroom/?from=vi-news`
-export const NEWSROOM_EN_URL = `${SITES.vi}/newsroom/?from=en-news`
+export const NEWSROOM_VI_URL = withLocale(`${SITES.vi}/newsroom/`, 'vi')
+export const NEWSROOM_EN_URL = withLocale(`${SITES.vi}/newsroom/`, 'en')
 
 export function newsroomUrl(lang = 'vi') {
-  return lang === 'en' ? NEWSROOM_EN_URL : NEWSROOM_VI_URL
+  return withLocale(`${SITES.vi}/newsroom/`, lang)
 }
 
 /** Path routes keyed by legacy page id. */
@@ -19,7 +78,7 @@ export const MAIN_SITE_PAGE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  News: '/newsroom/?from=vi-news',
+  News: '/newsroom/',
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   FAQs: '/faqs',
@@ -31,26 +90,28 @@ export const MAIN_SITE_PAGE_PATHS = {
   orgStructure: '/structure/',
 }
 
-/** Pages served only on icue.vn when linking from en.icue.vn. */
-const EN_CROSS_SITE_PAGES = new Set(['News', 'orgStructure'])
+/** Standalone apps served only on icue.vn, regardless of UI language. */
+const VI_ONLY_APP_PAGES = new Set(['News', 'orgStructure', 'ourWork', 'Contact'])
 
 export function resolveMainSiteLink(page, lang, base) {
+  const locale = normalizeUiLocale(lang, 'vi')
+
   if (page === 'News') {
-    return newsroomUrl(lang)
+    return newsroomUrl(locale)
   }
 
   const path = MAIN_SITE_PAGE_PATHS[page]
   if (!path) {
-    return `${String(base).replace(/\/$/, '')}/#/${page}`
+    return withLocale(`${String(base).replace(/\/$/, '')}/#/${page}`, locale)
   }
 
-  if (lang === 'en' && EN_CROSS_SITE_PAGES.has(page)) {
-    return `${SITES.vi}${path}`
+  if (VI_ONLY_APP_PAGES.has(page)) {
+    return withLocale(`${SITES.vi}${path}`, locale)
   }
 
   if (typeof base === 'string' && base.startsWith('http')) {
-    return `${base.replace(/\/$/, '')}${path}`
+    return withLocale(`${base.replace(/\/$/, '')}${path}`, locale)
   }
 
-  return path
+  return withLocale(path, locale)
 }

@@ -24,8 +24,8 @@ export default function HomePage() {
   const containerRef = useRef(null)
   const heroRef = useRef(null)
 
-  const hero = useMemo(() => buildHero(t), [t, lang])
-  const sections = useMemo(() => buildHomeSections(t), [t, lang])
+  const hero = useMemo(() => buildHero(t, lang), [t, lang])
+  const sections = useMemo(() => buildHomeSections(t, lang), [t, lang])
 
   // Refs are keyed off the layout, not the copy, so switching language does not
   // hand the beam network a fresh set of nodes to re-measure.

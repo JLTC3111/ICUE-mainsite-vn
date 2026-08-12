@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { cleanupLegacyPage, initLegacyPage } from '../legacy/pageInit'
 import {
   loadModelViewer,
@@ -10,6 +11,8 @@ import { LEGACY_PAGE_FILES, pageFromPathname, prepareLegacyHtml } from '../lib/r
 
 export default function LegacyHtmlPage() {
   const { pathname } = useLocation()
+  const { i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
   const pageName = pageFromPathname(pathname)
   const [html, setHtml] = useState('')
   const [error, setError] = useState(null)
@@ -41,7 +44,7 @@ export default function LegacyHtmlPage() {
         if (cancelled) return
 
         // Render the page before loading the large, decorative 3D runtime.
-        setHtml(prepareLegacyHtml(raw))
+        setHtml(prepareLegacyHtml(raw, lang))
       } catch (err) {
         if (cancelled || err.name === 'AbortError') return
         setError(err.message || 'Failed to load page')
@@ -55,7 +58,7 @@ export default function LegacyHtmlPage() {
       controller.abort()
       cleanupLegacyPage(pageName)
     }
-  }, [pageName])
+  }, [lang, pageName])
 
   useEffect(() => {
     if (!html || !pageUsesModelViewer(pageName)) return undefined

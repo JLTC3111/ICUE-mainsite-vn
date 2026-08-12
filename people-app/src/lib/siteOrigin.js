@@ -1,4 +1,9 @@
-import { newsroomUrl, resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+import {
+  mainSiteOriginForLocale,
+  newsroomUrl,
+  resolveMainSiteLink,
+  withLocale,
+} from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
   vi: 'https://icue.vn',
@@ -52,7 +57,7 @@ export function detectEntrySite() {
 }
 
 export function getMainSiteBase(lang) {
-  return lang === 'vi' ? SITES.vi : SITES.en
+  return mainSiteOriginForLocale(lang)
 }
 
 export function mainSiteLink(page, lang) {
@@ -60,9 +65,14 @@ export function mainSiteLink(page, lang) {
 }
 
 /** Structure app lives only on icue.vn. */
-export function structureSiteLink(path = '') {
+export function structureSiteLink(path = '', locale) {
   const suffix = path ? `/${String(path).replace(/^\//, '')}` : '/'
-  return `${SITES.vi}/structure${suffix === '/' ? '/' : suffix}`
+  return withLocale(`${SITES.vi}/structure${suffix === '/' ? '/' : suffix}`, locale)
+}
+
+export function peopleSiteLink(path = '', locale) {
+  const suffix = path ? `/${String(path).replace(/^\//, '')}` : '/'
+  return withLocale(`${SITES.vi}/people${suffix === '/' ? '/' : suffix}`, locale)
 }
 
 export function newsroomLink(lang) {
@@ -71,8 +81,9 @@ export function newsroomLink(lang) {
 
 export function cleanSiteParams() {
   const params = new URLSearchParams(window.location.search)
-  if (!params.has('site')) return
+  if (!params.has('site') && !params.has('lang')) return
   params.delete('site')
+  params.delete('lang')
   const qs = params.toString()
   const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
   window.history.replaceState({}, '', next)

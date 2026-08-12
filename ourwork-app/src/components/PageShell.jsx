@@ -42,7 +42,7 @@ export default function PageShell({ children }) {
       <main id="content" className="ow-shell__main">
         {children}
       </main>
-      <Footer linkMode="standalone" labels={footerLabels} />
+      <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
       <ContactSidebar contentKey="our-work" />
     </div>
   )

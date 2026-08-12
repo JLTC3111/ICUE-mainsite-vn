@@ -1,4 +1,9 @@
-import { newsroomUrl, resolveMainSiteLink } from '../../../shared/site-routes/mainSitePaths.js'
+import {
+  mainSiteOriginForLocale,
+  newsroomUrl,
+  resolveMainSiteLink,
+  withLocale,
+} from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
   vi: 'https://icue.vn',
@@ -57,7 +62,7 @@ export function getMainSiteBase(lang) {
       return window.location.origin
     }
   }
-  return lang === 'vi' ? SITES.vi : SITES.en
+  return mainSiteOriginForLocale(lang)
 }
 
 export function mainSiteLink(page, lang) {
@@ -65,14 +70,24 @@ export function mainSiteLink(page, lang) {
 }
 
 /** People app lives only on icue.vn. */
-export function peopleSiteLink(path) {
+export function peopleSiteLink(path, lang) {
   if (typeof window !== 'undefined') {
     const host = window.location.hostname.toLowerCase()
     if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      return `${window.location.origin}/people/${path}`
+      return withLocale(`${window.location.origin}/people/${path}`, lang)
     }
   }
-  return `${SITES.vi}/people/${path}`
+  return withLocale(`${SITES.vi}/people/${path}`, lang)
+}
+
+export function structureSiteLink(lang) {
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname.toLowerCase()
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+      return withLocale(`${window.location.origin}/structure/`, lang)
+    }
+  }
+  return withLocale(`${SITES.vi}/structure/`, lang)
 }
 
 export function newsroomLink(lang) {
@@ -81,8 +96,9 @@ export function newsroomLink(lang) {
 
 export function cleanSiteParams() {
   const params = new URLSearchParams(window.location.search)
-  if (!params.has('site')) return
+  if (!params.has('site') && !params.has('lang')) return
   params.delete('site')
+  params.delete('lang')
   const qs = params.toString()
   const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
   window.history.replaceState({}, '', next)

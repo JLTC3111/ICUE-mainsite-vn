@@ -2,6 +2,7 @@ import {
   SITES,
   newsroomUrl,
   resolveMainSiteLink,
+  withLocale,
 } from '../site-routes/mainSitePaths.js';
 
 const SITE_CONFIG = {
@@ -157,7 +158,10 @@ function mainSiteBase(siteLang) {
 
 function buildTargetPath(targetPageName, targetSite) {
   if (targetPageName === 'newsArchive') {
-    return `${mainSiteBase(targetSite.language)}/news-archive`;
+    return withLocale(
+      `${mainSiteBase(targetSite.language)}/news-archive`,
+      targetSite.language,
+    );
   }
 
   const resolved = resolveMainSiteLink(
@@ -222,9 +226,10 @@ export function buildLanguageSwitchTarget({ currentSiteLanguage } = {}) {
   );
 
   const targetPath = buildTargetPath(targetPageName, targetSite);
-  const targetUrl = targetPath.startsWith('http')
+  const unresolvedTargetUrl = targetPath.startsWith('http')
     ? targetPath
     : `${currentProtocol}//${targetSite.domain}${targetPath}${currentSearch}`;
+  const targetUrl = withLocale(unresolvedTargetUrl, targetSite.language);
 
   return {
     currentSite,

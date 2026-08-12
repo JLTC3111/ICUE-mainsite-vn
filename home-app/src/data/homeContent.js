@@ -1,6 +1,6 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
-import { newsroomUrl } from '../../../shared/site-routes/mainSitePaths.js'
+import { newsroomUrl, withLocale } from '../../../shared/site-routes/mainSitePaths.js'
 
 /**
  * Structure here, words in the locale files.
@@ -60,31 +60,33 @@ const SECTION_LAYOUT = [
   },
 ]
 
-export function buildHero(t) {
+export function buildHero(t, locale) {
   return {
     bannerLabel: t('home.hero.bannerLabel'),
-    bannerHref: newsroomUrl('vi'),
+    bannerHref: newsroomUrl(locale),
     title: t('home.hero.title'),
     subtitle: t('home.hero.subtitle'),
     ariaLabel: t('home.hero.ariaLabel'),
     actions: [
-      { label: t('home.hero.actions.contact'), href: ROUTE_PATHS.contact, variant: 'primary' },
-      { label: t('home.hero.actions.pastProjects'), href: ROUTE_PATHS.pastProjects, variant: 'ghost' },
+      { label: t('home.hero.actions.contact'), href: withLocale(ROUTE_PATHS.contact, locale), variant: 'primary' },
+      { label: t('home.hero.actions.pastProjects'), href: withLocale(ROUTE_PATHS.pastProjects, locale), variant: 'ghost' },
     ],
   }
 }
 
-export function buildHomeSections(t) {
+export function buildHomeSections(t, locale) {
   return SECTION_LAYOUT.map((section) => ({
     id: section.id,
     alt: section.alt,
-    linkHref: section.linkHref,
+    linkHref: section.key === 'news'
+      ? newsroomUrl(locale)
+      : withLocale(section.linkHref, locale),
     title: t(`home.sections.${section.key}.title`),
     description: t(`home.sections.${section.key}.description`),
     linkLabel: t(`home.sections.${section.key}.linkLabel`),
     cards: section.cards.map((card) => ({
       image: card.image,
-      href: card.href,
+      href: section.key === 'ourWork' ? withLocale(card.href, locale) : card.href,
       imageOnly: card.imageOnly,
       title: t(`home.sections.${section.key}.cards.${card.key}.title`),
       description: t(`home.sections.${section.key}.cards.${card.key}.description`),

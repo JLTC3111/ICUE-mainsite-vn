@@ -11,9 +11,9 @@ const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
  * markup with its own copy. Omit it and you get the Vietnamese defaults the
  * home app has always used.
  */
-function Footer({ linkMode = 'hash', labels: labelOverrides }) {
+function Footer({ linkMode = 'hash', labels: labelOverrides, locale }) {
   const labels = labelOverrides ? { ...FOOTER_LABELS, ...labelOverrides } : FOOTER_LABELS
-  const links = getFooterLinks(linkMode)
+  const links = getFooterLinks(linkMode, locale)
   const year = new Date().getFullYear()
 
   return (

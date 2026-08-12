@@ -1,8 +1,8 @@
-import { MAIN_SITE_PAGE_PATHS } from '../site-routes/mainSitePaths.js'
+import { MAIN_SITE_PAGE_PATHS, withLocale } from '../site-routes/mainSitePaths.js'
 
-function buildFooterLinks() {
+function buildFooterLinks(locale) {
   const p = MAIN_SITE_PAGE_PATHS
-  return {
+  const links = {
     notableAwards: p.notableAwards,
     news: p.News,
     archive: '/news-archive',
@@ -14,17 +14,21 @@ function buildFooterLinks() {
     cookies: p.cookies,
     contact: p.Contact,
   }
+
+  return Object.fromEntries(
+    Object.entries(links).map(([key, href]) => [key, withLocale(href, locale)]),
+  )
 }
 
 /** @deprecated VN site no longer uses hash routing for footers. */
-export function getHashFooterLinks() {
-  return buildFooterLinks()
+export function getHashFooterLinks(locale) {
+  return buildFooterLinks(locale)
 }
 
-export function getStandaloneFooterLinks() {
-  return buildFooterLinks()
+export function getStandaloneFooterLinks(locale) {
+  return buildFooterLinks(locale)
 }
 
-export function getFooterLinks(linkMode = 'standalone') {
-  return buildFooterLinks()
+export function getFooterLinks(linkMode = 'standalone', locale) {
+  return buildFooterLinks(locale)
 }

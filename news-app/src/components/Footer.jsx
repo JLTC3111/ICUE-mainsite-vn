@@ -9,8 +9,8 @@ const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
 function Footer() {
   const { t } = useTranslation()
-  const links = getFooterLinks('standalone')
-  const { archiveLink } = useMainSite()
+  const { archiveLink, uiLang } = useMainSite()
+  const links = getFooterLinks('standalone', uiLang)
   const year = new Date().getFullYear()
 
   return (

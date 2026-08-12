@@ -9,7 +9,7 @@ import './Header.css'
 
 function Header() {
   const { t } = useTranslation()
-  const { base, hashLink, peopleLink } = useMainSite()
+  const { base, hashLink, peopleLink, structureLink } = useMainSite()
   const [searchOpen, setSearchOpen] = useState(false)
 
   const handleSearchOpenChange = useCallback((next) => {
@@ -30,7 +30,7 @@ function Header() {
         <DrawerMenu
           hashLink={hashLink}
           peopleLink={peopleLink}
-          orgHref="/structure/"
+          orgHref={structureLink()}
           currentPage="org"
         />
 

@@ -1,3 +1,5 @@
+import { normalizeUiLocale } from '@icue/site-routes/mainSitePaths.js'
+
 const LANG_KEY = 'icue_news_lang'
 
 /** Must match SUPPORTED_LANGUAGES in ./i18n.js. */
@@ -24,13 +26,13 @@ export function detectInitialLanguage() {
   // ?lang= wins over the stored value: this page carries all six languages and
   // is linked to directly, so an explicit request must not be overridden by a
   // preference set on some other page.
-  const requested = params.get('lang')
+  const requested = normalizeUiLocale(params.get('lang'))
   if (requested && SUPPORTED.has(requested)) {
     localStorage.setItem(LANG_KEY, requested)
     return requested
   }
 
-  const saved = localStorage.getItem(LANG_KEY)
+  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
   if (saved) return saved
 
   if (
