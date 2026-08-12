@@ -6,6 +6,17 @@ const Lanyard = lazy(() => import('./reactbits/Lanyard/Lanyard'))
 export const EMPLOYEE_LANYARD_PHONE_QUERY =
   '(max-width: 450px), (max-width: 520px) and (pointer: coarse), (max-height: 520px) and (pointer: coarse)'
 
+const INTER_BADGE_FONT = '"Inter", Arial, sans-serif'
+const VI_BADGE_FONT = '"Noto Sans", Arial, sans-serif'
+const JA_BADGE_FONT = '"Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif'
+const KO_BADGE_FONT = '"Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif'
+
+const BADGE_FONT_BY_LANGUAGE = {
+  vi: VI_BADGE_FONT,
+  ja: JA_BADGE_FONT,
+  ko: KO_BADGE_FONT,
+}
+
 function useMediaQuery(query) {
   const [matches, setMatches] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(query).matches,
@@ -32,14 +43,28 @@ function roundedRect(ctx, x, y, width, height, radius) {
   ctx.closePath()
 }
 
-function fitText(ctx, text, maxWidth, maxSize, minSize = 24) {
+function fitText(ctx, text, maxWidth, maxSize, fontFamily, minSize = 24) {
   let size = maxSize
   while (size > minSize) {
-    ctx.font = `700 ${size}px Inter, Arial, sans-serif`
+    ctx.font = `700 ${size}px ${fontFamily}`
     if (ctx.measureText(text).width <= maxWidth) break
     size -= 2
   }
   return size
+}
+
+async function ensureBadgeFonts(fontFamily, sampleText) {
+  if (!document.fonts?.load) return
+
+  try {
+    await Promise.all(
+      [500, 600, 700, 800].map((weight) =>
+        document.fonts.load(`${weight} 32px ${fontFamily}`, sampleText),
+      ),
+    )
+  } catch {
+    // Keep badge generation resilient if the Font Loading API is unavailable.
+  }
 }
 
 function loadImage(src) {
@@ -51,7 +76,12 @@ function loadImage(src) {
   })
 }
 
-async function createBadgeImage({ profile, displayName, title, genericLabel }) {
+async function createBadgeImage({ profile, displayName, title, genericLabel, fontFamily }) {
+  await ensureBadgeFonts(
+    fontFamily,
+    `${displayName} ${title} ${genericLabel} ICUE EMPLOYEE BADGE`,
+  )
+
   const canvas = document.createElement('canvas')
   canvas.width = 768
   canvas.height = 1100
@@ -73,10 +103,10 @@ async function createBadgeImage({ profile, displayName, title, genericLabel }) {
 
   ctx.fillStyle = '#80ecff'
   ctx.fillRect(56, 58, 88, 8)
-  ctx.font = '800 72px Inter, Arial, sans-serif'
+  ctx.font = `800 72px ${fontFamily}`
   ctx.fillStyle = '#f8fbff'
   ctx.fillText('ICUE', 56, 148)
-  ctx.font = '600 24px Inter, Arial, sans-serif'
+  ctx.font = `600 24px ${fontFamily}`
   ctx.fillStyle = 'rgba(222, 237, 250, 0.7)'
   ctx.letterSpacing = '5px'
   ctx.fillText('EMPLOYEE BADGE', 56, 196)
@@ -93,7 +123,7 @@ async function createBadgeImage({ profile, displayName, title, genericLabel }) {
     try {
       const photo = await loadImage(profile.img)
       ctx.save()
-      const photoFrame = { x: 50, y: 218, width: 668, height: 565 }
+      const photoFrame = { x: 42, y: 210, width: 684, height: 579 }
       roundedRect(
         ctx,
         photoFrame.x,
@@ -133,7 +163,7 @@ async function createBadgeImage({ profile, displayName, title, genericLabel }) {
       // The text identity remains usable if a profile photo cannot load.
     }
   } else {
-    ctx.font = '800 150px Inter, Arial, sans-serif'
+    ctx.font = `800 150px ${fontFamily}`
     ctx.fillStyle = 'rgba(128, 236, 255, 0.9)'
     ctx.textAlign = 'center'
     ctx.fillText('ICUE', 384, 555)
@@ -141,12 +171,12 @@ async function createBadgeImage({ profile, displayName, title, genericLabel }) {
   }
 
   const name = displayName || genericLabel
-  const nameSize = fitText(ctx, name, 656, 52, 28)
-  ctx.font = `700 ${nameSize}px Inter, Arial, sans-serif`
+  const nameSize = fitText(ctx, name, 656, 52, fontFamily, 28)
+  ctx.font = `700 ${nameSize}px ${fontFamily}`
   ctx.fillStyle = '#ffffff'
   ctx.fillText(name, 56, 850)
 
-  ctx.font = '500 30px Inter, Arial, sans-serif'
+  ctx.font = `500 30px ${fontFamily}`
   ctx.fillStyle = '#9be9ff'
   ctx.fillText(title || 'INSTITUTE STAFF', 56, 906)
 
@@ -156,7 +186,7 @@ async function createBadgeImage({ profile, displayName, title, genericLabel }) {
   ctx.lineTo(712, 958)
   ctx.stroke()
 
-  ctx.font = '600 22px Inter, Arial, sans-serif'
+  ctx.font = `600 22px ${fontFamily}`
   ctx.fillStyle = 'rgba(225, 237, 248, 0.68)'
   ctx.fillText('CONSTRUCTION ECONOMICS · URBAN PLANNING', 56, 1012)
   ctx.fillStyle = '#80ecff'
@@ -191,11 +221,13 @@ export default function EmployeeLanyard({ profile, onOpen }) {
   const displayName = profile ? t(`orgChart.people.${profile.id}.displayName`) : ''
   const title = profile ? t(`orgChart.people.${profile.id}.title`) : t('orgChart.badgeGenericRole')
   const genericLabel = t('orgChart.badgeGeneric')
+  const language = (i18n.resolvedLanguage || i18n.language).split('-')[0]
+  const badgeFontFamily = BADGE_FONT_BY_LANGUAGE[language] || INTER_BADGE_FONT
   const [badgeImage, setBadgeImage] = useState(null)
 
   const badgeRequest = useMemo(
-    () => ({ profile, displayName, title, genericLabel }),
-    [profile, displayName, title, genericLabel, i18n.language],
+    () => ({ profile, displayName, title, genericLabel, fontFamily: badgeFontFamily }),
+    [profile, displayName, title, genericLabel, badgeFontFamily],
   )
 
   useEffect(() => {
@@ -250,7 +282,8 @@ export default function EmployeeLanyard({ profile, onOpen }) {
               frontImage={badgeImage}
               imageFit="cover"
               lanyardWidth={0.82}
-              cardScale={tabletLayout ? 2.55 : 2.75}
+              segmentLength={0.5}
+              cardScale={tabletLayout ? 2.8 : 3.05}
               rigPosition={[0, 3.3, 0]}
               onCardClick={profile ? onOpen : undefined}
             />

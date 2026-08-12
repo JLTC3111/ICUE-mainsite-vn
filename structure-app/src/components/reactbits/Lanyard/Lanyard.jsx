@@ -37,6 +37,7 @@ export default function Lanyard({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
+  segmentLength = 1,
   cardScale = 2.25,
   rigPosition = [0, 4, 0],
   onCardClick = null
@@ -66,6 +67,7 @@ export default function Lanyard({
             imageFit={imageFit}
             lanyardImage={lanyardImage}
             lanyardWidth={lanyardWidth}
+            segmentLength={segmentLength}
             cardScale={cardScale}
             rigPosition={rigPosition}
             onCardClick={onCardClick}
@@ -114,6 +116,7 @@ function Band({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
+  segmentLength = 1,
   cardScale = 2.25,
   rigPosition = [0, 4, 0],
   onCardClick = null
@@ -192,9 +195,9 @@ function Band({
   const pointerMoved = useRef(false);
   const cardScaleRatio = cardScale / 2.25;
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], segmentLength]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], segmentLength]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], segmentLength]);
   useSphericalJoint(j3, card, [
     [0, 0, 0],
     [0, 1.5 * cardScaleRatio, 0]
@@ -242,16 +245,21 @@ function Band({
     <>
       <group position={rigPosition}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
+        <RigidBody position={[segmentLength * 0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
+        <RigidBody position={[segmentLength, 0, 0]} ref={j2} {...segmentProps}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
+        <RigidBody position={[segmentLength * 1.5, 0, 0]} ref={j3} {...segmentProps}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
+        <RigidBody
+          position={[segmentLength * 2, 0, 0]}
+          ref={card}
+          {...segmentProps}
+          type={dragged ? 'kinematicPosition' : 'dynamic'}
+        >
           <CuboidCollider args={[0.8 * cardScaleRatio, 1.125 * cardScaleRatio, 0.01]} />
           <group
             scale={cardScale}
