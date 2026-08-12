@@ -22,7 +22,7 @@
   height: 2.3rem;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: transparent;
   cursor: pointer;
   transition: transform 0.4s var(--icue-ease, cubic-bezier(0.22, 1, 0.36, 1));
@@ -40,7 +40,7 @@
 .icue-lang__flag {
   width: 2.15rem;
   height: 2.15rem;
-  border-radius: 50%;
+  border-radius: 50% !important;
   object-fit: cover;
   flex-shrink: 0;
   box-shadow: 2px 4px 12px #fff;
@@ -58,7 +58,7 @@
   width: max-content;
   padding: 0.4rem;
   border: 1px solid var(--icue-chrome-border, rgba(255, 255, 255, 0.12));
-  border-radius: 1.15rem;
+  border-radius: 1.15rem !important;
   background: var(--icue-gradient-dark, linear-gradient(135deg, #0a1628 0%, #1a2a42 100%));
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
   opacity: 0;
@@ -85,7 +85,7 @@
   gap: 0.6rem;
   padding: 0.28rem 0.7rem 0.28rem 0.28rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: transparent;
   color: var(--icue-chrome-text-mute, #9aa0a6);
   font-family: inherit;

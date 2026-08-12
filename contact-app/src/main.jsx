@@ -5,6 +5,7 @@ import { detectEntrySite, cleanSiteParams } from './lib/siteOrigin'
 import i18n, { i18nReady } from './lib/i18n'
 import './styles/theme.css'
 import '@icue/styles/icue-base.css'
+import '@icue/styles/radius-reset.css'
 import App from './App.jsx'
 
 detectEntrySite()

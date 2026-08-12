@@ -40,7 +40,7 @@
   gap: 0.42rem;
   height: var(--pill-nav-height);
   padding: 0.38rem 0.8rem 0.38rem 0.42rem;
-  border-radius: 999px;
+  border-radius: 999px !important;
   color: var(--pill-nav-text) !important;
   text-decoration: none;
   flex-shrink: 0;
@@ -52,7 +52,7 @@
   height: 2.35rem;
   display: block;
   object-fit: contain;
-  border-radius: 50%;
+  border-radius: 50% !important;
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -82,7 +82,7 @@
   width: 100%;
   height: var(--pill-nav-height);
   padding: 0.22rem;
-  border-radius: 999px;
+  border-radius: 999px !important;
   overflow: hidden;
 }
 
@@ -110,7 +110,7 @@
   padding: 0 clamp(0.68rem, 1.05vw, 1rem);
   overflow: hidden;
   border: 0;
-  border-radius: 999px;
+  border-radius: 999px !important;
   background: transparent;
   color: var(--pill-nav-text) !important;
   font-family: var(--icue-font-stack);
@@ -185,7 +185,7 @@
   max-width: min(24rem, calc(100vw - 2rem));
   padding: 0.38rem;
   border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 1.15rem;
+  border-radius: 1.15rem !important;
   background: rgba(10, 14, 20, 0.97);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
   backdrop-filter: blur(16px) saturate(125%);
@@ -215,7 +215,7 @@
   min-height: 3.25rem;
   padding: 0.72rem 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0.9rem;
+  border-radius: 0.9rem !important;
   color: rgba(255, 255, 255, 0.9) !important;
   font-family: var(--icue-font-stack);
   font-size: 0.76rem;
@@ -258,7 +258,7 @@
   bottom: -160%;
   width: 150%;
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: var(--pill-nav-accent);
   transform: translate3d(-50%, 0, 0) scale(0);
   transform-origin: 50% 100%;
@@ -315,7 +315,7 @@
   bottom: 0.22rem;
   width: 0.28rem;
   height: 0.28rem;
-  border-radius: 50%;
+  border-radius: 50% !important;
   background: currentColor;
   transform: translateX(-50%);
   opacity: 0.65;
@@ -344,7 +344,7 @@
   gap: 0.3rem;
   height: var(--pill-nav-height);
   padding: 0.25rem 0.4rem;
-  border-radius: 999px;
+  border-radius: 999px !important;
   flex-shrink: 0;
 }
 
@@ -599,7 +599,7 @@
     gap: clamp(0.18rem, 1.5vw, 0.45rem);
     padding: 0.3rem clamp(0.35rem, 2vw, 0.6rem);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
+    border-radius: 999px !important;
     background: var(--pill-nav-base);
     box-shadow: 0 9px 28px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(14px) saturate(125%);

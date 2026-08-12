@@ -28,9 +28,6 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ja', label: '日本語' },
 ]
 
-/** The locale the legal text itself is authored and legally binding in. */
-export const AUTHORITATIVE_LANGUAGE = 'vi'
-
 const normalizePostProcessor = {
   type: 'postProcessor',
   name: 'normalizeUnicode',

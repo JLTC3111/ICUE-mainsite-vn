@@ -1,7 +1,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { LEGAL_DOCUMENTS } from '../src/legalDocuments.js'
+import { AUTHORITATIVE_LANGUAGE, buildLegalDocuments } from '../src/legalDocuments.js'
+
+/*
+ * Shells are built from the authoritative Vietnamese. These are the crawlable
+ * fallbacks served at icue.vn/legal/* before React boots; the app then swaps in
+ * whichever of the six languages the reader has chosen.
+ */
+const LEGAL_DOCUMENTS = buildLegalDocuments(AUTHORITATIVE_LANGUAGE)
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outputRoot = path.resolve(appRoot, '../legal')

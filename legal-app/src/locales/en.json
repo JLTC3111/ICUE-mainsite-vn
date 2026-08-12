@@ -49,40 +49,6 @@
       "blocked": "Your browser is blocking local storage, so the choices could not be saved."
     }
   },
-  "notice": {
-    "title": "The Vietnamese text is the binding version",
-    "body": "This page's interface follows the language you selected, but the legal text below remains the reviewed Vietnamese original. That is the version ICUE is bound by."
-  },
-  "documents": {
-    "privacy": {
-      "tabLabel": "Privacy",
-      "eyebrow": "Data protection",
-      "title": "Privacy policy",
-      "summary": "How ICUE collects, uses, stores and protects personal information when you work with us or use the website.",
-      "description": "The privacy policy covering how ICUE Vietnam collects, uses and protects personal information."
-    },
-    "terms": {
-      "tabLabel": "Terms",
-      "eyebrow": "Rules of use",
-      "title": "Terms of use",
-      "summary": "The conditions that apply when you visit the website, use its content and work with ICUE's online services.",
-      "description": "Terms and conditions applying to access to and use of the ICUE Vietnam website and its content."
-    },
-    "gdpr": {
-      "tabLabel": "GDPR",
-      "eyebrow": "Data rights",
-      "title": "Your rights under the GDPR",
-      "summary": "The eight core data rights and how to send ICUE a request under the European Union's General Data Protection Regulation.",
-      "description": "Information about personal data rights under the GDPR and how to send ICUE Vietnam a data request."
-    },
-    "cookies": {
-      "tabLabel": "Cookies",
-      "eyebrow": "Stored on your device",
-      "title": "Cookie policy",
-      "summary": "What cookies are, the groups this website may use, and how you stay in control of your choices.",
-      "description": "The cookie policy explaining how the ICUE Vietnam website uses cookies and similar storage technologies."
-    }
-  },
   "lang": {
     "label": "Choose language"
   },

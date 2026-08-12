@@ -5,6 +5,7 @@ import './lib/i18n'
 import App from './App'
 import './legal.css'
 import '@icue/styles/icue-base.css'
+import '@icue/styles/radius-reset.css'
 
 /*
  * reducedMotion="user" makes every motion/react animation in the tree honour

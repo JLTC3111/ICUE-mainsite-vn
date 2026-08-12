@@ -1133,3 +1133,16 @@
     max-width: 100%;
   }
 }
+
+/*
+ * Top Stories runs square.
+ *
+ * The rest of the newsroom keeps rounded cards; this band is deliberately flat.
+ * Scoped to `.news-band--top` so the identical `.news-card` used by Latest and
+ * the other bands is untouched — the extra class beats the base rule on
+ * specificity, so no !important is needed.
+ */
+.news-band--top .news-card__media,
+.news-band--top .news-card__media img {
+  border-radius: 0;
+}

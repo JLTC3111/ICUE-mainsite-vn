@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   BrowserRouter,
@@ -31,10 +31,11 @@ import GooeyTabs from './components/GooeyTabs'
 import PageLanguageMenu from './components/PageLanguageMenu'
 import ScrollProgress from './components/ScrollProgress'
 import SpotlightSection from './components/SpotlightSection'
-import { AUTHORITATIVE_LANGUAGE } from './lib/i18n'
 import {
-  LEGAL_DOCUMENT_BY_SLUG,
-  LEGAL_DOCUMENTS,
+  AUTHORITATIVE_LANGUAGE,
+  buildLegalDocuments,
+  ensureLegalContent,
+  hasLegalContent,
 } from './legalDocuments'
 
 const ICONS = {
@@ -245,9 +246,40 @@ function ContactCard({ contact, accent, t }) {
   )
 }
 
+/**
+ * Documents for the active language.
+ *
+ * vi and en ship in the first bundle; de/fr/ko/ja are fetched on demand, so
+ * until the chunk lands `buildLegalDocuments` falls back to Vietnamese. The
+ * `ready` counter re-renders once the real content is in.
+ */
+function useLegalDocuments(language) {
+  // Bumped once the on-demand chunk lands. It is the memo's second dependency
+  // so the documents rebuild with the real content rather than the fallback —
+  // calling hasLegalContent() inside the dependency array instead would read
+  // a mutable module value during render.
+  const [loadedCount, setLoadedCount] = useState(0)
+
+  useEffect(() => {
+    if (hasLegalContent(language)) return undefined
+    let cancelled = false
+    ensureLegalContent(language).then(() => {
+      if (!cancelled) setLoadedCount((count) => count + 1)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [language])
+
+  return useMemo(() => buildLegalDocuments(language), [language, loadedCount])
+}
+
 function LegalDocumentPage() {
   const { slug } = useParams()
-  const document = LEGAL_DOCUMENT_BY_SLUG[slug]
+  const { i18n } = useTranslation()
+  const language = i18n.resolvedLanguage || i18n.language || AUTHORITATIVE_LANGUAGE
+  const documents = useLegalDocuments(language)
+  const document = documents.find((entry) => entry.slug === slug)
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' })
@@ -255,19 +287,17 @@ function LegalDocumentPage() {
 
   if (!document) return <Navigate to="/privacy" replace />
 
-  return <LegalDocument document={document} />
+  return <LegalDocument document={document} documents={documents} />
 }
 
-function LegalDocument({ document }) {
+function LegalDocument({ document, documents }) {
   const { t, i18n } = useTranslation()
   const language = i18n.resolvedLanguage || i18n.language || AUTHORITATIVE_LANGUAGE
   const Icon = ICONS[document.icon]
 
-  // Headline copy is translated; the numbered sections below are not.
-  const meta = t(`documents.${document.slug}`, { returnObjects: true })
-  const translatedBody = language === AUTHORITATIVE_LANGUAGE
-
-  useDocumentMeta(document, meta, language)
+  // `document` arrives already merged for this language — headings, sections
+  // and every block of prose come from legal/content/<lang>.js.
+  useDocumentMeta(document, document, language)
 
   return (
     <div
@@ -297,22 +327,22 @@ function LegalDocument({ document }) {
           <div className="legal-shell">
             <BlurFade inView={false}>
               <div className="legal-hero__meta">
-                <span><Icon aria-hidden="true" /> {meta.eyebrow}</span>
+                <span><Icon aria-hidden="true" /> {document.eyebrow}</span>
                 <span>{t('hero.updated', { date: document.updated })}</span>
                 {document.version && (
                   <span>{t('hero.version', { version: document.version })}</span>
                 )}
               </div>
-              <h1>{meta.title}</h1>
-              <p className="legal-hero__summary">{meta.summary}</p>
+              <h1>{document.title}</h1>
+              <p className="legal-hero__summary">{document.summary}</p>
             </BlurFade>
 
             <GooeyTabs
-              documents={LEGAL_DOCUMENTS}
+              documents={documents}
               activeSlug={document.slug}
               iconMap={ICONS}
               ariaLabel={t('tabs.aria')}
-              labelFor={(entry) => t(`documents.${entry.slug}.tabLabel`)}
+              labelFor={(entry) => entry.tabLabel}
             />
           </div>
         </header>
@@ -320,10 +350,7 @@ function LegalDocument({ document }) {
         <div className="legal-shell legal-layout">
           <aside className="legal-toc">
             <p>{t('toc.heading')}</p>
-            <nav
-              aria-label={t('toc.aria', { title: meta.title })}
-              lang={AUTHORITATIVE_LANGUAGE}
-            >
+            <nav aria-label={t('toc.aria', { title: document.title })}>
               {document.sections.map((section, index) => (
                 <a key={section.id} href={`#${section.id}`}>
                   <span>{String(index + 1).padStart(2, '0')}</span>
@@ -334,19 +361,7 @@ function LegalDocument({ document }) {
           </aside>
 
           <article className="legal-article" key={document.slug}>
-            {!translatedBody && (
-              <aside className="legal-callout legal-source-notice" role="note">
-                <strong>{t('notice.title')}</strong>
-                <span>{t('notice.body')}</span>
-              </aside>
-            )}
-
-            {/*
-              `lang` marks the untranslated body as Vietnamese even when the
-              chrome is in another language, so screen readers keep the right
-              pronunciation and the browser hyphenates correctly.
-            */}
-            <div className="legal-article__body" lang={AUTHORITATIVE_LANGUAGE}>
+            <div className="legal-article__body">
               {document.sections.map((section, index) => (
                 <BlurFade key={section.id} delay={Math.min(index * 0.025, 0.12)} inView>
                   <SpotlightSection

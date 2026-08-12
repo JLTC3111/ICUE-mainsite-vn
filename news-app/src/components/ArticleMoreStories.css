@@ -42,3 +42,25 @@
     display: none;
   }
 }
+
+/*
+ * The carousel's own shell runs square in the article-detail band, matching the
+ * Top Stories band. Scoped to this section so BentoYCarousel keeps its rounded
+ * frame anywhere else it is used.
+ */
+.article-more-stories .bento-y-carousel__frame,
+.article-more-stories .bento-y-carousel__parallax,
+.article-more-stories .bento-y-carousel__layer,
+.article-more-stories .bento-y-carousel__layer img {
+  border-radius: 0;
+}
+
+/*
+ * The cards inside it keep a light corner — 10px rather than the 14px they take
+ * elsewhere, so they read as cards within a square band without competing with
+ * it. `.bento-card` clips its background media with `overflow: hidden`, so the
+ * media follows the corner on its own.
+ */
+.article-more-stories .bento-card {
+  border-radius: 10px;
+}

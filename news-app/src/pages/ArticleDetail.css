@@ -322,8 +322,10 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 .article-detail__cover { margin: 32px auto; max-width: 1127px; padding: 0 24px; }
+/* The cover runs square — frame and image both — so the hero reads as a plate
+   rather than a card. */
 .article-detail__cover-lens {
-  border-radius: var(--icue-radius);
+  border-radius: 0;
   box-shadow: var(--icue-shadow-md);
   height: auto;
   aspect-ratio: auto;
@@ -343,6 +345,14 @@ html:lang(vi) .article-detail__subtitle {
 
 .article-detail__cover .article-image-comparison {
   margin-bottom: 0;
+}
+
+/* Square corners follow through to the comparison cover, so both cover kinds
+   read the same. Scoped to the cover — the carousel keeps its rounded frame
+   inside article bodies. */
+.article-detail__cover .article-comparison-parallax__parallax,
+.article-detail__cover .article-image-comparison__frame {
+  border-radius: 0;
 }
 
 /* Cover already separates hero media from body — no divider after it. */
@@ -375,7 +385,7 @@ html:lang(vi) .article-detail__subtitle {
 .article-detail__cover img {
   width: 100%;
   display: block;
-  border-radius: var(--icue-radius);
+  border-radius: 0;
   pointer-events: none;
 }
 
@@ -962,7 +972,7 @@ html:lang(vi) .article-detail__subtitle {
 .article-detail__cover-lens,
 .article-detail__cover img,
 .article-detail__cover--comparison .article-comparison-parallax {
-  border-radius: clamp(14px, 1.4vw, 24px);
+  border-radius: 0;
 }
 
 .article-detail__editorial-frame {
@@ -1325,7 +1335,7 @@ html:lang(vi) .article-detail__subtitle {
   .article-detail__cover-lens,
   .article-detail__cover img,
   .article-detail__cover--comparison .article-comparison-parallax {
-    border-radius: 14px;
+    border-radius: 0;
   }
 
   .article-detail__editorial-frame {

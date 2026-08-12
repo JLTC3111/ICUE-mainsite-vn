@@ -1,28 +1,34 @@
 /*
- * Square corners everywhere.
+ * Square corners — OPT-IN, per app.
  *
- * The site is deliberately flat: no element carries a rounded corner except the
- * injected shell chrome — the main site nav (including its drawer) and the site
- * footer. That includes the shapes people usually treat as untouchable, so
- * avatars, flag icons, profile photos and pill buttons all render as squares.
+ * WHO IMPORTS THIS (from the app's main.jsx, after icue-base.css):
+ *   contact-app, legal-app, ourwork-app
  *
- * WHY `!important` ON `*`:
- * `*` has zero specificity, so a plain reset would lose to literally every
- * authored rule — and there are ~500 radius declarations spread across seven
- * apps plus injected legacy HTML we do not control. Marking the reset
- * `!important` is what makes it actually win. It also beats inline styles that
- * components set from JS.
+ * WHO DELIBERATELY DOES NOT — these keep their authored corners:
+ *   home-app, structure-app, news-app, people-app
  *
- * HOW THE SHELL CHROME OPTS OUT:
- * An `!important` declaration on a class selector outranks an `!important`
- * declaration on `*`, because specificity still breaks ties between two
- * important author rules. So the nav and drawer keep their corners simply by
- * marking their own radii `!important` in MainSiteNav.css and DrawerMenu.css.
- * Anything in `shared/site-footer/Footer.css` that needs a corner in future
- * must do the same — the footer currently declares none.
+ * news-app is rounded overall but squares two specific card groups; that lives
+ * next to the components concerned rather than here, so the exception is
+ * visible to whoever edits them.
  *
- * This is the single place corner radius is decided. Do not add radii to app
- * stylesheets expecting them to survive.
+ * This started life as a site-wide rule imported by icue-base.css. It was too
+ * blunt: the rounded language belongs to some of the apps, and flattening
+ * everything also caught the shell chrome in stylesheets that were easy to miss
+ * (PillSiteHeader, Dock, LanguageFlagMenu, FlagIcon). Making it opt-in means
+ * the apps keeping their radii need no `!important` defence at all.
+ *
+ * WHY `!important` ON `*` IN THE APPS THAT DO OPT IN:
+ * `*` has zero specificity, so a plain reset would lose to every authored rule,
+ * including injected legacy HTML we do not control. `!important` is what makes
+ * it win, and it also beats inline styles set from JS.
+ *
+ * HOW CHROME OPTS BACK OUT:
+ * An `!important` declaration on a class selector outranks an `!important` one
+ * on `*`, because specificity still breaks ties between two important author
+ * rules. So the shell nav, its drawer, the dock, the flag menu and the Our Work
+ * header keep their corners by marking their own radii `!important`. If you add
+ * a radius to shell chrome, mark it `!important` or it will be flattened inside
+ * these four apps.
  */
 
 :root {

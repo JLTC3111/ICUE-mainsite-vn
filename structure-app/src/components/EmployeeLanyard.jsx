@@ -1,17 +1,30 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import './EmployeeLanyard.css'
+
+/*
+ * The WebGL scene is code-split: three.js + fiber + drei + rapier is a large
+ * chunk on a page that is mostly an org chart, and phones and
+ * `prefers-reduced-motion` visitors never render it (they get the CSS badge
+ * below). Loading it lazily keeps that weight off their first paint.
+ */
+const Lanyard = lazy(() => import('./reactbits/Lanyard/Lanyard.jsx'))
 
 export const EMPLOYEE_LANYARD_PHONE_QUERY =
   '(max-width: 450px), (max-width: 520px) and (pointer: coarse), (max-height: 520px) and (pointer: coarse)'
 
-const INTER_BADGE_FONT = '"Inter", Arial, sans-serif'
-const VI_BADGE_FONT = '"Noto Sans", Arial, sans-serif'
+/*
+ * Canvas needs real font strings, not the CSS custom properties the rest of the
+ * site uses — so these mirror shared/styles/typography.css by hand. Inter used
+ * to lead here; it is no longer shipped (the site is Noto Sans throughout, see
+ * shared/fonts/fonts.css), and naming a font we do not serve would silently
+ * fall back to Arial and change the badge's metrics.
+ */
+const DEFAULT_BADGE_FONT = '"Noto Sans", Arial, sans-serif'
 const JA_BADGE_FONT = '"Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif'
 const KO_BADGE_FONT = '"Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif'
 
 const BADGE_FONT_BY_LANGUAGE = {
-  vi: VI_BADGE_FONT,
   ja: JA_BADGE_FONT,
   ko: KO_BADGE_FONT,
 }
@@ -42,10 +55,18 @@ function roundedRect(ctx, x, y, width, height, radius) {
   ctx.closePath()
 }
 
-function fitText(ctx, text, maxWidth, maxSize, fontFamily, minSize = 24) {
+/**
+ * Largest size at or below `maxSize` that fits `text` into `maxWidth`.
+ *
+ * `weight` matters: the caller sets the same weight it will draw with, because
+ * measuring 600 text with a 700 font over-estimates and shrinks the result more
+ * than needed. Any letter-spacing must already be set on `ctx` — measureText
+ * accounts for it.
+ */
+function fitText(ctx, text, maxWidth, maxSize, fontFamily, minSize = 24, weight = 700) {
   let size = maxSize
   while (size > minSize) {
-    ctx.font = `700 ${size}px ${fontFamily}`
+    ctx.font = `${weight} ${size}px ${fontFamily}`
     if (ctx.measureText(text).width <= maxWidth) break
     size -= 2
   }
@@ -75,10 +96,35 @@ function loadImage(src) {
   })
 }
 
-async function createBadgeImage({ profile, displayName, title, genericLabel, fontFamily }) {
+/**
+ * Draw the badge artwork.
+ *
+ * Everything printed here is passed in already translated. The wordmark stays
+ * "ICUE" in every language; the badge label, the fallback role and the strap
+ * line under the wordmark all come from orgChart.* — they used to be English
+ * string literals, which is why the card kept reading "EMPLOYEE BADGE" no
+ * matter what the rest of the page said.
+ */
+async function createBadgeImage({
+  profile,
+  displayName,
+  title,
+  genericLabel,
+  genericRole,
+  badgeLabel,
+  tagline,
+  language,
+  fontFamily,
+}) {
+  // Upper-casing is locale-sensitive (Turkish dotted i, Vietnamese diacritics);
+  // for ja/ko it is simply a no-op, which is what we want.
+  const upper = (value) => (value || '').toLocaleUpperCase(language || 'en')
+  const badgeHeading = upper(badgeLabel)
+  const strapLine = upper(tagline)
+
   await ensureBadgeFonts(
     fontFamily,
-    `${displayName} ${title} ${genericLabel} ICUE EMPLOYEE BADGE`,
+    `${displayName} ${title} ${genericLabel} ICUE ${badgeHeading} ${strapLine}`,
   )
 
   const canvas = document.createElement('canvas')
@@ -105,10 +151,11 @@ async function createBadgeImage({ profile, displayName, title, genericLabel, fon
   ctx.font = `800 72px ${fontFamily}`
   ctx.fillStyle = '#f8fbff'
   ctx.fillText('ICUE', 56, 148)
-  ctx.font = `600 24px ${fontFamily}`
-  ctx.fillStyle = 'rgba(222, 237, 250, 0.7)'
   ctx.letterSpacing = '5px'
-  ctx.fillText('EMPLOYEE BADGE', 56, 196)
+  const headingSize = fitText(ctx, badgeHeading, 656, 24, fontFamily, 14, 600)
+  ctx.font = `600 ${headingSize}px ${fontFamily}`
+  ctx.fillStyle = 'rgba(222, 237, 250, 0.7)'
+  ctx.fillText(badgeHeading, 56, 196)
   ctx.letterSpacing = '0px'
 
   roundedRect(ctx, 36, 204, 696, 593, 34)
@@ -177,7 +224,7 @@ async function createBadgeImage({ profile, displayName, title, genericLabel, fon
 
   ctx.font = `500 30px ${fontFamily}`
   ctx.fillStyle = '#9be9ff'
-  ctx.fillText(title || 'INSTITUTE STAFF', 56, 906)
+  ctx.fillText(title || genericRole, 56, 906)
 
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.13)'
   ctx.beginPath()
@@ -185,9 +232,10 @@ async function createBadgeImage({ profile, displayName, title, genericLabel, fon
   ctx.lineTo(712, 958)
   ctx.stroke()
 
-  ctx.font = `600 22px ${fontFamily}`
+  const strapSize = fitText(ctx, strapLine, 600, 22, fontFamily, 13, 600)
+  ctx.font = `600 ${strapSize}px ${fontFamily}`
   ctx.fillStyle = 'rgba(225, 237, 248, 0.68)'
-  ctx.fillText('CONSTRUCTION ECONOMICS · URBAN PLANNING', 56, 1012)
+  ctx.fillText(strapLine, 56, 1012)
   ctx.fillStyle = '#80ecff'
   ctx.beginPath()
   ctx.arc(682, 1005, 12, 0, Math.PI * 2)
@@ -213,27 +261,63 @@ function StaticBadge({ profile, displayName, title, genericLabel, onOpen }) {
 }
 
 /**
- * The badge on its lanyard.
+ * The badge on a CSS strap — the still fallback for the WebGL lanyard.
  *
- * This used to be a WebGL scene: three.js + @react-three/fiber + drei, a
- * rapier physics rig and a meshline strap, so the card could be dragged and
- * swung. It cost roughly 3 MB of JavaScript, held a live renderer and a
- * physics step on a page that is mostly an org chart, and re-mounted whenever
- * a visitor picked a different person.
- *
- * The badge artwork was never 3D — it is composited to a canvas by
- * createBadgeImage and mapped onto a flat card. So the same picture hangs here
- * from a CSS strap with a transform-only sway. Nothing animates on the main
- * thread, the sway stops for `prefers-reduced-motion`, and hovering lifts the
- * card the way grabbing it used to.
+ * Same artwork: createBadgeImage composites it to a canvas either way, so this
+ * is the 3D card's texture hung from an SVG cord with a transform-only sway.
+ * It renders when the physics scene is not wanted — `prefers-reduced-motion`,
+ * where a draggable swinging card is exactly what the visitor asked us not to
+ * do — and when it cannot run at all. Nothing here touches the main thread.
  */
 function HangingBadge({ image, label, onOpen, interactive }) {
   const Tag = interactive ? 'button' : 'div'
 
   return (
     <div className="employee-badge-hang">
-      <span className="employee-badge-hang__strap" aria-hidden="true" />
-      <span className="employee-badge-hang__clip" aria-hidden="true" />
+      {/*
+       * The cord: two strands running from the top corners down to the clasp,
+       * the way a real lanyard reads when you look at it front-on. Drawn as SVG
+       * rather than two skewed divs so the strands can actually curve and take
+       * a woven texture, and so the join at the clasp is a single shape.
+       */}
+      <svg
+        className="employee-badge-hang__cord"
+        viewBox="0 0 300 150"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="lanyard-cord" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#2f7fb8" />
+            <stop offset="55%" stopColor="#1d5f92" />
+            <stop offset="100%" stopColor="#12405f" />
+          </linearGradient>
+          <linearGradient id="lanyard-cord-sheen" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="50%" stopColor="rgba(190,238,255,0.55)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+        </defs>
+
+        <path
+          className="employee-badge-hang__strand"
+          d="M6 0 C 34 74, 96 116, 150 150"
+        />
+        <path
+          className="employee-badge-hang__strand"
+          d="M294 0 C 266 74, 204 116, 150 150"
+        />
+        {/* Highlight along the left strand only — light comes from upper left. */}
+        <path
+          className="employee-badge-hang__strand-sheen"
+          d="M6 0 C 34 74, 96 116, 150 150"
+        />
+      </svg>
+
+      <span className="employee-badge-hang__clasp" aria-hidden="true">
+        <span className="employee-badge-hang__clasp-ring" />
+      </span>
+
       <Tag
         {...(interactive ? { type: 'button', onClick: onOpen } : {})}
         className="employee-badge-hang__card"
@@ -244,6 +328,27 @@ function HangingBadge({ image, label, onOpen, interactive }) {
   )
 }
 
+/**
+ * Falls back to the CSS badge if the WebGL scene cannot run.
+ *
+ * Two things can fail here and neither should take the org chart with it: the
+ * lazy chunk failing to arrive, and three.js finding no WebGL context (old
+ * hardware, a blocked GPU). Without a boundary either one throws past this
+ * panel and blanks the page.
+ */
+class LanyardBoundary extends Component {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    if (this.state.failed) return this.props.fallback
+    return this.props.children
+  }
+}
+
 export default function EmployeeLanyard({ profile, onOpen }) {
   const { t, i18n } = useTranslation()
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -252,13 +357,31 @@ export default function EmployeeLanyard({ profile, onOpen }) {
   const displayName = profile ? t(`orgChart.people.${profile.id}.displayName`) : ''
   const title = profile ? t(`orgChart.people.${profile.id}.title`) : t('orgChart.badgeGenericRole')
   const genericLabel = t('orgChart.badgeGeneric')
+  const genericRole = t('orgChart.badgeGenericRole')
+  const badgeLabel = t('orgChart.badgeLabel')
+  const tagline = t('orgChart.badgeTagline')
   const language = (i18n.resolvedLanguage || i18n.language).split('-')[0]
-  const badgeFontFamily = BADGE_FONT_BY_LANGUAGE[language] || INTER_BADGE_FONT
+  const badgeFontFamily = BADGE_FONT_BY_LANGUAGE[language] || DEFAULT_BADGE_FONT
   const [badgeImage, setBadgeImage] = useState(null)
 
+  // Every translated string the artwork prints is a dependency: the badge is a
+  // rasterised image, so it has to be redrawn when the language changes.
   const badgeRequest = useMemo(
-    () => ({ profile, displayName, title, genericLabel, fontFamily: badgeFontFamily }),
-    [profile, displayName, title, genericLabel, badgeFontFamily],
+    () => ({
+      profile,
+      displayName,
+      title,
+      genericLabel,
+      genericRole,
+      badgeLabel,
+      tagline,
+      language,
+      fontFamily: badgeFontFamily,
+    }),
+    [
+      profile, displayName, title, genericLabel, genericRole,
+      badgeLabel, tagline, language, badgeFontFamily,
+    ],
   )
 
   useEffect(() => {
@@ -279,32 +402,69 @@ export default function EmployeeLanyard({ profile, onOpen }) {
 
   if (phoneDisabled) return null
 
+  // The non-WebGL badge: the reduced-motion rendering, and what the boundary
+  // above shows if the scene cannot run at all.
+  const stillBadge = badgeImage ? (
+    <HangingBadge
+      image={badgeImage}
+      label={displayName || genericLabel}
+      onOpen={onOpen}
+      interactive={Boolean(profile)}
+    />
+  ) : (
+    <StaticBadge
+      profile={profile}
+      displayName={displayName}
+      title={title}
+      genericLabel={genericLabel}
+      onOpen={onOpen}
+    />
+  )
+
   return (
     <aside className="employee-lanyard" aria-live="polite">
+      {/*
+        Names the panel rather than the card. The badge label is printed on the
+        badge artwork itself now, so repeating it here read as a duplicate — and
+        sat left-aligned right where the cord's left strand comes down.
+      */}
       <div className="employee-lanyard__heading">
         <span className="employee-lanyard__status" aria-hidden="true" />
-        <span>{t('orgChart.badgeLabel')}</span>
+        <span>{t('orgChart.badgePanelLabel')}</span>
       </div>
 
       <div
         className={`employee-lanyard__stage${tabletLayout ? ' is-compact' : ''}`}
         data-motion={reducedMotion ? 'reduced' : 'full'}
       >
-        {badgeImage ? (
-          <HangingBadge
-            image={badgeImage}
-            label={displayName || genericLabel}
-            onOpen={onOpen}
-            interactive={Boolean(profile)}
-          />
+        {reducedMotion ? (
+          stillBadge
         ) : (
-          <StaticBadge
-            profile={profile}
-            displayName={displayName}
-            title={title}
-            genericLabel={genericLabel}
-            onOpen={onOpen}
-          />
+          <LanyardBoundary fallback={stillBadge}>
+            <Suspense fallback={<div className="employee-lanyard__loading" aria-hidden="true" />}>
+              <Lanyard
+                /*
+                 * Key on the profile only. Including the badge-image load state
+                 * tore down and rebuilt the whole WebGL scene (renderer, physics
+                 * rig, textures) a second time the moment the canvas-composited
+                 * badge finished generating — the "loads twice on profile
+                 * change". `frontImage` is already reactive inside Lanyard via
+                 * useTexture, so the texture swaps in place without a remount.
+                 */
+                key={profile?.id || 'generic'}
+                position={[0, 0, 26]}
+                gravity={[0, -34, 0]}
+                fov={22}
+                frontImage={badgeImage}
+                imageFit="cover"
+                lanyardWidth={0.82}
+                segmentLength={0.5}
+                cardScale={tabletLayout ? 2.8 : 3.05}
+                rigPosition={[0, 3.3, 0]}
+                onCardClick={profile ? onOpen : undefined}
+              />
+            </Suspense>
+          </LanyardBoundary>
         )}
       </div>
 

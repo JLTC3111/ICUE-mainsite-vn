@@ -1007,22 +1007,3 @@ a {
   }
 }
 
-/*
- * Shown above the document body when the reader's UI locale is not the one the
- * legal text is authored in. The chrome around it is translated; these sections
- * are deliberately not (see src/lib/i18n.js).
- */
-.legal-source-notice {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin-bottom: 1.75rem;
-}
-
-.legal-source-notice strong {
-  font-weight: 600;
-}
-
-.legal-source-notice span {
-  opacity: 0.85;
-}

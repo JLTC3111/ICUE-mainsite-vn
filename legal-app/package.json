@@ -8,8 +8,9 @@
     "dev": "vite",
     "predev": "npm run sync-assets",
     "build": "vite build && node scripts/generate-route-shells.mjs",
-    "prebuild": "npm run sync-assets",
-    "preview": "vite preview"
+    "prebuild": "npm run sync-assets && npm run verify:legal",
+    "preview": "vite preview",
+    "verify:legal": "node scripts/verify-legal-content.mjs"
   },
   "dependencies": {
     "i18next": "^26.3.1",
