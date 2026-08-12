@@ -55,12 +55,7 @@
   border-radius: 0;
 }
 
-/*
- * The cards inside it keep a light corner — 10px rather than the 14px they take
- * elsewhere, so they read as cards within a square band without competing with
- * it. `.bento-card` clips its background media with `overflow: hidden`, so the
- * media follows the corner on its own.
- */
+/* Keep the article-detail band and every card inside it completely square. */
 .article-more-stories .bento-card {
-  border-radius: 10px;
+  border-radius: 0;
 }

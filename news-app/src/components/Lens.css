@@ -41,15 +41,12 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(17, 19, 22, 0.86);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.94);
+  border-radius: 0;
+  background: transparent;
   pointer-events: none;
   color: #111316;
   transform: translate(-50%, -50%);
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+  box-shadow: none;
 }
 
 .lens__indicator svg {
@@ -59,10 +56,7 @@
 }
 
 .icue-app--news-theme-dark .lens__indicator {
-  border-color: rgba(255, 255, 255, 0.86);
-  background: rgba(10, 10, 10, 0.94);
+  background: transparent;
   color: #fff;
-  box-shadow:
-    0 2px 9px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.72);
+  box-shadow: none;
 }

@@ -30,14 +30,13 @@ export default function BentoYCarousel({
   const unlockTimerRef = useRef(null)
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
-  const useLoop = slides.length > 2 && !reduceMotion
   const useParallax = slides.length > 1 && !reduceMotion && !disableParallax
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: 'y',
     align: 'start',
-    loop: useLoop,
-    containScroll: useLoop ? false : 'trimSnaps',
+    loop: false,
+    containScroll: 'trimSnaps',
     skipSnaps: false,
     watchResize: true,
     watchSlides: true,
@@ -118,7 +117,7 @@ export default function BentoYCarousel({
       const index = emblaApi.selectedScrollSnap()
       const atStart = index <= 0
       const atEnd = index >= slides.length - 1
-      const canGo = useLoop || (goingDown ? !atEnd : !atStart)
+      const canGo = goingDown ? !atEnd : !atStart
 
       if (!canGo) return
 
@@ -144,7 +143,7 @@ export default function BentoYCarousel({
       section.removeEventListener('wheel', onWheel)
       unlockWheel()
     }
-  }, [emblaApi, slides.length, useLoop, scheduleUnlock, unlockWheel])
+  }, [emblaApi, slides.length, scheduleUnlock, unlockWheel])
 
   const scrollPrev = useCallback(() => {
     if (!emblaApi || wheelLockRef.current) return
@@ -167,8 +166,8 @@ export default function BentoYCarousel({
     scheduleUnlock()
   }, [emblaApi, scheduleUnlock])
 
-  const canScrollPrev = useLoop || selectedIndex > 0
-  const canScrollNext = useLoop || selectedIndex < slides.length - 1
+  const canScrollPrev = selectedIndex > 0
+  const canScrollNext = selectedIndex < slides.length - 1
   const currentPage = selectedIndex + 1
   const totalPages = slides.length
 

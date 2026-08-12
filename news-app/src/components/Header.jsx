@@ -229,11 +229,6 @@ function Header() {
                 {t('nav.mainSite')}
               </AnimatedShinyText>
             </a>
-            <NavLink to="/" end className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
-              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
-                {t('nav.news')}
-              </AnimatedShinyText>
-            </NavLink>
             <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
                 {t('nav.archive')}
