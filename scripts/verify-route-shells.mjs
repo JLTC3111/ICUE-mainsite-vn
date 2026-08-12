@@ -97,6 +97,8 @@ for (const [label, set] of Object.entries(values)) {
 // Assert each app is actually there and reachable, since dropping them from
 // `routes` above removed them from every other check in this file.
 const standaloneApps = [
+  ['/newsroom', 'newsroom', 'news-app'],
+  ['/structure', 'structure', 'structure-app'],
   ['/our-work', 'our-work', 'ourwork-app'],
   ['/contact', 'contact', 'contact-app'],
 ]
@@ -109,6 +111,12 @@ for (const [route, dir, appName] of standaloneApps) {
   if (!fs.existsSync(path.join(dist, `${dir}/index.html`))) {
     throw new Error(`${route}: ${appName} build output is missing from dist-home`)
   }
+}
+
+// A locale query on a deep newsroom URL must still reach the newsroom SPA;
+// otherwise Netlify's final main-site catch-all silently renders Home there.
+if (!/^\/newsroom\/\*\s+\/newsroom\/index\.html\s+200$/m.test(redirects)) {
+  throw new Error('/newsroom/*: missing catch-all before the main-site fallback')
 }
 
 // The contact form is submitted over fetch, so Netlify only knows the form

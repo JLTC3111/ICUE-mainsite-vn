@@ -44,6 +44,7 @@
 /newsroom/assist     /newsroom/index.html   200
 /newsroom/profile    /newsroom/index.html   200
 /newsroom/article/*  /newsroom/index.html   200
+/newsroom/*          /newsroom/index.html   200
 
 # People React app (history routing) lives at /people.
 /people              /people/index.html   200
