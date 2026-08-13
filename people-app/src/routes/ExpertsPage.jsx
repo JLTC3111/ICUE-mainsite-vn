@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import people from '../data/people.js'
 import PageShell from '../components/PageShell'
 import ProfileCarousel from '../components/ProfileCarousel'
@@ -9,6 +10,7 @@ const experts = people.filter((p) => p.group === 'experts')
 
 export default function ExpertsPage() {
   const { t } = useTranslation()
+  const [searchParams] = useSearchParams()
   const { enabled, toggle, canToggle } = useBackgroundVideo()
 
   useDocumentMeta({ title: t('meta.expertsTitle'), description: t('meta.description') })
@@ -21,7 +23,11 @@ export default function ExpertsPage() {
       backgroundEnabled={enabled}
       onBackgroundToggle={toggle}
     >
-      <ProfileCarousel profiles={experts} group="experts" />
+      <ProfileCarousel
+        profiles={experts}
+        group="experts"
+        requestedProfileId={searchParams.get('profile') || ''}
+      />
     </PageShell>
   )
 }

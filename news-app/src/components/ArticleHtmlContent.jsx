@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import HeroVideoDialog from './magicui/HeroVideoDialog'
+import EmployeeNameHighlighter from './EmployeeNameHighlighter'
 import { embedUrlWithAutoplay, splitArticleHtmlSegments } from '../lib/articleHtmlSegments'
 
 export default function ArticleHtmlContent({ html, className }) {
@@ -8,9 +9,9 @@ export default function ArticleHtmlContent({ html, className }) {
 
   if (!hasVideo && segments.length === 1) {
     return (
-      <div
+      <EmployeeNameHighlighter
         className={className}
-        dangerouslySetInnerHTML={{ __html: segments[0].html ?? '' }}
+        html={segments[0].html ?? ''}
       />
     )
   }
@@ -33,10 +34,10 @@ export default function ArticleHtmlContent({ html, className }) {
         if (!segment.html?.trim()) return null
 
         return (
-          <div
+          <EmployeeNameHighlighter
             key={`html-${index}`}
             className="article-detail__html-segment"
-            dangerouslySetInnerHTML={{ __html: segment.html }}
+            html={segment.html}
           />
         )
       })}

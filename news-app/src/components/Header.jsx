@@ -47,6 +47,15 @@ function AuthorIcon({ name }) {
     )
   }
 
+  if (name === 'write') {
+    return (
+      <svg {...common}>
+        <path d="M4 20h4L19 9a2.12 2.12 0 0 0-3-3L5 17l-1 3Z" />
+        <path d="m14.5 7.5 3 3" />
+      </svg>
+    )
+  }
+
   return (
     <svg {...common}>
       <circle cx="12" cy="5" r="1.4" fill="currentColor" stroke="none" />
@@ -61,7 +70,9 @@ function AuthorToolsMenu({ onNavigate }) {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const rootRef = useRef(null)
-  const active = pathname.startsWith('/dashboard') || pathname.startsWith('/assist')
+  const active = pathname.startsWith('/dashboard')
+    || pathname.startsWith('/assist')
+    || pathname.startsWith('/write')
 
   useEffect(() => {
     if (!menuOpen) return undefined
@@ -114,6 +125,17 @@ function AuthorToolsMenu({ onNavigate }) {
           <ul className="icue-header__author-dropdown" role="menu">
             <li role="none">
               <NavLink
+                to="/write"
+                role="menuitem"
+                className="icue-header__author-item"
+                onClick={go}
+              >
+                <AuthorIcon name="write" />
+                <span>{t('nav.write')}</span>
+              </NavLink>
+            </li>
+            <li role="none">
+              <NavLink
                 to="/dashboard"
                 role="menuitem"
                 className="icue-header__author-item"
@@ -137,10 +159,6 @@ function AuthorToolsMenu({ onNavigate }) {
           </ul>
         )}
       </div>
-
-      <NavLink to="/write" className="btn btn-accent btn-sm icue-header__write-btn" onClick={onNavigate}>
-        {t('nav.write')}
-      </NavLink>
     </div>
   )
 }
@@ -156,12 +174,14 @@ function Header() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const usesOverflowNav = useMediaQuery('(max-width: 860px)')
   const showExpandedSearch = useMediaQuery('(min-width: 1360px)')
   const compactSearchOpen = searchOpen && !showExpandedSearch
 
   const close = useCallback(() => setOpen(false), [])
   const handleSearchOpenChange = useCallback((next) => {
     setSearchOpen(next)
+    if (next) setOpen(false)
   }, [])
   const handleSignOut = useCallback(async () => {
     await signOut()
@@ -203,11 +223,25 @@ function Header() {
           />
         )}
 
+        {usesOverflowNav && (
+          <div className="icue-header__responsive-actions">
+            <ArticleSearch
+              open={searchOpen}
+              onOpenChange={handleSearchOpenChange}
+            />
+            {/* Keyed by account so notification state resets on user switch. */}
+            {isAuthed && <NotificationBell key={`responsive-${user?.id}`} compact />}
+          </div>
+        )}
+
         <button
           className={`icue-header__burger ${open ? 'is-open' : ''}`}
           aria-label={t('nav.news')}
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => {
+            setSearchOpen(false)
+            setOpen((v) => !v)
+          }}
         >
           {open ? (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -239,13 +273,15 @@ function Header() {
           {isAuthed && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
-            <ArticleSearch
-              open={searchOpen}
-              expanded={showExpandedSearch}
-              onOpenChange={handleSearchOpenChange}
-            />
+            {!usesOverflowNav && (
+              <ArticleSearch
+                open={searchOpen}
+                expanded={showExpandedSearch}
+                onOpenChange={handleSearchOpenChange}
+              />
+            )}
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && <NotificationBell key={user?.id} />}
+            {isAuthed && !usesOverflowNav && <NotificationBell key={user?.id} />}
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>

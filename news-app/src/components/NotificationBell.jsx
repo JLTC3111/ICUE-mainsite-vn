@@ -59,7 +59,7 @@ function useNotificationMessage() {
   )
 }
 
-export default function NotificationBell() {
+export default function NotificationBell({ compact = false }) {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const rootRef = useRef(null)
@@ -120,7 +120,7 @@ export default function NotificationBell() {
     : t('notifications.title')
 
   return (
-    <div className={`notif${open ? ' is-open' : ''}`} ref={rootRef}>
+    <div className={`notif${compact ? ' notif--compact' : ''}${open ? ' is-open' : ''}`} ref={rootRef}>
       <button
         type="button"
         className="notif__trigger"

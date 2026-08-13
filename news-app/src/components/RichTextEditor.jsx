@@ -4,6 +4,7 @@ import {
   AlignCenter,
   AlignLeft,
   Eraser,
+  Highlighter as HighlighterIcon,
   Link as LinkIcon,
   Quote,
   Sparkles,
@@ -13,23 +14,23 @@ import {
 } from 'lucide-react'
 import {
   ARTICLE_HIGHLIGHT_COLORS,
+  ARTICLE_MAGIC_HIGHLIGHT_COLORS,
   ARTICLE_LINE_HEIGHTS,
   ARTICLE_TEXT_COLORS,
   sanitizeArticleHtml,
 } from '@icue/text/sanitizeArticleHtml'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
 import LinkExt from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import TextAlign from '@tiptap/extension-text-align'
-import Highlight from '@tiptap/extension-highlight'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
 import { Table, TableRow, TableCell, TableHeader } from '@tiptap/extension-table'
 import { LineHeight } from '../lib/tiptapLineHeight'
 import { detectImportantPhraseRanges, IMPORTANT_PHRASE_STYLES } from '../lib/importantPhrases'
+import { MagicHighlight, MagicUnderline } from '../lib/tiptapMagicHighlight'
 import './RichTextEditor.css'
 
 const ICON = { size: 16, strokeWidth: 2 }
@@ -69,13 +70,13 @@ const LINE_HEIGHTS = [...ARTICLE_LINE_HEIGHTS].map((value) => ({
 
 const extensions = (placeholder) => [
   StarterKit.configure({ heading: { levels: [2, 3] }, link: false, underline: false }),
-  Underline,
+  MagicUnderline,
   LinkExt.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: 'noopener noreferrer' } }),
   Image.configure({ inline: false, HTMLAttributes: { loading: 'lazy', decoding: 'async' } }),
   TextAlign.configure({ types: ['heading', 'paragraph'] }),
   TextStyle,
   Color,
-  Highlight.configure({ multicolor: true }),
+  MagicHighlight.configure({ multicolor: true }),
   LineHeight,
   Table.configure({ resizable: false }),
   TableRow,
@@ -160,6 +161,24 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
   }, [editor])
 
+  const toggleMagicUnderline = useCallback(() => {
+    if (!editor) return
+    if (editor.isActive('underline')) {
+      editor.chain().focus().unsetUnderline().run()
+      return
+    }
+    editor.chain().focus().unsetHighlight().setUnderline().run()
+  }, [editor])
+
+  const toggleMagicHighlight = useCallback((color) => {
+    if (!editor) return
+    if (editor.isActive('highlight', { color })) {
+      editor.chain().focus().unsetHighlight().run()
+      return
+    }
+    editor.chain().focus().unsetUnderline().setHighlight({ color }).run()
+  }, [editor])
+
   const cleanFormatting = useCallback(() => {
     if (!editor) return
     const clean = sanitizeArticleHtml(editor.getHTML())
@@ -176,8 +195,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
       if (!node.isTextblock || node.type.name === 'codeBlock' || node.type.name === 'heading') return
 
       // Build a block string while counting inline atoms as one document
-      // position. This keeps ranges accurate even when existing marks split a
-      // sentence into several text nodes.
+      // position. This keeps ranges accurate when existing marks split text.
       let blockText = ''
       node.forEach((child) => {
         if (child.isText) blockText += child.text
@@ -208,22 +226,37 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
 
     const { schema } = editor.state
     let transaction = editor.state.tr
+    let highlightIndex = 0
     for (const range of selected) {
       const style = IMPORTANT_PHRASE_STYLES[range.kind]
+      // Reset both annotation marks before applying exactly one treatment.
+      if (schema.marks.highlight) {
+        transaction = transaction.removeMark(range.from, range.to, schema.marks.highlight)
+      }
+      if (schema.marks.underline) {
+        transaction = transaction.removeMark(range.from, range.to, schema.marks.underline)
+      }
       if (style.bold && schema.marks.bold) {
         transaction = transaction.addMark(range.from, range.to, schema.marks.bold.create())
       }
       if (style.italic && schema.marks.italic) {
         transaction = transaction.addMark(range.from, range.to, schema.marks.italic.create())
       }
-      if (style.underline && schema.marks.underline) {
-        transaction = transaction.addMark(range.from, range.to, schema.marks.underline.create())
-      }
       if (style.color && schema.marks.textStyle) {
         transaction = transaction.addMark(range.from, range.to, schema.marks.textStyle.create({ color: style.color }))
       }
-      if (style.highlight && schema.marks.highlight) {
-        transaction = transaction.addMark(range.from, range.to, schema.marks.highlight.create({ color: style.highlight }))
+      if (style.underline && schema.marks.underline) {
+        transaction = transaction.addMark(range.from, range.to, schema.marks.underline.create())
+      } else if (style.highlight && schema.marks.highlight) {
+        const highlightColor = ARTICLE_MAGIC_HIGHLIGHT_COLORS[
+          highlightIndex % ARTICLE_MAGIC_HIGHLIGHT_COLORS.length
+        ]
+        highlightIndex += 1
+        transaction = transaction.addMark(
+          range.from,
+          range.to,
+          schema.marks.highlight.create({ color: highlightColor }),
+        )
       }
     }
 
@@ -240,22 +273,32 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
 
   return (
     <div className="rte" lang={highlightLocale}>
-      <div className="rte-toolbar" role="toolbar" aria-label="Formatting">
+      <div
+        className="rte-toolbar rte-toolbar--magic"
+        role="toolbar"
+        aria-label={`Magic UI — ${highlightT('editor.smartHighlight')}`}
+      >
+        <span className="rte-magic-brand" aria-hidden="true">
+          <Sparkles {...ICON} />
+          <span>Magic UI</span>
+        </span>
         <ToolbarButton
           className="rte-btn--smart"
-          label={highlightT('editor.smartHighlight')}
+          label={`Magic UI — ${highlightT('editor.smartHighlight')}`}
           onClick={highlightImportantPhrases}
         >
-          <Sparkles {...ICON} aria-hidden />
+          <HighlighterIcon {...ICON} aria-hidden />
           <span>{highlightT('editor.smartHighlight')}</span>
         </ToolbarButton>
         {smartHighlightMessage && (
           <span className="rte-smart-status" role="status">{smartHighlightMessage}</span>
         )}
-        <span className="rte-sep" />
+      </div>
+
+      <div className="rte-toolbar" role="toolbar" aria-label="Formatting">
         <ToolbarButton label="Bold" active={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}><b>B</b></ToolbarButton>
         <ToolbarButton label="Italic" active={editor.isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()}><i>i</i></ToolbarButton>
-        <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()}><u>U</u></ToolbarButton>
+        <ToolbarButton label="Underline" active={editor.isActive('underline')} onClick={toggleMagicUnderline}><u>U</u></ToolbarButton>
         <ToolbarButton label="Link" active={editor.isActive('link')} onClick={setLink}>
           <LinkIcon {...ICON} />
         </ToolbarButton>
@@ -297,7 +340,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
               title={`Highlight ${c.name}`}
               aria-label={`Highlight ${c.name}`}
               onMouseDown={(e) => e.preventDefault()}
-              onClick={() => editor.chain().focus().toggleHighlight({ color: c.value }).run()}
+              onClick={() => toggleMagicHighlight(c.value)}
             />
           ))}
           <button

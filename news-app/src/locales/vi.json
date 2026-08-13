@@ -166,7 +166,7 @@
     "needContent": "Vui lòng nhập nội dung bài viết.",
     "cleanFormatting": "Xóa định dạng",
     "cleanFormattingDone": "Đã xóa định dạng",
-    "smartHighlight": "Tự động làm nổi bật",
+    "smartHighlight": "Làm nổi bật cụm từ quan trọng",
     "smartHighlightDone": "Đã làm nổi bật {{count}} cụm từ quan trọng",
     "smartHighlightNone": "Không tìm thấy cụm từ quan trọng nào",
     "sourcesTitle": "Nguồn tham khảo",

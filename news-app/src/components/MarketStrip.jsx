@@ -79,6 +79,45 @@ function Quote({ quote, locale, position, label = quote.label }) {
   )
 }
 
+function MarketGroups({ t, locale, vnQuotes, globalQuotes, clone = false }) {
+  return (
+    <div
+      className={`market-strip__inner${clone ? ' market-strip__inner--clone' : ''}`}
+      aria-hidden={clone || undefined}
+    >
+      {vnQuotes.length > 0 && (
+        <div className="market-strip__group market-strip__group--vn">
+          <span className="market-strip__label">{t('market.vnLabel')}</span>
+          {vnQuotes.map((quote, index) => (
+            <Quote key={quote.symbol} quote={quote} locale={locale} position={index + 1} />
+          ))}
+        </div>
+      )}
+
+      {vnQuotes.length > 0 && globalQuotes.length > 0 && (
+        <span className="market-strip__divider" aria-hidden="true" />
+      )}
+
+      {globalQuotes.length > 0 && (
+        <div className="market-strip__group market-strip__group--global">
+          <span className="market-strip__label">{t('market.label')}</span>
+          {globalQuotes.map((quote, index) => (
+            <Quote
+              key={quote.symbol}
+              quote={quote}
+              locale={locale}
+              position={index + 1}
+              label={GLOBAL_LABEL_KEYS[quote.symbol]
+                ? t(GLOBAL_LABEL_KEYS[quote.symbol])
+                : quote.label}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function MarketStrip() {
   const { t, i18n } = useTranslation()
   const { pauseTickers } = usePerformanceProfile()
@@ -114,37 +153,25 @@ export default function MarketStrip() {
   }
 
   return (
-    <div className="market-strip" aria-label={t('market.label')} aria-live="off">
-      <div className="market-strip__inner">
-        {vnQuotes.length > 0 && (
-          <div className="market-strip__group market-strip__group--vn">
-            <span className="market-strip__label">{t('market.vnLabel')}</span>
-            {vnQuotes.map((quote, index) => (
-              <Quote key={quote.symbol} quote={quote} locale={locale} position={index + 1} />
-            ))}
-          </div>
-        )}
-
-        {vnQuotes.length > 0 && globalQuotes.length > 0 && (
-          <span className="market-strip__divider" aria-hidden="true" />
-        )}
-
-        {globalQuotes.length > 0 && (
-          <div className="market-strip__group market-strip__group--global">
-            <span className="market-strip__label">{t('market.label')}</span>
-            {globalQuotes.map((quote, index) => (
-              <Quote
-                key={quote.symbol}
-                quote={quote}
-                locale={locale}
-                position={index + 1}
-                label={GLOBAL_LABEL_KEYS[quote.symbol]
-                  ? t(GLOBAL_LABEL_KEYS[quote.symbol])
-                  : quote.label}
-              />
-            ))}
-          </div>
-        )}
+    <div
+      className={`market-strip${pauseTickers ? ' is-paused' : ''}`}
+      aria-label={t('market.label')}
+      aria-live="off"
+    >
+      <div className="market-strip__track">
+        <MarketGroups
+          t={t}
+          locale={locale}
+          vnQuotes={vnQuotes}
+          globalQuotes={globalQuotes}
+        />
+        <MarketGroups
+          t={t}
+          locale={locale}
+          vnQuotes={vnQuotes}
+          globalQuotes={globalQuotes}
+          clone
+        />
       </div>
     </div>
   )

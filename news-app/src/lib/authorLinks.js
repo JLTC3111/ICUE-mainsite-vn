@@ -1,3 +1,5 @@
+import people from '../../../people-app/src/data/people.json' with { type: 'json' }
+
 const STRUCTURE_PROFILES = [
   {
     id: 'hanh',
@@ -155,6 +157,21 @@ const ORGANISATION_BYLINES = [
   'Công ty',
 ]
 
+const PEOPLE_DIRECTORY_TERMS = [
+  // Vietnamese
+  { locale: 'vi', terms: ['các chuyên gia', 'chuyên gia', 'các thành viên', 'thành viên', 'nhóm tư vấn', 'đội ngũ tư vấn'] },
+  // English
+  { locale: 'en', terms: ['advisory team', 'consulting team', 'team members', 'experts', 'expert', 'members', 'member'] },
+  // German
+  { locale: 'de', terms: ['Beratungsteam', 'Beraterteam', 'Expertinnen', 'Experten', 'Expertin', 'Experte', 'Mitglieder', 'Mitglied'] },
+  // French
+  { locale: 'fr', terms: ['équipe de conseil', 'équipe consultative', 'expertes', 'experts', 'experte', 'expert', 'membres', 'membre'] },
+  // Korean and Japanese words commonly attach directly to particles, so their
+  // matcher deliberately does not require Latin-style word boundaries.
+  { locale: 'ko', looseBoundary: true, terms: ['컨설팅 팀', '전문가들', '전문가', '구성원', '자문팀'] },
+  { locale: 'ja', looseBoundary: true, terms: ['コンサルティングチーム', '諮問チーム', '専門家', 'メンバー', '構成員'] },
+]
+
 function normalizeByline(value) {
   return String(value || '')
     .normalize('NFC')
@@ -173,8 +190,155 @@ const PROFILE_BY_NAME = new Map(
 const ORGANISATION_BYLINE_KEYS = new Set(ORGANISATION_BYLINES.map(normalizeByline))
 const PROFILE_BY_ID = new Map(STRUCTURE_PROFILES.map((profile) => [profile.id, profile]))
 
+function uniqueNames(values) {
+  const names = new Map()
+  for (const value of values) {
+    const name = String(value || '').normalize('NFC').trim()
+    const key = normalizeByline(name)
+    if (name && !names.has(key)) names.set(key, name)
+  }
+  return [...names.values()]
+}
+
+function localizedPersonTitles(person) {
+  return Object.fromEntries(
+    Object.entries(person.i18n || {}).map(([locale, fields]) => [locale, fields.title || '']),
+  )
+}
+
+/**
+ * The People app owns the complete employee list. Structure metadata is joined
+ * by the exact Vietnamese name so article links can prefer its individual
+ * profile route while still supporting future People-only profiles.
+ */
+export const EMPLOYEE_DIRECTORY = Object.freeze(people.map((person) => {
+  const localizedNames = Object.values(person.i18n || {}).map((fields) => fields.name)
+  const primaryName = person.i18n?.vi?.name || localizedNames[0] || person.id
+  const structureProfile = STRUCTURE_PROFILES.find(
+    (profile) => normalizeByline(profile.name) === normalizeByline(primaryName),
+  ) || null
+
+  return Object.freeze({
+    id: person.id,
+    group: person.group,
+    name: primaryName,
+    names: Object.freeze(uniqueNames([
+      ...localizedNames,
+      ...(structureProfile?.names || []),
+    ])),
+    photo: structureProfile
+      ? `profilePhotos/${structureProfile.photo}`
+      : String(person.photo || '').replace(/^\//, ''),
+    title: structureProfile?.title || localizedPersonTitles(person),
+    structureProfileId: structureProfile?.id || null,
+    peoplePath: `${person.group === 'core' ? 'core-team' : 'experts'}?profile=${encodeURIComponent(person.id)}`,
+  })
+}))
+
+const EMPLOYEE_BY_NAME = new Map(
+  EMPLOYEE_DIRECTORY.flatMap((employee) => (
+    employee.names.map((name) => [normalizeByline(name), employee])
+  )),
+)
+
+const EMPLOYEE_BY_ID = new Map(
+  EMPLOYEE_DIRECTORY.map((employee) => [employee.id, employee]),
+)
+
+const WORD_CHARACTER_RE = /[\p{L}\p{M}\p{N}_]/u
+
+function hasWordBoundary(text, start, end) {
+  const before = start > 0 ? text[start - 1] : ''
+  const after = end < text.length ? text[end] : ''
+  return (!before || !WORD_CHARACTER_RE.test(before))
+    && (!after || !WORD_CHARACTER_RE.test(after))
+}
+
+const DIRECTORY_MATCHERS = (() => {
+  const matchers = new Map()
+
+  for (const employee of EMPLOYEE_DIRECTORY) {
+    for (const name of employee.names) {
+      const key = normalizeByline(name)
+      if (!key || matchers.has(`employee:${key}`)) continue
+      matchers.set(`employee:${key}`, {
+        key,
+        kind: 'employee',
+        employee,
+        looseBoundary: false,
+      })
+    }
+  }
+
+  for (const group of PEOPLE_DIRECTORY_TERMS) {
+    for (const term of group.terms) {
+      const key = normalizeByline(term)
+      if (!key || matchers.has(`people:${key}`)) continue
+      matchers.set(`people:${key}`, {
+        key,
+        kind: 'people',
+        locale: group.locale,
+        looseBoundary: Boolean(group.looseBoundary),
+      })
+    }
+  }
+
+  return [...matchers.values()].sort((a, b) => (
+    b.key.length - a.key.length
+    || (a.kind === 'employee' ? -1 : 1)
+  ))
+})()
+
 export function getStructureAuthorProfile(profileId) {
   return PROFILE_BY_ID.get(profileId) || null
+}
+
+export function getEmployeeById(employeeId) {
+  return EMPLOYEE_BY_ID.get(employeeId) || null
+}
+
+/** Find non-overlapping, exact employee names and localized People terms. */
+export function findArticleDirectoryMentions(value) {
+  const text = String(value || '').normalize('NFC')
+  const foldedText = text.toLocaleLowerCase('vi')
+  if (!foldedText) return []
+
+  const candidates = []
+  for (const matcher of DIRECTORY_MATCHERS) {
+    let from = 0
+    while (from < foldedText.length) {
+      const start = foldedText.indexOf(matcher.key, from)
+      if (start < 0) break
+      const end = start + matcher.key.length
+
+      if (matcher.looseBoundary || hasWordBoundary(foldedText, start, end)) {
+        candidates.push({
+          start,
+          end,
+          text: text.slice(start, end),
+          kind: matcher.kind,
+          ...(matcher.employee ? { employee: matcher.employee } : {}),
+          ...(matcher.locale ? { locale: matcher.locale } : {}),
+        })
+      }
+      from = Math.max(end, start + 1)
+    }
+  }
+
+  candidates.sort((a, b) => (
+    a.start - b.start
+    || (b.end - b.start) - (a.end - a.start)
+    || (a.kind === 'employee' ? -1 : 1)
+  ))
+
+  const selected = []
+  let coveredUntil = -1
+  for (const candidate of candidates) {
+    if (candidate.start < coveredUntil) continue
+    selected.push(candidate)
+    coveredUntil = candidate.end
+  }
+  return selected
 }
 
 /**
@@ -184,6 +348,14 @@ export function getStructureAuthorProfile(profileId) {
 export function resolveAuthorLinkTarget(byline) {
   const key = normalizeByline(byline)
   if (!key) return null
+
+  const employee = EMPLOYEE_BY_NAME.get(key)
+  if (employee?.structureProfileId) {
+    return { type: 'structure-profile', profileId: employee.structureProfileId }
+  }
+  if (employee) {
+    return { type: 'people-profile', employeeId: employee.id, path: employee.peoplePath }
+  }
 
   const profileId = PROFILE_BY_NAME.get(key)
   if (profileId) return { type: 'structure-profile', profileId }

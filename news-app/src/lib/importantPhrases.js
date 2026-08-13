@@ -1,9 +1,9 @@
 export const IMPORTANT_PHRASE_STYLES = Object.freeze({
   finding: Object.freeze({ bold: true, color: '#059669', highlight: '#bbf7d0' }),
-  recommendation: Object.freeze({ bold: true, underline: true, color: '#2563eb', highlight: '#bfdbfe' }),
+  recommendation: Object.freeze({ bold: true, underline: true, color: '#2563eb' }),
   risk: Object.freeze({ bold: true, color: '#ea580c', highlight: '#fed7aa' }),
   statistic: Object.freeze({ bold: true, highlight: '#fef08a' }),
-  deadline: Object.freeze({ bold: true, underline: true, color: '#dc2626', highlight: '#fef08a' }),
+  deadline: Object.freeze({ bold: true, underline: true, color: '#dc2626' }),
   quote: Object.freeze({ italic: true, color: '#7c3aed', highlight: '#fbcfe8' }),
 })
 

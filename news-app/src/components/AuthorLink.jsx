@@ -1,6 +1,10 @@
 import { useId } from 'react'
 import { useMainSite } from '../hooks/useMainSite'
-import { getStructureAuthorProfile, resolveAuthorLinkTarget } from '../lib/authorLinks'
+import {
+  getEmployeeById,
+  getStructureAuthorProfile,
+  resolveAuthorLinkTarget,
+} from '../lib/authorLinks'
 import './AuthorLink.css'
 
 export default function AuthorLink({ name, className = '' }) {
@@ -12,10 +16,17 @@ export default function AuthorLink({ name, className = '' }) {
 
   const href = target.type === 'structure-profile'
     ? structureLink(`profile/${encodeURIComponent(target.profileId)}`)
-    : peopleLink('')
+    : target.type === 'people-profile'
+      ? peopleLink(target.path)
+      : peopleLink('')
   const employee = target.type === 'structure-profile'
     ? getStructureAuthorProfile(target.profileId)
-    : null
+    : target.type === 'people-profile'
+      ? getEmployeeById(target.employeeId)
+      : null
+  const employeePhoto = employee?.photo?.startsWith('profilePhotos/')
+    ? employee.photo
+    : `profilePhotos/${employee?.photo || ''}`
 
   const authorAnchor = (
     <a
@@ -35,7 +46,7 @@ export default function AuthorLink({ name, className = '' }) {
       <span id={tooltipId} className="author-profile-popover" role="tooltip">
         <img
           className="author-profile-popover__photo"
-          src={`${import.meta.env.BASE_URL}profilePhotos/${employee.photo}`}
+          src={`${import.meta.env.BASE_URL}${employeePhoto}`}
           alt=""
           loading="lazy"
           decoding="async"

@@ -1,8 +1,7 @@
 /* Single market row — replaces the stacked MarketTicker + VnMarketTicker.
    Fixed 38px in every state (loading, error, loaded) so the page below never
-   shifts. Content is clipped rather than scrolled: the instrument lists in
-   MarketStrip.jsx are sized to the width budget, and the media queries below
-   drop from the tail as the viewport narrows. */
+   shifts. Tablets and desktops stay static; small phones receive a continuous
+   marquee so every instrument remains available in the narrow viewport. */
 .market-strip {
   /* Direction colours live as tokens so the theme owns them and no hex is
      written at the usage site. */
@@ -28,6 +27,11 @@
   --market-down: #f87171;
 }
 
+.market-strip__track {
+  width: 100%;
+  min-width: 0;
+}
+
 .market-strip__inner {
   display: flex;
   align-items: center;
@@ -38,6 +42,10 @@
   padding: 0 40px;
   min-width: 0;
   overflow: hidden;
+}
+
+.market-strip__inner--clone {
+  display: none;
 }
 
 .market-strip__group {
@@ -135,4 +143,71 @@
 /* Narrower than the 390px reference phone, even two overflow. */
 @media (max-width: 389px) {
   .market-strip__group--vn .market-strip__quote--2 { display: none; }
+}
+
+/* Small-phone marquee. Both identical rows are required for a seamless loop;
+   the duplicate is hidden from assistive technology in the component. */
+@media (max-width: 600px) {
+  .market-strip__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    min-width: max-content;
+    animation: market-strip-scroll 42s linear infinite;
+    will-change: transform;
+  }
+
+  .market-strip.is-paused .market-strip__track {
+    animation-play-state: paused;
+  }
+
+  .market-strip__inner {
+    flex: none;
+    width: max-content;
+    max-width: none;
+    gap: 22px;
+    padding: 0 16px;
+    overflow: visible;
+  }
+
+  .market-strip__inner--clone,
+  .market-strip__group--global {
+    display: flex;
+  }
+
+  .market-strip__divider {
+    display: block;
+  }
+
+  .market-strip__group--vn .market-strip__quote--2,
+  .market-strip__group--vn .market-strip__quote--3,
+  .market-strip__group--global .market-strip__quote--2,
+  .market-strip__group--global .market-strip__quote--3 {
+    display: inline-flex;
+  }
+}
+
+@keyframes market-strip-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .market-strip__track {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    animation: none;
+    will-change: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .market-strip__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .market-strip__inner--clone {
+    display: none;
+  }
 }

@@ -369,6 +369,41 @@
   .notif__list {
     max-height: 50vh;
   }
+
+  /* Responsive-header variant: keep the bell beside search instead of turning
+     it into a labeled row inside the overflow drawer. */
+  .notif--compact {
+    width: auto;
+  }
+
+  .notif--compact .notif__trigger {
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    border-radius: 999px;
+  }
+
+  .notif--compact .notif__trigger-label {
+    display: none;
+  }
+
+  .notif--compact .notif__badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    margin-left: 0;
+  }
+
+  .notif--compact .notif__panel {
+    position: fixed;
+    top: calc(var(--icue-chrome-top) + 8px);
+    right: 12px;
+    width: min(360px, calc(100vw - 24px));
+    margin-top: 0;
+    box-shadow: var(--icue-shadow-md);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -24,7 +24,7 @@ function storeIndex(group, index) {
   }
 }
 
-export default function ProfileCarousel({ profiles, group }) {
+export default function ProfileCarousel({ profiles, group, requestedProfileId = '' }) {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
   const localizedProfiles = useMemo(
@@ -33,6 +33,8 @@ export default function ProfileCarousel({ profiles, group }) {
   )
 
   const [currentIndex, setCurrentIndex] = useState(() => {
+    const requested = localizedProfiles.findIndex((person) => person.id === requestedProfileId)
+    if (requested >= 0) return requested
     const stored = getStoredIndex(group)
     return stored < localizedProfiles.length ? stored : 0
   })
@@ -55,6 +57,13 @@ export default function ProfileCarousel({ profiles, group }) {
   }, [currentIndex, localizedProfiles.length, goTo])
 
   const swipeHandlers = useSwipe({ onSwipeLeft: goNext, onSwipeRight: goPrev })
+
+  useEffect(() => {
+    if (!requestedProfileId) return
+    const requested = localizedProfiles.findIndex((person) => person.id === requestedProfileId)
+    if (requested < 0 || requested === currentIndex) return
+    goTo(requested, requested > currentIndex ? 'right' : 'left')
+  }, [requestedProfileId, localizedProfiles, currentIndex, goTo])
 
   useEffect(() => {
     const onKey = (e) => {

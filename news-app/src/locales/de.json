@@ -206,7 +206,7 @@
     "mediaInfoPlaceholder": "Zusatzinformation (z. B. Quelle: KI-generiert)",
     "cleanFormatting": "Formatierung bereinigen",
     "cleanFormattingDone": "Formatierung bereinigt",
-    "smartHighlight": "Automatisch hervorheben",
+    "smartHighlight": "Wichtige Passagen hervorheben",
     "smartHighlightDone": "{{count}} wichtige Formulierungen hervorgehoben",
     "smartHighlightNone": "Keine wichtigen Textstellen erkannt",
     "coverImageAltBadge": "Cover B",

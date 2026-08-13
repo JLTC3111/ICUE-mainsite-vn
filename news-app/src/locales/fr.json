@@ -206,7 +206,7 @@
     "mediaInfoPlaceholder": "Informations complémentaires (ex. source : généré par IA)",
     "cleanFormatting": "Nettoyer la mise en forme",
     "cleanFormattingDone": "Mise en forme nettoyée",
-    "smartHighlight": "Surlignage automatique",
+    "smartHighlight": "Surligner les passages importants",
     "smartHighlightDone": "{{count}} formulations importantes surlignées",
     "smartHighlightNone": "Aucun passage important détecté",
     "coverImageAltBadge": "Couverture B",

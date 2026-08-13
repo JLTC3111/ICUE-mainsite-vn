@@ -497,7 +497,7 @@ html:lang(vi) .article-detail__subtitle {
 .article-detail__content ol { padding-left: 1.35em; margin: 0 0 1.58em; }
 .article-detail__content li { margin-bottom: 0.35em; }
 .article-detail__content a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-.article-detail__content img { width: 100%; border-radius: 10px; margin: 1.8em 0; box-shadow: var(--icue-shadow-sm); }
+.article-detail__content img:not(.author-profile-popover__photo) { width: 100%; border-radius: 10px; margin: 1.8em 0; box-shadow: var(--icue-shadow-sm); }
 
 .article-detail__content .video-embed,
 .article-detail__content figure.video-embed {
@@ -545,10 +545,17 @@ html:lang(vi) .article-detail__subtitle {
 }
 
 .article-detail__content mark {
-  border-radius: 2px;
-  padding: 0.08em 0.1em;
-  background: rgba(186, 237, 189, 0.55);
-  color: inherit;
+  border-radius: 0;
+  padding: 0;
+  background: transparent !important;
+  color: inherit !important;
+}
+
+/* In legacy nested mark/underline pairs, the reader keeps only the Magic UI
+   underline treatment. Hide the browser's native line beneath that SVG. */
+.article-detail__content mark u,
+.article-detail__content u:has(mark) {
+  text-decoration: none !important;
 }
 
 /* Tables --------------------------------------------------------------- */
@@ -761,42 +768,6 @@ html:lang(vi) .article-detail__subtitle {
   color: #d8dbd4 !important;
 }
 
-.icue-app--news-theme-dark .article-detail__content mark {
-  --article-mark-bg: #26352d;
-  --article-mark-fg: #eaffef;
-  background: var(--article-mark-bg) !important;
-  color: var(--article-mark-fg) !important;
-  border-radius: 0.22em;
-  padding: 0.08em 0.16em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fef08a"] {
-  --article-mark-bg: #4a3d0a;
-  --article-mark-fg: #fff0a6;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#bbf7d0"] {
-  --article-mark-bg: #123f2a;
-  --article-mark-fg: #c8f7dd;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#bfdbfe"] {
-  --article-mark-bg: #173a66;
-  --article-mark-fg: #d9eaff;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fbcfe8"] {
-  --article-mark-bg: #55243f;
-  --article-mark-fg: #ffddeb;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fed7aa"] {
-  --article-mark-bg: #5a3116;
-  --article-mark-fg: #ffe0c2;
-}
-
 .icue-app--news-theme-dark .article-detail__content blockquote {
   border-left-color: rgba(255, 255, 255, 0.22);
   color: rgba(216, 219, 212, 0.78) !important;
@@ -810,9 +781,11 @@ html:lang(vi) .article-detail__subtitle {
   color: #f0f1ed !important;
 }
 
-/* Keep rich-text formatting from overriding the accessible highlight color. */
+/* Magic UI draws the pastel highlight behind the semantic <mark>. Keep its
+   foreground dark enough to remain legible in the dark reader theme. */
+.icue-app--news-theme-dark .article-detail__content mark,
 .icue-app--news-theme-dark .article-detail__content mark :where(strong, b, em, i, span, u, s, a, small, sup, sub) {
-  color: inherit !important;
+  color: #111316 !important;
 }
 
 .icue-app--news-theme-dark .article-detail__content th,

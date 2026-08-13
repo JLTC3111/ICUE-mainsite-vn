@@ -231,53 +231,6 @@
   color: #6eb3ff !important;
 }
 
-.icue-app--news-theme-dark .article-detail__content mark,
-.icue-app--news-theme-dark .article-detail__content--paged mark {
-  --article-mark-bg: #26352d;
-  --article-mark-fg: #eaffef;
-  background: var(--article-mark-bg) !important;
-  color: var(--article-mark-fg) !important;
-  border-radius: 0.22em;
-  padding: 0.08em 0.16em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fef08a"],
-.icue-app--news-theme-dark .article-detail__content--paged mark[data-color="#fef08a"] {
-  --article-mark-bg: #4a3d0a;
-  --article-mark-fg: #fff0a6;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#bbf7d0"],
-.icue-app--news-theme-dark .article-detail__content--paged mark[data-color="#bbf7d0"] {
-  --article-mark-bg: #123f2a;
-  --article-mark-fg: #c8f7dd;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#bfdbfe"],
-.icue-app--news-theme-dark .article-detail__content--paged mark[data-color="#bfdbfe"] {
-  --article-mark-bg: #173a66;
-  --article-mark-fg: #d9eaff;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fbcfe8"],
-.icue-app--news-theme-dark .article-detail__content--paged mark[data-color="#fbcfe8"] {
-  --article-mark-bg: #55243f;
-  --article-mark-fg: #ffddeb;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark[data-color="#fed7aa"],
-.icue-app--news-theme-dark .article-detail__content--paged mark[data-color="#fed7aa"] {
-  --article-mark-bg: #5a3116;
-  --article-mark-fg: #ffe0c2;
-}
-
-.icue-app--news-theme-dark .article-detail__content mark :where(strong, b, em, i, span, u, s, a, small, sup, sub),
-.icue-app--news-theme-dark .article-detail__content--paged mark :where(strong, b, em, i, span, u, s, a, small, sup, sub) {
-  color: inherit !important;
-}
-
 .icue-app--news-theme-dark .article-detail__content th,
 .icue-app--news-theme-dark .article-detail__content td,
 .icue-app--news-theme-dark .article-detail__content--paged th,

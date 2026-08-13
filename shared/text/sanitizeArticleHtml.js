@@ -11,12 +11,16 @@ export const ARTICLE_TEXT_COLORS = new Set([
   '#6b7280',
 ])
 
-export const ARTICLE_HIGHLIGHT_COLORS = new Set([
-  '#fef08a',
-  '#bbf7d0',
+export const ARTICLE_MAGIC_HIGHLIGHT_COLORS = Object.freeze([
   '#bfdbfe',
-  '#fbcfe8',
+  '#bbf7d0',
   '#fed7aa',
+  '#fef08a',
+])
+
+export const ARTICLE_HIGHLIGHT_COLORS = new Set([
+  ...ARTICLE_MAGIC_HIGHLIGHT_COLORS,
+  '#fbcfe8',
 ])
 
 export const ARTICLE_LINE_HEIGHTS = new Set(['1', '1.25', '1.5', '1.75', '2'])
@@ -173,7 +177,7 @@ function cleanElementAttributes(element) {
     if (name === 'style' || name === 'class' || name === 'lang' || name === 'face' || name === 'size') {
       element.removeAttribute(attr.name)
     }
-    if (name.startsWith('on') || name.startsWith('data-pm-')) {
+    if (name === 'data-magic-highlight' || name.startsWith('on') || name.startsWith('data-pm-')) {
       element.removeAttribute(attr.name)
     }
   }
@@ -221,7 +225,9 @@ function sanitizeNodeTree(root) {
 
     cleanElementAttributes(element)
 
-    if (tag === 'SPAN' || tag === 'MARK') {
+    // Empty formatting spans carry no semantics, but an unstyled <mark> is a
+    // valid legacy highlight and must survive for the Magic UI reader upgrade.
+    if (tag === 'SPAN') {
       const hasAttrs = element.attributes.length > 0
       const hasOnlyText = element.childNodes.length === 1 && element.firstChild?.nodeType === Node.TEXT_NODE
       if (!hasAttrs && hasOnlyText) {
@@ -259,6 +265,7 @@ function cleanFallbackAttributes(tagName, attrs) {
     .replace(/\ssize=(?:"[^"]*"|'[^']*')/gi, '')
     .replace(/\son[a-z]+=(?:"[^"]*"|'[^']*')/gi, '')
     .replace(/\sdata-pm-[a-z-]+=(?:"[^"]*"|'[^']*')/gi, '')
+    .replace(/\sdata-magic-highlight(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, '')
 
   cleaned = cleaned.replace(/\sstyle=(?:"([^"]*)"|'([^']*)')/gi, (match, dbl, sgl) => {
     const styleText = dbl ?? sgl ?? ''

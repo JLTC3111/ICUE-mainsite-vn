@@ -21,6 +21,27 @@
   background: #1a1d22;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
+.rte-toolbar--magic {
+  gap: 10px;
+  padding: 10px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(200, 255, 0, 0.14), transparent 44%),
+    #12160f;
+}
+.rte-magic-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 4px;
+  color: #c8ff00;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rte-magic-brand svg { flex: 0 0 auto; }
 .rte-btn {
   min-width: 32px;
   height: 32px;
@@ -50,22 +71,23 @@
   gap: 7px;
   width: auto;
   max-width: min(100%, 240px);
-  min-height: 32px;
+  min-height: 38px;
   height: auto;
   padding: 6px 11px;
-  border: 1px solid rgba(200, 255, 0, 0.36);
-  background: rgba(200, 255, 0, 0.14);
-  color: #f2ffd0;
-  font-size: 12px;
-  font-weight: 750;
+  border: 1px solid #c8ff00;
+  background: #c8ff00;
+  color: #11150b;
+  box-shadow: 0 6px 18px rgba(163, 210, 0, 0.16);
+  font-size: 13px;
+  font-weight: 800;
   line-height: 1.2;
   text-align: left;
   white-space: normal;
 }
 .rte-btn--smart:hover:not(:disabled) {
-  border-color: rgba(200, 255, 0, 0.62);
-  background: rgba(200, 255, 0, 0.22);
-  color: #fff;
+  border-color: #dcff5d;
+  background: #dcff5d;
+  color: #080a06;
 }
 .rte-btn--smart svg { flex: 0 0 auto; }
 .rte-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); margin: 0 6px; }
@@ -129,7 +151,7 @@
 .rte-btn--clear { font-size: 12px; min-width: 28px; }
 
 .rte-smart-status {
-  max-width: 180px;
+  max-width: 240px;
   margin-inline: 4px;
   color: #dce3d8;
   font-size: 11px;
@@ -207,11 +229,33 @@
 .rte-content ul, .rte-content ol { padding-left: 1.4em; margin: 0 0 1em; }
 .rte-content img { border-radius: 10px; margin: 1.4em auto; box-shadow: var(--icue-shadow-sm); max-width: 100%; }
 
-.rte-content mark {
-  border-radius: 2px;
-  padding: 0.08em 0.1em;
-  background: rgba(186, 237, 189, 0.55);
-  color: inherit;
+/* Magic UI/Rough Notation owns each editable annotation's single treatment. */
+.rte-content .rte-magic-highlight-mark .magic-highlighter,
+.rte-content .rte-magic-highlight-mark .magic-highlighter > [data-mark-view-content],
+.rte-content .rte-magic-underline-mark .magic-highlighter,
+.rte-content .rte-magic-underline-mark .magic-highlighter > [data-mark-view-content] {
+  display: inline;
+}
+.rte-content .rte-magic-highlight-mark .rough-annotation,
+.rte-content .rte-magic-underline-mark .rough-annotation {
+  pointer-events: none;
+}
+
+.rte-content .rte-magic-underline-mark {
+  text-decoration: none !important;
+}
+
+/* In older nested mark/underline content, underline wins and the highlight's
+   Rough Notation SVG stays hidden so the two treatments never overlap. */
+.rte-content .rte-magic-highlight-mark:has(.rte-magic-underline-mark) > .rough-annotation,
+.rte-content .rte-magic-underline-mark .rte-magic-highlight-mark > .rough-annotation {
+  display: none;
+}
+
+/* Suppress the native line in older nested content; Magic UI draws its own. */
+.rte-content .rte-magic-highlight-mark u,
+.rte-content u:has(.rte-magic-highlight-mark) {
+  text-decoration: none !important;
 }
 
 /* Tables --------------------------------------------------------------- */
@@ -243,7 +287,8 @@
   .rte-sep { margin: 0 3px; }
   .rte-textcolor { width: 24px; height: 24px; font-size: 12px; }
   .rte-swatch { width: 20px; height: 20px; }
-  .rte-smart-status { max-width: 130px; }
-  .rte-btn--smart { max-width: min(100%, 210px); }
+  .rte-toolbar--magic { gap: 8px; padding: 8px; }
+  .rte-toolbar--magic .rte-btn--smart { flex: 1 1 190px; max-width: none; }
+  .rte-toolbar--magic .rte-smart-status { flex: 1 0 100%; max-width: none; margin-inline: 2px; }
   .rte-content, .rte .ProseMirror { padding: 18px 16px; font-size: 18px; }
 }

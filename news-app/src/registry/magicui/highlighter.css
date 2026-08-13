@@ -1,0 +1,12 @@
+.magic-highlighter {
+  position: relative;
+  display: inline-block;
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rough-annotation path {
+    animation-duration: 0ms !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

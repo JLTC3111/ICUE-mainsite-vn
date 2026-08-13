@@ -25,6 +25,15 @@ test('uses quotation styling and ignores ordinary report prose', () => {
   assert.equal(IMPORTANT_PHRASE_STYLES.quote.italic, true)
 })
 
+test('keeps Magic UI underline and highlight treatments mutually exclusive', () => {
+  assert.equal(IMPORTANT_PHRASE_STYLES.finding.highlight, '#bbf7d0')
+  assert.equal(IMPORTANT_PHRASE_STYLES.finding.underline, undefined)
+  assert.equal(IMPORTANT_PHRASE_STYLES.recommendation.underline, true)
+  assert.equal(IMPORTANT_PHRASE_STYLES.recommendation.highlight, undefined)
+  assert.equal(IMPORTANT_PHRASE_STYLES.deadline.underline, true)
+  assert.equal(IMPORTANT_PHRASE_STYLES.deadline.highlight, undefined)
+})
+
 test('limits overlapping and excessive matches', () => {
   const text = 'Kết quả quan trọng cho thấy 75% diện tích được bảo vệ. Rủi ro nghiêm trọng có thể làm giảm 30% sản lượng.'
   const ranges = detectImportantPhraseRanges(text, { maxRanges: 1 })
