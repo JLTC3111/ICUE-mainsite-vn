@@ -34,6 +34,36 @@
   display: block;
 }
 
+/* Holder for the shared WebGL magnifying glass (see lib/lensGlass.js). It sits
+   above the zoom layer and is clipped by .lens, so the handle runs off the
+   image edge exactly as the zoom circle does. */
+.lens__glass-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.lens__glass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+  /* transform is written straight to the element on every pointer move */
+  will-change: transform;
+}
+
+.lens__glass.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lens__glass {
+    transition: none;
+  }
+}
+
 .lens__indicator {
   position: absolute;
   z-index: 3;

@@ -1,24 +1,82 @@
 /*
- * One typeface for the whole site — Noto Sans, served from our own /fonts.
+ * Site type stacks — Archivo for Latin/Vietnamese UI, Noto members for CJK.
  *
- * Every app used to pick its own stack (Inter here, Archivo there, Poppins and
- * JetBrains Mono sprinkled through components) and pull the display faces from
- * Google at runtime. This file collapses all of that onto a single family and
- * re-points the per-app tokens at it, so a page renders in one voice no matter
- * which app served it.
+ * Archivo ships as self-hosted .woff2 under /fonts (compressed from the local
+ * .ttf sources). Noto Sans / JP / KR remain the unicode-range kit in
+ * shared/fonts/fonts.css so Japanese and Korean pages keep their glyphs and
+ * metrics; they also backstop any Archivo gaps.
  *
  * Import this AFTER an app's own theme.css — these definitions deliberately
  * overwrite the app-local token values.
- *
- * The locale stacks differ only in which Noto member leads: Latin/Vietnamese
- * text uses "Noto Sans", Japanese "Noto Sans JP", Korean "Noto Sans KR". The
- * system fallbacks after each are kept as a safety net for glyphs outside the
- * subsets we ship (see shared/fonts/fonts.css).
  */
 
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/archivo-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/archivo-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/archivo-medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/archivo-medium-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/archivo-semibold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/archivo-semibold-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/archivo-bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/archivo-bold-italic.woff2") format("woff2");
+}
+
 :root {
-  --icue-font-stack: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+  --icue-font-stack: "Archivo", "Noto Sans", system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
   --icue-font-stack-ja: "Noto Sans JP", "Noto Sans", "Hiragino Sans", "Yu Gothic",
     Meiryo, system-ui, sans-serif;
   --icue-font-stack-ko: "Noto Sans KR", "Noto Sans", "Apple SD Gothic Neo",

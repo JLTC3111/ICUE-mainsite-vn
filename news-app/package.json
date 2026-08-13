@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "sync-assets": "node scripts/sync-assets.mjs",
+    "sync-assets": "node scripts/sync-assets.mjs && node scripts/build-lens-model.mjs",
     "dev": "vite",
     "predev": "npm run sync-assets",
     "build": "vite build",
