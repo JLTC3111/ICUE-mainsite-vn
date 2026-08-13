@@ -171,6 +171,7 @@
     "smartHighlightNone": "Không tìm thấy cụm từ quan trọng nào",
     "sourcesTitle": "Nguồn tham khảo",
     "sourcesOptional": "Tùy chọn — trích dẫn nguồn với nhãn và liên kết.",
+    "sourceLanguage": "Ngôn ngữ gốc",
     "sourceLabel": "Nhãn",
     "sourceUrl": "URL",
     "sourcePublisher": "Nhà xuất bản (tùy chọn)",
@@ -513,6 +514,8 @@
     "articleIncomplete": "Bản dịch chưa đầy đủ · {{complete}}/{{total}} ngôn ngữ",
     "sources": "Nội dung nguồn tham khảo",
     "sourcesHint": "Dịch tên nguồn và nhà xuất bản. URL và ngày truy cập được giữ nguyên.",
+    "suggestSources": "Gợi ý bản dịch nguồn",
+    "suggestSourcesHint": "Điền các trường nguồn còn trống bằng trình dịch trên thiết bị của trình duyệt. Không có gì được lưu cho đến khi bạn nhấn Lưu.",
     "sourceLabel": "Tên nguồn",
     "sourcePublisher": "Nhà xuất bản"
   },

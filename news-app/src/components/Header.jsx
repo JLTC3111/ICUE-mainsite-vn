@@ -259,12 +259,12 @@ function Header() {
         <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
           <div className="icue-header__primary-links" aria-hidden={compactSearchOpen || undefined}>
             <a href={base} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
-              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72} animate={false}>
                 {t('nav.mainSite')}
               </AnimatedShinyText>
             </a>
             <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
-              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72}>
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72} animate={false}>
                 {t('nav.archive')}
               </AnimatedShinyText>
             </a>

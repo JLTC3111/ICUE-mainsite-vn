@@ -9,11 +9,12 @@ export function AnimatedShinyText({
   children,
   className = '',
   shimmerWidth = 100,
+  animate = true,
   ...props
 }) {
   return (
     <span
-      className={`animated-shiny-text${className ? ` ${className}` : ''}`}
+      className={`animated-shiny-text${animate ? '' : ' animated-shiny-text--static'}${className ? ` ${className}` : ''}`}
       style={{ '--shiny-width': `${shimmerWidth}px` }}
       {...props}
     >

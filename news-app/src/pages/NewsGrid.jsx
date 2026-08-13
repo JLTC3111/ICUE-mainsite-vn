@@ -170,7 +170,11 @@ function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = 
   return (
     <Tag className={`${className} translation-reveal`}>
       {shinyOnHover ? (
-        <AnimatedShinyText className="news-lead__title-shiny" shimmerWidth={420}>
+        <AnimatedShinyText
+          className="news-lead__title-shiny"
+          shimmerWidth={420}
+          animate={false}
+        >
           {card.title}
         </AnimatedShinyText>
       ) : card.title}

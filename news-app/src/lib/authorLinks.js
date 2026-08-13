@@ -246,12 +246,29 @@ const EMPLOYEE_BY_ID = new Map(
 )
 
 const WORD_CHARACTER_RE = /[\p{L}\p{M}\p{N}_]/u
+const JAPANESE_EMPLOYEE_SUFFIX_RE = /^(?:副所長|所長|担当専門家|専門家|研究員|運営ディレクター|技術ディレクター|会計責任者|総務部長|顧客対応部長|プロジェクト文書管理|教授|准教授|博士|技師|部長|局長|課長|会長|社長|先生|さん|さま|様|氏|が|は|を|に|と|も|へ|で|の)/u
 
 function hasWordBoundary(text, start, end) {
   const before = start > 0 ? text[start - 1] : ''
   const after = end < text.length ? text[end] : ''
   return (!before || !WORD_CHARACTER_RE.test(before))
     && (!after || !WORD_CHARACTER_RE.test(after))
+}
+
+/**
+ * Japanese honorifics, roles, and particles are normally attached directly to
+ * a Latin-script personal name. Keep the strict left boundary so partial names
+ * still cannot link, while accepting only known Japanese continuations on the
+ * right.
+ */
+function hasJapaneseEmployeeBoundary(text, start, end) {
+  const before = start > 0 ? text[start - 1] : ''
+  if (before && WORD_CHARACTER_RE.test(before)) return false
+
+  const after = end < text.length ? text[end] : ''
+  return !after
+    || !WORD_CHARACTER_RE.test(after)
+    || JAPANESE_EMPLOYEE_SUFFIX_RE.test(text.slice(end))
 }
 
 const DIRECTORY_MATCHERS = (() => {
@@ -311,7 +328,12 @@ export function findArticleDirectoryMentions(value) {
       if (start < 0) break
       const end = start + matcher.key.length
 
-      if (matcher.looseBoundary || hasWordBoundary(foldedText, start, end)) {
+      const hasBoundary = matcher.looseBoundary
+        || hasWordBoundary(foldedText, start, end)
+        || (matcher.kind === 'employee'
+          && hasJapaneseEmployeeBoundary(foldedText, start, end))
+
+      if (hasBoundary) {
         candidates.push({
           start,
           end,

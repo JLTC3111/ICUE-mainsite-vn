@@ -171,6 +171,7 @@
     "smartHighlightNone": "No important phrases detected",
     "sourcesTitle": "Sources",
     "sourcesOptional": "Optional — cite references with a label and link.",
+    "sourceLanguage": "Original language",
     "sourceLabel": "Label",
     "sourceUrl": "URL",
     "sourcePublisher": "Publisher (optional)",
@@ -513,6 +514,8 @@
     "articleIncomplete": "Translation incomplete · {{complete}}/{{total}} languages",
     "sources": "Source text",
     "sourcesHint": "Translate every source label and publisher. URLs and access dates remain unchanged.",
+    "suggestSources": "Suggest source translations",
+    "suggestSourcesHint": "Fills empty source fields using your browser's on-device translator. Nothing is saved until you press Save.",
     "sourceLabel": "Source label",
     "sourcePublisher": "Publisher"
   },

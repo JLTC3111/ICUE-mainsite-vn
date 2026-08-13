@@ -163,6 +163,7 @@
     "needContent": "記事の本文を入力してください。",
     "sourcesTitle": "出典",
     "sourcesOptional": "任意 — ラベルとリンクで参照元を追加できます。",
+    "sourceLanguage": "原文の言語",
     "sourceLabel": "ラベル",
     "sourceUrl": "URL",
     "sourcePublisher": "発行元（任意）",
@@ -513,6 +514,8 @@
     "articleIncomplete": "翻訳未完了 · {{complete}}/{{total}}言語",
     "sources": "出典テキスト",
     "sourcesHint": "各出典名と発行元を翻訳してください。URLと参照日は変更されません。",
+    "suggestSources": "出典の翻訳を提案",
+    "suggestSourcesHint": "ブラウザの端末内翻訳で空の出典欄を埋めます。保存を押すまで何も保存されません。",
     "sourceLabel": "出典名",
     "sourcePublisher": "発行元"
   },

@@ -40,7 +40,9 @@
       color-mix(in srgb, var(--shiny-muted) 70%, transparent)
     );
   background-size: var(--shiny-width) 100%, 100% 100%;
-  background-position: 0 0, 0 0;
+  /* Keep the shine band off-canvas before the first animation frame. Starting
+     it at 0 briefly painted a bright stripe while route CSS was hydrating. */
+  background-position: calc(-100% - var(--shiny-width)) 0, 0 0;
   background-repeat: no-repeat, no-repeat;
   -webkit-background-clip: text, text;
   background-clip: text, text;
@@ -57,6 +59,16 @@
   to {
     background-position: calc(100% + var(--shiny-width)) 0, 0 0;
   }
+}
+
+/* Public newsroom text opts into interaction-only shimmer. Keeping the base
+   glyph paint static prevents the generic animation from appearing for a frame
+   before route-level hover styles finish loading. */
+.animated-shiny-text.animated-shiny-text--static {
+  background-image: none;
+  color: inherit;
+  animation: none;
+  -webkit-text-fill-color: currentColor;
 }
 
 /* Dark studio — keep our blue theme tokens */

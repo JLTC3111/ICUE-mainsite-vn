@@ -73,18 +73,20 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
   // treat it as absent rather than blanking the article.
   const usable = data && (data.title || data.content_html)
 
-  const result = usable
+  // Preserve auxiliary localized fields even when the article text itself is
+  // original. A Vietnamese article can still have English bibliography copy
+  // with a hand-authored Vietnamese source translation in this same row.
+  const result = data
     ? {
       locale: target,
-      title: data.title || '',
-      subtitle: data.subtitle || '',
-      content_html: data.content_html || '',
-      cover_info: data.cover_info || '',
-      sources: data.sources || [],
-      media: data.media || [],
-      original: false,
+      ...normalizeTranslationRow(data),
+      original: !usable,
     }
-    : { locale: target, original: true }
+    : {
+      locale: target,
+      ...normalizeTranslationRow(),
+      original: true,
+    }
 
   memoryCache.set(key, result)
   return result

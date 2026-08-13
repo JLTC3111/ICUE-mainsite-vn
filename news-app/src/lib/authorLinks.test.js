@@ -74,6 +74,22 @@ test('article text detection finds exact employee names without partial-word fal
   )
 })
 
+test('Japanese titles and particles may attach directly to Latin employee names', () => {
+  const mentions = findArticleDirectoryMentions(
+    'Nguyen Hong Hanh所長、Nguyen Thanh Tam副所長、Dinh Tung Duong担当専門家が参加しました。',
+  )
+
+  assert.deepEqual(
+    mentions.filter((mention) => mention.kind === 'employee').map((mention) => mention.employee.id),
+    ['nguyen-hong-hanh', 'nguyen-thanh-tam', 'dinh-tung-duong'],
+  )
+})
+
+test('Japanese suffix support does not allow a partial Latin employee name', () => {
+  const mentions = findArticleDirectoryMentions('prefixNguyen Hong Hanh所長')
+  assert.equal(mentions.some((mention) => mention.kind === 'employee'), false)
+})
+
 test('general People terms are detected across every supported locale', () => {
   const samples = [
     ['vi', 'các chuyên gia'],

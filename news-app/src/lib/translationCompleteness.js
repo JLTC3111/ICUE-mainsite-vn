@@ -1,4 +1,5 @@
 import { buildArticleTranslateSample, inferSourceLanguage, normalizeLang } from './translateUtils.js'
+import { articleSourceNeedsTranslation } from './articleSources.js'
 
 function text(value) {
   return String(value ?? '').trim()
@@ -22,26 +23,37 @@ function rowsById(rows) {
 }
 
 /** Required translated elements are derived from authored source content. */
-export function getLocaleTranslationCompleteness(article = {}, translation = null) {
+export function getLocaleTranslationCompleteness(article = {}, translation = null, targetLocale = '') {
   const missing = []
   const row = translation || {}
+  const target = normalizeLang(targetLocale)
+  const declared = normalizeLang(article.language) || 'vi'
+  const articleSourceLanguage = inferSourceLanguage(
+    declared,
+    buildArticleTranslateSample(article),
+  ) || declared
+  const sourceOnlyLocale = Boolean(target && target === articleSourceLanguage)
 
-  if (text(article.title) && !text(row.title)) missing.push({ kind: 'title' })
-  if (text(article.subtitle) && !text(row.subtitle)) missing.push({ kind: 'subtitle' })
-  if (htmlText(article.content_html) && !htmlText(row.content_html)) missing.push({ kind: 'content' })
-  if (text(article.cover_info) && !text(row.cover_info)) missing.push({ kind: 'cover_info' })
+  if (!sourceOnlyLocale) {
+    if (text(article.title) && !text(row.title)) missing.push({ kind: 'title' })
+    if (text(article.subtitle) && !text(row.subtitle)) missing.push({ kind: 'subtitle' })
+    if (htmlText(article.content_html) && !htmlText(row.content_html)) missing.push({ kind: 'content' })
+    if (text(article.cover_info) && !text(row.cover_info)) missing.push({ kind: 'cover_info' })
+  }
 
   const translatedMedia = rowsById(row.media)
-  for (const item of Array.isArray(article.media) ? article.media : []) {
-    if (item?.id == null || !text(item.info)) continue
-    if (!text(translatedMedia.get(String(item.id))?.info)) {
-      missing.push({ kind: 'media_caption', id: String(item.id), mediaKind: item.kind || 'image' })
+  if (!sourceOnlyLocale) {
+    for (const item of Array.isArray(article.media) ? article.media : []) {
+      if (item?.id == null || !text(item.info)) continue
+      if (!text(translatedMedia.get(String(item.id))?.info)) {
+        missing.push({ kind: 'media_caption', id: String(item.id), mediaKind: item.kind || 'image' })
+      }
     }
   }
 
   const translatedSources = rowsById(row.sources)
   for (const source of Array.isArray(article.sources) ? article.sources : []) {
-    if (source?.id == null) continue
+    if (source?.id == null || !articleSourceNeedsTranslation(source, targetLocale)) continue
     const translated = translatedSources.get(String(source.id))
     if (text(source.label) && !text(translated?.label)) {
       missing.push({ kind: 'source_label', id: String(source.id) })
@@ -64,12 +76,17 @@ export function getArticleTranslationCompleteness(article = {}, translations = {
   const sourceLanguage = inferSourceLanguage(declared, buildArticleTranslateSample(article)) || declared
   const targetLocales = supportedLanguages
     .map((language) => normalizeLang(language?.code ?? language))
-    .filter((locale) => locale && locale !== sourceLanguage)
+    .filter((locale) => locale && (
+      locale !== sourceLanguage
+      || (Array.isArray(article.sources) && article.sources.some(
+        (source) => articleSourceNeedsTranslation(source, locale),
+      ))
+    ))
 
   const locales = Object.fromEntries(
     targetLocales.map((locale) => [
       locale,
-      getLocaleTranslationCompleteness(article, translations?.[locale]),
+      getLocaleTranslationCompleteness(article, translations?.[locale], locale),
     ]),
   )
   const completeLocales = targetLocales.filter((locale) => locales[locale].complete)

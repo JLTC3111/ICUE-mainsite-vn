@@ -61,39 +61,109 @@ test('does not require optional elements absent from the source article', () => 
   assert.equal(result.complete, true)
 })
 
+test('uses original English bibliography text for the English locale', () => {
+  const english = getLocaleTranslationCompleteness(ARTICLE, {
+    ...COMPLETE,
+    sources: [],
+  }, 'en')
+
+  assert.equal(english.complete, true)
+  assert.deepEqual(english.missing, [])
+
+  const german = getLocaleTranslationCompleteness(ARTICLE, {
+    ...COMPLETE,
+    sources: [],
+  }, 'de')
+
+  assert.deepEqual(german.missing.map((item) => item.kind), [
+    'source_label',
+    'source_publisher',
+  ])
+})
+
+test('respects an explicit non-English source language', () => {
+  const article = {
+    ...ARTICLE,
+    sources: ARTICLE.sources.map((source) => ({ ...source, language: 'vi' })),
+  }
+  const result = getLocaleTranslationCompleteness(article, {
+    ...COMPLETE,
+    sources: [],
+  }, 'en')
+
+  assert.deepEqual(result.missing.map((item) => item.kind), [
+    'source_label',
+    'source_publisher',
+  ])
+})
+
+test('counts English as complete without duplicate source rows', () => {
+  const languages = ['vi', 'en', 'de']
+  const result = getArticleTranslationCompleteness(ARTICLE, {
+    vi: { sources: COMPLETE.sources },
+    en: { ...COMPLETE, sources: [] },
+    de: COMPLETE,
+  }, languages)
+
+  assert.equal(result.complete, true)
+  assert.equal(result.completedLocales, 3)
+  assert.equal(result.totalLocales, 3)
+  assert.deepEqual(result.incompleteLocales, [])
+})
+
+test('adds the article locale as a source-only translation when bibliography language differs', () => {
+  const sourceOnly = getLocaleTranslationCompleteness(ARTICLE, {
+    sources: COMPLETE.sources,
+  }, 'vi')
+
+  assert.equal(sourceOnly.complete, true)
+  assert.deepEqual(sourceOnly.missing, [])
+
+  const missing = getLocaleTranslationCompleteness(ARTICLE, null, 'vi')
+  assert.deepEqual(missing.missing.map((item) => item.kind), [
+    'source_label',
+    'source_publisher',
+  ])
+})
+
 test('marks an article complete only when every target locale is complete', () => {
   const languages = ['vi', 'en', 'de']
   const result = getArticleTranslationCompleteness(ARTICLE, {
+    vi: { sources: COMPLETE.sources },
     en: COMPLETE,
     de: { ...COMPLETE, subtitle: '' },
   }, languages)
 
   assert.equal(result.sourceLanguage, 'vi')
-  assert.equal(result.completedLocales, 1)
-  assert.equal(result.totalLocales, 2)
+  assert.equal(result.completedLocales, 2)
+  assert.equal(result.totalLocales, 3)
   assert.deepEqual(result.incompleteLocales, ['de'])
   assert.equal(result.complete, false)
 })
 
-test('reports 0/5 when every saved locale is missing only the required cover caption', () => {
+test('reports 1/6 when every article translation is missing only the required cover caption', () => {
   const languages = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
   const withoutCoverCaption = { ...COMPLETE, cover_info: '' }
-  const translations = Object.fromEntries(
-    languages.slice(1).map((locale) => [locale, withoutCoverCaption]),
-  )
+  const translations = {
+    vi: { sources: COMPLETE.sources },
+    ...Object.fromEntries(
+      languages.slice(1).map((locale) => [locale, withoutCoverCaption]),
+    ),
+  }
 
   const incomplete = getArticleTranslationCompleteness(ARTICLE, translations, languages)
 
-  assert.equal(incomplete.completedLocales, 0)
-  assert.equal(incomplete.totalLocales, 5)
+  assert.equal(incomplete.completedLocales, 1)
+  assert.equal(incomplete.totalLocales, 6)
   assert.deepEqual(incomplete.incompleteLocales, ['en', 'de', 'fr', 'ko', 'ja'])
   for (const locale of incomplete.incompleteLocales) {
     assert.deepEqual(incomplete.locales[locale].missing, [{ kind: 'cover_info' }])
   }
 
-  const complete = getArticleTranslationCompleteness(ARTICLE, Object.fromEntries(
-    languages.slice(1).map((locale) => [locale, COMPLETE]),
-  ), languages)
-  assert.equal(complete.completedLocales, 5)
+  const complete = getArticleTranslationCompleteness(ARTICLE, {
+    vi: { sources: COMPLETE.sources },
+    ...Object.fromEntries(languages.slice(1).map((locale) => [locale, COMPLETE])),
+  }, languages)
+  assert.equal(complete.completedLocales, 6)
   assert.equal(complete.complete, true)
 })

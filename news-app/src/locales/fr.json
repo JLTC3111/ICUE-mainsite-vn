@@ -163,6 +163,7 @@
     "needContent": "Veuillez saisir un contenu pour l'article.",
     "sourcesTitle": "Sources",
     "sourcesOptional": "Facultatif — citez vos références avec un libellé et un lien.",
+    "sourceLanguage": "Langue d’origine",
     "sourceLabel": "Libellé",
     "sourceUrl": "URL",
     "sourcePublisher": "Éditeur (facultatif)",
@@ -513,6 +514,8 @@
     "articleIncomplete": "Traduction incomplète · {{complete}}/{{total}} langues",
     "sources": "Texte des sources",
     "sourcesHint": "Traduisez chaque libellé de source et éditeur. Les URL et dates de consultation restent inchangées.",
+    "suggestSources": "Proposer les traductions des sources",
+    "suggestSourcesHint": "Remplit les champs de source vides avec le traducteur local du navigateur. Rien n’est enregistré avant que vous ne cliquiez sur Enregistrer.",
     "sourceLabel": "Libellé de la source",
     "sourcePublisher": "Éditeur"
   },

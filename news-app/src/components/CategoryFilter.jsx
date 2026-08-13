@@ -49,7 +49,7 @@ export default function CategoryFilter({ value, onChange, tagline = '' }) {
                 className={`section-nav__item${value === 'all' ? ' is-active' : ''}`}
                 onClick={() => pick('all')}
               >
-                <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76} animate={false}>
                   {t('categories.all')}
                 </AnimatedShinyText>
               </button>
@@ -62,7 +62,7 @@ export default function CategoryFilter({ value, onChange, tagline = '' }) {
                   className={`section-nav__item${value === slug ? ' is-active' : ''}`}
                   onClick={() => pick(slug)}
                 >
-                  <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                  <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76} animate={false}>
                     {t(`categories.${slug}`)}
                   </AnimatedShinyText>
                 </button>
@@ -78,7 +78,7 @@ export default function CategoryFilter({ value, onChange, tagline = '' }) {
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
             >
-              <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+              <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76} animate={false}>
                 {overflowActive ? t(`categories.${value}`) : t('categories.more')}
               </AnimatedShinyText>
               <svg
@@ -107,7 +107,7 @@ export default function CategoryFilter({ value, onChange, tagline = '' }) {
                       className={`section-nav__menu-item${value === slug ? ' is-active' : ''}`}
                       onClick={() => pick(slug)}
                     >
-                      <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76}>
+                      <AnimatedShinyText className="section-nav__shiny" shimmerWidth={76} animate={false}>
                         {t(`categories.${slug}`)}
                       </AnimatedShinyText>
                     </button>

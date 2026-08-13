@@ -30,6 +30,7 @@ import ScrollProgress from '../components/ScrollProgress'
 import { embedVideosInHtml } from '../lib/videoEmbeds'
 import { findAllCoverComparisonImages } from '../lib/mediaComparison'
 import { categoryColor, isCategory } from '../lib/categories'
+import { articleSourceNeedsTranslation } from '../lib/articleSources'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './ArticleDetail.css'
@@ -97,6 +98,7 @@ export default function ArticleDetail() {
   const [state, setState] = useState('loading')
   const [viewCount, setViewCount] = useState(0)
   const [translation, setTranslation] = useState(null)
+  const [sourceTranslation, setSourceTranslation] = useState(null)
   const [translatedLang, setTranslatedLang] = useState(null)
   const [translateBusy, setTranslateBusy] = useState(false)
   const [translateError, setTranslateError] = useState(false)
@@ -114,6 +116,7 @@ export default function ArticleDetail() {
     setState('loading')
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslation(null)
+    setSourceTranslation(null)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslatedLang(null)
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -154,7 +157,11 @@ export default function ArticleDetail() {
     if (state !== 'ready' || !article?.id || showOriginal) return undefined
 
     const uiLang = i18n.resolvedLanguage
-    if (!shouldTranslateArticle(article.language, uiLang, translateSample)) {
+    const needsArticleTranslation = shouldTranslateArticle(article.language, uiLang, translateSample)
+    const needsSourceTranslation = (article.sources || []).some(
+      (source) => articleSourceNeedsTranslation(source, uiLang),
+    )
+    if (!needsArticleTranslation && !needsSourceTranslation) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslation(null)
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -163,25 +170,30 @@ export default function ArticleDetail() {
       setTranslateBusy(false)
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslateResolved(true)
+      setSourceTranslation(null)
       return undefined
     }
 
     let active = true
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslateBusy(true)
+    setTranslateBusy(needsArticleTranslation)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslateError(false)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslateResolved(false)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslation(null)
+    setSourceTranslation(null)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTranslatedLang(null)
 
     fetchArticleTranslation(article.id, uiLang)
       .then((result) => {
         if (!active) return
-        if (result.original) {
+        setSourceTranslation(
+          needsSourceTranslation && result.sources?.length ? result.sources : null,
+        )
+        if (!needsArticleTranslation || result.original) {
           setTranslation(null)
           setTranslatedLang(null)
         } else {
@@ -210,7 +222,11 @@ export default function ArticleDetail() {
           }
         }
       })
-      .catch(() => active && setTranslateError(true))
+      .catch(() => {
+        if (!active) return
+        setSourceTranslation(null)
+        if (needsArticleTranslation) setTranslateError(true)
+      })
       .finally(() => {
         if (active) {
           setTranslateBusy(false)
@@ -330,7 +346,7 @@ export default function ArticleDetail() {
   const contentLang = usingTranslation && translatedLang ? translatedLang : article.language
   const isViContent = String(contentLang || '').startsWith('vi')
   const category = isCategory(article.category) ? article.category : 'general'
-  const translatedSources = usingTranslation ? translation?.sources : null
+  const translatedSources = !showOriginal ? sourceTranslation : null
   const translatedMedia = usingTranslation ? translation?.media : null
   const renderOwnerActions = (className) => canEdit ? (
     <div className={className}>

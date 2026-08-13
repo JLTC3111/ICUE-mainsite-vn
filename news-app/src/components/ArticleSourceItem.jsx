@@ -1,6 +1,8 @@
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ChevronRight, X } from 'lucide-react'
+import { SUPPORTED_LANGUAGES } from '../lib/i18n'
+import { DEFAULT_ARTICLE_SOURCE_LANGUAGE } from '../lib/articleSources'
 import DatePickerField from './DatePickerField'
 
 /**
@@ -83,6 +85,21 @@ export default function ArticleSourceItem({
         inert={!expanded}
       >
         <div className="source-item__fields">
+          <label className="field source-item__field">
+            <span>{t('editor.sourceLanguage')}</span>
+            <select
+              className="input"
+              value={row.language || DEFAULT_ARTICLE_SOURCE_LANGUAGE}
+              onChange={(e) => onUpdate({ language: e.target.value })}
+            >
+              {SUPPORTED_LANGUAGES.map((language) => (
+                <option key={language.code} value={language.code}>
+                  {language.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
           <label className="field source-item__field">
             <span>{t('editor.sourceLabel')}</span>
             <input

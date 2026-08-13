@@ -2,7 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, CircleAlert, Trash2 } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
-import { normalizeSources } from '../lib/articleSources'
+import {
+  articleSourceNeedsTranslation,
+  normalizeArticleSourceLanguage,
+  normalizeSources,
+} from '../lib/articleSources'
+import { isBrowserTranslationSupported, translateWithBrowser } from '../lib/browserTranslator'
 import { MEDIA_CAPTION_MAX_LENGTH } from '../lib/mediaTranslations'
 import {
   getArticleTranslationCompleteness,
@@ -18,7 +23,7 @@ import {
 import RichTextEditor from './RichTextEditor'
 import './ArticleTranslationsEditor.css'
 
-const EMPTY = { title: '', subtitle: '', content_html: '', cover_info: '', media: [] }
+const EMPTY = { title: '', subtitle: '', content_html: '', cover_info: '', media: [], sources: [] }
 
 /** Caption text keyed by media id, for easy diffing and editing. */
 function captionsOf(entry) {
@@ -43,9 +48,9 @@ function sourcesOf(entry) {
 
 /**
  * Per-locale translations authored by hand. Whatever is saved here is what
- * readers see when they switch language — there is no machine translation
- * anywhere in the pipeline, so a locale left blank simply falls back to the
- * article's original language.
+ * readers see when they switch language. On supported browsers, an editor can
+ * fill empty source fields with an on-device translation as a starting point;
+ * it is never persisted until they review it and press Save.
  */
 export default function ArticleTranslationsEditor({
   articleId,
@@ -93,16 +98,24 @@ export default function ArticleTranslationsEditor({
   }), [sourceTitle, sourceSubtitle, sourceContentHtml, coverInfo, sourceRows, media, sourceLang])
 
   const locales = useMemo(
-    () => SUPPORTED_LANGUAGES.filter((l) => l.code !== sourceLang),
-    [sourceLang],
+    () => SUPPORTED_LANGUAGES.filter((l) => (
+      l.code !== sourceLang
+      || sourceRows.some((source) => articleSourceNeedsTranslation(source, l.code))
+    )),
+    [sourceLang, sourceRows],
   )
 
-  const [active, setActive] = useState(locales[0]?.code || '')
+  const [selectedLocale, setSelectedLocale] = useState(locales[0]?.code || '')
+  const active = locales.some((locale) => locale.code === selectedLocale)
+    ? selectedLocale
+    : (locales[0]?.code || '')
   const [drafts, setDrafts] = useState({})
   const [stored, setStored] = useState({})
   const [state, setState] = useState('loading') // loading | ready | error
   const [busy, setBusy] = useState(false)
   const [saved, setSaved] = useState('')
+  const [suggestingSources, setSuggestingSources] = useState(false)
+  const browserTranslationSupported = useMemo(() => isBrowserTranslationSupported(), [])
 
   useEffect(() => {
     let live = true
@@ -132,6 +145,11 @@ export default function ArticleTranslationsEditor({
 
   const currentCaptions = useMemo(() => captionsOf(current), [current])
   const currentSources = useMemo(() => sourcesOf(current), [current])
+  const sourceRowsForActiveLocale = useMemo(
+    () => sourceRows.filter((source) => articleSourceNeedsTranslation(source, active)),
+    [sourceRows, active],
+  )
+  const sourceOnlyLocale = active === sourceLang
 
   const updateCaption = useCallback((mediaId, value) => {
     setSaved('')
@@ -173,6 +191,67 @@ export default function ArticleTranslationsEditor({
     })
   }, [active, sourceRows])
 
+  const handleSuggestSources = useCallback(async () => {
+    setSuggestingSources(true)
+    try {
+      const suggested = []
+      // Translator instances are shared per language pair. Feed them in order
+      // so a long bibliography does not start dozens of model calls at once.
+      for (const source of sourceRowsForActiveLocale) {
+        const id = String(source.id)
+        const authored = currentSources[id] || {}
+        const sourceLanguageCode = normalizeArticleSourceLanguage(source.language)
+        const label = source.label && !String(authored.label || '').trim()
+          ? await translateWithBrowser(source.label, {
+            sourceLanguage: sourceLanguageCode,
+            targetLanguage: active,
+          })
+          : null
+        const publisher = source.publisher && !String(authored.publisher || '').trim()
+          ? await translateWithBrowser(source.publisher, {
+            sourceLanguage: sourceLanguageCode,
+            targetLanguage: active,
+          })
+          : null
+        if (label || publisher) suggested.push({ id, source, label, publisher })
+      }
+
+      if (!suggested.length) return
+      setSaved('')
+      setDrafts((prev) => {
+        const entry = prev[active] || EMPTY
+        const next = (Array.isArray(entry.sources) ? entry.sources : [])
+          .map((source) => ({ ...source }))
+
+        for (const suggestion of suggested) {
+          const index = next.findIndex((source) => String(source?.id) === suggestion.id)
+          const existing = index >= 0 ? next[index] : {
+            id: suggestion.id,
+            label: '',
+            publisher: '',
+            url: suggestion.source.url || '',
+            accessed_at: suggestion.source.accessed_at || null,
+          }
+          const updated = {
+            ...existing,
+            label: String(existing.label || '').trim()
+              ? existing.label
+              : (suggestion.label || existing.label || ''),
+            publisher: String(existing.publisher || '').trim()
+              ? existing.publisher
+              : (suggestion.publisher || existing.publisher || ''),
+          }
+          if (index >= 0) next[index] = updated
+          else next.push(updated)
+        }
+
+        return { ...prev, [active]: { ...entry, sources: next } }
+      })
+    } finally {
+      setSuggestingSources(false)
+    }
+  }, [active, currentSources, sourceRowsForActiveLocale])
+
   const isDirty = useMemo(() => {
     const base = stored[active] || EMPTY
     return base.title !== current.title
@@ -188,8 +267,8 @@ export default function ArticleTranslationsEditor({
     [sourceArticle, stored, locales],
   )
   const currentCompleteness = useMemo(
-    () => getLocaleTranslationCompleteness(sourceArticle, current),
-    [sourceArticle, current],
+    () => getLocaleTranslationCompleteness(sourceArticle, current, active),
+    [sourceArticle, current, active],
   )
 
   const handleSave = useCallback(async () => {
@@ -269,7 +348,7 @@ export default function ArticleTranslationsEditor({
               role="tab"
               aria-selected={active === l.code}
               className={`translations-editor__tab${active === l.code ? ' is-active' : ''}${state === 'ready' ? complete ? ' is-complete' : ' is-incomplete' : ''}`}
-              onClick={() => { setActive(l.code); setSaved('') }}
+              onClick={() => { setSelectedLocale(l.code); setSaved('') }}
             >
               {l.label}
               {complete ? (
@@ -300,7 +379,7 @@ export default function ArticleTranslationsEditor({
               : t('translationsEditor.missingItems', { count: currentCompleteness.missingCount })}
           </p>
 
-          <div className="field">
+          {!sourceOnlyLocale && <div className="field">
             <label htmlFor={`tr-title-${active}`}>{t('translationsEditor.fieldTitle')}</label>
             <input
               id={`tr-title-${active}`}
@@ -310,9 +389,9 @@ export default function ArticleTranslationsEditor({
               onChange={(e) => update('title', e.target.value)}
               placeholder={t('translationsEditor.titlePlaceholder')}
             />
-          </div>
+          </div>}
 
-          <div className="field">
+          {!sourceOnlyLocale && <div className="field">
             <label htmlFor={`tr-subtitle-${active}`}>{t('translationsEditor.fieldSubtitle')}</label>
             <input
               id={`tr-subtitle-${active}`}
@@ -322,9 +401,9 @@ export default function ArticleTranslationsEditor({
               onChange={(e) => update('subtitle', e.target.value)}
               placeholder={t('translationsEditor.subtitlePlaceholder')}
             />
-          </div>
+          </div>}
 
-          <div className="field">
+          {!sourceOnlyLocale && <div className="field">
             <label>{t('translationsEditor.fieldStory')}</label>
             <RichTextEditor
               key={active}
@@ -337,9 +416,9 @@ export default function ArticleTranslationsEditor({
               onChange={({ html }) => update('content_html', html)}
               placeholder={t('translationsEditor.storyPlaceholder')}
             />
-          </div>
+          </div>}
 
-          {coverInfo && (
+          {!sourceOnlyLocale && coverInfo && (
             <div className="field">
               <label htmlFor={`tr-cover-${active}`}>
                 {t('translationsEditor.fieldCoverInfo')}
@@ -357,7 +436,7 @@ export default function ArticleTranslationsEditor({
             </div>
           )}
 
-          {captionSources.length > 0 && (
+          {!sourceOnlyLocale && captionSources.length > 0 && (
             <div className="translations-editor__captions">
               <p className="translations-editor__captions-label">
                 {t('translationsEditor.captions')}
@@ -386,14 +465,27 @@ export default function ArticleTranslationsEditor({
             </div>
           )}
 
-          {sourceRows.length > 0 && (
+          {sourceRowsForActiveLocale.length > 0 && (
             <div className="translations-editor__sources">
               <p className="translations-editor__captions-label">
                 {t('translationsEditor.sources')}
               </p>
               <p className="translations-editor__hint">{t('translationsEditor.sourcesHint')}</p>
+              {browserTranslationSupported && (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm translations-editor__source-suggest"
+                  onClick={handleSuggestSources}
+                  disabled={suggestingSources || busy}
+                  title={t('translationsEditor.suggestSourcesHint')}
+                >
+                  {suggestingSources
+                    ? t('translate.translating')
+                    : t('translationsEditor.suggestSources')}
+                </button>
+              )}
 
-              {sourceRows.map((source) => (
+              {sourceRowsForActiveLocale.map((source) => (
                 <div className="translations-editor__source" key={source.id}>
                   <div className="field">
                     <label htmlFor={`tr-source-label-${active}-${source.id}`}>

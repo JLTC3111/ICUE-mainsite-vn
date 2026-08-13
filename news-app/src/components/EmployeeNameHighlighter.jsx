@@ -193,6 +193,7 @@ export default function EmployeeNameHighlighter({ html, className }) {
           color={color}
           strokeWidth={action === 'underline' ? 2.25 : 1.5}
           animationDuration={420}
+          animate={false}
           iterations={2}
           padding={1}
         />

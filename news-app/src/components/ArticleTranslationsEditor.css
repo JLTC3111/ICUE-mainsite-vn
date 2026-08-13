@@ -154,6 +154,10 @@
   background: var(--icue-surface);
 }
 
+.translations-editor__source-suggest {
+  justify-self: start;
+}
+
 .translations-editor__source .field:only-child {
   grid-column: 1 / -1;
 }

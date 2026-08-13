@@ -163,6 +163,7 @@
     "needContent": "기사 내용을 입력해 주세요.",
     "sourcesTitle": "출처",
     "sourcesOptional": "선택 사항 — 라벨과 링크로 참고 자료를 추가하세요.",
+    "sourceLanguage": "원문 언어",
     "sourceLabel": "라벨",
     "sourceUrl": "URL",
     "sourcePublisher": "발행처 (선택)",
@@ -513,6 +514,8 @@
     "articleIncomplete": "번역 미완료 · {{complete}}/{{total}}개 언어",
     "sources": "출처 텍스트",
     "sourcesHint": "각 출처 이름과 발행처를 번역하세요. URL과 열람일은 그대로 유지됩니다.",
+    "suggestSources": "출처 번역 제안",
+    "suggestSourcesHint": "브라우저의 기기 내 번역기로 비어 있는 출처 필드를 채웁니다. 저장을 누르기 전까지는 아무것도 저장되지 않습니다.",
     "sourceLabel": "출처 이름",
     "sourcePublisher": "발행처"
   },

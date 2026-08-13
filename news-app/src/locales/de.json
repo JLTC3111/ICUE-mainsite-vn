@@ -163,6 +163,7 @@
     "needContent": "Bitte gib einen Inhalt für den Artikel ein.",
     "sourcesTitle": "Quellen",
     "sourcesOptional": "Optional — Referenzen mit Bezeichnung und Link angeben.",
+    "sourceLanguage": "Originalsprache",
     "sourceLabel": "Bezeichnung",
     "sourceUrl": "URL",
     "sourcePublisher": "Herausgeber (optional)",
@@ -513,6 +514,8 @@
     "articleIncomplete": "Übersetzung unvollständig · {{complete}}/{{total}} Sprachen",
     "sources": "Quellentext",
     "sourcesHint": "Übersetzen Sie alle Quellenbezeichnungen und Herausgeber. URLs und Abrufdaten bleiben unverändert.",
+    "suggestSources": "Quellenübersetzungen vorschlagen",
+    "suggestSourcesHint": "Füllt leere Quellenfelder mit der geräteinternen Übersetzung Ihres Browsers. Es wird nichts gespeichert, bis Sie auf Speichern klicken.",
     "sourceLabel": "Quellenbezeichnung",
     "sourcePublisher": "Herausgeber"
   },

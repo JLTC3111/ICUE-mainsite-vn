@@ -1,7 +1,28 @@
 export const MAX_ARTICLE_SOURCES = 20
+export const DEFAULT_ARTICLE_SOURCE_LANGUAGE = 'en'
+const ARTICLE_SOURCE_LANGUAGE_CODES = new Set(['vi', 'en', 'de', 'fr', 'ko', 'ja'])
 
 function trim(value) {
   return String(value ?? '').trim()
+}
+
+/**
+ * Reference labels are entered using their bibliographic source language,
+ * independently from the language of the surrounding article. Existing source
+ * rows predate this metadata and were authored in English, so English is the
+ * backwards-compatible default.
+ */
+export function normalizeArticleSourceLanguage(value) {
+  const language = trim(value).split('-')[0].toLowerCase()
+  return ARTICLE_SOURCE_LANGUAGE_CODES.has(language)
+    ? language
+    : DEFAULT_ARTICLE_SOURCE_LANGUAGE
+}
+
+export function articleSourceNeedsTranslation(source, targetLocale) {
+  const target = trim(targetLocale).split('-')[0].toLowerCase()
+  if (!target) return true
+  return normalizeArticleSourceLanguage(source?.language) !== target
 }
 
 export function isValidSourceUrl(value) {
@@ -21,11 +42,13 @@ function normalizeRow(raw = {}, { preserveDraft = false } = {}) {
   const publisher = preserveDraft ? String(raw.publisher ?? '') : trim(raw.publisher)
   const accessedAt = preserveDraft ? String(raw.accessed_at ?? raw.accessedAt ?? '') : trim(raw.accessed_at ?? raw.accessedAt)
   const id = trim(raw.id)
+  const language = normalizeArticleSourceLanguage(raw.language)
 
   if (!label && !url && !publisher && !accessedAt) {
     if (preserveDraft && id) {
       return {
         id,
+        language,
         label: '',
         url: '',
         publisher: null,
@@ -37,6 +60,7 @@ function normalizeRow(raw = {}, { preserveDraft = false } = {}) {
 
   return {
     id: id || crypto.randomUUID(),
+    language,
     label,
     url,
     publisher: publisher || null,
@@ -66,6 +90,7 @@ export function sanitizeSourcesForSave(rows) {
 
   return cleaned.map((row) => ({
     id: row.id,
+    language: row.language,
     label: row.label,
     url: row.url,
     publisher: row.publisher,
@@ -96,6 +121,7 @@ export function sourcesForDisplay(originalSources, translatedSources) {
 export function createEmptySource() {
   return {
     id: crypto.randomUUID(),
+    language: DEFAULT_ARTICLE_SOURCE_LANGUAGE,
     label: '',
     url: '',
     publisher: '',
