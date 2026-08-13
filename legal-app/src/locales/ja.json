@@ -1,5 +1,58 @@
 {
   "skipToContent": "本文へスキップ",
+  "instituteName": "建設経済・都市開発研究所",
+  "nav": {
+    "pages": {
+      "Home": "ホーム",
+      "orgStructure": "組織構成",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト・研究",
+      "News": "ニュース・イベント",
+      "aboutUs": "私たちについて",
+      "Contact": "お問い合わせ",
+      "ourPeople": "人材",
+      "meetOurExperts": "専門家紹介",
+      "coreTeam": "中核メンバー"
+    },
+    "compact": {
+      "Home": "ホーム",
+      "orgStructure": "組織",
+      "ourWork": "業務",
+      "pastProjects": "プロジェクト",
+      "News": "ニュース",
+      "aboutUs": "紹介"
+    },
+    "aria": {
+      "nav": "サイトナビゲーション",
+      "home": "ホームへ移動",
+      "more": "その他のナビゲーション項目を開く",
+      "moreLabel": "その他",
+      "overflow": "その他のナビゲーション項目",
+      "openMenu": "全メニューを開く",
+      "toggleMenu": "ナビゲーションメニューの開閉",
+      "closeMenu": "ナビゲーションメニューを閉じる",
+      "resizeMenu": "ナビゲーションメニューの幅を変更",
+      "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
+      "homeVideo": "背景動画のオン/オフ",
+      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）"
+    },
+    "contactWordmark": "私たちについて"
+  },
+  "footer": {
+    "company": "会社",
+    "otherPages": "その他のページ",
+    "awards": "主な受賞",
+    "news": "ニュース",
+    "archive": "過去のニュース",
+    "faqs": "よくあるご質問",
+    "recruitment": "採用",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "gdpr": "GDPR",
+    "cookies": "Cookie",
+    "partner": "協業について",
+    "rights": "ICUE, All rights reserved."
+  },
   "hero": {
     "updated": "{{date}} 更新",
     "version": "バージョン {{version}}"

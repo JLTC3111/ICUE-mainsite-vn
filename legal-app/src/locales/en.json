@@ -1,5 +1,58 @@
 {
   "skipToContent": "Skip to content",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "nav": {
+    "pages": {
+      "Home": "Home",
+      "orgStructure": "Structure & Organization",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects & Research",
+      "News": "News & Events",
+      "aboutUs": "About Us",
+      "Contact": "Contact",
+      "ourPeople": "Our People",
+      "meetOurExperts": "Meet Our Experts",
+      "coreTeam": "Core Team"
+    },
+    "compact": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects",
+      "News": "News",
+      "aboutUs": "About"
+    },
+    "aria": {
+      "nav": "Site navigation",
+      "home": "Go to homepage",
+      "more": "Open more navigation items",
+      "moreLabel": "More",
+      "overflow": "More navigation items",
+      "openMenu": "Open the full menu",
+      "toggleMenu": "Toggle navigation menu",
+      "closeMenu": "Close navigation menu",
+      "resizeMenu": "Resize navigation menu",
+      "resizeMenuTitle": "Drag to resize the menu",
+      "homeVideo": "Toggle background video",
+      "aboutUsVideo": "Toggle background video (About Us)"
+    },
+    "contactWordmark": "ABOUT US"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
+  },
   "hero": {
     "updated": "Updated {{date}}",
     "version": "Version {{version}}"

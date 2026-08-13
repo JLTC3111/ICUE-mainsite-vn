@@ -1,5 +1,58 @@
 {
   "skipToContent": "Zum Inhalt springen",
+  "instituteName": "Institut für Bauwirtschaft und Stadtentwicklung",
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur & Organisation",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte & Forschung",
+      "News": "News & Veranstaltungen",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Unser Team",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Menü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "ÜBER UNS"
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Nachrichten",
+    "archive": "Archiv",
+    "faqs": "Häufige Fragen",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Zusammenarbeit",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  },
   "hero": {
     "updated": "Aktualisiert am {{date}}",
     "version": "Version {{version}}"

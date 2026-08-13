@@ -256,7 +256,11 @@
   z-index: -1;
   left: 50%;
   bottom: -160%;
-  width: 150%;
+  /* The old 150%-of-link width was too small for short CJK labels. Its circle
+     ended behind the glyphs, making the dark hover copy look clipped against
+     the dark bar. Size the circle from the pill height so even a two-glyph
+     link is fully covered when the hover animation settles. */
+  width: max(150%, calc(var(--pill-nav-height) * 3));
   aspect-ratio: 1;
   border-radius: 50% !important;
   background: var(--pill-nav-accent);

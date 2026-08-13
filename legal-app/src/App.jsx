@@ -299,6 +299,30 @@ function LegalDocument({ document, documents }) {
   // and every block of prose come from legal/content/<lang>.js.
   useDocumentMeta(document, document, language)
 
+  // locale alone only rewrites footer/nav hrefs. Visible chrome copy stays on
+  // the shared Vietnamese defaults unless we pass labels — same pattern as
+  // contact-app / home-app.
+  const navLabels = useMemo(() => t('nav', { returnObjects: true }), [t, language])
+  const footerLabels = useMemo(
+    () => ({
+      company: t('footer.company'),
+      otherPages: t('footer.otherPages'),
+      awards: t('footer.awards'),
+      news: t('footer.news'),
+      archive: t('footer.archive'),
+      faqs: t('footer.faqs'),
+      recruitment: t('footer.recruitment'),
+      privacy: t('footer.privacy'),
+      terms: t('footer.terms'),
+      gdpr: t('footer.gdpr'),
+      cookies: t('footer.cookies'),
+      partner: t('footer.partner'),
+      rights: t('footer.rights'),
+      instituteName: t('instituteName'),
+    }),
+    [t, language],
+  )
+
   return (
     <div
       className="legal-page"
@@ -318,6 +342,7 @@ function LegalDocument({ document, documents }) {
         pillOverflowItems={PEOPLE_SUBMENU.items}
         homeHref="/"
         locale={language}
+        labels={navLabels}
         LanguageControl={PageLanguageMenu}
       />
 
@@ -391,7 +416,7 @@ function LegalDocument({ document, documents }) {
         </div>
       </main>
 
-      <Footer linkMode="standalone" locale={language} />
+      <Footer linkMode="standalone" labels={footerLabels} locale={language} />
     </div>
   )
 }

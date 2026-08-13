@@ -1,5 +1,58 @@
 {
   "skipToContent": "Bỏ qua đến nội dung",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "nav": {
+    "pages": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu & Tổ Chức",
+      "ourWork": "Công Việc",
+      "pastProjects": "Đề Tài, Dự Án",
+      "News": "Tin Tức & Sự Kiện",
+      "aboutUs": "Về Chúng Tôi",
+      "Contact": "Liên Hệ",
+      "ourPeople": "Nhân Lực",
+      "meetOurExperts": "Chuyên Gia",
+      "coreTeam": "Cán Bộ"
+    },
+    "compact": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu",
+      "ourWork": "Công Việc",
+      "pastProjects": "Dự Án",
+      "News": "Tin Tức",
+      "aboutUs": "Giới Thiệu"
+    },
+    "aria": {
+      "nav": "Điều hướng trang",
+      "home": "Về trang chủ",
+      "more": "Mở thêm mục điều hướng",
+      "moreLabel": "Thêm",
+      "overflow": "Thêm mục điều hướng",
+      "openMenu": "Mở trình đơn đầy đủ",
+      "toggleMenu": "Bật/tắt trình đơn điều hướng",
+      "closeMenu": "Đóng trình đơn điều hướng",
+      "resizeMenu": "Thay đổi kích thước trình đơn",
+      "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
+      "homeVideo": "Bật/tắt video nền",
+      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)"
+    },
+    "contactWordmark": "GIỚI THIỆU"
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  },
   "hero": {
     "updated": "Cập nhật {{date}}",
     "version": "Phiên bản {{version}}"
