@@ -33,7 +33,7 @@ export function BentoCard({
   ...props
 }) {
   const backgroundNode = lens ? (
-    <Lens className="bento-card__lens" zoomFactor={1.45} lensSize={150}>
+    <Lens className="bento-card__lens" zoomFactor={1.45} lensSize={100}>
       {background}
     </Lens>
   ) : (

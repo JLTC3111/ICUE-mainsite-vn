@@ -493,7 +493,7 @@ export default function ArticleDetail() {
           <Lens
             className="article-detail__cover-lens"
             zoomFactor={1.4}
-            lensSize={180}
+            lensSize={110}
             disabled={!lensEnabled}
           >
             <img src={article.cover_image_url} alt="" decoding="async" />

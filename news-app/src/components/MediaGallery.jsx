@@ -152,7 +152,7 @@ export default function MediaGallery({ images = [], videos = [], lensEnabled = f
               <Lens
                 className="media-gallery__lens"
                 zoomFactor={1.4}
-                lensSize={150}
+                lensSize={100}
                 disabled={!lensEnabled}
               >
                 <img src={img.url} alt="" loading="lazy" decoding="async" onLoad={(event) => handleImageLoad(img.id, event)} />
