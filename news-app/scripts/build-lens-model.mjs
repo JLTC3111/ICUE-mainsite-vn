@@ -28,6 +28,8 @@ const OUT = path.join(OUT_DIR, 'magnifying-glass.lens.bin')
 const MAX_SWING = 0.16
 /** Padding on the baked bounds so specular/AA never clips at the canvas edge. */
 const BOUNDS_MARGIN = 1.03
+/** Radial samples of the lens half-profile the renderer lathes the glass from. */
+const GLASS_PROFILE_SAMPLES = 8
 
 const COMPONENT = {
   5120: { array: Int8Array, size: 1 },
@@ -265,6 +267,45 @@ function glassRadius(group) {
   return radius
 }
 
+/**
+ * The lens is a surface of revolution, so its 7.6k triangles carry no more
+ * information than a half-profile does. Sampling that profile lets the renderer
+ * lathe the disc back at whatever tessellation the screen actually needs, and
+ * keeps the mesh — 47% of the payload, for a near-flat surface drawn at ~19%
+ * opacity — out of the file entirely.
+ *
+ * Returns z at `samples` evenly spaced radii from the centre out to the rim.
+ */
+function glassProfile(group, radius, samples) {
+  // Bin by radius keeping the highest z: the top surface, ignoring the rim band
+  // and the mirrored underside.
+  const rings = new Map()
+  for (let i = 0; i < group.positions.length; i += 3) {
+    const r = Math.hypot(group.positions[i], group.positions[i + 1])
+    const z = group.positions[i + 2]
+    if (z < 0) continue
+    const key = Math.round(r * 1e6)
+    if (!rings.has(key) || z > rings.get(key)) rings.set(key, z)
+  }
+
+  const curve = [...rings.entries()]
+    .map(([key, z]) => [key / 1e6, z])
+    .sort((a, b) => a[0] - b[0])
+
+  // Resample onto a uniform radial grid so the renderer needs no radius table.
+  const profile = []
+  let cursor = 0
+  for (let s = 0; s < samples; s += 1) {
+    const target = (radius * s) / (samples - 1)
+    while (cursor < curve.length - 2 && curve[cursor + 1][0] < target) cursor += 1
+    const [r0, z0] = curve[cursor]
+    const [r1, z1] = curve[Math.min(cursor + 1, curve.length - 1)]
+    const t = r1 === r0 ? 0 : (target - r0) / (r1 - r0)
+    profile.push(Number((z0 + (z1 - z0) * Math.max(0, Math.min(1, t))).toFixed(7)))
+  }
+  return profile
+}
+
 function align4(value) {
   return (value + 3) & ~3
 }
@@ -286,22 +327,21 @@ function build() {
     }
   })
 
-  // Opaque first: the renderer draws in array order with depth writes off for
-  // the blended pass, so the glass has to land last.
-  entries.sort((a, b) => Number(a.blend) - Number(b.blend))
-
   let posScale = 0
   for (const { group } of entries) {
     for (const value of group.positions) posScale = Math.max(posScale, Math.abs(value))
   }
 
+  // The blended lens ships as a lathe profile rather than a mesh — see
+  // glassProfile. Everything else is written out verbatim.
   const glass = entries.find((entry) => entry.blend) || entries[0]
+  const meshEntries = entries.filter((entry) => entry !== glass)
 
   const blocks = []
   let byteLength = 0
   const meta = []
 
-  for (const entry of entries) {
+  for (const entry of meshEntries) {
     const { group } = entry
     const vertexCount = group.positions.length / 3
     if (vertexCount > 65535) throw new Error(`${entry.name}: too many vertices for uint16 indices`)
@@ -348,10 +388,18 @@ function build() {
 
   byteLength = align4(byteLength)
 
+  const radius = glassRadius(glass.group)
   const header = {
     posScale: Number(posScale.toFixed(8)),
     bounds: sweptBounds(groups).map((value) => Number(value.toFixed(6))),
-    glassRadius: Number(glassRadius(glass.group).toFixed(6)),
+    glassRadius: Number(radius.toFixed(6)),
+    glass: {
+      name: glass.name,
+      color: glass.color.map((value) => Number(value.toFixed(6))),
+      metallic: Number(glass.metallic.toFixed(4)),
+      roughness: Number(glass.roughness.toFixed(4)),
+      profile: glassProfile(glass.group, radius, GLASS_PROFILE_SAMPLES),
+    },
     groups: meta,
   }
 
@@ -375,9 +423,11 @@ function build() {
   fs.writeFileSync(OUT, out)
 
   const sourceSize = fs.statSync(SRC).size
-  const totalTriangles = meta.reduce((sum, group) => sum + group.indexCount / 3, 0)
+  const bakedTriangles = meta.reduce((sum, group) => sum + group.indexCount / 3, 0)
+  const lathedAway = glass.group.indices.length / 3
   console.log(
-    `Baked lens model: ${meta.length} draw calls, ${totalTriangles} tris, `
+    `Baked lens model: ${meta.length} baked groups, ${bakedTriangles} tris `
+    + `(glass lathed at runtime, ${lathedAway} tris kept out of the file), `
     + `${(sourceSize / 1024).toFixed(0)} kB glb -> ${(out.length / 1024).toFixed(0)} kB bin`,
   )
 }

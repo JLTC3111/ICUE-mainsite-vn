@@ -14,7 +14,8 @@
  *   pointer movement never touches the GPU;
  * - the render loop only runs while the tilt spring is settling, and skips
  *   draws whose rotation delta is below the visible threshold;
- * - the model ships as quantised int16/int8 attributes in 3 draw calls.
+ * - the model ships as quantised int16/int8 attributes in 2 draw calls, with
+ *   the lens disc lathed at load time from a profile rather than shipped.
  *
  * @see scripts/build-lens-model.mjs for the asset bake.
  */
@@ -35,6 +36,12 @@ const CAMERA_DEPTH = 0.1
  * content underneath stays readable.
  */
 const GLASS_TINT_STRENGTH = 0.45
+/**
+ * Radial segments for the lathed lens disc. At the sizes this renders (the
+ * glass spans ~100 px) the chord error at 44 segments is about a tenth of a
+ * pixel, well under what MSAA already resolves.
+ */
+const GLASS_SEGMENTS = 44
 
 /* Spring driving handle swing and tilt. Under-damped (zeta ~0.6) so the handle
  * overshoots and settles the way a held object would. */
@@ -157,6 +164,124 @@ let releaseTimer = 0
 
 /* ---------------------------------------------------------------- model ---- */
 
+/**
+ * Lathes the lens disc from the half-profile in the file header.
+ *
+ * The authored disc was 7,632 triangles and 47% of the asset, for a surface of
+ * revolution that is nearly flat and drawn at ~19% opacity. Spinning it here
+ * from 8 profile samples rebuilds the same shape — the profile is sampled off
+ * the original mesh at bake time — in 1,232 triangles and zero bytes on the
+ * wire. Both faces are generated: the disc is closed and drawn double-sided
+ * without depth writes, so front and back each contribute a blend pass, and
+ * dropping one would halve the tint.
+ */
+function latheGlass(glass, radius, positionScale) {
+  const { profile } = glass
+  const rings = profile.length
+  const step = radius / (rings - 1)
+  const capVertices = 1 + (rings - 1) * GLASS_SEGMENTS
+  const vertexCount = capVertices * 2 + GLASS_SEGMENTS * 2
+
+  const positions = new Int16Array(vertexCount * 3)
+  const normals = new Int8Array(vertexCount * 4)
+  const indices = []
+
+  const quantise = 32767 / positionScale
+  let cursor = 0
+  const push = (x, y, z, nx, ny, nz) => {
+    positions[cursor * 3] = Math.round(x * quantise)
+    positions[cursor * 3 + 1] = Math.round(y * quantise)
+    positions[cursor * 3 + 2] = Math.round(z * quantise)
+    const length = Math.hypot(nx, ny, nz) || 1
+    normals[cursor * 4] = Math.round((nx / length) * 127)
+    normals[cursor * 4 + 1] = Math.round((ny / length) * 127)
+    normals[cursor * 4 + 2] = Math.round((nz / length) * 127)
+    cursor += 1
+  }
+
+  // dz/dr along the profile, central differences on the uniform radial grid.
+  const slopes = profile.map((_, i) => {
+    if (i === 0) return 0
+    if (i === rings - 1) return (profile[i] - profile[i - 1]) / step
+    return (profile[i + 1] - profile[i - 1]) / (2 * step)
+  })
+
+  for (const front of [true, false]) {
+    const face = front ? 1 : -1
+    push(0, 0, profile[0] * face, 0, 0, face)
+    for (let i = 1; i < rings; i += 1) {
+      const r = step * i
+      const slope = slopes[i]
+      for (let j = 0; j < GLASS_SEGMENTS; j += 1) {
+        const angle = (j / GLASS_SEGMENTS) * Math.PI * 2
+        const cos = Math.cos(angle)
+        const sin = Math.sin(angle)
+        push(
+          r * cos, r * sin, profile[i] * face,
+          -slope * cos * face, -slope * sin * face, face,
+        )
+      }
+    }
+  }
+
+  const rimZ = profile[rings - 1]
+  for (const z of [rimZ, -rimZ]) {
+    for (let j = 0; j < GLASS_SEGMENTS; j += 1) {
+      const angle = (j / GLASS_SEGMENTS) * Math.PI * 2
+      const cos = Math.cos(angle)
+      const sin = Math.sin(angle)
+      push(radius * cos, radius * sin, z, cos, sin, 0)
+    }
+  }
+
+  // Winding stays counter-clockwise as seen from outside on every face, so the
+  // shader's gl_FrontFacing normal flip agrees with the geometry.
+  for (const front of [true, false]) {
+    const base = front ? 0 : capVertices
+    const ring = (i, j) => base + 1 + (i - 1) * GLASS_SEGMENTS + (j % GLASS_SEGMENTS)
+    for (let j = 0; j < GLASS_SEGMENTS; j += 1) {
+      if (front) indices.push(base, ring(1, j), ring(1, j + 1))
+      else indices.push(base, ring(1, j + 1), ring(1, j))
+    }
+    for (let i = 1; i < rings - 1; i += 1) {
+      for (let j = 0; j < GLASS_SEGMENTS; j += 1) {
+        const a = ring(i, j)
+        const b = ring(i, j + 1)
+        const d = ring(i + 1, j)
+        const c = ring(i + 1, j + 1)
+        if (front) indices.push(a, d, c, a, c, b)
+        else indices.push(a, c, d, a, b, c)
+      }
+    }
+  }
+
+  const rimBase = capVertices * 2
+  for (let j = 0; j < GLASS_SEGMENTS; j += 1) {
+    const next = (j + 1) % GLASS_SEGMENTS
+    const topA = rimBase + j
+    const topB = rimBase + next
+    const bottomA = rimBase + GLASS_SEGMENTS + j
+    const bottomB = rimBase + GLASS_SEGMENTS + next
+    indices.push(topA, bottomA, bottomB, topA, bottomB, topB)
+  }
+
+  return {
+    color: Float32Array.of(
+      glass.color[0],
+      glass.color[1],
+      glass.color[2],
+      glass.color[3] * GLASS_TINT_STRENGTH,
+    ),
+    metallic: glass.metallic,
+    roughness: glass.roughness,
+    blend: true,
+    indexCount: indices.length,
+    positions,
+    normals,
+    indices: Uint16Array.from(indices),
+  }
+}
+
 function parseModel(buffer) {
   const view = new DataView(buffer)
   const magic = String.fromCharCode(
@@ -173,21 +298,21 @@ function parseModel(buffer) {
     positionScale: header.posScale,
     bounds: header.bounds,
     glassRadius: header.glassRadius,
-    groups: header.groups.map((group) => ({
-      color: Float32Array.of(
-        group.color[0],
-        group.color[1],
-        group.color[2],
-        group.blend ? group.color[3] * GLASS_TINT_STRENGTH : group.color[3],
-      ),
-      metallic: group.metallic,
-      roughness: group.roughness,
-      blend: group.blend,
-      indexCount: group.indexCount,
-      positions: new Int16Array(buffer, binary + group.position, group.vertexCount * 3),
-      normals: new Int8Array(buffer, binary + group.normal, group.vertexCount * 4),
-      indices: new Uint16Array(buffer, binary + group.index, group.indexCount),
-    })),
+    // Opaque groups from the file, then the lathed glass: the renderer draws in
+    // array order and the blended pass must come last.
+    groups: [
+      ...header.groups.map((group) => ({
+        color: Float32Array.of(...group.color),
+        metallic: group.metallic,
+        roughness: group.roughness,
+        blend: false,
+        indexCount: group.indexCount,
+        positions: new Int16Array(buffer, binary + group.position, group.vertexCount * 3),
+        normals: new Int8Array(buffer, binary + group.normal, group.vertexCount * 4),
+        indices: new Uint16Array(buffer, binary + group.index, group.indexCount),
+      })),
+      latheGlass(header.glass, header.glassRadius, header.posScale),
+    ],
   }
 }
 
