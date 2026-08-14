@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<title>ICUE Parcel Datum — Refined C Minimal</title>
+<g transform="translate(150 150)">
+  <path d="M0 0H310V270H270V310H0Z" fill="#0B1D34"/>
+  <path d="M390 0H700V310H430V270H390Z" fill="#0B1D34"/>
+  <path d="M0 390H270V430H310V700H0Z" fill="#0B1D34"/>
+  <path d="M430 390H700V700H390V430H430Z" fill="#2E6FAE"/>
+  <rect x="270" y="270" width="160" height="160" rx="12" fill="#fff"/>
+  <circle cx="350" cy="350" r="34" fill="#0B1D34"/>
+  <circle cx="350" cy="350" r="12" fill="#fff"/>
+</g>
+</svg>

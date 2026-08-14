@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<title>ICUE Responsive Circular Icon</title>
+<g transform="translate(256 256)">
+<circle r="188" fill="none" stroke="#0F1D35" stroke-width="42" stroke-dasharray="120 28"/>
+<rect x="-18" y="-205" width="36" height="410" fill="#0F1D35"/><rect x="-205" y="-18" width="410" height="36" fill="#0F1D35"/>
+<rect x="-12" y="-155" width="24" height="105" fill="#25A88E" transform="rotate(45)"/><rect x="-12" y="-155" width="24" height="105" fill="#25A88E" transform="rotate(135)"/><rect x="-12" y="-155" width="24" height="105" fill="#25A88E" transform="rotate(225)"/><rect x="-12" y="-155" width="24" height="105" fill="#25A88E" transform="rotate(315)"/>
+<circle r="54" fill="#fff"/><circle r="29" fill="#2D5DA7"/>
+</g></svg>

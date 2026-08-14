@@ -1,4 +1,6 @@
-export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v3'
+// Bump on every change to classifyPerformanceTier, or sessions that already
+// cached a tier keep the old verdict until the tab is closed.
+export const PERF_TIER_STORAGE_KEY = 'icue:perf-tier:v4'
 export const PERF_OVERRIDE_STORAGE_KEY = 'icue:perf-override:v1'
 
 export const PERF_TIERS = ['full', 'reduced', 'minimal']
@@ -89,7 +91,12 @@ export function classifyPerformanceTier({ cores = 8, memory, renderer = '', mobi
   if (memory != null && memory <= 4) return 'minimal'
 
   if (cores <= 8) return 'reduced'
-  if (memory != null && memory <= 8) return 'reduced'
+  // No memory test here on purpose. navigator.deviceMemory only ever reports a
+  // power of two clamped to 8, so Chrome and Edge send exactly 8 on a 128 GB
+  // workstation and on an 8 GB laptop alike — a `memory <= 8` check put the
+  // whole Chromium userbase on `reduced`, which is what switches the article
+  // lens off (tierToProfile.disableLens). The `<= 4` minimal threshold above
+  // still catches the machines the API can actually identify as small.
   if (matchesPattern(normalizedRenderer, INTEGRATED_GPU_PATTERNS)) return 'reduced'
 
   return 'full'

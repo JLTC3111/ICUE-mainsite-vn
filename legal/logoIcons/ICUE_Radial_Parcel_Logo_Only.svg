@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">ICUE Radial Parcel Mark</title>
+  <desc id="desc">Circular radial parcel logo with orthogonal structure, diagonal urban sectors, inner parcel bands and a central datum.</desc>
+
+  <g transform="translate(500 500)">
+    <!-- Outer segmented circular parcel ring -->
+    <circle r="300"
+            fill="none"
+            stroke="#0F1D35"
+            stroke-width="56"
+            stroke-dasharray="300 68 240 68 300 68 240 68"
+            transform="rotate(-12)"/>
+
+    <!-- Primary orthogonal structure -->
+    <rect x="-36" y="-350" width="72" height="700" rx="2" fill="#0F1D35"/>
+    <rect x="-350" y="-36" width="700" height="72" rx="2" fill="#0F1D35"/>
+
+    <!-- Diagonal urban / connectivity sectors -->
+    <rect x="-26" y="-300" width="52" height="220" rx="2" fill="#25A88E" transform="rotate(45)"/>
+    <rect x="-26" y="-300" width="52" height="220" rx="2" fill="#25A88E" transform="rotate(135)"/>
+    <rect x="-26" y="-300" width="52" height="220" rx="2" fill="#25A88E" transform="rotate(225)"/>
+    <rect x="-26" y="-300" width="52" height="220" rx="2" fill="#25A88E" transform="rotate(315)"/>
+
+    <!-- Inner parcel fields -->
+    <path d="M0,-236 A236,236 0 0 1 168,-168 L120,-120 A170,170 0 0 0 0,-170Z" fill="#2D5DA7"/>
+    <path d="M236,0 A236,236 0 0 1 168,168 L120,120 A170,170 0 0 0 170,0Z" fill="#25A88E"/>
+    <path d="M0,236 A236,236 0 0 1 -168,168 L-120,120 A170,170 0 0 0 0,170Z" fill="#2D5DA7"/>
+    <path d="M-236,0 A236,236 0 0 1 -168,-168 L-120,-120 A170,170 0 0 0 -170,0Z" fill="#2D5DA7"/>
+
+    <!-- Central datum -->
+    <circle r="104" fill="#FFFFFF"/>
+    <circle r="62" fill="none" stroke="#0F1D35" stroke-width="18"/>
+    <circle r="20" fill="#2D5DA7"/>
+  </g>
+</svg>

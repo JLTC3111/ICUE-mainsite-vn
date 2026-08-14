@@ -55,6 +55,10 @@ export default function Lens({
   ariaLabel,
   disabled = false,
   glass3d = true,
+  // Defaults to the size at which the bezel frames the zoom circle, which is
+  // ~2.4x lensSize for this model. Set it to break that lock; lower lensSize to
+  // shrink the magnifier and its zoom circle together.
+  glassSize,
 }) {
   const [isHovering, setIsHovering] = useState(false)
   const [mousePosition, setMousePosition] = useState(position)
@@ -92,7 +96,7 @@ export default function Lens({
 
     const token = ++glassTokenRef.current
     import('../lib/lensGlass')
-      .then((module) => module.mountLensGlass(slot, lensSize, x, y))
+      .then((module) => module.mountLensGlass(slot, lensSize, glassSize, x, y))
       .then((glass) => {
         if (!glass) return
         if (glassTokenRef.current !== token) {
@@ -103,7 +107,7 @@ export default function Lens({
         setGlassReady(true)
       })
       .catch(() => {})
-  }, [glassEnabled, lensSize])
+  }, [glassEnabled, lensSize, glassSize])
 
   const handleMouseLeave = useCallback(() => {
     setIsHovering(false)

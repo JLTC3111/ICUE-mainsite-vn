@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<title>ICUE Circular Identity</title>
+<g transform="translate(500 500)">
+<circle r="285" fill="none" stroke="#0F1D35" stroke-width="110" stroke-dasharray="170 54" transform="rotate(-20)"/>
+<circle r="285" fill="none" stroke="#2D5DA7" stroke-width="110" stroke-dasharray="85 700" transform="rotate(35)"/>
+<circle r="285" fill="none" stroke="#25A88E" stroke-width="110" stroke-dasharray="85 700" transform="rotate(82)"/>
+<rect x="-16" y="-355" width="32" height="710" fill="#fff"/><rect x="-355" y="-16" width="710" height="32" fill="#fff"/>
+<rect x="-13" y="-335" width="26" height="670" fill="#fff" transform="rotate(45)"/><rect x="-13" y="-335" width="26" height="670" fill="#fff" transform="rotate(-45)"/>
+<circle r="94" fill="#fff"/><circle r="58" fill="none" stroke="#0F1D35" stroke-width="16"/><circle r="18" fill="#25A88E"/>
+</g></svg>

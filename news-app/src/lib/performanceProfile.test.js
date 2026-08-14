@@ -59,6 +59,29 @@ test('genuinely low end devices stay optimized on both form factors', () => {
   assert.equal(classifyPerformanceTier({ cores: 8, memory: 16 }), 'reduced')
 })
 
+test('deviceMemory at the browser cap is not read as a low-memory machine', () => {
+  // navigator.deviceMemory is clamped to 8, so every Chromium desktop reports
+  // exactly 8 whatever its real RAM. Treating that as low memory put all of
+  // Chrome and Edge on `reduced`, which hides the article lens entirely. The
+  // memory: 16 cases elsewhere in this file are values no browser ever sends,
+  // which is why that never showed up here.
+  assert.equal(classifyPerformanceTier({
+    cores: 16,
+    memory: 8,
+    renderer: 'angle (nvidia, nvidia geforce rtx 4070 direct3d11)',
+  }), 'full')
+  assert.equal(tierToProfile(classifyPerformanceTier({ cores: 10, memory: 8 })).disableLens, false)
+
+  // The thresholds that can still tell a small machine apart are untouched.
+  assert.equal(classifyPerformanceTier({ cores: 8, memory: 8 }), 'reduced')
+  assert.equal(classifyPerformanceTier({ cores: 16, memory: 4 }), 'minimal')
+  assert.equal(classifyPerformanceTier({
+    cores: 16,
+    memory: 8,
+    renderer: 'angle (intel, intel(r) uhd graphics 620 direct3d11)',
+  }), 'reduced')
+})
+
 test('automatic performance tier is used when there is no manual override', () => {
   assert.equal(resolveEffectiveTier({ autoTier: 'reduced', override: null }), 'reduced')
   assert.equal(resolveEffectiveTier({ autoTier: 'minimal', override: null }), 'minimal')

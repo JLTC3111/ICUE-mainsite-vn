@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<title>ICUE Radial Parcel Dark Theme — C_Ice_Electric</title>
+<rect width="1000" height="1000" fill="#090D12"/>
+<g transform="translate(500 500)">
+  <circle r="300" fill="none" stroke="#57D9C2" stroke-width="56"
+          stroke-dasharray="300 68 240 68 300 68 240 68" transform="rotate(-12)"/>
+  <rect x="-36" y="-350" width="72" height="700" fill="#F4F7F8"/>
+  <rect x="-350" y="-36" width="700" height="72" fill="#F4F7F8"/>
+  <rect x="-26" y="-300" width="52" height="220" fill="#DCEBFA" transform="rotate(45)"/>
+  <rect x="-26" y="-300" width="52" height="220" fill="#DCEBFA" transform="rotate(135)"/>
+  <rect x="-26" y="-300" width="52" height="220" fill="#DCEBFA" transform="rotate(225)"/>
+  <rect x="-26" y="-300" width="52" height="220" fill="#DCEBFA" transform="rotate(315)"/>
+  <path d="M0,-236 A236,236 0 0 1 168,-168 L120,-120 A170,170 0 0 0 0,-170Z" fill="#4E9EFF"/>
+  <path d="M236,0 A236,236 0 0 1 168,168 L120,120 A170,170 0 0 0 170,0Z" fill="#DCEBFA"/>
+  <path d="M0,236 A236,236 0 0 1 -168,168 L-120,120 A170,170 0 0 0 0,170Z" fill="#4E9EFF"/>
+  <path d="M-236,0 A236,236 0 0 1 -168,-168 L-120,-120 A170,170 0 0 0 -170,0Z" fill="#4E9EFF"/>
+  <circle r="104" fill="#090D12"/>
+  <circle r="62" fill="none" stroke="#F4F7F8" stroke-width="18"/>
+  <circle r="20" fill="#DCEBFA"/>
+</g></svg>

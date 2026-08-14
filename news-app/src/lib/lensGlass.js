@@ -23,7 +23,10 @@ const MODEL_URL = `${import.meta.env.BASE_URL || '/'}models/magnifying-glass.len
 
 /** Tear the GL context down after this long with no lens hovered. */
 const IDLE_RELEASE_MS = 45_000
-const MAX_DPR = 2
+/* The magnifier is a small, softly-lit object with MSAA on, so the third of a
+ * pixel a 2x buffer would add is not visible — and dropping to 1.5x removes 44%
+ * of everything the GPU clears, shades and composites. */
+const MAX_DPR = 1.5
 /** Half-depth of the orthographic camera, in model units. */
 const CAMERA_DEPTH = 0.1
 /**
@@ -349,13 +352,23 @@ function destroyRuntime() {
 }
 
 /**
- * Frames the model so its glass disc exactly circumscribes the lens' zoom
- * circle, and sizes the canvas to the swing-swept bounds baked into the model.
+ * Sizes the canvas to the model's swing-swept bounds.
+ *
+ * By default the magnifier is scaled so its bezel's inner rim circumscribes the
+ * zoom circle exactly — the ratio is derived from the baked bounds rather than
+ * written as a literal, so re-baking the model cannot desynchronise the two.
+ * That makes the magnifier about 2.4x the zoom diameter (this one's handle is
+ * longer than its head), which leaves the caller's `lensSize` as the real cost
+ * dial: the canvas is square and every pixel of it is cleared, shaded and
+ * composited, so cost grows with its square. `glassSize` overrides the framing
+ * outright, at the price of the magnifier no longer lining up with the zoom.
  */
-function configure(instance, lensSize) {
+function configure(instance, lensSize, glassSize) {
   const { gl, model } = instance
   const [minX, minY, maxX, maxY] = model.bounds
-  const pixelsPerUnit = lensSize / 2 / model.glassRadius
+  const modelWidth = maxX - minX
+  const size = glassSize ?? (lensSize * modelWidth) / (2 * model.glassRadius)
+  const pixelsPerUnit = size / modelWidth
   const width = Math.ceil((maxX - minX) * pixelsPerUnit)
   const height = Math.ceil((maxY - minY) * pixelsPerUnit)
   const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
@@ -433,9 +446,9 @@ function clamp(value, limit) {
   return value < -limit ? -limit : value > limit ? limit : value
 }
 
-function createSession(instance, container, lensSize, originX, originY) {
+function createSession(instance, container, lensSize, glassSize, originX, originY) {
   const { canvas } = instance
-  configure(instance, lensSize)
+  configure(instance, lensSize, glassSize)
 
   let pointerX = originX
   let pointerY = originY
@@ -552,12 +565,18 @@ function createSession(instance, container, lensSize, originX, originY) {
       disposed = true
       if (frame) cancelAnimationFrame(frame)
       frame = 0
+      // The canvas is shared. A session that has already been superseded — two
+      // lenses hovered in quick succession, or a mount that resolved after its
+      // pointer left — must not pull it out from under the live one.
+      if (session !== self) return
       canvas.classList.remove('is-visible')
       canvas.remove()
-      if (session?.container === container) session = null
+      session = null
       scheduleRelease()
     },
   }
+
+  return self
 }
 
 function scheduleRelease() {
@@ -574,11 +593,12 @@ function scheduleRelease() {
  *
  * @param {HTMLElement} container positioned ancestor the canvas is placed in
  * @param {number} lensSize diameter in CSS px of the lens' zoom circle
+ * @param {number} [glassSize] overrides the magnifier's overall width in CSS px
  * @param {number} x pointer position within the container, in CSS px
  * @param {number} y pointer position within the container, in CSS px
  * @returns {Promise<{ move(x: number, y: number): void, dispose(): void } | null>}
  */
-export async function mountLensGlass(container, lensSize, x, y) {
+export async function mountLensGlass(container, lensSize, glassSize, x, y) {
   let model
   try {
     model = await loadModel()
@@ -598,6 +618,6 @@ export async function mountLensGlass(container, lensSize, x, y) {
     if (!runtime) return null
   }
 
-  session = createSession(runtime, container, lensSize, x, y)
+  session = createSession(runtime, container, lensSize, glassSize, x, y)
   return session
 }

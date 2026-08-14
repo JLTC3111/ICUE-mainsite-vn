@@ -41,7 +41,7 @@ export default function MainSiteHeader({
 }) {
   const logoVideoSrc = `${assetPrefix}bgVideos/video-text-football.mp4`;
   const contactVideoSrc = `${assetPrefix}bgVideos/blueflow.mp4`;
-  const logoMarkSrc = `${assetPrefix}logoIcons/favicon.png`;
+  const logoMarkSrc = `${assetPrefix}logoIcons/original_logo.png`;
 
   const showActionsGroup = showHomeVideoToggle || showAboutUsVideoToggle || showContactLink;
 
