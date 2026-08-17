@@ -65,6 +65,10 @@ export function getBackgroundCanvases() {
     // The lanyard is a foreground WebGL effect, not the page background.
     // Reading it back stalls the GPU and can return a mostly transparent frame.
     if (node.closest('.home-hero__lanyard, .lanyard-wrapper')) return
+    // About waves: WebGL without preserveDrawingBuffer reads back empty/transparent
+    // and would short-circuit before the CSS underlay that actually carries the
+    // light/dark palette. Sample `.about-waves-bg` CSS instead (see below).
+    if (node.closest('.about-waves-bg, .gradient-waves-container')) return
 
     const rect = node.getBoundingClientRect()
     if (rect.width < 80 || rect.height < 80) return
@@ -358,6 +362,31 @@ function getVisibleWarpBackground() {
   return warp
 }
 
+/**
+ * About's fixed CSS/WebGL backdrop. Only present while AboutUsPage is mounted,
+ * so this never competes with home warp / hero video sampling.
+ */
+function getVisibleAboutWavesBackground() {
+  const waves = document.querySelector('.about-waves-bg')
+  if (!(waves instanceof Element) || !isMediaVisible(waves)) return null
+
+  const rect = waves.getBoundingClientRect()
+  if (!coversViewport(rect) || !rectIntersectsViewport(rect)) return null
+  return waves
+}
+
+function fillCanvasFromAboutWaves(canvas, wavesRoot) {
+  if (!(wavesRoot instanceof Element)) return null
+
+  if (fillCanvasFromCssBackground(canvas, wavesRoot)) {
+    const style = getComputedStyle(wavesRoot)
+    return rgbStopsFromBackgroundValue(style.backgroundImage)
+      ?? parseColor(style.backgroundColor)
+  }
+
+  return null
+}
+
 function fillCanvasFromWarp(canvas, warpRoot) {
   if (!(warpRoot instanceof Element)) return null
 
@@ -450,6 +479,7 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
     const target = document.elementFromPoint(sampleX, sampleY)
 
     // Warp only when the sample point is actually over the hero warp layer.
+    // Home keeps priority: this runs before About waves and before video/canvas.
     const warp = getVisibleWarpBackground()
     if (warp && pointInRect(sampleX, sampleY, warp.getBoundingClientRect())) {
       const rgbHint = readWarpBackgroundRgb(warp)
@@ -457,6 +487,20 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
         fillCanvasFromWarp(canvas, warp)
         return { canvas, rgbHint }
       }
+    }
+
+    // About waves are pointer-events:none under the page, but they cover the
+    // viewport the way the old about bg video did — sample their CSS palette
+    // (light/dark) rather than the unreadable WebGL child canvas.
+    const aboutWaves = getVisibleAboutWavesBackground()
+    if (
+      aboutWaves
+      && pointNearSample(sampleX, sampleY, aboutWaves.getBoundingClientRect(), {
+        allowViewportCover: true,
+      })
+    ) {
+      const rgbHint = fillCanvasFromAboutWaves(canvas, aboutWaves)
+      if (rgbHint) return { canvas, rgbHint }
     }
 
     for (const sourceCanvas of getBackgroundCanvases()) {

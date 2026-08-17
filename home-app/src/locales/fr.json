@@ -36,7 +36,8 @@
       "resizeMenu": "Redimensionner le menu de navigation",
       "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
       "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
-      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)"
+      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)",
+      "aboutUsTheme": "Basculer entre le thème clair et le thème sombre (À propos)"
     },
     "contactWordmark": "À PROPOS"
   },
@@ -54,6 +55,86 @@
     "cookies": "Cookies",
     "partner": "Devenir partenaire",
     "rights": "Tous droits réservés, ICUE."
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "À propos d'ICUE",
+      "subText": "Créer, Relier, Réussir",
+      "body": "En hommage à notre pays – à nos aînés, à notre communauté",
+      "modelAlt": "Un modèle 3D d'un piano à queue"
+    },
+    "greeting": "Bonjour !",
+    "greetingEcho": "-Vous- Êtes Arrivé Chez ICUE",
+    "wordmark": {
+      "first": "RENOUVEAU",
+      "second": "CRÉATIVITÉ"
+    },
+    "excellence": {
+      "before": "RENCONTREZ",
+      "emphasis": "UNE QUALITÉ",
+      "after": "EXCEPTIONNELLE"
+    },
+    "weAre": {
+      "heading": "Nous Sommes",
+      "fuzzy": "PASSION",
+      "body": "Une équipe de spécialistes de la planification, du développement urbain résilient au changement climatique et de la protection de l'environnement naturel, au Vietnam comme à l'international"
+    },
+    "people": {
+      "heading": "Nos Équipes",
+      "middle": "Plus De 10 Ans De Gestion Urbaine",
+      "images": {
+        "planning": "Planification urbaine",
+        "collaboration": "Collaboration au sein de l'équipe",
+        "construction": "Un chantier de construction"
+      }
+    },
+    "members": {
+      "heading": "Rencontrez Nos Membres D'Exception",
+      "images": {
+        "vision": "Notre vision",
+        "mission": "Notre mission",
+        "values": "Nos valeurs",
+        "team": "Notre équipe"
+      }
+    },
+    "highlights": {
+      "heading": "Moments De Notre Travail",
+      "galleryLabel": "Galerie des activités d'ICUE"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "Espaces Publics, 2018",
+        "alt": "Photographie de groupe lors du séminaire international « Les espaces publics au service d'une croissance urbaine verte et d'un développement durable », Hanoï, 23 novembre 2018"
+      },
+      "laoCai": {
+        "label": "Séance De Travail À Lào Cai",
+        "alt": "Une séance de travail d'ICUE au Comité populaire de la province de Lào Cai"
+      },
+      "workshop2025": {
+        "label": "Séminaire Scientifique, 2025",
+        "alt": "Le séminaire scientifique consacré à la planification et à la gestion du développement urbain et rural dans le modèle d'administration locale à deux niveaux, Hanoï, 16 août 2025"
+      },
+      "urbanSummit2025": {
+        "label": "Forum Urbain Du Vietnam 2025",
+        "alt": "La séance plénière du Forum urbain du Vietnam 2025 – Développement intelligent, durable et inclusif, 8 novembre 2025"
+      },
+      "dubai2025": {
+        "label": "Délégation ICUE À Dubaï, 2025",
+        "alt": "Des collaborateurs d'ICUE participant à un congrès international à Dubaï, en 2025"
+      }
+    },
+    "contact": {
+      "heading": "Restons En Contact"
+    },
+    "balloon": "Lâchez Les Ballons !",
+    "slides": [
+      "L'Institut de recherche en économie de la construction et en urbanisme (ci-après « l'Institut ») <strong class=\"highlight-text-phrase\"> a été créé par la décision n° 29/QĐ/THXDVN du 16 avril 2013 du Présidium de la Fédération vietnamienne de la construction</strong>",
+      "Plus de 10 ans d'expérience, <strong class=\"highlight-text-phrase\">plus de 20 jeunes collaborateurs et spécialistes d'exception ainsi que de nombreux experts de premier plan </strong>en planification, en développement urbain et en économie urbaine — nous avons conçu des villes intelligentes, vertes et respectueuses de l'environnement, à l'équilibre entre fonction, résilience et besoins de la communauté",
+      "Recherche scientifique, recherche appliquée et développement technologique dans la construction, le conseil, la planification du développement urbain, l'économie urbaine, l'économie de la construction et la protection de l'environnement. <strong class=\"highlight-text-phrase\"></strong>",
+      "Transfert de technologies scientifiques et transition verte. Services d'information et organisation de conférences et de séminaires au Vietnam et à l'international. Coopération et partenariats avec des organisations nationales et internationales dans les domaines de la planification, du développement urbain et de la protection de l'environnement <strong class=\"highlight-text-phrase\"> avec efficacité </strong>, et capacité de mise en réseau — pour bâtir des villes <strong class=\"highlight-text-phrase\"> prêtes pour l'avenir </strong>.",
+      "Pilotage de l'initiative de planification à l'échelle de Đà Nẵng pour les villes de catégorie 1 et 2 — un projet de transformation qui reflète notre engagement envers <strong class=\"highlight-text-phrase\"> une stratégie d'ensemble </strong> et <strong class=\"highlight-text-phrase\"> des résultats concrets. </strong>",
+      "Études et élaboration de projets et de plans d'aménagement, planification urbaine et rurale ; programmes de développement du logement ; économie urbaine et environnement urbain ; investissement dans la construction ; information sur le marché immobilier ; passation des marchés… <strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
   },
   "home": {
     "hero": {

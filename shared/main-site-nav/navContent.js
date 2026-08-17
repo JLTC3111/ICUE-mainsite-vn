@@ -46,6 +46,7 @@ export const NAV_LABELS = {
     resizeMenuTitle: 'Kéo để thay đổi kích thước trình đơn',
     homeVideo: 'Bật/tắt video nền',
     aboutUsVideo: 'Bật/tắt video nền (Giới thiệu)',
+    aboutUsTheme: 'Chuyển giao diện sáng/tối (Giới thiệu)',
   },
   /** The dock variant's wordmark link, set in video-filled capitals. */
   contactWordmark: 'GIỚI THIỆU',

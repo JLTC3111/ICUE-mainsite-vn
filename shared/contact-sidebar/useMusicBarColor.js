@@ -126,6 +126,8 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
     window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
     window.addEventListener('icue:homeVideoEnabled', scheduleSample)
+    window.addEventListener('icue:aboutUsTheme', scheduleSample)
+    window.addEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     const viewport = window.visualViewport
@@ -146,7 +148,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     const rootObserver = new MutationObserver(scheduleSample)
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video'],
+      attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme'],
     })
 
     const unbindVideos = bindBackgroundVideoSampling(scheduleSample)
@@ -159,6 +161,8 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
       window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       window.removeEventListener('icue:homeVideoEnabled', scheduleSample)
+      window.removeEventListener('icue:aboutUsTheme', scheduleSample)
+      window.removeEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       viewport?.removeEventListener('resize', scheduleSample)
       viewport?.removeEventListener('scroll', scheduleSample)

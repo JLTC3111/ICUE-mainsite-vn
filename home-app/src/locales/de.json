@@ -36,7 +36,8 @@
       "resizeMenu": "Navigationsmenü in der Größe ändern",
       "resizeMenuTitle": "Zum Ändern der Breite ziehen",
       "homeVideo": "Hintergrundvideo ein-/ausschalten",
-      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)",
+      "aboutUsTheme": "Zwischen hellem und dunklem Design wechseln (Über uns)"
     },
     "contactWordmark": "ÜBER UNS"
   },
@@ -54,6 +55,86 @@
     "cookies": "Cookies",
     "partner": "Partner werden",
     "rights": "Alle Rechte vorbehalten, ICUE."
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "Über ICUE",
+      "subText": "Gestalten, Verbinden, Gelingen",
+      "body": "In Dankbarkeit an unser Land – an die Vorfahren, an die Gemeinschaft",
+      "modelAlt": "Ein 3D-Modell eines Konzertflügels"
+    },
+    "greeting": "Hallo!",
+    "greetingEcho": "-Sie- Sind Bei ICUE Angekommen",
+    "wordmark": {
+      "first": "ERNEUERUNG",
+      "second": "KREATIVITÄT"
+    },
+    "excellence": {
+      "before": "TRIFFT",
+      "emphasis": "HERAUSRAGENDE",
+      "after": "QUALITÄT"
+    },
+    "weAre": {
+      "heading": "Wir Sind",
+      "fuzzy": "LEIDENSCHAFT",
+      "body": "Ein Team von Fachleuten für Planung, für klimaresiliente Stadtentwicklung und für den Schutz der natürlichen Umwelt – im Inland wie international"
+    },
+    "people": {
+      "heading": "Unsere Mitarbeitenden",
+      "middle": "Mehr Als 10 Jahre Stadtmanagement",
+      "images": {
+        "planning": "Stadtplanung",
+        "collaboration": "Zusammenarbeit im Team",
+        "construction": "Eine Baustelle"
+      }
+    },
+    "members": {
+      "heading": "Lernen Sie Unsere Besten Kennen",
+      "images": {
+        "vision": "Unsere Vision",
+        "mission": "Unsere Mission",
+        "values": "Unsere Werte",
+        "team": "Unser Team"
+      }
+    },
+    "highlights": {
+      "heading": "Momente Unserer Arbeit",
+      "galleryLabel": "Galerie der Aktivitäten von ICUE"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "Öffentliche Räume, 2018",
+        "alt": "Gruppenfoto beim internationalen Workshop „Öffentliche Räume für grünes Städtewachstum und nachhaltige Entwicklung“, Hanoi, 23. November 2018"
+      },
+      "laoCai": {
+        "label": "Arbeitssitzung In Lào Cai",
+        "alt": "Eine Arbeitssitzung von ICUE beim Volkskomitee der Provinz Lào Cai"
+      },
+      "workshop2025": {
+        "label": "Wissenschaftlicher Workshop, 2025",
+        "alt": "Der wissenschaftliche Workshop zur Planung und Entwicklungssteuerung von Stadt und Land im zweistufigen Kommunalmodell, Hanoi, 16. August 2025"
+      },
+      "urbanSummit2025": {
+        "label": "Vietnam Urban Summit 2025",
+        "alt": "Die Plenarsitzung des Vietnam Urban Summit 2025 – Intelligente, nachhaltige und inklusive Entwicklung, 8. November 2025"
+      },
+      "dubai2025": {
+        "label": "ICUE-Delegation In Dubai, 2025",
+        "alt": "Mitarbeitende von ICUE bei einem internationalen Kongress in Dubai, 2025"
+      }
+    },
+    "contact": {
+      "heading": "Treten Wir In Kontakt"
+    },
+    "balloon": "Ballons Steigen Lassen!",
+    "slides": [
+      "Das Institut für Bau-, Stadt- und Wirtschaftsforschung (im Folgenden: das Institut) <strong class=\"highlight-text-phrase\"> wurde mit Beschluss Nr. 29/QĐ/THXDVN vom 16. April 2013 des Präsidiums des Vietnamesischen Bauverbands gegründet</strong>",
+      "Mehr als 10 Jahre Erfahrung, <strong class=\"highlight-text-phrase\">über 20 herausragende junge Mitarbeitende und Fachleute sowie zahlreiche führende Expertinnen und Experten </strong>in Planung, Stadtentwicklung und Stadtökonomie – wir haben Städte entworfen, die intelligent, grün und umweltfreundlich sind und Funktion, Resilienz und die Bedürfnisse der Gemeinschaft ins Gleichgewicht bringen",
+      "Grundlagenforschung, angewandte Forschung und Technologieentwicklung im Bauwesen, in der Beratung, in der Stadtentwicklungsplanung, der Stadtökonomie, der Bauökonomie und im Umweltschutz. <strong class=\"highlight-text-phrase\"></strong>",
+      "Transfer wissenschaftlicher Technologien und grüner Wandel. Informationsdienste sowie die Ausrichtung von Konferenzen und Workshops im In- und Ausland. Zusammenarbeit und Partnerschaften mit nationalen und internationalen Organisationen in den Bereichen Planung, Stadtentwicklung und Umweltschutz <strong class=\"highlight-text-phrase\"> wirksam </strong>, und Vernetzung – für Städte, die <strong class=\"highlight-text-phrase\"> für die Zukunft bereit sind </strong>.",
+      "Federführung der stadtweiten Planungsinitiative für Đà Nẵng für Städte der Kategorien 1 und 2 – ein Transformationsprojekt, das unser Engagement für <strong class=\"highlight-text-phrase\"> eine Gesamtstrategie </strong> und <strong class=\"highlight-text-phrase\"> greifbare Ergebnisse </strong> widerspiegelt.",
+      "Forschung und Erarbeitung von Konzepten und Planungsvorhaben, Stadt- und Regionalplanung; Wohnraumentwicklungsprogramme; Stadtökonomie und Stadtumwelt; Bauinvestitionen; Informationen zum Immobilienmarkt; Vergabe- und Ausschreibungswesen … <strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
   },
   "home": {
     "hero": {

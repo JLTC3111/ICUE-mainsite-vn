@@ -5,19 +5,29 @@ import { normalizeDeep } from '@icue/text/normalizeUnicode'
 import { detectInitialLanguage } from './detectLanguage'
 
 import vi from '../locales/vi.json'
+import en from '../locales/en.json'
 import de from '../locales/de.json'
 import fr from '../locales/fr.json'
 import ko from '../locales/ko.json'
 import ja from '../locales/ja.json'
 
 /**
- * English is in the menu but not in the resources on purpose. This site *is*
- * the Vietnamese one; the English home page is a whole separate build at
- * en.icue.vn, and the flag has always crossed to it. Translating an `en.json`
- * here would put a second, worse English home page on icue.vn.
+ * English is a resource here now, but it is still not this site's language.
  *
- * So the disc lists all six languages in the order every other ICUE app uses,
- * and picking English navigates instead of re-rendering — see SiteLanguageMenu.
+ * icue.vn *is* the Vietnamese site; the English build is a separate deploy at
+ * en.icue.vn, and the flag has always crossed to it. What changed is that the
+ * About page moved: there is one About page for both hosts, it lives here, and
+ * en.icue.vn/about-us redirects to it. That route therefore has to answer in
+ * English — hence `en.json` — while every other route on this host stays
+ * Vietnamese and keeps sending English readers across.
+ *
+ * Two guards keep those apart, and neither lives in this file:
+ *   - detectLanguage only accepts `en` on a SHARED_LOCALE_PATHS route, so no
+ *     stored or `?lang=`-requested English can turn the home page English.
+ *   - SiteLanguageMenu still navigates to en.icue.vn everywhere except those
+ *     routes, where it changes language in place instead.
+ *
+ * The disc lists all six languages in the order every other ICUE app uses.
  */
 export const CROSS_SITE_LANGUAGE = { code: 'en', label: 'English' }
 
@@ -30,10 +40,11 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ja', label: '日本語' },
 ]
 
-/** The five this build can actually render. */
-export const UI_LANGUAGES = SUPPORTED_LANGUAGES.filter(
-  (lang) => lang.code !== CROSS_SITE_LANGUAGE.code,
-)
+/**
+ * All six now have translations to render. Whether a given route is *allowed*
+ * to render English is a separate question, answered by detectLanguage.
+ */
+export const UI_LANGUAGES = SUPPORTED_LANGUAGES
 
 const normalizePostProcessor = {
   type: 'postProcessor',
@@ -48,6 +59,7 @@ i18n
   .init({
     resources: {
       vi: { translation: normalizeDeep(vi) },
+      en: { translation: normalizeDeep(en) },
       de: { translation: normalizeDeep(de) },
       fr: { translation: normalizeDeep(fr) },
       ko: { translation: normalizeDeep(ko) },

@@ -12,15 +12,24 @@ import './lib/i18n'
 import '../../styles.css'
 import './styles/footer-theme.css'
 import '@icue/styles/icue-base.css'
+// Last on purpose. As an injected legacy page this stylesheet sat in the body,
+// after every bundled sheet, so it won ties against styles.css on equal
+// specificity — see the header comment in AboutUsPage.css. Importing it from the
+// page component instead would pull it in ahead of styles.css and quietly change
+// the About page's layout.
+import './pages/AboutUsPage.css'
 
 window.gsap = gsap
 installGlobalDebugHandlers()
 
-// `?lang=` is an app-to-app transfer hint. i18n has consumed and persisted it
-// by this point, so remove it without disturbing unrelated query parameters.
+// `?lang=` and `?site=` are app-to-app transfer hints — the second is what
+// en.icue.vn's _redirects uses when it forwards /about-us here. i18n has
+// consumed and persisted whichever arrived by this point, so remove them
+// without disturbing unrelated query parameters.
 const entryParams = new URLSearchParams(window.location.search)
-if (normalizeUiLocale(entryParams.get('lang'))) {
+if (normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))) {
   entryParams.delete('lang')
+  entryParams.delete('site')
   const search = entryParams.toString()
   window.history.replaceState(
     {},

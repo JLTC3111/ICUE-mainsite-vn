@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import LanguageFlagMenu from '@icue/i18n/LanguageFlagMenu'
 import { buildLanguageSwitchTarget } from '@icue/main-site-nav/languageSwitcher'
 import { CROSS_SITE_LANGUAGE, SUPPORTED_LANGUAGES } from '../lib/i18n'
+import { servesAllLocales } from '../lib/routes'
 
 /**
  * Replaces the flag link in the injected nav.
@@ -10,6 +11,11 @@ import { CROSS_SITE_LANGUAGE, SUPPORTED_LANGUAGES } from '../lib/i18n'
  * English, is the crossing to en.icue.vn the flag has always been — and it
  * lands on the counterpart of the page you were reading, not the homepage.
  *
+ * Except on About. That page is served for both hosts from here, and
+ * en.icue.vn/about-us is a redirect back to it, so crossing would send the
+ * reader out and immediately back to the page they were already on. There
+ * English re-renders in place like the other five.
+ *
  * Module scope, not inline in App: a component identity that changed each
  * render would remount the whole nav.
  */
@@ -17,7 +23,7 @@ export default function SiteLanguageMenu() {
   const { t, i18n } = useTranslation()
 
   const handleChange = (code) => {
-    if (code !== CROSS_SITE_LANGUAGE.code) {
+    if (code !== CROSS_SITE_LANGUAGE.code || servesAllLocales()) {
       i18n.changeLanguage(code)
       return
     }

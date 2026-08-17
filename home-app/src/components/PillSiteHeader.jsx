@@ -4,6 +4,7 @@ import VideoText from '@icue/ui/VideoText';
 import LanguageFlagLink from '@icue/main-site-nav/LanguageFlagLink';
 import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
+import ThemeToggle from '@icue/main-site-nav/ThemeToggle';
 import { NAV_LABELS } from '@icue/main-site-nav/navContent';
 import './PillSiteHeader.css';
 
@@ -87,6 +88,12 @@ export default function PillSiteHeader({
   aboutUsVideoEnabled,
   aboutUsVideoToggleDisabled,
   onAboutUsVideoToggle,
+  /* 'theme' once the About page publishes a theme manager, 'video' while the
+     legacy About page — which still has a background video — is the one
+     mounted. Resolved upstream by MainSiteNav. */
+  aboutUsControl = 'video',
+  aboutUsThemeDark = false,
+  onAboutUsThemeToggle,
   menuIconRef,
   menuToggleRef,
   logoLinkRef,
@@ -264,7 +271,16 @@ export default function PillSiteHeader({
           />
         )}
 
-        {showAboutUsVideoToggle && (
+        {showAboutUsVideoToggle && (aboutUsControl === 'theme' ? (
+          <ThemeToggle
+            id={`aboutUsThemeToggleContainer${toggleSuffix}`}
+            variant={isMobile ? 'navbar' : 'nav'}
+            label={aria.aboutUsTheme}
+            visible
+            checked={aboutUsThemeDark}
+            onCheckedChange={onAboutUsThemeToggle}
+          />
+        ) : (
           <VideoToggle
             id={`aboutUsVideoToggleContainer${toggleSuffix}`}
             inputId={`aboutUsVideoToggle${toggleSuffix}`}
@@ -277,7 +293,7 @@ export default function PillSiteHeader({
             onCheckedChange={onAboutUsVideoToggle}
             disabled={aboutUsVideoToggleDisabled}
           />
-        )}
+        ))}
 
         <div className="pill-site-header__language" ref={flagLinkRef}>
           <LanguageControl />

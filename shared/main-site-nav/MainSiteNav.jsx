@@ -115,6 +115,13 @@ export default function MainSiteNav({
   const [homeVideoToggleDisabled, setHomeVideoToggleDisabled] = useState(false);
   const [aboutUsVideoEnabled, setAboutUsVideoEnabled] = useState(true);
   const [aboutUsVideoToggleDisabled, setAboutUsVideoToggleDisabled] = useState(false);
+  /* The About page owns one slot in the chrome, and which switch goes in it
+     depends on which page is mounted: the converted page publishes a theme
+     manager and wants a light/dark toggle, the legacy page publishes a video
+     manager and wants the camera. 'video' is the safe default — it is what
+     every build of this nav did before the theme switch existed. */
+  const [aboutUsControl, setAboutUsControl] = useState('video');
+  const [aboutUsThemeDark, setAboutUsThemeDark] = useState(false);
   const [dockExpanded, setDockExpanded] = useState(() => shouldExpandDock());
 
   const menuIconRef = useRef(null);
@@ -217,6 +224,16 @@ export default function MainSiteNav({
     }
     setAboutUsVideoEnabled(!!manager.isEnabled?.());
     setAboutUsVideoToggleDisabled(!manager.canToggleVideos?.());
+  }, []);
+
+  const handleAboutUsThemeToggle = useCallback((dark) => {
+    window.AboutUsThemeManager?.setDark?.(dark);
+  }, []);
+
+  const syncAboutUsThemeState = useCallback(() => {
+    const manager = window.AboutUsThemeManager;
+    setAboutUsControl(manager ? 'theme' : 'video');
+    if (manager) setAboutUsThemeDark(!!manager.isDark?.());
   }, []);
 
   const playEntranceAnimation = useCallback((isFirstLoad = true) => {
@@ -470,12 +487,33 @@ export default function MainSiteNav({
     };
   }, [showAboutUsVideoToggle, syncAboutUsVideoToggleState]);
 
+  // The theme manager is published by the About page's own effect, which runs
+  // after this nav has already mounted — hence the ready event. It fires again
+  // on unmount, when the manager is withdrawn, which is what puts the camera
+  // back for the legacy About page.
+  useEffect(() => {
+    if (!showAboutUsVideoToggle) return undefined;
+
+    syncAboutUsThemeState();
+
+    const onAboutUsTheme = () => syncAboutUsThemeState();
+    window.addEventListener('icue:aboutUsTheme', onAboutUsTheme);
+    window.addEventListener('icue:aboutUsThemeManagerReady', onAboutUsTheme);
+
+    return () => {
+      window.removeEventListener('icue:aboutUsTheme', onAboutUsTheme);
+      window.removeEventListener('icue:aboutUsThemeManagerReady', onAboutUsTheme);
+    };
+  }, [showAboutUsVideoToggle, syncAboutUsThemeState]);
+
   useEffect(() => {
     const ids = [
       'homeVideoToggleContainerDesktop',
       'homeVideoToggleContainerMobile',
       'aboutUsVideoToggleContainerDesktop',
       'aboutUsVideoToggleContainerMobile',
+      'aboutUsThemeToggleContainerDesktop',
+      'aboutUsThemeToggleContainerMobile',
       'contactLink',
     ];
 
@@ -521,6 +559,9 @@ export default function MainSiteNav({
           aboutUsVideoEnabled={aboutUsVideoEnabled}
           aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
           onAboutUsVideoToggle={handleAboutUsVideoToggle}
+          aboutUsControl={aboutUsControl}
+          aboutUsThemeDark={aboutUsThemeDark}
+          onAboutUsThemeToggle={handleAboutUsThemeToggle}
           menuIconRef={menuIconRef}
           menuToggleRef={menuToggleRef}
           logoLinkRef={logoLinkRef}

@@ -90,8 +90,22 @@ export const MAIN_SITE_PAGE_PATHS = {
   orgStructure: '/structure/',
 }
 
-/** Standalone apps served only on icue.vn, regardless of UI language. */
-const VI_ONLY_APP_PAGES = new Set(['News', 'orgStructure', 'ourWork', 'Contact'])
+/**
+ * Pages served only from icue.vn, regardless of UI language, so every app's
+ * link to them points at this host with `?lang=` carrying the reader's choice.
+ *
+ * The first four are standalone apps that were never built for en.icue.vn.
+ * `aboutUs` joins them for a different reason: it used to exist twice, once per
+ * host, and now exists once — the icue.vn copy renders all six languages and
+ * en.icue.vn/about-us redirects to it.
+ */
+const VI_ONLY_APP_PAGES = new Set([
+  'News',
+  'orgStructure',
+  'ourWork',
+  'Contact',
+  'aboutUs',
+])
 
 export function resolveMainSiteLink(page, lang, base) {
   const locale = normalizeUiLocale(lang, 'vi')

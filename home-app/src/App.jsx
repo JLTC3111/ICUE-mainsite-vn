@@ -10,6 +10,7 @@ import PillSiteHeader from './components/PillSiteHeader'
 import RouteHead from './components/RouteHead'
 import SiteLanguageMenu from './components/SiteLanguageMenu'
 import HomePage from './pages/HomePage'
+import AboutUsPage from './pages/AboutUsPage'
 import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 import { debugLog } from './lib/debugLog'
@@ -101,7 +102,10 @@ function AppShell() {
               a client-side route here would shadow it on in-app navigation.
               ROUTE_PATHS.contact stays — the drawer and footer still link to
               it, as a real navigation. */}
-          <Route path={ROUTE_PATHS.aboutUs} element={<LegacyHtmlPage />} />
+          <Route path={ROUTE_PATHS.aboutUs} element={<AboutUsPage />} />
+          {/* The pre-conversion About page, kept reachable for side-by-side
+              comparison. Retire this route with LEGACY_PREVIEW_PATHS. */}
+          <Route path="/about-us-legacy" element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />

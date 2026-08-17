@@ -56,8 +56,44 @@ export const LEGACY_PAGE_FILES = {
   FAQs: 'FAQs.html',
 }
 
+/**
+ * Paths that still render a legacy HTML page whose canonical route has already
+ * moved to JSX. Deliberately kept out of PATH_TO_PAGE: PAGE_TO_PATH inverts that
+ * map, and a second path for the same page id would hijack the canonical one
+ * when links get rewritten.
+ *
+ * `/about-us-legacy` exists so the old page stays reachable for comparison while
+ * AboutUsPage beds in. Remove it — and the route in App.jsx — once the JSX page
+ * is trusted; legacy/pages/aboutUs.html can go at the same time.
+ */
+export const LEGACY_PREVIEW_PATHS = {
+  '/about-us-legacy': 'aboutUs',
+}
+
+/**
+ * Routes on icue.vn that serve all six UI languages, English included.
+ *
+ * Everywhere else on this host is the Vietnamese site and English means
+ * en.icue.vn. About is the exception because there is now exactly one About
+ * page: en.icue.vn/about-us redirects here, so this route has to be able to
+ * answer in English or the redirect would hand an English reader a Vietnamese
+ * page. It is the same arrangement Contact, Our Work and the newsroom already
+ * have — see VI_ONLY_APP_PAGES in shared/site-routes/mainSitePaths.js, which is
+ * what points every other app's About link at this host.
+ *
+ * Two things read this: detectLanguage, so a stored or requested `en` is
+ * honoured here and nowhere else, and SiteLanguageMenu, so picking English here
+ * re-renders instead of bouncing out to en.icue.vn and straight back.
+ */
+export const SHARED_LOCALE_PATHS = [ROUTE_PATHS.aboutUs]
+
+export function servesAllLocales(pathname = window.location.pathname) {
+  const normalized = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  return SHARED_LOCALE_PATHS.includes(normalized)
+}
+
 export function pageFromPathname(pathname) {
-  return PATH_TO_PAGE[pathname] || null
+  return PATH_TO_PAGE[pathname] || LEGACY_PREVIEW_PATHS[pathname] || null
 }
 
 export function pathFromPage(page) {

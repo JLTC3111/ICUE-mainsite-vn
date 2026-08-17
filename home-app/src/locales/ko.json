@@ -36,7 +36,8 @@
       "resizeMenu": "탐색 메뉴 크기 조절",
       "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
       "homeVideo": "배경 영상 켜기/끄기",
-      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)"
+      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)",
+      "aboutUsTheme": "밝은/어두운 테마 전환 (소개)"
     },
     "contactWordmark": "소개"
   },
@@ -54,6 +55,86 @@
     "cookies": "쿠키",
     "partner": "파트너십 문의",
     "rights": "저작권은 ICUE에 있습니다."
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "ICUE 소개",
+      "subText": "창조, 연결, 성취",
+      "body": "나라와 선인, 그리고 공동체에 감사드립니다",
+      "modelAlt": "그랜드 피아노 3D 모델"
+    },
+    "greeting": "안녕하세요!",
+    "greetingEcho": "-당신- ICUE에 오신 것을 환영합니다",
+    "wordmark": {
+      "first": "혁신",
+      "second": "창조"
+    },
+    "excellence": {
+      "before": "만나는",
+      "emphasis": "탁월한",
+      "after": "품질"
+    },
+    "weAre": {
+      "heading": "우리는",
+      "fuzzy": "열정",
+      "body": "국내외에서 도시 계획, 기후 변화에 대응하는 도시 개발, 그리고 자연환경 보호를 담당하는 전문가 팀입니다"
+    },
+    "people": {
+      "heading": "인력",
+      "middle": "10년 이상의 도시 관리 경험",
+      "images": {
+        "planning": "도시 계획",
+        "collaboration": "팀 협업",
+        "construction": "건설 현장"
+      }
+    },
+    "members": {
+      "heading": "우수한 구성원을 만나 보세요",
+      "images": {
+        "vision": "우리의 비전",
+        "mission": "우리의 사명",
+        "values": "우리의 가치",
+        "team": "우리 팀"
+      }
+    },
+    "highlights": {
+      "heading": "활동의 발자취",
+      "galleryLabel": "ICUE 활동 사진 갤러리"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "공공 공간, 2018",
+        "alt": "국제 워크숍 「녹색 성장 도시와 지속가능한 발전을 향한 공공 공간」 단체 사진, 하노이, 2018년 11월 23일"
+      },
+      "laoCai": {
+        "label": "라오까이 현장 회의",
+        "alt": "라오까이성 인민위원회에서 진행된 ICUE의 실무 회의"
+      },
+      "workshop2025": {
+        "label": "학술 워크숍, 2025",
+        "alt": "2단계 지방정부 모델에 부합하는 도시·농촌 개발 계획 및 관리를 주제로 한 학술 워크숍, 하노이, 2025년 8월 16일"
+      },
+      "urbanSummit2025": {
+        "label": "베트남 도시 포럼 2025",
+        "alt": "베트남 도시 포럼 2025 – 스마트하고 지속가능하며 포용적인 발전 전체 회의, 2025년 11월 8일"
+      },
+      "dubai2025": {
+        "label": "두바이 ICUE 대표단, 2025",
+        "alt": "2025년 두바이에서 열린 국제 회의에 참석한 ICUE 직원"
+      }
+    },
+    "contact": {
+      "heading": "함께해요"
+    },
+    "balloon": "풍선 날리기!",
+    "slides": [
+      "건설·도시경제연구원(이하 '연구원')은 <strong class=\"highlight-text-phrase\"> 2013년 4월 16일 베트남건설총회 상임위원회의 결정 제29/QĐ/THXDVN호에 따라 설립되었습니다</strong>",
+      "10년이 넘는 경험과 <strong class=\"highlight-text-phrase\">20명이 넘는 우수한 젊은 직원 및 전문 인력, 그리고 다수의 선도적 전문가 </strong>가 도시 계획, 도시 개발, 도시경제 분야에서 활동하며 — 저희는 스마트하고 친환경적이며 기능과 회복력, 지역사회의 요구가 균형을 이루는 도시를 설계해 왔습니다",
+      "건설, 자문, 도시 개발 계획 수립, 도시경제, 건설경제 및 환경 보호 분야의 기초 연구, 응용 연구와 기술 개발. <strong class=\"highlight-text-phrase\"></strong>",
+      "과학 기술 이전과 녹색 전환. 정보 서비스 제공, 국내외 회의 및 세미나 개최. 도시 계획, 도시 개발, 환경 보호 분야에서 국내외 기관과의 협력 및 연계를 <strong class=\"highlight-text-phrase\"> 효과적으로 </strong> 추진하고, 연결성을 높여 <strong class=\"highlight-text-phrase\"> 미래에 대비한 </strong> 도시를 만들어 갑니다.",
+      "1급 및 2급 도시를 대상으로 한 다낭 전역 도시 계획 이니셔티브를 주도했습니다 — <strong class=\"highlight-text-phrase\"> 전체를 아우르는 전략 </strong>과 <strong class=\"highlight-text-phrase\"> 실질적인 성과 </strong>에 대한 저희의 헌신을 보여 주는 전환적 사업입니다.",
+      "사업 계획 및 계획 프로젝트 연구 수립, 도시·농촌 계획; 주택 개발 프로그램; 도시경제 및 도시환경; 건설 투자; 부동산 시장 정보; 입찰 업무 등 <strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
   },
   "home": {
     "hero": {

@@ -36,7 +36,8 @@
       "resizeMenu": "Thay đổi kích thước trình đơn",
       "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
       "homeVideo": "Bật/tắt video nền",
-      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)"
+      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)",
+      "aboutUsTheme": "Chuyển giao diện sáng/tối (Giới thiệu)"
     },
     "contactWordmark": "GIỚI THIỆU"
   },
@@ -54,6 +55,86 @@
     "cookies": "Cookies",
     "partner": "Hợp Tác Cùng Chúng Tôi",
     "rights": "Bản quyền thuộc về ICUE."
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "Giới thiệu ICUE",
+      "subText": "Sáng Tạo, Kết Nối, Thành Công",
+      "body": "Tri Ân Đất Nước – Tiền Nhân, Cộng Đồng",
+      "modelAlt": "Mô hình 3D của một cây đại dương cầm"
+    },
+    "greeting": "Xin Chào!",
+    "greetingEcho": "-Bạn- Đã Đến Với ICUE",
+    "wordmark": {
+      "first": "ĐỔI MỚI",
+      "second": "SÁNG TẠO"
+    },
+    "excellence": {
+      "before": "GẶP",
+      "emphasis": "CHẤT LƯỢNG",
+      "after": "XUẤT SẮC"
+    },
+    "weAre": {
+      "heading": "Chúng Tôi Là",
+      "fuzzy": "ĐAM MÊ",
+      "body": "Đội ngũ chuyên gia Quy hoạch, phát triển đô thị ứng phó biến đổi khí hậu và bảo vệ môi trường tự nhiên trong nước và quốc tế"
+    },
+    "people": {
+      "heading": "Nhân Lực",
+      "middle": "Hơn 10 Năm Quản Lý Đô Thị",
+      "images": {
+        "planning": "Quy hoạch đô thị",
+        "collaboration": "Hợp tác trong đội ngũ",
+        "construction": "Công trường xây dựng"
+      }
+    },
+    "members": {
+      "heading": "Gặp Những Thành Viên Ưu Tú",
+      "images": {
+        "vision": "Tầm nhìn của chúng tôi",
+        "mission": "Sứ mệnh của chúng tôi",
+        "values": "Giá trị của chúng tôi",
+        "team": "Đội ngũ của chúng tôi"
+      }
+    },
+    "highlights": {
+      "heading": "Dấu Ấn Hoạt Động",
+      "galleryLabel": "Thư viện ảnh hoạt động của ICUE"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "Không Gian Công Cộng, 2018",
+        "alt": "Ảnh chụp tập thể tại Hội thảo quốc tế “Không gian công cộng hướng tới đô thị tăng trưởng xanh và phát triển bền vững”, Hà Nội, ngày 23/11/2018"
+      },
+      "laoCai": {
+        "label": "Làm Việc Tại Lào Cai",
+        "alt": "Phiên làm việc của ICUE tại Ủy ban Nhân dân tỉnh Lào Cai"
+      },
+      "workshop2025": {
+        "label": "Hội Thảo Khoa Học, 2025",
+        "alt": "Hội thảo khoa học “Quy hoạch và quản lý phát triển đô thị – nông thôn phù hợp với mô hình chính quyền địa phương hai cấp”, Hà Nội, ngày 16/8/2025"
+      },
+      "urbanSummit2025": {
+        "label": "Diễn Đàn Đô Thị Việt Nam 2025",
+        "alt": "Phiên toàn thể Diễn đàn Đô thị Việt Nam 2025 – Phát triển thông minh, bền vững và bao trùm, ngày 08/11/2025"
+      },
+      "dubai2025": {
+        "label": "Đoàn ICUE Tại Dubai, 2025",
+        "alt": "Cán bộ ICUE tham dự hội nghị quốc tế tại Dubai, năm 2025"
+      }
+    },
+    "contact": {
+      "heading": "Kết Nối Nhé"
+    },
+    "balloon": "Thả Bóng!",
+    "slides": [
+      "Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (sau đây gọi tắt là viện) <strong class=\"highlight-text-phrase\"> được thành lập theo Quyết định số 29/QĐ/THXDVN ngày 16/4/2013 của Đoàn Chủ tịch Tổng hội Xây dựng Việt Nam</strong>",
+      "Hơn 10 năm kinh nghiệm, <strong class=\"highlight-text-phrase\">hơn 20 cán bộ, chuyên viên trẻ, xuất sắc và nhiều chuyên gia đầu nghành </strong>trong lĩnh vực quy hoạch, phát triển đô thị, kinh tế đô thị - chúng tôi đã thiết kế những thành phố thông minh - xanh thân thiện môi trường - cân bằng giữa chức năng - khả năng phục hồi và nhu cầu cộng đồng",
+      "Nghiên cứu khoa học, nghiên cứu ứng dụng và phát triển công nghệ trong lĩnh vực xây dựng, tư vấn, lập quy hoạch phát triển đô thị, kinh tế đô thị, kinh tế xây dựng và bảo vệ môi trường. <strong class=\"highlight-text-phrase\"></strong>",
+      "Chuyển giao công nghệ khoa học, chuyển đổi xanh. Thực hiện các dịch vụ thông tin, tổ chức hội nghị, hội thảo trong nước và quốc tế. Hợp tác và liên kết với các tổ chức trong nước và quốc tế về các lĩnh vực quy hoạch, phát triển đô thị và bảo vệ môi trường <strong class=\"highlight-text-phrase\"> hiệu quả </strong>, khả năng kết nối — xây dựng các thành phố <strong class=\"highlight-text-phrase\"> sẵn sàng cho tương lai </strong>.",
+      "Lãnh đạo sáng kiến quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với <strong class=\"highlight-text-phrase\"> chiến lược toàn cảnh </strong> và <strong class=\"highlight-text-phrase\"> kết quả thực tế. </strong>",
+      "Nghiên cứu lập đề án, dự án quy hoạch, quy hoạch đô thị nông thôn; Chương trình phát triển nhà ở; Kinh tế đô thị, Môi trường đô thị; Đầu tư xây dựng; Thông tin thị trường bất động sản; Công tác đấu thầu... <strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
   },
   "home": {
     "hero": {

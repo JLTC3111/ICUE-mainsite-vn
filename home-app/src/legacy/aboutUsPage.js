@@ -1,14 +1,7 @@
+import { ABOUT_US_SLIDES as MESSAGES } from '../data/aboutUsContent'
+
 const SLIDE_INTERVAL = 45_000
 const STORAGE_KEY = 'aboutUs_bg_video_enabled'
-
-const MESSAGES = [
-  'Viện Nghiên cứu Kinh tế Xây dựng và Đô thị (sau đây gọi tắt là viện) <strong class="highlight-text-phrase"> được thành lập theo Quyết định số 29/QĐ/THXDVN ngày 16/4/2013 của Đoàn Chủ tịch Tổng hội Xây dựng Việt Nam</strong>',
-  'Hơn 10 năm kinh nghiệm, <strong class="highlight-text-phrase">hơn 20 cán bộ, chuyên viên trẻ, xuất sắc và nhiều chuyên gia đầu nghành </strong>trong lĩnh vực quy hoạch, phát triển đô thị, kinh tế đô thị - chúng tôi đã thiết kế những thành phố thông minh - xanh thân thiện môi trường - cân bằng giữa chức năng - khả năng phục hồi và nhu cầu cộng đồng',
-  'Nghiên cứu khoa học, nghiên cứu ứng dụng và phát triển công nghệ trong lĩnh vực xây dựng, tư vấn, lập quy hoạch phát triển đô thị, kinh tế đô thị, kinh tế xây dựng và bảo vệ môi trường. <strong class="highlight-text-phrase"></strong>',
-  'Chuyển giao công nghệ khoa học, chuyển đổi xanh. Thực hiện các dịch vụ thông tin, tổ chức hội nghị, hội thảo trong nước và quốc tế. Hợp tác và liên kết với các tổ chức trong nước và quốc tế về các lĩnh vực quy hoạch, phát triển đô thị và bảo vệ môi trường <strong class="highlight-text-phrase"> hiệu quả </strong>, khả năng kết nối — xây dựng các thành phố <strong class="highlight-text-phrase"> sẵn sàng cho tương lai </strong>.',
-  'Lãnh đạo sáng kiến ​​quy hoạch toàn thành phố Đà Nẵng cho thành phố loại 1 và loại 2 — một dự án chuyển đổi phản ánh sự tận tâm của chúng tôi đối với <strong class="highlight-text-phrase"> chiến lược toàn cảnh </strong> và <strong class="highlight-text-phrase"> kết quả thực tế. </strong>',
-  'Nghiên cứu lập đề án, dự án quy hoạch, quy hoạch đô thị nông thôn; Chương trình phát triển nhà ở; Kinh tế đô thị, Môi trường đô thị; Đầu tư xây dựng; Thông tin thị trường bất động sản; Công tác đấu thầu... <strong class="highlight-text-phrase"></strong><strong class="highlight-text-phrase"></strong>',
-]
 
 let cleanupCurrent = null
 

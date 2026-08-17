@@ -1,5 +1,6 @@
 import LanguageFlagLink from './LanguageFlagLink';
 import VideoToggle from './VideoToggle';
+import ThemeToggle from './ThemeToggle';
 import VideoText from '@icue/ui/VideoText';
 import { Dock, DockIcon } from '@icue/ui/Dock';
 import MetallicMenuIcon from './MetallicMenuIcon';
@@ -21,6 +22,11 @@ export default function MainSiteHeader({
   aboutUsVideoEnabled,
   aboutUsVideoToggleDisabled,
   onAboutUsVideoToggle,
+  /* Which switch the About slot holds. Resolved by MainSiteNav from whichever
+     manager the page published; 'video' is the legacy About page's. */
+  aboutUsControl = 'video',
+  aboutUsThemeDark = false,
+  onAboutUsThemeToggle,
   menuIconRef,
   menuToggleRef,
   logoLinkRef,
@@ -64,6 +70,9 @@ export default function MainSiteHeader({
         aboutUsVideoEnabled={aboutUsVideoEnabled}
         aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
         onAboutUsVideoToggle={onAboutUsVideoToggle}
+        aboutUsControl={aboutUsControl}
+        aboutUsThemeDark={aboutUsThemeDark}
+        onAboutUsThemeToggle={onAboutUsThemeToggle}
         menuIconRef={menuIconRef}
         menuToggleRef={menuToggleRef}
         logoLinkRef={logoLinkRef}
@@ -166,7 +175,32 @@ export default function MainSiteHeader({
                 </>
               )}
 
-              {showAboutUsVideoToggle && (
+              {showAboutUsVideoToggle && aboutUsControl === 'theme' && (
+                <>
+                  <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--video">
+                    <ThemeToggle
+                      id="aboutUsThemeToggleContainerMobile"
+                      variant="navbar"
+                      label={labels.aria.aboutUsTheme}
+                      visible
+                      checked={aboutUsThemeDark}
+                      onCheckedChange={onAboutUsThemeToggle}
+                    />
+                  </DockIcon>
+                  <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--video">
+                    <ThemeToggle
+                      id="aboutUsThemeToggleContainerDesktop"
+                      variant="nav"
+                      label={labels.aria.aboutUsTheme}
+                      visible
+                      checked={aboutUsThemeDark}
+                      onCheckedChange={onAboutUsThemeToggle}
+                    />
+                  </DockIcon>
+                </>
+              )}
+
+              {showAboutUsVideoToggle && aboutUsControl !== 'theme' && (
                 <>
                   <DockIcon className="main-site-nav__dock-icon main-site-nav__dock-icon--video">
                     <VideoToggle

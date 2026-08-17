@@ -1,0 +1,246 @@
+{
+  "instituteName": "Institute for Construction, Urban and Economic Research",
+  "lang": {
+    "label": "Page language"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Project History",
+      "News": "News",
+      "aboutUs": "About Us",
+      "Contact": "Contact",
+      "ourPeople": "Personnel",
+      "meetOurExperts": "Meet Our Experts",
+      "coreTeam": "Core Team"
+    },
+    "compact": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects",
+      "News": "News",
+      "aboutUs": "About"
+    },
+    "aria": {
+      "nav": "Site navigation",
+      "home": "Go to homepage",
+      "more": "Open additional navigation",
+      "moreLabel": "More",
+      "overflow": "Additional navigation",
+      "openMenu": "Open full navigation menu",
+      "toggleMenu": "Toggle navigation menu",
+      "closeMenu": "Close full navigation menu",
+      "resizeMenu": "Resize navigation menu",
+      "resizeMenuTitle": "Drag to resize menu",
+      "homeVideo": "Toggle background video",
+      "aboutUsVideo": "Toggle background video (About Us)",
+      "aboutUsTheme": "Switch between light and dark (About Us)"
+    },
+    "contactWordmark": "About Us"
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "Newsroom",
+    "archive": "Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Let's Work Together!",
+    "rights": "All rights reserved to ICUE."
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "About ICUE",
+      "subText": "Create, Connect, Succeed",
+      "body": "In Gratitude to Our Country, Our Forebears, Our Community",
+      "modelAlt": "A 3D model of a grand piano"
+    },
+    "greeting": "Hello!",
+    "greetingEcho": "-You- Have Come To ICUE",
+    "wordmark": {
+      "first": "RENEWAL",
+      "second": "CREATIVITY"
+    },
+    "excellence": {
+      "before": "MEET",
+      "emphasis": "OUTSTANDING",
+      "after": "QUALITY"
+    },
+    "weAre": {
+      "heading": "We Are",
+      "fuzzy": "PASSION",
+      "body": "A team of specialists in planning, in climate-resilient urban development and in the protection of the natural environment, at home and internationally"
+    },
+    "people": {
+      "heading": "Our People",
+      "middle": "More Than 10 Years In Urban Management",
+      "images": {
+        "planning": "Urban planning",
+        "collaboration": "Collaboration across the team",
+        "construction": "A construction site"
+      }
+    },
+    "members": {
+      "heading": "Meet Our Outstanding Members",
+      "images": {
+        "vision": "Our vision",
+        "mission": "Our mission",
+        "values": "Our values",
+        "team": "Our team"
+      }
+    },
+    "highlights": {
+      "heading": "Moments From Our Work",
+      "galleryLabel": "Gallery of ICUE activities"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "Public Spaces, 2018",
+        "alt": "Group photograph at the international workshop “Public Spaces Towards Urban Green Growth and Sustainable Development”, Hanoi, 23 November 2018"
+      },
+      "laoCai": {
+        "label": "Working Session In Lào Cai",
+        "alt": "An ICUE working session at the Lào Cai Provincial People's Committee"
+      },
+      "workshop2025": {
+        "label": "Scientific Workshop, 2025",
+        "alt": "The scientific workshop “Urban and rural planning and development management under the two-tier local government model”, Hanoi, 16 August 2025"
+      },
+      "urbanSummit2025": {
+        "label": "Vietnam Urban Summit 2025",
+        "alt": "The plenary session of Vietnam Urban Summit 2025 — Smart, Sustainable and Inclusive Development, 8 November 2025"
+      },
+      "dubai2025": {
+        "label": "ICUE Delegation In Dubai, 2025",
+        "alt": "ICUE staff attending an international congress in Dubai, 2025"
+      }
+    },
+    "contact": {
+      "heading": "Let's Connect"
+    },
+    "balloon": "Release Balloons!",
+    "slides": [
+      "The Institute for Construction, Urban and Economic Research (hereafter, the Institute) <strong class=\"highlight-text-phrase\"> was established under Decision No. 29/QĐ/THXDVN of 16 April 2013 by the Presidium of the Vietnam Federation of Civil Engineering Associations</strong>",
+      "More than 10 years of experience, <strong class=\"highlight-text-phrase\">over 20 outstanding young staff and specialists alongside many leading experts </strong>in planning, urban development and urban economics — we have designed cities that are smart, green and environmentally friendly, balanced between function, resilience and the needs of the community",
+      "Scientific research, applied research and technology development in construction, consultancy, urban development planning, urban economics, construction economics and environmental protection. <strong class=\"highlight-text-phrase\"></strong>",
+      "Transfer of scientific technology and green transition. Delivering information services and organising conferences and workshops at home and internationally. Partnership and collaboration with domestic and international organisations across planning, urban development and environmental protection <strong class=\"highlight-text-phrase\"> effectively </strong>, and connectivity — building cities <strong class=\"highlight-text-phrase\"> ready for the future </strong>.",
+      "Leading the city-wide planning initiative for Đà Nẵng across class 1 and class 2 cities — a transformative project reflecting our commitment to <strong class=\"highlight-text-phrase\"> whole-picture strategy </strong> and <strong class=\"highlight-text-phrase\"> real-world results. </strong>",
+      "Research and preparation of schemes and planning projects, urban and rural planning; housing development programmes; urban economics and the urban environment; construction investment; real-estate market information; procurement and tendering… <strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
+  },
+  "home": {
+    "hero": {
+      "ariaLabel": "Homepage introduction",
+      "bannerLabel": "Latest news",
+      "title": "Institute for Construction, Urban and Economic Research",
+      "subtitle": "Community initiatives and practical solutions for a better future.",
+      "actions": {
+        "contact": "Contact",
+        "pastProjects": "Projects & Research"
+      }
+    },
+    "sections": {
+      "pastProjects": {
+        "title": "Featured projects",
+        "description": "Highlights from cross-disciplinary partnerships and community-led development initiatives.",
+        "linkLabel": "View all projects →",
+        "cards": {
+          "laoCai": {
+            "title": "Adjustment of the Lào Cai city master plan",
+            "description": "A planning area of 28,162.64 ha in total, targeted for completion in 2045.",
+            "imageAlt": "Master plan for the city of Lào Cai"
+          },
+          "subdivision6b": {
+            "title": "Subdivision Plan 6B (Nguyễn Ái Quốc Ward)",
+            "description": "The plan works towards coordinated technical infrastructure and an expanded ecological corridor.",
+            "imageAlt": "Subdivision plan 6B, Nguyễn Ái Quốc ward"
+          },
+          "dongYen": {
+            "title": "General Urban Plan for Đông Yên, Bắc Giang District",
+            "description": "The project sets out to build a smart satellite town with a full complement of urban functions.",
+            "imageAlt": "General urban plan for Đông Yên, Bắc Giang district"
+          }
+        }
+      },
+      "ourWork": {
+        "title": "Research & Technical Reporting",
+        "description": "In-depth analysis and technical reporting on urban infrastructure and operational data, with practical recommendations.",
+        "linkLabel": "View all work →",
+        "cards": {
+          "evaluation": {
+            "title": "Project Evaluation & Reporting",
+            "description": "Data design and assessment for dependable digital infrastructure. The reports consolidate data, identify gaps and propose solutions.",
+            "imageAlt": "Project evaluation and reporting"
+          },
+          "survey": {
+            "title": "Surveying & Measurement",
+            "description": "Specialist services supporting the development, appraisal and delivery of infrastructure and construction projects",
+            "imageAlt": "Field surveying and measurement"
+          },
+          "infrastructure": {
+            "title": "Infrastructure Analysis",
+            "description": "Accurate cost estimation and budget control from the planning stage through to project completion.",
+            "imageAlt": "Infrastructure analysis"
+          },
+          "aerial": {
+            "title": "Aerial & Spatial Photography",
+            "description": "Aerial photography — imagery and mapping from unmanned aircraft (Mavic Pro) for land appraisal and monitoring.",
+            "imageAlt": "Aerial photography by unmanned aircraft"
+          }
+        }
+      },
+      "news": {
+        "title": "Latest news",
+        "description": "Announcements, events and perspectives from iCUE Vietnam.",
+        "linkLabel": "Read all news →",
+        "cards": {
+          "auCoPark": {
+            "title": "Inauguration and Handover of Âu Cơ Park",
+            "description": "The Institute for Construction, Urban and Economic Research (ICUE), in partnership with the People's Committee of Hội An. With the attendance of the Chairman of the Quảng Nam Provincial People's Committee, Mr Lê Văn Dũng",
+            "imageAlt": "Inauguration and handover of Âu Cơ Park"
+          },
+          "conservationForum": {
+            "title": "Asia Regional Conservation Forum",
+            "description": "The International Union for Conservation of Nature (IUCN) opened the forum in Bangkok, Thailand. The event brought together nearly 600 conservation leaders from across the region, including government representatives, non-governmental organisations, donors and partners, academia and the private sector, along with many other stakeholders.",
+            "imageAlt": "Asia Regional Conservation Forum in Bangkok"
+          },
+          "yagi": {
+            "title": "Support for communities affected by Typhoon Yagi",
+            "description": "Following the appeal of the Central Committee of the Vietnam Fatherland Front, ICUE called on its staff, its partners and benefactors to contribute together in support of the communities affected by Typhoon Yagi.",
+            "imageAlt": "Relief activities for communities affected by Typhoon Yagi"
+          }
+        }
+      },
+      "recruitment": {
+        "title": "Recruitment",
+        "description": "Join a mission-driven team focused on innovation and social impact.",
+        "linkLabel": "View open positions →",
+        "cards": {
+          "culture": {
+            "title": "A Collaborative Culture",
+            "description": "Work alongside researchers, designers and community builders.",
+            "imageAlt": "The ICUE office"
+          },
+          "growth": {
+            "title": "Learning & Growth",
+            "description": "Continuous learning through workshops and mentoring programmes.",
+            "imageAlt": "An internal ICUE workshop"
+          },
+          "impact": {
+            "title": "Make a Difference",
+            "description": "Contribute to programmes that create real change.",
+            "imageAlt": "ICUE staff on a field survey"
+          }
+        }
+      }
+    }
+  }
+}

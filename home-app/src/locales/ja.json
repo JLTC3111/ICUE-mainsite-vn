@@ -36,7 +36,8 @@
       "resizeMenu": "ナビゲーションメニューの幅を変更",
       "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
       "homeVideo": "背景動画のオン/オフ",
-      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）"
+      "aboutUsVideo": "背景動画のオン/オフ（私たちについて）",
+      "aboutUsTheme": "ライト/ダークテーマの切り替え（私たちについて）"
     },
     "contactWordmark": "私たちについて"
   },
@@ -54,6 +55,86 @@
     "cookies": "Cookie",
     "partner": "パートナーになる",
     "rights": "著作権はICUEに帰属します。"
+  },
+  "about": {
+    "hero": {
+      "ariaLabel": "ICUEについて",
+      "subText": "創造し、つながり、成し遂げる",
+      "body": "国と先人、そして地域社会への感謝を込めて",
+      "modelAlt": "グランドピアノの3Dモデル"
+    },
+    "greeting": "こんにちは！",
+    "greetingEcho": "-あなた- がICUEにいらっしゃいました",
+    "wordmark": {
+      "first": "革新",
+      "second": "創造"
+    },
+    "excellence": {
+      "before": "出会う",
+      "emphasis": "卓越した",
+      "after": "品質"
+    },
+    "weAre": {
+      "heading": "私たちは",
+      "fuzzy": "情熱",
+      "body": "国内外において、都市計画、気候変動に対応した都市開発、そして自然環境の保全に取り組む専門家チームです"
+    },
+    "people": {
+      "heading": "人材",
+      "middle": "10年以上の都市マネジメント",
+      "images": {
+        "planning": "都市計画",
+        "collaboration": "チームでの協働",
+        "construction": "建設現場"
+      }
+    },
+    "members": {
+      "heading": "優れたメンバーをご紹介します",
+      "images": {
+        "vision": "私たちのビジョン",
+        "mission": "私たちのミッション",
+        "values": "私たちの価値観",
+        "team": "私たちのチーム"
+      }
+    },
+    "highlights": {
+      "heading": "活動の軌跡",
+      "galleryLabel": "ICUEの活動写真ギャラリー"
+    },
+    "gallery": {
+      "publicSpaces2018": {
+        "label": "公共空間、2018年",
+        "alt": "国際ワークショップ「緑の都市成長と持続可能な発展に向けた公共空間」での集合写真、ハノイ、2018年11月23日"
+      },
+      "laoCai": {
+        "label": "ラオカイでの実務会議",
+        "alt": "ラオカイ省人民委員会でのICUEの実務会議"
+      },
+      "workshop2025": {
+        "label": "学術ワークショップ、2025年",
+        "alt": "二層制の地方行政モデルに適合した都市・農村の計画と開発管理をテーマとする学術ワークショップ、ハノイ、2025年8月16日"
+      },
+      "urbanSummit2025": {
+        "label": "ベトナム都市フォーラム2025",
+        "alt": "ベトナム都市フォーラム2025「スマート・持続可能・包摂的な発展」の全体会合、2025年11月8日"
+      },
+      "dubai2025": {
+        "label": "ドバイのICUE代表団、2025年",
+        "alt": "2025年、ドバイで開催された国際会議に参加するICUE職員"
+      }
+    },
+    "contact": {
+      "heading": "つながりましょう"
+    },
+    "balloon": "風船を飛ばそう！",
+    "slides": [
+      "建設・都市経済研究所（以下「当研究所」）は、<strong class=\"highlight-text-phrase\">2013年4月16日付ベトナム建設総会幹部会決定第29/QĐ/THXDVN号に基づき設立されました</strong>",
+      "10年を超える経験と、<strong class=\"highlight-text-phrase\">20名を超える優秀な若手職員・専門スタッフ、そして各分野を牽引する多くの専門家 </strong>が都市計画・都市開発・都市経済の分野に携わり、機能と回復力、そして地域社会のニーズが調和した、スマートで環境にやさしい緑豊かな都市を設計してきました",
+      "建設、コンサルティング、都市開発計画の策定、都市経済、建設経済、環境保全の各分野における科学研究、応用研究および技術開発。<strong class=\"highlight-text-phrase\"></strong>",
+      "科学技術の移転とグリーン転換。情報サービスの提供、国内外での会議・セミナーの開催。都市計画、都市開発、環境保全の分野において国内外の組織と<strong class=\"highlight-text-phrase\">効果的に</strong>連携・協力し、つながる力を高めて<strong class=\"highlight-text-phrase\">未来に備えた</strong>都市を築きます。",
+      "1級および2級都市を対象としたダナン市全域の都市計画イニシアチブを主導しました。<strong class=\"highlight-text-phrase\">全体を見通した戦略</strong>と<strong class=\"highlight-text-phrase\">実際の成果</strong>への当研究所の姿勢を示す、変革的なプロジェクトです。",
+      "事業計画・計画プロジェクトの調査立案、都市および農村の計画。住宅開発プログラム、都市経済・都市環境、建設投資、不動産市場情報、入札業務など。<strong class=\"highlight-text-phrase\"></strong><strong class=\"highlight-text-phrase\"></strong>"
+    ]
   },
   "home": {
     "hero": {

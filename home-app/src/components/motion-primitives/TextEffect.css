@@ -1,0 +1,23 @@
+/* Stands in for the Tailwind utilities the upstream component uses — see the
+   header note in TextEffect.jsx. */
+
+.text-effect__segment {
+  display: inline-block;
+  white-space: pre;
+}
+
+.text-effect__line {
+  display: block;
+}
+
+.text-effect__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

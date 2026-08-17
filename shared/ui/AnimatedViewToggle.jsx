@@ -138,6 +138,10 @@ function CameraSlashIcon() {
 /**
  * Magic UI Animated Theme Toggler pattern — adapted for boolean view transitions.
  * @see https://magicui.design/docs/components/animated-theme-toggler
+ *
+ * `onIcon` / `offIcon` default to the camera pair this started life with, so
+ * the home page's background-video switch needs no changes. The About page
+ * passes a sun and a moon instead — see ThemeToggle.
  */
 export default function AnimatedViewToggle({
   className = '',
@@ -149,6 +153,8 @@ export default function AnimatedViewToggle({
   disabled = false,
   ariaLabel,
   viewTransitionName = 'icue-avt-video-icon',
+  onIcon,
+  offIcon,
   ...props
 }) {
   const shape = variant ?? 'circle';
@@ -275,10 +281,10 @@ export default function AnimatedViewToggle({
         aria-hidden="true"
       >
         <span className={`animated-view-toggle__face animated-view-toggle__face--on${checked ? ' is-active' : ''}`}>
-          <CameraIcon />
+          {onIcon ?? <CameraIcon />}
         </span>
         <span className={`animated-view-toggle__face animated-view-toggle__face--off${!checked ? ' is-active' : ''}`}>
-          <CameraSlashIcon />
+          {offIcon ?? <CameraSlashIcon />}
         </span>
       </span>
       <span className="animated-view-toggle__sr-only">{ariaLabel}</span>

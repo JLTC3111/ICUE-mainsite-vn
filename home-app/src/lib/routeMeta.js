@@ -21,6 +21,9 @@ export const ROUTE_META = [
     slug: 'about-us',
     path: '/about-us',
     pageName: 'aboutUs',
+    // Now rendered by pages/AboutUsPage.jsx, not injected from this file.
+    // It is named only so the shell generator's noscript copy still matches;
+    // the file itself stays reachable at /about-us-legacy.
     pageFile: 'aboutUs.html',
     title: 'Về chúng tôi | ICUE Vietnam',
     description: 'Tìm hiểu sứ mệnh, kinh nghiệm, đội ngũ và định hướng đổi mới của Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị.',
