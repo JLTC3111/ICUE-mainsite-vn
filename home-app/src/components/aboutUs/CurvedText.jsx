@@ -1,14 +1,15 @@
 import { useMemo } from 'react'
 
 /**
- * Lays characters along a shallow upward arc (circle centered below the line).
+ * Lays characters along a shallow arc (circle centered above or below the line).
  *
- * `segments` lets one arc carry mixed styles — e.g. Caveat “We Are” beside
- * yellow “PASSION” — without splitting into two competing transforms.
+ * `curve="up"` bows upward (∩); `curve="down"` bows downward (∪), opposite
+ * the We Are / Passion row. `segments` carries mixed styles on one arc.
  */
 export default function CurvedText({
   segments,
   radius,
+  curve = 'up',
   /* Degrees of total sweep; scaled up a little for longer locales. */
   arcDegrees,
   className = '',
@@ -35,7 +36,11 @@ export default function CurvedText({
 
   return (
     <Tag
-      className={`about-curved-text${className ? ` ${className}` : ''}`}
+      className={[
+        'about-curved-text',
+        curve === 'down' ? 'about-curved-text--down' : '',
+        className,
+      ].filter(Boolean).join(' ')}
       style={radius != null ? { '--curve-radius': `${radius}px` } : undefined}
       aria-label={chars.map((item) => item.character).join('')}
     >

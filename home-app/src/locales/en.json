@@ -90,6 +90,9 @@
     },
     "members": {
       "heading": "Meet Our Outstanding Members",
+      "headingBefore": "Meet Our ",
+      "headingEmphasis": "Outstanding",
+      "headingAfter": " Members",
       "images": {
         "vision": "Our vision",
         "mission": "Our mission",
@@ -120,7 +123,23 @@
       },
       "dubai2025": {
         "label": "ICUE Delegation In Dubai, 2025",
-        "alt": "ICUE staff attending an international congress in Dubai, 2025"
+        "alt": "ICUE staff seated at a working session during the IUCN World Conservation Congress, Abu Dhabi, 2025"
+      },
+      "dubai2025Stage": {
+        "label": "Congress Stage, UAE 2025",
+        "alt": "A plenary stage with landscape imagery during the IUCN World Conservation Congress, Abu Dhabi, 2025"
+      },
+      "dubai2025Plenary": {
+        "label": "Plenary Hall, 2025",
+        "alt": "The plenary hall during the IUCN World Conservation Congress Abu Dhabi 2025"
+      },
+      "dubai2025Group": {
+        "label": "ICUE Group Photo, 2025",
+        "alt": "ICUE delegation group photograph at the IUCN World Conservation Congress Abu Dhabi 2025"
+      },
+      "dubai2025Venue": {
+        "label": "ADNEC Centre, UAE 2025",
+        "alt": "The ADNEC exhibition centre during the IUCN World Conservation Congress, Abu Dhabi, 2025"
       }
     },
     "contact": {

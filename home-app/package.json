@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync-assets": "node scripts/sync-assets.mjs",
+    "optimize-gallery-images": "node scripts/optimize-gallery-images.mjs",
     "dev": "vite",
     "predev": "npm run sync-assets",
     "build": "vite build && node ../scripts/generate-route-shells.mjs",

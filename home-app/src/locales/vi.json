@@ -90,6 +90,9 @@
     },
     "members": {
       "heading": "Gặp Những Thành Viên Ưu Tú",
+      "headingBefore": "Gặp Những ",
+      "headingEmphasis": "Thành Viên Ưu Tú",
+      "headingAfter": "",
       "images": {
         "vision": "Tầm nhìn của chúng tôi",
         "mission": "Sứ mệnh của chúng tôi",
@@ -120,7 +123,23 @@
       },
       "dubai2025": {
         "label": "Đoàn ICUE Tại Dubai, 2025",
-        "alt": "Cán bộ ICUE tham dự hội nghị quốc tế tại Dubai, năm 2025"
+        "alt": "Cán bộ ICUE tại phiên làm việc trong Đại hội Bảo tồn Thế giới IUCN, Abu Dhabi, 2025"
+      },
+      "dubai2025Stage": {
+        "label": "Sân Khấu Đại Hội, UAE 2025",
+        "alt": "Sân khấu toàn thể với hình ảnh cảnh quan tại Đại hội Bảo tồn Thế giới IUCN, Abu Dhabi, 2025"
+      },
+      "dubai2025Plenary": {
+        "label": "Hội Trường Toàn Thể, 2025",
+        "alt": "Hội trường toàn thể trong Đại hội Bảo tồn Thế giới IUCN Abu Dhabi 2025"
+      },
+      "dubai2025Group": {
+        "label": "Ảnh Tập Thể ICUE, 2025",
+        "alt": "Ảnh chụp tập thể đoàn ICUE tại Đại hội Bảo tồn Thế giới IUCN Abu Dhabi 2025"
+      },
+      "dubai2025Venue": {
+        "label": "Trung Tâm ADNEC, UAE 2025",
+        "alt": "Trung tâm triển lãm ADNEC trong Đại hội Bảo tồn Thế giới IUCN, Abu Dhabi, 2025"
       }
     },
     "contact": {

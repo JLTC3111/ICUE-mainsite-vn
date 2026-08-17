@@ -90,6 +90,9 @@
     },
     "members": {
       "heading": "우수한 구성원을 만나 보세요",
+      "headingBefore": "",
+      "headingEmphasis": "우수한",
+      "headingAfter": " 구성원을 만나 보세요",
       "images": {
         "vision": "우리의 비전",
         "mission": "우리의 사명",
@@ -120,7 +123,23 @@
       },
       "dubai2025": {
         "label": "두바이 ICUE 대표단, 2025",
-        "alt": "2025년 두바이에서 열린 국제 회의에 참석한 ICUE 직원"
+        "alt": "IUCN 세계자연보호대회(아부다비, 2025)에서 ICUE 직원들의 실무 세션"
+      },
+      "dubai2025Stage": {
+        "label": "대회 무대, UAE 2025",
+        "alt": "IUCN 세계자연보호대회(아부다비, 2025)의 풍경 영상이 비치는 전체 무대"
+      },
+      "dubai2025Plenary": {
+        "label": "전체 회의장, 2025",
+        "alt": "IUCN World Conservation Congress Abu Dhabi 2025 전체 회의장"
+      },
+      "dubai2025Group": {
+        "label": "ICUE 단체 사진, 2025",
+        "alt": "IUCN World Conservation Congress Abu Dhabi 2025에서 ICUE 대표단 단체 사진"
+      },
+      "dubai2025Venue": {
+        "label": "ADNEC 센터, UAE 2025",
+        "alt": "IUCN 세계자연보호대회 개최 중인 ADNEC 전시 센터(아부다비, 2025)"
       }
     },
     "contact": {

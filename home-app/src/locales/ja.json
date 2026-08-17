@@ -90,6 +90,9 @@
     },
     "members": {
       "heading": "優れたメンバーをご紹介します",
+      "headingBefore": "",
+      "headingEmphasis": "優れた",
+      "headingAfter": "メンバーをご紹介します",
       "images": {
         "vision": "私たちのビジョン",
         "mission": "私たちのミッション",
@@ -120,7 +123,23 @@
       },
       "dubai2025": {
         "label": "ドバイのICUE代表団、2025年",
-        "alt": "2025年、ドバイで開催された国際会議に参加するICUE職員"
+        "alt": "IUCN世界自然保護連合総会（アブダビ、2025年）でのICUE職員の実務セッション"
+      },
+      "dubai2025Stage": {
+        "label": "総会ステージ、UAE 2025年",
+        "alt": "IUCN世界自然保護連合総会（アブダビ、2025年）の全体ステージと風景映像"
+      },
+      "dubai2025Plenary": {
+        "label": "全体ホール、2025年",
+        "alt": "IUCN World Conservation Congress Abu Dhabi 2025の全体ホール"
+      },
+      "dubai2025Group": {
+        "label": "ICUE集合写真、2025年",
+        "alt": "IUCN World Conservation Congress Abu Dhabi 2025でのICUE代表団の集合写真"
+      },
+      "dubai2025Venue": {
+        "label": "ADNECセンター、UAE 2025年",
+        "alt": "IUCN世界自然保護連合総会開催中のADNEC展示センター（アブダビ、2025年）"
       }
     },
     "contact": {

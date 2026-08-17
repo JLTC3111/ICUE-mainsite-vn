@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 
 import './AccordionGallery.css'
@@ -8,14 +9,18 @@ import './AccordionGallery.css'
  * and the rest tilt away behind it.
  * @see https://reactbits.dev/components/accordion-gallery
  *
- * Vendored as-is apart from two things:
+ * Vendored as-is apart from performance and accessibility additions:
  *
  *  - `items` carries `alt` separately from `label`. Upstream falls back to the
  *    label for alt text, which is fine when both are English nouns and wrong
  *    here: the labels are short Vietnamese captions and the alt text has to
  *    describe the photograph.
- *  - The <img> tags are lazy and async-decoded. Five conference photographs
- *    below the fold are not worth blocking the About page's first paint.
+ *  - WebP via `<picture>` when `fallback` is set; JPEG is the fallback source.
+ *  - Nothing downloads until the gallery scrolls into view. After that, only
+ *    the active panel and its neighbours load — hovering a strip fetches it.
+ *  - Intrinsic width/height on `<img>` when provided, to reserve layout space.
+ *  - Clicking the active panel opens a full-size lightbox (`fullImage`, then
+ *    `fallback`, then `image`). Escape, backdrop click, or × closes it.
  *
  * The GSAP timeline only runs on hover, focus or arrow keys, so there is no
  * idle cost to this component — unlike the backdrop it sits on.
@@ -28,6 +33,129 @@ const DEFAULT_ITEMS = [
   { image: 'https://picsum.photos/id/1043/900/1200', label: 'Harbour', link: '#' },
   { image: 'https://picsum.photos/id/1044/900/1200', label: 'Skyline', link: '#' },
 ]
+
+function getPreviewSources(item) {
+  return {
+    webp: item.image,
+    jpeg: item.fallback || item.image,
+  }
+}
+
+function getFullSources(item) {
+  const jpeg = item.fullImage || item.fallback || item.image
+  const webp = item.fullImageWebp || (item.fullImage ? null : item.image)
+  return { webp, jpeg }
+}
+
+function GalleryLightbox({ item, index, count, onClose, onNavigate }) {
+  const closeRef = useRef(null)
+  const { webp, jpeg } = getFullSources(item)
+  const alt = item.alt || item.label || ''
+
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [index])
+
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prevOverflow
+    }
+  }, [])
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault()
+        onNavigate(-1)
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault()
+        onNavigate(1)
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose, onNavigate])
+
+  return createPortal(
+    <div
+      className="ag-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.label || 'Photo viewer'}
+      onClick={onClose}
+    >
+      <div
+        className="ag-lightbox__panel"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          className="ag-lightbox__close"
+          aria-label="Close photo viewer"
+          onClick={onClose}
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              className="ag-lightbox__nav ag-lightbox__nav--prev"
+              aria-label="Previous photo"
+              onClick={() => onNavigate(-1)}
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+            <button
+              type="button"
+              className="ag-lightbox__nav ag-lightbox__nav--next"
+              aria-label="Next photo"
+              onClick={() => onNavigate(1)}
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </>
+        )}
+
+        <figure className="ag-lightbox__figure">
+          {webp && webp !== jpeg ? (
+            <picture>
+              <source srcSet={webp} type="image/webp" />
+              <img
+                className="ag-lightbox__image"
+                src={jpeg}
+                alt={alt}
+                decoding="async"
+                draggable={false}
+              />
+            </picture>
+          ) : (
+            <img
+              className="ag-lightbox__image"
+              src={jpeg}
+              alt={alt}
+              decoding="async"
+              draggable={false}
+            />
+          )}
+          {item.label ? (
+            <figcaption className="ag-lightbox__caption">{item.label}</figcaption>
+          ) : null}
+        </figure>
+      </div>
+    </div>,
+    document.body,
+  )
+}
 
 const AccordionGallery = ({
   items = DEFAULT_ITEMS,
@@ -63,6 +191,46 @@ const AccordionGallery = ({
   const vertical = orientation === 'vertical'
   const count = items.length
   const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1))
+  const [inView, setInView] = useState(false)
+  const [loaded, setLoaded] = useState(() => new Set([defaultIndex]))
+  const [lightboxIndex, setLightboxIndex] = useState(null)
+
+  const markLoaded = useCallback((index) => {
+    setLoaded((prev) => {
+      if (prev.has(index)) return prev
+      const next = new Set(prev)
+      next.add(index)
+      return next
+    })
+  }, [])
+
+  useEffect(() => {
+    markLoaded(active)
+    if (active > 0) markLoaded(active - 1)
+    if (active < count - 1) markLoaded(active + 1)
+  }, [active, count, markLoaded])
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return undefined
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '120px 0px', threshold: 0.01 },
+    )
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
+
+  const shouldLoadImage = useCallback(
+    (index) => inView && loaded.has(index),
+    [inView, loaded],
+  )
 
   const prefersReduced =
     typeof window !== 'undefined' && window.matchMedia
@@ -182,11 +350,36 @@ const AccordionGallery = ({
   }
 
   const handleClick = (i, e) => {
+    const item = items[i]
     if (i !== active) {
       e.preventDefault()
       setActive(i)
+      return
     }
+
+    if (item.link) return
+
+    e.preventDefault()
+    markLoaded(i)
+    setLightboxIndex(i)
   }
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null)
+  }, [])
+
+  const navigateLightbox = useCallback(
+    (delta) => {
+      setLightboxIndex((current) => {
+        if (current == null) return current
+        const next = (current + delta + count) % count
+        markLoaded(next)
+        setActive(next)
+        return next
+      })
+    },
+    [count, markLoaded],
+  )
 
   const handleKeyDown = (i, e) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
@@ -199,6 +392,7 @@ const AccordionGallery = ({
   }
 
   return (
+    <>
     <div
       ref={rootRef}
       className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
@@ -216,23 +410,47 @@ const AccordionGallery = ({
       {items.map((item, i) => {
         const isActive = i === active
         const Tag = item.link ? 'a' : 'div'
+        const loadImage = shouldLoadImage(i)
+        const preview = getPreviewSources(item)
+        const imgProps = {
+          alt: item.alt || item.label || '',
+          draggable: false,
+          decoding: 'async',
+          loading: isActive ? 'eager' : 'lazy',
+          ...(isActive && inView ? { fetchPriority: 'high' } : {}),
+          ...(item.width ? { width: item.width } : {}),
+          ...(item.height ? { height: item.height } : {}),
+        }
+
         return (
           <Tag
             key={item.image}
             ref={(el) => {
               panelRefs.current[i] = el
             }}
-            className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
+            className={`ag-panel${isActive ? ' ag-panel--active' : ''}${isActive && !item.link ? ' ag-panel--expandable' : ''}`}
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={(e) => handleClick(i, e)}
             onMouseEnter={() => handleEnter(i)}
             onFocus={() => setActive(i)}
-            onKeyDown={(e) => handleKeyDown(i, e)}
+            onKeyDown={(e) => {
+              if ((e.key === 'Enter' || e.key === ' ') && i === active && !item.link) {
+                e.preventDefault()
+                markLoaded(i)
+                setLightboxIndex(i)
+                return
+              }
+              handleKeyDown(i, e)
+            }}
             role="listitem"
             tabIndex={0}
             aria-current={isActive ? 'true' : undefined}
-            aria-label={item.label}
+            aria-label={
+              isActive && !item.link
+                ? `${item.label}. View full size`
+                : item.label
+            }
           >
             <span className="ag-panel__frame">
               <span
@@ -241,13 +459,18 @@ const AccordionGallery = ({
                   mediaRefs.current[i] = el
                 }}
               >
-                <img
-                  src={item.image}
-                  alt={item.alt || item.label || ''}
-                  draggable="false"
-                  loading="lazy"
-                  decoding="async"
-                />
+                {loadImage ? (
+                  preview.webp && preview.webp !== preview.jpeg ? (
+                    <picture>
+                      <source srcSet={preview.webp} type="image/webp" />
+                      <img src={preview.jpeg} {...imgProps} />
+                    </picture>
+                  ) : (
+                    <img src={preview.jpeg} {...imgProps} />
+                  )
+                ) : (
+                  <span className="ag-panel__placeholder" aria-hidden="true" />
+                )}
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
@@ -273,6 +496,17 @@ const AccordionGallery = ({
         )
       })}
     </div>
+
+    {lightboxIndex != null && items[lightboxIndex] ? (
+      <GalleryLightbox
+        item={items[lightboxIndex]}
+        index={lightboxIndex}
+        count={count}
+        onClose={closeLightbox}
+        onNavigate={navigateLightbox}
+      />
+    ) : null}
+    </>
   )
 }
 

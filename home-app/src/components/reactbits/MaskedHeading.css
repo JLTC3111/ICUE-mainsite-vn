@@ -5,6 +5,7 @@
   padding: 0;
   text-wrap: balance;
   -webkit-font-smoothing: antialiased;
+  overflow: visible;
 }
 
 .masked-heading__measure {

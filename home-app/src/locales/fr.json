@@ -90,6 +90,9 @@
     },
     "members": {
       "heading": "Rencontrez Nos Membres D'Exception",
+      "headingBefore": "Rencontrez Nos Membres ",
+      "headingEmphasis": "D'Exception",
+      "headingAfter": "",
       "images": {
         "vision": "Notre vision",
         "mission": "Notre mission",
@@ -120,7 +123,23 @@
       },
       "dubai2025": {
         "label": "Délégation ICUE À Dubaï, 2025",
-        "alt": "Des collaborateurs d'ICUE participant à un congrès international à Dubaï, en 2025"
+        "alt": "Des collaborateurs d'ICUE lors d'une séance de travail au Congrès mondial de la nature de l'UICN, Abu Dhabi, 2025"
+      },
+      "dubai2025Stage": {
+        "label": "Scène Du Congrès, EAU 2025",
+        "alt": "La scène plénière avec des images de paysages au Congrès mondial de la nature de l'UICN, Abu Dhabi, 2025"
+      },
+      "dubai2025Plenary": {
+        "label": "Salle Plénière, 2025",
+        "alt": "La salle plénière du Congrès mondial de la nature de l'UICN Abu Dhabi 2025"
+      },
+      "dubai2025Group": {
+        "label": "Photo De Groupe ICUE, 2025",
+        "alt": "Photographie de groupe de la délégation ICUE au Congrès mondial de la nature de l'UICN Abu Dhabi 2025"
+      },
+      "dubai2025Venue": {
+        "label": "Centre ADNEC, EAU 2025",
+        "alt": "Le centre d'exposition ADNEC pendant le Congrès mondial de la nature de l'UICN, Abu Dhabi, 2025"
       }
     },
     "contact": {

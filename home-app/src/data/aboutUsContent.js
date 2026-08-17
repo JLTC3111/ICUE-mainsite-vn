@@ -30,17 +30,74 @@ export const ABOUT_US_SLIDES = normalizeDeep(vi.about.slides)
 /**
  * Photographs for the highlights gallery, oldest first.
  *
- * Only the file lives here; the caption and the alt text are per-language and
- * come from `about.gallery.<key>` in the locale files. Every one of these is a
- * real, dated ICUE event — if you add a slot, add a caption that says what the
- * photograph actually shows, in all six languages.
+ * `image` is WebP (primary); `fallback` is a resized JPEG for browsers without
+ * WebP. Dimensions are intrinsic — they reserve space before decode. Only the
+ * file paths live here; captions are per-language in `about.gallery.<key>`.
  */
 export const ABOUT_US_GALLERY = [
-  { key: 'publicSpaces2018', image: '/aboutUs/UN-Habitat-HealthBridge.jpg' },
-  { key: 'laoCai', image: '/aboutUs/laocai.jpg' },
-  { key: 'workshop2025', image: '/aboutUs/hoithaokhoahoc.jpg' },
-  { key: 'urbanSummit2025', image: '/aboutUs/conference_nov5_2025.jpg' },
-  { key: 'dubai2025', image: '/aboutUs/dubai_2025_1.jpg' },
+  {
+    key: 'publicSpaces2018',
+    image: '/aboutUs/UN-Habitat-HealthBridge.webp',
+    fallback: '/aboutUs/UN-Habitat-HealthBridge.jpg',
+    width: 960,
+    height: 638,
+  },
+  {
+    key: 'laoCai',
+    image: '/aboutUs/laocai.webp',
+    fallback: '/aboutUs/laocai.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'workshop2025',
+    image: '/aboutUs/hoithaokhoahoc.webp',
+    fallback: '/aboutUs/hoithaokhoahoc.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'urbanSummit2025',
+    image: '/aboutUs/conference_nov5_2025.webp',
+    fallback: '/aboutUs/conference_nov5_2025.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'dubai2025',
+    image: '/aboutUs/dubai_2025_1.webp',
+    fallback: '/aboutUs/dubai_2025_1.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'dubai2025Stage',
+    image: '/aboutUs/dubai_2025_2.webp',
+    fallback: '/aboutUs/dubai_2025_2.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'dubai2025Plenary',
+    image: '/aboutUs/dubai_2025_3.webp',
+    fallback: '/aboutUs/dubai_2025_3.jpg',
+    width: 960,
+    height: 720,
+  },
+  {
+    key: 'dubai2025Group',
+    image: '/aboutUs/dubai_2025_4.webp',
+    fallback: '/aboutUs/dubai_2025_4.jpg',
+    width: 960,
+    height: 540,
+  },
+  {
+    key: 'dubai2025Venue',
+    image: '/aboutUs/dubai_2025_5.webp',
+    fallback: '/aboutUs/dubai_2025_5.jpg',
+    width: 720,
+    height: 960,
+  },
 ]
 
 /**

@@ -85,6 +85,9 @@ export default function AboutUsPage() {
 
   const galleryItems = ABOUT_US_GALLERY.map((item) => ({
     image: item.image,
+    fallback: item.fallback,
+    width: item.width,
+    height: item.height,
     label: t(`about.gallery.${item.key}.label`),
     alt: t(`about.gallery.${item.key}.alt`),
   }))
@@ -175,9 +178,9 @@ export default function AboutUsPage() {
         </div>
 
         <div className="section">
-          <TextEffect as="h2" className="handwritten" per="word" preset="slide" startOnView>
+          <h2 className="handwritten about-section-heading">
             {t('about.people.heading')}
-          </TextEffect>
+          </h2>
 
           <div className="image-grid-top">
             {ABOUT_US_PEOPLE_IMAGES.filter((image) => image.grid === 'top').map((image) => (
@@ -212,9 +215,13 @@ export default function AboutUsPage() {
         </div>
 
         <div className="section">
-          <TextEffect as="h2" className="handwritten" per="word" preset="slide" startOnView>
-            {t('about.members.heading')}
-          </TextEffect>
+          <h2 className="handwritten about-section-heading about-members-heading">
+            {t('about.members.headingBefore')}
+            <span className="about-members-heading__emphasis">
+              {t('about.members.headingEmphasis')}
+            </span>
+            {t('about.members.headingAfter')}
+          </h2>
           <div className="image-grid-bottom">
             {ABOUT_US_MEMBER_IMAGES.map((image) => (
               <img
@@ -239,6 +246,7 @@ export default function AboutUsPage() {
             reveal="rise"
             trigger="view"
             textScale={0.105}
+            lineHeight={1.22}
             /* Drift and parallax both off: this heading sits on a page that is
                already running a WebGL backdrop, and the loop that animates them
                would be the only thing on screen asking for every frame. The
