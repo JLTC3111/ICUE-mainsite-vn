@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
-<title>ICUE Urban Compass</title>
-<g transform="translate(500 500)">
-<circle r="300" fill="none" stroke="#0F1D35" stroke-width="34" stroke-dasharray="220 38 220 38" transform="rotate(45)"/>
-<rect x="-22" y="-320" width="44" height="640" fill="#0F1D35"/><rect x="-320" y="-22" width="640" height="44" fill="#0F1D35"/>
-<rect x="-15" y="-245" width="30" height="165" fill="#25A88E" transform="rotate(45)"/><rect x="-15" y="-245" width="30" height="165" fill="#25A88E" transform="rotate(135)"/><rect x="-15" y="-245" width="30" height="165" fill="#25A88E" transform="rotate(225)"/><rect x="-15" y="-245" width="30" height="165" fill="#25A88E" transform="rotate(315)"/>
-<circle r="92" fill="#fff"/><circle r="58" fill="none" stroke="#0F1D35" stroke-width="16"/><circle r="18" fill="#2D5DA7"/>
-</g></svg>

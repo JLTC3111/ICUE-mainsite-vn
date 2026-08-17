@@ -6,57 +6,89 @@ import {
   shouldTranslateArticle,
 } from '../lib/translate'
 
-export function useArticleTitleTranslations(articles, locale) {
-  const [result, setResult] = useState({ key: '', titles: {}, subtitles: {} })
-  const uiLang = normalizeLang(locale)
+const EMPTY = {}
 
-  const translateIds = useMemo(() => {
-    if (!articles?.length) return []
-    return articles
-      .filter((article) => article?.id && shouldTranslateArticle(article.language, uiLang, article.title))
-      .map((article) => article.id)
+/** Fold a finished lookup into the store, dropping it if the locale moved on. */
+function mergeLookup(current, lang, ids, result) {
+  const base = current.lang === lang
+    ? current
+    : { lang, titles: EMPTY, subtitles: EMPTY, resolved: EMPTY }
+  const resolved = { ...base.resolved }
+  for (const id of ids) resolved[id] = true
+  return {
+    lang,
+    titles: { ...base.titles, ...(result.titles || EMPTY) },
+    subtitles: { ...base.subtitles, ...(result.subtitles || EMPTY) },
+    resolved,
+  }
+}
+
+/**
+ * Stored title/subtitle translations for a list of articles.
+ *
+ * The store is cumulative per locale, and each lookup asks only for the ids it
+ * has not seen yet. That matters most for the newsroom's live search: the
+ * visible list is rebuilt on every keystroke, and a store keyed to the current
+ * list would blank every headline it had already translated — and re-request the
+ * ones that come back into view — each time a character lands.
+ */
+export function useArticleTitleTranslations(articles, locale) {
+  const uiLang = normalizeLang(locale)
+  const [store, setStore] = useState(
+    () => ({ lang: uiLang, titles: EMPTY, subtitles: EMPTY, resolved: EMPTY }),
+  )
+
+  const needsTranslation = useMemo(() => {
+    const ids = new Set()
+    for (const article of articles || []) {
+      if (article?.id && shouldTranslateArticle(article.language, uiLang, article.title)) {
+        ids.add(String(article.id))
+      }
+    }
+    return ids
   }, [articles, uiLang])
 
-  const idsKey = translateIds.join(',')
-  const requestKey = idsKey ? `${uiLang}:${idsKey}` : ''
+  const isCurrentLang = store.lang === uiLang
+  // Serialized so the effect below re-runs on a change of contents rather than
+  // of array identity.
+  const missingKey = useMemo(() => {
+    const missing = []
+    for (const id of needsTranslation) {
+      if (!isCurrentLang || !store.resolved[id]) missing.push(id)
+    }
+    return missing.join(',')
+  }, [needsTranslation, isCurrentLang, store.resolved])
 
   useEffect(() => {
-    if (!idsKey) return undefined
+    if (!uiLang || !missingKey) return undefined
 
-    const articleIds = idsKey.split(',')
+    const ids = missingKey.split(',')
     let active = true
 
-    fetchArticleTitleTranslations(articleIds, uiLang)
+    fetchArticleTitleTranslations(ids, uiLang)
       .then((result) => {
-        if (!active) return
-        setResult({
-          key: requestKey,
-          titles: result.titles || {},
-          subtitles: result.subtitles || {},
-        })
+        if (active) setStore((current) => mergeLookup(current, uiLang, ids, result))
       })
       .catch(() => {
-        if (!active) return
-        setResult({ key: requestKey, titles: {}, subtitles: {} })
+        // Record the ids as looked-up regardless. A failure is indistinguishable
+        // from "nothing stored" to the reader, and leaving them missing would
+        // re-fire the request on the next keystroke.
+        if (active) setStore((current) => mergeLookup(current, uiLang, ids, EMPTY))
       })
 
-    return () => {
-      active = false
-    }
-  }, [idsKey, requestKey, uiLang])
+    return () => { active = false }
+  }, [missingKey, uiLang])
 
-  const isCurrent = result.key === requestKey
-  const titles = useMemo(() => (isCurrent ? result.titles : {}), [isCurrent, result.titles])
-  const subtitles = useMemo(
-    () => (isCurrent ? result.subtitles : {}),
-    [isCurrent, result.subtitles],
-  )
-  const pending = Boolean(requestKey && !isCurrent)
+  const titles = isCurrentLang ? store.titles : EMPTY
+  const subtitles = isCurrentLang ? store.subtitles : EMPTY
+  const pending = Boolean(missingKey)
 
-  const isTitlePending = useCallback(
-    (articleId) => pending && translateIds.includes(articleId) && !titles[articleId],
-    [pending, translateIds, titles],
-  )
+  // Per-article, not global: an article whose lookup already came back keeps its
+  // headline while other articles in the same list are still being fetched.
+  const isTitlePending = useCallback((articleId) => {
+    const id = String(articleId)
+    return needsTranslation.has(id) && !(isCurrentLang && store.resolved[id])
+  }, [needsTranslation, isCurrentLang, store.resolved])
 
   return { titles, subtitles, isTitlePending, pending }
 }

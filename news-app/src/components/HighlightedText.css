@@ -1,0 +1,43 @@
+/* Live-search hits inside card copy. `mark` defaults to a black-on-yellow
+   highlighter that fights every headline weight on the grid, so this is a tinted
+   wash under the text instead: the ink stays whatever the headline set, and only
+   the ground changes. Both themes derive from the newsroom accent so a hit on a
+   dark card reads at the same strength as one on a light card. */
+
+.news-mark {
+  --news-mark-tint: var(--icue-blue, #368adf);
+
+  padding: 0 0.08em;
+  border-radius: 0.18em;
+  background: color-mix(in srgb, var(--news-mark-tint) 26%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--news-mark-tint) 22%, transparent);
+  color: inherit;
+  /* Marks land inside headlines that already carry their own weight; a bolder
+     run inside them would reflow the line, so only the ground moves. */
+  font: inherit;
+}
+
+.icue-app--news-theme-dark .news-mark {
+  background: color-mix(in srgb, var(--news-mark-tint) 34%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--news-mark-tint) 30%, transparent);
+}
+
+/* The lead headline runs through AnimatedShinyText, which paints the text with a
+   clipped gradient — a tint behind it would be the only thing visible. Underline
+   the run there instead. */
+.news-lead__title-shiny .news-mark {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  text-decoration: underline;
+  text-decoration-color: var(--news-mark-tint);
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.16em;
+}
+
+@media (prefers-contrast: more) {
+  .news-mark {
+    background: color-mix(in srgb, var(--news-mark-tint) 55%, transparent);
+  }
+}

@@ -131,8 +131,13 @@
     font-family: 'IMB Plex Sans', sans-serif;
     font-size: 2em;
     color: #874b1d;
-    margin: 10px 0;
-    transform: translate(150px, -50px);
+    margin: 10px auto;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    /* Y-only nudge — the old translateX(150px) was tuned for short VI/EN
+       copy and shoved longer FR / wider CJK strings off-center. */
+    transform: translateY(-50px);
 }
 
 :where(.about-us-page) .regular-text{

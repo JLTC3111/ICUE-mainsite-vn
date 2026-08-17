@@ -3,9 +3,26 @@
 netlify/functions/private-env.cjs
 # Dependencies are installed by the build (npm ci) — never commit them.
 node_modules/
+*.local
+
+# Vite / postbuild output. Netlify runs `npm run build` and publishes `.`.
+# `dist` does not match dist-home or sibling-app outDirs (newsroom, people, …).
 dist
 dist-ssr
-*.local
+dist-home/
+
+# Home-app hashed bundles and generated HTML copied to repo root by postbuild.
+/assets/
+/route-shells/
+/index.html
+
+# Sibling-app Vite outDirs. Source lives in *-app/; public assets stay in public/.
+/newsroom/
+/people/
+/structure/
+/our-work/
+/contact/
+/legal/
 
 # Environment (secrets — never commit)
 .env

@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import WordRotate from '../components/WordRotate'
 import { AnimatedShinyText } from '../components/magicui/AnimatedShinyText'
 import CategoryFilter from '../components/CategoryFilter'
 import ArticleViewCounter from '../components/ArticleViewCounter'
 import AuthorLink from '../components/AuthorLink'
+import HighlightedText from '../components/HighlightedText'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -15,6 +16,7 @@ import {
   useArticlePreviewTranslation,
   useArticleTitleTranslations,
 } from '../hooks/useArticleTitleTranslations'
+import { useNewsroomSearch } from '../context/NewsroomSearchContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { fetchPublishedArticles } from '../lib/articles'
@@ -118,26 +120,30 @@ function buildCard(article, {
 }) {
   const author = article.author || {}
   const isFeatured = article.id === featuredArticleId
-  const titlePending = isTitlePending(article.id) || (isFeatured && featuredTranslationPending)
   const featuredText = isFeatured
     ? resolveArticlePreviewText(article, featuredTranslation, featuredTranslationPending)
     : null
+  const gridTitle = isTitlePending(article.id) ? '' : (titles[article.id] || article.title)
+  const gridSubtitle = isTitlePending(article.id)
+    ? ''
+    : (subtitles[article.id] || article.subtitle || '')
+  /* The featured card asks for the article's full localized text, which the grid
+     lookup does not carry. Live search moves the lead on almost every keystroke,
+     so while that request is in flight show what the grid already knows rather
+     than skeletoning a headline the page has in hand. Once it lands its text is
+     authoritative — including a deliberately empty translated subtitle, which
+     must not fall back and reveal the source copy. */
+  const featuredPending = isFeatured && featuredTranslationPending
+  const title = isFeatured && !featuredPending ? featuredText.title : gridTitle
+  const subtitle = isFeatured && !featuredPending ? featuredText.subtitle : gridSubtitle
   const comparison = resolveArticleCoverComparison(article)
 
   return {
     id: article.id,
     slug: article.slug,
-    title: normalizeUnicode(
-      isFeatured
-        ? featuredText.title
-        : titlePending ? '' : (titles[article.id] || article.title),
-    ),
-    titlePending,
-    subtitle: normalizeUnicode(
-      isFeatured
-        ? featuredText.subtitle
-        : titlePending ? '' : (subtitles[article.id] || article.subtitle || ''),
-    ),
+    title: normalizeUnicode(title),
+    titlePending: !title,
+    subtitle: normalizeUnicode(subtitle),
     cover: article.cover_image_url || comparison?.before?.url || '',
     category: isCategory(article.category) ? article.category : 'general',
     date: article.published_at || article.article_date || '',
@@ -159,7 +165,7 @@ function CategoryTag({ category, t, className = 'news-tag' }) {
  * Vietnamese headlines run long and the cards are sized to grow, so nothing
  * here clamps or ellipsises.
  */
-function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = false }) {
+function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = false, query }) {
   if (card.titlePending) {
     return (
       <Tag className={className}>
@@ -167,6 +173,7 @@ function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = 
       </Tag>
     )
   }
+  const title = <HighlightedText text={card.title} query={query} />
   return (
     <Tag className={`${className} translation-reveal`}>
       {shinyOnHover ? (
@@ -175,17 +182,17 @@ function Headline({ card, as: Tag, className, skeletonLines = 2, shinyOnHover = 
           shimmerWidth={420}
           animate={false}
         >
-          {card.title}
+          {title}
         </AnimatedShinyText>
-      ) : card.title}
+      ) : title}
     </Tag>
   )
 }
 
-function StoryMeta({ card, locale, t }) {
+function StoryMeta({ card, locale, t, query }) {
   return (
     <div className="news-meta">
-      <AuthorLink name={card.byline} className="news-meta__byline" />
+      <AuthorLink name={card.byline} className="news-meta__byline" query={query} />
       {card.date && (
         <>
           <span className="news-meta__dot" aria-hidden>·</span>
@@ -203,7 +210,7 @@ function StoryMeta({ card, locale, t }) {
   )
 }
 
-function LeadStory({ card, t }) {
+function LeadStory({ card, t, query }) {
   return (
     <article className={`news-lead${card.cover ? '' : ' news-lead--no-image'}`}>
       <Link
@@ -215,8 +222,12 @@ function LeadStory({ card, t }) {
           <div className="news-lead__kicker">
             <span className="news-lead__featured">{t('newsroom.featuredReporting')}</span>
           </div>
-          <Headline card={card} as="h2" className="news-lead__title" shinyOnHover />
-          {card.subtitle && <p className="news-lead__subtitle">{card.subtitle}</p>}
+          <Headline card={card} as="h2" className="news-lead__title" shinyOnHover query={query} />
+          {card.subtitle && (
+            <p className="news-lead__subtitle">
+              <HighlightedText text={card.subtitle} query={query} />
+            </p>
+          )}
         </div>
         {card.cover && (
           <div className="news-lead__media">
@@ -228,7 +239,7 @@ function LeadStory({ card, t }) {
   )
 }
 
-function StoryCard({ card, locale, t }) {
+function StoryCard({ card, locale, t, query }) {
   return (
     <article className={`news-card${card.cover ? '' : ' news-card--no-image'}`}>
       <div className="news-card__link">
@@ -246,17 +257,21 @@ function StoryCard({ card, locale, t }) {
         <div className="news-card__body">
           <CategoryTag category={card.category} t={t} className="news-tag news-tag--sm" />
           <Link to={`/article/${card.slug}`} className="news-card__headline-link">
-            <Headline card={card} as="h3" className="news-card__title" />
+            <Headline card={card} as="h3" className="news-card__title" query={query} />
           </Link>
-          {card.subtitle && <p className="news-card__subtitle">{card.subtitle}</p>}
-          <StoryMeta card={card} locale={locale} t={t} />
+          {card.subtitle && (
+            <p className="news-card__subtitle">
+              <HighlightedText text={card.subtitle} query={query} />
+            </p>
+          )}
+          <StoryMeta card={card} locale={locale} t={t} query={query} />
         </div>
       </div>
     </article>
   )
 }
 
-function StoryRow({ card, locale, t }) {
+function StoryRow({ card, locale, t, query }) {
   return (
     <article className="news-row">
       <Link
@@ -271,8 +286,12 @@ function StoryRow({ card, locale, t }) {
         )}
         <div className="news-row__copy">
           <div className="news-row__kicker">{t(`categories.${card.category}`)}</div>
-          <Headline card={card} as="h3" className="news-row__title" skeletonLines={1} />
-          {card.subtitle && <p className="news-row__subtitle">{card.subtitle}</p>}
+          <Headline card={card} as="h3" className="news-row__title" skeletonLines={1} query={query} />
+          {card.subtitle && (
+            <p className="news-row__subtitle">
+              <HighlightedText text={card.subtitle} query={query} />
+            </p>
+          )}
           <div className="news-row__meta">
             {card.date ? formatDate(card.date, locale) : ''}
             {card.readMinutes > 0 ? ` · ${card.readMinutes} ${t('news.minRead')}` : ''}
@@ -319,8 +338,14 @@ export default function NewsGrid() {
   const { t, i18n } = useTranslation()
   const profile = usePerformanceProfile()
   const { reduceMotion, simplifyHero } = profile
-  const [searchParams, setSearchParams] = useSearchParams()
-  const searchQuery = searchParams.get('q') || ''
+  const { query: liveQuery, clearQuery } = useNewsroomSearch()
+  /* The header's field owns `liveQuery` and updates on every keystroke. Filtering
+     and re-rendering the whole front page is the expensive half of that, so it
+     runs off the deferred copy: React keeps the last painted grid on screen
+     while it prepares the next one, and the field never stutters under a fast
+     typist. Highlighting reads the same deferred value, so the marks on a card
+     always belong to the query that let it through. */
+  const searchQuery = useDeferredValue(liveQuery)
   const [articles, setArticles] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
   const [activeCat, setActiveCat] = useState(NEWSROOM_DEFAULT_CATEGORY)
@@ -431,16 +456,10 @@ export default function NewsGrid() {
   const hasCategoryFilter = activeCat !== NEWSROOM_DEFAULT_CATEGORY
   const hasActiveFilters = hasSearchFilter || hasCategoryFilter
 
-  const clearSearchFilter = useCallback(() => {
-    const nextParams = new URLSearchParams(searchParams)
-    nextParams.delete('q')
-    setSearchParams(nextParams, { replace: true })
-  }, [searchParams, setSearchParams])
-
   const clearAllFilters = useCallback(() => {
     setActiveCat(NEWSROOM_DEFAULT_CATEGORY)
-    if (hasSearchFilter) clearSearchFilter()
-  }, [clearSearchFilter, hasSearchFilter])
+    clearQuery()
+  }, [clearQuery])
 
   return (
     <div id="newsroom-top" className={`news-page${isDark ? ' news-page--dark' : ''}`}>
@@ -506,7 +525,7 @@ export default function NewsGrid() {
                 <button
                   type="button"
                   className="news-filter-chip"
-                  onClick={clearSearchFilter}
+                  onClick={clearQuery}
                   aria-label={t('search.clearSearch', { query: searchQuery.trim() })}
                 >
                   <span>{t('search.activeSearch', { query: searchQuery.trim() })}</span>
@@ -555,7 +574,7 @@ export default function NewsGrid() {
         {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
 
         {state === 'ready' && lead && (
-          <LeadStory card={lead} t={t} />
+          <LeadStory card={lead} t={t} query={searchQuery} />
         )}
 
         {state === 'ready' && topStories.length > 0 && (
@@ -565,7 +584,7 @@ export default function NewsGrid() {
             </h2>
             <div className="news-band__grid">
               {topStories.map((card) => (
-                <StoryCard key={card.id} card={card} locale={locale} t={t} />
+                <StoryCard key={card.id} card={card} locale={locale} t={t} query={searchQuery} />
               ))}
             </div>
           </section>
@@ -578,7 +597,7 @@ export default function NewsGrid() {
             </h2>
             <div className="news-band__rows">
               {latestStories.map((card) => (
-                <StoryRow key={card.id} card={card} locale={locale} t={t} />
+                <StoryRow key={card.id} card={card} locale={locale} t={t} query={searchQuery} />
               ))}
             </div>
           </section>

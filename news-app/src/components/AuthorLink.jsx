@@ -5,14 +5,21 @@ import {
   getStructureAuthorProfile,
   resolveAuthorLinkTarget,
 } from '../lib/authorLinks'
+import HighlightedText from './HighlightedText'
 import './AuthorLink.css'
 
-export default function AuthorLink({ name, className = '' }) {
+/**
+ * `query` is the newsroom's live search text: author names are part of what the
+ * search matches on, so a hit has to be visible on the byline too. Absent — the
+ * usual case, everywhere but the filtered grid — the name renders untouched.
+ */
+export default function AuthorLink({ name, className = '', query = '' }) {
   const tooltipId = useId()
   const { peopleLink, structureLink, uiLang } = useMainSite()
   const target = resolveAuthorLinkTarget(name)
+  const label = <HighlightedText text={name} query={query} />
 
-  if (!target) return <span className={className}>{name}</span>
+  if (!target) return <span className={className}>{label}</span>
 
   const href = target.type === 'structure-profile'
     ? structureLink(`profile/${encodeURIComponent(target.profileId)}`)
@@ -34,7 +41,7 @@ export default function AuthorLink({ name, className = '' }) {
       href={href}
       aria-describedby={employee ? tooltipId : undefined}
     >
-      {name}
+      {label}
     </a>
   )
 

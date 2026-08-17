@@ -22,7 +22,6 @@
   --np-inset-shadow-pressed:
     inset 5px 5px 10px rgba(16, 19, 24, 0.15),
     inset -4px -4px 9px rgba(255, 255, 255, 0.8);
-  --search-expanded-width: 270px;
   --search-mobile-max-width: 31.8rem;
 }
 
@@ -88,14 +87,13 @@
   box-shadow: var(--np-inset-shadow);
 }
 
+/* The track's width is animated by motion/react (the Toolbar Dynamic spring in
+   ArticleSearch.jsx), which writes it inline. The values here are only the
+   first-paint fallback — keep them in step with WIDTHS in that file, and do not
+   add a CSS transition: it would fight the spring. */
 .article-search__motion {
   width: 36px;
   overflow: hidden;
-  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.article-search.is-open .article-search__motion {
-  width: var(--search-expanded-width);
 }
 
 .article-search__inner {
@@ -288,7 +286,7 @@
 }
 
 @media (max-width: 860px) {
-  .article-search:not(.is-open) .article-search__motion {
+  .article-search__motion {
     width: 44px;
   }
 
@@ -309,10 +307,6 @@
     box-shadow: 0 18px 48px rgba(16, 19, 24, 0.2), 0 2px 8px rgba(16, 19, 24, 0.1);
     transform: translateX(-50%);
     animation: article-search-mobile-enter 0.18s ease-out both;
-  }
-
-  .article-search.is-open .article-search__motion {
-    width: 100%;
   }
 
   .article-search.is-open .article-search__inner {

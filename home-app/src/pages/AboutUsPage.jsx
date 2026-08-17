@@ -143,7 +143,7 @@ export default function AboutUsPage() {
 
         <div>
           <p className="highlight-fourthPart">
-            {t('about.excellence.before')}
+            {t('about.excellence.before')}{' '}
             <span className="extra-bold">{t('about.excellence.emphasis')}</span>{' '}
             {t('about.excellence.after')}
           </p>

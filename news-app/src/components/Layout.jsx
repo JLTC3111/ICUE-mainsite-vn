@@ -4,6 +4,7 @@ import ContactSidebar from '@icue/contact-sidebar'
 import Header from './Header'
 import Footer from './Footer'
 import MarketStrip from './MarketStrip'
+import { NewsroomSearchProvider } from '../context/NewsroomSearchContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'
@@ -32,10 +33,14 @@ function Layout() {
       }`}
     >
       {!isAgentRoute && <MarketStrip />}
-      <Header />
-      <main className="icue-main">
-        <Outlet />
-      </main>
+      {/* The header types the live search query and the grid filters on it, so
+          the two have to share one provider above both. */}
+      <NewsroomSearchProvider>
+        <Header />
+        <main className="icue-main">
+          <Outlet />
+        </main>
+      </NewsroomSearchProvider>
       {!isAgentRoute && <Footer />}
       {!isAgentRoute && <ContactSidebar contentKey={pathname} />}
     </div>

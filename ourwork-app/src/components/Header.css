@@ -258,7 +258,12 @@
   z-index: -1;
   left: 50%;
   bottom: -160%;
-  width: 150%;
+  /* 150% of the link's own width is too small for the short labels — ko `홈`,
+     ja `仕事`, `組織`. The circle then ends behind the glyphs and the dark hover
+     copy reads as clipped against the dark bar. Sizing it off the pill height
+     instead covers even a one-glyph link when the sweep settles; same fix as
+     home-app/src/components/PillSiteHeader.css. */
+  width: max(150%, calc(var(--ow-nav-h) * 3));
   aspect-ratio: 1;
   border-radius: 50% !important;
   background: var(--icue-chrome-accent);
