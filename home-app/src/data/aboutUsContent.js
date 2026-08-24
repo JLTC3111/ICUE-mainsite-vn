@@ -1,5 +1,6 @@
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
 import vi from '../locales/vi.json'
+import { GALLERY_PLACEHOLDERS } from './galleryPlaceholders'
 
 /**
  * The About page's structure — the parts that are the same in every language.
@@ -33,8 +34,12 @@ export const ABOUT_US_SLIDES = normalizeDeep(vi.about.slides)
  * `image` is WebP (primary); `fallback` is a resized JPEG for browsers without
  * WebP. Dimensions are intrinsic — they reserve space before decode. Only the
  * file paths live here; captions are per-language in `about.gallery.<key>`.
+ *
+ * Exported as ABOUT_US_GALLERY below, with each photo's blur-up placeholder
+ * attached. Keep the literal shape of this array simple: it is also read as
+ * text by scripts/generate-gallery-placeholders.mjs.
  */
-export const ABOUT_US_GALLERY = [
+const GALLERY_PHOTOS = [
   {
     key: 'publicSpaces2018',
     image: '/aboutUs/UN-Habitat-HealthBridge.webp',
@@ -99,6 +104,18 @@ export const ABOUT_US_GALLERY = [
     height: 960,
   },
 ]
+
+/**
+ * The gallery as the page consumes it: every photo carries the 24px WebP
+ * thumbnail of itself that AccordionGallery paints while the full file is in
+ * flight. A missing entry is not an error — the panel simply falls back to a
+ * flat tile — so a newly added photo still renders before anyone regenerates
+ * the placeholders.
+ */
+export const ABOUT_US_GALLERY = GALLERY_PHOTOS.map((photo) => ({
+  ...photo,
+  blur: GALLERY_PLACEHOLDERS[photo.image],
+}))
 
 /**
  * Which colour class each letter of the two-part wordmark takes.

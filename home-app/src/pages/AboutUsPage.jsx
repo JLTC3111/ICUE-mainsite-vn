@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import AboutGradientWaves from '../components/aboutUs/AboutGradientWaves'
 import AboutModelViewer from '../components/aboutUs/AboutModelViewer'
@@ -83,14 +83,22 @@ export default function AboutUsPage() {
     document.documentElement.removeAttribute('data-aboutus-bg-video')
   }, [])
 
-  const galleryItems = ABOUT_US_GALLERY.map((item) => ({
-    image: item.image,
-    fallback: item.fallback,
-    width: item.width,
-    height: item.height,
-    label: t(`about.gallery.${item.key}.label`),
-    alt: t(`about.gallery.${item.key}.alt`),
-  }))
+  // Memoised because AccordionGallery keys its background download queue off
+  // this array: rebuilding it on every render would restart the queue every
+  // time anything else on the page changed.
+  const galleryItems = useMemo(
+    () =>
+      ABOUT_US_GALLERY.map((item) => ({
+        image: item.image,
+        fallback: item.fallback,
+        blur: item.blur,
+        width: item.width,
+        height: item.height,
+        label: t(`about.gallery.${item.key}.label`),
+        alt: t(`about.gallery.${item.key}.alt`),
+      })),
+    [t],
+  )
 
   return (
     <div className="about-us-page">
@@ -242,7 +250,10 @@ export default function AboutUsPage() {
           <MaskedHeading
             className="about-highlights__heading"
             text={t('about.highlights.heading')}
-            src="/aboutUs/conference_nov5_2025.jpg"
+            /* WebP, not the JPEG beside it: same photograph, 91 KB instead of
+               210 KB, and it downloads immediately above the gallery — on a
+               phone the two are competing for the same connection. */
+            src="/aboutUs/conference_nov5_2025.webp"
             reveal="rise"
             trigger="view"
             textScale={0.105}

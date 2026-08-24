@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useState, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 
@@ -16,14 +16,37 @@ import './AccordionGallery.css'
  *    here: the labels are short Vietnamese captions and the alt text has to
  *    describe the photograph.
  *  - WebP via `<picture>` when `fallback` is set; JPEG is the fallback source.
- *  - Nothing downloads until the gallery scrolls into view. After that, only
- *    the active panel and its neighbours load — hovering a strip fetches it.
  *  - Intrinsic width/height on `<img>` when provided, to reserve layout space.
  *  - Clicking the active panel opens a full-size lightbox (`fullImage`, then
  *    `fallback`, then `image`). Escape, backdrop click, or × closes it.
  *
  * The GSAP timeline only runs on hover, focus or arrow keys, so there is no
  * idle cost to this component — unlike the backdrop it sits on.
+ *
+ * ── How the photographs arrive ──────────────────────────────────────────────
+ *
+ * Nothing downloads until the gallery is nearly on screen. From there the
+ * loading is deliberately two-speed, because the phone case and the desktop
+ * case want opposite things:
+ *
+ *  - The panel the reader is on, and its two neighbours, render as ordinary
+ *    <img> at normal priority. That is the photograph someone is actually
+ *    looking at, so it competes with the rest of the page on equal terms.
+ *  - Everything else is pulled into the HTTP cache afterwards by `warmImage`,
+ *    one file at a time, at `fetchPriority: 'low'`, from an idle callback.
+ *    Serially and at low priority on purpose: this page also loads a WebGL
+ *    backdrop and an 850 KB glTF model, and nine parallel photo requests would
+ *    take bandwidth from both. By the time a reader taps a panel the file is
+ *    usually already in cache, which is the difference between "instant" and
+ *    "a second of dark rectangle" on a phone — where there is no hover to warm
+ *    anything ahead of the tap.
+ *
+ * Until a photograph paints, its panel shows `item.blur`: a 24px WebP of the
+ * same photo, inline as a data URI, upscaled by the browser into a blur. The
+ * real image then fades in over it, on decode. An empty dark panel is what
+ * made this gallery read as broken on mobile even when it was working.
+ *
+ * On a touch screen the hover affordances are dropped as well — see `touch`.
  */
 
 const DEFAULT_ITEMS = [
@@ -33,6 +56,9 @@ const DEFAULT_ITEMS = [
   { image: 'https://picsum.photos/id/1043/900/1200', label: 'Harbour', link: '#' },
   { image: 'https://picsum.photos/id/1044/900/1200', label: 'Skyline', link: '#' },
 ]
+
+/** Panels stack instead of tilting at or below this width; mirrors the CSS. */
+const COMPACT_WIDTH = 520
 
 function getPreviewSources(item) {
   return {
@@ -47,8 +73,128 @@ function getFullSources(item) {
   return { webp, jpeg }
 }
 
+let webpSupport = null
+
+/**
+ * Whether `<picture>` will take the WebP branch, so the warm-up queue requests
+ * the same file the panel will. Warming the WebP in a browser that cannot
+ * decode it would download every photograph twice.
+ */
+function supportsWebp() {
+  if (webpSupport !== null) return webpSupport
+  if (typeof document === 'undefined') return false
+  try {
+    const canvas = document.createElement('canvas')
+    canvas.width = 1
+    canvas.height = 1
+    webpSupport = canvas.toDataURL('image/webp').startsWith('data:image/webp')
+  } catch {
+    // Canvas is readable everywhere this app runs, so a throw means a
+    // fingerprinting shield rather than a browser from before 2020. Assume the
+    // WebP branch: guessing wrong in this direction costs nothing, guessing
+    // wrong in the other downloads every photograph twice.
+    webpSupport = true
+  }
+  return webpSupport
+}
+
+/** The URL the browser will actually request for a panel. */
+function getPreviewHref(item) {
+  const { webp, jpeg } = getPreviewSources(item)
+  return supportsWebp() ? webp : jpeg
+}
+
+/**
+ * How many photographs either side of the open one are worth pulling down
+ * before the reader asks for them.
+ *
+ * The whole set is around 680 KB, which is a fair trade on a normal connection
+ * and a bad one on a metered or 2G connection — so Save-Data and 2G opt out of
+ * the queue entirely and keep today's behaviour (active panel plus
+ * neighbours), and 3G takes a few. `navigator.connection` is Chromium-only;
+ * Safari reports nothing, and no signal is read as a normal connection rather
+ * than as a slow one.
+ */
+function getPrefetchBudget() {
+  const connection =
+    typeof navigator !== 'undefined'
+      ? navigator.connection || navigator.mozConnection || navigator.webkitConnection
+      : null
+  if (!connection) return Infinity
+  if (connection.saveData) return 0
+  const type = connection.effectiveType
+  if (type === 'slow-2g' || type === '2g') return 0
+  if (type === '3g') return 4
+  return Infinity
+}
+
+/**
+ * Pull one photograph into the HTTP cache and decode it, off the critical path.
+ * Always resolves: a photo that 404s must not stall the rest of the queue.
+ */
+function warmImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.decoding = 'async'
+    if ('fetchPriority' in img) img.fetchPriority = 'low'
+    img.onload = () => {
+      if (typeof img.decode === 'function') img.decode().then(resolve, resolve)
+      else resolve()
+    }
+    img.onerror = () => resolve()
+    img.src = src
+  })
+}
+
+/** Runs `callback` when the browser is idle. Returns its canceller. */
+function scheduleIdle(callback) {
+  if (typeof requestIdleCallback === 'function') {
+    const id = requestIdleCallback(callback, { timeout: 1500 })
+    return () => cancelIdleCallback(id)
+  }
+  const id = setTimeout(callback, 300)
+  return () => clearTimeout(id)
+}
+
+/** Every index, ordered by distance from `from` — nearest neighbours first. */
+function outwardFrom(from, count) {
+  const order = [from]
+  for (let step = 1; step < count; step += 1) {
+    if (from + step < count) order.push(from + step)
+    if (from - step >= 0) order.push(from - step)
+  }
+  return order
+}
+
+/** Live `matchMedia` result; false anywhere `matchMedia` is unavailable. */
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia(query).matches
+      : false,
+  )
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined
+    const mql = window.matchMedia(query)
+    const onChange = (event) => setMatches(event.matches)
+    setMatches(mql.matches)
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [query])
+
+  return matches
+}
+
 function GalleryLightbox({ item, index, count, onClose, onNavigate }) {
   const closeRef = useRef(null)
+  // Which photograph has finished loading, not whether one has. Resetting a
+  // boolean from an effect on `index` would let the arrow keys paint a frame of
+  // the outgoing photograph at full opacity before it snapped to transparent;
+  // deriving it means the new index is already "not shown" in the same render
+  // that swaps the src.
+  const [shownIndex, setShownIndex] = useState(null)
+  const shown = shownIndex === index
   const { webp, jpeg } = getFullSources(item)
   const alt = item.alt || item.label || ''
 
@@ -82,6 +228,20 @@ function GalleryLightbox({ item, index, count, onClose, onNavigate }) {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [onClose, onNavigate])
+
+  const imgProps = {
+    className: `ag-lightbox__image${shown ? ' is-ready' : ''}`,
+    src: jpeg,
+    alt,
+    decoding: 'async',
+    fetchPriority: 'high',
+    draggable: false,
+    onLoad: () => setShownIndex(index),
+    onError: () => setShownIndex(index),
+    ref: (el) => {
+      if (el?.complete) setShownIndex(index)
+    },
+  }
 
   return createPortal(
     <div
@@ -130,22 +290,10 @@ function GalleryLightbox({ item, index, count, onClose, onNavigate }) {
           {webp && webp !== jpeg ? (
             <picture>
               <source srcSet={webp} type="image/webp" />
-              <img
-                className="ag-lightbox__image"
-                src={jpeg}
-                alt={alt}
-                decoding="async"
-                draggable={false}
-              />
+              <img {...imgProps} />
             </picture>
           ) : (
-            <img
-              className="ag-lightbox__image"
-              src={jpeg}
-              alt={alt}
-              decoding="async"
-              draggable={false}
-            />
+            <img {...imgProps} />
           )}
           {item.label ? (
             <figcaption className="ag-lightbox__caption">{item.label}</figcaption>
@@ -188,12 +336,26 @@ const AccordionGallery = ({
   const firstRunRef = useRef(true)
   const mediaSizeRef = useRef(320)
 
+  const compact = useMediaQuery(`(max-width: ${COMPACT_WIDTH}px)`)
+  // Not "is this a phone": a laptop with a touchscreen still has a pointer and
+  // still gets the hover treatment. This is only true where hover cannot happen.
+  const touch = useMediaQuery('(hover: none)')
+
   const vertical = orientation === 'vertical'
+  const stacked = vertical || compact
   const count = items.length
   const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1))
   const [inView, setInView] = useState(false)
   const [loaded, setLoaded] = useState(() => new Set([defaultIndex]))
+  const [ready, setReady] = useState(() => new Set())
   const [lightboxIndex, setLightboxIndex] = useState(null)
+
+  // The warm-up queue starts from wherever the reader is when it opens, without
+  // restarting every time they move.
+  const activeRef = useRef(active)
+  useEffect(() => {
+    activeRef.current = active
+  }, [active])
 
   const markLoaded = useCallback((index) => {
     setLoaded((prev) => {
@@ -202,6 +364,10 @@ const AccordionGallery = ({
       next.add(index)
       return next
     })
+  }, [])
+
+  const markReady = useCallback((index) => {
+    setReady((prev) => (prev.has(index) ? prev : new Set(prev).add(index)))
   }, [])
 
   useEffect(() => {
@@ -221,11 +387,47 @@ const AccordionGallery = ({
           observer.disconnect()
         }
       },
-      { rootMargin: '120px 0px', threshold: 0.01 },
+      // Roughly half a phone viewport of lead time. The gallery sits far down a
+      // long page, so this is spent while the reader is still scrolling toward
+      // it rather than while they are waiting on it.
+      { rootMargin: '480px 0px', threshold: 0.01 },
     )
     observer.observe(root)
     return () => observer.disconnect()
   }, [])
+
+  // `items` is rebuilt on every render of the page that owns it (the captions
+  // are translated), so the queue keys off the URLs instead of the array.
+  const sourceKey = useMemo(() => items.map((item) => item.image).join('|'), [items])
+
+  useEffect(() => {
+    if (!inView) return undefined
+    const budget = getPrefetchBudget()
+    if (budget <= 0) return undefined
+
+    let cancelled = false
+    const cancelIdle = scheduleIdle(async () => {
+      const order = outwardFrom(activeRef.current, count)
+      const queue = budget === Infinity ? order : order.slice(0, budget + 1)
+
+      for (const index of queue) {
+        if (cancelled) return
+        const item = items[index]
+        if (!item) continue
+        await warmImage(getPreviewHref(item))
+        if (cancelled) return
+        // Only now render it: the file is in cache and decoded, so the <img>
+        // paints on the same frame it mounts.
+        markLoaded(index)
+      }
+    })
+
+    return () => {
+      cancelled = true
+      cancelIdle()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, count, sourceKey, markLoaded])
 
   const shouldLoadImage = useCallback(
     (index) => inView && loaded.has(index),
@@ -258,23 +460,28 @@ const AccordionGallery = ({
         const text = textRefs.current[i]
 
         const rot = isActive ? 0 : i < active ? tilt : -tilt
-        const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot }
+        const rotProp = stacked ? { rotateX: -rot } : { rotateY: rot }
 
         tl.to(panel, { flexGrow: isActive ? grow : 1, ...rotProp, duration: dur, ease }, 0)
 
         if (media) {
           const drift = Math.max(-1.5, Math.min(1.5, active - i))
           const shift = drift * parallax * mediaSize * 0.06
-          const gray = grayscale ? (isActive ? 0 : 1) : 0
+          // Draining the colour out of every panel but one is a hover
+          // affordance: it says "this is the one you are pointing at". With no
+          // pointer there is nothing to say, and eight grey, dimmed panels read
+          // as eight photographs that failed to load.
+          const gray = grayscale && !touch ? (isActive ? 0 : 1) : 0
+          const dim = isActive ? 0 : touch ? 0.16 : 0.35
           tl.to(
             media,
             {
               xPercent: -50,
               yPercent: -50,
-              x: vertical ? 0 : isActive ? 0 : shift,
-              y: vertical ? (isActive ? 0 : shift) : 0,
+              x: stacked ? 0 : isActive ? 0 : shift,
+              y: stacked ? (isActive ? 0 : shift) : 0,
               '--ag-gray': gray,
-              '--ag-dim': isActive ? 0 : 0.35,
+              '--ag-dim': dim,
               duration: dur,
               ease,
             },
@@ -283,10 +490,18 @@ const AccordionGallery = ({
         }
 
         if (showLabels && bar && text) {
-          if (isActive) {
+          // Every caption stays up on a touch screen: they are the only thing
+          // telling the panels apart when none of them is "hovered".
+          if (isActive || touch) {
             tl.to(
               [bar, text],
-              { opacity: 1, x: 0, duration: dur, ease, stagger: prefersReduced ? 0 : stagger },
+              {
+                opacity: isActive ? 1 : 0.75,
+                x: 0,
+                duration: dur,
+                ease,
+                stagger: prefersReduced ? 0 : stagger,
+              },
               0,
             )
           } else {
@@ -303,7 +518,8 @@ const AccordionGallery = ({
       expandRatio,
       duration,
       ease,
-      vertical,
+      stacked,
+      touch,
       tilt,
       parallax,
       grayscale,
@@ -319,9 +535,22 @@ const AccordionGallery = ({
 
     const measure = () => {
       const rect = el.getBoundingClientRect()
-      const total = vertical ? rect.height : rect.width
-      const usable = Math.max(total - gap * (count - 1), 120)
-      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22)
+      let size
+
+      if (compact) {
+        // The compact stack is a list of fixed-height strips, so the media box
+        // is sized from a panel rather than from the container: measuring the
+        // container here (as the horizontal layout does) produced a media box
+        // several times taller than the strip cropping it, and the browser paid
+        // to scale and rasterise all of it.
+        const panelHeight = panelRefs.current[0]?.getBoundingClientRect().height || 0
+        size = Math.max(120, (panelHeight || 84) * 1.32)
+      } else {
+        const total = vertical ? rect.height : rect.width
+        const usable = Math.max(total - gap * (count - 1), 120)
+        size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22)
+      }
+
       mediaSizeRef.current = size
       el.style.setProperty('--ag-media-size', `${size}px`)
       applyLayout(!firstRunRef.current)
@@ -331,7 +560,7 @@ const AccordionGallery = ({
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [applyLayout, gap, count, expandRatio, vertical])
+  }, [applyLayout, gap, count, expandRatio, vertical, compact])
 
   useEffect(() => {
     applyLayout(!firstRunRef.current)
@@ -346,12 +575,14 @@ const AccordionGallery = ({
   )
 
   const handleEnter = (i) => {
-    if (trigger === 'hover') setActive(i)
+    // Touch browsers synthesise mouseenter on tap; letting it through would
+    // make the first tap select and only the second one open the photo.
+    if (trigger === 'hover' && !touch) setActive(i)
   }
 
   const handleClick = (i, e) => {
     const item = items[i]
-    if (i !== active) {
+    if (i !== active && !touch) {
       e.preventDefault()
       setActive(i)
       return
@@ -360,6 +591,7 @@ const AccordionGallery = ({
     if (item.link) return
 
     e.preventDefault()
+    setActive(i)
     markLoaded(i)
     setLightboxIndex(i)
   }
@@ -411,12 +643,22 @@ const AccordionGallery = ({
         const isActive = i === active
         const Tag = item.link ? 'a' : 'div'
         const loadImage = shouldLoadImage(i)
+        const expandable = !item.link && (isActive || touch)
         const preview = getPreviewSources(item)
         const imgProps = {
+          className: `ag-panel__img${ready.has(i) ? ' is-ready' : ''}`,
           alt: item.alt || item.label || '',
           draggable: false,
           decoding: 'async',
           loading: isActive ? 'eager' : 'lazy',
+          onLoad: () => markReady(i),
+          onError: () => markReady(i),
+          // A warmed file can finish loading before React attaches onLoad. The
+          // fade starts from opacity 0, so missing that event would leave the
+          // panel showing nothing but its blur.
+          ref: (el) => {
+            if (el?.complete) markReady(i)
+          },
           ...(isActive && inView ? { fetchPriority: 'high' } : {}),
           ...(item.width ? { width: item.width } : {}),
           ...(item.height ? { height: item.height } : {}),
@@ -428,7 +670,7 @@ const AccordionGallery = ({
             ref={(el) => {
               panelRefs.current[i] = el
             }}
-            className={`ag-panel${isActive ? ' ag-panel--active' : ''}${isActive && !item.link ? ' ag-panel--expandable' : ''}`}
+            className={`ag-panel${isActive ? ' ag-panel--active' : ''}${expandable ? ' ag-panel--expandable' : ''}`}
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={(e) => handleClick(i, e)}
@@ -447,9 +689,7 @@ const AccordionGallery = ({
             tabIndex={0}
             aria-current={isActive ? 'true' : undefined}
             aria-label={
-              isActive && !item.link
-                ? `${item.label}. View full size`
-                : item.label
+              expandable ? `${item.label}. View full size` : item.label
             }
           >
             <span className="ag-panel__frame">
@@ -458,6 +698,7 @@ const AccordionGallery = ({
                 ref={(el) => {
                   mediaRefs.current[i] = el
                 }}
+                style={item.blur ? { backgroundImage: `url("${item.blur}")` } : undefined}
               >
                 {loadImage ? (
                   preview.webp && preview.webp !== preview.jpeg ? (
@@ -468,9 +709,7 @@ const AccordionGallery = ({
                   ) : (
                     <img src={preview.jpeg} {...imgProps} />
                   )
-                ) : (
-                  <span className="ag-panel__placeholder" aria-hidden="true" />
-                )}
+                ) : null}
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
