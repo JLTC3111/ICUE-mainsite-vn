@@ -150,10 +150,13 @@
 }
 
 @media (max-width: 520px) {
+  /* No `height: auto` here: it beat the inline height, left the column with no
+     free space to distribute, and pinned every panel to the 84px minimum below
+     — the active panel could not open. The component sets the column height
+     from COMPACT_ACTIVE + COMPACT_STRIP, which these values mirror. */
   .accordion-gallery {
     flex-direction: column;
     perspective: none;
-    height: auto !important;
   }
   .ag-panel {
     min-height: 84px;
@@ -227,6 +230,16 @@
   opacity: 1;
 }
 
+.ag-lightbox__count {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.82em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  opacity: 0.72;
+}
+
 .ag-lightbox__caption {
   margin: 0;
   max-width: min(96vw, 720px);
@@ -244,18 +257,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
   cursor: pointer;
   color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  transition: background 180ms ease;
+  /* Dark and bordered, not 12% white: these are `fixed` at the screen edges,
+     which on a phone puts them on top of a photograph filling 96vw. A pale
+     wash over a pale picture is an invisible control. */
+  background: rgba(8, 6, 16, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
   -webkit-tap-highlight-color: transparent;
   z-index: 10002;
 }
 
 .ag-lightbox__close:hover,
 .ag-lightbox__nav:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(28, 24, 44, 0.78);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .ag-lightbox__close:focus-visible,
@@ -294,8 +316,8 @@
 
 @media (max-width: 640px) {
   .ag-lightbox__nav {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1.65rem;
   }
 }
