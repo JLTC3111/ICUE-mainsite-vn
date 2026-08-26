@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "title": "Tuyển dụng | ICUE Vietnam",
+    "description": "Cơ hội nghề nghiệp tại ICUE Vietnam: các vị trí đang tuyển, quyền lợi và môi trường làm việc tại viện nghiên cứu kinh tế xây dựng và đô thị."
+  },
+  "skipToContent": "Tới các vị trí đang tuyển",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "lang": {
+    "label": "Ngôn ngữ trang"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu & Tổ Chức",
+      "ourWork": "Công Việc",
+      "pastProjects": "Đề Tài, Dự Án",
+      "News": "Tin Tức & Sự Kiện",
+      "aboutUs": "Về Chúng Tôi",
+      "Contact": "Liên Hệ",
+      "ourPeople": "Nhân Lực",
+      "meetOurExperts": "Chuyên Gia",
+      "coreTeam": "Cán Bộ"
+    },
+    "compact": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu",
+      "ourWork": "Công Việc",
+      "pastProjects": "Dự Án",
+      "News": "Tin Tức",
+      "aboutUs": "Giới Thiệu"
+    },
+    "aria": {
+      "nav": "Điều hướng trang",
+      "home": "Về trang chủ",
+      "more": "Mở thêm mục điều hướng",
+      "moreLabel": "Thêm",
+      "overflow": "Thêm mục điều hướng",
+      "openMenu": "Mở trình đơn đầy đủ",
+      "toggleMenu": "Bật/tắt trình đơn điều hướng",
+      "closeMenu": "Đóng trình đơn điều hướng",
+      "resizeMenu": "Thay đổi kích thước trình đơn",
+      "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
+      "homeVideo": "Bật/tắt video nền",
+      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)"
+    },
+    "contactWordmark": "GIỚI THIỆU"
+  },
+  "search": {
+    "title": "Cơ Hội Nghề Nghiệp",
+    "subtitle": "Tìm kiếm các vị trí phù hợp với kỹ năng và đam mê của bạn",
+    "placeholder": "Tìm kiếm theo vị trí, phòng ban, kỹ năng...",
+    "submit": "Tìm kiếm",
+    "clear": "Xóa",
+    "label": "Tìm kiếm vị trí tuyển dụng"
+  },
+  "results": {
+    "count_one": "Tìm thấy {{count}} vị trí phù hợp với \"{{query}}\".",
+    "count_other": "Tìm thấy {{count}} vị trí phù hợp với \"{{query}}\".",
+    "none": "Không tìm thấy vị trí nào phù hợp với \"{{query}}\". Thử một từ khoá khác, hoặc xoá bộ lọc để xem tất cả.",
+    "cleared": "Đang hiển thị tất cả các vị trí."
+  },
+  "gallery": {
+    "label": "Hình ảnh môi trường làm việc",
+    "items": {
+      "survey": {
+        "label": "Khảo Sát Thực Tế",
+        "alt": "Cán bộ ICUE khảo sát hiện trường"
+      },
+      "office": {
+        "label": "Văn Phòng",
+        "alt": "Văn phòng làm việc của ICUE"
+      },
+      "event": {
+        "label": "Họp Đề Án Nghiên Cứu",
+        "alt": "Buổi họp đề án nghiên cứu của ICUE"
+      }
+    }
+  },
+  "jobs": {
+    "title": "Các Vị Trí",
+    "subtitle": "Tham gia và tạo ra sự khác biệt trong cuộc sống",
+    "department": "Phòng ban",
+    "location": "Địa điểm",
+    "expand": "Xem chi tiết",
+    "collapse": "Thu gọn",
+    "apply": "Ứng tuyển vị trí này",
+    "empty": "Hiện chưa có vị trí nào đang tuyển. Mời bạn quay lại sau."
+  },
+  "benefits": {
+    "title": "Quyền Lợi",
+    "subtitle": "Chúng tôi luôn quan tâm đến sự phát triển của bạn",
+    "items": {
+      "salary": {
+        "title": "Mức Lương",
+        "body": "Hấp dẫn cùng với các thưởng và cổ phiếu"
+      },
+      "health": {
+        "title": "Bảo Hiểm Y Tế",
+        "body": "Toàn diện cho bạn và gia đình"
+      },
+      "growth": {
+        "title": "Phát Triển Sự Nghiệp",
+        "body": "Liên tục học hỏi và cải thiện kĩ năng"
+      },
+      "balance": {
+        "title": "Cân Bằng Công Việc & Cuộc Sống",
+        "body": "Thời gian làm việc linh hoạt, nghỉ phép có lương"
+      },
+      "projects": {
+        "title": "Các Dự Án Hấp Dẫn",
+        "body": "Tham gia vào các dự án, đề tài khoa học, lập kế hoạch phân khu"
+      },
+      "impact": {
+        "title": "Mang Lợi Ích Cho Cộng Đồng",
+        "body": "Xây dựng tương lai vững bền cho mai sau!"
+      }
+    }
+  },
+  "chat": {
+    "title": "Trợ lý ICUE",
+    "greeting": "Xin chào! Tôi là trợ lý của ICUE. Tôi có thể giúp bạn tìm hiểu về dịch vụ, quy trình, chi phí và cách liên hệ. Bạn cần hỗ trợ gì?",
+    "placeholder": "Hỏi bất cứ điều gì…",
+    "send": "Gửi tin nhắn",
+    "open": "Mở trợ lý ICUE",
+    "close": "Đóng trợ lý ICUE",
+    "badge": "Tự động",
+    "thinking": "Đang soạn trả lời…",
+    "transcript": "Nội dung trò chuyện",
+    "error": "Xin lỗi, hiện chưa trả lời được. Bạn thử lại giúp mình nhé.",
+    "suggestions": [
+      "Dịch vụ",
+      "Chi phí",
+      "Liên hệ"
+    ]
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE."
+  }
+}

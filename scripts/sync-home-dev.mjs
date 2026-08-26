@@ -29,7 +29,10 @@ if (!fs.existsSync(homeDist)) {
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
-for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'legal', 'logoIcons', 'models', 'news', 'pastProjects', 'recruitment', 'route-shells', 'work']) {
+// 'recruitment' is deliberately absent: it is recruitment-app's build output
+// now, not a home-app asset directory, and copying a stale dist-home/recruitment
+// over it would replace the app with the photographs it used to hold.
+for (const dir of ['aboutUs', 'bgVideos', 'flags', 'legacy', 'legal', 'logoIcons', 'models', 'news', 'pastProjects', 'route-shells', 'work']) {
   copyDir(path.join(homeDist, dir), path.join(root, dir));
 }
 

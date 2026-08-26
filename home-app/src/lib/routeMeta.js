@@ -37,14 +37,6 @@ export const ROUTE_META = [
     description: 'Xem các dự án nghiên cứu, quy hoạch, phát triển đô thị và hoạt động chuyên môn tiêu biểu đã được ICUE Vietnam thực hiện.',
   },
   {
-    slug: 'recruitment',
-    path: '/recruitment',
-    pageName: 'recruitment',
-    pageFile: 'recruitment.html',
-    title: 'Tuyển dụng | ICUE Vietnam',
-    description: 'Cơ hội nghề nghiệp và cộng tác chuyên môn tại ICUE Vietnam trong nghiên cứu, quy hoạch, kinh tế xây dựng và phát triển đô thị.',
-  },
-  {
     slug: 'news-archive',
     path: '/news-archive',
     pageName: 'newsArchive',
@@ -67,14 +59,6 @@ export const ROUTE_META = [
     pageFile: 'communityActivities.html',
     title: 'Hoạt động cộng đồng | ICUE Vietnam',
     description: 'Các chương trình, sáng kiến và hoạt động cộng đồng do ICUE Vietnam tổ chức hoặc đồng hành.',
-  },
-  {
-    slug: 'faqs',
-    path: '/faqs',
-    pageName: 'FAQs',
-    pageFile: 'FAQs.html',
-    title: 'Câu hỏi thường gặp | ICUE Vietnam',
-    description: 'Giải đáp những câu hỏi thường gặp về ICUE Vietnam, lĩnh vực hoạt động, dự án, hợp tác và liên hệ.',
   },
 ]
 

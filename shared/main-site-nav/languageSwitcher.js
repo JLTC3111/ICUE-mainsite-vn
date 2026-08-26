@@ -38,9 +38,16 @@ const PAGE_MAPPING = {
   communityActivities: 'communityActivities',
 };
 
+/*
+ * Pages the VN<->EN domain flag can land on, which then need the legacy
+ * runtime re-initialised on arrival. `faqs` and `recruitment` are no longer
+ * among them: both render their own six-language menu (PageLanguageMenu)
+ * rather than the domain flag, and both are pinned to icue.vn by
+ * VI_ONLY_APP_PAGES, so the flag can never target them.
+ */
 const STATIC_PAGES = [
-  'gdpr', 'privacy', 'recruitment', 'terms',
-  'faqs', 'cookies', 'notableAwards', 'communityActivities',
+  'gdpr', 'privacy', 'terms',
+  'cookies', 'notableAwards', 'communityActivities',
 ];
 
 /** Path routes for migrated main-site pages (no hash). */

@@ -36,24 +36,21 @@ const ASSET_DIRS = [
   'work',
   // Full news tree: article photos + partner logos used by legacy News.html
   'news',
-  'recruitment',
   'logoIcons',
   'flags',
 ]
 
-// Contact.html, ourWork.html and orgStructure.html are deliberately absent:
-// those three pages are their own apps now (contact-app, ourwork-app,
-// structure-app). `copyFile` below is unguarded, so re-adding a name here
-// without the file in src/pages/ fails the build rather than silently
-// shipping nothing.
+// Contact.html, ourWork.html, orgStructure.html, FAQs.html and
+// recruitment.html are deliberately absent: each of those pages is its own app
+// now (contact-app, ourwork-app, structure-app, faq-app, recruitment-app).
+// `copyFile` below is unguarded, so re-adding a name here without the file in
+// src/pages/ fails the build rather than silently shipping nothing.
 const LEGACY_PAGES = [
   'aboutUs.html',
   'pastProjects.html',
-  'recruitment.html',
   'News.html',
   'notableAwards.html',
   'communityActivities.html',
-  'FAQs.html',
 ]
 
 for (const rel of ASSET_DIRS) {

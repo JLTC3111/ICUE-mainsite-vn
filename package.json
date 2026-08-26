@@ -30,9 +30,9 @@
     "vite": "^6.3.2"
   },
   "scripts": {
-    "dev": "npm run build:home && npm run build:newsroom && npm run build:ourwork && npm run build:contact && npm run build:legal && node scripts/sync-home-dev.mjs && vite",
-    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix contact-app && npm ci --prefix legal-app && npm ci --prefix home-app",
-    "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && node scripts/postbuild.mjs",
+    "dev": "npm run build:home && npm run build:newsroom && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && node scripts/sync-home-dev.mjs && vite",
+    "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix contact-app && npm ci --prefix legal-app && npm ci --prefix home-app && npm ci --prefix faq-app && npm ci --prefix recruitment-app",
+    "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && node scripts/postbuild.mjs",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",
     "preview": "vite preview",
     "server": "node server.js",
@@ -48,6 +48,10 @@
     "dev:contact": "npm run dev --prefix contact-app",
     "build:legal": "npm run build --prefix legal-app",
     "dev:legal": "npm run dev --prefix legal-app",
+    "build:faq": "npm run build --prefix faq-app",
+    "dev:faq": "npm run dev --prefix faq-app",
+    "build:recruitment": "npm run build --prefix recruitment-app",
+    "dev:recruitment": "npm run dev --prefix recruitment-app",
     "verify:routes": "node scripts/verify-route-shells.mjs",
     "verify:locales": "node scripts/verify-locale-routing.mjs",
     "dev:home": "npm run dev --prefix home-app",

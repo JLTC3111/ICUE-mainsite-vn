@@ -1,0 +1,6 @@
+{
+  "name": "@icue/faq-content",
+  "private": true,
+  "type": "module",
+  "main": "index.js"
+}

@@ -48,14 +48,17 @@ const SECTION_LAYOUT = [
     ],
   },
   {
+    // The photographs moved into recruitment-app/public/media/ when the page
+    // became its own app: it builds to /recruitment with emptyOutDir, so
+    // anything else sitting in that directory was deleted on every build.
     id: 'home-recruitment',
     key: 'recruitment',
     alt: true,
     linkHref: ROUTE_PATHS.recruitment,
     cards: [
-      { key: 'culture', image: '/recruitment/office.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'growth', image: '/recruitment/event.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'impact', image: '/recruitment/survey.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'culture', image: '/recruitment/media/office.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'growth', image: '/recruitment/media/event.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'impact', image: '/recruitment/media/survey.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
     ],
   },
 ]
@@ -74,6 +77,17 @@ export function buildHero(t, locale) {
   }
 }
 
+/*
+ * Sections whose cards link to a standalone app, and therefore have to carry
+ * the reader's locale. `ourWork` was alone here while /recruitment was a
+ * Vietnamese-only page injected into this app; it renders all six languages of
+ * its own now, so its three cards were handing over a bare path and leaving the
+ * locale to whatever localStorage happened to hold. The news and past-project
+ * cards are absent on purpose: they point at legacy `?id=` templates that have
+ * no locale to carry.
+ */
+const LOCALIZED_CARD_SECTIONS = new Set(['ourWork', 'recruitment'])
+
 export function buildHomeSections(t, locale) {
   return SECTION_LAYOUT.map((section) => ({
     id: section.id,
@@ -86,7 +100,7 @@ export function buildHomeSections(t, locale) {
     linkLabel: t(`home.sections.${section.key}.linkLabel`),
     cards: section.cards.map((card) => ({
       image: card.image,
-      href: section.key === 'ourWork' ? withLocale(card.href, locale) : card.href,
+      href: LOCALIZED_CARD_SECTIONS.has(section.key) ? withLocale(card.href, locale) : card.href,
       imageOnly: card.imageOnly,
       title: t(`home.sections.${section.key}.cards.${card.key}.title`),
       description: t(`home.sections.${section.key}.cards.${card.key}.description`),

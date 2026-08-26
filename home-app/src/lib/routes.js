@@ -26,11 +26,9 @@ export const PATH_TO_PAGE = {
   [ROUTE_PATHS.aboutUs]: 'aboutUs',
   [ROUTE_PATHS.ourWork]: 'ourWork',
   [ROUTE_PATHS.pastProjects]: 'pastProjects',
-  [ROUTE_PATHS.recruitment]: 'recruitment',
   [ROUTE_PATHS.newsArchive]: 'newsArchive',
   [ROUTE_PATHS.notableAwards]: 'notableAwards',
   [ROUTE_PATHS.communityActivities]: 'communityActivities',
-  [ROUTE_PATHS.faqs]: 'FAQs',
   [ROUTE_PATHS.privacy]: 'privacy',
   [ROUTE_PATHS.terms]: 'terms',
   [ROUTE_PATHS.gdpr]: 'gdpr',
@@ -42,18 +40,16 @@ export const PAGE_TO_PATH = Object.fromEntries(
 )
 
 /**
- * Legacy pages this SPA still injects. Contact, Our Work, Structure and the
- * four legal documents are absent because each is served by a dedicated app.
- * Links to them are still rewritten by `hashToPath`.
+ * Legacy pages this SPA still injects. Contact, Our Work, Structure, the FAQs,
+ * recruitment and the four legal documents are absent because each is served
+ * by a dedicated app. Links to them are still rewritten by `hashToPath`.
  */
 export const LEGACY_PAGE_FILES = {
   aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
-  recruitment: 'recruitment.html',
   newsArchive: 'News.html',
   notableAwards: 'notableAwards.html',
   communityActivities: 'communityActivities.html',
-  FAQs: 'FAQs.html',
 }
 
 /**

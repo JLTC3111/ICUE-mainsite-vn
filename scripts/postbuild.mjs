@@ -46,6 +46,8 @@ copyDir(path.join(root, 'structure'), path.join(homeDist, 'structure'));
 copyDir(path.join(root, 'our-work'), path.join(homeDist, 'our-work'));
 copyDir(path.join(root, 'contact'), path.join(homeDist, 'contact'));
 copyDir(path.join(root, 'legal'), path.join(homeDist, 'legal'));
+copyDir(path.join(root, 'faqs'), path.join(homeDist, 'faqs'));
+copyDir(path.join(root, 'recruitment'), path.join(homeDist, 'recruitment'));
 copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
@@ -79,7 +81,6 @@ const rootDirsFromHome = [
   'models',
   'news',
   'pastProjects',
-  'recruitment',
   'route-shells',
   'work',
   'newsroom',
@@ -88,6 +89,11 @@ const rootDirsFromHome = [
   'our-work',
   'contact',
   'legal',
+  // 'recruitment' is an app output now, not the image directory it used to be:
+  // the photographs live in recruitment-app/public/media/ and ship inside the
+  // app's own build. See recruitment-app/vite.config.js.
+  'faqs',
+  'recruitment',
   'public',
 ];
 

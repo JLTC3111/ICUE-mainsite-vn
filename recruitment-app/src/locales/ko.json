@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "title": "채용 | ICUE Vietnam",
+    "description": "ICUE Vietnam 채용 안내: 모집 중인 직무, 복리후생, 그리고 건설·도시경제 연구소에서의 일하는 방식."
+  },
+  "skipToContent": "모집 중인 직무로 건너뛰기",
+  "instituteName": "건설경제 및 도시개발 연구원",
+  "lang": {
+    "label": "페이지 언어"
+  },
+  "nav": {
+    "pages": {
+      "Home": "홈",
+      "orgStructure": "조직 구성",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트·연구",
+      "News": "뉴스·행사",
+      "aboutUs": "소개",
+      "Contact": "문의",
+      "ourPeople": "인력",
+      "meetOurExperts": "전문가 소개",
+      "coreTeam": "핵심 인력"
+    },
+    "compact": {
+      "Home": "홈",
+      "orgStructure": "조직",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트",
+      "News": "뉴스",
+      "aboutUs": "소개"
+    },
+    "aria": {
+      "nav": "사이트 탐색",
+      "home": "홈으로 이동",
+      "more": "추가 탐색 항목 열기",
+      "moreLabel": "더보기",
+      "overflow": "추가 탐색 항목",
+      "openMenu": "전체 메뉴 열기",
+      "toggleMenu": "탐색 메뉴 열기/닫기",
+      "closeMenu": "탐색 메뉴 닫기",
+      "resizeMenu": "탐색 메뉴 크기 조절",
+      "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
+      "homeVideo": "배경 영상 켜기/끄기",
+      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)"
+    },
+    "contactWordmark": "소개"
+  },
+  "search": {
+    "title": "채용 기회",
+    "subtitle": "역량과 관심사에 맞는 자리를 찾아보세요",
+    "placeholder": "직무, 부서, 역량으로 검색…",
+    "submit": "검색",
+    "clear": "지우기",
+    "label": "모집 중인 직무 검색"
+  },
+  "results": {
+    "count_one": "“{{query}}”에 해당하는 직무 {{count}}건을 찾았습니다.",
+    "count_other": "“{{query}}”에 해당하는 직무 {{count}}건을 찾았습니다.",
+    "none": "“{{query}}”에 해당하는 직무가 없습니다. 다른 검색어를 쓰시거나 검색을 지워 전체를 확인해 보세요.",
+    "cleared": "모집 중인 직무를 모두 표시합니다."
+  },
+  "gallery": {
+    "label": "ICUE에서의 하루",
+    "items": {
+      "survey": {
+        "label": "현장 조사",
+        "alt": "현장 조사를 수행하는 ICUE 직원"
+      },
+      "office": {
+        "label": "사무실",
+        "alt": "ICUE 사무실"
+      },
+      "event": {
+        "label": "연구 과제 회의",
+        "alt": "ICUE 연구 과제 검토 회의"
+      }
+    }
+  },
+  "jobs": {
+    "title": "모집 직무",
+    "subtitle": "함께 사람들의 삶이 달라지는 일을 만들어 갑니다",
+    "department": "부서",
+    "location": "근무지",
+    "expand": "상세 보기",
+    "collapse": "접기",
+    "apply": "이 직무에 지원하기",
+    "empty": "현재 모집 중인 직무가 없습니다. 곧 다시 확인해 주세요."
+  },
+  "benefits": {
+    "title": "복리후생",
+    "subtitle": "여러분의 성장을 진지하게 생각합니다",
+    "items": {
+      "salary": {
+        "title": "급여",
+        "body": "경쟁력 있는 급여와 상여·주식 보상"
+      },
+      "health": {
+        "title": "건강보험",
+        "body": "본인과 가족까지 폭넓게 보장"
+      },
+      "growth": {
+        "title": "경력 개발",
+        "body": "꾸준히 배우고 실력을 다듬을 수 있는 환경"
+      },
+      "balance": {
+        "title": "일과 삶의 균형",
+        "body": "유연근무와 유급휴가"
+      },
+      "projects": {
+        "title": "의미 있는 프로젝트",
+        "body": "실제 프로젝트, 학술 연구, 지구단위계획 참여"
+      },
+      "impact": {
+        "title": "지역사회 기여",
+        "body": "오래 가는 미래를 짓습니다!"
+      }
+    }
+  },
+  "chat": {
+    "title": "ICUE 어시스턴트",
+    "greeting": "안녕하세요! ICUE 어시스턴트입니다. 서비스, 진행 절차, 비용, 연락 방법을 안내해 드릴 수 있습니다. 무엇을 도와드릴까요?",
+    "placeholder": "무엇이든 물어보세요…",
+    "send": "메시지 보내기",
+    "open": "ICUE 어시스턴트 열기",
+    "close": "ICUE 어시스턴트 닫기",
+    "badge": "자동",
+    "thinking": "답변을 작성하는 중…",
+    "transcript": "대화 내용",
+    "error": "죄송합니다 — 지금은 답변할 수 없었습니다. 다시 시도해 주세요.",
+    "suggestions": [
+      "서비스",
+      "비용",
+      "문의"
+    ]
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "다른 페이지",
+    "awards": "주요 수상",
+    "news": "소식",
+    "archive": "지난 소식",
+    "faqs": "자주 묻는 질문",
+    "recruitment": "채용",
+    "privacy": "개인정보",
+    "terms": "이용약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "함께 일하기",
+    "rights": "ICUE, 모든 권리 보유."
+  }
+}

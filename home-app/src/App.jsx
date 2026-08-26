@@ -107,11 +107,14 @@ function AppShell() {
               comparison. Retire this route with LEGACY_PREVIEW_PATHS. */}
           <Route path="/about-us-legacy" element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.recruitment} element={<LegacyHtmlPage />} />
+          {/* No /faqs or /recruitment route: like /contact and /our-work, each
+              is a separate app now (faq-app, recruitment-app), and a
+              client-side route here would shadow it on in-app navigation.
+              ROUTE_PATHS keeps both — the drawer and footer still link to
+              them, as a real navigation. */}
           <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.faqs} element={<LegacyHtmlPage />} />
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>

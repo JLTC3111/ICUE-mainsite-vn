@@ -4,242 +4,582 @@
   "intents": [
     {
       "id": "greeting",
-      "keywords": ["xin chào", "chào", "hello", "hi", "alo", "chào bạn"],
-      "phrases": ["xin chào", "chào bạn", "hello"],
+      "keywords": [
+        "xin chào",
+        "chào",
+        "hello",
+        "hi",
+        "alo",
+        "chào bạn"
+      ],
+      "phrases": [
+        "xin chào",
+        "chào bạn",
+        "hello"
+      ],
       "answer": "Xin chào! Mình có thể giúp bạn tìm thông tin về dịch vụ, dự án, quy trình, chi phí, tuyển dụng, chính sách và cách liên hệ ICUE. Bạn đang quan tâm mục nào?"
     },
     {
       "id": "services",
-      "keywords": ["dịch vụ", "tư vấn", "quy hoạch", "thiết kế", "quản lý dự án", "giám sát", "consulting"],
-      "phrases": ["icue cung cấp dịch vụ gì", "dịch vụ tư vấn", "bạn làm được gì"],
+      "keywords": [
+        "dịch vụ",
+        "tư vấn",
+        "quy hoạch",
+        "thiết kế",
+        "quản lý dự án",
+        "giám sát",
+        "consulting"
+      ],
+      "phrases": [
+        "icue cung cấp dịch vụ gì",
+        "dịch vụ tư vấn",
+        "bạn làm được gì"
+      ],
       "answer": "ICUE cung cấp các dịch vụ tư vấn liên quan đến quy hoạch/thiết kế, quản lý dự án, hỗ trợ thủ tục và các giải pháp phát triển bền vững. Bạn cho mình biết loại dự án + phạm vi (thiết kế/giám sát/hồ sơ…) để mình gợi ý hướng phù hợp.",
       "links": [
-        {"label": "Công việc / Dịch vụ", "url": "#/ourWork"},
-        {"label": "FAQ", "url": "#/faqs"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Công việc / Dịch vụ",
+          "url": "/our-work"
+        },
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        },
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "planning_design",
-      "keywords": ["quy hoạch", "thiết kế", "master plan", "thiết kế ý tưởng", "thiết kế cơ sở", "thiết kế kỹ thuật"],
-      "phrases": ["bạn có làm quy hoạch không", "bạn có làm thiết kế không"],
+      "keywords": [
+        "quy hoạch",
+        "thiết kế",
+        "master plan",
+        "thiết kế ý tưởng",
+        "thiết kế cơ sở",
+        "thiết kế kỹ thuật"
+      ],
+      "phrases": [
+        "bạn có làm quy hoạch không",
+        "bạn có làm thiết kế không"
+      ],
       "answer": "Có — tùy theo nhu cầu dự án, ICUE có thể hỗ trợ các bước quy hoạch/thiết kế. Bạn cho mình biết địa điểm, mục tiêu và giai đoạn hiện tại (ý tưởng / sơ bộ / chi tiết) để mình gợi ý quy trình phù hợp.",
       "links": [
-        {"label": "Công việc", "url": "#/ourWork"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Công việc",
+          "url": "/our-work"
+        },
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "project_management",
-      "keywords": ["quản lý dự án", "pm", "điều phối", "triển khai", "tiến độ"],
-      "phrases": ["có quản lý dự án không", "hỗ trợ quản lý dự án"],
+      "keywords": [
+        "quản lý dự án",
+        "pm",
+        "điều phối",
+        "triển khai",
+        "tiến độ"
+      ],
+      "phrases": [
+        "có quản lý dự án không",
+        "hỗ trợ quản lý dự án"
+      ],
       "answer": "ICUE có thể hỗ trợ quản lý dự án/điều phối tùy phạm vi. Bạn cho mình biết timeline, bên liên quan và đầu ra mong muốn để mình gợi ý cách tổ chức công việc.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "supervision",
-      "keywords": ["giám sát", "theo dõi", "giám sát hiện trường", "kiểm soát chất lượng"],
-      "phrases": ["có giám sát thi công không", "giám sát hiện trường"],
+      "keywords": [
+        "giám sát",
+        "theo dõi",
+        "giám sát hiện trường",
+        "kiểm soát chất lượng"
+      ],
+      "phrases": [
+        "có giám sát thi công không",
+        "giám sát hiện trường"
+      ],
       "answer": "Hỗ trợ giám sát/theo dõi phụ thuộc loại dự án và địa điểm. Bạn cho mình biết dự án ở đâu và đang ở giai đoạn nào (thiết kế/đấu thầu/thi công) để mình tư vấn cách làm phù hợp.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "permits_legal",
-      "keywords": ["thủ tục", "pháp lý", "giấy phép", "xin phép", "phê duyệt"],
-      "phrases": ["có hỗ trợ xin giấy phép không", "hỗ trợ thủ tục"],
+      "keywords": [
+        "thủ tục",
+        "pháp lý",
+        "giấy phép",
+        "xin phép",
+        "phê duyệt"
+      ],
+      "phrases": [
+        "có hỗ trợ xin giấy phép không",
+        "hỗ trợ thủ tục"
+      ],
       "answer": "ICUE có thể hỗ trợ thủ tục/hồ sơ tùy dự án. Bạn cho mình biết tỉnh/thành và loại dự án, mình sẽ gợi ý các bước và nhóm giấy tờ thường gặp.",
       "links": [
-        {"label": "FAQ", "url": "#/faqs"},
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        },
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "documents_required",
-      "keywords": ["giấy tờ", "hồ sơ", "tài liệu", "yêu cầu", "bản vẽ hiện trạng"],
-      "phrases": ["cần giấy tờ gì", "cần hồ sơ gì"],
+      "keywords": [
+        "giấy tờ",
+        "hồ sơ",
+        "tài liệu",
+        "yêu cầu",
+        "bản vẽ hiện trạng"
+      ],
+      "phrases": [
+        "cần giấy tờ gì",
+        "cần hồ sơ gì"
+      ],
       "answer": "Những thứ hay cần lúc bắt đầu: thông tin khu đất/địa điểm, mục tiêu phạm vi, bản vẽ hiện trạng (nếu có) và các giấy tờ pháp lý liên quan (nếu áp dụng). Bạn nói bạn đang có gì rồi, mình sẽ chỉ phần còn thiếu.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"},
-        {"label": "FAQ", "url": "#/faqs"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        },
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
       ]
     },
     {
       "id": "pricing_fees",
-      "keywords": ["chi phí", "giá", "báo giá", "phí", "budget"],
-      "phrases": ["chi phí bao nhiêu", "xin báo giá", "báo giá"],
+      "keywords": [
+        "chi phí",
+        "giá",
+        "báo giá",
+        "phí",
+        "budget"
+      ],
+      "phrases": [
+        "chi phí bao nhiêu",
+        "xin báo giá",
+        "báo giá"
+      ],
       "answer": "Chi phí phụ thuộc phạm vi, thời gian và độ phức tạp. Bạn gửi giúp mình brief ngắn (loại dự án, địa điểm, quy mô, deadline, và bạn cần đầu ra gì) để ICUE có thể ước tính sát hơn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "payment_installments",
-      "keywords": ["thanh toán", "theo đợt", "tạm ứng", "mốc"],
-      "phrases": ["có thanh toán theo đợt không", "điều khoản thanh toán"],
+      "keywords": [
+        "thanh toán",
+        "theo đợt",
+        "tạm ứng",
+        "mốc"
+      ],
+      "phrases": [
+        "có thanh toán theo đợt không",
+        "điều khoản thanh toán"
+      ],
       "answer": "Thông thường có thể chia theo mốc công việc (ý tưởng → bản nháp → hoàn thiện). Bạn cho mình biết timeline và đầu ra, mình sẽ gợi ý cách chia mốc hợp lý.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "process_steps",
-      "keywords": ["quy trình", "các bước", "workflow", "làm việc"],
-      "phrases": ["quy trình hợp tác", "làm việc như thế nào"],
+      "keywords": [
+        "quy trình",
+        "các bước",
+        "workflow",
+        "làm việc"
+      ],
+      "phrases": [
+        "quy trình hợp tác",
+        "làm việc như thế nào"
+      ],
       "answer": "Quy trình thường là: trao đổi ban đầu → thu thập yêu cầu → khảo sát/nghiên cứu bối cảnh → bản nháp → chỉnh sửa → bàn giao. Bạn đang ở giai đoạn nào để mình gợi ý bước bắt đầu tốt nhất?",
       "links": [
-        {"label": "FAQ", "url": "#/faqs"}
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
       ]
     },
     {
       "id": "timeline_duration",
-      "keywords": ["thời gian", "bao lâu", "timeline", "tiến độ"],
-      "phrases": ["mất bao lâu", "thời gian thực hiện"],
+      "keywords": [
+        "thời gian",
+        "bao lâu",
+        "timeline",
+        "tiến độ"
+      ],
+      "phrases": [
+        "mất bao lâu",
+        "thời gian thực hiện"
+      ],
       "answer": "Thời gian phụ thuộc phạm vi và thủ tục phê duyệt. Bạn cho mình deadline + đầu ra cần bàn giao (ý tưởng hay trọn gói) để mình gợi ý timeline và các mốc kiểm tra.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "bim_3d",
-      "keywords": ["bim", "3d", "mô hình", "render", "phối cảnh"],
-      "phrases": ["có dùng bim không", "có mô hình 3d không"],
+      "keywords": [
+        "bim",
+        "3d",
+        "mô hình",
+        "render",
+        "phối cảnh"
+      ],
+      "phrases": [
+        "có dùng bim không",
+        "có mô hình 3d không"
+      ],
       "answer": "ICUE có thể dùng BIM/mô hình 3D (khi phù hợp) để hỗ trợ hình dung và phối hợp. Bạn cần đầu ra gì (model 3D, phối cảnh, phối hợp kỹ thuật) để mình tư vấn.",
       "links": [
-        {"label": "Công việc", "url": "#/ourWork"}
+        {
+          "label": "Công việc",
+          "url": "/our-work"
+        }
       ]
     },
     {
       "id": "green_sustainability",
-      "keywords": ["bền vững", "xanh", "môi trường", "khí hậu", "tiết kiệm năng lượng"],
-      "phrases": ["giải pháp xanh", "phát triển bền vững"],
+      "keywords": [
+        "bền vững",
+        "xanh",
+        "môi trường",
+        "khí hậu",
+        "tiết kiệm năng lượng"
+      ],
+      "phrases": [
+        "giải pháp xanh",
+        "phát triển bền vững"
+      ],
       "answer": "Có — ICUE có thể lồng ghép mục tiêu bền vững (vật liệu, năng lượng, thích ứng khí hậu) tùy bối cảnh dự án. Bạn nêu ưu tiên/giới hạn để mình đề xuất phương án thực tế.",
       "links": [
-        {"label": "Công việc", "url": "#/ourWork"}
+        {
+          "label": "Công việc",
+          "url": "/our-work"
+        }
       ]
     },
     {
       "id": "sectors_clients",
-      "keywords": ["khách hàng", "đối tượng", "cơ quan", "doanh nghiệp", "cá nhân", "cộng đồng"],
-      "phrases": ["khách hàng của bạn là ai", "bạn làm với ai"],
+      "keywords": [
+        "khách hàng",
+        "đối tượng",
+        "cơ quan",
+        "doanh nghiệp",
+        "cá nhân",
+        "cộng đồng"
+      ],
+      "phrases": [
+        "khách hàng của bạn là ai",
+        "bạn làm với ai"
+      ],
       "answer": "ICUE làm việc với nhiều nhóm đối tác (cá nhân, tổ chức/doanh nghiệp, và khu vực công) tùy chương trình/dự án. Bạn chia sẻ bối cảnh để mình gợi ý ví dụ tương tự.",
       "links": [
-        {"label": "Dự án đã thực hiện", "url": "#/pastProjects"}
+        {
+          "label": "Dự án đã thực hiện",
+          "url": "/past-projects"
+        }
       ]
     },
     {
       "id": "locations",
-      "keywords": ["ở đâu", "địa điểm", "hà nội", "việt nam", "tỉnh", "thành"],
-      "phrases": ["icue ở đâu", "có làm ở tỉnh khác không"],
+      "keywords": [
+        "ở đâu",
+        "địa điểm",
+        "hà nội",
+        "việt nam",
+        "tỉnh",
+        "thành"
+      ],
+      "phrases": [
+        "icue ở đâu",
+        "có làm ở tỉnh khác không"
+      ],
       "answer": "Bạn cho mình biết dự án ở tỉnh/thành nào và bạn muốn hỗ trợ từ xa hay trực tiếp, mình sẽ tư vấn cách làm việc phù hợp.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "portfolio_projects",
-      "keywords": ["portfolio", "dự án đã làm", "case study", "tham khảo"],
-      "phrases": ["xem dự án", "xem portfolio"],
+      "keywords": [
+        "portfolio",
+        "dự án đã làm",
+        "case study",
+        "tham khảo"
+      ],
+      "phrases": [
+        "xem dự án",
+        "xem portfolio"
+      ],
       "answer": "Bạn có thể xem các dự án/hoạt động ở mục Công việc / Dự án đã thực hiện. Nếu bạn nêu lĩnh vực (đô thị, môi trường, cộng đồng…), mình sẽ chỉ ví dụ gần nhất.",
       "links": [
-        {"label": "Dự án đã thực hiện", "url": "#/pastProjects"},
-        {"label": "Công việc", "url": "#/ourWork"}
+        {
+          "label": "Dự án đã thực hiện",
+          "url": "/past-projects"
+        },
+        {
+          "label": "Công việc",
+          "url": "/our-work"
+        }
       ]
     },
     {
       "id": "news_updates",
-      "keywords": ["tin tức", "bài viết", "news", "cập nhật"],
-      "phrases": ["tin mới", "bài viết mới"],
+      "keywords": [
+        "tin tức",
+        "bài viết",
+        "news",
+        "cập nhật"
+      ],
+      "phrases": [
+        "tin mới",
+        "bài viết mới"
+      ],
       "answer": "Bạn có thể xem mục Tin tức để theo dõi cập nhật và bài viết gần đây.",
       "links": [
-        {"label": "Tin tức", "url": "#/News"}
+        {
+          "label": "Tin tức",
+          "url": "/newsroom/"
+        }
       ]
     },
     {
       "id": "community",
-      "keywords": ["cộng đồng", "hoạt động", "sự kiện", "workshop", "đào tạo"],
-      "phrases": ["hoạt động cộng đồng", "sự kiện"],
+      "keywords": [
+        "cộng đồng",
+        "hoạt động",
+        "sự kiện",
+        "workshop",
+        "đào tạo"
+      ],
+      "phrases": [
+        "hoạt động cộng đồng",
+        "sự kiện"
+      ],
       "answer": "ICUE có các hoạt động/chương trình cộng đồng. Bạn xem mục Hoạt động cộng đồng để biết thêm.",
       "links": [
-        {"label": "Hoạt động cộng đồng", "url": "#/communityActivities"}
+        {
+          "label": "Hoạt động cộng đồng",
+          "url": "/community-activities"
+        }
       ]
     },
     {
       "id": "recruitment",
-      "keywords": ["tuyển dụng", "việc làm", "job", "career", "apply", "ứng tuyển"],
-      "phrases": ["icue có tuyển dụng không", "cách ứng tuyển", "vị trí đang mở"],
+      "keywords": [
+        "tuyển dụng",
+        "việc làm",
+        "job",
+        "career",
+        "apply",
+        "ứng tuyển"
+      ],
+      "phrases": [
+        "icue có tuyển dụng không",
+        "cách ứng tuyển",
+        "vị trí đang mở"
+      ],
       "answer": "Bạn xem mục Tuyển dụng để biết vị trí đang mở và yêu cầu. Nếu bạn nói vị trí quan tâm, mình có thể gợi ý cách viết CV/ngắn gọn nội dung ứng tuyển.",
       "links": [
-        {"label": "Tuyển dụng", "url": "#/recruitment"}
+        {
+          "label": "Tuyển dụng",
+          "url": "/recruitment"
+        }
       ]
     },
     {
       "id": "internship",
-      "keywords": ["thực tập", "intern", "internship", "sinh viên"],
-      "phrases": ["có nhận thực tập không", "tìm thực tập"],
+      "keywords": [
+        "thực tập",
+        "intern",
+        "internship",
+        "sinh viên"
+      ],
+      "phrases": [
+        "có nhận thực tập không",
+        "tìm thực tập"
+      ],
       "answer": "Nếu bạn quan tâm thực tập, hãy xem mục Tuyển dụng. Bạn chia sẻ ngành học + kỹ năng + mong muốn học gì, mình sẽ gợi ý cách trình bày hồ sơ.",
       "links": [
-        {"label": "Tuyển dụng", "url": "#/recruitment"}
+        {
+          "label": "Tuyển dụng",
+          "url": "/recruitment"
+        }
       ]
     },
     {
       "id": "partnership",
-      "keywords": ["hợp tác", "đối tác", "collaboration", "mou", "phối hợp"],
-      "phrases": ["muốn hợp tác", "cơ hội hợp tác"],
+      "keywords": [
+        "hợp tác",
+        "đối tác",
+        "collaboration",
+        "mou",
+        "phối hợp"
+      ],
+      "phrases": [
+        "muốn hợp tác",
+        "cơ hội hợp tác"
+      ],
       "answer": "ICUE sẵn sàng trao đổi hợp tác nếu phù hợp mục tiêu và phạm vi. Bạn cho mình biết bạn là ai, đề xuất gì và mong muốn đầu ra nào, mình sẽ giúp bạn soạn tin nhắn liên hệ rõ ràng.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "media_press",
-      "keywords": ["báo chí", "truyền thông", "phỏng vấn", "diễn giả"],
-      "phrases": ["liên hệ truyền thông", "yêu cầu báo chí"],
+      "keywords": [
+        "báo chí",
+        "truyền thông",
+        "phỏng vấn",
+        "diễn giả"
+      ],
+      "phrases": [
+        "liên hệ truyền thông",
+        "yêu cầu báo chí"
+      ],
       "answer": "Nếu bạn cần làm việc về truyền thông/báo chí, hãy liên hệ và nêu rõ deadline, chủ đề và nhu cầu (trích dẫn/phỏng vấn/diễn giả). Mình cũng có thể giúp bạn soạn nội dung yêu cầu ngắn gọn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "schedule_meeting",
-      "keywords": ["hẹn", "lịch", "cuộc gọi", "tư vấn", "meeting"],
-      "phrases": ["hẹn lịch tư vấn", "đặt lịch"],
+      "keywords": [
+        "hẹn",
+        "lịch",
+        "cuộc gọi",
+        "tư vấn",
+        "meeting"
+      ],
+      "phrases": [
+        "hẹn lịch tư vấn",
+        "đặt lịch"
+      ],
       "answer": "Được nhé — bạn cho mình khung giờ mong muốn, múi giờ và nội dung cần trao đổi. Khi nhắn qua trang Liên hệ, bạn ghi các thông tin này để xử lý nhanh hơn.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "request_proposal",
-      "keywords": ["đề xuất", "proposal", "tor", "rfp", "phạm vi công việc"],
-      "phrases": ["xin proposal", "gửi đề xuất"],
+      "keywords": [
+        "đề xuất",
+        "proposal",
+        "tor",
+        "rfp",
+        "phạm vi công việc"
+      ],
+      "phrases": [
+        "xin proposal",
+        "gửi đề xuất"
+      ],
       "answer": "Bạn gửi giúp mình mô tả phạm vi (mục tiêu, đầu ra, timeline, ngân sách dự kiến nếu có) để ICUE có thể phản hồi cấu trúc đề xuất và bước tiếp theo.",
       "links": [
-        {"label": "Liên hệ", "url": "#/Contact"}
+        {
+          "label": "Liên hệ",
+          "url": "/contact"
+        }
       ]
     },
     {
       "id": "policies",
-      "keywords": ["privacy", "bảo mật", "gdpr", "điều khoản", "terms", "cookies"],
-      "phrases": ["chính sách bảo mật", "gdpr", "điều khoản sử dụng", "cookies"],
+      "keywords": [
+        "privacy",
+        "bảo mật",
+        "gdpr",
+        "điều khoản",
+        "terms",
+        "cookies"
+      ],
+      "phrases": [
+        "chính sách bảo mật",
+        "gdpr",
+        "điều khoản sử dụng",
+        "cookies"
+      ],
       "answer": "Bạn có thể xem các trang chính sách (Bảo mật, GDPR, Điều khoản, Cookies). Nếu bạn nói rõ bạn quan tâm mục nào, mình sẽ chỉ đúng trang.",
       "links": [
-        {"label": "Bảo mật", "url": "/legal/privacy"},
-        {"label": "GDPR", "url": "/legal/gdpr"},
-        {"label": "Điều khoản", "url": "/legal/terms"},
-        {"label": "Cookies", "url": "/legal/cookies"}
+        {
+          "label": "Bảo mật",
+          "url": "/legal/privacy"
+        },
+        {
+          "label": "GDPR",
+          "url": "/legal/gdpr"
+        },
+        {
+          "label": "Điều khoản",
+          "url": "/legal/terms"
+        },
+        {
+          "label": "Cookies",
+          "url": "/legal/cookies"
+        }
       ]
     },
     {
       "id": "faq",
-      "keywords": ["faq", "câu hỏi thường gặp", "hỏi đáp"],
-      "phrases": ["faq", "câu hỏi thường gặp"],
+      "keywords": [
+        "faq",
+        "câu hỏi thường gặp",
+        "hỏi đáp"
+      ],
+      "phrases": [
+        "faq",
+        "câu hỏi thường gặp"
+      ],
       "answer": "Bạn có thể xem mục FAQ để tra cứu nhanh. Bạn cứ hỏi trực tiếp ở đây nữa nhé — mình cũng sẽ cố tìm câu trả lời gần nhất từ FAQ cho bạn.",
       "links": [
-        {"label": "FAQ", "url": "#/faqs"}
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
       ]
     }
   ],

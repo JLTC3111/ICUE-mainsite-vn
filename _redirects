@@ -3,11 +3,9 @@
 /                     /index.html                              200
 /about-us             /route-shells/about-us.html              200
 /past-projects        /route-shells/past-projects.html         200
-/recruitment          /route-shells/recruitment.html           200
 /news-archive         /route-shells/news-archive.html          200
 /notable-awards       /route-shells/notable-awards.html        200
 /community-activities /route-shells/community-activities.html  200
-/faqs                 /route-shells/faqs.html                  200
 
 # Former legal-page URLs permanently move to the consolidated legal app.
 /privacy              /legal/privacy  301
@@ -22,6 +20,9 @@
 /src/pages/notableAwards.html       /notable-awards         301
 /src/pages/communityActivities.html /community-activities   301
 /src/pages/FAQs.html                /faqs                   301
+/src/pages/recruitment.html         /recruitment            301
+/legacy/pages/FAQs.html             /faqs                   301
+/legacy/pages/recruitment.html      /recruitment            301
 /src/pages/privacy.html             /legal/privacy         301
 /src/pages/terms.html               /legal/terms           301
 /src/pages/gdpr.html                /legal/gdpr            301
@@ -70,6 +71,20 @@
 # structured data and a no-JS fallback with the address and the number.
 /contact             /contact/index.html     200
 /contact/*           /contact/index.html     200
+
+# FAQ React app lives at /faqs. It replaces the legacy FAQs.html page and the
+# crawlable route shell — its own index.html carries the meta, FAQPage
+# structured data and a no-JS fallback with every question and answer.
+/faqs                /faqs/index.html        200
+/faqs/*              /faqs/index.html        200
+
+# Recruitment React app lives at /recruitment. It owns the whole namespace,
+# photographs included (/recruitment/media/*), because it builds there with
+# emptyOutDir. Its index.html carries JobPosting data for each open role.
+# Like /newsroom/* below, the splat is a fallback: real files under
+# /recruitment/assets/* and /recruitment/media/* are served as-is when present.
+/recruitment         /recruitment/index.html    200
+/recruitment/*       /recruitment/index.html    200
 
 # Consolidated legal React app. All four documents share one bundle and use
 # route-aware tabs at /legal/privacy, /legal/terms, /legal/gdpr and /legal/cookies.

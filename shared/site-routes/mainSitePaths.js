@@ -98,6 +98,14 @@ export const MAIN_SITE_PAGE_PATHS = {
  * `aboutUs` joins them for a different reason: it used to exist twice, once per
  * host, and now exists once — the icue.vn copy renders all six languages and
  * en.icue.vn/about-us redirects to it.
+ *
+ * `FAQs` and `recruitment` are the same case as aboutUs. Until they became
+ * their own apps they were Vietnamese-only pages injected into home-app, and a
+ * reader who picked English on either was sent to en.icue.vn — a host this
+ * repository does not build, which is where people-app's and structure-app's
+ * footers were pointing English readers. Both now render all six languages
+ * here. `FAQs` and `faqs` are both listed because MAIN_SITE_PAGE_PATHS carries
+ * the id in both casings and callers use either.
  */
 const VI_ONLY_APP_PAGES = new Set([
   'News',
@@ -105,6 +113,9 @@ const VI_ONLY_APP_PAGES = new Set([
   'ourWork',
   'Contact',
   'aboutUs',
+  'FAQs',
+  'faqs',
+  'recruitment',
 ])
 
 export function resolveMainSiteLink(page, lang, base) {

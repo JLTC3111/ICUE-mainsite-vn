@@ -362,7 +362,7 @@ footer {
                         Các Trang Khác
                     </div>
                     <div class="collapsible">
-                        <a href="/src/pages/FAQs.html">Câu Hỏi Thường Gặp</a>
+                        <a href="/faqs">Câu Hỏi Thường Gặp</a>
                         <a href="/recruitment">Tuyển Dụng</a>
                     </div>
                 </div>

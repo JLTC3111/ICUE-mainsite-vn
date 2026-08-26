@@ -23,6 +23,8 @@ dist-home/
 /our-work/
 /contact/
 /legal/
+/faqs/
+/recruitment/
 
 # Environment (secrets — never commit)
 .env

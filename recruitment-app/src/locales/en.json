@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "title": "Careers | ICUE Vietnam",
+    "description": "Careers at ICUE Vietnam: open positions, benefits and what it is like to work at the institute for construction and urban economics research."
+  },
+  "skipToContent": "Skip to open positions",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "lang": {
+    "label": "Page language"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Home",
+      "orgStructure": "Structure & Organization",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects & Research",
+      "News": "News & Events",
+      "aboutUs": "About Us",
+      "Contact": "Contact",
+      "ourPeople": "Our People",
+      "meetOurExperts": "Meet Our Experts",
+      "coreTeam": "Core Team"
+    },
+    "compact": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects",
+      "News": "News",
+      "aboutUs": "About"
+    },
+    "aria": {
+      "nav": "Site navigation",
+      "home": "Go to homepage",
+      "more": "Open more navigation items",
+      "moreLabel": "More",
+      "overflow": "More navigation items",
+      "openMenu": "Open the full menu",
+      "toggleMenu": "Toggle navigation menu",
+      "closeMenu": "Close navigation menu",
+      "resizeMenu": "Resize navigation menu",
+      "resizeMenuTitle": "Drag to resize the menu",
+      "homeVideo": "Toggle background video",
+      "aboutUsVideo": "Toggle background video (About Us)"
+    },
+    "contactWordmark": "ABOUT US"
+  },
+  "search": {
+    "title": "Career Opportunities",
+    "subtitle": "Find the roles that match your skills and what you care about",
+    "placeholder": "Search by role, department or skill…",
+    "submit": "Search",
+    "clear": "Clear",
+    "label": "Search open positions"
+  },
+  "results": {
+    "count_one": "{{count}} position matches “{{query}}”.",
+    "count_other": "{{count}} positions match “{{query}}”.",
+    "none": "No positions match “{{query}}”. Try a different term, or clear the search to see everything.",
+    "cleared": "Showing all open positions."
+  },
+  "gallery": {
+    "label": "Life at ICUE",
+    "items": {
+      "survey": {
+        "label": "Field Survey",
+        "alt": "ICUE staff carrying out a site survey"
+      },
+      "office": {
+        "label": "The Office",
+        "alt": "The ICUE office"
+      },
+      "event": {
+        "label": "Research Review",
+        "alt": "An ICUE research project review meeting"
+      }
+    }
+  },
+  "jobs": {
+    "title": "Open Positions",
+    "subtitle": "Join us and make a difference to how people live",
+    "department": "Department",
+    "location": "Location",
+    "expand": "Show details",
+    "collapse": "Hide details",
+    "apply": "Apply for this role",
+    "empty": "There are no open positions right now. Please check back soon."
+  },
+  "benefits": {
+    "title": "Benefits",
+    "subtitle": "We take your growth seriously",
+    "items": {
+      "salary": {
+        "title": "Salary",
+        "body": "Competitive, with bonuses and equity"
+      },
+      "health": {
+        "title": "Health Cover",
+        "body": "Comprehensive, for you and your family"
+      },
+      "growth": {
+        "title": "Career Development",
+        "body": "Keep learning and sharpening your craft"
+      },
+      "balance": {
+        "title": "Work & Life Balance",
+        "body": "Flexible hours and paid leave"
+      },
+      "projects": {
+        "title": "Work Worth Doing",
+        "body": "Real projects, scientific research and district-level planning"
+      },
+      "impact": {
+        "title": "Community Impact",
+        "body": "Building a future that lasts!"
+      }
+    }
+  },
+  "chat": {
+    "title": "ICUE Assistant",
+    "greeting": "Hello! I’m the ICUE assistant. I can help you find your way around our services, how we work, fees and how to reach us. What do you need?",
+    "placeholder": "Ask anything…",
+    "send": "Send message",
+    "open": "Open the ICUE assistant",
+    "close": "Close the ICUE assistant",
+    "badge": "Auto",
+    "thinking": "Writing a reply…",
+    "transcript": "Conversation transcript",
+    "error": "Sorry — I could not answer just now. Please try again.",
+    "suggestions": [
+      "Services",
+      "Fees",
+      "Contact"
+    ]
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE."
+  }
+}

@@ -10,11 +10,9 @@ const routes = [
   ['/', 'index.html'],
   ['/about-us', 'route-shells/about-us.html'],
   ['/past-projects', 'route-shells/past-projects.html'],
-  ['/recruitment', 'route-shells/recruitment.html'],
   ['/news-archive', 'route-shells/news-archive.html'],
   ['/notable-awards', 'route-shells/notable-awards.html'],
   ['/community-activities', 'route-shells/community-activities.html'],
-  ['/faqs', 'route-shells/faqs.html'],
 ]
 
 const values = {
@@ -89,7 +87,8 @@ for (const [label, set] of Object.entries(values)) {
   }
 }
 
-// /our-work, /contact and /legal are served by their own apps, not by a route shell.
+// /our-work, /contact, /legal, /faqs and /recruitment are served by their own
+// apps, not by a route shell.
 // Assert each app is actually there and reachable, since dropping them from
 // `routes` above removed them from every other check in this file.
 const standaloneApps = [
@@ -98,6 +97,8 @@ const standaloneApps = [
   ['/our-work', 'our-work', 'ourwork-app'],
   ['/contact', 'contact', 'contact-app'],
   ['/legal', 'legal', 'legal-app'],
+  ['/faqs', 'faqs', 'faq-app'],
+  ['/recruitment', 'recruitment', 'recruitment-app'],
 ]
 
 for (const [route, dir, appName] of standaloneApps) {

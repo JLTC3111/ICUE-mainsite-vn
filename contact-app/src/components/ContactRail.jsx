@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { withLocale } from '@icue/site-routes/mainSitePaths.js'
 import { openZaloChat } from '@icue/zalo/zaloLink'
 import {
   CHAT,
@@ -21,7 +22,8 @@ function Arrow() {
 }
 
 export default function ContactRail() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
 
   return (
     <aside className="ct-rail">
@@ -121,11 +123,16 @@ export default function ContactRail() {
 
       <section className="ct-rail__section ct-reveal">
         <h2 className="ct-rail__heading">{t('rail.faster')}</h2>
+        {/* The two internal shortcuts point at /recruitment and /faqs, which
+            now render all six languages themselves. Without withLocale they
+            handed the reader a bare path and the locale survived only via
+            localStorage — every other link on this page carries it. The
+            capability PDF is `external` and has no locale to carry. */}
         {SHORTCUTS.map((item) => (
           <a
             key={item.id}
             className="ct-rail__link"
-            href={item.href}
+            href={item.external ? item.href : withLocale(item.href, lang)}
             target={item.external ? '_blank' : undefined}
             rel={item.external ? 'noopener noreferrer' : undefined}
           >

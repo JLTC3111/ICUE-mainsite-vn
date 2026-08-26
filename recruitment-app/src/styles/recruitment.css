@@ -1,0 +1,433 @@
+/*
+ * Ported from the inline <style> block in src/pages/recruitment.html:9-359.
+ *
+ * The legacy block opened with a universal reset and styled bare `body`, which
+ * is why home-app had to rewrite those selectors before injecting the page
+ * (prepareLegacyHtml, home-app/src/lib/routes.js:108). Owning the document
+ * means none of that is needed — the reset lives in theme.css and every rule
+ * below is scoped to an `rc-` class.
+ *
+ * Three rules that were dead in the original are not carried over:
+ * `.cta-button` and `.hero-section` (recruitment.html:29-49, :324-326) had no
+ * matching element — leftovers from a removed hero that JobBoard.initialize()
+ * still queried at src/script.js:3381 — and `.gallery-item.large` was never
+ * applied to any of the three photographs.
+ *
+ * The search button's #f44336 red is also gone. It was the only red on the
+ * page, it read as a warning rather than an action, and it sat next to a
+ * "clear" button that had no background colour at all.
+ */
+
+.rc-container {
+  max-width: var(--rc-maxw);
+  margin: 0 auto;
+  padding-inline: var(--rc-pad);
+}
+
+.rc-page {
+  /* Clears the fixed pill nav. */
+  padding-top: clamp(88px, 12vh, 140px);
+}
+
+.rc-section__title {
+  font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  color: var(--rc-ink);
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.rc-section__subtitle {
+  font-size: clamp(0.85rem, 2.25vw, 1.1rem);
+  color: var(--rc-ink-3);
+  text-align: center;
+  margin: 0;
+}
+
+/* ---- search ------------------------------------------------------------ */
+
+.rc-search {
+  background: var(--rc-surface);
+  padding: clamp(36px, 6vw, 60px) 0;
+  box-shadow: var(--rc-shadow);
+}
+
+.rc-search .rc-container {
+  max-width: 800px;
+  text-align: center;
+}
+
+.rc-search__title {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 600;
+  color: var(--rc-ink);
+  margin: 0 0 4px;
+}
+
+.rc-search__subtitle {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  color: var(--rc-ink-3);
+  margin: 0 0 20px;
+}
+
+.rc-search__form {
+  display: flex;
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rc-search__input {
+  flex: 1;
+  min-width: 220px;
+  padding: 14px 18px;
+  border: 2px solid var(--rc-rule);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: inherit;
+  background: var(--rc-surface);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rc-search__input:focus {
+  outline: none;
+  border-color: var(--rc-accent);
+  box-shadow: 0 0 0 3px var(--rc-tint);
+}
+
+.rc-search__submit,
+.rc-search__clear {
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+.rc-search__submit {
+  background: var(--rc-accent);
+  color: var(--rc-on-accent);
+}
+
+.rc-search__submit:hover {
+  background: var(--rc-accent-hover);
+}
+
+.rc-search__clear {
+  background: var(--rc-surface-2);
+  color: var(--rc-ink-2);
+  border: 1px solid var(--rc-rule);
+}
+
+.rc-search__clear:hover:not(:disabled) {
+  background: var(--rc-tint);
+}
+
+.rc-search__clear:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- gallery ----------------------------------------------------------- */
+
+.rc-gallery {
+  padding: 25px 0;
+  background: var(--rc-surface-2);
+}
+
+.rc-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rc-gallery__item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--rc-shadow-lift);
+  background: var(--rc-rule);
+  aspect-ratio: 3 / 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rc-gallery__item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.rc-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rc-gallery__caption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rc-gallery__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* ---- postings ---------------------------------------------------------- */
+
+.rc-jobs {
+  background: var(--rc-surface);
+  padding: clamp(36px, 6vw, 64px) 0;
+  scroll-margin-top: clamp(88px, 12vh, 140px);
+}
+
+.rc-jobs__status {
+  text-align: center;
+  color: var(--rc-ink-3);
+  font-size: 0.92rem;
+  margin: 18px 0 0;
+  min-height: 1.4em;
+}
+
+.rc-jobs__empty {
+  text-align: center;
+  color: var(--rc-ink-3);
+  margin-top: 32px;
+}
+
+.rc-jobs__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 28px;
+}
+
+.rc-job {
+  background: var(--rc-surface);
+  border: 1px solid var(--rc-rule);
+  border-radius: 12px;
+  padding: clamp(20px, 3vw, 30px);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.rc-job:hover,
+.rc-job.is-expanded {
+  border-color: var(--rc-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.rc-job__summary {
+  display: block;
+  width: 100%;
+  text-align: start;
+  cursor: pointer;
+}
+
+.rc-job__title {
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  font-weight: 600;
+  color: var(--rc-ink);
+  margin: 0 0 10px;
+}
+
+.rc-job__department {
+  color: var(--rc-accent-hover);
+  font-weight: 500;
+  font-style: italic;
+  margin: 0 0 8px;
+}
+
+/* The field name is for screen readers and small print, not decoration: the
+   legacy card showed a bare italic word with no indication it was a
+   department. */
+.rc-job__field {
+  display: block;
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rc-ink-3);
+}
+
+.rc-job__location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rc-ink-3);
+  font-size: 0.95rem;
+  margin: 0 0 15px;
+}
+
+.rc-job__pin {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.rc-job__description {
+  color: var(--rc-ink-2);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.rc-job__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rc-job__tag {
+  background: var(--rc-surface-2);
+  color: var(--rc-ink-3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  border: 1px solid var(--rc-rule);
+}
+
+.rc-job__apply {
+  align-self: flex-start;
+  margin-top: 20px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--rc-accent);
+  color: var(--rc-on-accent);
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.rc-job__apply:hover {
+  background: var(--rc-accent-hover);
+}
+
+/* Search-term highlight. `background`/`color` are both set: the UA default for
+   <mark> is black on yellow, which fights the page and fails against the tag
+   chips' grey ground. */
+.rc-mark {
+  background: var(--rc-tint-strong);
+  color: var(--rc-ink);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ---- benefits ---------------------------------------------------------- */
+
+.rc-benefits {
+  background: linear-gradient(135deg, var(--rc-surface-2) 0%, var(--rc-rule) 100%);
+  padding: clamp(48px, 8vw, 80px) 0;
+}
+
+.rc-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+  list-style: none;
+  padding: 0;
+}
+
+.rc-benefit {
+  background: var(--rc-surface);
+  border-radius: 12px;
+  padding: 30px 25px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.rc-benefit:hover {
+  transform: translateY(-5px);
+}
+
+.rc-benefit__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.rc-benefit__icon svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.rc-benefit__title {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  color: var(--rc-ink);
+  margin: 0 0 10px;
+}
+
+.rc-benefit__body {
+  color: var(--rc-ink-3);
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-gallery__item,
+  .rc-job,
+  .rc-benefit {
+    transition: none;
+  }
+  .rc-gallery__item:hover,
+  .rc-job:hover,
+  .rc-job.is-expanded,
+  .rc-benefit:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .rc-search__form {
+    gap: 8px;
+  }
+
+  .rc-search__input {
+    min-width: 100%;
+  }
+
+  .rc-search__submit,
+  .rc-search__clear {
+    flex: 1;
+  }
+
+  .rc-jobs__grid,
+  .rc-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Appended after the port: the disclosure hint on a job card. The legacy card
+   had no affordance at all — it was clickable with nothing to say so. */
+.rc-job__disclosure {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--rc-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

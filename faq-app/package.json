@@ -1,0 +1,28 @@
+{
+  "name": "faq-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "sync-assets": "node scripts/sync-assets.mjs",
+    "dev": "vite",
+    "predev": "npm run sync-assets && npm run generate:head",
+    "build": "vite build",
+    "prebuild": "npm run sync-assets && npm run generate:head && npm run verify:content",
+    "preview": "vite preview",
+    "verify:content": "node scripts/verify-content.mjs",
+    "generate:head": "node scripts/generate-head.mjs"
+  },
+  "dependencies": {
+    "i18next": "^26.3.1",
+    "lucide-react": "^1.24.0",
+    "motion": "^12.42.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.12"
+  }
+}

@@ -7,12 +7,19 @@ import {
   withLocale,
 } from '../shared/site-routes/mainSitePaths.js'
 
+/*
+ * Every destination a standalone app links to. Keep this in step with the apps
+ * themselves: a page missing here is silently unverified — the loop below only
+ * ever asserts about the values in this map.
+ */
 const APPS = {
   Home: 'Home',
   Structure: 'orgStructure',
   'Our Work': 'ourWork',
   News: 'News',
   Contact: 'Contact',
+  FAQs: 'FAQs',
+  Recruitment: 'recruitment',
 }
 
 let verifiedTransitions = 0
@@ -33,7 +40,8 @@ for (const source of Object.keys(APPS)) {
         `${source} -> ${destination} must preserve ${locale}`,
       )
 
-      if (['News', 'orgStructure', 'ourWork', 'Contact'].includes(page)) {
+      // Must mirror VI_ONLY_APP_PAGES in shared/site-routes/mainSitePaths.js.
+      if (['News', 'orgStructure', 'ourWork', 'Contact', 'FAQs', 'faqs', 'recruitment'].includes(page)) {
         assert.equal(url.origin, 'https://icue.vn')
       } else {
         assert.equal(url.origin, mainSiteOriginForLocale(locale))

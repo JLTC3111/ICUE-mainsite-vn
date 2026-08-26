@@ -37,7 +37,8 @@ export default function LanguageFlagLink() {
     }
 
     if (
-      ['gdpr', 'privacy', 'recruitment', 'terms', 'faqs', 'cookies', 'notableAwards', 'communityActivities'].includes(
+      // Keep in step with STATIC_PAGES in ./languageSwitcher.js.
+      ['gdpr', 'privacy', 'terms', 'cookies', 'notableAwards', 'communityActivities'].includes(
         fresh.targetPageName
       )
     ) {

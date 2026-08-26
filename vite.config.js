@@ -88,14 +88,14 @@ function homeDevFallback() {
   // this middleware answers with the home SPA's index.html, the SPA finds no
   // route for it and its catch-all redirects to `/`, so the link just appears
   // to do nothing.
-  const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work', '/contact', '/legal'];
+  const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work', '/contact', '/legal',
+    '/faqs', '/recruitment'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
     '/src/pages/notableAwards.html',
     '/src/pages/communityActivities.html',
-    '/src/pages/FAQs.html',
-  ]);
+    ]);
 
   // Mirrors the 301s in _redirects. Pages that became standalone apps have no
   // legacy HTML left to serve, so in dev these are pure redirects — without
@@ -106,8 +106,7 @@ function homeDevFallback() {
     '/legacy/pages/News.html': '/news-archive',
     '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
-    '/legacy/pages/FAQs.html': '/faqs',
-    '/legacy/pages/privacy.html': '/legal/privacy',
+      '/legacy/pages/privacy.html': '/legal/privacy',
     '/legacy/pages/terms.html': '/legal/terms',
     '/legacy/pages/gdpr.html': '/legal/gdpr',
     '/legacy/pages/cookies.html': '/legal/cookies',
@@ -119,8 +118,7 @@ function homeDevFallback() {
     '/src/pages/orgStructure.html': '/structure/',
     '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
-    '/src/pages/FAQs.html': '/faqs',
-    '/src/pages/privacy.html': '/legal/privacy',
+      '/src/pages/privacy.html': '/legal/privacy',
     '/src/pages/terms.html': '/legal/terms',
     '/src/pages/gdpr.html': '/legal/gdpr',
     '/src/pages/cookies.html': '/legal/cookies',
@@ -247,6 +245,8 @@ export default {
     spaDevFallback({ name: 'ourwork-dev-fallback', basePath: '/our-work', outDirName: 'our-work', buildScript: 'build:ourwork' }),
     spaDevFallback({ name: 'contact-dev-fallback', basePath: '/contact', outDirName: 'contact', buildScript: 'build:contact' }),
     spaDevFallback({ name: 'legal-dev-fallback', basePath: '/legal', outDirName: 'legal', buildScript: 'build:legal' }),
+    spaDevFallback({ name: 'faq-dev-fallback', basePath: '/faqs', outDirName: 'faqs', buildScript: 'build:faq' }),
+    spaDevFallback({ name: 'recruitment-dev-fallback', basePath: '/recruitment', outDirName: 'recruitment', buildScript: 'build:recruitment' }),
     // Must stay last: this one claims every remaining extensionless URL.
     homeDevFallback(),
   ],

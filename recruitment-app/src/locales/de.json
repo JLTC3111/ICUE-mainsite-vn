@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "title": "Karriere | ICUE Vietnam",
+    "description": "Karriere bei ICUE Vietnam: offene Stellen, Leistungen und die Arbeit am Institut für Bau- und Stadtökonomieforschung."
+  },
+  "skipToContent": "Zu den offenen Stellen springen",
+  "instituteName": "Institut für Bauwirtschaft und Stadtentwicklung",
+  "lang": {
+    "label": "Sprache der Seite"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur & Organisation",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte & Forschung",
+      "News": "News & Veranstaltungen",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Unser Team",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Menü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "ÜBER UNS"
+  },
+  "search": {
+    "title": "Berufliche Möglichkeiten",
+    "subtitle": "Finden Sie die Stelle, die zu Ihren Fähigkeiten und Interessen passt",
+    "placeholder": "Nach Stelle, Abteilung oder Fähigkeit suchen …",
+    "submit": "Suchen",
+    "clear": "Zurücksetzen",
+    "label": "Offene Stellen durchsuchen"
+  },
+  "results": {
+    "count_one": "{{count}} Stelle passt zu „{{query}}“.",
+    "count_other": "{{count}} Stellen passen zu „{{query}}“.",
+    "none": "Keine Stelle passt zu „{{query}}“. Versuchen Sie einen anderen Begriff oder setzen Sie die Suche zurück.",
+    "cleared": "Alle offenen Stellen werden angezeigt."
+  },
+  "gallery": {
+    "label": "Arbeiten bei ICUE",
+    "items": {
+      "survey": {
+        "label": "Vor-Ort-Aufnahme",
+        "alt": "ICUE-Mitarbeitende bei einer Bestandsaufnahme"
+      },
+      "office": {
+        "label": "Das Büro",
+        "alt": "Das Büro von ICUE"
+      },
+      "event": {
+        "label": "Projektbesprechung",
+        "alt": "Besprechung eines Forschungsprojekts bei ICUE"
+      }
+    }
+  },
+  "jobs": {
+    "title": "Offene Stellen",
+    "subtitle": "Kommen Sie dazu und verändern Sie, wie Menschen leben",
+    "department": "Abteilung",
+    "location": "Standort",
+    "expand": "Details anzeigen",
+    "collapse": "Details ausblenden",
+    "apply": "Auf diese Stelle bewerben",
+    "empty": "Derzeit sind keine Stellen ausgeschrieben. Schauen Sie bald wieder vorbei."
+  },
+  "benefits": {
+    "title": "Leistungen",
+    "subtitle": "Ihre Entwicklung ist uns wichtig",
+    "items": {
+      "salary": {
+        "title": "Vergütung",
+        "body": "Attraktiv, mit Bonus und Beteiligung"
+      },
+      "health": {
+        "title": "Krankenversicherung",
+        "body": "Umfassend, für Sie und Ihre Familie"
+      },
+      "growth": {
+        "title": "Weiterentwicklung",
+        "body": "Ständig dazulernen und Ihr Handwerk schärfen"
+      },
+      "balance": {
+        "title": "Beruf & Privatleben",
+        "body": "Flexible Arbeitszeiten und bezahlter Urlaub"
+      },
+      "projects": {
+        "title": "Aufgaben mit Substanz",
+        "body": "Echte Projekte, wissenschaftliche Forschung und Bebauungsplanung"
+      },
+      "impact": {
+        "title": "Nutzen für die Gesellschaft",
+        "body": "Eine Zukunft bauen, die trägt!"
+      }
+    }
+  },
+  "chat": {
+    "title": "ICUE-Assistent",
+    "greeting": "Hallo! Ich bin der ICUE-Assistent. Ich helfe Ihnen bei Fragen zu Leistungen, Ablauf, Honoraren und Kontakt. Was brauchen Sie?",
+    "placeholder": "Fragen Sie einfach …",
+    "send": "Nachricht senden",
+    "open": "ICUE-Assistenten öffnen",
+    "close": "ICUE-Assistenten schließen",
+    "badge": "Auto",
+    "thinking": "Antwort wird verfasst …",
+    "transcript": "Gesprächsverlauf",
+    "error": "Entschuldigung — gerade war keine Antwort möglich. Bitte versuchen Sie es noch einmal.",
+    "suggestions": [
+      "Leistungen",
+      "Honorare",
+      "Kontakt"
+    ]
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Nachrichten",
+    "archive": "Archiv",
+    "faqs": "Häufige Fragen",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Zusammenarbeit",
+    "rights": "Alle Rechte vorbehalten, ICUE."
+  }
+}

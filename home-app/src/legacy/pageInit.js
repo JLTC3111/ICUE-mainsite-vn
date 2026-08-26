@@ -90,12 +90,6 @@ const PAGE_INIT = {
     const api = await getNewsArchiveSlider()
     await api.initNewsArchiveSlider()
   },
-  recruitment: async () => {
-    window.JobBoard?.init?.()
-  },
-  FAQs: async () => {
-    window.initFrequentlyAskedQuestions?.()
-  },
   notableAwards: async () => {
     window.AwardsPage?.init?.()
   },

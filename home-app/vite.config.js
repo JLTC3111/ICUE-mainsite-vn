@@ -9,14 +9,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LEGACY_SHELL_SRC_PAGES = new Set([
   '/src/pages/notableAwards.html',
   '/src/pages/communityActivities.html',
-  '/src/pages/FAQs.html',
 ])
 
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/News.html': '/news-archive',
   '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
-  '/legacy/pages/FAQs.html': '/faqs',
   '/legacy/pages/privacy.html': '/legal/privacy',
   '/legacy/pages/terms.html': '/legal/terms',
   '/legacy/pages/gdpr.html': '/legal/gdpr',

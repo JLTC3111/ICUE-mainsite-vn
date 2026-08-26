@@ -72,6 +72,11 @@ const routes = [
   {
     key: 'recruitment',
     path: '/recruitment',
+    // Served by recruitment-app, which ships its own index.html with the same
+    // meta, JobPosting structured data and a no-JS fallback listing every open
+    // role. Kept in this list so the other shells' noscript nav and the sitemap
+    // still carry the route — just don't generate a shell that would shadow it.
+    standalone: true,
     title: 'Tuyển dụng | ICUE Vietnam',
     description:
       'Cơ hội nghề nghiệp và cộng tác chuyên môn tại ICUE Vietnam trong nghiên cứu, quy hoạch, kinh tế xây dựng và phát triển đô thị.',
@@ -112,6 +117,10 @@ const routes = [
   {
     key: 'faqs',
     path: '/faqs',
+    // Served by faq-app, which ships its own index.html with the same meta,
+    // FAQPage structured data and a no-JS fallback carrying every question.
+    // Kept here for sitemap and no-JS navigation data.
+    standalone: true,
     title: 'Câu hỏi thường gặp | ICUE Vietnam',
     description:
       'Giải đáp những câu hỏi thường gặp về ICUE Vietnam, lĩnh vực hoạt động, dự án, hợp tác và liên hệ.',

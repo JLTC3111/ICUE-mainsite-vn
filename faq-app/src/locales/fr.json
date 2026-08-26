@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "title": "Questions fréquentes | ICUE Vietnam",
+    "description": "Réponses aux questions les plus fréquentes sur ICUE Vietnam : prestations de conseil, déroulement, honoraires, autorisations, délais et contact."
+  },
+  "skipToContent": "Aller aux catégories de questions",
+  "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
+  "lang": {
+    "label": "Langue de la page"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Accueil",
+      "orgStructure": "Structure & organisation",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets & études",
+      "News": "Actualités & événements",
+      "aboutUs": "À propos",
+      "Contact": "Contact",
+      "ourPeople": "Notre équipe",
+      "meetOurExperts": "Nos experts",
+      "coreTeam": "Équipe permanente"
+    },
+    "compact": {
+      "Home": "Accueil",
+      "orgStructure": "Structure",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets",
+      "News": "Actualités",
+      "aboutUs": "À propos"
+    },
+    "aria": {
+      "nav": "Navigation du site",
+      "home": "Retour à l'accueil",
+      "more": "Ouvrir les autres liens de navigation",
+      "moreLabel": "Plus",
+      "overflow": "Autres liens de navigation",
+      "openMenu": "Ouvrir le menu complet",
+      "toggleMenu": "Afficher ou masquer le menu de navigation",
+      "closeMenu": "Fermer le menu de navigation",
+      "resizeMenu": "Redimensionner le menu de navigation",
+      "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
+      "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
+      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)"
+    },
+    "contactWordmark": "À PROPOS"
+  },
+  "header": {
+    "title": "Questions fréquentes",
+    "subtitle": "Les questions que l’on nous pose le plus sur le conseil en construction et urbanisme"
+  },
+  "a11y": {
+    "categoryList": "Catégories de questions",
+    "openCategory": "Ouvrir la catégorie {{label}}",
+    "closeCategory": "Fermer la catégorie {{label}}",
+    "answer": "Réponse"
+  },
+  "labels": {
+    "question": "Question",
+    "answer": "Réponse"
+  },
+  "stillStuck": {
+    "heading": "Vous n’avez pas trouvé votre réponse ?",
+    "body": "Posez-nous directement votre question — nous répondons sous 24 heures ouvrées.",
+    "cta": "Contacter ICUE"
+  },
+  "chat": {
+    "title": "Assistant ICUE",
+    "greeting": "Bonjour ! Je suis l’assistant ICUE. Je peux vous orienter sur nos prestations, notre façon de travailler, les honoraires et comment nous joindre. Que cherchez-vous ?",
+    "placeholder": "Posez votre question…",
+    "send": "Envoyer le message",
+    "open": "Ouvrir l’assistant ICUE",
+    "close": "Fermer l’assistant ICUE",
+    "badge": "Auto",
+    "thinking": "Rédaction de la réponse…",
+    "transcript": "Fil de la conversation",
+    "error": "Désolé — je n’ai pas pu répondre à l’instant. Merci de réessayer.",
+    "suggestions": [
+      "Prestations",
+      "Honoraires",
+      "Contact"
+    ]
+  },
+  "footer": {
+    "company": "Société",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Actualités",
+    "archive": "Archives",
+    "faqs": "Questions fréquentes",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Travailler avec nous",
+    "rights": "Tous droits réservés, ICUE."
+  }
+}
