@@ -12,7 +12,6 @@ const routes = [
   ['/past-projects', 'route-shells/past-projects.html'],
   ['/news-archive', 'route-shells/news-archive.html'],
   ['/notable-awards', 'route-shells/notable-awards.html'],
-  ['/community-activities', 'route-shells/community-activities.html'],
 ]
 
 const values = {
@@ -99,6 +98,7 @@ const standaloneApps = [
   ['/legal', 'legal', 'legal-app'],
   ['/faqs', 'faqs', 'faq-app'],
   ['/recruitment', 'recruitment', 'recruitment-app'],
+  ['/community-activities', 'community-activities', 'community-app'],
 ]
 
 for (const [route, dir, appName] of standaloneApps) {

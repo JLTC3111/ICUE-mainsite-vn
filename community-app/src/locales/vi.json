@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "Hoạt động cộng đồng | ICUE Vietnam",
+    "description": "Các chương trình thiện nguyện và cứu trợ do ICUE Vietnam thực hiện: áo ấm cho trẻ vùng cao Hà Giang, hỗ trợ bà con Bảo Yên sau bão lũ Yagi."
+  },
+  "skipToContent": "Tới các chương trình",
+  "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "lang": {
+    "label": "Ngôn ngữ trang"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu & Tổ Chức",
+      "ourWork": "Công Việc",
+      "pastProjects": "Đề Tài, Dự Án",
+      "News": "Tin Tức & Sự Kiện",
+      "communityActivities": "Hoạt Động Cộng Đồng",
+      "aboutUs": "Về Chúng Tôi",
+      "Contact": "Liên Hệ",
+      "ourPeople": "Nhân Lực",
+      "meetOurExperts": "Chuyên Gia",
+      "coreTeam": "Cán Bộ"
+    },
+    "compact": {
+      "Home": "Trang Chủ",
+      "orgStructure": "Cơ Cấu",
+      "ourWork": "Công Việc",
+      "pastProjects": "Dự Án",
+      "News": "Tin Tức",
+      "aboutUs": "Giới Thiệu"
+    },
+    "aria": {
+      "nav": "Điều hướng trang",
+      "home": "Về trang chủ",
+      "more": "Mở thêm mục điều hướng",
+      "moreLabel": "Thêm",
+      "overflow": "Thêm mục điều hướng",
+      "openMenu": "Mở trình đơn đầy đủ",
+      "toggleMenu": "Bật/tắt trình đơn điều hướng",
+      "closeMenu": "Đóng trình đơn điều hướng",
+      "resizeMenu": "Thay đổi kích thước trình đơn",
+      "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
+      "homeVideo": "Bật/tắt video nền",
+      "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)"
+    },
+    "contactWordmark": "GIỚI THIỆU"
+  },
+  "header": {
+    "kicker": "ICUE Vietnam",
+    "title": "Hoạt Động Cộng Đồng",
+    "intro": "Những chuyến đi của Viện tới các địa phương — ghi lại bằng ảnh của chính đoàn công tác."
+  },
+  "credit": "Ảnh bởi ICUE Team",
+  "a11y": {
+    "programmeList": "Các chương trình cộng đồng",
+    "gallery": "Ảnh chương trình {{name}}",
+    "openPhoto": "Xem ảnh lớn: {{caption}}",
+    "lightbox": "Ảnh phóng to",
+    "close": "Đóng",
+    "previous": "Ảnh trước",
+    "next": "Ảnh sau",
+    "counter": "Ảnh {{current}} trên {{total}}"
+  },
+  "chat": {
+    "title": "Trợ lý ICUE",
+    "greeting": "Xin chào! Tôi là trợ lý của ICUE. Tôi có thể giúp bạn tìm hiểu về dịch vụ, quy trình, chi phí và cách liên hệ. Bạn cần hỗ trợ gì?",
+    "placeholder": "Hỏi bất cứ điều gì…",
+    "send": "Gửi tin nhắn",
+    "open": "Mở trợ lý ICUE",
+    "close": "Đóng trợ lý ICUE",
+    "badge": "Tự động",
+    "thinking": "Đang soạn trả lời…",
+    "transcript": "Nội dung trò chuyện",
+    "error": "Xin lỗi, hiện chưa trả lời được. Bạn thử lại giúp mình nhé.",
+    "suggestions": [
+      "Dịch vụ",
+      "Chi phí",
+      "Liên hệ"
+    ]
+  },
+  "footer": {
+    "company": "Công Ty",
+    "otherPages": "Các Trang Khác",
+    "awards": "Giải Thưởng Nổi Bật",
+    "news": "Bản Tin",
+    "archive": "Tin Cũ",
+    "faqs": "Câu Hỏi Thường Gặp",
+    "recruitment": "Tuyển Dụng",
+    "privacy": "Quyền Riêng Tư",
+    "terms": "Điều Khoản",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Hợp Tác Cùng Chúng Tôi",
+    "rights": "Bản quyền thuộc về ICUE.",
+    "community": "Hoạt Động Cộng Đồng"
+  }
+}

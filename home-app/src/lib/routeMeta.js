@@ -52,14 +52,6 @@ export const ROUTE_META = [
     title: 'Giải thưởng nổi bật | ICUE Vietnam',
     description: 'Những giải thưởng, ghi nhận và dấu mốc chuyên môn nổi bật của ICUE Vietnam.',
   },
-  {
-    slug: 'community-activities',
-    path: '/community-activities',
-    pageName: 'communityActivities',
-    pageFile: 'communityActivities.html',
-    title: 'Hoạt động cộng đồng | ICUE Vietnam',
-    description: 'Các chương trình, sáng kiến và hoạt động cộng đồng do ICUE Vietnam tổ chức hoặc đồng hành.',
-  },
 ]
 
 export const ROUTE_META_BY_PATH = Object.fromEntries(

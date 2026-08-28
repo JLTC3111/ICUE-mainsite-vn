@@ -32,17 +32,26 @@ export function detectInitialLanguage() {
     return requested
   }
 
-  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
-  if (saved) return saved
-
-  if (
-    params.get('from') === 'en-news'
-    || params.get('site') === 'en'
-    || isEnReferrer()
-  ) {
+  /*
+   * A hand-off from en.icue.vn, which redirects several of its own routes here
+   * with ?site=en. That is a signal from the current navigation, so it has to
+   * outrank a preference stored on an earlier visit — and that preference is
+   * almost always 'vi', because every icue.vn page writes this shared key.
+   * Ordering it below the stored value is why arriving from the English site
+   * used to land in Vietnamese for anyone who had ever been on icue.vn.
+   */
+  if (params.get('site') === 'en' || params.get('from') === 'en-news') {
     localStorage.setItem(LANG_KEY, 'en')
     return 'en'
   }
+
+  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
+  if (saved) return saved
+
+  // Weaker than the explicit parameters above: any link from the English site
+  // arrives with this referrer, so it answers in English without overwriting a
+  // stored choice.
+  if (isEnReferrer()) return 'en'
 
   return 'vi'
 }

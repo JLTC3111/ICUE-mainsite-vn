@@ -107,6 +107,10 @@ const routes = [
   {
     key: 'community-activities',
     path: '/community-activities',
+    // Served by community-app, which ships its own index.html with the same
+    // meta, CollectionPage structured data and a no-JS fallback naming every
+    // programme. Kept here for sitemap and no-JS navigation data.
+    standalone: true,
     title: 'Hoạt động cộng đồng | ICUE Vietnam',
     description:
       'Các chương trình, sáng kiến và hoạt động cộng đồng do ICUE Vietnam tổ chức hoặc đồng hành.',

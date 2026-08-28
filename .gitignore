@@ -25,6 +25,7 @@ dist-home/
 /legal/
 /faqs/
 /recruitment/
+/community-activities/
 
 # Environment (secrets — never commit)
 .env

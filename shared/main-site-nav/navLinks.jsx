@@ -56,12 +56,27 @@ const IconSubmenuArrow = () => (
   </svg>
 );
 
+/* Three figures side by side. Drawn here rather than pasted from an icon set:
+   every SVG in this file is hand-written so none of them can smuggle in a
+   <style> block, which is exactly how the legacy community page ended up
+   shrinking every icon on the site. */
+const IconCommunity = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" {...props}>
+    <circle cx="12" cy="8" r="2.6" strokeLinecap="round" />
+    <circle cx="5" cy="10" r="2" strokeLinecap="round" />
+    <circle cx="19" cy="10" r="2" strokeLinecap="round" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 18.5a4.5 4.5 0 0 1 9 0" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1.8 18a3.4 3.4 0 0 1 3.9-3.3M22.2 18a3.4 3.4 0 0 0-3.9-3.3" />
+  </svg>
+);
+
 export const DRAWER_LINKS = [
   { page: 'Home', href: '#/Home', label: 'Trang Chủ', icon: IconHome, closeOnly: true },
   { page: 'orgStructure', href: '/structure/', label: 'Cơ Cấu & Tổ Chức', icon: IconOrg, closeOnly: true },
   { page: 'ourWork', href: '#/ourWork', label: 'Công Việc', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '#/pastProjects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
   { page: 'News', href: '#/News', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
+  { page: 'communityActivities', href: '#/communityActivities', label: 'Hoạt Động Cộng Đồng', icon: IconCommunity, closeOnly: true, drawerOnly: true },
   { page: 'aboutUs', href: '#/aboutUs', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
   { page: 'Contact', href: '#/Contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
 ];
@@ -73,6 +88,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'ourWork', href: '/our-work', label: 'Công Việc', icon: IconWork, closeOnly: true },
   { page: 'pastProjects', href: '/past-projects', label: 'Đề Tài, Dự Án', icon: IconProjects, closeOnly: true },
   { page: 'News', href: newsroomUrl('vi'), label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
+  { page: 'communityActivities', href: '/community-activities', label: 'Hoạt Động Cộng Đồng', icon: IconCommunity, closeOnly: true, drawerOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
   { page: 'Contact', href: '/contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
 ];

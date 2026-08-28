@@ -40,9 +40,10 @@ const ASSET_DIRS = [
   'flags',
 ]
 
-// Contact.html, ourWork.html, orgStructure.html, FAQs.html and
-// recruitment.html are deliberately absent: each of those pages is its own app
-// now (contact-app, ourwork-app, structure-app, faq-app, recruitment-app).
+// Contact.html, ourWork.html, orgStructure.html, FAQs.html,
+// recruitment.html and communityActivities.html are deliberately absent: each
+// of those pages is its own app now (contact-app, ourwork-app, structure-app,
+// faq-app, recruitment-app, community-app).
 // `copyFile` below is unguarded, so re-adding a name here without the file in
 // src/pages/ fails the build rather than silently shipping nothing.
 const LEGACY_PAGES = [
@@ -50,7 +51,6 @@ const LEGACY_PAGES = [
   'pastProjects.html',
   'News.html',
   'notableAwards.html',
-  'communityActivities.html',
 ]
 
 for (const rel of ASSET_DIRS) {

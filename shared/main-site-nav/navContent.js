@@ -18,6 +18,7 @@ export const NAV_LABELS = {
     ourWork: 'Công Việc',
     pastProjects: 'Đề Tài, Dự Án',
     News: 'Tin Tức & Sự Kiện',
+    communityActivities: 'Hoạt Động Cộng Đồng',
     aboutUs: 'Về Chúng Tôi',
     Contact: 'Liên Hệ',
     ourPeople: 'Nhân Lực',

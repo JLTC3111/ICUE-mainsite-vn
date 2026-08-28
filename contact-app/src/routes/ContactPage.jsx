@@ -60,6 +60,7 @@ export default function ContactPage() {
       company: t('footer.company'),
       otherPages: t('footer.otherPages'),
       awards: t('footer.awards'),
+      community: t('footer.community'),
       news: t('footer.news'),
       archive: t('footer.archive'),
       faqs: t('footer.faqs'),

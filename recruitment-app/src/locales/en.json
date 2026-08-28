@@ -15,6 +15,7 @@
       "ourWork": "Our Work",
       "pastProjects": "Projects & Research",
       "News": "News & Events",
+      "communityActivities": "Community Activities",
       "aboutUs": "About Us",
       "Contact": "Contact",
       "ourPeople": "Our People",
@@ -47,8 +48,8 @@
   },
   "search": {
     "title": "Career Opportunities",
-    "subtitle": "Find the roles that match your skills and what you care about",
-    "placeholder": "Search by role, department or skill…",
+    "subtitle": "Explore positions that match your skills and passions",
+    "placeholder": "Search by location, department, skills...",
     "submit": "Search",
     "clear": "Clear",
     "label": "Search open positions"
@@ -63,22 +64,22 @@
     "label": "Life at ICUE",
     "items": {
       "survey": {
-        "label": "Field Survey",
+        "label": "Field Works",
         "alt": "ICUE staff carrying out a site survey"
       },
       "office": {
-        "label": "The Office",
+        "label": "Office",
         "alt": "The ICUE office"
       },
       "event": {
-        "label": "Research Review",
+        "label": "Conferences",
         "alt": "An ICUE research project review meeting"
       }
     }
   },
   "jobs": {
     "title": "Open Positions",
-    "subtitle": "Join us and make a difference to how people live",
+    "subtitle": "Join our team and make a difference in the energy sector",
     "department": "Department",
     "location": "Location",
     "expand": "Show details",
@@ -87,32 +88,32 @@
     "empty": "There are no open positions right now. Please check back soon."
   },
   "benefits": {
-    "title": "Benefits",
-    "subtitle": "We take your growth seriously",
+    "title": "Employee Benefits",
+    "subtitle": "We care about the growth and happiness of every team member",
     "items": {
       "salary": {
-        "title": "Salary",
-        "body": "Competitive, with bonuses and equity"
+        "title": "Competitive Salary",
+        "body": "Attractive pay along with performance bonuses and stock options"
       },
       "health": {
-        "title": "Health Cover",
-        "body": "Comprehensive, for you and your family"
+        "title": "Health Insurance",
+        "body": "Comprehensive coverage for you and your family"
       },
       "growth": {
-        "title": "Career Development",
-        "body": "Keep learning and sharpening your craft"
+        "title": "Professional Development",
+        "body": "Continuous learning and upskilling opportunities"
       },
       "balance": {
-        "title": "Work & Life Balance",
-        "body": "Flexible hours and paid leave"
+        "title": "Work-Life Balance",
+        "body": "Flexible working hours and generous leave"
       },
       "projects": {
-        "title": "Work Worth Doing",
-        "body": "Real projects, scientific research and district-level planning"
+        "title": "Exciting Projects",
+        "body": "Contribute to pioneering projects in the energy sector"
       },
       "impact": {
-        "title": "Community Impact",
-        "body": "Building a future that lasts!"
+        "title": "Positive Impact",
+        "body": "Help build a sustainable future for the world"
       }
     }
   },
@@ -137,6 +138,7 @@
     "company": "Company",
     "otherPages": "Other Pages",
     "awards": "Notable Awards",
+    "community": "Community Activities",
     "news": "News",
     "archive": "News Archive",
     "faqs": "FAQs",

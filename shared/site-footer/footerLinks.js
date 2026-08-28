@@ -4,6 +4,7 @@ function buildFooterLinks(locale) {
   const p = MAIN_SITE_PAGE_PATHS
   const links = {
     notableAwards: p.notableAwards,
+    community: p.communityActivities,
     news: p.News,
     archive: '/news-archive',
     faqs: p.FAQs,

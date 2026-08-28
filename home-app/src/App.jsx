@@ -61,6 +61,7 @@ function AppShell() {
       company: t('footer.company'),
       otherPages: t('footer.otherPages'),
       awards: t('footer.awards'),
+      community: t('footer.community'),
       news: t('footer.news'),
       archive: t('footer.archive'),
       faqs: t('footer.faqs'),
@@ -114,7 +115,8 @@ function AppShell() {
               them, as a real navigation. */}
           <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
           <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.communityActivities} element={<LegacyHtmlPage />} />
+          {/* No /community-activities route: it is its own app now
+              (community-app), like /faqs and /recruitment above. */}
           <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
         </Routes>
       </main>

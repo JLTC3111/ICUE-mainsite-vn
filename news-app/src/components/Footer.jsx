@@ -19,6 +19,7 @@ function Footer() {
         <div className="icue-footer__col">
           <h4>{t('footer.company')}</h4>
           <a href={links.notableAwards}>{t('footer.awards')}</a>
+          <a href={links.community}>{t('footer.community')}</a>
           <a href={links.news}>{t('footer.news')}</a>
           <a href={archiveLink()}>{t('nav.archive')}</a>
         </div>

@@ -1,0 +1,272 @@
+/*
+ * ICUE Community Activities.
+ *
+ * Nothing here is ported. The legacy page's 449 lines of inline CSS built a
+ * tilted 3-D collage on a 7x6 grid whose spans never added up — bare gradient
+ * rows on desktop, photographs silently clipped on mobile — and ended with a
+ * bare `svg { width:17.5px !important }` inside a media query that escaped
+ * scoping and shrank every SVG on the site. This is a fresh sheet, and every
+ * selector below is scoped to a `cm-` class.
+ */
+
+.cm-container {
+  max-width: var(--cm-maxw);
+  margin: 0 auto;
+  padding-inline: var(--cm-pad);
+}
+
+.cm-page {
+  padding-bottom: clamp(48px, 8vh, 96px);
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+.cm-masthead {
+  padding-top: clamp(96px, 14vh, 168px);
+  padding-bottom: clamp(28px, 5vw, 52px);
+}
+
+.cm-masthead__kicker {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cm-accent);
+}
+
+.cm-masthead__title {
+  margin: 0 0 14px;
+  /* A real colour, not a gradient clipped to the text — the legacy title had
+     only `background-clip` and vanished wherever that was unsupported. */
+  color: var(--cm-ink);
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.cm-masthead__intro {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  color: var(--cm-ink-2);
+}
+
+.cm-masthead__places {
+  margin: 18px 0 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cm-ink-3);
+}
+
+/* ---- programme --------------------------------------------------------- */
+
+.cm-programme {
+  padding-block: clamp(32px, 6vw, 60px);
+  border-top: 1px solid var(--cm-rule);
+  scroll-margin-top: clamp(88px, 12vh, 140px);
+}
+
+.cm-programme:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.cm-programme__head {
+  max-width: 62ch;
+}
+
+.cm-programme__kicker {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cm-accent);
+}
+
+.cm-programme__name {
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--cm-ink);
+}
+
+.cm-programme__meta {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--cm-ink-3);
+}
+
+.cm-programme__summary {
+  margin: 0;
+  font-size: clamp(1rem, 2.1vw, 1.12rem);
+  color: var(--cm-ink-2);
+}
+
+.cm-programme__body {
+  max-width: 62ch;
+  margin-top: 18px;
+}
+
+.cm-programme__body p {
+  margin: 0 0 14px;
+  color: var(--cm-ink-2);
+  line-height: 1.7;
+}
+
+/* ---- photographs ------------------------------------------------------- */
+
+.cm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(16px, 2.4vw, 26px);
+  margin-top: clamp(24px, 4vw, 38px);
+}
+
+.cm-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* The button is the image's frame — it must not add chrome of its own. */
+.cm-figure__button {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cm-figure__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--cm-rule);
+  box-shadow: var(--cm-shadow);
+  transition: transform 0.4s var(--cm-ease), box-shadow 0.4s var(--cm-ease);
+}
+
+.cm-figure__button:hover .cm-figure__img {
+  transform: scale(1.02);
+  box-shadow: var(--cm-shadow-lift);
+}
+
+.cm-figure__caption {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--cm-ink-3);
+}
+
+.cm-credit {
+  margin: clamp(28px, 5vw, 48px) 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--cm-rule);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cm-ink-3);
+}
+
+/* ---- lightbox ---------------------------------------------------------- */
+
+/* A real <dialog>: the top layer, the inert background, focus trapping and
+   Escape all come from the platform rather than from a keydown listener that
+   the legacy version never removed. */
+.cm-lightbox {
+  width: min(96vw, 1200px);
+  max-width: none;
+  max-height: 94vh;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: var(--cm-surface);
+  color: var(--cm-ink);
+  overflow: hidden;
+}
+
+.cm-lightbox::backdrop {
+  background: rgba(10, 12, 14, 0.86);
+}
+
+.cm-lightbox__inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 12px;
+  padding: 16px;
+  max-height: 94vh;
+}
+
+.cm-lightbox__counter,
+.cm-lightbox__caption {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--cm-ink-3);
+}
+
+.cm-lightbox__counter {
+  font-variant-numeric: tabular-nums;
+}
+
+.cm-lightbox__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--cm-surface-2);
+}
+
+.cm-lightbox__controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cm-lightbox__controls button {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--cm-rule);
+  background: var(--cm-surface-2);
+  color: var(--cm-ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cm-lightbox__controls button:hover {
+  background: var(--cm-tint);
+  border-color: var(--cm-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-figure__img {
+    transition: none;
+  }
+  .cm-figure__button:hover .cm-figure__img {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .cm-grid {
+    grid-template-columns: 1fr;
+  }
+  .cm-lightbox__inner {
+    padding: 12px;
+  }
+}

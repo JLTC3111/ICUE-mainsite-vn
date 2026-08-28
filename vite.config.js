@@ -89,7 +89,7 @@ function homeDevFallback() {
   // route for it and its catch-all redirects to `/`, so the link just appears
   // to do nothing.
   const siblingPrefixes = ['/newsroom', '/people', '/structure', '/our-work', '/contact', '/legal',
-    '/faqs', '/recruitment'];
+    '/faqs', '/recruitment', '/community-activities'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
@@ -247,6 +247,7 @@ export default {
     spaDevFallback({ name: 'legal-dev-fallback', basePath: '/legal', outDirName: 'legal', buildScript: 'build:legal' }),
     spaDevFallback({ name: 'faq-dev-fallback', basePath: '/faqs', outDirName: 'faqs', buildScript: 'build:faq' }),
     spaDevFallback({ name: 'recruitment-dev-fallback', basePath: '/recruitment', outDirName: 'recruitment', buildScript: 'build:recruitment' }),
+    spaDevFallback({ name: 'community-dev-fallback', basePath: '/community-activities', outDirName: 'community-activities', buildScript: 'build:community' }),
     // Must stay last: this one claims every remaining extensionless URL.
     homeDevFallback(),
   ],

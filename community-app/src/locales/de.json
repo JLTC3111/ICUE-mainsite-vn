@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "Gemeinschaftsarbeit | ICUE Vietnam",
+    "description": "Wohltätigkeits- und Hilfsprogramme von ICUE Vietnam: warme Jacken für Kinder im Hochland von Hà Giang und Hilfe für Bảo Yên nach dem Taifun Yagi."
+  },
+  "skipToContent": "Zu den Programmen springen",
+  "instituteName": "Institut für Bauwirtschaft und Stadtentwicklung",
+  "lang": {
+    "label": "Sprache der Seite"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Startseite",
+      "orgStructure": "Struktur & Organisation",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte & Forschung",
+      "News": "News & Veranstaltungen",
+      "communityActivities": "Gemeinschaftsarbeit",
+      "aboutUs": "Über uns",
+      "Contact": "Kontakt",
+      "ourPeople": "Unser Team",
+      "meetOurExperts": "Unsere Fachleute",
+      "coreTeam": "Kernteam"
+    },
+    "compact": {
+      "Home": "Start",
+      "orgStructure": "Struktur",
+      "ourWork": "Arbeit",
+      "pastProjects": "Projekte",
+      "News": "News",
+      "aboutUs": "Über uns"
+    },
+    "aria": {
+      "nav": "Seitennavigation",
+      "home": "Zur Startseite",
+      "more": "Weitere Navigationspunkte öffnen",
+      "moreLabel": "Mehr",
+      "overflow": "Weitere Navigationspunkte",
+      "openMenu": "Vollständiges Menü öffnen",
+      "toggleMenu": "Navigationsmenü umschalten",
+      "closeMenu": "Navigationsmenü schließen",
+      "resizeMenu": "Navigationsmenü in der Größe ändern",
+      "resizeMenuTitle": "Zum Ändern der Breite ziehen",
+      "homeVideo": "Hintergrundvideo ein-/ausschalten",
+      "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)"
+    },
+    "contactWordmark": "ÜBER UNS"
+  },
+  "header": {
+    "kicker": "ICUE Vietnam",
+    "title": "Gemeinschaftsarbeit",
+    "intro": "Wo das Institut gewesen ist — festgehalten von denen, die dabei waren."
+  },
+  "credit": "Fotos vom ICUE-Team",
+  "a11y": {
+    "programmeList": "Programme der Gemeinschaftsarbeit",
+    "gallery": "Fotos von {{name}}",
+    "openPhoto": "Größer ansehen: {{caption}}",
+    "lightbox": "Vergrößertes Foto",
+    "close": "Schließen",
+    "previous": "Vorheriges Foto",
+    "next": "Nächstes Foto",
+    "counter": "Foto {{current}} von {{total}}"
+  },
+  "chat": {
+    "title": "ICUE-Assistent",
+    "greeting": "Hallo! Ich bin der ICUE-Assistent. Ich helfe Ihnen bei Fragen zu Leistungen, Ablauf, Honoraren und Kontakt. Was brauchen Sie?",
+    "placeholder": "Fragen Sie einfach …",
+    "send": "Nachricht senden",
+    "open": "ICUE-Assistenten öffnen",
+    "close": "ICUE-Assistenten schließen",
+    "badge": "Automatisch",
+    "thinking": "Antwort wird verfasst …",
+    "transcript": "Gesprächsverlauf",
+    "error": "Entschuldigung — gerade war keine Antwort möglich. Bitte versuchen Sie es noch einmal.",
+    "suggestions": [
+      "Leistungen",
+      "Honorare",
+      "Kontakt"
+    ]
+  },
+  "footer": {
+    "company": "Unternehmen",
+    "otherPages": "Weitere Seiten",
+    "awards": "Auszeichnungen",
+    "news": "Nachrichten",
+    "archive": "Archiv",
+    "faqs": "Häufige Fragen",
+    "recruitment": "Karriere",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "gdpr": "DSGVO",
+    "cookies": "Cookies",
+    "partner": "Zusammenarbeit",
+    "rights": "Alle Rechte vorbehalten, ICUE.",
+    "community": "Gemeinschaftsarbeit"
+  }
+}

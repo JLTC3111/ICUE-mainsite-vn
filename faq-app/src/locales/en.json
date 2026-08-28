@@ -15,6 +15,7 @@
       "ourWork": "Our Work",
       "pastProjects": "Projects & Research",
       "News": "News & Events",
+      "communityActivities": "Community Activities",
       "aboutUs": "About Us",
       "Contact": "Contact",
       "ourPeople": "Our People",
@@ -47,7 +48,7 @@
   },
   "header": {
     "title": "Frequently Asked Questions",
-    "subtitle": "Common questions about our construction and urban planning consultancy"
+    "subtitle": "Answer common questions about our construction and planning services"
   },
   "a11y": {
     "categoryList": "Question categories",
@@ -85,6 +86,7 @@
     "company": "Company",
     "otherPages": "Other Pages",
     "awards": "Notable Awards",
+    "community": "Community Activities",
     "news": "News",
     "archive": "News Archive",
     "faqs": "FAQs",

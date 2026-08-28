@@ -1,95 +1,107 @@
-/** English — hand-written from the authored Vietnamese in ./vi.js. */
+/**
+ * English — ICUE's published English wording, lifted from the en.icue.vn
+ * repository (~/Desktop/ICUE-mainsite-en, legacy/script.js) when that site's
+ * /faqs was retired in favour of this one. It is the English readers and search
+ * engines have already seen, so it is preserved verbatim rather than
+ * re-translated from ./vi.js.
+ *
+ * One known discrepancy with the Vietnamese, left as published: legal[1] says
+ * clients provide "land ownership papers", where the Vietnamese asks for
+ * `giấy chứng nhận quyền sử dụng đất` — a land-USE rights certificate, which is
+ * a different instrument. Worth settling with whoever owns the copy; changing
+ * it here alone would put this page out of step with the Vietnamese source.
+ */
 export default {
   labels: {
     services: 'Services',
-    process: 'How We Work',
-    costs: 'Fees & Payment',
-    legal: 'Permits & Paperwork',
-    timeline: 'Project Timelines',
-    technology: 'Technology & Sustainability',
-    clients: 'Clients & Support',
-    general: 'General Questions',
+    process: 'Process',
+    costs: 'Fees & Finance',
+    legal: 'Legal & Documents',
+    timeline: 'Project Schedule',
+    technology: 'Technology',
+    clients: 'Customer Support',
+    general: 'Other Questions',
   },
 
   entries: {
     services: [
       {
-        q: 'What kinds of consulting do you offer?',
-        a: 'We advise on planning, design, project management, site supervision and support for legal procedures.',
+        q: 'What types of consulting services do you provide?',
+        a: 'We provide consulting in planning, design, project management, supervision, and legal procedure support.',
       },
       {
         q: 'Do you take on small residential projects?',
-        a: 'Yes. We handle everything from private homes to commercial and industrial works.',
+        a: 'Yes, we handle everything from residential housing to commercial and industrial buildings.',
       },
     ],
     process: [
       {
-        q: 'What does working with you look like?',
-        a: 'Initial consultation → site survey → preliminary design → final drawings → construction support.',
+        q: 'What is the collaboration process like?',
+        a: 'The process includes: initial consultation → site survey → preliminary design → finalized drawings → construction support.',
       },
       {
-        q: 'Can I change the design while work is under way?',
-        a: 'Yes. Clients can request revisions at each stage, up until the drawings are signed off.',
+        q: 'Can I make changes to the design during the process?',
+        a: 'Yes, clients have the right to request revisions at different stages before finalizing the drawings.',
       },
     ],
     costs: [
       {
-        q: 'How are your fees calculated?',
-        a: 'As a fixed package, as a percentage of total investment, or hourly — whichever suits the project.',
+        q: 'How are service fees calculated?',
+        a: 'Fees can be charged as a package, as a percentage of total investment, or hourly depending on the project type.',
       },
       {
-        q: 'Can I pay in instalments?',
-        a: 'Yes. We accept payment staged across the phases of the project.',
+        q: 'Do you allow payment in installments?',
+        a: 'Yes, we accept flexible payments according to project phases.',
       },
     ],
     legal: [
       {
-        q: 'Do you help with building permits?',
-        a: 'Yes — from preparing the file through to filing it with the authorities.',
+        q: 'Do you assist with building permits?',
+        a: 'Yes, we provide full support from preparing documents to submitting them to the authorities.',
       },
       {
-        q: 'What documents do I need to provide?',
-        a: 'Typically the land-use certificate, an as-built survey drawing and any related legal paperwork.',
+        q: 'What documents do clients need to provide?',
+        a: 'Typically: land ownership papers, current site drawings, and relevant legal documents.',
       },
     ],
     timeline: [
       {
-        q: 'How long does a project take?',
-        a: 'It depends on scale — usually 2–6 months for design and 6–18 months for construction.',
+        q: 'How long does it take to complete a project?',
+        a: 'Depending on scale, usually 2-6 months for design and 6-18 months for construction.',
       },
       {
-        q: 'What happens if the project falls behind?',
-        a: 'We tell you straight away, propose a way forward, and commit to recovering the schedule where we can.',
+        q: 'What if the project is delayed?',
+        a: 'We immediately report delays, propose solutions, and commit to catching up when possible.',
       },
     ],
     technology: [
       {
-        q: 'Do you use BIM?',
-        a: 'Yes. We work in BIM and 3D models so clients can see the design clearly before it is built.',
+        q: 'Do you use BIM technology?',
+        a: 'Yes, we use BIM and 3D modeling to help clients clearly visualize the design.',
       },
       {
-        q: 'Do you offer green design?',
-        a: 'Yes. We favour sustainable materials and energy-efficient solutions.',
+        q: 'Do you offer green design solutions?',
+        a: 'Yes, we prioritize sustainable materials and energy-saving solutions.',
       },
     ],
     clients: [
       {
-        q: 'Who do you usually work for?',
-        a: 'Private individuals, businesses and government agencies.',
+        q: 'Who are your main clients?',
+        a: 'We serve individuals, businesses, and government agencies.',
       },
       {
-        q: 'Do you support maintenance after handover?',
-        a: 'Yes. We provide after-sales service and maintenance on request.',
+        q: 'Do you provide maintenance support after handover?',
+        a: 'Yes, we offer after-sales service and maintenance upon request.',
       },
     ],
     general: [
       {
-        q: 'Can I see your previous projects?',
-        a: 'Yes — get in touch and we will send you our portfolio and project list.',
+        q: 'Can I see your past projects?',
+        a: 'Yes, please contact us to receive our portfolio and project list.',
       },
       {
-        q: 'What is the fastest way to reach you?',
-        a: 'Call the hotline or send an email; we reply within 24 hours.',
+        q: 'What’s the fastest way to contact you?',
+        a: 'You can call our hotline directly or send an email, we respond within 24 hours.',
       },
     ],
   },

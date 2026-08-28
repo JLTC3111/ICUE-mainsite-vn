@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "지역사회 활동 | ICUE Vietnam",
+    "description": "ICUE Vietnam이 진행한 자선·구호 프로그램: 하장 고산지대 아이들을 위한 겉옷 전달, 태풍 야기 이후 바오옌 지원."
+  },
+  "skipToContent": "프로그램으로 건너뛰기",
+  "instituteName": "건설경제 및 도시개발 연구원",
+  "lang": {
+    "label": "페이지 언어"
+  },
+  "nav": {
+    "pages": {
+      "Home": "홈",
+      "orgStructure": "조직 구성",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트·연구",
+      "News": "뉴스·행사",
+      "communityActivities": "지역사회 활동",
+      "aboutUs": "소개",
+      "Contact": "문의",
+      "ourPeople": "인력",
+      "meetOurExperts": "전문가 소개",
+      "coreTeam": "핵심 인력"
+    },
+    "compact": {
+      "Home": "홈",
+      "orgStructure": "조직",
+      "ourWork": "업무",
+      "pastProjects": "프로젝트",
+      "News": "뉴스",
+      "aboutUs": "소개"
+    },
+    "aria": {
+      "nav": "사이트 탐색",
+      "home": "홈으로 이동",
+      "more": "추가 탐색 항목 열기",
+      "moreLabel": "더보기",
+      "overflow": "추가 탐색 항목",
+      "openMenu": "전체 메뉴 열기",
+      "toggleMenu": "탐색 메뉴 열기/닫기",
+      "closeMenu": "탐색 메뉴 닫기",
+      "resizeMenu": "탐색 메뉴 크기 조절",
+      "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
+      "homeVideo": "배경 영상 켜기/끄기",
+      "aboutUsVideo": "배경 영상 켜기/끄기 (소개)"
+    },
+    "contactWordmark": "소개"
+  },
+  "header": {
+    "kicker": "ICUE Vietnam",
+    "title": "지역사회 활동",
+    "intro": "연구소가 다녀온 곳들 — 함께 간 사람들이 남긴 기록입니다."
+  },
+  "credit": "사진 ICUE 팀",
+  "a11y": {
+    "programmeList": "지역사회 프로그램",
+    "gallery": "{{name}} 사진",
+    "openPhoto": "크게 보기: {{caption}}",
+    "lightbox": "확대된 사진",
+    "close": "닫기",
+    "previous": "이전 사진",
+    "next": "다음 사진",
+    "counter": "사진 {{total}}장 중 {{current}}번째"
+  },
+  "chat": {
+    "title": "ICUE 어시스턴트",
+    "greeting": "안녕하세요! ICUE 어시스턴트입니다. 서비스, 진행 절차, 비용, 연락 방법을 안내해 드릴 수 있습니다. 무엇을 도와드릴까요?",
+    "placeholder": "무엇이든 물어보세요…",
+    "send": "메시지 보내기",
+    "open": "ICUE 어시스턴트 열기",
+    "close": "ICUE 어시스턴트 닫기",
+    "badge": "자동",
+    "thinking": "답변을 작성하는 중…",
+    "transcript": "대화 내용",
+    "error": "죄송합니다 — 지금은 답변할 수 없었습니다. 다시 시도해 주세요.",
+    "suggestions": [
+      "서비스",
+      "비용",
+      "문의"
+    ]
+  },
+  "footer": {
+    "company": "회사",
+    "otherPages": "다른 페이지",
+    "awards": "주요 수상",
+    "news": "소식",
+    "archive": "지난 소식",
+    "faqs": "자주 묻는 질문",
+    "recruitment": "채용",
+    "privacy": "개인정보",
+    "terms": "이용약관",
+    "gdpr": "GDPR",
+    "cookies": "쿠키",
+    "partner": "함께 일하기",
+    "rights": "ICUE, 모든 권리 보유.",
+    "community": "지역사회 활동"
+  }
+}

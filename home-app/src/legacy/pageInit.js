@@ -93,9 +93,6 @@ const PAGE_INIT = {
   notableAwards: async () => {
     window.AwardsPage?.init?.()
   },
-  communityActivities: async () => {
-    window.CommunityPage?.init?.()
-  },
 }
 
 const PAGE_CLEANUP = {

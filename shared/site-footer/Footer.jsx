@@ -22,6 +22,7 @@ function Footer({ linkMode = 'hash', labels: labelOverrides, locale }) {
         <div className="icue-footer__col">
           <h4>{labels.company}</h4>
           <a href={links.notableAwards}>{labels.awards}</a>
+          <a href={links.community}>{labels.community}</a>
           <a href={links.news}>{labels.news}</a>
           <a href={links.archive}>{labels.archive}</a>
         </div>

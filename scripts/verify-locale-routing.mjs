@@ -20,6 +20,7 @@ const APPS = {
   Contact: 'Contact',
   FAQs: 'FAQs',
   Recruitment: 'recruitment',
+  Community: 'communityActivities',
 }
 
 let verifiedTransitions = 0
@@ -41,7 +42,7 @@ for (const source of Object.keys(APPS)) {
       )
 
       // Must mirror VI_ONLY_APP_PAGES in shared/site-routes/mainSitePaths.js.
-      if (['News', 'orgStructure', 'ourWork', 'Contact', 'FAQs', 'faqs', 'recruitment'].includes(page)) {
+      if (['News', 'orgStructure', 'ourWork', 'Contact', 'FAQs', 'faqs', 'recruitment', 'communityActivities'].includes(page)) {
         assert.equal(url.origin, 'https://icue.vn')
       } else {
         assert.equal(url.origin, mainSiteOriginForLocale(locale))

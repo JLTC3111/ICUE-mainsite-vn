@@ -48,6 +48,7 @@ copyDir(path.join(root, 'contact'), path.join(homeDist, 'contact'));
 copyDir(path.join(root, 'legal'), path.join(homeDist, 'legal'));
 copyDir(path.join(root, 'faqs'), path.join(homeDist, 'faqs'));
 copyDir(path.join(root, 'recruitment'), path.join(homeDist, 'recruitment'));
+copyDir(path.join(root, 'community-activities'), path.join(homeDist, 'community-activities'));
 copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
@@ -94,6 +95,7 @@ const rootDirsFromHome = [
   // app's own build. See recruitment-app/vite.config.js.
   'faqs',
   'recruitment',
+  'community-activities',
   'public',
 ];
 

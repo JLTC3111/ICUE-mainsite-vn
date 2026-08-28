@@ -29,7 +29,6 @@ import {
 import MainSiteHeader from './MainSiteHeader';
 import './MainSiteNav.css';
 
-const DARK_NAV_PAGES = ['communityActivities'];
 const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
 const DESKTOP_DOCK_MQ = '(min-width: 1025px)';
 
@@ -79,7 +78,9 @@ function getPageVisibility(page) {
     showContactLink: true,
     showHomeVideoToggle: page === 'Home',
     showAboutUsVideoToggle: page === 'aboutUs',
-    darkNav: DARK_NAV_PAGES.includes(page),
+    // No page needs the dark nav any more: community-activities was the only
+    // one, and it sits on the same light ground as the other apps now.
+    darkNav: false,
   };
 }
 
@@ -569,7 +570,11 @@ export default function MainSiteNav({
           flagLinkRef={flagLinkRef}
           usePillNav={usePillNav}
           activePage={activePage}
-          pillItems={drawerLinkConfig}
+          /* The drawer is the full menu; the pill bar is the condensed
+             primary nav. An entry marked drawerOnly appears in the former and
+             not the latter — community-activities is one, so the pill stays at
+             seven items rather than growing an eighth long label. */
+          pillItems={drawerLinkConfig.filter((link) => !link.drawerOnly)}
           onNavigate={onNavigate}
           PillHeaderComponent={PillHeaderComponent}
           pillOverflowItems={localizedOverflowItems}

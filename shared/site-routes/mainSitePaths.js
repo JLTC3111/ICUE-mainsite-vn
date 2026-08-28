@@ -116,6 +116,7 @@ const VI_ONLY_APP_PAGES = new Set([
   'FAQs',
   'faqs',
   'recruitment',
+  'communityActivities',
 ])
 
 export function resolveMainSiteLink(page, lang, base) {

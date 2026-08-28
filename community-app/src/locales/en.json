@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "Community activities | ICUE Vietnam",
+    "description": "Charitable and relief programmes run by ICUE Vietnam: warm coats for highland children in Hà Giang, and relief for Bảo Yên after typhoon Yagi."
+  },
+  "skipToContent": "Skip to the programmes",
+  "instituteName": "Institute of Construction Economics and Urban Planning",
+  "lang": {
+    "label": "Page language"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Home",
+      "orgStructure": "Structure & Organization",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects & Research",
+      "News": "News & Events",
+      "communityActivities": "Community Activities",
+      "aboutUs": "About Us",
+      "Contact": "Contact",
+      "ourPeople": "Our People",
+      "meetOurExperts": "Meet Our Experts",
+      "coreTeam": "Core Team"
+    },
+    "compact": {
+      "Home": "Home",
+      "orgStructure": "Structure",
+      "ourWork": "Our Work",
+      "pastProjects": "Projects",
+      "News": "News",
+      "aboutUs": "About"
+    },
+    "aria": {
+      "nav": "Site navigation",
+      "home": "Go to homepage",
+      "more": "Open more navigation items",
+      "moreLabel": "More",
+      "overflow": "More navigation items",
+      "openMenu": "Open the full menu",
+      "toggleMenu": "Toggle navigation menu",
+      "closeMenu": "Close navigation menu",
+      "resizeMenu": "Resize navigation menu",
+      "resizeMenuTitle": "Drag to resize the menu",
+      "homeVideo": "Toggle background video",
+      "aboutUsVideo": "Toggle background video (About Us)"
+    },
+    "contactWordmark": "ABOUT US"
+  },
+  "header": {
+    "kicker": "ICUE Vietnam",
+    "title": "Community Activities",
+    "intro": "Where the Institute has been, recorded by the people who went."
+  },
+  "credit": "Photographs by the ICUE team",
+  "a11y": {
+    "programmeList": "Community programmes",
+    "gallery": "Photographs from {{name}}",
+    "openPhoto": "View larger: {{caption}}",
+    "lightbox": "Enlarged photograph",
+    "close": "Close",
+    "previous": "Previous photograph",
+    "next": "Next photograph",
+    "counter": "Photograph {{current}} of {{total}}"
+  },
+  "chat": {
+    "title": "ICUE Assistant",
+    "greeting": "Hello! I’m the ICUE assistant. I can help you find your way around our services, how we work, fees and how to reach us. What do you need?",
+    "placeholder": "Ask anything…",
+    "send": "Send message",
+    "open": "Open the ICUE assistant",
+    "close": "Close the ICUE assistant",
+    "badge": "Auto",
+    "thinking": "Writing a reply…",
+    "transcript": "Conversation transcript",
+    "error": "Sorry — I could not answer just now. Please try again.",
+    "suggestions": [
+      "Services",
+      "Fees",
+      "Contact"
+    ]
+  },
+  "footer": {
+    "company": "Company",
+    "otherPages": "Other Pages",
+    "awards": "Notable Awards",
+    "news": "News",
+    "archive": "News Archive",
+    "faqs": "FAQs",
+    "recruitment": "Recruitment",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "partner": "Partner With Us",
+    "rights": "All rights reserved, ICUE.",
+    "community": "Community Activities"
+  }
+}

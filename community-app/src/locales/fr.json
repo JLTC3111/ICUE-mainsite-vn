@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "Actions solidaires | ICUE Vietnam",
+    "description": "Programmes solidaires et d’aide menés par ICUE Vietnam : manteaux chauds pour les enfants des hauts plateaux de Hà Giang, aide à Bảo Yên après le typhon Yagi."
+  },
+  "skipToContent": "Aller aux programmes",
+  "instituteName": "Institut d'Économie de la Construction et d'Urbanisme",
+  "lang": {
+    "label": "Langue de la page"
+  },
+  "nav": {
+    "pages": {
+      "Home": "Accueil",
+      "orgStructure": "Structure & organisation",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets & études",
+      "News": "Actualités & événements",
+      "communityActivities": "Actions solidaires",
+      "aboutUs": "À propos",
+      "Contact": "Contact",
+      "ourPeople": "Notre équipe",
+      "meetOurExperts": "Nos experts",
+      "coreTeam": "Équipe permanente"
+    },
+    "compact": {
+      "Home": "Accueil",
+      "orgStructure": "Structure",
+      "ourWork": "Nos travaux",
+      "pastProjects": "Projets",
+      "News": "Actualités",
+      "aboutUs": "À propos"
+    },
+    "aria": {
+      "nav": "Navigation du site",
+      "home": "Retour à l'accueil",
+      "more": "Ouvrir les autres liens de navigation",
+      "moreLabel": "Plus",
+      "overflow": "Autres liens de navigation",
+      "openMenu": "Ouvrir le menu complet",
+      "toggleMenu": "Afficher ou masquer le menu de navigation",
+      "closeMenu": "Fermer le menu de navigation",
+      "resizeMenu": "Redimensionner le menu de navigation",
+      "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
+      "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
+      "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)"
+    },
+    "contactWordmark": "À PROPOS"
+  },
+  "header": {
+    "kicker": "ICUE Vietnam",
+    "title": "Actions solidaires",
+    "intro": "Là où l’Institut s’est rendu, raconté par ceux qui y étaient."
+  },
+  "credit": "Photographies de l’équipe ICUE",
+  "a11y": {
+    "programmeList": "Programmes solidaires",
+    "gallery": "Photographies de {{name}}",
+    "openPhoto": "Voir en grand : {{caption}}",
+    "lightbox": "Photographie agrandie",
+    "close": "Fermer",
+    "previous": "Photographie précédente",
+    "next": "Photographie suivante",
+    "counter": "Photographie {{current}} sur {{total}}"
+  },
+  "chat": {
+    "title": "Assistant ICUE",
+    "greeting": "Bonjour ! Je suis l’assistant ICUE. Je peux vous orienter sur nos prestations, notre façon de travailler, les honoraires et comment nous joindre. Que cherchez-vous ?",
+    "placeholder": "Posez votre question…",
+    "send": "Envoyer le message",
+    "open": "Ouvrir l’assistant ICUE",
+    "close": "Fermer l’assistant ICUE",
+    "badge": "Automatique",
+    "thinking": "Rédaction de la réponse…",
+    "transcript": "Fil de la conversation",
+    "error": "Désolé — je n’ai pas pu répondre à l’instant. Merci de réessayer.",
+    "suggestions": [
+      "Prestations",
+      "Honoraires",
+      "Contact"
+    ]
+  },
+  "footer": {
+    "company": "Société",
+    "otherPages": "Autres pages",
+    "awards": "Distinctions",
+    "news": "Actualités",
+    "archive": "Archives",
+    "faqs": "Questions fréquentes",
+    "recruitment": "Recrutement",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "gdpr": "RGPD",
+    "cookies": "Cookies",
+    "partner": "Travailler avec nous",
+    "rights": "Tous droits réservés, ICUE.",
+    "community": "Actions solidaires"
+  }
+}
