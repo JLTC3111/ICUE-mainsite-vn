@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,6 +51,7 @@ copyDir(path.join(root, 'community-activities'), path.join(homeDist, 'community-
 copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
+copyFile(path.join(root, '_headers'), path.join(homeDist, '_headers'));
 
 // Publish social/Netlify preview image at site root (/preview.jpg) in addition to /public/preview.jpg.
 const previewJpg = path.join(root, 'public/preview.jpg');
@@ -170,5 +170,3 @@ if (fs.existsSync(newsSrc)) {
 
 // Quiet on success — the remaining console.warn calls above still surface real
 // problems (missing preview.jpg, card.js, article.js) during a build.
-
-execSync('node scripts/write-function-secrets.mjs', { cwd: root, stdio: 'inherit' });

@@ -35,9 +35,27 @@ const ALLOWED_TAGS = new Set([
   'STRONG', 'B', 'EM', 'I', 'U', 'S', 'SPAN', 'MARK', 'SUP', 'SUB',
 ])
 
-const STRIP_TAGS = new Set(['SCRIPT', 'STYLE', 'META', 'LINK', 'XML', 'O:P', 'FONT'])
+const STRIP_TAGS = new Set([
+  'SCRIPT', 'STYLE', 'META', 'LINK', 'BASE', 'XML', 'O:P', 'FONT',
+  'IFRAME', 'OBJECT', 'EMBED', 'SVG', 'MATH', 'TEMPLATE', 'NOSCRIPT',
+  'FORM', 'INPUT', 'BUTTON', 'TEXTAREA', 'SELECT', 'OPTION',
+])
 
 const BLOCK_ALIGN_TAGS = new Set(['P', 'H2', 'H3', 'BLOCKQUOTE', 'LI', 'TD', 'TH', 'DIV'])
+
+const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml'
+
+const ALLOWED_ATTRIBUTES = Object.freeze({
+  A: new Set(['href', 'title', 'target', 'rel']),
+  IMG: new Set(['src', 'alt', 'title', 'loading', 'decoding', 'width', 'height']),
+  MARK: new Set(['data-color']),
+  OL: new Set(['start']),
+  LI: new Set(['value']),
+  TH: new Set(['colspan', 'rowspan', 'scope']),
+  TD: new Set(['colspan', 'rowspan']),
+})
+
+const ALLOWED_REL_TOKENS = new Set(['noopener', 'noreferrer', 'nofollow', 'ugc', 'sponsored'])
 
 function sanitizePlainText(value) {
   if (typeof value !== 'string') return value
@@ -166,23 +184,115 @@ function cleanStyleAttribute(styleText, tagName) {
   return serializeStyle(pickAllowedStyles(parseStyle(styleText), tagName))
 }
 
-function cleanElementAttributes(element) {
-  const tag = element.tagName
-  if (!tag) return
+function decodeUrlEntities(value) {
+  const named = { colon: ':', tab: '\t', newline: '\n' }
+  return String(value ?? '')
+    .replace(/&#x([0-9a-f]+);?/gi, (match, hex) => {
+      try {
+        const codePoint = Number.parseInt(hex, 16)
+        return codePoint <= 0x10ffff ? String.fromCodePoint(codePoint) : match
+      } catch {
+        return match
+      }
+    })
+    .replace(/&#([0-9]+);?/g, (match, decimal) => {
+      try {
+        const codePoint = Number.parseInt(decimal, 10)
+        return codePoint <= 0x10ffff ? String.fromCodePoint(codePoint) : match
+      } catch {
+        return match
+      }
+    })
+    .replace(/&(colon|tab|newline);?/gi, (match, entity) => named[entity.toLowerCase()] ?? match)
+}
 
-  const serialized = cleanStyleAttribute(element.getAttribute('style') || '', tag)
+function hasAllowedUrlScheme(value, kind) {
+  const decoded = decodeUrlEntities(value).trim()
+  if (!decoded) return false
 
-  for (const attr of [...element.attributes]) {
-    const name = attr.name.toLowerCase()
-    if (name === 'style' || name === 'class' || name === 'lang' || name === 'face' || name === 'size') {
-      element.removeAttribute(attr.name)
+  // Browsers ignore ASCII controls and whitespace in protocol names. Remove
+  // them before checking so values such as "java&#x09;script:" cannot bypass
+  // the scheme allowlist.
+  const protocolProbe = decoded.replace(/[\u0000-\u0020\u007f-\u009f\s]+/gu, '')
+  const scheme = protocolProbe.match(/^([a-z][a-z0-9+.-]*):/i)?.[1]?.toLowerCase()
+  if (!scheme) return true
+  if (kind === 'image') return scheme === 'http' || scheme === 'https'
+  return scheme === 'http' || scheme === 'https' || scheme === 'mailto' || scheme === 'tel'
+}
+
+function normalizeRel(value) {
+  return [...new Set(String(value || '')
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((token) => ALLOWED_REL_TOKENS.has(token)))]
+}
+
+function cleanAttributeValue(name, rawValue) {
+  const value = String(rawValue ?? '')
+
+  if (name === 'href') return hasAllowedUrlScheme(value, 'link') ? value.trim() : null
+  if (name === 'src') return hasAllowedUrlScheme(value, 'image') ? value.trim() : null
+  if (name === 'target') return value === '_blank' || value === '_self' ? value : null
+  if (name === 'rel') {
+    const rel = normalizeRel(value).join(' ')
+    return rel || null
+  }
+  if (name === 'data-color') {
+    const color = normalizeColor(value)
+    return color && ARTICLE_HIGHLIGHT_COLORS.has(color) ? color : null
+  }
+  if (name === 'loading') return value === 'lazy' || value === 'eager' ? value : null
+  if (name === 'decoding') return ['async', 'sync', 'auto'].includes(value) ? value : null
+  if (name === 'scope') return ['row', 'col', 'rowgroup', 'colgroup'].includes(value) ? value : null
+  if (name === 'width' || name === 'height') return /^\d{1,5}$/.test(value) ? value : null
+  if (name === 'colspan' || name === 'rowspan') return /^\d{1,3}$/.test(value) ? value : null
+  if (name === 'start' || name === 'value') return /^-?\d{1,9}$/.test(value) ? value : null
+
+  // href/src and structural attributes are handled above. The remaining
+  // allowlisted values are inert text attributes such as title and alt.
+  return value
+}
+
+function sanitizeAttributeEntries(tagName, entries) {
+  const tag = tagName.toUpperCase()
+  const allowedForTag = ALLOWED_ATTRIBUTES[tag] || new Set()
+  const kept = new Map()
+  const seen = new Set()
+
+  for (const [rawName, rawValue] of entries) {
+    const name = String(rawName || '').toLowerCase()
+    if (!name || seen.has(name)) continue
+    seen.add(name)
+
+    if (name === 'style') {
+      const style = cleanStyleAttribute(rawValue, tag)
+      if (style) kept.set('style', style)
+      continue
     }
-    if (name === 'data-magic-highlight' || name.startsWith('on') || name.startsWith('data-pm-')) {
-      element.removeAttribute(attr.name)
-    }
+    if (!allowedForTag.has(name)) continue
+
+    const cleaned = cleanAttributeValue(name, rawValue)
+    if (cleaned !== null) kept.set(name, cleaned)
   }
 
-  if (serialized) element.setAttribute('style', serialized)
+  if (tag === 'A' && kept.get('target') === '_blank') {
+    const rel = new Set(normalizeRel(kept.get('rel')))
+    rel.add('noopener')
+    rel.add('noreferrer')
+    kept.set('rel', [...rel].join(' '))
+  }
+
+  return kept
+}
+
+function cleanElementAttributes(element) {
+  const tag = element.tagName?.toUpperCase()
+  if (!tag) return
+
+  const entries = [...element.attributes].map((attr) => [attr.name, attr.value])
+  const kept = sanitizeAttributeEntries(tag, entries)
+  for (const attr of [...element.attributes]) element.removeAttribute(attr.name)
+  for (const [name, value] of kept) element.setAttribute(name, value)
 }
 
 function unwrapElement(element) {
@@ -195,7 +305,7 @@ function unwrapElement(element) {
 }
 
 function normalizeTextNodes(root) {
-  const walker = root.ownerDocument.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+  const walker = root.ownerDocument.createTreeWalker(root, 4)
   while (walker.nextNode()) {
     const node = walker.currentNode
     if (node.nodeValue) node.nodeValue = sanitizePlainText(node.nodeValue)
@@ -206,12 +316,17 @@ function sanitizeNodeTree(root) {
   const doc = root.ownerDocument || root
   const body = root.nodeType === Node.DOCUMENT_NODE ? root.body : root
 
-  const walker = doc.createTreeWalker(body, NodeFilter.SHOW_ELEMENT)
+  const walker = doc.createTreeWalker(body, 1)
   const toProcess = []
   while (walker.nextNode()) toProcess.push(walker.currentNode)
 
   for (const element of toProcess) {
-    const tag = element.tagName
+    const tag = element.tagName?.toUpperCase()
+
+    if (element.namespaceURI && element.namespaceURI !== HTML_NAMESPACE) {
+      element.remove()
+      continue
+    }
 
     if (STRIP_TAGS.has(tag)) {
       element.remove()
@@ -256,24 +371,28 @@ function parseSanitizeRoot(html) {
   return doc.querySelector('[data-sanitize-root]')
 }
 
+function parseFallbackAttributes(attrs) {
+  const entries = []
+  const attributePattern = /([^\s"'<>\/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g
+  for (const match of attrs.matchAll(attributePattern)) {
+    entries.push([match[1], match[2] ?? match[3] ?? match[4] ?? ''])
+  }
+  return entries
+}
+
+function escapeFallbackAttribute(value) {
+  return String(value)
+    .replace(/&(?!(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]+);)/gi, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
 function cleanFallbackAttributes(tagName, attrs) {
-  const upper = tagName.toUpperCase()
-  let cleaned = attrs
-    .replace(/\sclass=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\slang=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\sface=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\ssize=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\son[a-z]+=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\sdata-pm-[a-z-]+=(?:"[^"]*"|'[^']*')/gi, '')
-    .replace(/\sdata-magic-highlight(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, '')
-
-  cleaned = cleaned.replace(/\sstyle=(?:"([^"]*)"|'([^']*)')/gi, (match, dbl, sgl) => {
-    const styleText = dbl ?? sgl ?? ''
-    const kept = cleanStyleAttribute(styleText, upper)
-    return kept ? ` style="${kept}"` : ''
-  })
-
-  return cleaned
+  const kept = sanitizeAttributeEntries(tagName, parseFallbackAttributes(attrs))
+  return [...kept]
+    .map(([name, value]) => ` ${name}="${escapeFallbackAttribute(value)}"`)
+    .join('')
 }
 
 /** Regex fallback when DOMParser is unavailable (Node translate functions). */
@@ -281,14 +400,25 @@ function sanitizeArticleHtmlFallback(html) {
   const source = html ?? ''
   if (typeof source !== 'string' || !source.trim()) return source
 
-  let out = source
-  out = out.replace(/<\/?(?:o:p|xml|meta|link|style|script|font)\b[^>]*>/gi, '')
+  let out = source.replace(/<!--[\s\S]*?-->/g, '')
+  out = out.replace(/<![^>]*>|<\?[^>]*>/g, '')
 
-  out = out.replace(/<([a-z0-9]+)\b([^>]*)>/gi, (match, tag, attrs) => {
+  for (const tag of STRIP_TAGS) {
+    const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    out = out.replace(
+      new RegExp(`<${escapedTag}\\b[^>]*>[\\s\\S]*?<\\/${escapedTag}\\s*>`, 'gi'),
+      '',
+    )
+  }
+
+  out = out.replace(/<\s*(\/?)\s*([a-z][a-z0-9:-]*)\b([^>]*)>/gi, (match, closing, tag, attrs) => {
     const upper = tag.toUpperCase()
     if (STRIP_TAGS.has(upper)) return ''
-    if (!ALLOWED_TAGS.has(upper)) return match
-    return `<${tag}${cleanFallbackAttributes(tag, attrs)}>`
+    if (!ALLOWED_TAGS.has(upper)) return ''
+
+    const outputTag = upper === 'B' ? 'strong' : upper === 'I' ? 'em' : tag.toLowerCase()
+    if (closing) return `</${outputTag}>`
+    return `<${outputTag}${cleanFallbackAttributes(upper, attrs)}>`
   })
 
   return sanitizePlainText(out)
@@ -303,7 +433,7 @@ function sanitizeArticleHtml(html) {
   }
 
   const root = parseSanitizeRoot(source)
-  if (!root) return source
+  if (!root) return sanitizeArticleHtmlFallback(source)
 
   sanitizeNodeTree(root)
   return root.innerHTML

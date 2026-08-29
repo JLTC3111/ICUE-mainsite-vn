@@ -212,20 +212,41 @@ alter table public.profiles      enable row level security;
 alter table public.articles      enable row level security;
 alter table public.article_media enable row level security;
 
--- profiles: readable by all (author bylines/avatars are public); writable by self/admin
+-- profiles: readable by all (author bylines/avatars are public). RLS selects
+-- the writable rows; column grants below keep role server-controlled.
 drop policy if exists profiles_select on public.profiles;
-create policy profiles_select on public.profiles for select using (true);
+create policy profiles_select on public.profiles
+  for select to anon, authenticated
+  using (true);
 
 drop policy if exists profiles_update_self on public.profiles;
-create policy profiles_update_self on public.profiles for update
-  using (id = auth.uid() or public.is_admin())
-  with check (id = auth.uid() or public.is_admin());
+create policy profiles_update_self on public.profiles
+  for update to authenticated
+  using (
+    id = (select auth.uid())
+    or (select public.is_admin())
+  )
+  with check (
+    id = (select auth.uid())
+    or (select public.is_admin())
+  );
 
 -- Allow a signed-in user to create their own profile row (self-heal path for
 -- accounts that pre-date the handle_new_user trigger).
 drop policy if exists profiles_insert_self on public.profiles;
-create policy profiles_insert_self on public.profiles for insert
-  with check (id = auth.uid());
+create policy profiles_insert_self on public.profiles
+  for insert to authenticated
+  with check (
+    id = (select auth.uid())
+    and role = 'author'::public.user_role
+  );
+
+revoke insert, update, delete on table public.profiles from anon, authenticated;
+grant select on table public.profiles to anon, authenticated;
+grant insert (id, full_name, display_name, bio, avatar_url)
+  on table public.profiles to authenticated;
+grant update (full_name, display_name, bio, avatar_url)
+  on table public.profiles to authenticated;
 
 -- articles: published readable by everyone; drafts only by owner/admin
 drop policy if exists articles_select_public on public.articles;
@@ -885,6 +906,22 @@ create trigger trg_newsroom_claps_notify
   after insert on public.article_claps
   for each row execute function public.newsroom_notify_article_claps();
 
+-- Trigger helpers must not be callable through the Data API. PostgreSQL grants
+-- function execution to PUBLIC by default, including SECURITY DEFINER helpers.
+revoke execute on function public.emit_newsroom_notification(
+  uuid, text, text, uuid, public.newsroom_notification_type, integer
+) from public, anon, authenticated;
+revoke execute on function public.newsroom_notify_article_published()
+  from public, anon, authenticated;
+revoke execute on function public.newsroom_notify_article_deleted()
+  from public, anon, authenticated;
+revoke execute on function public.newsroom_notify_article_views()
+  from public, anon, authenticated;
+revoke execute on function public.newsroom_notify_article_hearts()
+  from public, anon, authenticated;
+revoke execute on function public.newsroom_notify_article_claps()
+  from public, anon, authenticated;
+
 -- ----------------------------------------------------------------------------
 -- RLS: recipients read their own rows. All writes go through the RPCs below so
 -- read_at is the only field a client can ever change.
@@ -920,9 +957,19 @@ returns void language sql security definer set search_path = public as $$
     where id = p_id and recipient_id = auth.uid();
 $$;
 
-grant execute on function public.mark_newsroom_notification_read(uuid)      to authenticated;
-grant execute on function public.mark_all_newsroom_notifications_read()     to authenticated;
-grant execute on function public.dismiss_newsroom_notification(uuid)        to authenticated;
+revoke execute on function public.mark_newsroom_notification_read(uuid)
+  from public, anon, authenticated;
+revoke execute on function public.mark_all_newsroom_notifications_read()
+  from public, anon, authenticated;
+revoke execute on function public.dismiss_newsroom_notification(uuid)
+  from public, anon, authenticated;
+
+grant execute on function public.mark_newsroom_notification_read(uuid)
+  to authenticated;
+grant execute on function public.mark_all_newsroom_notifications_read()
+  to authenticated;
+grant execute on function public.dismiss_newsroom_notification(uuid)
+  to authenticated;
 
 -- Realtime: lets the bell update without polling. Harmless if the publication
 -- already carries the table (or if Realtime is disabled on the project — the

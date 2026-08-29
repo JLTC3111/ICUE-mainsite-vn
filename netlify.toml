@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "."
+  publish = "dist-home"
 
 # Newsroom requires Supabase credentials at build time (Site settings → Environment):
 #   VITE_SUPABASE_URL  or  SUPABASE_URL
@@ -10,16 +10,16 @@
 # from Supabase (public.article_translations) — no translation API, no key.
 #
 # gemini-article (AI Assist at /newsroom/assist) needs:
-#   GEMINI_API_KEY               — required (scope: Builds + Functions)
+#   GEMINI_API_KEY               — required (scope: Functions)
 #   GEMINI_MODEL                 — optional (default: gemini-3.5-flash-lite)
 #
 # flux-image (Generate Image via Workers AI FLUX) needs:
-#   CLOUDFLARE_ACCOUNT_ID        — required (scope: Builds + Functions)
+#   CLOUDFLARE_ACCOUNT_ID        — required (scope: Functions)
 #   CLOUDFLARE_API_TOKEN         — required (Workers AI permission)
 #   CLOUDFLARE_FLUX_MODEL        — optional (default: @cf/black-forest-labs/flux-1-schnell)
 #
-# Keys are baked into the function bundle at build time (private-env.cjs) and
-# also read at runtime. Enable BOTH Builds and Functions scopes in Netlify UI.
+# Server credentials are read only from the Functions runtime environment. Do
+# not expose them to Builds unless another build step explicitly requires them.
 
 [functions]
   directory = "netlify/functions"

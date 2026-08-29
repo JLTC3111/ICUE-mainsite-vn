@@ -23,7 +23,7 @@ function normalizeTranslationRow(row = {}) {
   return {
     title: row.title || '',
     subtitle: row.subtitle || '',
-    content_html: row.content_html || '',
+    content_html: sanitizeArticleHtml(row.content_html || ''),
     cover_info: row.cover_info || '',
     sources: row.sources || [],
     media: row.media || [],

@@ -26,3 +26,38 @@ test('normalizes legacy and Magic UI highlights into one stable save payload', (
   assert.doesNotMatch(sanitized, /color: inherit/u)
   assert.equal(sanitizeArticleHtmlFallback(sanitized), sanitized)
 })
+
+test('removes executable elements and unwraps unknown presentation tags', () => {
+  const source = '<p>Before<script>alert(1)</script><iframe srcdoc="<script>alert(2)</script>">frame</iframe><svg onload="alert(3)"><circle /></svg><custom-tag onclick="alert(4)"><strong>kept</strong></custom-tag>After</p>'
+
+  assert.equal(
+    sanitizeArticleHtmlFallback(source),
+    '<p>Before<strong>kept</strong>After</p>',
+  )
+})
+
+test('allows only inert attributes and explicitly safe URL schemes', () => {
+  const source = '<p><a href="java&#x09;script:alert(1)" onclick="x" id="clobber" target="_blank">bad</a><a href="https://icue.vn/news" target="_blank" rel="opener nofollow">safe</a><a href="mailto:hello@icue.vn">mail</a><img src="data:image/svg+xml;base64,AAAA" onerror="x" srcset="javascript:x" alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>'
+  const sanitized = sanitizeArticleHtmlFallback(source)
+
+  assert.equal(
+    sanitized,
+    '<p><a target="_blank" rel="noopener noreferrer">bad</a><a href="https://icue.vn/news" target="_blank" rel="nofollow noopener noreferrer">safe</a><a href="mailto:hello@icue.vn">mail</a><img alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>',
+  )
+  assert.doesNotMatch(sanitized, /javascript:|data:image|onclick|onerror|srcset|id=/iu)
+  assert.equal(sanitizeArticleHtmlFallback(sanitized), sanitized)
+})
+
+test('rejects encoded and legacy executable URL schemes', () => {
+  const payloads = [
+    'javascript:alert(1)',
+    'java&#x09;script:alert(1)',
+    'javascript&colon;alert(1)',
+    'vbscript:msgbox(1)',
+    'data:text/html,<script>alert(1)</script>',
+  ]
+
+  for (const href of payloads) {
+    assert.equal(sanitizeArticleHtmlFallback(`<a href="${href}">link</a>`), '<a>link</a>')
+  }
+})

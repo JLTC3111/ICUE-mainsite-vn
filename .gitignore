@@ -1,11 +1,10 @@
 .DS_Store
 **/.DS_Store
-netlify/functions/private-env.cjs
 # Dependencies are installed by the build (npm ci) — never commit them.
 node_modules/
 *.local
 
-# Vite / postbuild output. Netlify runs `npm run build` and publishes `.`.
+# Vite / postbuild output. Netlify runs `npm run build` and publishes `dist-home/`.
 # `dist` does not match dist-home or sibling-app outDirs (newsroom, people, …).
 dist
 dist-ssr

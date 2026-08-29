@@ -5,7 +5,14 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { fetchArticleBySlug, deleteArticle } from '../lib/articles'
 import { recordArticleView } from '../lib/engagement'
-import { formatDate, articlePublishDate, articleEditedDate, normalizeHtmlUnicode, normalizeUnicode } from '../lib/helpers'
+import {
+  formatDate,
+  articlePublishDate,
+  articleEditedDate,
+  normalizeHtmlUnicode,
+  normalizeUnicode,
+  sanitizeArticleHtml,
+} from '../lib/helpers'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import RetroGrid from '../components/RetroGrid'
 import SocialGooeyNav from '../components/SocialGooeyNav'
@@ -272,7 +279,7 @@ export default function ArticleDetail() {
     const translated = usingTranslation ? translation.content_html : ''
     const hasBody = String(translated || '').replace(/<[^>]*>/g, '').trim().length > 0
     const raw = hasBody ? translated : article?.content_html
-    return normalizeHtmlUnicode(embedVideosInHtml(raw || ''))
+    return normalizeHtmlUnicode(embedVideosInHtml(sanitizeArticleHtml(raw || '')))
   }, [translation, showOriginal, article?.content_html])
 
   const toggleLens = useCallback(() => {
