@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import chroma from 'chroma-js'
-import { FastAverageColor } from 'fast-average-color'
-import {
-  BACKGROUND_SAMPLE_SIZE,
-  bindBackgroundVideoSampling,
-  captureBackgroundSampleCanvas,
-} from './backgroundSampling.js'
+import { readBackgroundSampleRgb } from './backgroundSampling.js'
 
-const fac = new FastAverageColor()
 const FALLBACK_COLOR = '#ffffff'
 const SAMPLE_THROTTLE_MS = 120
 
@@ -32,30 +26,9 @@ function pickBarColor(rgb) {
   return background.luminance() > 0.58 ? dark.hex() : white.hex()
 }
 
-async function extractBarColorFromCanvas(canvas, rgbHint = null) {
-  if (rgbHint) return pickBarColor(rgbHint)
-  if (!canvas) return FALLBACK_COLOR
-
-  try {
-    const result = await fac.getColorAsync(canvas, {
-      algorithm: 'dominant',
-      // Ignore only transparent pixels. Light and dark opaque pixels are the
-      // actual background signal and must remain available for contrast
-      // selection, especially for bright video frames and WebGL canvases.
-      ignoredColor: [0, 0, 0, 0],
-      defaultColor: [248, 250, 252, 255],
-    })
-    return pickBarColor(result?.rgb)
-  } catch {
-    return FALLBACK_COLOR
-  }
-}
-
-async function resolveMusicBarColor(musicEl) {
+function resolveMusicBarColor(musicEl) {
   if (!musicEl) return FALLBACK_COLOR
-
-  const { canvas, rgbHint } = captureBackgroundSampleCanvas(musicEl, BACKGROUND_SAMPLE_SIZE)
-  return extractBarColorFromCanvas(canvas, rgbHint)
+  return pickBarColor(readBackgroundSampleRgb(musicEl))
 }
 
 export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
@@ -151,9 +124,6 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme'],
     })
 
-    const unbindVideos = bindBackgroundVideoSampling(scheduleSample)
-    const id = window.setInterval(scheduleSample, 500)
-
     return () => {
       if (sampleTimer !== null) window.clearTimeout(sampleTimer)
       window.removeEventListener('scroll', scheduleSample, true)
@@ -168,8 +138,6 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       viewport?.removeEventListener('scroll', scheduleSample)
       observer?.disconnect()
       rootObserver.disconnect()
-      unbindVideos()
-      window.clearInterval(id)
     }
   }, [contentKey, enabled, sample])
 

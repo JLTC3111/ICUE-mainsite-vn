@@ -14,22 +14,35 @@
   overflow: visible;
 }
 
-.circular-text__metallic {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
 .circular-text span {
   position: absolute;
   display: inline-block;
   inset: 0;
   font-size: 24px;
   line-height: 1;
+  color: var(--circular-text-light, #fff);
+  filter:
+    brightness(var(--circular-text-brightness, 1))
+    contrast(var(--circular-text-contrast, 1));
   transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .circular-text span {
+    background-image: linear-gradient(135deg, #7d8790 0%, #fff 34%, #c9d1d8 52%, #fff 68%, #737c86 100%);
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--circular-text-dark, #fff) 55%, #303743) 0%,
+      var(--circular-text-light, #fff) 34%,
+      color-mix(in srgb, var(--circular-text-tint, #fff) 72%, #b7c4cb) 52%,
+      var(--circular-text-light, #fff) 68%,
+      color-mix(in srgb, var(--circular-text-dark, #fff) 58%, #4b5563) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

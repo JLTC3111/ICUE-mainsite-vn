@@ -375,6 +375,13 @@ function getVisibleAboutWavesBackground() {
   return waves
 }
 
+function readAboutWavesBackgroundRgb(wavesRoot) {
+  if (!(wavesRoot instanceof Element)) return null
+  const style = getComputedStyle(wavesRoot)
+  return rgbStopsFromBackgroundValue(style.backgroundImage)
+    ?? parseColor(style.backgroundColor)
+}
+
 function fillCanvasFromAboutWaves(canvas, wavesRoot) {
   if (!(wavesRoot instanceof Element)) return null
 
@@ -537,6 +544,55 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
     const fallback = readBackgroundAtPoint(target) ?? readBackground(document.body)
     fillCanvasSolid(canvas, fallback)
     return { canvas, rgbHint: fallback }
+  })
+}
+
+/**
+ * Resolve a contrast hint without reading rendered pixels. Canvas/video
+ * readback is treated as fingerprinting by privacy browsers; declared CSS
+ * colors are deterministic, and white is the safe fallback over live media.
+ */
+export function readBackgroundSampleRgb(musicEl) {
+  if (!musicEl) return null
+
+  const rect = musicEl.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return null
+
+  const sampleX = rect.left + rect.width * 0.5
+  const sampleY = rect.top + rect.height * 0.5
+
+  return withSidebarHidden(musicEl, () => {
+    const target = document.elementFromPoint(sampleX, sampleY)
+    const warp = getVisibleWarpBackground()
+
+    if (warp && pointInRect(sampleX, sampleY, warp.getBoundingClientRect())) {
+      const warpRgb = readWarpBackgroundRgb(warp)
+      if (warpRgb) return warpRgb
+    }
+
+    const aboutWaves = getVisibleAboutWavesBackground()
+    if (
+      aboutWaves
+      && pointNearSample(sampleX, sampleY, aboutWaves.getBoundingClientRect(), {
+        allowViewportCover: true,
+      })
+    ) {
+      const wavesRgb = readAboutWavesBackgroundRgb(aboutWaves)
+      if (wavesRgb) return wavesRgb
+    }
+
+    const dynamicMediaAtPoint = [
+      ...getBackgroundCanvases(),
+      ...getBackgroundVideos(),
+    ].some((media) => pointNearSample(
+      sampleX,
+      sampleY,
+      media.getBoundingClientRect(),
+      { allowViewportCover: media instanceof HTMLVideoElement },
+    ))
+
+    if (dynamicMediaAtPoint) return null
+    return readBackgroundAtPoint(target) ?? readBackground(document.body)
   })
 }
 

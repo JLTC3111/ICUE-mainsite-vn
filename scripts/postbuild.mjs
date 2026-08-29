@@ -33,6 +33,27 @@ function removeDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
+function copyFontKit(src, dest) {
+  if (!fs.existsSync(src)) {
+    console.warn(`[postbuild] Skipping missing font kit: ${src}`);
+    return;
+  }
+
+  removeDir(dest);
+  fs.mkdirSync(dest, { recursive: true });
+
+  let copied = 0;
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.woff2')) continue;
+    copyFile(path.join(src, entry.name), path.join(dest, entry.name));
+    copied += 1;
+  }
+
+  if (copied === 0) {
+    console.warn(`[postbuild] No WOFF2 files found in font kit: ${src}`);
+  }
+}
+
 if (!fs.existsSync(homeDist)) {
   console.error('[postbuild] dist-home/ not found. Run npm run build:home first.');
   process.exit(1);
@@ -50,6 +71,7 @@ copyDir(path.join(root, 'recruitment'), path.join(homeDist, 'recruitment'));
 copyDir(path.join(root, 'community-activities'), path.join(homeDist, 'community-activities'));
 copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
+copyFontKit(path.join(root, 'fonts'), path.join(homeDist, 'fonts'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
 copyFile(path.join(root, '_headers'), path.join(homeDist, '_headers'));
 

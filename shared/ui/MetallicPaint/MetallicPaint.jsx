@@ -141,7 +141,7 @@ void main(){
   oC=vec4(col*vs,vs);
 }`;
 
-function processImage(img) {
+function processImage(img, maskCoverageRange) {
   const MAX_SIZE = 1000;
   const MIN_SIZE = 500;
   let width = img.naturalWidth || img.width;
@@ -177,6 +177,7 @@ function processImage(img) {
   const alphaValues = new Float32Array(size);
   const shapeMask = new Uint8Array(size);
   const boundaryMask = new Uint8Array(size);
+  let shapePixels = 0;
 
   for (let i = 0; i < size; i++) {
     const idx = i * 4;
@@ -187,6 +188,19 @@ function processImage(img) {
     const isBackground = (r > 250 && g > 250 && b > 250 && a === 255) || a < 5;
     alphaValues[i] = isBackground ? 0 : a / 255;
     shapeMask[i] = alphaValues[i] > 0.1 ? 1 : 0;
+    shapePixels += shapeMask[i];
+  }
+
+  if (maskCoverageRange) {
+    const [minimumCoverage, maximumCoverage] = maskCoverageRange;
+    const coverage = shapePixels / size;
+    if (
+      !Number.isFinite(coverage)
+      || coverage < minimumCoverage
+      || coverage > maximumCoverage
+    ) {
+      throw new Error('MetallicPaint mask validation failed');
+    }
   }
 
   for (let y = 0; y < height; y++) {
@@ -276,6 +290,9 @@ export default function MetallicPaint({
   tintColor = '#feb3ff',
   className = '',
   paused = false,
+  maskCoverageRange,
+  onTextureReady,
+  onTextureError,
 }) {
   const canvasRef = useRef(null);
   const glRef = useRef(null);
@@ -289,6 +306,8 @@ export default function MetallicPaint({
   const speedRef = useRef(speed);
   const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
   const mouseAnimRef = useRef(mouseAnimation);
+  const onTextureReadyRef = useRef(onTextureReady);
+  const onTextureErrorRef = useRef(onTextureError);
 
   const [ready, setReady] = useState(false);
   const [textureReady, setTextureReady] = useState(false);
@@ -300,6 +319,12 @@ export default function MetallicPaint({
   useEffect(() => {
     mouseAnimRef.current = mouseAnimation;
   }, [mouseAnimation]);
+  useEffect(() => {
+    onTextureReadyRef.current = onTextureReady;
+  }, [onTextureReady]);
+  useEffect(() => {
+    onTextureErrorRef.current = onTextureError;
+  }, [onTextureError]);
 
   const initGL = useCallback(() => {
     const canvas = canvasRef.current;
@@ -361,11 +386,12 @@ export default function MetallicPaint({
   const uploadTexture = useCallback((imgData) => {
     const gl = glRef.current;
     const uniforms = uniformsRef.current;
-    if (!gl || !imgData) return;
+    if (!gl || !imgData) return false;
 
     if (textureRef.current) gl.deleteTexture(textureRef.current);
 
     const tex = gl.createTexture();
+    if (!tex) return false;
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -381,6 +407,7 @@ export default function MetallicPaint({
 
     textureRef.current = tex;
     imgDataRef.current = imgData;
+    return true;
   }, []);
 
   useEffect(() => {
@@ -388,11 +415,20 @@ export default function MetallicPaint({
     // #region agent log
     debugLog('MetallicPaint.jsx:initGL', 'webgl init', { glOk }, 'E')
     // #endregion
-    if (!glOk) return;
+    if (!glOk) {
+      onTextureErrorRef.current?.(new Error('WebGL2 is unavailable'));
+      return undefined;
+    }
 
     const canvas = canvasRef.current;
     const gl = glRef.current;
     if (!canvas || !gl) return;
+
+    const handleContextLost = (event) => {
+      event.preventDefault();
+      onTextureErrorRef.current?.(new Error('WebGL context was lost'));
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost);
 
     const isCompact = window.matchMedia('(max-width: 768px)').matches
       || window.matchMedia('(pointer: coarse)').matches
@@ -417,8 +453,10 @@ export default function MetallicPaint({
     }
 
     resizeCanvas()
-    const resizeObserver = new ResizeObserver(resizeCanvas)
-    resizeObserver.observe(canvas)
+    const resizeObserver = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(resizeCanvas)
+    resizeObserver?.observe(canvas)
 
     // #region agent log
     debugLog('MetallicPaint.jsx:canvas', 'canvas sized', { isCompact, side: canvas.width }, 'E')
@@ -427,7 +465,8 @@ export default function MetallicPaint({
     setReady(true);
 
     return () => {
-      resizeObserver.disconnect()
+      resizeObserver?.disconnect()
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (textureRef.current && glRef.current) {
         glRef.current.deleteTexture(textureRef.current);
@@ -451,14 +490,35 @@ export default function MetallicPaint({
 
     setTextureReady(false);
     const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const imgData = processImage(img);
-      uploadTexture(imgData);
-      setTextureReady(true);
+    let cancelled = false;
+
+    const fail = (error) => {
+      if (cancelled) return;
+      setTextureReady(false);
+      onTextureErrorRef.current?.(error);
     };
+
+    if (!/^(?:data|blob):/i.test(imageSrc)) img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const imgData = processImage(img, maskCoverageRange);
+        if (!uploadTexture(imgData)) throw new Error('MetallicPaint texture upload failed');
+        if (cancelled) return;
+        setTextureReady(true);
+        onTextureReadyRef.current?.();
+      } catch (error) {
+        fail(error);
+      }
+    };
+    img.onerror = () => fail(new Error('MetallicPaint mask failed to load'));
     img.src = imageSrc;
-  }, [ready, imageSrc, uploadTexture]);
+
+    return () => {
+      cancelled = true;
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [ready, imageSrc, maskCoverageRange, uploadTexture]);
 
   useEffect(() => {
     const gl = glRef.current;

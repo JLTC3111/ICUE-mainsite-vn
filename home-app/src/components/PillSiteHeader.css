@@ -378,6 +378,7 @@
   width: 2.3rem !important;
   height: 2.3rem !important;
   padding: 0 !important;
+  overflow: hidden;
 }
 
 .pill-site-header__menu {
@@ -392,6 +393,17 @@
 .pill-site-header__menu #menuIcon {
   width: 2.05rem !important;
   height: 2.05rem !important;
+}
+
+.pill-site-header__menu .menu-icon-metallic[data-renderer="static"] {
+  overflow: hidden;
+}
+
+.pill-site-header__menu .menu-icon-metallic .menu-icon-metallic__lucide {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
 }
 
 .pill-site-header__mobile-wordmark {
@@ -669,6 +681,13 @@
   .pill-site-header--mobile .pill-site-header__menu #menuIcon {
     width: 1.95rem !important;
     height: 1.95rem !important;
+  }
+
+  .pill-site-header--mobile .pill-site-header__menu .menu-icon-metallic .menu-icon-metallic__lucide {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
   }
 
   .pill-site-header--mobile .pill-site-header__logo:active,

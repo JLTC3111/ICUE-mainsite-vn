@@ -98,35 +98,13 @@ function getFullSources(item) {
   return { webp, jpeg }
 }
 
-let webpSupport = null
-
-/**
- * Whether `<picture>` will take the WebP branch, so the warm-up queue requests
- * the same file the panel will. Warming the WebP in a browser that cannot
- * decode it would download every photograph twice.
- */
-function supportsWebp() {
-  if (webpSupport !== null) return webpSupport
-  if (typeof document === 'undefined') return false
-  try {
-    const canvas = document.createElement('canvas')
-    canvas.width = 1
-    canvas.height = 1
-    webpSupport = canvas.toDataURL('image/webp').startsWith('data:image/webp')
-  } catch {
-    // Canvas is readable everywhere this app runs, so a throw means a
-    // fingerprinting shield rather than a browser from before 2020. Assume the
-    // WebP branch: guessing wrong in this direction costs nothing, guessing
-    // wrong in the other downloads every photograph twice.
-    webpSupport = true
-  }
-  return webpSupport
-}
-
 /** The URL the browser will actually request for a panel. */
 function getPreviewHref(item) {
   const { webp, jpeg } = getPreviewSources(item)
-  return supportsWebp() ? webp : jpeg
+  // The app already targets ES2020-era browsers, all of which decode WebP.
+  // Avoid canvas-based format detection: privacy browsers treat toDataURL()
+  // as fingerprinting even for a one-pixel capability probe.
+  return webp || jpeg
 }
 
 /**
@@ -797,7 +775,7 @@ const AccordionGallery = ({
         const neighbour = items[(lightboxIndex + delta + total) % total]
         if (!neighbour) continue
         const { webp, jpeg } = getFullSources(neighbour)
-        await warmImage(supportsWebp() && webp ? webp : jpeg)
+        await warmImage(webp || jpeg)
       }
     })
     return () => {

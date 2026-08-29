@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { motion, useAnimation, useMotionValue } from 'motion/react'
-import MetallicPaint from '../MetallicPaint/MetallicPaint'
-import { renderCircularTextImage } from './renderCircularTextImage'
-import { debugLog } from '../../debug/debugLog.js'
 import './CircularText.css'
 
 const getRotationTransition = (duration, from, loop = true) => ({
@@ -42,35 +39,6 @@ export default function CircularText({
   const controls = useAnimation()
   const rotation = useMotionValue(0)
   const reducedMotion = prefersReducedMotion()
-  const [imageSrc, setImageSrc] = useState(null)
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return undefined
-
-    const isCompact = window.matchMedia('(max-width: 768px)').matches
-      || window.matchMedia('(pointer: coarse)').matches
-    const imageSize = isCompact ? 224 : 512
-
-    try {
-      const src = renderCircularTextImage(text, imageSize)
-      setImageSrc(src)
-      // #region agent log
-      debugLog('CircularText.jsx:image', 'metallic image ready', {
-        isCompact,
-        imageSize,
-        hasSrc: !!src,
-      }, 'E')
-      // #endregion
-    } catch (error) {
-      // #region agent log
-      debugLog('CircularText.jsx:image', 'metallic image failed', {
-        error: String(error),
-      }, 'E')
-      // #endregion
-    }
-
-    return undefined
-  }, [text])
 
   useEffect(() => {
     if (reducedMotion) return undefined
@@ -130,44 +98,33 @@ export default function CircularText({
   return (
     <motion.div
       className={`circular-text ${className}`.trim()}
-      style={{ rotate: rotation }}
+      style={{
+        rotate: rotation,
+        '--circular-text-light': lightColor,
+        '--circular-text-dark': darkColor,
+        '--circular-text-tint': tintColor,
+        '--circular-text-brightness': Math.min(Math.max(brightness, 0.85), 1.2),
+        '--circular-text-contrast': Math.min(Math.max(0.8 + contrast * 0.4, 0.85), 1.2),
+      }}
       initial={{ rotate: 0 }}
       animate={controls}
       onMouseEnter={handleHoverStart}
       onMouseLeave={handleHoverEnd}
       aria-hidden="true"
     >
-      {imageSrc ? (
-        <MetallicPaint
-          className="circular-text__metallic"
-          imageSrc={imageSrc}
-          seed={200}
-          scale={5}
-          speed={reducedMotion ? 0 : 0.05}
-          paused={reducedMotion}
-          blur={0.1}
-          mouseAnimation={false}
-          lightColor={lightColor}
-          darkColor={darkColor}
-          tintColor={tintColor}
-          brightness={brightness}
-          contrast={contrast}
-        />
-      ) : (
-        letters.map((letter, i) => {
-          const rotationDeg = (360 / letters.length) * i
-          const factor = Math.PI / letters.length
-          const x = factor * i
-          const y = factor * i
-          const transform = `rotateZ(${rotationDeg}deg) translate3d(${x}px, ${y}px, 0)`
+      {letters.map((letter, i) => {
+        const rotationDeg = (360 / letters.length) * i
+        const factor = Math.PI / letters.length
+        const x = factor * i
+        const y = factor * i
+        const transform = `rotateZ(${rotationDeg}deg) translate3d(${x}px, ${y}px, 0)`
 
-          return (
-            <span key={`${letter}-${i}`} style={{ transform, WebkitTransform: transform }}>
-              {letter}
-            </span>
-          )
-        })
-      )}
+        return (
+          <span key={`${letter}-${i}`} style={{ transform, WebkitTransform: transform }}>
+            {letter}
+          </span>
+        )
+      })}
     </motion.div>
   )
 }

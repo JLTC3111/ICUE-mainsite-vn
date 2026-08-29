@@ -23,8 +23,8 @@ export default defineConfig({
       '@icue/site-routes': path.resolve(__dirname, '../shared/site-routes'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),
-      // Required transitively: site-footer imports @icue/ui/CircularText, which
-      // imports MetallicPaint. Dropping this alias breaks the build.
+      // Required transitively: site-footer imports @icue/ui/CircularText.
+      // Dropping this alias breaks the build.
       '@icue/ui': path.resolve(__dirname, '../shared/ui'),
       '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
       // The pill header is not shared — it lives in home-app and is aliased in

@@ -41,7 +41,16 @@ function getWrappedLines(element) {
   return lines
 }
 
-async function buildCanvasMaskFromElement(element) {
+function escapeSvgText(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;')
+}
+
+async function buildSvgMaskFromElement(element) {
   const bounds = element.getBoundingClientRect()
   const width = Math.ceil(bounds.width)
   const height = Math.ceil(bounds.height)
@@ -57,28 +66,32 @@ async function buildCanvasMaskFromElement(element) {
     }
   }
 
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const canvas = document.createElement('canvas')
-  canvas.width = width * dpr
-  canvas.height = height * dpr
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return null
-
-  ctx.scale(dpr, dpr)
-  ctx.font = style.font
-  ctx.fillStyle = '#ffffff'
-  ctx.textBaseline = 'top'
-  ctx.textAlign = 'center'
-
   const lines = getWrappedLines(element)
-  for (const line of lines) {
+  const textNodes = lines.map((line) => {
     const x = line.rect.left - bounds.left + line.rect.width / 2
     const y = line.rect.top - bounds.top
-    ctx.fillText(line.text, x, y)
-  }
+    return [
+      `<text x="${x}" y="${y}" text-anchor="middle"`,
+      ' dominant-baseline="text-before-edge"',
+      ` textLength="${line.rect.width}" lengthAdjust="spacingAndGlyphs">`,
+      escapeSvgText(line.text),
+      '</text>',
+    ].join('')
+  }).join('')
 
-  return canvas.toDataURL('image/png')
+  const svg = [
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">`,
+    `<g fill="#fff" font-family="${escapeSvgText(style.fontFamily)}"`,
+    ` font-size="${escapeSvgText(style.fontSize)}"`,
+    ` font-style="${escapeSvgText(style.fontStyle)}"`,
+    ` font-weight="${escapeSvgText(style.fontWeight)}"`,
+    ` font-stretch="${escapeSvgText(style.fontStretch)}"`,
+    ` letter-spacing="${escapeSvgText(style.letterSpacing)}">`,
+    textNodes,
+    '</g></svg>',
+  ].join('')
+
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
 }
 
 export default function HeroVideoTitle({ text }) {
@@ -99,12 +112,15 @@ export default function HeroVideoTitle({ text }) {
     if (!label) return undefined
 
     let frame = 0
+    let disposed = false
+    let requestVersion = 0
 
     const updateMask = () => {
       window.cancelAnimationFrame(frame)
+      const version = ++requestVersion
       frame = window.requestAnimationFrame(async () => {
-        const nextMask = await buildCanvasMaskFromElement(label)
-        if (nextMask) setMaskUrl(nextMask)
+        const nextMask = await buildSvgMaskFromElement(label)
+        if (!disposed && version === requestVersion && nextMask) setMaskUrl(nextMask)
       })
     }
 
@@ -119,6 +135,8 @@ export default function HeroVideoTitle({ text }) {
     window.addEventListener('resize', updateMask)
 
     return () => {
+      disposed = true
+      requestVersion += 1
       window.cancelAnimationFrame(frame)
       resizeObserver.disconnect()
       fonts?.removeEventListener?.('loadingdone', updateMask)
