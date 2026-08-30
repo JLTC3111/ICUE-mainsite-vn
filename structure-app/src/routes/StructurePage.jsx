@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { orgProfiles, orgChartLevels } from '../data/orgProfiles'
@@ -6,19 +6,51 @@ import { departments } from '../data/departments'
 import { documentCategories, downloadDocument } from '../data/documents'
 import PageShell from '../components/PageShell'
 import OrgChart from '../components/OrgChart'
-import DepartmentsGrid from '../components/DepartmentsGrid'
-import LegalDocuments from '../components/LegalDocuments'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
-import EmployeeLanyard, {
-  EMPLOYEE_LANYARD_PHONE_QUERY,
-} from '../components/EmployeeLanyard'
+import { EMPLOYEE_LANYARD_PHONE_QUERY } from '../components/employeeLanyardConfig'
+import '../components/EmployeeLanyard.css'
 import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
 import { WordRotate } from '../components/magicui/WordRotate'
 import { RippleButton } from '../components/magicui/RippleButton'
 import { TransitionPanel } from '../components/motion-primitives/TransitionPanel'
 import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
+
+const loadDepartmentsGrid = () => import('../components/DepartmentsGrid')
+const loadLegalDocuments = () => import('../components/LegalDocuments')
+const loadEmployeeLanyard = () => import('../components/EmployeeLanyard')
+const DepartmentsGrid = lazy(loadDepartmentsGrid)
+const LegalDocuments = lazy(loadLegalDocuments)
+const EmployeeLanyard = lazy(loadEmployeeLanyard)
+
+function EmployeeLanyardPlaceholder() {
+  const { t } = useTranslation()
+  const genericLabel = t('orgChart.badgeGeneric')
+  const genericRole = t('orgChart.badgeGenericRole')
+
+  return (
+    <aside className="employee-lanyard" aria-live="polite">
+      <div className="employee-lanyard__heading">
+        <span className="employee-lanyard__status" aria-hidden="true" />
+        <span>{t('orgChart.badgePanelLabel')}</span>
+      </div>
+      <div className="employee-lanyard__stage" data-motion="reduced">
+        <button type="button" className="employee-badge-static" disabled>
+          <span className="employee-badge-static__brand">ICUE</span>
+          <span className="employee-badge-static__monogram">ICUE</span>
+          <strong>{genericLabel}</strong>
+          <span>{genericRole}</span>
+        </button>
+      </div>
+      <div className="employee-lanyard__identity">
+        <strong>{genericLabel}</strong>
+        <span>{genericRole}</span>
+        <p>{t('orgChart.badgeSelectHint')}</p>
+      </div>
+    </aside>
+  )
+}
 
 const TAB_IDS = [
   { id: 'org-chart', labelKey: 'tabs.orgChart' },
@@ -59,6 +91,7 @@ export default function StructurePage() {
     if (!requestedProfileId) return
     const requestedProfile = orgProfiles.find((profile) => profile.id === requestedProfileId)
     if (!requestedProfile) return
+    void loadEmployeeLanyard()
     setActiveTab('org-chart')
     setBadgeProfile(requestedProfile)
     setSelectedProfile(requestedProfile)
@@ -99,6 +132,7 @@ export default function StructurePage() {
 
   function selectBadgeProfile(profile) {
     if (!profile) return
+    void loadEmployeeLanyard()
     setBadgeProfile(profile)
 
     if (window.matchMedia(EMPLOYEE_LANYARD_PHONE_QUERY).matches) {
@@ -161,6 +195,14 @@ export default function StructurePage() {
                   className={`structure-tab${activeTab === tab.id ? ' active' : ''}`}
                   rippleColor="rgba(255, 255, 255, 0.65)"
                   duration="700ms"
+                  onPointerEnter={() => {
+                    if (tab.id === 'departments') void loadDepartmentsGrid()
+                    if (tab.id === 'documents') void loadLegalDocuments()
+                  }}
+                  onFocus={() => {
+                    if (tab.id === 'departments') void loadDepartmentsGrid()
+                    if (tab.id === 'documents') void loadLegalDocuments()
+                  }}
                   onClick={() => setActiveTab(tab.id)}
                 >
                   {t(tab.labelKey)}
@@ -191,12 +233,16 @@ export default function StructurePage() {
                         selectedPersonId={badgeProfile?.id}
                       />
                     </div>
-                    <EmployeeLanyard
-                      profile={badgeProfile}
-                      onOpen={() => {
-                        if (badgeProfile) setSelectedProfile(badgeProfile)
-                      }}
-                    />
+                    {badgeProfile ? (
+                      <Suspense fallback={<EmployeeLanyardPlaceholder />}>
+                        <EmployeeLanyard
+                          profile={badgeProfile}
+                          onOpen={() => setSelectedProfile(badgeProfile)}
+                        />
+                      </Suspense>
+                    ) : (
+                      <EmployeeLanyardPlaceholder />
+                    )}
                   </div>
                 </section>
 
@@ -209,7 +255,9 @@ export default function StructurePage() {
                   <h2 className="structure-section-title structure-section-title--on-dark">
                     {t('departments.title')}
                   </h2>
-                  <DepartmentsGrid departments={departmentCards} />
+                  <Suspense fallback={null}>
+                    <DepartmentsGrid departments={departmentCards} />
+                  </Suspense>
                 </section>
 
                 <section
@@ -221,11 +269,13 @@ export default function StructurePage() {
                   <h2 className="structure-section-title structure-section-title--on-dark">
                     {t('documents.title')}
                   </h2>
-                  <LegalDocuments
-                    categories={documentCategories}
-                    searchTerm={searchTerm}
-                    onDownload={downloadDocument}
-                  />
+                  <Suspense fallback={null}>
+                    <LegalDocuments
+                      categories={documentCategories}
+                      searchTerm={searchTerm}
+                      onDownload={downloadDocument}
+                    />
+                  </Suspense>
                 </section>
               </TransitionPanel>
             </div>

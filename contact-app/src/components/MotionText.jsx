@@ -37,8 +37,8 @@ export function ParticleText({ text, className = '', colors = DEFAULT_PARTICLE_C
     let frame = 0
     let cancelled = false
     let resizeFrame = 0
-    let idleCallback = 0
     let initialized = false
+    let initializing = false
     let interactionRect = null
     let compositionKey = ''
 
@@ -135,7 +135,14 @@ export function ParticleText({ text, className = '', colors = DEFAULT_PARTICLE_C
       sampleCtx.textBaseline = 'middle'
       sampleCtx.fillText(String(text), width / 2, height / 2)
 
-      const pixels = sampleCtx.getImageData(0, 0, width, height).data
+      let pixels
+      try {
+        pixels = sampleCtx.getImageData(0, 0, width, height).data
+      } catch {
+        // Privacy browsers can deny canvas readback. The DOM fallback remains
+        // visible and fully accessible, so progressive enhancement just stops.
+        return
+      }
       const nextParticles = []
       for (let y = 0; y < height; y += particleGap) {
         for (let x = 0; x < width; x += particleGap) {
@@ -174,10 +181,23 @@ export function ParticleText({ text, className = '', colors = DEFAULT_PARTICLE_C
     const observer = new ResizeObserver(scheduleCompose)
     observer.observe(fallback)
 
+    const initializeAfterInput = () => {
+      if (initialized || initializing || cancelled) return
+      initializing = true
+
+      Promise.resolve(document.fonts?.ready).then(() => {
+        if (cancelled) return
+        initialized = true
+        initializing = false
+        scheduleCompose()
+      })
+    }
+
     const onPointerEnter = () => {
       interactionRect = root.getBoundingClientRect()
     }
     const onPointerMove = (event) => {
+      initializeAfterInput()
       const rect = interactionRect || root.getBoundingClientRect()
       pointer.active = true
       pointer.x = event.clientX - rect.left + padding
@@ -194,25 +214,6 @@ export function ParticleText({ text, className = '', colors = DEFAULT_PARTICLE_C
     root.addEventListener('pointermove', onPointerMove, { passive: true })
     root.addEventListener('pointerleave', onPointerLeave)
 
-    Promise.resolve(document.fonts?.ready).then(() => {
-      if (cancelled) return
-
-      const initialize = () => {
-        if (cancelled) return
-        initialized = true
-        scheduleCompose()
-      }
-
-      // The gradient DOM fallback is already complete and readable. Building
-      // the progressive canvas layer after the first paint keeps that work off
-      // the contact page's critical rendering path.
-      if (typeof window.requestIdleCallback === 'function') {
-        idleCallback = window.requestIdleCallback(initialize, { timeout: 900 })
-      } else {
-        idleCallback = window.setTimeout(initialize, 0)
-      }
-    })
-
     return () => {
       cancelled = true
       observer.disconnect()
@@ -220,11 +221,6 @@ export function ParticleText({ text, className = '', colors = DEFAULT_PARTICLE_C
       root.removeEventListener('pointermove', onPointerMove)
       root.removeEventListener('pointerleave', onPointerLeave)
       root.classList.remove('is-particle-ready')
-      if (typeof window.cancelIdleCallback === 'function') {
-        window.cancelIdleCallback(idleCallback)
-      } else {
-        window.clearTimeout(idleCallback)
-      }
       window.cancelAnimationFrame(resizeFrame)
       window.cancelAnimationFrame(frame)
     }

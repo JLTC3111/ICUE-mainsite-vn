@@ -1,6 +1,5 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
 import { detectInitialLanguage } from './detectLanguage'
 
@@ -28,7 +27,6 @@ const normalizePostProcessor = {
 
 i18n
   .use(normalizePostProcessor)
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
@@ -44,11 +42,14 @@ i18n
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     postProcess: ['normalizeUnicode'],
     interpolation: { escapeValue: false },
-    detection: {
-      order: ['localStorage'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'icue_news_lang',
-    },
   })
+
+i18n.on('languageChanged', (language) => {
+  try {
+    localStorage.setItem('icue_news_lang', language)
+  } catch {
+    // Storage may be unavailable in privacy-restricted browsing contexts.
+  }
+})
 
 export default i18n

@@ -1,6 +1,6 @@
 import { memo, useLayoutEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import ContactSidebar from '@icue/contact-sidebar'
+import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import Header from './Header'
 import Footer from './Footer'
 import MarketStrip from './MarketStrip'
@@ -42,7 +42,7 @@ function Layout() {
         </main>
       </NewsroomSearchProvider>
       {!isAgentRoute && <Footer />}
-      {!isAgentRoute && <ContactSidebar contentKey={pathname} />}
+      {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} />}
     </div>
   )
 }

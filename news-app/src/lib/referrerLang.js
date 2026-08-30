@@ -1,5 +1,6 @@
 import { referrerSiteHint } from './siteOrigin'
 import { normalizeUiLocale } from '../../../shared/site-routes/mainSitePaths.js'
+import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
 
 const LANG_KEY = 'icue_news_lang'
 
@@ -17,7 +18,7 @@ function querySiteHint() {
 }
 
 function persistLang(lang) {
-  localStorage.setItem(LANG_KEY, lang)
+  writeLocalStorage(LANG_KEY, lang)
   return lang
 }
 
@@ -32,7 +33,7 @@ export function detectInitialLanguage() {
     return persistLang(fromEntry)
   }
 
-  const saved = normalizeUiLocale(localStorage.getItem(LANG_KEY))
+  const saved = normalizeUiLocale(readLocalStorage(LANG_KEY))
   if (saved) return saved
 
   return 'vi'

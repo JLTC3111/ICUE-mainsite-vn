@@ -1,19 +1,20 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useEffect, useMemo } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
 import Footer from '@icue/site-footer/Footer'
-import ContactSidebar from '@icue/contact-sidebar'
+import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
 import PillSiteHeader from './components/PillSiteHeader'
 import RouteHead from './components/RouteHead'
 import SiteLanguageMenu from './components/SiteLanguageMenu'
 import HomePage from './pages/HomePage'
-import AboutUsPage from './pages/AboutUsPage'
-import LegacyHtmlPage from './pages/LegacyHtmlPage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 import { debugLog } from './lib/debugLog'
+
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
+const LegacyHtmlPage = lazy(() => import('./pages/LegacyHtmlPage'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -97,31 +98,33 @@ function AppShell() {
       />
       <HomeLayoutGuard />
       <main id="content">
-        <Routes>
-          <Route path={ROUTE_PATHS.home} element={<HomePage />} />
-          {/* No /contact route: like /our-work, it is a separate app now, and
-              a client-side route here would shadow it on in-app navigation.
-              ROUTE_PATHS.contact stays — the drawer and footer still link to
-              it, as a real navigation. */}
-          <Route path={ROUTE_PATHS.aboutUs} element={<AboutUsPage />} />
-          {/* The pre-conversion About page, kept reachable for side-by-side
-              comparison. Retire this route with LEGACY_PREVIEW_PATHS. */}
-          <Route path="/about-us-legacy" element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
-          {/* No /faqs or /recruitment route: like /contact and /our-work, each
-              is a separate app now (faq-app, recruitment-app), and a
-              client-side route here would shadow it on in-app navigation.
-              ROUTE_PATHS keeps both — the drawer and footer still link to
-              them, as a real navigation. */}
-          <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
-          <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
-          {/* No /community-activities route: it is its own app now
-              (community-app), like /faqs and /recruitment above. */}
-          <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path={ROUTE_PATHS.home} element={<HomePage />} />
+            {/* No /contact route: like /our-work, it is a separate app now, and
+                a client-side route here would shadow it on in-app navigation.
+                ROUTE_PATHS.contact stays — the drawer and footer still link to
+                it, as a real navigation. */}
+            <Route path={ROUTE_PATHS.aboutUs} element={<AboutUsPage />} />
+            {/* The pre-conversion About page, kept reachable for side-by-side
+                comparison. Retire this route with LEGACY_PREVIEW_PATHS. */}
+            <Route path="/about-us-legacy" element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
+            {/* No /faqs or /recruitment route: like /contact and /our-work, each
+                is a separate app now (faq-app, recruitment-app), and a
+                client-side route here would shadow it on in-app navigation.
+                ROUTE_PATHS keeps both — the drawer and footer still link to
+                them, as a real navigation. */}
+            <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
+            {/* No /community-activities route: it is its own app now
+                (community-app), like /faqs and /recruitment above. */}
+            <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-      <ContactSidebar contentKey={pathname} />
+      <DeferredContactSidebar contentKey={pathname} />
     </>
   )
 }

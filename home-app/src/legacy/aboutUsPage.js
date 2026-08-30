@@ -1,3 +1,4 @@
+import { gsap } from 'gsap'
 import { ABOUT_US_SLIDES as MESSAGES } from '../data/aboutUsContent'
 
 const SLIDE_INTERVAL = 45_000
@@ -272,24 +273,19 @@ function initTextSlider(signal, registerTimeout) {
       registerTimeout(typeNext, /[.,!?]/.test(text.textContent?.slice(-1)) ? 70 : 18)
     }
 
-    const gsap = window.gsap
-    if (gsap) {
-      gsap.killTweensOf(text)
-      gsap.fromTo(
-        text,
-        { opacity: 0, scale: 0.97, y: 8 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-          onComplete: typeNext,
-        },
-      )
-    } else {
-      typeNext()
-    }
+    gsap.killTweensOf(text)
+    gsap.fromTo(
+      text,
+      { opacity: 0, scale: 0.97, y: 8 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.2,
+        ease: 'power2.out',
+        onComplete: typeNext,
+      },
+    )
   }
 
   const restart = () => {
@@ -351,7 +347,7 @@ function initTextSlider(signal, registerTimeout) {
   return () => {
     typingGeneration += 1
     if (intervalId != null) window.clearInterval(intervalId)
-    window.gsap?.killTweensOf(text)
+    gsap.killTweensOf(text)
   }
 }
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { readLocalStorage, writeLocalStorage } from '../storage/safeLocalStorage.js'
 
 const STORAGE_KEY = 'icue_main_drawer_width'
 const MIN_WIDTH = 280
@@ -35,17 +36,13 @@ export default function useDrawerResize(drawerRef, handleRef, enabled = true) {
 
     const loadSavedWidth = () => {
       const migrationKey = 'icue_main_drawer_width_v2'
-      const saved = Number.parseInt(localStorage.getItem(STORAGE_KEY), 10)
+      const saved = Number.parseInt(readLocalStorage(STORAGE_KEY), 10)
 
-      if (!localStorage.getItem(migrationKey) && Number.isFinite(saved)) {
+      if (!readLocalStorage(migrationKey) && Number.isFinite(saved)) {
         const halved = clampWidth(Math.round(saved / 2))
         applyWidth(halved)
-        try {
-          localStorage.setItem(STORAGE_KEY, String(halved))
-          localStorage.setItem(migrationKey, '1')
-        } catch {
-          // ignore
-        }
+        writeLocalStorage(STORAGE_KEY, halved)
+        writeLocalStorage(migrationKey, '1')
         return
       }
 
@@ -66,11 +63,7 @@ export default function useDrawerResize(drawerRef, handleRef, enabled = true) {
       state.dragging = false
       drawer.classList.remove('is-resizing')
       handle.releasePointerCapture?.(event.pointerId)
-      try {
-        localStorage.setItem(STORAGE_KEY, String(Math.round(drawer.getBoundingClientRect().width)))
-      } catch {
-        // ignore
-      }
+      writeLocalStorage(STORAGE_KEY, Math.round(drawer.getBoundingClientRect().width))
     }
 
     const onPointerDown = (event) => {

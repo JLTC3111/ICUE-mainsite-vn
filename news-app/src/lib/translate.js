@@ -5,6 +5,7 @@
 
 import { supabase } from './supabase'
 import { normalizeLang } from './translateUtils.js'
+import { clearPublicTranslateCache } from './publicTranslate'
 import { sanitizeArticleHtml } from '@icue/text/sanitizeArticleHtml'
 
 export {
@@ -35,6 +36,8 @@ function cacheKey(articleId, locale) {
 }
 
 export function clearTranslateCache(articleId, locale) {
+  clearPublicTranslateCache(articleId, locale)
+
   if (!articleId) {
     memoryCache.clear()
     return

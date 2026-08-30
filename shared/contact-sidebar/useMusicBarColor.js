@@ -1,29 +1,42 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import chroma from 'chroma-js'
 import { readBackgroundSampleRgb } from './backgroundSampling.js'
 
 const FALLBACK_COLOR = '#ffffff'
+const DARK_COLOR = '#0a1a3a'
+const DARK_RGB = [10, 26, 58]
 const SAMPLE_THROTTLE_MS = 120
+
+function relativeLuminance(rgb) {
+  if (!Array.isArray(rgb) || rgb.length < 3 || !rgb.every(Number.isFinite)) return null
+  const channel = (value) => {
+    const normalized = Math.min(Math.max(value, 0), 255) / 255
+    return normalized <= 0.03928
+      ? normalized / 12.92
+      : ((normalized + 0.055) / 1.055) ** 2.4
+  }
+  return 0.2126 * channel(rgb[0]) + 0.7152 * channel(rgb[1]) + 0.0722 * channel(rgb[2])
+}
+
+function contrastRatio(first, second) {
+  const lighter = Math.max(first, second)
+  const darker = Math.min(first, second)
+  return (lighter + 0.05) / (darker + 0.05)
+}
 
 function pickBarColor(rgb) {
   if (!rgb) return FALLBACK_COLOR
 
-  let background
-  try {
-    background = chroma(rgb)
-  } catch {
-    return FALLBACK_COLOR
-  }
+  const backgroundLuminance = relativeLuminance(rgb)
+  const darkLuminance = relativeLuminance(DARK_RGB)
+  if (backgroundLuminance == null || darkLuminance == null) return FALLBACK_COLOR
 
-  const white = chroma('#ffffff')
-  const dark = chroma('#0a1a3a')
-  const whiteContrast = chroma.contrast(background, white)
-  const darkContrast = chroma.contrast(background, dark)
+  const whiteContrast = contrastRatio(backgroundLuminance, 1)
+  const darkContrast = contrastRatio(backgroundLuminance, darkLuminance)
 
-  if (whiteContrast >= darkContrast && whiteContrast >= 3) return white.hex()
-  if (darkContrast >= 3) return dark.hex()
+  if (whiteContrast >= darkContrast && whiteContrast >= 3) return FALLBACK_COLOR
+  if (darkContrast >= 3) return DARK_COLOR
 
-  return background.luminance() > 0.58 ? dark.hex() : white.hex()
+  return backgroundLuminance > 0.58 ? DARK_COLOR : FALLBACK_COLOR
 }
 
 function resolveMusicBarColor(musicEl) {

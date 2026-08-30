@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
 import { detectEntrySite, cleanSiteParams } from './lib/siteOrigin'
-import './lib/i18n'
+import i18n, { i18nReady } from './lib/i18n'
 import './styles/theme.css'
 import './styles/structure.css'
 import '@icue/styles/icue-base.css'
@@ -17,10 +17,19 @@ cleanSiteParams()
  * checked it individually; this settles the JS half for all of them at once
  * (the CSS half lives in shared/styles/motion.css).
  */
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <MotionConfig reducedMotion="user">
-      <App />
-    </MotionConfig>
-  </StrictMode>,
-)
+function mountApp() {
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <MotionConfig reducedMotion="user">
+        <App />
+      </MotionConfig>
+    </StrictMode>,
+  )
+}
+
+void i18nReady
+  .then(mountApp)
+  .catch(async () => {
+    await i18n.changeLanguage('en')
+    mountApp()
+  })

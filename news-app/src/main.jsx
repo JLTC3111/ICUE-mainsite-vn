@@ -2,8 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
 import { cleanSiteParams } from './lib/siteOrigin'
-import { initSupabase } from './lib/supabase'
-import './lib/i18n'
+import i18n, { i18nReady } from './lib/i18n'
 import './styles/theme.css'
 import './styles/newsroomTheme.css'
 import './styles/performance.css'
@@ -17,18 +16,16 @@ import { PerformanceProfileProvider } from './context/PerformanceProfileContext'
 // Strip entry hints after i18n + detectEntrySite have read them.
 cleanSiteParams()
 
-async function bootstrap() {
-  await initSupabase()
-
-  /*
+/*
  * reducedMotion="user" makes every motion/react animation in the tree honour
  * the visitor's OS setting. The vendored magicui / reactbits components never
  * checked it individually; this settles the JS half for all of them at once
  * (the CSS half lives in shared/styles/motion.css).
  */
-createRoot(document.getElementById('root')).render(
+function mountApp() {
+  createRoot(document.getElementById('root')).render(
     <StrictMode>
-    <MotionConfig reducedMotion="user">
+      <MotionConfig reducedMotion="user">
         <PerformanceProfileProvider>
           <AuthProvider>
             <NewsroomThemeProvider>
@@ -36,9 +33,14 @@ createRoot(document.getElementById('root')).render(
             </NewsroomThemeProvider>
           </AuthProvider>
         </PerformanceProfileProvider>
-    </MotionConfig>
+      </MotionConfig>
     </StrictMode>,
   )
 }
 
-bootstrap()
+void i18nReady
+  .then(mountApp)
+  .catch(async () => {
+    await i18n.changeLanguage('vi')
+    mountApp()
+  })

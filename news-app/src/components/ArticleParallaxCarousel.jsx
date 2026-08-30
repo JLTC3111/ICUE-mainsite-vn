@@ -15,6 +15,7 @@ import { resolveArticleCoverComparison } from '../lib/mediaComparison'
 import { bindEmblaParallax } from '../lib/emblaParallax'
 import { tierToProfile } from '../lib/performanceProfile'
 import { useArticleTitleTranslations } from '../hooks/useArticleTitleTranslations'
+import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
 import ArticleViewCounter from './ArticleViewCounter'
 import TranslationLineSkeleton from './TranslationSkeleton'
 import BentoCardBackground from './BentoCardBackground'
@@ -26,7 +27,7 @@ const STORAGE_KEY = 'newsroomParallaxIndex'
 const PARALLAX_LAYER_SELECTOR = '.article-parallax__layer'
 
 function readInitialIndex(count) {
-  const raw = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+  const raw = parseInt(readLocalStorage(STORAGE_KEY) || '0', 10)
   if (Number.isNaN(raw)) return 0
   return Math.max(0, Math.min(count - 1, raw))
 }
@@ -95,7 +96,7 @@ export default function ArticleParallaxCarousel({ articles, profile = tierToProf
     if (!emblaApi) return
     const index = emblaApi.selectedScrollSnap()
     setSelectedIndex(index)
-    localStorage.setItem(STORAGE_KEY, String(index))
+    writeLocalStorage(STORAGE_KEY, index)
   }, [emblaApi])
 
   const scrollTo = useCallback(
@@ -108,11 +109,12 @@ export default function ArticleParallaxCarousel({ articles, profile = tierToProf
   useEffect(() => {
     if (!emblaApi) return undefined
 
-    syncIndex()
+    const initialSyncFrame = requestAnimationFrame(syncIndex)
     emblaApi.on('select', syncIndex)
     emblaApi.on('reInit', syncIndex)
 
     return () => {
+      cancelAnimationFrame(initialSyncFrame)
       emblaApi.off('select', syncIndex)
       emblaApi.off('reInit', syncIndex)
     }
@@ -133,7 +135,6 @@ export default function ArticleParallaxCarousel({ articles, profile = tierToProf
   useLayoutEffect(() => {
     if (!emblaApi) return undefined
     emblaApi.reInit()
-    syncIndex()
     const id = requestAnimationFrame(() => {
       emblaApi.reInit()
       syncIndex()

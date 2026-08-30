@@ -1,5 +1,6 @@
 import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { EMPLOYEE_LANYARD_PHONE_QUERY } from './employeeLanyardConfig'
 import './EmployeeLanyard.css'
 
 /*
@@ -9,9 +10,6 @@ import './EmployeeLanyard.css'
  * below). Loading it lazily keeps that weight off their first paint.
  */
 const Lanyard = lazy(() => import('./reactbits/Lanyard/Lanyard.jsx'))
-
-export const EMPLOYEE_LANYARD_PHONE_QUERY =
-  '(max-width: 450px), (max-width: 520px) and (pointer: coarse), (max-height: 520px) and (pointer: coarse)'
 
 /*
  * Canvas needs real font strings, not the CSS custom properties the rest of the
@@ -385,7 +383,7 @@ export default function EmployeeLanyard({ profile, onOpen }) {
   )
 
   useEffect(() => {
-    if (phoneDisabled) {
+    if (phoneDisabled || !profile) {
       setBadgeImage(null)
       return undefined
     }
@@ -394,6 +392,8 @@ export default function EmployeeLanyard({ profile, onOpen }) {
     setBadgeImage(null)
     createBadgeImage(badgeRequest).then((image) => {
       if (!cancelled) setBadgeImage(image)
+    }).catch(() => {
+      if (!cancelled) setBadgeImage(null)
     })
     return () => {
       cancelled = true
@@ -437,11 +437,11 @@ export default function EmployeeLanyard({ profile, onOpen }) {
         className={`employee-lanyard__stage${tabletLayout ? ' is-compact' : ''}`}
         data-motion={reducedMotion ? 'reduced' : 'full'}
       >
-        {reducedMotion ? (
+        {reducedMotion || !profile ? (
           stillBadge
         ) : (
           <LanyardBoundary fallback={stillBadge}>
-            <Suspense fallback={<div className="employee-lanyard__loading" aria-hidden="true" />}>
+            <Suspense fallback={stillBadge}>
               <Lanyard
                 /*
                  * Key on the profile only. Including the badge-image load state

@@ -4,10 +4,10 @@
   "description": "ICUE Vietnam website and connected applications",
   "main": "server.js",
   "dependencies": {
+    "@emotion/is-prop-valid": "1.4.0",
     "@google/model-viewer": "^4.1.0",
     "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
-    "chroma-js": "^3.2.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

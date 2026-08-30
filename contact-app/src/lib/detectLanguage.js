@@ -1,4 +1,5 @@
 import { normalizeUiLocale } from '@icue/site-routes/mainSitePaths.js'
+import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
 
 export const LANGUAGE_STORAGE_KEY = 'icue_news_lang'
 
@@ -28,7 +29,7 @@ export function detectInitialLanguage() {
   // both sites, so an explicit request must not lose to an older preference.
   const requested = normalizeUiLocale(params.get('lang'))
   if (requested && SUPPORTED.has(requested)) {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, requested)
+    writeLocalStorage(LANGUAGE_STORAGE_KEY, requested)
     return requested
   }
 
@@ -41,11 +42,11 @@ export function detectInitialLanguage() {
    * used to land in Vietnamese for anyone who had ever been on icue.vn.
    */
   if (params.get('site') === 'en' || params.get('from') === 'en-news') {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en')
+    writeLocalStorage(LANGUAGE_STORAGE_KEY, 'en')
     return 'en'
   }
 
-  const saved = normalizeUiLocale(localStorage.getItem(LANGUAGE_STORAGE_KEY))
+  const saved = normalizeUiLocale(readLocalStorage(LANGUAGE_STORAGE_KEY))
   if (saved && SUPPORTED.has(saved)) return saved
   if (saved) return 'en'
 

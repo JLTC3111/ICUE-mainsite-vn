@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
 
 const STORAGE_KEY = 'people_bg_video_enabled'
 
@@ -14,7 +15,7 @@ function prefersSlowNetwork() {
 
 function readInitialEnabled() {
   if (prefersReducedMotion() || prefersSlowNetwork()) return false
-  const stored = localStorage.getItem(STORAGE_KEY)
+  const stored = readLocalStorage(STORAGE_KEY)
   return stored === null ? true : stored === 'true'
 }
 
@@ -24,7 +25,7 @@ export function useBackgroundVideo() {
   const toggle = useCallback(() => {
     setEnabled((prev) => {
       const next = !prev
-      localStorage.setItem(STORAGE_KEY, String(next))
+      writeLocalStorage(STORAGE_KEY, next)
       return next
     })
   }, [])

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { gsap } from 'gsap'
 import { ABOUT_US_SLIDES } from '../../data/aboutUsContent'
 
 const SLIDE_INTERVAL = 45_000
@@ -137,23 +138,18 @@ export default function AboutTextSlider() {
       )
     }
 
-    const { gsap } = window
-    if (gsap) {
-      gsap.killTweensOf(text)
-      gsap.fromTo(
-        text,
-        { opacity: 0, scale: 0.97, y: 8 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.2, ease: 'power2.out', onComplete: typeNext },
-      )
-    } else {
-      typeNext()
-    }
+    gsap.killTweensOf(text)
+    gsap.fromTo(
+      text,
+      { opacity: 0, scale: 0.97, y: 8 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.2, ease: 'power2.out', onComplete: typeNext },
+    )
 
     return () => {
       cancelled = true
       typingRef.current = false
       if (timeoutId != null) window.clearTimeout(timeoutId)
-      window.gsap?.killTweensOf(text)
+      gsap.killTweensOf(text)
     }
   }, [slide, slides])
 

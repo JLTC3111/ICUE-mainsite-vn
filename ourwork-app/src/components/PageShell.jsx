@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import ContactSidebar from '@icue/contact-sidebar'
+import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import Footer from '@icue/site-footer/Footer'
 import Header from './Header'
 import ScrollProgress from './magicui/ScrollProgress'
@@ -44,7 +44,7 @@ export default function PageShell({ children }) {
         {children}
       </main>
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-      <ContactSidebar contentKey="our-work" />
+      <DeferredContactSidebar contentKey="our-work" />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ContactSidebar from '@icue/contact-sidebar'
+import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
 import Header from './Header'
 import Footer from './Footer'
@@ -92,7 +92,7 @@ export default function PageShell({
           <Footer />
         </div>
 
-        <ContactSidebar
+        <DeferredContactSidebar
           contentKey={pathname}
           musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'}
         />

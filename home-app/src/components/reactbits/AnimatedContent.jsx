@@ -1,9 +1,23 @@
 import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './AnimatedContent.css'
 
-gsap.registerPlugin(ScrollTrigger)
+const CSS_EASINGS = {
+  'power2.out': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  'power2.in': 'cubic-bezier(0.55, 0.085, 0.68, 0.53)',
+  'power3.out': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+  'power3.in': 'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
+  'power4.out': 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+}
+
+function cssEase(ease) {
+  return CSS_EASINGS[ease] || ease || 'ease'
+}
+
+function transformFor(axis, offset, scale) {
+  const x = axis === 'x' ? offset : 0
+  const y = axis === 'y' ? offset : 0
+  return `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+}
 
 export default function AnimatedContent({
   children,
@@ -32,9 +46,16 @@ export default function AnimatedContent({
     const el = ref.current
     if (!el) return undefined
 
+    const axis = direction === 'horizontal' ? 'x' : 'y'
+    const offset = reverse ? -distance : distance
+    const initialTransform = transformFor(axis, offset, scale)
+    const finalTransform = transformFor(axis, 0, 1)
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     if (reduceMotion) {
-      gsap.set(el, { opacity: 1, visibility: 'visible', x: 0, y: 0, scale: 1 })
+      el.style.opacity = '1'
+      el.style.visibility = 'visible'
+      el.style.transform = finalTransform
       return undefined
     }
 
@@ -43,55 +64,94 @@ export default function AnimatedContent({
       scrollerTarget = document.querySelector(scrollerTarget)
     }
 
-    const axis = direction === 'horizontal' ? 'x' : 'y'
-    const offset = reverse ? -distance : distance
-    const startPct = (1 - threshold) * 100
+    let enterAnimation = null
+    let exitAnimation = null
+    let disappearTimer = null
 
-    gsap.set(el, {
-      [axis]: offset,
-      scale,
-      opacity: animateOpacity ? initialOpacity : 1,
-      visibility: 'visible',
-    })
+    el.style.opacity = animateOpacity ? String(initialOpacity) : '1'
+    el.style.visibility = 'visible'
+    el.style.transform = initialTransform
 
-    const tl = gsap.timeline({
-      paused: true,
-      delay,
-      onComplete: () => {
-        onComplete?.()
-        if (disappearAfter > 0) {
-          gsap.to(el, {
-            [axis]: reverse ? distance : -distance,
-            scale: 0.8,
-            opacity: animateOpacity ? initialOpacity : 0,
-            delay: disappearAfter,
-            duration: disappearDuration,
-            ease: disappearEase,
-            onComplete: () => onDisappearanceComplete?.(),
-          })
+    const finishEnter = () => {
+      el.style.opacity = '1'
+      el.style.transform = finalTransform
+      onComplete?.()
+
+      if (disappearAfter <= 0) return
+      disappearTimer = window.setTimeout(() => {
+        const exitTransform = transformFor(
+          axis,
+          reverse ? distance : -distance,
+          0.8,
+        )
+
+        if (typeof el.animate !== 'function') {
+          el.style.opacity = animateOpacity ? String(initialOpacity) : '0'
+          el.style.transform = exitTransform
+          onDisappearanceComplete?.()
+          return
         }
-      },
-    })
 
-    tl.to(el, {
-      [axis]: 0,
-      scale: 1,
-      opacity: 1,
-      duration,
-      ease,
-    })
+        exitAnimation = el.animate(
+          [
+            { opacity: 1, transform: finalTransform },
+            { opacity: animateOpacity ? initialOpacity : 0, transform: exitTransform },
+          ],
+          {
+            duration: disappearDuration * 1000,
+            easing: cssEase(disappearEase),
+            fill: 'forwards',
+          },
+        )
+        exitAnimation.addEventListener('finish', () => {
+          el.style.opacity = animateOpacity ? String(initialOpacity) : '0'
+          el.style.transform = exitTransform
+          onDisappearanceComplete?.()
+        }, { once: true })
+      }, disappearAfter * 1000)
+    }
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      scroller: scrollerTarget || window,
-      start: `top ${startPct}%`,
-      once: true,
-      onEnter: () => tl.play(),
-    })
+    const play = () => {
+      if (typeof el.animate !== 'function') {
+        finishEnter()
+        return
+      }
+
+      enterAnimation = el.animate(
+        [
+          { opacity: animateOpacity ? initialOpacity : 1, transform: initialTransform },
+          { opacity: 1, transform: finalTransform },
+        ],
+        {
+          duration: duration * 1000,
+          delay: delay * 1000,
+          easing: cssEase(ease),
+          fill: 'forwards',
+        },
+      )
+      enterAnimation.addEventListener('finish', finishEnter, { once: true })
+    }
+
+    const root = scrollerTarget instanceof Element ? scrollerTarget : null
+    const observer = typeof IntersectionObserver === 'undefined'
+      ? null
+      : new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return
+          observer.disconnect()
+          play()
+        },
+        { root, threshold: Math.min(Math.max(threshold, 0), 1) },
+      )
+
+    if (observer) observer.observe(el)
+    else play()
 
     return () => {
-      st.kill()
-      tl.kill()
+      observer?.disconnect()
+      enterAnimation?.cancel()
+      exitAnimation?.cancel()
+      if (disappearTimer != null) window.clearTimeout(disappearTimer)
     }
   }, [
     container,

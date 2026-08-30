@@ -20,6 +20,7 @@ export default defineConfig({
       '@icue/text': path.resolve(__dirname, '../shared/text'),
       '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
       'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'),
+      'motion/react': path.resolve(__dirname, 'node_modules/motion/react'),
     },
   },
   build: {

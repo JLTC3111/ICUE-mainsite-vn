@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ThemeProvider } from './contexts/ThemeContext'
 import PageShell from './components/PageShell'
@@ -13,23 +12,26 @@ function LangSync() {
   return null
 }
 
+function CanonicalPathSync() {
+  useEffect(() => {
+    const { pathname } = window.location
+    if (pathname === '/our-work' || pathname === '/our-work/') return
+
+    // Netlify sends every /our-work/* request to this one-page app. Preserve
+    // the old router's wildcard behavior without restoring the router bundle.
+    window.history.replaceState(window.history.state, '', '/our-work/')
+  }, [])
+  return null
+}
+
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter basename="/our-work">
-        <LangSync />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PageShell>
-                <OurWorkPage />
-              </PageShell>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
+      <CanonicalPathSync />
+      <LangSync />
+      <PageShell>
+        <OurWorkPage />
+      </PageShell>
     </ThemeProvider>
   )
 }

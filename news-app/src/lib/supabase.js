@@ -1,12 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
+import { loadSupabaseConfig } from './supabaseConfig'
 
 let client = createUnavailableClient()
 let configured = false
 let initPromise = null
-
-function isValidConfig(url, anonKey) {
-  return Boolean(url && anonKey && !url.includes('YOUR-PROJECT-ref'))
-}
 
 function createUnavailableClient() {
   const message =
@@ -62,28 +59,6 @@ function createConfiguredClient(url, anonKey) {
   })
 }
 
-async function loadRuntimeConfig() {
-  const buildUrl = import.meta.env.VITE_SUPABASE_URL
-  const buildKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-  if (isValidConfig(buildUrl, buildKey)) {
-    return { url: buildUrl, anonKey: buildKey }
-  }
-
-  try {
-    const base = import.meta.env.BASE_URL || '/'
-    const res = await fetch(`${base}supabase-config.json`, { cache: 'no-store' })
-    if (!res.ok) return null
-    const json = await res.json()
-    if (isValidConfig(json?.url, json?.anonKey)) {
-      return { url: json.url, anonKey: json.anonKey }
-    }
-  } catch (e) {
-    console.warn('[supabase] Failed to load runtime config:', e)
-  }
-
-  return null
-}
-
 export function isSupabaseConfigured() {
   return configured
 }
@@ -92,7 +67,7 @@ export async function initSupabase() {
   if (initPromise) return initPromise
 
   initPromise = (async () => {
-    const config = await loadRuntimeConfig()
+    const config = await loadSupabaseConfig()
     if (!config) {
       client = createUnavailableClient()
       configured = false

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { fetchMyArticles } from '../lib/articles'
+import { fetchArticleTitleTranslations as fetchAuthenticatedTitleTranslations } from '../lib/translate'
 import { askAssist, ASSIST_ERROR } from '../lib/assistClient'
 import { generateFluxImage } from '../lib/fluxAssist'
 import { saveAiDraft } from '../lib/aiDraft'
@@ -245,7 +246,7 @@ export default function AiAssist() {
     titles: translatedTitles,
     isTitlePending,
     pending: titlesPending,
-  } = useArticleTitleTranslations(articles, uiLang)
+  } = useArticleTitleTranslations(articles, uiLang, fetchAuthenticatedTitleTranslations)
 
   const translateActive = titlesPending || localizing
 

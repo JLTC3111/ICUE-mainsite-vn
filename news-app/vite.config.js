@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
         '@icue/zalo': path.resolve(__dirname, '../shared/zalo'),
         '@icue/ui': path.resolve(__dirname, '../shared/ui'),
         'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'),
+        'motion/react': path.resolve(__dirname, 'node_modules/motion/react'),
       },
     },
     build: {
@@ -61,6 +62,14 @@ export default defineConfig(({ mode }) => {
           // Priorities make React its own base chunk that `editor` depends on.
           advancedChunks: {
             groups: [
+              // Keep Vite's dynamic-import helper out of a feature vendor
+              // chunk. Otherwise Rolldown can co-locate it with Supabase and
+              // turn that lazy 200 kB SDK back into an entry preload.
+              {
+                name: 'preload-helper',
+                test: /\0vite\/preload-helper/,
+                priority: 110,
+              },
               {
                 name: 'react',
                 test: /node_modules[/\\](react|react-dom|scheduler|use-sync-external-store)[/\\]/,
@@ -78,7 +87,7 @@ export default defineConfig(({ mode }) => {
               },
               {
                 name: 'i18n',
-                test: /node_modules[/\\](i18next|react-i18next|i18next-browser-languagedetector)[/\\]/,
+                test: /node_modules[/\\](i18next|react-i18next)[/\\]/,
                 priority: 70,
               },
               {
@@ -90,6 +99,26 @@ export default defineConfig(({ mode }) => {
                 name: 'router',
                 test: /node_modules[/\\]react-router/,
                 priority: 50,
+              },
+              {
+                name: 'swiper',
+                test: /node_modules[/\\]swiper[/\\]/,
+                priority: 40,
+              },
+              {
+                name: 'date-picker',
+                test: /node_modules[/\\](@daypicker|react-day-picker|date-fns|@date-fns)[/\\]/,
+                priority: 39,
+              },
+              {
+                name: 'embla',
+                test: /node_modules[/\\](embla-carousel|embla-carousel-react|embla-carousel-reactive-utils)[/\\]/,
+                priority: 38,
+              },
+              {
+                name: 'rough-notation',
+                test: /node_modules[/\\]rough-notation[/\\]/,
+                priority: 37,
               },
               { name: 'vendor', test: /node_modules/, priority: 1 },
             ],

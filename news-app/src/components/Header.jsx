@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, useEffect, useRef } from 'react'
+import { lazy, memo, Suspense, useState, useCallback, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -7,13 +7,22 @@ import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
-import NotificationBell from './NotificationBell'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
 import PerformanceModeToggle from './PerformanceModeToggle'
 import { AnimatedShinyText } from './magicui/AnimatedShinyText'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
+
+const NotificationBell = lazy(() => import('./NotificationBell'))
+
+function DeferredNotificationBell(props) {
+  return (
+    <Suspense fallback={null}>
+      <NotificationBell {...props} />
+    </Suspense>
+  )
+}
 
 function AuthorIcon({ name }) {
   const common = {
@@ -230,7 +239,7 @@ function Header() {
               onOpenChange={handleSearchOpenChange}
             />
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && <NotificationBell key={`responsive-${user?.id}`} compact />}
+            {isAuthed && <DeferredNotificationBell key={`responsive-${user?.id}`} compact />}
           </div>
         )}
 
@@ -281,7 +290,7 @@ function Header() {
               />
             )}
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && !usesOverflowNav && <NotificationBell key={user?.id} />}
+            {isAuthed && !usesOverflowNav && <DeferredNotificationBell key={user?.id} />}
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>

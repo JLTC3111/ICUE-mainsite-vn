@@ -1,14 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import App from './App.jsx'
 
-gsap.registerPlugin(ScrollTrigger)
 import { installGlobalDebugHandlers } from './lib/debugLog'
 import { normalizeUiLocale } from '../../shared/site-routes/mainSitePaths.js'
-import './lib/i18n'
+import i18n, { i18nReady } from './lib/i18n'
 import '../../styles.css'
 import './styles/footer-theme.css'
 import '@icue/styles/icue-base.css'
@@ -19,7 +16,6 @@ import '@icue/styles/icue-base.css'
 // the About page's layout.
 import './pages/AboutUsPage.css'
 
-window.gsap = gsap
 installGlobalDebugHandlers()
 
 // `?lang=` and `?site=` are app-to-app transfer hints — the second is what
@@ -44,10 +40,19 @@ if (normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))) {
  * checked it individually; this settles the JS half for all of them at once
  * (the CSS half lives in shared/styles/motion.css).
  */
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <MotionConfig reducedMotion="user">
-      <App />
-    </MotionConfig>
-  </StrictMode>,
-)
+function mountApp() {
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <MotionConfig reducedMotion="user">
+        <App />
+      </MotionConfig>
+    </StrictMode>,
+  )
+}
+
+void i18nReady
+  .then(mountApp)
+  .catch(async () => {
+    await i18n.changeLanguage('vi')
+    mountApp()
+  })

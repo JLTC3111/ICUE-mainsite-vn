@@ -19,7 +19,7 @@ import {
 import { useNewsroomSearch } from '../context/NewsroomSearchContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
-import { fetchPublishedArticles } from '../lib/articles'
+import { fetchPublishedArticles } from '../lib/publicArticles'
 import { categoryColor, isCategory } from '../lib/categories'
 import { resolveArticleCoverComparison } from '../lib/mediaComparison'
 import { formatDate, normalizeUnicode, resolveIntlLocale } from '../lib/helpers'

@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   fetchArticleTranslation,
   fetchArticleTitleTranslations,
+} from '../lib/publicTranslate'
+import {
   normalizeLang,
   shouldTranslateArticle,
-} from '../lib/translate'
+} from '../lib/translateUtils'
 
 const EMPTY = {}
 
@@ -32,7 +34,11 @@ function mergeLookup(current, lang, ids, result) {
  * list would blank every headline it had already translated — and re-request the
  * ones that come back into view — each time a character lands.
  */
-export function useArticleTitleTranslations(articles, locale) {
+export function useArticleTitleTranslations(
+  articles,
+  locale,
+  fetchTitles = fetchArticleTitleTranslations,
+) {
   const uiLang = normalizeLang(locale)
   const [store, setStore] = useState(
     () => ({ lang: uiLang, titles: EMPTY, subtitles: EMPTY, resolved: EMPTY }),
@@ -65,7 +71,7 @@ export function useArticleTitleTranslations(articles, locale) {
     const ids = missingKey.split(',')
     let active = true
 
-    fetchArticleTitleTranslations(ids, uiLang)
+    fetchTitles(ids, uiLang)
       .then((result) => {
         if (active) setStore((current) => mergeLookup(current, uiLang, ids, result))
       })
@@ -77,7 +83,7 @@ export function useArticleTitleTranslations(articles, locale) {
       })
 
     return () => { active = false }
-  }, [missingKey, uiLang])
+  }, [fetchTitles, missingKey, uiLang])
 
   const titles = isCurrentLang ? store.titles : EMPTY
   const subtitles = isCurrentLang ? store.subtitles : EMPTY

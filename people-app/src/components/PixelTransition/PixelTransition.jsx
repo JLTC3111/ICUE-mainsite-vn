@@ -1,6 +1,14 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { gsap } from 'gsap'
 import './PixelTransition.css'
+
+let gsapPromise = null
+
+function loadGsap() {
+  if (!gsapPromise) {
+    gsapPromise = import('gsap').then((module) => module.gsap || module.default)
+  }
+  return gsapPromise
+}
 
 function PixelTransition({
   firstContent,
@@ -19,6 +27,8 @@ function PixelTransition({
   const activeRef = useRef(null)
   const defaultRef = useRef(null)
   const delayedCallRef = useRef(null)
+  const gsapRef = useRef(null)
+  const mountedRef = useRef(false)
   const prevTrigger = useRef(trigger)
   const isAnimating = useRef(false)
 
@@ -46,7 +56,7 @@ function PixelTransition({
     return undefined
   }, [gridSize, pixelColor])
 
-  const runTransition = useCallback(() => {
+  const runTransition = useCallback(async () => {
     const pixelGridEl = pixelGridRef.current
     const activeEl = activeRef.current
     const defaultEl = defaultRef.current
@@ -60,6 +70,21 @@ function PixelTransition({
     }
 
     isAnimating.current = true
+
+    let gsap
+    try {
+      gsap = await loadGsap()
+    } catch {
+      if (!mountedRef.current) return
+      activeEl.style.display = 'flex'
+      defaultEl.style.display = 'none'
+      isAnimating.current = false
+      onComplete?.()
+      return
+    }
+
+    if (!mountedRef.current) return
+    gsapRef.current = gsap
     const pixels = pixelGridEl.querySelectorAll('.pixel-transition__pixel')
     if (!pixels.length) {
       isAnimating.current = false
@@ -117,8 +142,14 @@ function PixelTransition({
     return undefined
   }, [trigger, runTransition])
 
-  useEffect(() => () => {
-    if (delayedCallRef.current) delayedCallRef.current.kill()
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+      if (delayedCallRef.current) delayedCallRef.current.kill()
+      const pixels = pixelGridRef.current?.querySelectorAll('.pixel-transition__pixel')
+      if (pixels?.length) gsapRef.current?.killTweensOf(pixels)
+    }
   }, [])
 
   useEffect(() => {
