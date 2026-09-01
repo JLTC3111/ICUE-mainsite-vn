@@ -12,9 +12,9 @@ import './Chatbot.css'
  * runtime — which meant it appeared on the legacy pages and nowhere else. As a
  * shared component any app can mount it; /faqs and /recruitment do today.
  *
- * The reply engine is unchanged in substance: authored intents scored by
- * keyword overlap, plus the FAQ corpus, with an authored fallback. What it says
- * is only ever text somebody wrote — see lib/knowledge.js.
+ * The reply engine remains retrieval-only: authored intents are ranked by
+ * lexical overlap, alongside the FAQ corpus, with clarification and authored
+ * fallback paths. It never generates an answer — see lib/knowledge.js.
  */
 
 const BOT_REPLY_DELAY_MS = 700
@@ -35,7 +35,7 @@ function UserAvatar() {
   )
 }
 
-function Message({ message }) {
+function Message({ message, onLinkClick }) {
   const isUser = message.role === 'user'
   const links = Array.isArray(message.links) ? message.links : []
 
@@ -49,7 +49,11 @@ function Message({ message }) {
         {links.length > 0 && (
           <div className="icue-chat__links">
             {links.map((link) => (
-              <a key={`${link.url}-${link.label}`} href={link.url}>
+              <a
+                key={`${link.url}-${link.label}`}
+                href={link.url}
+                onClick={() => onLinkClick?.(link, message.meta)}
+              >
                 {link.label}
               </a>
             ))}
@@ -65,8 +69,10 @@ function Message({ message }) {
  * @param {string} props.locale   the reader's UI language, one of the six
  * @param {object} props.labels   UI chrome from the host app's i18n (`chat.*`)
  * @param {{faqs: string, contact: string}} props.links  resolved page URLs
+ * @param {(event: object) => void} [props.onEvent] privacy-safe analytics hook;
+ *   events deliberately exclude the visitor's message text
  */
-export default function Chatbot({ locale = 'vi', labels, links }) {
+export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const [isOpen, setIsOpen] = useState(false)
   const [draft, setDraft] = useState('')
   const [isThinking, setIsThinking] = useState(false)
@@ -83,6 +89,22 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
         copy: createBotCopy({ faqsUrl: links.faqs, contactUrl: links.contact }),
       }),
     [locale, links.faqs, links.contact],
+  )
+
+  const emitEvent = useCallback(
+    (type, detail = {}) => {
+      const event = {
+        type,
+        locale,
+        path: typeof window !== 'undefined' ? window.location.pathname : '',
+        ...detail,
+      }
+      onEvent?.(event)
+      if (typeof window !== 'undefined' && typeof window.CustomEvent === 'function') {
+        window.dispatchEvent(new CustomEvent('icue:chatbot-event', { detail: event }))
+      }
+    },
+    [locale, onEvent],
   )
 
   // Each language keeps its own transcript; switching flag swaps the thread.
@@ -124,15 +146,34 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
       timerRef.current = setTimeout(async () => {
         try {
           const response = await knowledge.getResponse(message)
-          append({ role: 'bot', content: response.content, links: response.links || [] })
+          append({
+            role: 'bot',
+            content: response.content,
+            links: response.links || [],
+            meta: response.meta || { source: 'unknown' },
+          })
+          emitEvent('response', response.meta || { source: 'unknown' })
         } catch {
           append({ role: 'bot', content: labels.error, links: [] })
+          emitEvent('error')
         } finally {
           setIsThinking(false)
         }
       }, BOT_REPLY_DELAY_MS)
     },
-    [append, isThinking, knowledge, labels.error],
+    [append, emitEvent, isThinking, knowledge, labels.error],
+  )
+
+  const recordLinkClick = useCallback(
+    (link, responseMeta = {}) => {
+      emitEvent('link_click', {
+        source: responseMeta?.source || 'unknown',
+        intentId: responseMeta?.intentId,
+        faqId: responseMeta?.faqId,
+        destination: link.url,
+      })
+    },
+    [emitEvent],
   )
 
   const suggestions = Array.isArray(labels.suggestions) ? labels.suggestions : []
@@ -169,7 +210,11 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
                 same way the legacy panel kept its seeded first bubble. */}
             {!hasTranscript && <Message message={{ role: 'bot', content: labels.greeting }} />}
             {messages.map((message) => (
-              <Message key={`${message.timestamp}-${message.role}`} message={message} />
+              <Message
+                key={`${message.timestamp}-${message.role}`}
+                message={message}
+                onLinkClick={recordLinkClick}
+              />
             ))}
             {isThinking && (
               <div className="icue-chat__message icue-chat__message--bot">

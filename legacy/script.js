@@ -4210,6 +4210,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     function createChatbotKnowledge() {
       const kbCache = Object.create(null);
       const kbLoading = Object.create(null);
+      const intentThreshold = 0.52;
+      const faqThreshold = 0.58;
       const siteLang = ((document.documentElement.lang || 'vi').toLowerCase().startsWith('vi')) ? 'vi' : 'en';
       const kbPaths = {
         vi: '/public/chatbot/kb.vi.json',
@@ -4250,7 +4252,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
       function getFallbackKb(lang) {
         return {
-          version: 1,
+          version: 2,
           language: lang,
           intents: [
             {
@@ -4273,7 +4275,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
       function prepareKb(kb, lang) {
         const safe = {
-          version: kb.version || 1,
+          version: kb.version || 2,
           language: kb.language || lang,
           intents: Array.isArray(kb.intents) ? kb.intents : [],
           fallback: kb.fallback || { answer: lang === 'vi' ? 'Bạn có thể nói rõ hơn giúp mình không?' : 'Could you clarify your question?' }
@@ -4284,13 +4286,15 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           .map((it) => {
             const keywords = Array.isArray(it.keywords) ? it.keywords.filter(Boolean) : [];
             const phrases = Array.isArray(it.phrases) ? it.phrases.filter(Boolean) : [];
+            const ambiguousKeywords = Array.isArray(it.ambiguousKeywords) ? it.ambiguousKeywords.filter(Boolean) : [];
             const links = Array.isArray(it.links) ? it.links.filter(l => l && l.label && l.url) : [];
-            const candidates = [...keywords, ...phrases]
+            const candidates = [...keywords, ...phrases, ...ambiguousKeywords]
               .map((s) => normalizeForSearch(String(s)))
               .filter(Boolean);
             const candidateTokens = candidates.map(tokenize);
             return {
               id: it.id || 'intent',
+              label: String(it.label || it.id || 'intent'),
               answer: String(it.answer),
               links,
               _candidates: candidates,
@@ -4304,7 +4308,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const raw = String(userMessage || '').trim();
         if (!raw) {
           const kb = await ensureKb(siteLang);
-          return { content: kb.fallback?.answer || '', links: [] };
+          return { content: kb.fallback?.answer || '', links: [], meta: { source: 'fallback' } };
         }
 
         const unsupported = detectUnsupportedLanguage(raw);
@@ -4313,7 +4317,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             content: siteLang === 'vi'
               ? 'Hiện tại chatbot chỉ hỗ trợ Tiếng Việt và English. Vui lòng đặt câu hỏi bằng Tiếng Việt hoặc English (bạn có thể đổi ngôn ngữ bằng biểu tượng lá cờ trên thanh menu).'
               : 'This chatbot currently supports Vietnamese and English only. Please ask your question in Vietnamese or English (you can switch site language via the flag icon in the menu).',
-            links: []
+            links: [],
+            meta: { source: 'unsupported', language: unsupported }
           };
         }
 
@@ -4325,7 +4330,9 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const kb = await ensureKb(detectedLang);
 
         // 1) Match intents in KB
-        const bestIntent = findBestIntent(kb, queryNorm, queryTokens);
+        const rankedIntents = findBestIntents(kb, queryNorm, queryTokens);
+        const bestIntent = rankedIntents[0] || null;
+        const secondIntent = rankedIntents[1] || null;
 
         // 2) Match against FAQ data (if available)
         const bestFaq = findBestFaq(queryNorm, queryTokens, detectedLang);
@@ -4334,13 +4341,35 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const intentScore = bestIntent?.score ?? 0;
         const faqScore = bestFaq?.score ?? 0;
 
-        if (faqScore >= 0.52 && faqScore >= intentScore) {
+        if (faqScore >= faqThreshold && faqScore >= intentScore) {
           const links = [{ label: detectedLang === 'vi' ? 'Xem FAQ' : 'View FAQs', url: '#/faqs' }];
-          return { content: bestFaq.answer, links };
+          return {
+            content: bestFaq.answer,
+            links,
+            meta: { source: 'faq', faqId: bestFaq.id, category: bestFaq.category, score: faqScore }
+          };
         }
 
-        if (intentScore >= 0.45) {
-          return { content: bestIntent.intent.answer, links: bestIntent.intent.links || [] };
+        if (isAmbiguousIntentMatch(bestIntent, secondIntent)) {
+          return {
+            content: detectedLang === 'vi'
+              ? `Mình tìm thấy hai chủ đề có thể phù hợp: ${bestIntent.intent.label} hoặc ${secondIntent.intent.label}. Bạn muốn hỏi về chủ đề nào?`
+              : `I found two possible topics: ${bestIntent.intent.label} or ${secondIntent.intent.label}. Which one do you mean?`,
+            links: [],
+            meta: {
+              source: 'clarification',
+              intentIds: [bestIntent.intent.id, secondIntent.intent.id],
+              score: bestIntent.score
+            }
+          };
+        }
+
+        if (intentScore >= intentThreshold) {
+          return {
+            content: bestIntent.intent.answer,
+            links: bestIntent.intent.links || [],
+            meta: { source: 'intent', intentId: bestIntent.intent.id, score: intentScore }
+          };
         }
 
         return {
@@ -4350,7 +4379,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           links: [
             { label: detectedLang === 'vi' ? 'FAQ' : 'FAQs', url: '#/faqs' },
             { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: '#/Contact' }
-          ]
+          ],
+          meta: { source: 'fallback', score: Math.max(intentScore, faqScore) }
         };
       }
 
@@ -4360,13 +4390,13 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
         // If we can't confidently detect, compare intent match strength across both KBs.
         const [kbEn, kbVi] = await Promise.all([ensureKb('en'), ensureKb('vi')]);
-        const bestEn = findBestIntent(kbEn, queryNorm, queryTokens);
-        const bestVi = findBestIntent(kbVi, queryNorm, queryTokens);
+        const bestEn = findBestIntents(kbEn, queryNorm, queryTokens)[0];
+        const bestVi = findBestIntents(kbVi, queryNorm, queryTokens)[0];
         const enScore = bestEn?.score ?? 0;
         const viScore = bestVi?.score ?? 0;
 
         // Only switch away from siteLang if there's a clear winner.
-        const minToSwitch = 0.45;
+        const minToSwitch = intentThreshold;
         const margin = 0.05;
         if (Math.max(enScore, viScore) >= minToSwitch && Math.abs(enScore - viScore) >= margin) {
           return enScore > viScore ? 'en' : 'vi';
@@ -4470,7 +4500,6 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
       function scoreTokens(queryTokens, candTokens, queryNorm, candNorm) {
         if (!candNorm) return 0;
         if (queryNorm === candNorm) return 1;
-        if (queryNorm.includes(candNorm) || candNorm.includes(queryNorm)) return 0.92;
 
         const qSet = new Set(queryTokens);
         const cSet = new Set(candTokens);
@@ -4478,30 +4507,49 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
         let intersect = 0;
         for (const t of cSet) if (qSet.has(t)) intersect++;
+        if (intersect === 0) return 0;
         const union = qSet.size + cSet.size - intersect;
         const jaccard = union ? (intersect / union) : 0;
         const coverage = cSet.size ? (intersect / cSet.size) : 0;
 
-        return (0.65 * jaccard) + (0.35 * coverage);
+        let score = (0.65 * jaccard) + (0.35 * coverage);
+        const paddedQuery = ` ${queryNorm} `;
+        const paddedCandidate = ` ${candNorm} `;
+        if (cSet.size >= 2 && paddedQuery.includes(paddedCandidate)) score += 0.08;
+        else if (qSet.size >= 2 && paddedCandidate.includes(paddedQuery)) score += 0.04;
+        return Math.min(score, 0.96);
       }
 
-      function findBestIntent(kb, queryNorm, queryTokens) {
-        let best = null;
-        for (const intent of kb.intents || []) {
+      function findBestIntents(kb, queryNorm, queryTokens) {
+        return (kb.intents || []).map((intent, order) => {
           let bestScore = 0;
+          let candidateSize = 0;
           const candidates = intent._candidates || [];
           const candidateTokens = intent._candidateTokens || [];
           for (let i = 0; i < candidates.length; i++) {
             const candNorm = candidates[i];
             const candTokens = candidateTokens[i] || [];
             const s = scoreTokens(queryTokens, candTokens, queryNorm, candNorm);
-            if (s > bestScore) bestScore = s;
+            if (s > bestScore || (s === bestScore && candTokens.length > candidateSize)) {
+              bestScore = s;
+              candidateSize = candTokens.length;
+            }
           }
-          if (!best || bestScore > best.score) {
-            best = { intent, score: bestScore };
-          }
-        }
-        return best;
+          return { intent, score: bestScore, candidateSize, order };
+        }).sort((left, right) =>
+          right.score - left.score || right.candidateSize - left.candidateSize || left.order - right.order
+        );
+      }
+
+      function isAmbiguousIntentMatch(first, second) {
+        return Boolean(
+          first?.intent?.id &&
+          second?.intent?.id &&
+          first.intent.id !== second.intent.id &&
+          first.score >= intentThreshold &&
+          second.score >= intentThreshold &&
+          Math.abs(first.score - second.score) <= 0.035
+        );
       }
 
       function findBestFaq(queryNorm, queryTokens, desiredLang) {
@@ -4515,16 +4563,22 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         }
 
         let best = null;
+        const reviewRequired = new Set([
+          'services.2', 'costs.1', 'costs.2', 'legal.1', 'legal.2',
+          'timeline.1', 'timeline.2', 'clients.2', 'general.2'
+        ]);
         for (const cat of Object.keys(faqData)) {
           const items = Array.isArray(faqData[cat]) ? faqData[cat] : [];
-          for (const item of items) {
+          for (let index = 0; index < items.length; index++) {
+            const item = items[index];
+            if (reviewRequired.has(`${cat}.${index + 1}`)) continue;
             const q = item?.q;
             const a = item?.a;
             if (!q || !a) continue;
             const qNorm = normalizeForSearch(q);
             const s = scoreTokens(queryTokens, tokenize(qNorm), queryNorm, qNorm);
             if (!best || s > best.score) {
-              best = { question: q, answer: String(a), score: s };
+              best = { id: `${cat}.${index + 1}`, category: cat, question: q, answer: String(a), score: s };
             }
           }
         }
@@ -4578,6 +4632,18 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
             }
             saveChatHistory(chatHistory);
         }
+
+        function emitChatbotEvent(type, detail = {}) {
+          if (typeof window.CustomEvent !== 'function') return;
+          window.dispatchEvent(new CustomEvent('icue:chatbot-event', {
+            detail: {
+              type,
+              locale: chatbotKnowledge.siteLang,
+              path: window.location.pathname,
+              ...detail
+            }
+          }));
+        }
         
         function createMessageElement(msg) {
           const messageDiv = document.createElement('div');
@@ -4622,6 +4688,12 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               a.style.marginTop = '6px';
               a.style.textDecoration = 'underline';
               a.addEventListener('click', (e) => {
+                emitChatbotEvent('link_click', {
+                  source: msg?.meta?.source || 'unknown',
+                  intentId: msg?.meta?.intentId,
+                  faqId: msg?.meta?.faqId,
+                  destination: String(l.url)
+                });
                 // allow hash routing; prevent full page reload
                 if (String(l.url).startsWith('#/')) {
                   e.preventDefault();
@@ -4729,13 +4801,16 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               addMessageToHistory({
                 role: 'bot',
                 content: resp.content,
-                links: resp.links || []
+                links: resp.links || [],
+                meta: resp.meta || { source: 'unknown' }
               });
               chatbotMessages.appendChild(createMessageElement({
                 role: 'bot',
                 content: resp.content,
-                links: resp.links || []
+                links: resp.links || [],
+                meta: resp.meta || { source: 'unknown' }
               }));
+              emitChatbotEvent('response', resp.meta || { source: 'unknown' });
               chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             }, 700);
         };

@@ -1,9 +1,10 @@
 {
-  "version": 1,
+  "version": 2,
   "language": "en",
   "intents": [
     {
       "id": "greeting",
+      "label": "Greeting",
       "keywords": [
         "hello",
         "hi",
@@ -21,21 +22,18 @@
     },
     {
       "id": "services",
+      "label": "Services",
       "keywords": [
         "services",
         "consulting",
-        "advisory",
-        "planning",
-        "design",
-        "project management",
-        "supervision"
+        "advisory"
       ],
       "phrases": [
         "what services do you provide",
         "consulting services",
         "what can you help with"
       ],
-      "answer": "ICUE provides consulting related to planning/design, project management, procedure support, and sustainability-focused solutions. Tell me your project type + scope (design, supervision, documentation, etc.) and I’ll point you to the best next step.",
+      "answer": "ICUE provides consulting related to planning/design, project management, procedure support, and sustainability-focused solutions. For project-specific guidance, send the project type, location, and required scope through the Contact page.",
       "links": [
         {
           "label": "Work / Services",
@@ -53,6 +51,7 @@
     },
     {
       "id": "planning_design",
+      "label": "Planning and design",
       "keywords": [
         "planning",
         "urban planning",
@@ -66,7 +65,7 @@
         "can you help with design",
         "master planning"
       ],
-      "answer": "Yes — we can support planning and design depending on the project needs. If you share the site/location, goals, and current status (idea / concept / detailed design), I can suggest the most suitable workflow.",
+      "answer": "ICUE can support planning and design depending on the project needs. A useful enquiry includes the site/location, goals, and current stage (idea / concept / detailed design) so the team can confirm an appropriate workflow.",
       "links": [
         {
           "label": "Work",
@@ -80,6 +79,7 @@
     },
     {
       "id": "project_management",
+      "label": "Project management",
       "keywords": [
         "project management",
         "pm",
@@ -91,7 +91,7 @@
         "can you manage my project",
         "project management support"
       ],
-      "answer": "We can provide project management and coordination support depending on scope. If you tell me timeline, stakeholders, and deliverables, I can outline a practical PM plan.",
+      "answer": "ICUE can provide project management and coordination support depending on scope. Include the timeline, stakeholders, and expected deliverables in your enquiry so the team can assess the work.",
       "links": [
         {
           "label": "Contact",
@@ -101,6 +101,7 @@
     },
     {
       "id": "supervision",
+      "label": "Site supervision",
       "keywords": [
         "supervision",
         "monitoring",
@@ -111,7 +112,7 @@
         "do you supervise construction",
         "site supervision"
       ],
-      "answer": "Supervision/monitoring support depends on project type and location. Share the project location and phase (design / tender / construction) and I’ll advise the best approach.",
+      "answer": "Supervision/monitoring support depends on the project type, location, and phase (design / tender / construction). Send those details through the Contact page so ICUE can confirm what support is feasible.",
       "links": [
         {
           "label": "Contact",
@@ -121,6 +122,7 @@
     },
     {
       "id": "permits_legal",
+      "label": "Permits and procedures",
       "keywords": [
         "permit",
         "permits",
@@ -133,7 +135,7 @@
         "can you help with permits",
         "legal procedure support"
       ],
-      "answer": "We can assist with procedures/document preparation depending on the project. If you tell me your city/province and project type, I can suggest what documents are typically needed and the usual steps.",
+      "answer": "ICUE may assist with procedures and document preparation depending on the project and jurisdiction. Contact the team with the city/province and project type to confirm scope and likely document requirements.",
       "links": [
         {
           "label": "FAQs",
@@ -147,6 +149,7 @@
     },
     {
       "id": "documents_required",
+      "label": "Required documents",
       "keywords": [
         "documents",
         "paperwork",
@@ -158,7 +161,7 @@
         "what documents do i need",
         "required documents"
       ],
-      "answer": "Common starting documents include: basic site info, goals/scope, existing drawings (if any), and relevant legal/ownership papers (if applicable). If you share what you already have, I can tell you what’s missing.",
+      "answer": "Common starting documents include basic site information, goals/scope, existing drawings (if any), and relevant land-use or legal papers. Final requirements depend on the project and should be confirmed with ICUE.",
       "links": [
         {
           "label": "Contact",
@@ -172,20 +175,24 @@
     },
     {
       "id": "pricing_fees",
+      "label": "Service pricing",
       "keywords": [
         "price",
         "pricing",
         "fees",
         "cost",
-        "quote",
         "budget"
       ],
       "phrases": [
         "how much does it cost",
-        "can i get a quote",
+        "can i get a cost estimate",
+        "how are service fees calculated",
         "pricing"
       ],
-      "answer": "Fees vary by scope, timeline, and project complexity. If you share a 3–5 line brief (project type, location, size, timeline, and what you need), we can provide a more accurate estimate.",
+      "ambiguousKeywords": [
+        "quote"
+      ],
+      "answer": "Fees vary by scope, timeline, and project complexity. Send a short brief through the Contact page—project type, location, size, timeline, and required output—for a project-specific estimate.",
       "links": [
         {
           "label": "Contact",
@@ -195,6 +202,7 @@
     },
     {
       "id": "payment_installments",
+      "label": "Payment terms",
       "keywords": [
         "payment",
         "installments",
@@ -205,7 +213,7 @@
         "can i pay in installments",
         "payment terms"
       ],
-      "answer": "Payment terms are usually aligned with milestones (e.g., concept → draft → final). If you share your timeline and deliverables, we can suggest a reasonable milestone plan.",
+      "answer": "Payment terms may be aligned with agreed milestones (for example, concept → draft → final). The applicable schedule must be confirmed in the written proposal or contract.",
       "links": [
         {
           "label": "Contact",
@@ -215,6 +223,7 @@
     },
     {
       "id": "process_steps",
+      "label": "Project process",
       "keywords": [
         "process",
         "workflow",
@@ -225,7 +234,7 @@
         "what is your process",
         "how do we work together"
       ],
-      "answer": "Typical flow: initial discussion → collect requirements → site/context review → draft deliverables → revisions → final delivery. If you tell me your project stage, I can recommend the right starting point.",
+      "answer": "A typical flow is: initial discussion → requirements → site/context review → draft deliverables → agreed revisions → final delivery. Exact stages and revision limits are confirmed for each project.",
       "links": [
         {
           "label": "FAQs",
@@ -235,17 +244,18 @@
     },
     {
       "id": "timeline_duration",
+      "label": "Project timeline",
       "keywords": [
         "timeline",
         "duration",
         "how long",
-        "schedule"
+        "project schedule"
       ],
       "phrases": [
         "how long does it take",
         "timeline"
       ],
-      "answer": "Timeline depends on scope and approvals. Share your deadline and what you need delivered (concept only vs. full package) and I’ll suggest a realistic timeline and checkpoints.",
+      "answer": "The timeline depends on scope, approvals, and the required deliverables. Include your deadline and whether you need a concept or full package when contacting ICUE for an assessed schedule.",
       "links": [
         {
           "label": "Contact",
@@ -255,6 +265,7 @@
     },
     {
       "id": "bim_3d",
+      "label": "BIM and 3D",
       "keywords": [
         "bim",
         "3d",
@@ -266,7 +277,7 @@
         "do you use bim",
         "3d model"
       ],
-      "answer": "We can use BIM/3D modeling where appropriate to help visualize and coordinate design. Tell me your deliverable needs (3D model, views, coordination) and I’ll advise.",
+      "answer": "ICUE can use BIM/3D modeling where appropriate to support visualization and design coordination. The available deliverables—such as models, views, or technical coordination—are confirmed in the project scope.",
       "links": [
         {
           "label": "Work",
@@ -276,6 +287,7 @@
     },
     {
       "id": "green_sustainability",
+      "label": "Sustainability",
       "keywords": [
         "sustainable",
         "sustainability",
@@ -288,7 +300,7 @@
         "green design",
         "sustainable solutions"
       ],
-      "answer": "Yes — we can incorporate sustainability goals (materials, energy, climate resilience) depending on project context. Share your priorities and constraints and I’ll propose practical options.",
+      "answer": "ICUE can incorporate sustainability goals such as materials, energy use, and climate resilience depending on project context. Priorities and constraints should be included in the project brief.",
       "links": [
         {
           "label": "Work",
@@ -298,19 +310,19 @@
     },
     {
       "id": "sectors_clients",
+      "label": "Clients and sectors",
       "keywords": [
         "clients",
         "sectors",
         "government",
         "business",
-        "individual",
-        "community"
+        "individual"
       ],
       "phrases": [
         "who do you work with",
         "who are your clients"
       ],
-      "answer": "We work with a mix of individuals, organizations/businesses, and public-sector stakeholders depending on the program/project. If you share your context, I can point to similar examples.",
+      "answer": "ICUE works with individuals, organizations/businesses, and public-sector stakeholders depending on the program or project. Published examples are available under Past Projects.",
       "links": [
         {
           "label": "Past Projects",
@@ -320,6 +332,7 @@
     },
     {
       "id": "locations",
+      "label": "Service locations",
       "keywords": [
         "where",
         "location",
@@ -332,7 +345,7 @@
         "where do you operate",
         "are you based in"
       ],
-      "answer": "If you tell me the project location (city/province) and whether you prefer remote or on-site support, I can advise what’s feasible and the typical workflow.",
+      "answer": "Service feasibility depends on the project location and whether remote or on-site support is required. Send the city/province and preferred working arrangement through the Contact page for confirmation.",
       "links": [
         {
           "label": "Contact",
@@ -342,6 +355,7 @@
     },
     {
       "id": "portfolio_projects",
+      "label": "Past projects",
       "keywords": [
         "portfolio",
         "past projects",
@@ -352,7 +366,7 @@
         "show portfolio",
         "what projects have you done"
       ],
-      "answer": "You can browse projects and activities under Work / Past Projects. If you tell me your domain (urban, environment, community…), I’ll suggest the closest examples.",
+      "answer": "You can browse published projects and activities under Work and Past Projects, including urban, environmental, and community work.",
       "links": [
         {
           "label": "Past Projects",
@@ -366,11 +380,11 @@
     },
     {
       "id": "news_updates",
+      "label": "News and updates",
       "keywords": [
         "news",
         "updates",
-        "articles",
-        "press"
+        "articles"
       ],
       "phrases": [
         "latest news",
@@ -386,6 +400,7 @@
     },
     {
       "id": "community",
+      "label": "Community activities",
       "keywords": [
         "community",
         "events",
@@ -407,6 +422,7 @@
     },
     {
       "id": "recruitment",
+      "label": "Recruitment",
       "keywords": [
         "recruitment",
         "jobs",
@@ -419,7 +435,7 @@
         "how do i apply",
         "open roles"
       ],
-      "answer": "Check the Recruitment page for open roles and requirements. If you share the role you’re targeting, I can help you tailor your CV and application message.",
+      "answer": "Check the Recruitment page for current roles and published requirements. Tailor your CV and application message to the listed responsibilities and include directly relevant experience.",
       "links": [
         {
           "label": "Recruitment",
@@ -429,6 +445,7 @@
     },
     {
       "id": "internship",
+      "label": "Internships",
       "keywords": [
         "intern",
         "internship",
@@ -439,7 +456,7 @@
         "do you offer internships",
         "internship opportunities"
       ],
-      "answer": "If you’re looking for internships, the Recruitment page is the best place to start. Share your background + interests and I can suggest what to highlight in your application.",
+      "answer": "For internships, start with the Recruitment page. A concise application should highlight relevant study, practical skills, portfolio work, and what you hope to learn.",
       "links": [
         {
           "label": "Recruitment",
@@ -449,6 +466,7 @@
     },
     {
       "id": "partnership",
+      "label": "Partnerships",
       "keywords": [
         "partner",
         "partnership",
@@ -460,7 +478,7 @@
         "i want to partner",
         "collaboration opportunities"
       ],
-      "answer": "We’re open to collaboration depending on alignment and scope. If you share who you are, the topic, and what you’re proposing, I can help draft a clear outreach message.",
+      "answer": "ICUE is open to discussing collaboration where goals and scope align. A useful enquiry states who you are, the topic, your proposal, and the intended outcome.",
       "links": [
         {
           "label": "Contact",
@@ -470,18 +488,22 @@
     },
     {
       "id": "media_press",
+      "label": "Media and press",
       "keywords": [
         "media",
         "press",
         "interview",
-        "speaker",
-        "quote"
+        "speaker"
       ],
       "phrases": [
         "media request",
-        "press contact"
+        "press contact",
+        "quote icue in an article"
       ],
-      "answer": "For media/press requests, please contact us with your deadline, topic, and what you need (quote/interview/speaker). I can help you draft the request message.",
+      "ambiguousKeywords": [
+        "quote"
+      ],
+      "answer": "For media or press requests, contact ICUE with the deadline, topic, publication, and requested contribution (quote / interview / speaker).",
       "links": [
         {
           "label": "Contact",
@@ -491,6 +513,7 @@
     },
     {
       "id": "schedule_meeting",
+      "label": "Schedule a consultation",
       "keywords": [
         "meeting",
         "call",
@@ -500,9 +523,10 @@
       ],
       "phrases": [
         "can we schedule a call",
-        "book a meeting"
+        "book a meeting",
+        "schedule a meeting"
       ],
-      "answer": "Sure — share your preferred time window, timezone, and what you want to discuss. If you message via the Contact page, include these details to speed things up.",
+      "answer": "To request a consultation, use the Contact page and include your preferred time window, timezone, and the topic you want to discuss.",
       "links": [
         {
           "label": "Contact",
@@ -512,6 +536,7 @@
     },
     {
       "id": "request_proposal",
+      "label": "Proposals and RFPs",
       "keywords": [
         "proposal",
         "rfp",
@@ -534,6 +559,7 @@
     },
     {
       "id": "policies",
+      "label": "Policies",
       "keywords": [
         "privacy",
         "gdpr",
@@ -545,7 +571,7 @@
         "terms of use",
         "cookies"
       ],
-      "answer": "You can review our policy pages (Privacy, GDPR, Terms, Cookies). Tell me which one you need and I’ll point you there.",
+      "answer": "You can review ICUE’s Privacy, GDPR, Terms, and Cookies pages using the links below.",
       "links": [
         {
           "label": "Privacy",
@@ -567,6 +593,7 @@
     },
     {
       "id": "faq",
+      "label": "FAQs",
       "keywords": [
         "faq",
         "frequently asked questions"
@@ -575,7 +602,7 @@
         "faq",
         "faqs"
       ],
-      "answer": "You can use the FAQs page for quick answers — and feel free to ask here too. I’ll try to find the closest match from the FAQ knowledge base.",
+      "answer": "Use the FAQs page for quick answers. Questions asked here are matched only against ICUE’s authored intent and FAQ content.",
       "links": [
         {
           "label": "FAQs",
