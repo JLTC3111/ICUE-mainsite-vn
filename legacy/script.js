@@ -4138,7 +4138,12 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     const chatbotHTML = `
         <div id="ai-chatbot" class="chatbot-container">
             <div class="chatbot-toggle" id="chatbot-toggle">
-                <svg width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-bubble-message-dot-2" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>1049</title> <defs> </defs> <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z" fill="#34efeb" class="si-glyph-fill"> </path> </g> </g></svg>
+                <svg class="chatbot-mark" width="68" height="68" viewBox="0 0 68 68" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path class="chatbot-mark-bubble" fill="#48dad5" d="M16 8h36c8.3 0 15 6.7 15 15v16c0 8.3-6.7 15-15 15H36.2c-4.7 4.2-10.1 7.1-16.2 9 2.2-2.8 3.6-5.8 4.2-9H16C7.7 54 1 47.3 1 39V23C1 14.7 7.7 8 16 8Z"></path>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="21" cy="31" r="3.6"></circle>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="34" cy="31" r="3.6"></circle>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="47" cy="31" r="3.6"></circle>
+                </svg>
                 <span class="chatbot-badge">Auto</span>
             </div>
             

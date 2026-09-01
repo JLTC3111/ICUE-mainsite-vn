@@ -281,11 +281,21 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         aria-expanded={isOpen}
         aria-label={isOpen ? labels.close : labels.open}
       >
-        <svg width="64" height="64" viewBox="0 -0.5 17 17" aria-hidden="true">
+        <svg
+          className="icue-chat__mark"
+          width="68"
+          height="68"
+          viewBox="0 0 68 68"
+          aria-hidden="true"
+        >
           <path
-            d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z"
-            fill="#34efeb"
+            className="icue-chat__mark-bubble"
+            fill="#48dad5"
+            d="M16 8h36c8.3 0 15 6.7 15 15v16c0 8.3-6.7 15-15 15H36.2c-4.7 4.2-10.1 7.1-16.2 9 2.2-2.8 3.6-5.8 4.2-9H16C7.7 54 1 47.3 1 39V23C1 14.7 7.7 8 16 8Z"
           />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="21" cy="31" r="3.6" />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="34" cy="31" r="3.6" />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="47" cy="31" r="3.6" />
         </svg>
         <span className="icue-chat__badge">{labels.badge}</span>
       </button>
