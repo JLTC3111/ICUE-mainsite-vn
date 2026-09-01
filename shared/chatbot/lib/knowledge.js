@@ -1,4 +1,4 @@
-import { getFaqEntries, isSupportedFaqLanguage } from '@icue/faq-content'
+import { getFaqEntries, isSupportedFaqLanguage } from '../../faq-content/index.js'
 import {
   findQuickTopic,
   isAmbiguousIntentMatch,
@@ -31,57 +31,65 @@ export const INTENT_THRESHOLD = 0.52
 /** FAQ match must reach this, and beat the intent, to be preferred. */
 export const FAQ_THRESHOLD = 0.58
 
-/** The two languages the authored knowledge base covers. */
-export const KB_LANGUAGES = ['vi', 'en']
+/** Every language exposed by the site has a complete authored intent database. */
+export const KB_LANGUAGES = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
 
 export function detectUserLanguage(text) {
   const raw = String(text || '')
-  const hasVietnameseDiacritics =
-    /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i.test(raw)
-  if (hasVietnameseDiacritics) return 'vi'
+  if (/[가-힯]/.test(raw)) return 'ko'
+  if (/[぀-ヿ]/.test(raw)) return 'ja'
 
-  // Vietnamese typed WITHOUT diacritics is common ("xin chao", "dich vu").
+  // Latin-script languages are distinguished by common query words. This also
+  // handles Vietnamese typed without diacritics and avoids treating French
+  // accents such as é/à as proof that a message is Vietnamese.
   const tokens = normalizeForSearch(raw).split(' ').filter(Boolean)
+  if (!tokens.length) return null
 
-  const viHints = new Set([
-    'xin', 'chao', 'camon', 'cam', 'on', 'dich', 'vu', 'lien', 'he', 'tuyen',
-    'dung', 'ung', 'du', 'an', 'bao', 'gia', 'chi', 'phi', 'thoi', 'gian',
-    'quy', 'trinh', 'hop', 'tac', 'doi', 'truyen', 'thong',
-  ])
-  const enHints = new Set([
-    'what', 'how', 'where', 'when', 'services', 'service', 'projects',
-    'project', 'contact', 'recruitment', 'privacy', 'terms', 'cookies', 'gdpr',
-    'price', 'pricing', 'quote', 'proposal', 'meeting', 'schedule',
-    'internship', 'partner', 'press',
-  ])
-
-  let viScore = 0
-  let enScore = 0
-  for (const t of tokens) {
-    if (viHints.has(t)) viScore++
-    if (enHints.has(t)) enScore++
+  const hintSets = {
+    vi: new Set([
+      'xin', 'chao', 'dich', 'vu', 'lien', 'he', 'tuyen', 'dung', 'du', 'an',
+      'bao', 'gia', 'chi', 'phi', 'thoi', 'gian', 'quy', 'trinh', 'hop', 'tac',
+    ]),
+    en: new Set([
+      'hello', 'what', 'how', 'where', 'when', 'services', 'service', 'projects',
+      'project', 'recruitment', 'privacy', 'pricing', 'proposal', 'meeting',
+      'internship', 'partner', 'press',
+    ]),
+    de: new Set([
+      'hallo', 'danke', 'welche', 'was', 'wie', 'wo', 'leistungen', 'beratung',
+      'kosten', 'honorar', 'projekt', 'karriere', 'datenschutz', 'termin',
+    ]),
+    fr: new Set([
+      'bonjour', 'merci', 'quelles', 'comment', 'ou', 'prestations', 'conseil',
+      'cout', 'honoraires', 'projet', 'recrutement', 'confidentialite', 'rendez',
+    ]),
   }
 
-  if (viScore >= 2 && viScore > enScore) return 'vi'
-  if (enScore >= 1 && enScore > viScore) return 'en'
+  const ranked = Object.entries(hintSets)
+    .map(([language, hints]) => ({
+      language,
+      score: tokens.reduce((total, token) => total + Number(hints.has(token)), 0),
+    }))
+    .sort((left, right) => right.score - left.score)
+
+  if (ranked[0].score >= 1 && ranked[0].score > ranked[1].score) {
+    return ranked[0].language
+  }
   return null
 }
 
 /**
- * Returns a language tag when the message is clearly in something the knowledge
- * base does not cover, so the caller can say so rather than answering badly.
- *
- * The four UI locales the site now supports but the KB does not — de, fr, ko,
- * ja — are deliberately still reported here. The reply tells the reader which
- * languages the bot itself handles; it does not change the page language.
+ * Returns a language tag when the message is clearly outside the six authored
+ * languages, so the caller can say so rather than answering badly.
  */
 export function detectUnsupportedLanguage(text) {
   const raw = String(text || '')
 
   // Script-based detection (high confidence).
-  if (/[぀-ヿ]/.test(raw)) return 'ja'
-  if (/[一-鿿]/.test(raw)) return 'zh'
-  if (/[가-힯]/.test(raw)) return 'ko'
+  if (/[぀-ヿ]/.test(raw) || /[가-힯]/.test(raw)) return null
+  // Han-only text is ambiguous between Chinese and Japanese, so do not reject
+  // it before the Japanese intent scorer has a chance to evaluate it.
+  if (/[一-鿿]/.test(raw)) return null
   if (/[฀-๿]/.test(raw)) return 'th'
   if (/[Ѐ-ӿ]/.test(raw)) return 'ru'
   if (/[؀-ۿ]/.test(raw)) return 'ar'
@@ -93,45 +101,38 @@ export function detectUnsupportedLanguage(text) {
 
   const hintSets = {
     es: new Set(['hola', 'gracias', 'por', 'favor', 'buenos', 'dias', 'buenas', 'noches', 'donde', 'precio', 'contacto', 'ayuda', 'necesito', 'quiero']),
-    fr: new Set(['bonjour', 'merci', 'svp', 'silvousplait', 'ou', 'prix', 'contact', 'aide', 'besoin', 'je', 'veux']),
-    de: new Set(['hallo', 'danke', 'bitte', 'preis', 'kontakt', 'hilfe', 'ich', 'brauche', 'mochte']),
   }
 
-  const counts = { es: 0, fr: 0, de: 0 }
+  const counts = { es: 0 }
   for (const t of tokens) {
     for (const [lang, hints] of Object.entries(hintSets)) {
       if (hints.has(t)) counts[lang]++
     }
   }
 
-  const max = Math.max(counts.es, counts.fr, counts.de)
+  const max = Math.max(...Object.values(counts))
   if (max >= 2) {
     return Object.keys(counts).find((lang) => counts[lang] === max)
   }
   return null
 }
 
-function fallbackKb(language) {
+function fallbackKb(language, fallbackAnswer) {
   return {
     version: 2,
     language,
     intents: [],
-    fallback: {
-      answer:
-        language === 'vi'
-          ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Liên hệ)?'
-          : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Contact)?',
-    },
+    fallback: { answer: fallbackAnswer || '' },
   }
 }
 
 /** Precomputes the normalized/tokenized candidate strings once per load. */
-function prepareKb(kb, language) {
+function prepareKb(kb, language, fallbackAnswer) {
   const safe = {
     version: kb?.version || 2,
     language: kb?.language || language,
     intents: Array.isArray(kb?.intents) ? kb.intents : [],
-    fallback: kb?.fallback || fallbackKb(language).fallback,
+    fallback: kb?.fallback || fallbackKb(language, fallbackAnswer).fallback,
   }
 
   safe.intents = safe.intents
@@ -223,9 +224,9 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     if (cache[safeLang]) return Promise.resolve(cache[safeLang])
     if (!loading[safeLang]) {
       loading[safeLang] = loadKb(safeLang)
-        .catch(() => fallbackKb(safeLang))
+        .catch(() => fallbackKb(safeLang, copy(safeLang).fallback))
         .then((kb) => {
-          cache[safeLang] = prepareKb(kb, safeLang)
+          cache[safeLang] = prepareKb(kb, safeLang, copy(safeLang).fallback)
           return cache[safeLang]
         })
     }
@@ -239,14 +240,24 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     const direct = detectUserLanguage(raw)
     if (direct) return direct
 
-    // Detection was inconclusive: compare match strength across both KBs and
-    // only move away from the site language when there is a clear winner.
-    const [kbEn, kbVi] = await Promise.all([ensureKb('en'), ensureKb('vi')])
-    const enScore = findBestIntents(kbEn, queryNorm, tokenize(queryNorm, 'en'))[0]?.score ?? 0
-    const viScore = findBestIntents(kbVi, queryNorm, tokenize(queryNorm, 'vi'))[0]?.score ?? 0
+    // Detection was inconclusive: compare all six authored databases and only
+    // move away from the active site language when one is a clear winner.
+    const rankedLanguages = await Promise.all(KB_LANGUAGES.map(async (language) => {
+      const kb = await ensureKb(language)
+      const score = findBestIntents(
+        kb,
+        queryNorm,
+        tokenize(queryNorm, language),
+      )[0]?.score ?? 0
+      return { language, score }
+    }))
+    rankedLanguages.sort((left, right) => right.score - left.score)
 
-    if (Math.max(enScore, viScore) >= INTENT_THRESHOLD && Math.abs(enScore - viScore) >= 0.05) {
-      return enScore > viScore ? 'en' : 'vi'
+    if (
+      rankedLanguages[0].score >= INTENT_THRESHOLD &&
+      rankedLanguages[0].score - rankedLanguages[1].score >= 0.05
+    ) {
+      return rankedLanguages[0].language
     }
     return botLanguage
   }
@@ -261,18 +272,8 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     const queryNorm = normalizeForSearch(raw)
     const directLanguage = detectUserLanguage(raw)
     const unsupported = detectUnsupportedLanguage(raw)
-    const detectedFaqLanguage = [directLanguage, unsupported]
-      .find((language) => isSupportedFaqLanguage(language))
-    const faqSearchLanguage =
-      detectedFaqLanguage ||
-      (!unsupported && isSupportedFaqLanguage(siteLang) ? siteLang : 'en')
-    const faqQueryTokens = tokenize(queryNorm, faqSearchLanguage)
-    const matchedFaq = findBestFaq(queryNorm, faqQueryTokens, faqSearchLanguage)
-    const localizedFaq = localizeFaqMatch(matchedFaq, siteLang)
-    const uiStrings = copy(isSupportedFaqLanguage(siteLang) ? siteLang : botLanguage)
-    const quickTopic = !KB_LANGUAGES.includes(siteLang)
-      ? findQuickTopic(uiStrings.quickTopics, raw)
-      : null
+    const uiStrings = copy(botLanguage)
+    const quickTopic = findQuickTopic(uiStrings.quickTopics, raw)
 
     if (quickTopic) {
       const topicLinks = (quickTopic.links || []).map((target) =>
@@ -287,21 +288,6 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
       }
     }
 
-    // Supported site locales can use their authored FAQ corpus even though the
-    // broader intent knowledge base is currently limited to Vietnamese/English.
-    if (unsupported && matchedFaq?.score >= FAQ_THRESHOLD && localizedFaq) {
-      return {
-        content: String(localizedFaq.a),
-        links: [{ label: uiStrings.viewFaqs, url: uiStrings.faqsUrl }],
-        meta: {
-          source: 'faq',
-          faqId: localizedFaq.id,
-          category: localizedFaq.category,
-          score: matchedFaq.score,
-        },
-      }
-    }
-
     if (unsupported) {
       return {
         content: uiStrings.unsupported,
@@ -313,7 +299,9 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     const detectedLang = directLanguage || await routeLanguage(raw, queryNorm)
     const queryTokens = tokenize(queryNorm, detectedLang)
     const kb = await ensureKb(detectedLang)
-    const strings = copy(isSupportedFaqLanguage(siteLang) ? siteLang : detectedLang)
+    const strings = copy(detectedLang)
+    const matchedFaq = findBestFaq(queryNorm, queryTokens, detectedLang)
+    const localizedFaq = localizeFaqMatch(matchedFaq, detectedLang)
 
     const rankedIntents = findBestIntents(kb, queryNorm, queryTokens)
     const bestIntent = rankedIntents[0] || null
@@ -369,9 +357,8 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     }
   }
 
-  // Warm both knowledge bases without blocking first paint.
-  void ensureKb('vi').catch(() => {})
-  void ensureKb('en').catch(() => {})
+  // Warm every locale without blocking first paint.
+  for (const language of KB_LANGUAGES) void ensureKb(language).catch(() => {})
 
   return { siteLang, botLanguage, ensureKb, getResponse }
 }

@@ -4,7 +4,7 @@ import { getFaqEntries, FAQ_REVIEW_FLAGS } from '../shared/faq-content/index.js'
 import BOT_COPY from '../shared/chatbot/lib/botCopy.js'
 import { findQuickTopic, normalizeForSearch } from '../shared/chatbot/lib/matching.js'
 
-const KB_LANGUAGES = ['en', 'vi']
+const KB_LANGUAGES = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
 const FAQ_LANGUAGES = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
 
 async function readKb(language) {
@@ -102,6 +102,13 @@ async function validateLegacyMirrors() {
   }
   assert.ok(source.includes('ambiguousKeywords'), 'legacy runtime ignores deliberate ambiguities')
   assert.ok(!source.includes('return 0.92;'), 'legacy runtime still contains the overconfident match shortcut')
+  assert.ok(source.includes('Intl.Segmenter'), 'legacy runtime does not tokenize Korean/Japanese text')
+  assert.ok(source.includes("replace(/[^\\p{L}\\p{N}\\s]/gu"),
+    'legacy runtime still removes non-Latin scripts')
+  assert.ok(source.includes("const supportedLanguages = ['vi', 'en', 'de', 'fr', 'ko', 'ja']"),
+    'legacy runtime language list is incomplete')
+  assert.ok(source.includes('/public/chatbot/kb.${lang}.json'),
+    'legacy runtime does not resolve localized KB paths')
 }
 
 async function validateLocalizedSuggestions() {
@@ -123,15 +130,32 @@ async function validateLocalizedSuggestions() {
   }
 }
 
+async function validateKnowledgeBaseSync() {
+  const syncScripts = [
+    '../faq-app/scripts/sync-assets.mjs',
+    '../recruitment-app/scripts/sync-assets.mjs',
+    '../community-app/scripts/sync-assets.mjs',
+  ]
+  for (const path of syncScripts) {
+    const source = await readFile(new URL(path, import.meta.url), 'utf8')
+    for (const language of KB_LANGUAGES) {
+      assert.ok(source.includes(`kb.${language}.json`), `${path}: ${language} KB is not published`)
+    }
+  }
+}
+
 const knowledgeBases = Object.fromEntries(
   await Promise.all(KB_LANGUAGES.map(async (language) => [language, await readKb(language)])),
 )
 const enIds = validateKb(knowledgeBases.en, 'en')
-const viIds = validateKb(knowledgeBases.vi, 'vi')
-assert.deepEqual(viIds, enIds, 'English/Vietnamese intent id or order drift')
+for (const language of KB_LANGUAGES.filter((language) => language !== 'en')) {
+  const localizedIds = validateKb(knowledgeBases[language], language)
+  assert.deepEqual(localizedIds, enIds, `${language}: intent id or order drift from English`)
+}
 const faqCount = validateFaqParity()
 await validateLegacyMirrors()
 await validateLocalizedSuggestions()
+await validateKnowledgeBaseSync()
 
 console.log(
   `Chatbot verified: ${enIds.length} intents in ${KB_LANGUAGES.length} languages; ` +

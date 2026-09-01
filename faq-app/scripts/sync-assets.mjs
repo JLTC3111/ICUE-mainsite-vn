@@ -14,7 +14,7 @@ const FLAG_FILES = ['vn', 'gb', 'de', 'fr', 'kr', 'jp']
 /* The chatbot fetches its knowledge base relative to BASE_URL rather than from
    /public/chatbot/, which only resolved in production because of a _redirects
    rule. Copying it in means the same path works in `vite dev`. */
-const CHATBOT_KB = ['kb.vi.json', 'kb.en.json']
+const CHATBOT_KB = ['kb.vi.json', 'kb.en.json', 'kb.de.json', 'kb.fr.json', 'kb.ko.json', 'kb.ja.json']
 
 const files = [
   [

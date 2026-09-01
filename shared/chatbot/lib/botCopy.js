@@ -1,14 +1,14 @@
 /**
  * Strings the bot itself says, as opposed to the UI around it.
  *
- * Intent answers exist in Vietnamese and English. FAQ answers and this routing
- * copy exist in all six site locales, so a reader can search the localized FAQ
- * before the bot explains the narrower intent-language support.
+ * Intent answers, FAQ answers, and this routing copy exist in all six site
+ * locales. Unsupported-language copy is only used for languages outside that
+ * authored set.
  */
 const COPY = {
   vi: {
     unsupported:
-      'Hiện tại chatbot chỉ hỗ trợ Tiếng Việt và English. Vui lòng đặt câu hỏi bằng Tiếng Việt hoặc English (bạn có thể đổi ngôn ngữ trang bằng biểu tượng lá cờ trên thanh menu).',
+      'Chatbot hiện hỗ trợ Tiếng Việt, English, Deutsch, Français, 한국어 và 日本語. Vui lòng sử dụng một trong các ngôn ngữ này.',
     fallback:
       'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn giúp mình không?',
     clarification: 'Mình tìm thấy hai chủ đề có thể phù hợp: {first} hoặc {second}. Bạn muốn hỏi về chủ đề nào?',
@@ -18,7 +18,7 @@ const COPY = {
   },
   en: {
     unsupported:
-      'This chatbot currently supports Vietnamese and English only. Please ask your question in Vietnamese or English (you can switch the page language with the flag icon in the menu).',
+      'This chatbot supports English, Vietnamese, German, French, Korean, and Japanese. Please use one of these languages.',
     fallback: 'I’m not fully sure I understood. Could you clarify your question?',
     clarification: 'I found two possible topics: {first} or {second}. Which one do you mean?',
     viewFaqs: 'View the FAQs',
@@ -27,7 +27,7 @@ const COPY = {
   },
   de: {
     unsupported:
-      'Der Chatbot kann FAQ-Fragen auf Deutsch beantworten. Für andere Anfragen verwenden Sie bitte Vietnamesisch oder Englisch.',
+      'Dieser Chatbot unterstützt Deutsch, Englisch, Vietnamesisch, Französisch, Koreanisch und Japanisch. Bitte verwenden Sie eine dieser Sprachen.',
     fallback: 'Ich bin nicht sicher, ob ich die Frage richtig verstanden habe. Können Sie sie präzisieren?',
     clarification: 'Ich habe zwei mögliche Themen gefunden: {first} oder {second}. Welches meinen Sie?',
     viewFaqs: 'FAQ ansehen',
@@ -53,7 +53,7 @@ const COPY = {
   },
   fr: {
     unsupported:
-      'Le chatbot peut répondre aux questions de la FAQ en français. Pour les autres demandes, veuillez utiliser le vietnamien ou l’anglais.',
+      'Ce chatbot prend en charge le français, l’anglais, le vietnamien, l’allemand, le coréen et le japonais. Veuillez utiliser l’une de ces langues.',
     fallback: 'Je ne suis pas certain d’avoir bien compris. Pouvez-vous préciser votre question ?',
     clarification: 'Deux sujets semblent possibles : {first} ou {second}. Lequel recherchez-vous ?',
     viewFaqs: 'Voir la FAQ',
@@ -79,7 +79,7 @@ const COPY = {
   },
   ko: {
     unsupported:
-      '이 챗봇은 한국어 FAQ 질문에 답할 수 있습니다. 그 밖의 문의는 베트남어 또는 영어로 작성해 주세요.',
+      '이 챗봇은 한국어, 영어, 베트남어, 독일어, 프랑스어, 일본어를 지원합니다. 이 중 하나의 언어를 사용해 주세요.',
     fallback: '질문을 정확히 이해하지 못했습니다. 조금 더 구체적으로 알려 주세요.',
     clarification: '두 가지 주제가 검색되었습니다: {first} 또는 {second}. 어느 쪽을 의미하시나요?',
     viewFaqs: 'FAQ 보기',
@@ -105,7 +105,7 @@ const COPY = {
   },
   ja: {
     unsupported:
-      'このチャットボットは日本語のFAQに回答できます。その他のお問い合わせは、ベトナム語または英語で入力してください。',
+      'このチャットボットは、日本語、英語、ベトナム語、ドイツ語、フランス語、韓国語に対応しています。いずれかの言語で入力してください。',
     fallback: 'ご質問を正確に理解できませんでした。もう少し具体的に入力してください。',
     clarification: '該当する可能性のある項目が2つあります：{first} または {second}。どちらについてですか。',
     viewFaqs: 'FAQを見る',

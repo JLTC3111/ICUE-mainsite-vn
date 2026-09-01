@@ -1,0 +1,237 @@
+{
+  "version": 2,
+  "language": "fr",
+  "intents": [
+    {
+      "id": "greeting",
+      "label": "Salutation",
+      "keywords": ["bonjour", "salut", "bon matin", "bon après-midi", "bonsoir"],
+      "phrases": ["bonjour", "salut", "bonjour à vous"],
+      "answer": "Bonjour ! Je peux vous aider à trouver des informations sur les prestations, les projets, le recrutement, les politiques et les coordonnées d’ICUE. Que recherchez-vous ?"
+    },
+    {
+      "id": "services",
+      "label": "Prestations",
+      "keywords": ["prestations", "services", "conseil", "services de conseil"],
+      "phrases": ["quelles prestations proposez-vous", "comment pouvez-vous m’aider", "quels services de conseil proposez-vous"],
+      "answer": "ICUE propose des services de conseil en planification et conception, gestion de projet, accompagnement des procédures et solutions axées sur la durabilité. Pour une réponse propre à votre projet, envoyez le type de projet, le lieu et le périmètre souhaité via la page Contact.",
+      "links": [
+        { "label": "Projets / Prestations", "url": "/our-work" },
+        { "label": "FAQ", "url": "/faqs" },
+        { "label": "Contact", "url": "/contact" }
+      ]
+    },
+    {
+      "id": "planning_design",
+      "label": "Planification et conception",
+      "keywords": ["planification", "urbanisme", "plan directeur", "conception", "conception préliminaire", "conception détaillée"],
+      "phrases": ["faites-vous de la planification", "pouvez-vous aider à la conception", "planification directrice"],
+      "answer": "ICUE peut accompagner la planification et la conception selon les besoins du projet. Une demande utile précise le site ou le lieu, les objectifs et l’étape actuelle (idée / concept / conception détaillée), afin que l’équipe puisse confirmer une méthode de travail adaptée.",
+      "links": [
+        { "label": "Projets", "url": "/our-work" },
+        { "label": "Contact", "url": "/contact" }
+      ]
+    },
+    {
+      "id": "project_management",
+      "label": "Gestion de projet",
+      "keywords": ["gestion de projet", "pilotage de projet", "coordination", "mise en œuvre", "réalisation"],
+      "phrases": ["pouvez-vous gérer mon projet", "accompagnement en gestion de projet"],
+      "answer": "ICUE peut assurer la gestion et la coordination d’un projet selon le périmètre convenu. Indiquez dans votre demande le calendrier, les parties prenantes et les livrables attendus afin que l’équipe puisse évaluer la mission.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "supervision",
+      "label": "Supervision de chantier",
+      "keywords": ["supervision", "suivi", "supervision de chantier", "suivi de chantier", "contrôle qualité"],
+      "phrases": ["supervisez-vous les travaux", "accompagnement du chantier"],
+      "answer": "L’accompagnement en supervision ou suivi dépend du type de projet, du lieu et de la phase (conception / appel d’offres / travaux). Envoyez ces informations via la page Contact afin qu’ICUE confirme ce qui est réalisable.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "permits_legal",
+      "label": "Autorisations et procédures",
+      "keywords": ["autorisation", "autorisations", "juridique", "procédure", "permis de construire", "approbation"],
+      "phrases": ["pouvez-vous aider pour les autorisations", "accompagnement des procédures administratives"],
+      "answer": "ICUE peut accompagner certaines procédures et la préparation de documents selon le projet et la juridiction. Indiquez la ville ou la province ainsi que le type de projet pour confirmer le périmètre et les pièces probablement nécessaires.",
+      "links": [
+        { "label": "FAQ", "url": "/faqs" },
+        { "label": "Contact", "url": "/contact" }
+      ]
+    },
+    {
+      "id": "documents_required",
+      "label": "Documents requis",
+      "keywords": ["documents", "pièces", "formalités", "documents fonciers", "plans existants"],
+      "phrases": ["quels documents dois-je fournir", "documents nécessaires"],
+      "answer": "Les documents de départ comprennent généralement les informations de base sur le site, les objectifs et le périmètre, les plans existants le cas échéant, ainsi que les pièces foncières ou juridiques pertinentes. Les exigences finales dépendent du projet et doivent être confirmées avec ICUE.",
+      "links": [
+        { "label": "Contact", "url": "/contact" },
+        { "label": "FAQ", "url": "/faqs" }
+      ]
+    },
+    {
+      "id": "pricing_fees",
+      "label": "Honoraires",
+      "keywords": ["prix", "tarification", "honoraires", "coût", "budget", "devis"],
+      "phrases": ["combien cela coûte", "comment sont calculés les honoraires", "puis-je obtenir une estimation"],
+      "answer": "Les honoraires varient selon le périmètre, le calendrier et la complexité du projet. Envoyez une brève description via la page Contact — type de projet, lieu, taille, calendrier et résultat attendu — pour obtenir une estimation adaptée au projet.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "payment_installments",
+      "label": "Modalités de paiement",
+      "keywords": ["paiement", "paiement échelonné", "échéances", "jalon", "contrat"],
+      "phrases": ["puis-je payer en plusieurs fois", "quelles sont les modalités de paiement"],
+      "answer": "Les paiements peuvent être alignés sur des jalons convenus, par exemple concept → version préliminaire → version finale. L’échéancier applicable doit être confirmé dans la proposition écrite ou le contrat.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "process_steps",
+      "label": "Déroulement du projet",
+      "keywords": ["processus", "déroulement", "méthode de travail", "étapes", "cycle du projet"],
+      "phrases": ["quel est votre processus", "comment travaillons-nous ensemble"],
+      "answer": "Un déroulement type comprend : premier échange → définition des besoins → analyse du site et du contexte → livrables préliminaires → révisions convenues → livraison finale. Les étapes exactes et le nombre de révisions sont confirmés pour chaque projet.",
+      "links": [{ "label": "FAQ", "url": "/faqs" }]
+    },
+    {
+      "id": "timeline_duration",
+      "label": "Calendrier du projet",
+      "keywords": ["calendrier", "délai", "durée", "combien de temps", "planning du projet"],
+      "phrases": ["combien de temps faut-il", "quel est le calendrier"],
+      "answer": "Le calendrier dépend du périmètre, des autorisations et des livrables requis. Indiquez votre échéance et si vous avez besoin d’un concept ou d’un dossier complet lorsque vous contactez ICUE afin d’obtenir un calendrier évalué.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "bim_3d",
+      "label": "BIM et 3D",
+      "keywords": ["bim", "3d", "modèle", "rendu", "visualisation"],
+      "phrases": ["utilisez-vous le bim", "modèle 3d"],
+      "answer": "ICUE peut utiliser la modélisation BIM et 3D lorsqu’elle est adaptée à la visualisation et à la coordination de la conception. Les livrables disponibles — modèles, vues ou coordination technique — sont confirmés dans le périmètre du projet.",
+      "links": [{ "label": "Projets", "url": "/our-work" }]
+    },
+    {
+      "id": "green_sustainability",
+      "label": "Durabilité",
+      "keywords": ["durable", "durabilité", "écologique", "climat", "environnement", "économie d’énergie"],
+      "phrases": ["conception écologique", "solutions durables"],
+      "answer": "ICUE peut intégrer des objectifs de durabilité tels que les matériaux, la consommation d’énergie et la résilience climatique selon le contexte du projet. Les priorités et contraintes doivent figurer dans la description du projet.",
+      "links": [{ "label": "Projets", "url": "/our-work" }]
+    },
+    {
+      "id": "sectors_clients",
+      "label": "Clients et secteurs",
+      "keywords": ["clients", "secteurs", "administration", "entreprise", "particulier", "secteur public"],
+      "phrases": ["avec qui travaillez-vous", "qui sont vos clients"],
+      "answer": "ICUE travaille avec des particuliers, des organisations et entreprises ainsi qu’avec des acteurs du secteur public, selon le programme ou le projet. Des exemples publiés sont disponibles dans Projets antérieurs.",
+      "links": [{ "label": "Projets antérieurs", "url": "/past-projects" }]
+    },
+    {
+      "id": "locations",
+      "label": "Zones d’intervention",
+      "keywords": ["où", "lieu", "localisation", "hanoï", "vietnam", "province", "à distance", "sur site"],
+      "phrases": ["où intervenez-vous", "où êtes-vous basés"],
+      "answer": "La faisabilité dépend du lieu du projet et de la nécessité d’un accompagnement à distance ou sur site. Envoyez la ville ou la province et le mode de travail souhaité via la page Contact pour confirmation.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "portfolio_projects",
+      "label": "Projets antérieurs",
+      "keywords": ["portfolio", "projets antérieurs", "projets réalisés", "étude de cas", "références"],
+      "phrases": ["voir le portfolio", "quels projets avez-vous réalisés"],
+      "answer": "Vous pouvez consulter les projets et activités publiés dans Projets et Projets antérieurs, notamment des travaux urbains, environnementaux et communautaires.",
+      "links": [
+        { "label": "Projets antérieurs", "url": "/past-projects" },
+        { "label": "Projets", "url": "/our-work" }
+      ]
+    },
+    {
+      "id": "news_updates",
+      "label": "Actualités",
+      "keywords": ["actualités", "nouvelles", "mises à jour", "articles"],
+      "phrases": ["dernières actualités", "articles récents"],
+      "answer": "Consultez la page Actualités pour les dernières informations et publications.",
+      "links": [{ "label": "Actualités", "url": "/newsroom/" }]
+    },
+    {
+      "id": "community",
+      "label": "Activités communautaires",
+      "keywords": ["communauté", "événements", "activités", "atelier", "formation"],
+      "phrases": ["activités communautaires", "événements icue"],
+      "answer": "ICUE organise ou soutient également des activités et programmes communautaires. Consultez la page Activités communautaires pour en savoir plus.",
+      "links": [{ "label": "Activités communautaires", "url": "/community-activities" }]
+    },
+    {
+      "id": "recruitment",
+      "label": "Recrutement",
+      "keywords": ["recrutement", "emplois", "carrière", "postuler", "embauche"],
+      "phrases": ["recrutez-vous", "comment postuler", "postes ouverts"],
+      "answer": "Consultez la page Recrutement pour les postes actuels et les exigences publiées. Adaptez votre CV et votre message de candidature aux responsabilités indiquées et mettez en avant votre expérience directement pertinente.",
+      "links": [{ "label": "Recrutement", "url": "/recruitment" }]
+    },
+    {
+      "id": "internship",
+      "label": "Stages",
+      "keywords": ["stage", "stagiaire", "alternance", "étudiant"],
+      "phrases": ["proposez-vous des stages", "possibilités de stage"],
+      "answer": "Pour les stages, commencez par consulter la page Recrutement. Une candidature concise doit présenter les études pertinentes, les compétences pratiques, les travaux de portfolio et ce que vous souhaitez apprendre.",
+      "links": [{ "label": "Recrutement", "url": "/recruitment" }]
+    },
+    {
+      "id": "partnership",
+      "label": "Partenariats",
+      "keywords": ["partenaire", "partenariat", "collaboration", "coopération", "moU"],
+      "phrases": ["je souhaite devenir partenaire", "possibilités de collaboration"],
+      "answer": "ICUE est disposé à discuter d’une collaboration lorsque les objectifs et le périmètre sont compatibles. Une demande utile précise qui vous êtes, le sujet, votre proposition et le résultat recherché.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "media_press",
+      "label": "Médias et presse",
+      "keywords": ["médias", "presse", "interview", "intervenant", "citation"],
+      "phrases": ["demande média", "contact presse", "citer icue dans un article"],
+      "answer": "Pour toute demande média ou presse, contactez ICUE en indiquant l’échéance, le sujet, la publication et la contribution souhaitée (citation / interview / intervention).",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "schedule_meeting",
+      "label": "Planifier une consultation",
+      "keywords": ["rendez-vous", "appel", "réunion", "planifier", "consultation"],
+      "phrases": ["pouvons-nous planifier un appel", "prendre rendez-vous", "planifier une consultation"],
+      "answer": "Pour demander une consultation, utilisez la page Contact et indiquez le créneau souhaité, votre fuseau horaire et le sujet à aborder.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "request_proposal",
+      "label": "Propositions et appels d’offres",
+      "keywords": ["proposition", "appel d’offres", "cahier des charges", "termes de référence", "rfp", "tor", "sow"],
+      "phrases": ["pouvez-vous envoyer une proposition", "réponse à un appel d’offres"],
+      "answer": "Oui — si vous communiquez un périmètre succinct (objectifs, livrables, calendrier et fourchette budgétaire si disponible), ICUE peut répondre avec une structure de proposition et les prochaines étapes.",
+      "links": [{ "label": "Contact", "url": "/contact" }]
+    },
+    {
+      "id": "policies",
+      "label": "Politiques",
+      "keywords": ["confidentialité", "rgpd", "conditions", "cookies"],
+      "phrases": ["politique de confidentialité", "conditions d’utilisation", "politique relative aux cookies"],
+      "answer": "Vous pouvez consulter les pages d’ICUE consacrées à la confidentialité, au RGPD, aux conditions d’utilisation et aux cookies grâce aux liens ci-dessous.",
+      "links": [
+        { "label": "Confidentialité", "url": "/legal/privacy" },
+        { "label": "RGPD", "url": "/legal/gdpr" },
+        { "label": "Conditions", "url": "/legal/terms" },
+        { "label": "Cookies", "url": "/legal/cookies" }
+      ]
+    },
+    {
+      "id": "faq",
+      "label": "Questions fréquentes",
+      "keywords": ["faq", "questions fréquentes", "foire aux questions"],
+      "phrases": ["faq", "questions fréquemment posées"],
+      "answer": "Utilisez la page FAQ pour obtenir des réponses rapides. Les questions posées ici sont uniquement comparées aux contenus d’intention et de FAQ rédigés par ICUE.",
+      "links": [{ "label": "FAQ", "url": "/faqs" }]
+    }
+  ],
+  "fallback": {
+    "answer": "Je ne suis pas certain d’avoir bien compris. Pouvez-vous préciser si votre question concerne les prestations, les projets, le recrutement, le contact ou les politiques ?"
+  }
+}
