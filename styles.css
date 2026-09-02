@@ -116,34 +116,77 @@ h3:hover {
 }
 
 .chatbot-toggle {
-    display: flex;
+    width: 78px;
+    height: 72px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
     position: relative;
-    color: white;
+    color: #48dad5;
+    border-radius: 24px;
+    line-height: 1;
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s ease;
 }
 
-.chatbot-toggle:hover {
-    transform: scale(1.2);
+.chatbot-mark {
+    display: block;
+    flex: none;
+    overflow: visible;
+    filter:
+        drop-shadow(0 8px 10px rgba(7, 18, 36, 0.34))
+        drop-shadow(0 0 6px rgba(72, 218, 213, 0.16));
+    transition: filter 0.2s ease;
+}
+
+.chatbot-mark-bubble {
+    fill: var(--icue-chat-mark, #48dad5);
+}
+
+.chatbot-mark-dot {
+    fill: var(--icue-chat-ink, #0d192b);
+}
+
+@media (hover: hover) {
+    .chatbot-toggle:hover {
+        transform: translateY(-2px) scale(1.04);
+    }
+
+    .chatbot-toggle:hover .chatbot-mark {
+        filter:
+            drop-shadow(0 10px 13px rgba(7, 18, 36, 0.38))
+            drop-shadow(0 0 9px rgba(72, 218, 213, 0.24));
+    }
+}
+
+.chatbot-toggle:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .chatbot-badge {
     position: absolute;
-    top: -5px;
-    right: -15px;
-    background: #ff4757;
-    color: white;
-    border-radius: 10px;
-    padding: 2px 6px;
-    font-size: clamp(8px, 2vw, 10px);
-    font-weight: bold;
+    top: 0;
+    right: -3px;
+    z-index: 1;
+    padding: 5px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: var(--icue-chat-accent, #ff5c67);
+    box-shadow: 0 5px 12px rgba(7, 18, 36, 0.3);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 .chatbot-window {
     position: absolute;
-    bottom: 70px;
+    bottom: 76px;
     left: 0;
     width: 350px;
     height: 500px;
@@ -169,6 +212,17 @@ h3:hover {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chatbot-window.open {
+        animation: none;
+    }
+
+    .chatbot-toggle,
+    .chatbot-mark {
+        transition: none;
     }
 }
 
@@ -348,9 +402,21 @@ h3:hover {
         left: 15px;
     }
 
-    .chatbot-toggle svg{
-      width: 36px !important;
-      height: 36px !important;
+    .chatbot-toggle {
+      width: 66px;
+      height: 60px;
+    }
+
+    .chatbot-mark {
+      width: 52px !important;
+      height: 52px !important;
+    }
+
+    .chatbot-badge {
+      top: 0;
+      right: -2px;
+      padding: 4px 7px;
+      font-size: 9px;
     }
 
 }

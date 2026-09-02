@@ -1,9 +1,10 @@
 {
-  "version": 1,
+  "version": 2,
   "language": "vi",
   "intents": [
     {
       "id": "greeting",
+      "label": "Lời chào",
       "keywords": [
         "xin chào",
         "chào",
@@ -21,13 +22,10 @@
     },
     {
       "id": "services",
+      "label": "Dịch vụ",
       "keywords": [
         "dịch vụ",
         "tư vấn",
-        "quy hoạch",
-        "thiết kế",
-        "quản lý dự án",
-        "giám sát",
         "consulting"
       ],
       "phrases": [
@@ -35,7 +33,7 @@
         "dịch vụ tư vấn",
         "bạn làm được gì"
       ],
-      "answer": "ICUE cung cấp các dịch vụ tư vấn liên quan đến quy hoạch/thiết kế, quản lý dự án, hỗ trợ thủ tục và các giải pháp phát triển bền vững. Bạn cho mình biết loại dự án + phạm vi (thiết kế/giám sát/hồ sơ…) để mình gợi ý hướng phù hợp.",
+      "answer": "ICUE cung cấp dịch vụ tư vấn về quy hoạch/thiết kế, quản lý dự án, hỗ trợ thủ tục và giải pháp phát triển bền vững. Để nhận hướng dẫn theo dự án, hãy gửi loại dự án, địa điểm và phạm vi cần hỗ trợ qua trang Liên hệ.",
       "links": [
         {
           "label": "Công việc / Dịch vụ",
@@ -53,6 +51,7 @@
     },
     {
       "id": "planning_design",
+      "label": "Quy hoạch và thiết kế",
       "keywords": [
         "quy hoạch",
         "thiết kế",
@@ -65,7 +64,7 @@
         "bạn có làm quy hoạch không",
         "bạn có làm thiết kế không"
       ],
-      "answer": "Có — tùy theo nhu cầu dự án, ICUE có thể hỗ trợ các bước quy hoạch/thiết kế. Bạn cho mình biết địa điểm, mục tiêu và giai đoạn hiện tại (ý tưởng / sơ bộ / chi tiết) để mình gợi ý quy trình phù hợp.",
+      "answer": "ICUE có thể hỗ trợ quy hoạch và thiết kế tùy nhu cầu dự án. Nội dung liên hệ nên gồm địa điểm, mục tiêu và giai đoạn hiện tại (ý tưởng / sơ bộ / chi tiết) để đội ngũ xác nhận quy trình phù hợp.",
       "links": [
         {
           "label": "Công việc",
@@ -79,18 +78,18 @@
     },
     {
       "id": "project_management",
+      "label": "Quản lý dự án",
       "keywords": [
         "quản lý dự án",
         "pm",
         "điều phối",
-        "triển khai",
-        "tiến độ"
+        "triển khai"
       ],
       "phrases": [
         "có quản lý dự án không",
         "hỗ trợ quản lý dự án"
       ],
-      "answer": "ICUE có thể hỗ trợ quản lý dự án/điều phối tùy phạm vi. Bạn cho mình biết timeline, bên liên quan và đầu ra mong muốn để mình gợi ý cách tổ chức công việc.",
+      "answer": "ICUE có thể hỗ trợ quản lý và điều phối dự án tùy phạm vi. Yêu cầu nên nêu timeline, các bên liên quan và đầu ra mong muốn để đội ngũ đánh giá công việc.",
       "links": [
         {
           "label": "Liên hệ",
@@ -100,6 +99,7 @@
     },
     {
       "id": "supervision",
+      "label": "Giám sát hiện trường",
       "keywords": [
         "giám sát",
         "theo dõi",
@@ -110,7 +110,7 @@
         "có giám sát thi công không",
         "giám sát hiện trường"
       ],
-      "answer": "Hỗ trợ giám sát/theo dõi phụ thuộc loại dự án và địa điểm. Bạn cho mình biết dự án ở đâu và đang ở giai đoạn nào (thiết kế/đấu thầu/thi công) để mình tư vấn cách làm phù hợp.",
+      "answer": "Khả năng hỗ trợ giám sát phụ thuộc loại dự án, địa điểm và giai đoạn (thiết kế / đấu thầu / thi công). Hãy gửi các thông tin này qua trang Liên hệ để ICUE xác nhận phạm vi phù hợp.",
       "links": [
         {
           "label": "Liên hệ",
@@ -120,6 +120,7 @@
     },
     {
       "id": "permits_legal",
+      "label": "Thủ tục và giấy phép",
       "keywords": [
         "thủ tục",
         "pháp lý",
@@ -131,7 +132,7 @@
         "có hỗ trợ xin giấy phép không",
         "hỗ trợ thủ tục"
       ],
-      "answer": "ICUE có thể hỗ trợ thủ tục/hồ sơ tùy dự án. Bạn cho mình biết tỉnh/thành và loại dự án, mình sẽ gợi ý các bước và nhóm giấy tờ thường gặp.",
+      "answer": "ICUE có thể hỗ trợ thủ tục và chuẩn bị hồ sơ tùy dự án và địa phương. Hãy gửi tỉnh/thành và loại dự án qua trang Liên hệ để xác nhận phạm vi và nhóm giấy tờ có thể cần.",
       "links": [
         {
           "label": "FAQ",
@@ -145,6 +146,7 @@
     },
     {
       "id": "documents_required",
+      "label": "Hồ sơ cần thiết",
       "keywords": [
         "giấy tờ",
         "hồ sơ",
@@ -156,7 +158,7 @@
         "cần giấy tờ gì",
         "cần hồ sơ gì"
       ],
-      "answer": "Những thứ hay cần lúc bắt đầu: thông tin khu đất/địa điểm, mục tiêu phạm vi, bản vẽ hiện trạng (nếu có) và các giấy tờ pháp lý liên quan (nếu áp dụng). Bạn nói bạn đang có gì rồi, mình sẽ chỉ phần còn thiếu.",
+      "answer": "Hồ sơ ban đầu thường gồm thông tin khu đất/địa điểm, mục tiêu và phạm vi, bản vẽ hiện trạng (nếu có), cùng giấy tờ về quyền sử dụng đất hoặc pháp lý liên quan. Yêu cầu cuối cùng phụ thuộc từng dự án và cần được ICUE xác nhận.",
       "links": [
         {
           "label": "Liên hệ",
@@ -170,6 +172,7 @@
     },
     {
       "id": "pricing_fees",
+      "label": "Chi phí dịch vụ",
       "keywords": [
         "chi phí",
         "giá",
@@ -179,10 +182,11 @@
       ],
       "phrases": [
         "chi phí bao nhiêu",
+        "chi phí dịch vụ tính thế nào",
         "xin báo giá",
         "báo giá"
       ],
-      "answer": "Chi phí phụ thuộc phạm vi, thời gian và độ phức tạp. Bạn gửi giúp mình brief ngắn (loại dự án, địa điểm, quy mô, deadline, và bạn cần đầu ra gì) để ICUE có thể ước tính sát hơn.",
+      "answer": "Chi phí phụ thuộc phạm vi, thời gian và độ phức tạp. Hãy gửi brief ngắn qua trang Liên hệ—loại dự án, địa điểm, quy mô, deadline và đầu ra cần thiết—để nhận ước tính theo dự án.",
       "links": [
         {
           "label": "Liên hệ",
@@ -192,6 +196,7 @@
     },
     {
       "id": "payment_installments",
+      "label": "Điều khoản thanh toán",
       "keywords": [
         "thanh toán",
         "theo đợt",
@@ -202,7 +207,7 @@
         "có thanh toán theo đợt không",
         "điều khoản thanh toán"
       ],
-      "answer": "Thông thường có thể chia theo mốc công việc (ý tưởng → bản nháp → hoàn thiện). Bạn cho mình biết timeline và đầu ra, mình sẽ gợi ý cách chia mốc hợp lý.",
+      "answer": "Thanh toán có thể được chia theo các mốc đã thống nhất (ví dụ: ý tưởng → bản nháp → hoàn thiện). Lịch áp dụng phải được xác nhận trong đề xuất hoặc hợp đồng bằng văn bản.",
       "links": [
         {
           "label": "Liên hệ",
@@ -212,6 +217,7 @@
     },
     {
       "id": "process_steps",
+      "label": "Quy trình dự án",
       "keywords": [
         "quy trình",
         "các bước",
@@ -222,7 +228,7 @@
         "quy trình hợp tác",
         "làm việc như thế nào"
       ],
-      "answer": "Quy trình thường là: trao đổi ban đầu → thu thập yêu cầu → khảo sát/nghiên cứu bối cảnh → bản nháp → chỉnh sửa → bàn giao. Bạn đang ở giai đoạn nào để mình gợi ý bước bắt đầu tốt nhất?",
+      "answer": "Quy trình thường là: trao đổi ban đầu → thu thập yêu cầu → khảo sát/nghiên cứu bối cảnh → bản nháp → số vòng chỉnh sửa đã thống nhất → bàn giao. Các giai đoạn cụ thể được xác nhận cho từng dự án.",
       "links": [
         {
           "label": "FAQ",
@@ -232,6 +238,7 @@
     },
     {
       "id": "timeline_duration",
+      "label": "Tiến độ dự án",
       "keywords": [
         "thời gian",
         "bao lâu",
@@ -242,7 +249,7 @@
         "mất bao lâu",
         "thời gian thực hiện"
       ],
-      "answer": "Thời gian phụ thuộc phạm vi và thủ tục phê duyệt. Bạn cho mình deadline + đầu ra cần bàn giao (ý tưởng hay trọn gói) để mình gợi ý timeline và các mốc kiểm tra.",
+      "answer": "Thời gian phụ thuộc phạm vi, thủ tục phê duyệt và đầu ra cần bàn giao. Hãy gửi deadline và nhu cầu (ý tưởng hay trọn gói) qua trang Liên hệ để nhận lịch trình đã được đánh giá.",
       "links": [
         {
           "label": "Liên hệ",
@@ -252,6 +259,7 @@
     },
     {
       "id": "bim_3d",
+      "label": "BIM và mô hình 3D",
       "keywords": [
         "bim",
         "3d",
@@ -263,7 +271,7 @@
         "có dùng bim không",
         "có mô hình 3d không"
       ],
-      "answer": "ICUE có thể dùng BIM/mô hình 3D (khi phù hợp) để hỗ trợ hình dung và phối hợp. Bạn cần đầu ra gì (model 3D, phối cảnh, phối hợp kỹ thuật) để mình tư vấn.",
+      "answer": "ICUE có thể dùng BIM/mô hình 3D khi phù hợp để hỗ trợ hình dung và phối hợp thiết kế. Các đầu ra như model 3D, phối cảnh hoặc phối hợp kỹ thuật được xác nhận trong phạm vi dự án.",
       "links": [
         {
           "label": "Công việc",
@@ -273,6 +281,7 @@
     },
     {
       "id": "green_sustainability",
+      "label": "Phát triển bền vững",
       "keywords": [
         "bền vững",
         "xanh",
@@ -284,7 +293,7 @@
         "giải pháp xanh",
         "phát triển bền vững"
       ],
-      "answer": "Có — ICUE có thể lồng ghép mục tiêu bền vững (vật liệu, năng lượng, thích ứng khí hậu) tùy bối cảnh dự án. Bạn nêu ưu tiên/giới hạn để mình đề xuất phương án thực tế.",
+      "answer": "ICUE có thể lồng ghép mục tiêu bền vững như vật liệu, năng lượng và thích ứng khí hậu tùy bối cảnh dự án. Các ưu tiên và giới hạn nên được nêu trong brief dự án.",
       "links": [
         {
           "label": "Công việc",
@@ -294,19 +303,19 @@
     },
     {
       "id": "sectors_clients",
+      "label": "Khách hàng và lĩnh vực",
       "keywords": [
         "khách hàng",
         "đối tượng",
         "cơ quan",
         "doanh nghiệp",
-        "cá nhân",
-        "cộng đồng"
+        "cá nhân"
       ],
       "phrases": [
         "khách hàng của bạn là ai",
         "bạn làm với ai"
       ],
-      "answer": "ICUE làm việc với nhiều nhóm đối tác (cá nhân, tổ chức/doanh nghiệp, và khu vực công) tùy chương trình/dự án. Bạn chia sẻ bối cảnh để mình gợi ý ví dụ tương tự.",
+      "answer": "ICUE làm việc với cá nhân, tổ chức/doanh nghiệp và các bên thuộc khu vực công tùy chương trình hoặc dự án. Ví dụ đã công bố có tại mục Dự án đã thực hiện.",
       "links": [
         {
           "label": "Dự án đã thực hiện",
@@ -316,6 +325,7 @@
     },
     {
       "id": "locations",
+      "label": "Phạm vi địa lý",
       "keywords": [
         "ở đâu",
         "địa điểm",
@@ -328,7 +338,7 @@
         "icue ở đâu",
         "có làm ở tỉnh khác không"
       ],
-      "answer": "Bạn cho mình biết dự án ở tỉnh/thành nào và bạn muốn hỗ trợ từ xa hay trực tiếp, mình sẽ tư vấn cách làm việc phù hợp.",
+      "answer": "Khả năng cung cấp dịch vụ phụ thuộc tỉnh/thành và nhu cầu hỗ trợ từ xa hay trực tiếp. Hãy gửi địa điểm và hình thức làm việc mong muốn qua trang Liên hệ để xác nhận.",
       "links": [
         {
           "label": "Liên hệ",
@@ -338,6 +348,7 @@
     },
     {
       "id": "portfolio_projects",
+      "label": "Dự án đã thực hiện",
       "keywords": [
         "portfolio",
         "dự án đã làm",
@@ -348,7 +359,7 @@
         "xem dự án",
         "xem portfolio"
       ],
-      "answer": "Bạn có thể xem các dự án/hoạt động ở mục Công việc / Dự án đã thực hiện. Nếu bạn nêu lĩnh vực (đô thị, môi trường, cộng đồng…), mình sẽ chỉ ví dụ gần nhất.",
+      "answer": "Bạn có thể xem các dự án và hoạt động đã công bố tại mục Công việc và Dự án đã thực hiện, gồm các lĩnh vực đô thị, môi trường và cộng đồng.",
       "links": [
         {
           "label": "Dự án đã thực hiện",
@@ -362,6 +373,7 @@
     },
     {
       "id": "news_updates",
+      "label": "Tin tức và cập nhật",
       "keywords": [
         "tin tức",
         "bài viết",
@@ -382,6 +394,7 @@
     },
     {
       "id": "community",
+      "label": "Hoạt động cộng đồng",
       "keywords": [
         "cộng đồng",
         "hoạt động",
@@ -403,6 +416,7 @@
     },
     {
       "id": "recruitment",
+      "label": "Tuyển dụng",
       "keywords": [
         "tuyển dụng",
         "việc làm",
@@ -416,7 +430,7 @@
         "cách ứng tuyển",
         "vị trí đang mở"
       ],
-      "answer": "Bạn xem mục Tuyển dụng để biết vị trí đang mở và yêu cầu. Nếu bạn nói vị trí quan tâm, mình có thể gợi ý cách viết CV/ngắn gọn nội dung ứng tuyển.",
+      "answer": "Hãy xem mục Tuyển dụng để biết vị trí và yêu cầu hiện tại. CV và nội dung ứng tuyển nên bám sát trách nhiệm đã đăng, đồng thời nêu kinh nghiệm liên quan trực tiếp.",
       "links": [
         {
           "label": "Tuyển dụng",
@@ -426,6 +440,7 @@
     },
     {
       "id": "internship",
+      "label": "Thực tập",
       "keywords": [
         "thực tập",
         "intern",
@@ -436,7 +451,7 @@
         "có nhận thực tập không",
         "tìm thực tập"
       ],
-      "answer": "Nếu bạn quan tâm thực tập, hãy xem mục Tuyển dụng. Bạn chia sẻ ngành học + kỹ năng + mong muốn học gì, mình sẽ gợi ý cách trình bày hồ sơ.",
+      "answer": "Nếu quan tâm thực tập, hãy bắt đầu tại mục Tuyển dụng. Hồ sơ ngắn gọn nên nêu ngành học, kỹ năng thực hành, sản phẩm/portfolio liên quan và mục tiêu học hỏi.",
       "links": [
         {
           "label": "Tuyển dụng",
@@ -446,6 +461,7 @@
     },
     {
       "id": "partnership",
+      "label": "Hợp tác",
       "keywords": [
         "hợp tác",
         "đối tác",
@@ -457,7 +473,7 @@
         "muốn hợp tác",
         "cơ hội hợp tác"
       ],
-      "answer": "ICUE sẵn sàng trao đổi hợp tác nếu phù hợp mục tiêu và phạm vi. Bạn cho mình biết bạn là ai, đề xuất gì và mong muốn đầu ra nào, mình sẽ giúp bạn soạn tin nhắn liên hệ rõ ràng.",
+      "answer": "ICUE sẵn sàng trao đổi hợp tác khi mục tiêu và phạm vi phù hợp. Nội dung liên hệ nên nêu bạn là ai, chủ đề, đề xuất và kết quả mong muốn.",
       "links": [
         {
           "label": "Liên hệ",
@@ -467,6 +483,7 @@
     },
     {
       "id": "media_press",
+      "label": "Báo chí và truyền thông",
       "keywords": [
         "báo chí",
         "truyền thông",
@@ -477,7 +494,7 @@
         "liên hệ truyền thông",
         "yêu cầu báo chí"
       ],
-      "answer": "Nếu bạn cần làm việc về truyền thông/báo chí, hãy liên hệ và nêu rõ deadline, chủ đề và nhu cầu (trích dẫn/phỏng vấn/diễn giả). Mình cũng có thể giúp bạn soạn nội dung yêu cầu ngắn gọn.",
+      "answer": "Đối với yêu cầu truyền thông hoặc báo chí, hãy liên hệ ICUE và nêu rõ deadline, chủ đề, đơn vị xuất bản cùng nhu cầu (trích dẫn / phỏng vấn / diễn giả).",
       "links": [
         {
           "label": "Liên hệ",
@@ -487,18 +504,19 @@
     },
     {
       "id": "schedule_meeting",
+      "label": "Đặt lịch tư vấn",
       "keywords": [
         "hẹn",
         "lịch",
         "cuộc gọi",
-        "tư vấn",
         "meeting"
       ],
       "phrases": [
         "hẹn lịch tư vấn",
+        "hẹn tư vấn",
         "đặt lịch"
       ],
-      "answer": "Được nhé — bạn cho mình khung giờ mong muốn, múi giờ và nội dung cần trao đổi. Khi nhắn qua trang Liên hệ, bạn ghi các thông tin này để xử lý nhanh hơn.",
+      "answer": "Để yêu cầu lịch tư vấn, hãy dùng trang Liên hệ và ghi khung giờ mong muốn, múi giờ cùng nội dung cần trao đổi.",
       "links": [
         {
           "label": "Liên hệ",
@@ -508,6 +526,7 @@
     },
     {
       "id": "request_proposal",
+      "label": "Đề xuất và RFP",
       "keywords": [
         "đề xuất",
         "proposal",
@@ -519,7 +538,7 @@
         "xin proposal",
         "gửi đề xuất"
       ],
-      "answer": "Bạn gửi giúp mình mô tả phạm vi (mục tiêu, đầu ra, timeline, ngân sách dự kiến nếu có) để ICUE có thể phản hồi cấu trúc đề xuất và bước tiếp theo.",
+      "answer": "Để yêu cầu đề xuất, hãy gửi qua trang Liên hệ mô tả phạm vi gồm mục tiêu, đầu ra, timeline và ngân sách dự kiến (nếu có).",
       "links": [
         {
           "label": "Liên hệ",
@@ -529,6 +548,7 @@
     },
     {
       "id": "policies",
+      "label": "Chính sách",
       "keywords": [
         "privacy",
         "bảo mật",
@@ -543,7 +563,7 @@
         "điều khoản sử dụng",
         "cookies"
       ],
-      "answer": "Bạn có thể xem các trang chính sách (Bảo mật, GDPR, Điều khoản, Cookies). Nếu bạn nói rõ bạn quan tâm mục nào, mình sẽ chỉ đúng trang.",
+      "answer": "Bạn có thể xem các trang Bảo mật, GDPR, Điều khoản và Cookies của ICUE bằng các liên kết bên dưới.",
       "links": [
         {
           "label": "Bảo mật",
@@ -565,6 +585,7 @@
     },
     {
       "id": "faq",
+      "label": "Câu hỏi thường gặp",
       "keywords": [
         "faq",
         "câu hỏi thường gặp",
@@ -574,7 +595,7 @@
         "faq",
         "câu hỏi thường gặp"
       ],
-      "answer": "Bạn có thể xem mục FAQ để tra cứu nhanh. Bạn cứ hỏi trực tiếp ở đây nữa nhé — mình cũng sẽ cố tìm câu trả lời gần nhất từ FAQ cho bạn.",
+      "answer": "Bạn có thể xem mục FAQ để tra cứu nhanh. Câu hỏi tại đây chỉ được đối chiếu với nội dung intent và FAQ do ICUE biên soạn.",
       "links": [
         {
           "label": "FAQ",

@@ -56,7 +56,9 @@
     "dev:community": "npm run dev --prefix community-app",
     "verify:routes": "node scripts/verify-route-shells.mjs",
     "verify:locales": "node scripts/verify-locale-routing.mjs",
-    "verify:publish": "node scripts/verify-publish-boundary.mjs",
+    "verify:chatbot": "node scripts/verify-chatbot.mjs",
+    "test:chatbot": "node --test shared/chatbot/lib/matching.test.mjs",
+    "verify:publish": "node scripts/verify-publish-boundary.mjs && npm run verify:chatbot",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",
     "dev:structure": "npm run dev --prefix structure-app"
