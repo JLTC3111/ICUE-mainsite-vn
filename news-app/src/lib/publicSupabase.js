@@ -1,4 +1,5 @@
 import { loadSupabaseConfig } from './supabaseConfig'
+import { buildPostgrestUrl } from './postgrestRequest'
 
 function unavailableError() {
   return {
@@ -18,12 +19,7 @@ export async function publicSelect(table, query) {
   const config = await loadSupabaseConfig()
   if (!config) return { data: null, error: unavailableError() }
 
-  const url = new URL(`/rest/v1/${encodeURIComponent(table)}`, config.url)
-  for (const [key, value] of Object.entries(query)) {
-    if (value !== undefined && value !== null && value !== '') {
-      url.searchParams.set(key, String(value))
-    }
-  }
+  const url = buildPostgrestUrl(config.url, table, query)
 
   try {
     const response = await fetch(url, {

@@ -21,11 +21,18 @@ const APPS = {
   FAQs: 'FAQs',
   Recruitment: 'recruitment',
   Community: 'communityActivities',
+  Privacy: 'privacy',
+  Terms: 'terms',
+  GDPR: 'gdpr',
+  Cookies: 'cookies',
 }
+// People uses the same resolver for its custom footer but is not itself a
+// MAIN_SITE_PAGE_PATHS destination, so keep it in the source matrix only.
+const APP_SOURCES = [...Object.keys(APPS), 'People']
 
 let verifiedTransitions = 0
 
-for (const source of Object.keys(APPS)) {
+for (const source of APP_SOURCES) {
   for (const [destination, page] of Object.entries(APPS)) {
     for (const locale of SUPPORTED_UI_LOCALES) {
       const href = resolveMainSiteLink(
@@ -42,7 +49,8 @@ for (const source of Object.keys(APPS)) {
       )
 
       // Must mirror VI_ONLY_APP_PAGES in shared/site-routes/mainSitePaths.js.
-      if (['News', 'orgStructure', 'ourWork', 'Contact', 'FAQs', 'faqs', 'recruitment', 'communityActivities'].includes(page)) {
+      if (['News', 'orgStructure', 'ourWork', 'Contact', 'FAQs', 'faqs', 'recruitment',
+        'communityActivities', 'privacy', 'terms', 'gdpr', 'cookies'].includes(page)) {
         assert.equal(url.origin, 'https://icue.vn')
       } else {
         assert.equal(url.origin, mainSiteOriginForLocale(locale))

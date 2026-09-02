@@ -105,7 +105,10 @@ export const MAIN_SITE_PAGE_PATHS = {
  * repository does not build, which is where people-app's and structure-app's
  * footers were pointing English readers. Both now render all six languages
  * here. `FAQs` and `faqs` are both listed because MAIN_SITE_PAGE_PATHS carries
- * the id in both casings and callers use either.
+ * the id in both casings and callers use either. The four Legal documents are
+ * also consolidated apps on icue.vn; without listing them, English links from
+ * Structure, People and the other shared apps incorrectly target en.icue.vn's
+ * retired static pages.
  */
 const VI_ONLY_APP_PAGES = new Set([
   'News',
@@ -117,6 +120,10 @@ const VI_ONLY_APP_PAGES = new Set([
   'faqs',
   'recruitment',
   'communityActivities',
+  'privacy',
+  'terms',
+  'gdpr',
+  'cookies',
 ])
 
 export function resolveMainSiteLink(page, lang, base) {
