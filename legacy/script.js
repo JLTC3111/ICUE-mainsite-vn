@@ -4138,7 +4138,12 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     const chatbotHTML = `
         <div id="ai-chatbot" class="chatbot-container">
             <div class="chatbot-toggle" id="chatbot-toggle">
-                <svg width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-bubble-message-dot-2" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>1049</title> <defs> </defs> <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z" fill="#34efeb" class="si-glyph-fill"> </path> </g> </g></svg>
+                <svg class="chatbot-mark" width="68" height="68" viewBox="0 0 68 68" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path class="chatbot-mark-bubble" fill="#48dad5" d="M16 8h36c8.3 0 15 6.7 15 15v16c0 8.3-6.7 15-15 15H36.2c-4.7 4.2-10.1 7.1-16.2 9 2.2-2.8 3.6-5.8 4.2-9H16C7.7 54 1 47.3 1 39V23C1 14.7 7.7 8 16 8Z"></path>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="21" cy="31" r="3.6"></circle>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="34" cy="31" r="3.6"></circle>
+                    <circle class="chatbot-mark-dot" fill="#0d192b" cx="47" cy="31" r="3.6"></circle>
+                </svg>
                 <span class="chatbot-badge">Auto</span>
             </div>
             
@@ -4210,16 +4215,58 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
     function createChatbotKnowledge() {
       const kbCache = Object.create(null);
       const kbLoading = Object.create(null);
-      const siteLang = ((document.documentElement.lang || 'vi').toLowerCase().startsWith('vi')) ? 'vi' : 'en';
-      const kbPaths = {
-        vi: '/public/chatbot/kb.vi.json',
-        en: '/public/chatbot/kb.en.json'
+      const segmenters = new Map();
+      const intentThreshold = 0.52;
+      const faqThreshold = 0.58;
+      const supportedLanguages = ['vi', 'en', 'de', 'fr', 'ko', 'ja'];
+      const documentLang = (document.documentElement.lang || 'vi').toLowerCase().split('-')[0];
+      const siteLang = supportedLanguages.includes(documentLang) ? documentLang : 'en';
+      const replyCopy = {
+        vi: {
+          unsupported: 'Chatbot hiện hỗ trợ Tiếng Việt, English, Deutsch, Français, 한국어 và 日本語. Vui lòng sử dụng một trong các ngôn ngữ này.',
+          clarification: 'Mình tìm thấy hai chủ đề có thể phù hợp: {first} hoặc {second}. Bạn muốn hỏi về chủ đề nào?',
+          fallback: 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn giúp mình không?',
+          viewFaqs: 'Xem FAQ', faqs: 'FAQ', contact: 'Liên hệ'
+        },
+        en: {
+          unsupported: 'This chatbot supports English, Vietnamese, German, French, Korean, and Japanese. Please use one of these languages.',
+          clarification: 'I found two possible topics: {first} or {second}. Which one do you mean?',
+          fallback: 'I’m not fully sure I understood. Could you clarify your question?',
+          viewFaqs: 'View FAQs', faqs: 'FAQs', contact: 'Contact'
+        },
+        de: {
+          unsupported: 'Dieser Chatbot unterstützt Deutsch, Englisch, Vietnamesisch, Französisch, Koreanisch und Japanisch. Bitte verwenden Sie eine dieser Sprachen.',
+          clarification: 'Ich habe zwei mögliche Themen gefunden: {first} oder {second}. Welches meinen Sie?',
+          fallback: 'Ich bin nicht sicher, ob ich die Frage richtig verstanden habe. Können Sie sie präzisieren?',
+          viewFaqs: 'FAQ ansehen', faqs: 'FAQ', contact: 'Kontakt'
+        },
+        fr: {
+          unsupported: 'Ce chatbot prend en charge le français, l’anglais, le vietnamien, l’allemand, le coréen et le japonais. Veuillez utiliser l’une de ces langues.',
+          clarification: 'Deux sujets semblent possibles : {first} ou {second}. Lequel recherchez-vous ?',
+          fallback: 'Je ne suis pas certain d’avoir bien compris. Pouvez-vous préciser votre question ?',
+          viewFaqs: 'Voir la FAQ', faqs: 'FAQ', contact: 'Contact'
+        },
+        ko: {
+          unsupported: '이 챗봇은 한국어, 영어, 베트남어, 독일어, 프랑스어, 일본어를 지원합니다. 이 중 하나의 언어를 사용해 주세요.',
+          clarification: '두 가지 주제가 검색되었습니다: {first} 또는 {second}. 어느 쪽을 의미하시나요?',
+          fallback: '질문을 정확히 이해하지 못했습니다. 조금 더 구체적으로 알려 주세요.',
+          viewFaqs: 'FAQ 보기', faqs: 'FAQ', contact: '문의'
+        },
+        ja: {
+          unsupported: 'このチャットボットは、日本語、英語、ベトナム語、ドイツ語、フランス語、韓国語に対応しています。いずれかの言語で入力してください。',
+          clarification: '該当する可能性のある項目が2つあります：{first} または {second}。どちらについてですか。',
+          fallback: 'ご質問を正確に理解できませんでした。もう少し具体的に入力してください。',
+          viewFaqs: 'FAQを見る', faqs: 'FAQ', contact: 'お問い合わせ'
+        }
       };
+      const copyFor = (lang) => replyCopy[lang] || replyCopy.en;
+      const kbPaths = Object.fromEntries(
+        supportedLanguages.map((lang) => [lang, `/public/chatbot/kb.${lang}.json`])
+      );
 
       // Warm the cache (non-blocking)
-      // Prefetch both languages so we can route per-message.
-      ensureKb('en').catch(() => {});
-      ensureKb('vi').catch(() => {});
+      // Prefetch all authored languages so we can route per-message.
+      supportedLanguages.forEach((lang) => ensureKb(lang).catch(() => {}));
 
       return {
         siteLang,
@@ -4228,7 +4275,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
       };
 
       async function ensureKb(lang) {
-        const safeLang = (lang === 'en' || lang === 'vi') ? lang : siteLang;
+        const safeLang = supportedLanguages.includes(lang) ? lang : siteLang;
         if (kbCache[safeLang]) return kbCache[safeLang];
         if (!kbLoading[safeLang]) {
           kbLoading[safeLang] = loadKb(safeLang)
@@ -4250,33 +4297,19 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
       function getFallbackKb(lang) {
         return {
-          version: 1,
+          version: 2,
           language: lang,
-          intents: [
-            {
-              id: 'contact',
-              keywords: ['liên hệ', 'contact', 'email', 'điện thoại', 'hotline'],
-              phrases: ['làm sao để liên hệ', 'thông tin liên hệ'],
-              answer: lang === 'vi'
-                ? 'Bạn có thể xem trang Liên hệ để biết email/số điện thoại/biểu mẫu.'
-                : 'Please check the Contact page for email/phone/form details.',
-              links: [{ label: 'Contact', url: '#/Contact' }]
-            }
-          ],
-          fallback: {
-            answer: lang === 'vi'
-              ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn bạn đang hỏi về mục nào không (Dịch vụ / Dự án / Tuyển dụng / Liên hệ)?'
-              : 'I’m not fully sure I understood. Could you clarify what you’re asking about (Services / Projects / Recruitment / Contact)?'
-          }
+          intents: [],
+          fallback: { answer: copyFor(lang).fallback }
         };
       }
 
       function prepareKb(kb, lang) {
         const safe = {
-          version: kb.version || 1,
+          version: kb.version || 2,
           language: kb.language || lang,
           intents: Array.isArray(kb.intents) ? kb.intents : [],
-          fallback: kb.fallback || { answer: lang === 'vi' ? 'Bạn có thể nói rõ hơn giúp mình không?' : 'Could you clarify your question?' }
+          fallback: kb.fallback || { answer: copyFor(lang).fallback }
         };
 
         safe.intents = safe.intents
@@ -4284,13 +4317,15 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
           .map((it) => {
             const keywords = Array.isArray(it.keywords) ? it.keywords.filter(Boolean) : [];
             const phrases = Array.isArray(it.phrases) ? it.phrases.filter(Boolean) : [];
+            const ambiguousKeywords = Array.isArray(it.ambiguousKeywords) ? it.ambiguousKeywords.filter(Boolean) : [];
             const links = Array.isArray(it.links) ? it.links.filter(l => l && l.label && l.url) : [];
-            const candidates = [...keywords, ...phrases]
+            const candidates = [...keywords, ...phrases, ...ambiguousKeywords]
               .map((s) => normalizeForSearch(String(s)))
               .filter(Boolean);
-            const candidateTokens = candidates.map(tokenize);
+            const candidateTokens = candidates.map((candidate) => tokenize(candidate, lang));
             return {
               id: it.id || 'intent',
+              label: String(it.label || it.id || 'intent'),
               answer: String(it.answer),
               links,
               _candidates: candidates,
@@ -4304,28 +4339,31 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const raw = String(userMessage || '').trim();
         if (!raw) {
           const kb = await ensureKb(siteLang);
-          return { content: kb.fallback?.answer || '', links: [] };
+          return { content: kb.fallback?.answer || '', links: [], meta: { source: 'fallback' } };
         }
 
         const unsupported = detectUnsupportedLanguage(raw);
         if (unsupported) {
           return {
-            content: siteLang === 'vi'
-              ? 'Hiện tại chatbot chỉ hỗ trợ Tiếng Việt và English. Vui lòng đặt câu hỏi bằng Tiếng Việt hoặc English (bạn có thể đổi ngôn ngữ bằng biểu tượng lá cờ trên thanh menu).'
-              : 'This chatbot currently supports Vietnamese and English only. Please ask your question in Vietnamese or English (you can switch site language via the flag icon in the menu).',
-            links: []
+            content: copyFor(siteLang).unsupported,
+            links: [],
+            meta: { source: 'unsupported', language: unsupported }
           };
         }
 
         const queryNorm = normalizeForSearch(raw);
-        const queryTokens = tokenize(queryNorm);
 
-        // Route language per-message. If detection is uncertain, score both KBs and pick the best match.
-        const detectedLang = await routeLanguage(raw, queryNorm, queryTokens);
+        // Route language per-message. If detection is uncertain, score every
+        // authored KB and pick a clear winner.
+        const detectedLang = await routeLanguage(raw, queryNorm);
+        const queryTokens = tokenize(queryNorm, detectedLang);
         const kb = await ensureKb(detectedLang);
+        const strings = copyFor(detectedLang);
 
         // 1) Match intents in KB
-        const bestIntent = findBestIntent(kb, queryNorm, queryTokens);
+        const rankedIntents = findBestIntents(kb, queryNorm, queryTokens);
+        const bestIntent = rankedIntents[0] || null;
+        const secondIntent = rankedIntents[1] || null;
 
         // 2) Match against FAQ data (if available)
         const bestFaq = findBestFaq(queryNorm, queryTokens, detectedLang);
@@ -4334,73 +4372,89 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const intentScore = bestIntent?.score ?? 0;
         const faqScore = bestFaq?.score ?? 0;
 
-        if (faqScore >= 0.52 && faqScore >= intentScore) {
-          const links = [{ label: detectedLang === 'vi' ? 'Xem FAQ' : 'View FAQs', url: '#/faqs' }];
-          return { content: bestFaq.answer, links };
+        if (faqScore >= faqThreshold && faqScore >= intentScore) {
+          const links = [{ label: strings.viewFaqs, url: '#/faqs' }];
+          return {
+            content: bestFaq.answer,
+            links,
+            meta: { source: 'faq', faqId: bestFaq.id, category: bestFaq.category, score: faqScore }
+          };
         }
 
-        if (intentScore >= 0.45) {
-          return { content: bestIntent.intent.answer, links: bestIntent.intent.links || [] };
+        if (isAmbiguousIntentMatch(bestIntent, secondIntent)) {
+          return {
+            content: strings.clarification
+              .replace('{first}', bestIntent.intent.label)
+              .replace('{second}', secondIntent.intent.label),
+            links: [],
+            meta: {
+              source: 'clarification',
+              intentIds: [bestIntent.intent.id, secondIntent.intent.id],
+              score: bestIntent.score
+            }
+          };
+        }
+
+        if (intentScore >= intentThreshold) {
+          return {
+            content: bestIntent.intent.answer,
+            links: bestIntent.intent.links || [],
+            meta: { source: 'intent', intentId: bestIntent.intent.id, score: intentScore }
+          };
         }
 
         return {
-          content: kb.fallback?.answer || (detectedLang === 'vi'
-            ? 'Mình chưa chắc mình hiểu đúng câu hỏi. Bạn có thể nói rõ hơn giúp mình không?'
-            : 'I’m not fully sure I understood. Could you clarify your question?'),
+          content: kb.fallback?.answer || strings.fallback,
           links: [
-            { label: detectedLang === 'vi' ? 'FAQ' : 'FAQs', url: '#/faqs' },
-            { label: detectedLang === 'vi' ? 'Liên hệ' : 'Contact', url: '#/Contact' }
-          ]
+            { label: strings.faqs, url: '#/faqs' },
+            { label: strings.contact, url: '#/Contact' }
+          ],
+          meta: { source: 'fallback', score: Math.max(intentScore, faqScore) }
         };
       }
 
-      async function routeLanguage(raw, queryNorm, queryTokens) {
+      async function routeLanguage(raw, queryNorm) {
         const direct = detectUserLanguage(raw);
-        if (direct === 'en' || direct === 'vi') return direct;
+        if (direct) return direct;
 
-        // If we can't confidently detect, compare intent match strength across both KBs.
-        const [kbEn, kbVi] = await Promise.all([ensureKb('en'), ensureKb('vi')]);
-        const bestEn = findBestIntent(kbEn, queryNorm, queryTokens);
-        const bestVi = findBestIntent(kbVi, queryNorm, queryTokens);
-        const enScore = bestEn?.score ?? 0;
-        const viScore = bestVi?.score ?? 0;
+        const rankedLanguages = await Promise.all(supportedLanguages.map(async (lang) => {
+          const kb = await ensureKb(lang);
+          const best = findBestIntents(kb, queryNorm, tokenize(queryNorm, lang))[0];
+          return { lang, score: best?.score ?? 0 };
+        }));
+        rankedLanguages.sort((left, right) => right.score - left.score);
 
-        // Only switch away from siteLang if there's a clear winner.
-        const minToSwitch = 0.45;
-        const margin = 0.05;
-        if (Math.max(enScore, viScore) >= minToSwitch && Math.abs(enScore - viScore) >= margin) {
-          return enScore > viScore ? 'en' : 'vi';
+        if (
+          rankedLanguages[0].score >= intentThreshold &&
+          rankedLanguages[0].score - rankedLanguages[1].score >= 0.05
+        ) {
+          return rankedLanguages[0].lang;
         }
         return siteLang;
       }
 
       function detectUserLanguage(text) {
         const raw = String(text || '');
-        const hasVietnameseDiacritics = /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵ]/i.test(raw);
-        if (hasVietnameseDiacritics) return 'vi';
+        if (/[\uac00-\ud7af]/.test(raw)) return 'ko';
+        if (/[\u3040-\u30ff]/.test(raw)) return 'ja';
 
-        // Also detect Vietnamese typed WITHOUT diacritics (e.g., "xin chao", "dich vu").
-        const norm = normalizeForSearch(raw);
-        const tokens = norm.split(' ').filter(Boolean);
+        const tokens = normalizeForSearch(raw).split(' ').filter(Boolean);
+        if (!tokens.length) return null;
 
-        const viHints = new Set([
-          'xin','chao','camon','cam','on','dich','vu','lien','he','tuyen','dung','ung','tuyen','du','an',
-          'bao','gia','chi','phi','gia','thoi','gian','quy','trinh','hop','tac','doi','tac','bao','chi','truyen','thong'
-        ]);
-        const enHints = new Set([
-          'what','how','where','when','services','service','projects','project','contact','recruitment',
-          'privacy','terms','cookies','gdpr','price','pricing','quote','proposal','meeting','schedule','internship','partner','press'
-        ]);
+        const hintSets = {
+          vi: new Set(['xin','chao','dich','vu','lien','he','tuyen','dung','du','an','bao','gia','chi','phi','thoi','gian','quy','trinh','hop','tac']),
+          en: new Set(['hello','what','how','where','when','services','service','projects','project','recruitment','privacy','pricing','proposal','meeting','internship','partner','press']),
+          de: new Set(['hallo','danke','welche','was','wie','wo','leistungen','beratung','kosten','honorar','projekt','karriere','datenschutz','termin']),
+          fr: new Set(['bonjour','merci','quelles','comment','ou','prestations','conseil','cout','honoraires','projet','recrutement','confidentialite','rendez'])
+        };
+        const ranked = Object.entries(hintSets)
+          .map(([lang, hints]) => ({
+            lang,
+            score: tokens.reduce((total, token) => total + Number(hints.has(token)), 0)
+          }))
+          .sort((left, right) => right.score - left.score);
 
-        let viScore = 0;
-        let enScore = 0;
-        for (const t of tokens) {
-          if (viHints.has(t)) viScore++;
-          if (enHints.has(t)) enScore++;
-        }
-
-        if (viScore >= 2 && viScore > enScore) return 'vi';
-        if (enScore >= 1 && enScore > viScore) return 'en';
+        if (ranked[0].score >= 1 && ranked[0].score > ranked[1].score) return ranked[0].lang;
         return null;
       }
 
@@ -4408,9 +4462,8 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         const raw = String(text || '');
 
         // Script-based detection (high confidence).
-        if (/[\u3040-\u30ff]/.test(raw)) return 'ja'; // Japanese Hiragana/Katakana
-        if (/[\u4e00-\u9fff]/.test(raw)) return 'zh'; // CJK Unified Ideographs
-        if (/[\uac00-\ud7af]/.test(raw)) return 'ko'; // Hangul
+        if (/[\u3040-\u30ff]/.test(raw) || /[\uac00-\ud7af]/.test(raw)) return null;
+        if (/[\u4e00-\u9fff]/.test(raw)) return null;
         if (/[\u0e00-\u0e7f]/.test(raw)) return 'th'; // Thai
         if (/[\u0400-\u04ff]/.test(raw)) return 'ru'; // Cyrillic
         if (/[\u0600-\u06ff]/.test(raw)) return 'ar'; // Arabic
@@ -4422,55 +4475,60 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         if (!tokens.length) return null;
 
         const esHints = new Set(['hola','gracias','por','favor','buenos','dias','buenas','noches','donde','precio','contacto','ayuda','necesito','quiero']);
-        const frHints = new Set(['bonjour','merci','svp','silvousplait','ou','prix','contact','aide','besoin','je','veux']);
-        const deHints = new Set(['hallo','danke','bitte','preis','kontakt','hilfe','ich','brauche','mochte']);
-
-        let es = 0;
-        let fr = 0;
-        let de = 0;
-        for (const t of tokens) {
-          if (esHints.has(t)) es++;
-          if (frHints.has(t)) fr++;
-          if (deHints.has(t)) de++;
-        }
-        const max = Math.max(es, fr, de);
-        if (max >= 2) {
-          if (es === max) return 'es';
-          if (fr === max) return 'fr';
-          if (de === max) return 'de';
-        }
+        const es = tokens.reduce((total, token) => total + Number(esHints.has(token)), 0);
+        if (es >= 2) return 'es';
         return null;
       }
 
       function normalizeForSearch(text) {
         let s = String(text || '').toLowerCase();
         try {
-          s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          s = s.normalize('NFD').replace(/\p{M}/gu, '').normalize('NFC');
         } catch (e) {
           // ignore
         }
         s = s.replace(/[đ]/g, 'd');
-        // After diacritics removal, keep it ASCII-only for compatibility.
-        s = s.replace(/[^a-z0-9\s]/g, ' ');
+        s = s.replace(/[^\p{L}\p{N}\s]/gu, ' ');
         s = s.replace(/\s+/g, ' ').trim();
         return s;
       }
 
-      function tokenize(normText) {
+      function tokenize(normText, language) {
         const stop = new Set([
           'la','va','hoac','cua','cho','ve','o','toi','ban','minh','chung','toi','xin','vui','long','nhe','a','oi',
           'the','a','an','to','for','and','or','of','in','on','at','is','are','am','i','you','we','our','about','please'
         ]);
-        return String(normText || '')
+        const value = String(normText || '').trim();
+        const keep = (token) =>
+          token && !stop.has(token) && (/[^a-z0-9]/i.test(token) || token.length >= 2);
+
+        if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
+          const key = language || 'und';
+          if (!segmenters.has(key)) {
+            try {
+              segmenters.set(key, new Intl.Segmenter(language || undefined, { granularity: 'word' }));
+            } catch (e) {
+              segmenters.set(key, null);
+            }
+          }
+          const segmenter = segmenters.get(key);
+          if (segmenter) {
+            return [...segmenter.segment(value)]
+              .filter((part) => part.isWordLike)
+              .map((part) => part.segment.trim())
+              .filter(keep);
+          }
+        }
+
+        return value
           .split(' ')
           .map(t => t.trim())
-          .filter(t => t.length >= 2 && !stop.has(t));
+          .filter(keep);
       }
 
       function scoreTokens(queryTokens, candTokens, queryNorm, candNorm) {
         if (!candNorm) return 0;
         if (queryNorm === candNorm) return 1;
-        if (queryNorm.includes(candNorm) || candNorm.includes(queryNorm)) return 0.92;
 
         const qSet = new Set(queryTokens);
         const cSet = new Set(candTokens);
@@ -4478,30 +4536,49 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
         let intersect = 0;
         for (const t of cSet) if (qSet.has(t)) intersect++;
+        if (intersect === 0) return 0;
         const union = qSet.size + cSet.size - intersect;
         const jaccard = union ? (intersect / union) : 0;
         const coverage = cSet.size ? (intersect / cSet.size) : 0;
 
-        return (0.65 * jaccard) + (0.35 * coverage);
+        let score = (0.65 * jaccard) + (0.35 * coverage);
+        const paddedQuery = ` ${queryNorm} `;
+        const paddedCandidate = ` ${candNorm} `;
+        if (cSet.size >= 2 && paddedQuery.includes(paddedCandidate)) score += 0.08;
+        else if (qSet.size >= 2 && paddedCandidate.includes(paddedQuery)) score += 0.04;
+        return Math.min(score, 0.96);
       }
 
-      function findBestIntent(kb, queryNorm, queryTokens) {
-        let best = null;
-        for (const intent of kb.intents || []) {
+      function findBestIntents(kb, queryNorm, queryTokens) {
+        return (kb.intents || []).map((intent, order) => {
           let bestScore = 0;
+          let candidateSize = 0;
           const candidates = intent._candidates || [];
           const candidateTokens = intent._candidateTokens || [];
           for (let i = 0; i < candidates.length; i++) {
             const candNorm = candidates[i];
             const candTokens = candidateTokens[i] || [];
             const s = scoreTokens(queryTokens, candTokens, queryNorm, candNorm);
-            if (s > bestScore) bestScore = s;
+            if (s > bestScore || (s === bestScore && candTokens.length > candidateSize)) {
+              bestScore = s;
+              candidateSize = candTokens.length;
+            }
           }
-          if (!best || bestScore > best.score) {
-            best = { intent, score: bestScore };
-          }
-        }
-        return best;
+          return { intent, score: bestScore, candidateSize, order };
+        }).sort((left, right) =>
+          right.score - left.score || right.candidateSize - left.candidateSize || left.order - right.order
+        );
+      }
+
+      function isAmbiguousIntentMatch(first, second) {
+        return Boolean(
+          first?.intent?.id &&
+          second?.intent?.id &&
+          first.intent.id !== second.intent.id &&
+          first.score >= intentThreshold &&
+          second.score >= intentThreshold &&
+          Math.abs(first.score - second.score) <= 0.035
+        );
       }
 
       function findBestFaq(queryNorm, queryTokens, desiredLang) {
@@ -4510,21 +4587,27 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
 
         // Avoid answering in the wrong language via FAQ corpus.
         const faqLang = window.__icueFaqLang;
-        if ((desiredLang === 'en' || desiredLang === 'vi') && (faqLang === 'en' || faqLang === 'vi') && faqLang !== desiredLang) {
+        if (supportedLanguages.includes(desiredLang) && supportedLanguages.includes(faqLang) && faqLang !== desiredLang) {
           return null;
         }
 
         let best = null;
+        const reviewRequired = new Set([
+          'services.2', 'costs.1', 'costs.2', 'legal.1', 'legal.2',
+          'timeline.1', 'timeline.2', 'clients.2', 'general.2'
+        ]);
         for (const cat of Object.keys(faqData)) {
           const items = Array.isArray(faqData[cat]) ? faqData[cat] : [];
-          for (const item of items) {
+          for (let index = 0; index < items.length; index++) {
+            const item = items[index];
+            if (reviewRequired.has(`${cat}.${index + 1}`)) continue;
             const q = item?.q;
             const a = item?.a;
             if (!q || !a) continue;
             const qNorm = normalizeForSearch(q);
-            const s = scoreTokens(queryTokens, tokenize(qNorm), queryNorm, qNorm);
+            const s = scoreTokens(queryTokens, tokenize(qNorm, desiredLang), queryNorm, qNorm);
             if (!best || s > best.score) {
-              best = { question: q, answer: String(a), score: s };
+              best = { id: `${cat}.${index + 1}`, category: cat, question: q, answer: String(a), score: s };
             }
           }
         }
@@ -4545,7 +4628,7 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
         if (!chatbotToggle || !chatbotWindow) return;
         
         // Local storage chat history
-        const CHAT_HISTORY_KEY = 'icueChatbotHistory:vi';
+        const CHAT_HISTORY_KEY = `icueChatbotHistory:${chatbotKnowledge.siteLang}`;
         
         function saveChatHistory(history) {
             try {
@@ -4577,6 +4660,18 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
                 chatHistory = chatHistory.slice(-50);
             }
             saveChatHistory(chatHistory);
+        }
+
+        function emitChatbotEvent(type, detail = {}) {
+          if (typeof window.CustomEvent !== 'function') return;
+          window.dispatchEvent(new CustomEvent('icue:chatbot-event', {
+            detail: {
+              type,
+              locale: chatbotKnowledge.siteLang,
+              path: window.location.pathname,
+              ...detail
+            }
+          }));
         }
         
         function createMessageElement(msg) {
@@ -4622,6 +4717,12 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               a.style.marginTop = '6px';
               a.style.textDecoration = 'underline';
               a.addEventListener('click', (e) => {
+                emitChatbotEvent('link_click', {
+                  source: msg?.meta?.source || 'unknown',
+                  intentId: msg?.meta?.intentId,
+                  faqId: msg?.meta?.faqId,
+                  destination: String(l.url)
+                });
                 // allow hash routing; prevent full page reload
                 if (String(l.url).startsWith('#/')) {
                   e.preventDefault();
@@ -4729,13 +4830,16 @@ window.initializeChatbot = function(targetSelector = 'body', css = '') {
               addMessageToHistory({
                 role: 'bot',
                 content: resp.content,
-                links: resp.links || []
+                links: resp.links || [],
+                meta: resp.meta || { source: 'unknown' }
               });
               chatbotMessages.appendChild(createMessageElement({
                 role: 'bot',
                 content: resp.content,
-                links: resp.links || []
+                links: resp.links || [],
+                meta: resp.meta || { source: 'unknown' }
               }));
+              emitChatbotEvent('response', resp.meta || { source: 'unknown' });
               chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             }, 700);
         };

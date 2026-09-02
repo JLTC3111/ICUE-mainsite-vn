@@ -21,6 +21,23 @@ import ja from './content/ja.js'
 
 const CONTENT = { vi, en, de, fr, ko, ja }
 
+/**
+ * Variable commercial/legal claims stay visible on the FAQ page for editorial
+ * review, but are not served as chatbot answers. The cautious intent responses
+ * route the reader to ICUE for project-specific confirmation instead.
+ */
+export const FAQ_REVIEW_FLAGS = {
+  'services.2': { owner: 'Services', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Scope varies by project type and location.' },
+  'costs.1': { owner: 'Commercial', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Fee methods require current commercial approval.' },
+  'costs.2': { owner: 'Commercial', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Payment terms must be confirmed per proposal or contract.' },
+  'legal.1': { owner: 'Legal', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Permit support depends on jurisdiction and agreed scope.' },
+  'legal.2': { owner: 'Legal', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'English and Vietnamese land-rights wording differs.' },
+  'timeline.1': { owner: 'Delivery', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Fixed duration ranges may not apply to every project.' },
+  'timeline.2': { owner: 'Delivery', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Recovery commitments require project-specific approval.' },
+  'clients.2': { owner: 'Services', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'Post-handover maintenance is not necessarily included.' },
+  'general.2': { owner: 'Operations', status: 'needs-review', chatbotEligible: false, flaggedAt: '2026-09-01', reason: 'The 24-hour response promise is an operational SLA.' },
+}
+
 export const AUTHORITATIVE_LANGUAGE = 'vi'
 
 /**
@@ -65,6 +82,9 @@ export function getFaqCategories(language) {
 /** Flat `[{ category, q, a }]`, the shape the chatbot's scorer wants. */
 export function getFaqEntries(language) {
   return getFaqCategories(language).flatMap(({ key, entries }) =>
-    entries.map((entry) => ({ category: key, ...entry })),
+    entries.map((entry, index) => {
+      const id = `${key}.${index + 1}`
+      return { id, category: key, ...entry, review: FAQ_REVIEW_FLAGS[id] || null }
+    }),
   )
 }

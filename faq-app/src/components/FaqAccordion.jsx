@@ -1,6 +1,8 @@
-import { useCallback, useId, useState } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CATEGORY_ICONS } from '../data/categoryIcons'
+
+const MOBILE_LAYOUT_QUERY = '(max-width: 768px)'
 
 /**
  * The two-level accordion: eight category cards, each opening onto its
@@ -27,6 +29,28 @@ function CategoryIcon({ category }) {
       dangerouslySetInnerHTML={{ __html: markup }}
     />
   )
+}
+
+function useMobileLayout() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      ? window.matchMedia(MOBILE_LAYOUT_QUERY).matches
+      : false,
+  )
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return undefined
+    }
+
+    const query = window.matchMedia(MOBILE_LAYOUT_QUERY)
+    const update = (event) => setIsMobile(event.matches)
+    setIsMobile(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  return isMobile
 }
 
 function Answer({ entry }) {
@@ -56,9 +80,28 @@ function Answer({ entry }) {
   )
 }
 
+function CategoryPanel({ category, panelId, triggerId }) {
+  return (
+    <div
+      className="fq-panel"
+      id={panelId}
+      role="region"
+      aria-labelledby={triggerId}
+    >
+      <h3 className="fq-panel__heading">{category.label}</h3>
+      <div className="fq-panel__answers">
+        {category.entries.map((entry) => (
+          <Answer key={entry.q} entry={entry} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function FaqAccordion({ categories }) {
   const { t } = useTranslation()
   const [openKey, setOpenKey] = useState(null)
+  const isMobile = useMobileLayout()
   const id = useId()
 
   // Re-clicking the open card closes it, as the legacy accordion did
@@ -69,29 +112,25 @@ export default function FaqAccordion({ categories }) {
 
   const open = categories.find((category) => category.key === openKey) || null
 
-  /*
-   * The panel sits below the whole grid, not inside the clicked cell.
-   *
-   * Both of the obvious alternatives leave a hole. Putting it in the cell makes
-   * the grid row as tall as the opened panel, so the other one or two cards in
-   * that row get a column of empty space beside them. Putting it in the grid
-   * spanning `1 / -1` — which is what the legacy page did — pushes every later
-   * card down a row, and when the opened card is not the last in its row the
-   * remaining columns of that row are left blank. One panel under the grid has
-   * neither problem, and gives the answers the full width to wrap in.
-   */
+  // Desktop keeps one full-width panel below the category grid. On mobile the
+  // grid is a single column, so the panel belongs directly after its active
+  // card; rendering it there also keeps keyboard and screen-reader order in
+  // step with the visual order.
   return (
     <>
       <div className="fq-grid" role="list" aria-label={t('a11y.categoryList')}>
         {categories.map((category) => {
           const isOpen = category.key === openKey
+          const panelId = `${id}-${category.key}-panel`
+          const triggerId = `${id}-${category.key}-trigger`
           return (
             <div className="fq-grid__cell" role="listitem" key={category.key}>
               <button
+                id={triggerId}
                 type="button"
                 className={`fq-card${isOpen ? ' is-active' : ''}`}
                 aria-expanded={isOpen}
-                aria-controls={`${id}-panel`}
+                aria-controls={panelId}
                 aria-label={t(isOpen ? 'a11y.closeCategory' : 'a11y.openCategory', {
                   label: category.label,
                 })}
@@ -114,22 +153,24 @@ export default function FaqAccordion({ categories }) {
                   </svg>
                 </span>
               </button>
+              {isMobile && isOpen && (
+                <CategoryPanel
+                  category={category}
+                  panelId={panelId}
+                  triggerId={triggerId}
+                />
+              )}
             </div>
           )
         })}
       </div>
 
-      {open && (
-        <div className="fq-panel" id={`${id}-panel`}>
-          {/* Names the open category: with the panel below the grid rather than
-              inside the card, the highlighted card alone is a thin cue. */}
-          <h3 className="fq-panel__heading">{open.label}</h3>
-          <div className="fq-panel__answers">
-            {open.entries.map((entry) => (
-              <Answer key={entry.q} entry={entry} />
-            ))}
-          </div>
-        </div>
+      {!isMobile && open && (
+        <CategoryPanel
+          category={open}
+          panelId={`${id}-${open.key}-panel`}
+          triggerId={`${id}-${open.key}-trigger`}
+        />
       )}
     </>
   )

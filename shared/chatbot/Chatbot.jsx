@@ -12,9 +12,9 @@ import './Chatbot.css'
  * runtime — which meant it appeared on the legacy pages and nowhere else. As a
  * shared component any app can mount it; /faqs and /recruitment do today.
  *
- * The reply engine is unchanged in substance: authored intents scored by
- * keyword overlap, plus the FAQ corpus, with an authored fallback. What it says
- * is only ever text somebody wrote — see lib/knowledge.js.
+ * The reply engine remains retrieval-only: authored intents are ranked by
+ * lexical overlap, alongside the FAQ corpus, with clarification and authored
+ * fallback paths. It never generates an answer — see lib/knowledge.js.
  */
 
 const BOT_REPLY_DELAY_MS = 700
@@ -35,7 +35,7 @@ function UserAvatar() {
   )
 }
 
-function Message({ message }) {
+function Message({ message, onLinkClick }) {
   const isUser = message.role === 'user'
   const links = Array.isArray(message.links) ? message.links : []
 
@@ -49,7 +49,11 @@ function Message({ message }) {
         {links.length > 0 && (
           <div className="icue-chat__links">
             {links.map((link) => (
-              <a key={`${link.url}-${link.label}`} href={link.url}>
+              <a
+                key={`${link.url}-${link.label}`}
+                href={link.url}
+                onClick={() => onLinkClick?.(link, message.meta)}
+              >
                 {link.label}
               </a>
             ))}
@@ -65,8 +69,10 @@ function Message({ message }) {
  * @param {string} props.locale   the reader's UI language, one of the six
  * @param {object} props.labels   UI chrome from the host app's i18n (`chat.*`)
  * @param {{faqs: string, contact: string}} props.links  resolved page URLs
+ * @param {(event: object) => void} [props.onEvent] privacy-safe analytics hook;
+ *   events deliberately exclude the visitor's message text
  */
-export default function Chatbot({ locale = 'vi', labels, links }) {
+export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const [isOpen, setIsOpen] = useState(false)
   const [draft, setDraft] = useState('')
   const [isThinking, setIsThinking] = useState(false)
@@ -83,6 +89,22 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
         copy: createBotCopy({ faqsUrl: links.faqs, contactUrl: links.contact }),
       }),
     [locale, links.faqs, links.contact],
+  )
+
+  const emitEvent = useCallback(
+    (type, detail = {}) => {
+      const event = {
+        type,
+        locale,
+        path: typeof window !== 'undefined' ? window.location.pathname : '',
+        ...detail,
+      }
+      onEvent?.(event)
+      if (typeof window !== 'undefined' && typeof window.CustomEvent === 'function') {
+        window.dispatchEvent(new CustomEvent('icue:chatbot-event', { detail: event }))
+      }
+    },
+    [locale, onEvent],
   )
 
   // Each language keeps its own transcript; switching flag swaps the thread.
@@ -124,15 +146,34 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
       timerRef.current = setTimeout(async () => {
         try {
           const response = await knowledge.getResponse(message)
-          append({ role: 'bot', content: response.content, links: response.links || [] })
+          append({
+            role: 'bot',
+            content: response.content,
+            links: response.links || [],
+            meta: response.meta || { source: 'unknown' },
+          })
+          emitEvent('response', response.meta || { source: 'unknown' })
         } catch {
           append({ role: 'bot', content: labels.error, links: [] })
+          emitEvent('error')
         } finally {
           setIsThinking(false)
         }
       }, BOT_REPLY_DELAY_MS)
     },
-    [append, isThinking, knowledge, labels.error],
+    [append, emitEvent, isThinking, knowledge, labels.error],
+  )
+
+  const recordLinkClick = useCallback(
+    (link, responseMeta = {}) => {
+      emitEvent('link_click', {
+        source: responseMeta?.source || 'unknown',
+        intentId: responseMeta?.intentId,
+        faqId: responseMeta?.faqId,
+        destination: link.url,
+      })
+    },
+    [emitEvent],
   )
 
   const suggestions = Array.isArray(labels.suggestions) ? labels.suggestions : []
@@ -169,7 +210,11 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
                 same way the legacy panel kept its seeded first bubble. */}
             {!hasTranscript && <Message message={{ role: 'bot', content: labels.greeting }} />}
             {messages.map((message) => (
-              <Message key={`${message.timestamp}-${message.role}`} message={message} />
+              <Message
+                key={`${message.timestamp}-${message.role}`}
+                message={message}
+                onLinkClick={recordLinkClick}
+              />
             ))}
             {isThinking && (
               <div className="icue-chat__message icue-chat__message--bot">
@@ -236,11 +281,21 @@ export default function Chatbot({ locale = 'vi', labels, links }) {
         aria-expanded={isOpen}
         aria-label={isOpen ? labels.close : labels.open}
       >
-        <svg width="64" height="64" viewBox="0 -0.5 17 17" aria-hidden="true">
+        <svg
+          className="icue-chat__mark"
+          width="68"
+          height="68"
+          viewBox="0 0 68 68"
+          aria-hidden="true"
+        >
           <path
-            d="M9.019,1.04 C4.621,1.04 1.051,3.66 1.051,6.892 C1.051,9.842 4.026,12.276 7.893,12.679 L5.845,15.929 L11.964,12.326 C14.906,11.465 16.989,9.358 16.989,6.891 C16.989,3.66 13.42,1.04 9.019,1.04 L9.019,1.04 Z M6,8 L4,8 L4,6 L6,6 L6,8 L6,8 Z M10,8 L8,8 L8,6 L10,6 L10,8 L10,8 Z M14,8 L12,8 L12,6 L14,6 L14,8 L14,8 Z"
-            fill="#34efeb"
+            className="icue-chat__mark-bubble"
+            fill="#48dad5"
+            d="M16 8h36c8.3 0 15 6.7 15 15v16c0 8.3-6.7 15-15 15H36.2c-4.7 4.2-10.1 7.1-16.2 9 2.2-2.8 3.6-5.8 4.2-9H16C7.7 54 1 47.3 1 39V23C1 14.7 7.7 8 16 8Z"
           />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="21" cy="31" r="3.6" />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="34" cy="31" r="3.6" />
+          <circle className="icue-chat__mark-dot" fill="#0d192b" cx="47" cy="31" r="3.6" />
         </svg>
         <span className="icue-chat__badge">{labels.badge}</span>
       </button>

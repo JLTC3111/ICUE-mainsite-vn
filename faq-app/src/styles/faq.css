@@ -139,7 +139,7 @@
 
 /* ---- answers ----------------------------------------------------------- */
 
-/* Below the grid, full width — see the note in FaqAccordion.jsx. */
+/* Full-width below the grid on desktop; nested under the active card on mobile. */
 .fq-panel {
   margin-top: 20px;
   background: var(--fq-surface-2);
@@ -278,5 +278,14 @@
   .fq-grid {
     grid-template-columns: 1fr;
     gap: 15px;
+  }
+
+  .fq-grid__cell {
+    flex-direction: column;
+  }
+
+  .fq-grid__cell > .fq-panel {
+    width: 100%;
+    margin-top: 12px;
   }
 }
