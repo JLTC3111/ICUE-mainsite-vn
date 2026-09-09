@@ -172,7 +172,7 @@ export default function Page() {
 
       {sidebarReady && (
         <Suspense fallback={null}>
-          <ContactSidebar contentKey="recruitment" />
+          <ContactSidebar contentKey="recruitment" locale={lang} />
         </Suspense>
       )}
     </>

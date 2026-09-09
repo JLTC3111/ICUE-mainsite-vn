@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
+import { NOTABLE_AWARDS_REDIRECTS } from './shared/site-routes/notableAwardsRedirects.js'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -93,7 +94,6 @@ function homeDevFallback() {
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
   const legacyShellSrcPages = new Set([
-    '/src/pages/notableAwards.html',
     '/src/pages/communityActivities.html',
     ]);
 
@@ -104,7 +104,6 @@ function homeDevFallback() {
     '/legacy/pages/Contact.html': '/contact',
     '/legacy/pages/ourWork.html': '/our-work',
     '/legacy/pages/News.html': '/news-archive',
-    '/legacy/pages/notableAwards.html': '/notable-awards',
     '/legacy/pages/communityActivities.html': '/community-activities',
       '/legacy/pages/privacy.html': '/legal/privacy',
     '/legacy/pages/terms.html': '/legal/terms',
@@ -116,7 +115,6 @@ function homeDevFallback() {
     '/src/pages/Contact.html': '/contact',
     '/src/pages/ourWork.html': '/our-work',
     '/src/pages/orgStructure.html': '/structure/',
-    '/src/pages/notableAwards.html': '/notable-awards',
     '/src/pages/communityActivities.html': '/community-activities',
       '/src/pages/privacy.html': '/legal/privacy',
     '/src/pages/terms.html': '/legal/terms',
@@ -142,6 +140,13 @@ function homeDevFallback() {
           return next();
         }
         if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
+
+        if (NOTABLE_AWARDS_REDIRECTS[urlPath]) {
+          res.statusCode = 302;
+          res.setHeader('Location', NOTABLE_AWARDS_REDIRECTS[urlPath] + req.url.slice(urlPath.length));
+          res.end();
+          return;
+        }
 
         if (retiredLegalRoutes[urlPath]) {
           res.statusCode = 302;

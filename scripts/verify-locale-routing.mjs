@@ -14,6 +14,7 @@ import {
  */
 const APPS = {
   Home: 'Home',
+  'Notable Awards': 'notableAwards',
   Structure: 'orgStructure',
   'Our Work': 'ourWork',
   News: 'News',
@@ -57,6 +58,9 @@ for (const source of APP_SOURCES) {
       }
 
       verifiedTransitions += 1
+      if (page === 'notableAwards') {
+        assert.equal(url.pathname, '/notable-awards', 'Awards must retain its canonical path in every locale')
+      }
     }
   }
 }

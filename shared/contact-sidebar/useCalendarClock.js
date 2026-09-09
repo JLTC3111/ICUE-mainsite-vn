@@ -1,29 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-function formatClock(now = new Date()) {
-  const month = now.toLocaleString('en-US', { month: 'long' })
-  const day = String(now.getDate())
-  let hours = now.getHours()
-  const minutes = now.getMinutes()
-  const ampm = hours >= 12 ? 'PM' : 'AM'
-  hours = hours % 12 || 12
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : String(minutes)
+function formatClock(now, locale) {
   return {
-    month,
-    day,
-    time: `${hours}:${formattedMinutes}${ampm}`,
+    month: now.toLocaleString(locale, { month: 'long' }),
+    day: now.toLocaleString(locale, { day: 'numeric' }),
+    time: now.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' }),
   }
 }
 
-export function useCalendarClock() {
-  const [clock, setClock] = useState(() => formatClock())
+export function useCalendarClock(locale = 'vi') {
+  const [now, setNow] = useState(() => new Date())
 
   useEffect(() => {
-    const tick = () => setClock(formatClock())
+    const tick = () => setNow(new Date())
     tick()
     const id = window.setInterval(tick, 60_000)
     return () => window.clearInterval(id)
   }, [])
 
-  return clock
+  return useMemo(() => formatClock(now, locale), [now, locale])
 }

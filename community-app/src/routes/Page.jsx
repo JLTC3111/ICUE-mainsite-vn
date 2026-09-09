@@ -154,7 +154,7 @@ export default function Page() {
 
       {sidebarReady && (
         <Suspense fallback={null}>
-          <ContactSidebar contentKey="community-activities" />
+          <ContactSidebar contentKey="community-activities" locale={lang} />
         </Suspense>
       )}
     </>

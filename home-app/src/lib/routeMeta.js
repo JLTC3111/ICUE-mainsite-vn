@@ -48,7 +48,7 @@ export const ROUTE_META = [
     slug: 'notable-awards',
     path: '/notable-awards',
     pageName: 'notableAwards',
-    pageFile: 'notableAwards.html',
+    // Native React page; the generated route shell keeps the same metadata.
     title: 'Giải thưởng nổi bật | ICUE Vietnam',
     description: 'Những giải thưởng, ghi nhận và dấu mốc chuyên môn nổi bật của ICUE Vietnam.',
   },

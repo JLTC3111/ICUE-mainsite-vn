@@ -14,6 +14,7 @@ import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 import { debugLog } from './lib/debugLog'
 
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
+const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'))
 const LegacyHtmlPage = lazy(() => import('./pages/LegacyHtmlPage'))
 
 function ScrollToTop() {
@@ -116,7 +117,7 @@ function AppShell() {
                 ROUTE_PATHS keeps both — the drawer and footer still link to
                 them, as a real navigation. */}
             <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.notableAwards} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.notableAwards} element={<NotableAwardsPage />} />
             {/* No /community-activities route: it is its own app now
                 (community-app), like /faqs and /recruitment above. */}
             <Route path="*" element={<Navigate to={ROUTE_PATHS.home} replace />} />
@@ -124,7 +125,7 @@ function AppShell() {
         </Suspense>
       </main>
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-      <DeferredContactSidebar contentKey={pathname} />
+      <DeferredContactSidebar contentKey={pathname} locale={lang} />
     </>
   )
 }

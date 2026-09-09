@@ -5,6 +5,7 @@ import App from './App.jsx'
 
 import { installGlobalDebugHandlers } from './lib/debugLog'
 import { normalizeUiLocale } from '../../shared/site-routes/mainSitePaths.js'
+import { NOTABLE_AWARDS_REDIRECTS } from '../../shared/site-routes/notableAwardsRedirects.js'
 import i18n, { i18nReady } from './lib/i18n'
 import '../../styles.css'
 import './styles/footer-theme.css'
@@ -23,14 +24,21 @@ installGlobalDebugHandlers()
 // consumed and persisted whichever arrived by this point, so remove them
 // without disturbing unrelated query parameters.
 const entryParams = new URLSearchParams(window.location.search)
-if (normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))) {
+const hasLocaleHint = normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))
+const hasAwardsHash = window.location.hash === '#/notableAwards'
+const awardsEntryPath = hasAwardsHash ? '/notable-awards' : NOTABLE_AWARDS_REDIRECTS[window.location.pathname]
+if (hasLocaleHint) {
   entryParams.delete('lang')
   entryParams.delete('site')
+}
+// Fragments never reach the server. Normalize the old awards bookmark before
+// BrowserRouter mounts, preserving unrelated query parameters and anchors.
+if (hasLocaleHint || awardsEntryPath) {
   const search = entryParams.toString()
   window.history.replaceState(
     {},
     '',
-    `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`,
+    `${awardsEntryPath || window.location.pathname}${search ? `?${search}` : ''}${hasAwardsHash ? '' : window.location.hash}`,
   )
 }
 

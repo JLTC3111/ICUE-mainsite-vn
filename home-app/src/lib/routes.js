@@ -42,12 +42,17 @@ export const PAGE_TO_PATH = Object.fromEntries(
  * Legacy pages this SPA still injects. Contact, Our Work, Structure, the FAQs,
  * recruitment, community activities and the four legal documents are absent
  * because each is served by a dedicated app. Links to them are still rewritten
- * by `hashToPath`.
+ * by `hashToPath`. Notable awards is a native React page within this app.
  */
 export const LEGACY_PAGE_FILES = {
   aboutUs: 'aboutUs.html',
   pastProjects: 'pastProjects.html',
   newsArchive: 'News.html',
+}
+
+// Old links must keep resolving after a page no longer needs an HTML embed.
+const LEGACY_LINK_PAGE_FILES = {
+  ...LEGACY_PAGE_FILES,
   notableAwards: 'notableAwards.html',
 }
 
@@ -148,12 +153,14 @@ export function prepareLegacyHtml(rawHtml, locale) {
     bodyHtml = bodyHtml.replaceAll(`href='/${hash.slice(1)}'`, `href='${localizedPath}'`)
   }
 
-  for (const [pageId, file] of Object.entries(LEGACY_PAGE_FILES)) {
+  for (const [pageId, file] of Object.entries(LEGACY_LINK_PAGE_FILES)) {
     const route = PAGE_TO_PATH[pageId]
     if (!route) continue
     const localizedRoute = withLocale(route, locale)
     bodyHtml = bodyHtml.replaceAll(`href="/src/pages/${file}"`, `href="${localizedRoute}"`)
     bodyHtml = bodyHtml.replaceAll(`href='/src/pages/${file}'`, `href='${localizedRoute}'`)
+    bodyHtml = bodyHtml.replaceAll(`href="/legacy/pages/${file}"`, `href="${localizedRoute}"`)
+    bodyHtml = bodyHtml.replaceAll(`href='/legacy/pages/${file}'`, `href='${localizedRoute}'`)
   }
 
   // A few legacy pages contain absolute app URLs rather than their old hash

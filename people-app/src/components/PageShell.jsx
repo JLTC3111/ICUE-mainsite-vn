@@ -17,7 +17,8 @@ export default function PageShell({
   backgroundEnabled = false,
   onBackgroundToggle,
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
   const { pathname } = useLocation()
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled
 
@@ -94,6 +95,7 @@ export default function PageShell({
 
         <DeferredContactSidebar
           contentKey={pathname}
+          locale={lang}
           musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'}
         />
       </div>

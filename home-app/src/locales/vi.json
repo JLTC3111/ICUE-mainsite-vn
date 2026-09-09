@@ -58,6 +58,174 @@
     "partner": "Hợp Tác Cùng Chúng Tôi",
     "rights": "Bản quyền thuộc về ICUE."
   },
+  "awards": {
+    "language": "vi",
+    "hero": {
+      "title": "Giải Thưởng & Sự Công Nhận",
+      "description": "Vinh danh sự xuất sắc trong xây dựng, quy hoạch và phát triển cộng đồng thông qua các giải thưởng ngành nghề và chứng chỉ chuyên môn.",
+      "stats": {
+        "industryAwards": "Giải Thưởng Ngành",
+        "certifications": "Chứng Chỉ",
+        "years": "Năm Xuất Sắc"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "Giải Thưởng & Thành Tích Gần Đây",
+        "description": "Cam kết xuất sắc của chúng tôi đã được công nhận bởi các tổ chức ngành hàng đầu và cơ quan nhà nước."
+      },
+      "certifications": {
+        "title": "Chứng Chỉ Chuyên Môn",
+        "description": "Đội ngũ của chúng tôi duy trì tiêu chuẩn chuyên môn cao nhất thông qua đào tạo và chứng chỉ liên tục."
+      },
+      "timeline": {
+        "title": "Dòng Thời Gian Công Nhận",
+        "description": "Hành trình của sự xuất sắc liên tục và công nhận ngày càng tăng trong lĩnh vực của chúng tôi."
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "Giải Thưởng Dự Án Xuất Sắc",
+        "organization": "Hiệp Hội Chuyên Gia Xây Dựng Quốc Gia",
+        "description": "Được công nhận vì quản lý dự án xuất sắc và hoàn thành Trung Tâm Cộng Đồng Riverside đúng tiến độ và tiết kiệm 8% ngân sách trong khi vượt mục tiêu bền vững.",
+        "projectLabel": "Dự Án Chiến Thắng",
+        "projectName": "Mở Rộng Trung Tâm Cộng Đồng Riverside"
+      },
+      "planningInnovation": {
+        "title": "Giải Thưởng Đổi Mới Quy Hoạch",
+        "organization": "Hiệp Hội Quy Hoạch Mỹ",
+        "description": "Vinh danh việc tiên phong sử dụng công nghệ tương tác cộng đồng và quy trình lập kế hoạch dựa trên dữ liệu, tăng 340% sự tham gia của công chúng.",
+        "projectLabel": "Trọng Tâm Đổi Mới",
+        "projectName": "Nền Tảng Tương Tác Cộng Đồng Kỹ Thuật Số"
+      },
+      "sustainability": {
+        "title": "Lãnh Đạo Phát Triển Bền Vững",
+        "organization": "Hội Đồng Xây Dựng Xanh",
+        "description": "Giải thưởng cho lãnh đạo trong thực hành xây dựng bền vững, đạt chứng chỉ LEED Platinum cho 3 dự án liên tiếp và giảm 45% lượng khí thải carbon.",
+        "projectLabel": "Thành Tích",
+        "projectName": "Danh Mục Ba Dự Án LEED Platinum"
+      },
+      "safety": {
+        "title": "Công Nhận An Toàn Không Tai Nạn",
+        "organization": "Cục An Toàn & Sức Khỏe Nghề Nghiệp",
+        "description": "Đạt hơn 1,000 ngày không có sự cố ghi nhận tại tất cả các dự án đang hoạt động, thể hiện cam kết xuất sắc về an toàn và đào tạo người lao động.",
+        "projectLabel": "Kỷ Lục An Toàn",
+        "projectName": "1,247 Ngày Không Tai Nạn"
+      },
+      "communityImpact": {
+        "title": "Xuất Sắc Tác Động Cộng Đồng",
+        "organization": "Hiệp Hội Quản Lý Thành Phố/Quận Quốc Tế",
+        "description": "Công nhận cho hợp tác công-tư xuất sắc, cải thiện cơ sở hạ tầng cộng đồng trị giá $4.2M và tạo hơn 200 việc làm.",
+        "projectLabel": "Khu Vực Tác Động",
+        "projectName": "Sáng Kiến Tái Tạo Trung Tâm Thành Phố"
+      },
+      "technology": {
+        "title": "Giải Thưởng Tích Hợp Công Nghệ",
+        "organization": "Hiệp Hội Công Nghệ Xây Dựng",
+        "description": "Dẫn đầu việc áp dụng BIM, khảo sát bằng drone và giám sát dự án bằng AI, rút ngắn thời gian dự án 25% và tăng độ chính xác 40%.",
+        "projectLabel": "Trọng Tâm Công Nghệ",
+        "projectName": "Nền Tảng Xây Dựng Thông Minh"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "Chuyên Gia LEED",
+        "organization": "Hội Đồng Xây Dựng Xanh Hoa Kỳ",
+        "logoAlt": "LEED Logo"
+      },
+      "pmp": {
+        "name": "Chuyên Gia Quản Lý Dự Án",
+        "organization": "Viện Quản Lý Dự Án",
+        "logoAlt": "PMP Logo"
+      },
+      "pe": {
+        "name": "Kỹ Sư Chuyên Nghiệp",
+        "organization": "Ban Kỹ Sư Bang",
+        "logoAlt": "PE Logo"
+      },
+      "aicp": {
+        "name": "Chuyên Gia Quy Hoạch Chứng Nhận",
+        "organization": "Viện Quy Hoạch Chứng Nhận Hoa Kỳ",
+        "logoAlt": "AICP Logo"
+      },
+      "osha": {
+        "name": "OSHA 30 Giờ Xây Dựng",
+        "organization": "Cục An Toàn & Sức Khỏe Nghề Nghiệp",
+        "logoAlt": "OSHA Logo"
+      },
+      "mbe": {
+        "name": "Doanh Nghiệp Thiểu Số",
+        "organization": "Cơ Quan Chứng Nhận Bang",
+        "logoAlt": "MBE Logo"
+      }
+    },
+    "statuses": {
+      "active": "Hoạt Động",
+      "renewing": "Đang Gia Hạn"
+    },
+    "timeline": {
+      "2021": {
+        "title": "Người Phát Triển Cộng Đồng",
+        "award": "Giải Thưởng Xuất Sắc Dịch Vụ Công",
+        "description": "Được công nhận vì hợp tác công-tư xuất sắc trong phản ứng dịch bệnh, cung cấp cơ sở hạ tầng quan trọng với tiến độ nhanh. Dẫn dắt xây dựng khẩn cấp tại 5 quận.",
+        "highlights": [
+          "Phản Ứng Dịch Bệnh",
+          "Xây Khẩn Cấp",
+          "5 Quận"
+        ],
+        "stats": [
+          "Dự Án Khẩn Cấp",
+          "↓ Thời Gian Xây Dựng",
+          "Người Được Hỗ Trợ"
+        ]
+      },
+      "2022": {
+        "title": "Người Tiên Phong Công Nghệ",
+        "award": "Tích Hợp Công Nghệ Xây Dựng",
+        "description": "Đầu tiên trong khu vực tích hợp hoàn toàn giám sát dự án bằng AI và khảo sát bằng drone, rút ngắn thời gian 25%. Tiên phong phương pháp xây dựng thông minh trở thành chuẩn mực ngành.",
+        "highlights": [
+          "Giám Sát AI",
+          "Khảo Sát Drone",
+          "BIM Thông Minh"
+        ],
+        "stats": [
+          "↓ Thời Gian",
+          "↑ Độ Chính Xác",
+          "Giải Công Nghệ"
+        ]
+      },
+      "2023": {
+        "title": "Lãnh Đạo Phát Triển Bền Vững",
+        "award": "Công Nhận Xây Dựng Xanh & An Toàn",
+        "description": "Đạt chứng chỉ LEED Platinum ba lần và kỷ lục an toàn 1,000+ ngày, khẳng định vị thế dẫn đầu ngành trong thực hành bền vững. Tiếp cận cách mạng trong xây dựng carbon-neutral.",
+        "highlights": [
+          "LEED Platinum x3",
+          "Không Tai Nạn",
+          "Carbon Neutral"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "Ngày An Toàn",
+          "↓ Carbon"
+        ]
+      },
+      "2024": {
+        "title": "Năm Công Nhận Cao Nhất",
+        "award": "Giải Thưởng Dự Án Xuất Sắc & Đổi Mới",
+        "description": "Năm nhận nhiều giải thưởng nhất với công nhận từ NACP và APA cho sự đổi mới trong tương tác cộng đồng và quản lý dự án xuất sắc. Triển khai các nền tảng kỹ thuật số tiên tiến, cải thiện sự tham gia công chúng.",
+        "highlights": [
+          "NACP Xuất Sắc",
+          "APA Đổi Mới",
+          "Lãnh Đạo Kỹ Thuật Số"
+        ],
+        "stats": [
+          "Giải Thưởng Chính",
+          "↑ Tham Gia",
+          "Giá Trị Dự Án"
+        ]
+      }
+    }
+  },
   "about": {
     "hero": {
       "ariaLabel": "Giới thiệu ICUE",

@@ -10,6 +10,9 @@ dist
 dist-ssr
 dist-home/
 
+# Certificate assets are synced from public/certs before home-app dev/build.
+/home-app/public/certs/
+
 # Home-app hashed bundles and generated HTML copied to repo root by postbuild.
 /assets/
 /route-shells/

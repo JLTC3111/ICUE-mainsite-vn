@@ -44,7 +44,7 @@ export default function PageShell({ children }) {
         {children}
       </main>
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-      <DeferredContactSidebar contentKey="our-work" />
+      <DeferredContactSidebar contentKey="our-work" locale={lang} />
     </div>
   )
 }

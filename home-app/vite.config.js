@@ -3,17 +3,16 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
+import { NOTABLE_AWARDS_REDIRECTS } from '../shared/site-routes/notableAwardsRedirects.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const LEGACY_SHELL_SRC_PAGES = new Set([
-  '/src/pages/notableAwards.html',
   '/src/pages/communityActivities.html',
 ])
 
 const LEGACY_PAGE_REDIRECTS = {
   '/legacy/pages/News.html': '/news-archive',
-  '/legacy/pages/notableAwards.html': '/notable-awards',
   '/legacy/pages/communityActivities.html': '/community-activities',
   '/legacy/pages/privacy.html': '/legal/privacy',
   '/legacy/pages/terms.html': '/legal/terms',
@@ -39,6 +38,13 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const urlPath = (req.url || '').split('?')[0]
+
+          if (NOTABLE_AWARDS_REDIRECTS[urlPath]) {
+            res.statusCode = 302
+            res.setHeader('Location', NOTABLE_AWARDS_REDIRECTS[urlPath] + req.url.slice(urlPath.length))
+            res.end()
+            return
+          }
 
           if (RETIRED_LEGAL_ROUTES[urlPath]) {
             res.statusCode = 302

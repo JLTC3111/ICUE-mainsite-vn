@@ -16,7 +16,7 @@ import '../styles/contact.css'
 
 const ContactSidebar = lazy(() => import('@icue/contact-sidebar'))
 
-function DeferredContactSidebar() {
+function DeferredContactSidebar({ locale }) {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function DeferredContactSidebar() {
 
   return (
     <Suspense fallback={null}>
-      <ContactSidebar contentKey="contact" />
+      <ContactSidebar contentKey="contact" locale={locale} />
     </Suspense>
   )
 }
@@ -127,7 +127,7 @@ export default function ContactPage() {
       </main>
 
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-      <DeferredContactSidebar />
+      <DeferredContactSidebar locale={lang} />
     </div>
   )
 }

@@ -1,9 +1,19 @@
 import { memo, useId, useRef, useState } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
+import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import { useMusicBarColor } from './useMusicBarColor'
 import './ContactSidebar.css'
+
+const CALENDAR_LABELS = {
+  vi: { title: 'Lịch', open: 'Mở lịch', close: 'Đóng lịch' },
+  en: { title: 'Calendar', open: 'Open calendar', close: 'Close calendar' },
+  de: { title: 'Kalender', open: 'Kalender öffnen', close: 'Kalender schließen' },
+  fr: { title: 'Calendrier', open: 'Ouvrir le calendrier', close: 'Fermer le calendrier' },
+  ko: { title: '달력', open: '달력 열기', close: '달력 닫기' },
+  ja: { title: 'カレンダー', open: 'カレンダーを開く', close: 'カレンダーを閉じる' },
+}
 
 function CalendarSvg({ month, day, time }) {
   return (
@@ -89,12 +99,14 @@ function MessengerIcon() {
   )
 }
 
-function ContactSidebar({ musicIconColor, contentKey = '' }) {
+function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
   const musicRef = useRef(null)
   const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
   const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null, contentKey)
   const musicColor = musicIconColor ?? sampledMusicColor
-  const { month, day, time } = useCalendarClock()
+  const calendarLocale = normalizeUiLocale(locale, 'vi')
+  const calendarLabels = CALENDAR_LABELS[calendarLocale]
+  const { month, day, time } = useCalendarClock(calendarLocale)
   const [calendarOpen, setCalendarOpen] = useState(false)
 
   return (
@@ -142,7 +154,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           type="button"
           className="contact-sidebar__item contact-sidebar__calendar"
           onClick={() => setCalendarOpen(true)}
-          aria-label="Open calendar"
+          aria-label={calendarLabels.open}
         >
           <CalendarSvg month={month} day={day} time={time} />
         </button>
@@ -186,7 +198,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
           className="contact-sidebar__modal"
           role="dialog"
           aria-modal="true"
-          aria-label="Calendar"
+          aria-label={calendarLabels.title}
           onClick={(e) => {
             if (e.target === e.currentTarget) setCalendarOpen(false)
           }}
@@ -196,7 +208,7 @@ function ContactSidebar({ musicIconColor, contentKey = '' }) {
               type="button"
               className="contact-sidebar__modal-close"
               onClick={() => setCalendarOpen(false)}
-              aria-label="Close calendar"
+              aria-label={calendarLabels.close}
             >
               &times;
             </button>

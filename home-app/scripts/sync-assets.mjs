@@ -31,6 +31,7 @@ function copyDir(src, dest) {
 const ASSET_DIRS = [
   'aboutUs',
   'bgVideos',
+  'certs',
   'models',
   'pastProjects',
   'work',
@@ -46,11 +47,11 @@ const ASSET_DIRS = [
 // faq-app, recruitment-app, community-app).
 // `copyFile` below is unguarded, so re-adding a name here without the file in
 // src/pages/ fails the build rather than silently shipping nothing.
+// Notable awards now renders directly in home-app as NotableAwardsPage.jsx.
 const LEGACY_PAGES = [
   'aboutUs.html',
   'pastProjects.html',
   'News.html',
-  'notableAwards.html',
 ]
 
 for (const rel of ASSET_DIRS) {

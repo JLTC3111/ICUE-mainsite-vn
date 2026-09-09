@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { AWARDS_CERTIFICATIONS } from '../home-app/src/data/notableAwardsContent.js'
+import { NOTABLE_AWARDS_REDIRECTS } from '../shared/site-routes/notableAwardsRedirects.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist-home')
@@ -18,6 +20,30 @@ const values = {
   title: new Set(),
   description: new Set(),
   canonical: new Set(),
+}
+
+// Certificate references used to work on case-insensitive Macs but fail on
+// the publish host. Check the actual filename and the final copied bytes.
+for (const certificate of AWARDS_CERTIFICATIONS) {
+  const relativePath = certificate.logo.replace(/^\//, '')
+  const publishedPath = path.join(dist, relativePath)
+  const filename = path.basename(publishedPath)
+  if (!fs.readdirSync(path.dirname(publishedPath)).includes(filename)) {
+    throw new Error(`Missing award certificate (case-sensitive): ${relativePath}`)
+  }
+  if (!fs.readFileSync(publishedPath).equals(fs.readFileSync(path.join(root, 'public', relativePath)))) {
+    throw new Error(`Award certificate differs from its source: ${relativePath}`)
+  }
+}
+
+for (const [oldPath, target] of Object.entries(NOTABLE_AWARDS_REDIRECTS)) {
+  const escapedPath = oldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!new RegExp(`^${escapedPath}\\s+${target}\\s+301!?$`, 'm').test(redirects)) {
+    throw new Error(`Missing awards redirect: ${oldPath}`)
+  }
+  if (oldPath.endsWith('.html') && fs.existsSync(path.join(dist, oldPath.slice(1)))) {
+    throw new Error(`Retired awards HTML is still being published: ${oldPath}`)
+  }
 }
 
 function capture(html, pattern, label, route) {

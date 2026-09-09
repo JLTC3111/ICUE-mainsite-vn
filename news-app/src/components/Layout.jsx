@@ -1,5 +1,6 @@
 import { memo, useLayoutEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import Header from './Header'
 import Footer from './Footer'
@@ -11,6 +12,8 @@ import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroo
 
 function Layout() {
   const { pathname } = useLocation()
+  const { i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
   const { isDark } = useNewsroomTheme()
   const { tier, reduceBlur } = usePerformanceProfile()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
@@ -42,7 +45,7 @@ function Layout() {
         </main>
       </NewsroomSearchProvider>
       {!isAgentRoute && <Footer />}
-      {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} />}
+      {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} locale={lang} />}
     </div>
   )
 }

@@ -120,7 +120,7 @@ export default function Page() {
 
       {sidebarReady && (
         <Suspense fallback={null}>
-          <ContactSidebar contentKey="faqs" />
+          <ContactSidebar contentKey="faqs" locale={lang} />
         </Suspense>
       )}
     </>

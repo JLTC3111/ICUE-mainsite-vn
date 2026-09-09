@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
 import Header from './Header'
@@ -7,6 +8,8 @@ import './PageShell.css'
 
 export default function PageShell({ children }) {
   const { pathname } = useLocation()
+  const { i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage || i18n.language
 
   return (
     <InteractiveBackgroundProvider active={false}>
@@ -16,7 +19,7 @@ export default function PageShell({ children }) {
         <div className="page-shell__site-footer">
           <Footer />
         </div>
-        <DeferredContactSidebar contentKey={pathname} />
+        <DeferredContactSidebar contentKey={pathname} locale={lang} />
       </div>
     </InteractiveBackgroundProvider>
   )

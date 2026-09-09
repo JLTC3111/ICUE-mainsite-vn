@@ -17,6 +17,8 @@
 
 # Redirect old static footer pages to React shell routes.
 /src/pages/notableAwards.html       /notable-awards         301
+/legacy/pages/notableAwards.html    /notable-awards         301
+/notable-awards/                    /notable-awards         301
 /src/pages/communityActivities.html /community-activities   301
 /legacy/pages/communityActivities.html /community-activities  301
 /src/pages/FAQs.html                /faqs                   301

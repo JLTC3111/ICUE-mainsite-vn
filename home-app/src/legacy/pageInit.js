@@ -90,9 +90,6 @@ const PAGE_INIT = {
     const api = await getNewsArchiveSlider()
     await api.initNewsArchiveSlider()
   },
-  notableAwards: async () => {
-    window.AwardsPage?.init?.()
-  },
 }
 
 const PAGE_CLEANUP = {
