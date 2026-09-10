@@ -3,36 +3,81 @@
 /                     /index.html                              200
 /about-us             /route-shells/about-us.html              200
 /past-projects        /route-shells/past-projects.html         200
+/past-projects/       /past-projects                           301
+/past-projects/*      /route-shells/past-projects.html         200
 /news-archive         /route-shells/news-archive.html          200
+/news-archive/        /news-archive                            301
+/news-archive/1       /route-shells/news-archive-1.html        200
+/news-archive/2       /route-shells/news-archive-2.html        200
+/news-archive/3       /route-shells/news-archive-3.html        200
+/news-archive/4       /route-shells/news-archive-4.html        200
+/news-archive/5       /route-shells/news-archive-5.html        200
+/news-archive/6       /route-shells/news-archive-6.html        200
+/news-archive/7       /route-shells/news-archive-7.html        200
+/news-archive/8       /route-shells/news-archive-8.html        200
+/news-archive/9       /route-shells/news-archive-9.html        200
+/news-archive/*       /route-shells/news-archive.html          200
 /notable-awards       /route-shells/notable-awards.html        200
+/about-us-legacy      /about-us                                 301!
 
 # Former legal-page URLs permanently move to the consolidated legal app.
-/privacy              /legal/privacy  301
-/terms                /legal/terms    301
-/gdpr                 /legal/gdpr     301
-/cookies              /legal/cookies  301
+/privacy              /legal/privacy  301!
+/terms                /legal/terms    301!
+/gdpr                 /legal/gdpr     301!
+/cookies              /legal/cookies  301!
 
-# Legacy News archive URL → canonical route.
-/src/pages/News.html  /news-archive  301
+# Every retired HTML entry is a forced redirect so a stale static file cannot
+# win over the current React route.
+/src/pages/Home.html  /  301!
+/src/pages/Home_OLD.html  /  301!
+/src/pages/aboutUs.html  /about-us  301!
+/legacy/pages/aboutUs.html  /about-us  301!
+/legacy-embed/pages/aboutUs.html  /about-us  301!
+/src/pages/News.html  /news-archive  301!
+/legacy/pages/News.html  /news-archive  301!
+/legacy-embed/pages/News.html  /news-archive  301!
+/src/pages/article_template.html id=:id  /news-archive/:id  301!
+/src/pages/article_template.html         /news-archive      301!
+/legacy/pages/article_template.html id=:id  /news-archive/:id  301!
+/legacy/pages/article_template.html         /news-archive      301!
+/legacy-embed/pages/article_template.html id=:id  /news-archive/:id  301!
+/legacy-embed/pages/article_template.html         /news-archive      301!
 
-# Redirect old static footer pages to React shell routes.
-/src/pages/notableAwards.html       /notable-awards         301
-/legacy/pages/notableAwards.html    /notable-awards         301
-/notable-awards/                    /notable-awards         301
-/src/pages/communityActivities.html /community-activities   301
-/legacy/pages/communityActivities.html /community-activities  301
-/src/pages/FAQs.html                /faqs                   301
-/src/pages/recruitment.html         /recruitment            301
-/legacy/pages/FAQs.html             /faqs                   301
-/legacy/pages/recruitment.html      /recruitment            301
-/src/pages/privacy.html             /legal/privacy         301
-/src/pages/terms.html               /legal/terms           301
-/src/pages/gdpr.html                /legal/gdpr            301
-/src/pages/cookies.html             /legal/cookies         301
-/legacy/pages/privacy.html          /legal/privacy         301
-/legacy/pages/terms.html            /legal/terms           301
-/legacy/pages/gdpr.html             /legal/gdpr            301
-/legacy/pages/cookies.html          /legal/cookies         301
+# Redirect old static pages to React routes.
+/src/pages/notableAwards.html       /notable-awards         301!
+/legacy/pages/notableAwards.html    /notable-awards         301!
+/legacy-embed/pages/notableAwards.html /notable-awards      301!
+/notable-awards/                    /notable-awards         301!
+/src/pages/pastProjects.html        /past-projects          301!
+/legacy/pages/pastProjects.html     /past-projects          301!
+/legacy-embed/pages/pastProjects.html /past-projects        301!
+/src/pages/card.html id=:id         /past-projects/:id      301!
+/src/pages/card.html                /past-projects          301!
+/legacy/pages/card.html id=:id      /past-projects/:id      301!
+/legacy/pages/card.html             /past-projects          301!
+/legacy-embed/pages/card.html id=:id /past-projects/:id     301!
+/legacy-embed/pages/card.html        /past-projects         301!
+/src/pages/communityActivities.html /community-activities   301!
+/legacy/pages/communityActivities.html /community-activities  301!
+/legacy-embed/pages/communityActivities.html /community-activities  301!
+/src/pages/FAQs.html                /faqs                   301!
+/src/pages/recruitment.html         /recruitment            301!
+/legacy/pages/FAQs.html             /faqs                   301!
+/legacy/pages/recruitment.html      /recruitment            301!
+/legacy-embed/pages/FAQs.html       /faqs                   301!
+/legacy-embed/pages/recruitment.html /recruitment           301!
+/src/pages/privacy.html             /legal/privacy         301!
+/src/pages/terms.html               /legal/terms           301!
+/src/pages/gdpr.html                /legal/gdpr            301!
+/src/pages/cookies.html             /legal/cookies         301!
+/legacy/pages/privacy.html          /legal/privacy         301!
+/legacy/pages/terms.html            /legal/terms           301!
+/legacy/pages/gdpr.html             /legal/gdpr            301!
+/legacy/pages/cookies.html          /legal/cookies         301!
+/legacy-embed/pages/privacy.html    /legal/privacy         301!
+/legacy-embed/pages/terms.html      /legal/terms           301!
+/legacy-embed/pages/gdpr.html       /legal/gdpr            301!
+/legacy-embed/pages/cookies.html    /legal/cookies         301!
 
 # Newsroom React app (history routing) lives at /newsroom.
 # Static files under /newsroom/assets/* are served as-is when present.
@@ -106,15 +151,19 @@
 /legal/*             /legal/index.html       200
 
 # Legacy Our Work page → the app.
-/src/pages/ourWork.html       /our-work   301
-/legacy/pages/ourWork.html    /our-work   301
+/src/pages/ourWork.html       /our-work   301!
+/legacy/pages/ourWork.html    /our-work   301!
+/legacy-embed/pages/ourWork.html /our-work 301!
 
 # Legacy Contact page → the app.
-/src/pages/Contact.html       /contact    301
-/legacy/pages/Contact.html    /contact    301
+/src/pages/Contact.html       /contact    301!
+/legacy/pages/Contact.html    /contact    301!
+/legacy-embed/pages/Contact.html /contact 301!
 
 # Legacy org structure hash page and HTML stub → new Structure app.
-/src/pages/orgStructure.html  /structure/  301
+/src/pages/orgStructure.html  /structure/  301!
+/legacy/pages/orgStructure.html /structure/ 301!
+/legacy-embed/pages/orgStructure.html /structure/ 301!
 
 # Silence the browser's default /favicon.ico probe.
 /favicon.ico         /public/logoIcons/favicon.png   200
@@ -122,7 +171,6 @@
 # Static assets live under /public in the repo root deploy layout.
 /zalo-link.js        /public/zalo-link.js            200
 /src/card.js         /public/card.js                 200
-/src/article.js      /public/article.js              200
 /profilePhotos/*     /public/profilePhotos/:splat    200
 /flags/*             /public/flags/:splat            200
 /docs/*              /public/docs/:splat             200

@@ -7,20 +7,13 @@ import vi from '../locales/vi.json'
 import en from '../locales/en.json'
 
 /**
- * English is a resource here now, but it is still not this site's language.
- *
- * icue.vn *is* the Vietnamese site; the English build is a separate deploy at
- * en.icue.vn, and the flag has always crossed to it. What changed is that the
- * About page moved: there is one About page for both hosts, it lives here, and
- * en.icue.vn/about-us redirects to it. That route therefore has to answer in
- * English — hence `en.json` — while every other route on this host stays
- * Vietnamese and keeps sending English readers across.
+ * English is a resource here for every subpage, while Home retains its
+ * dedicated English deployment at en.icue.vn.
  *
  * Two guards keep those apart, and neither lives in this file:
- *   - detectLanguage only accepts `en` on a SHARED_LOCALE_PATHS route, so no
- *     stored or `?lang=`-requested English can turn the home page English.
- *   - SiteLanguageMenu still navigates to en.icue.vn everywhere except those
- *     routes, where it changes language in place instead.
+ *   - detectLanguage accepts `en` on every non-home route.
+ *   - SiteLanguageMenu crosses to en.icue.vn only from Home and otherwise
+ *     changes language in place.
  *
  * The disc lists all six languages in the order every other ICUE app uses.
  */

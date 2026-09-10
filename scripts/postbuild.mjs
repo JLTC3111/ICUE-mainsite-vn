@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { HOME_BG_VIDEOS, HOME_MODELS } from '../home-app/scripts/deployMedia.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const homeDist = path.join(root, 'dist-home');
@@ -28,10 +29,25 @@ function copyDir(src, dest) {
   }
 }
 
+function replaceDirWithAllowlist(srcDir, destDir, files) {
+  fs.rmSync(destDir, { recursive: true, force: true });
+  fs.mkdirSync(destDir, { recursive: true });
+  for (const file of files) {
+    const from = path.join(srcDir, file);
+    if (!fs.existsSync(from)) {
+      console.warn(`[postbuild] Missing allowlisted media: ${from}`);
+      continue;
+    }
+    copyFile(from, path.join(destDir, file));
+  }
+}
+
 function removeDir(dir) {
   if (!fs.existsSync(dir)) return;
   fs.rmSync(dir, { recursive: true, force: true });
 }
+
+const SOURCE_MEDIA_DIRS = new Set(['bgVideos', 'models']);
 
 function copyFontKit(src, dest) {
   if (!fs.existsSync(src)) {
@@ -69,8 +85,17 @@ copyDir(path.join(root, 'legal'), path.join(homeDist, 'legal'));
 copyDir(path.join(root, 'faqs'), path.join(homeDist, 'faqs'));
 copyDir(path.join(root, 'recruitment'), path.join(homeDist, 'recruitment'));
 copyDir(path.join(root, 'community-activities'), path.join(homeDist, 'community-activities'));
-copyDir(path.join(root, 'src/pages'), path.join(homeDist, 'src/pages'));
 copyDir(path.join(root, 'public'), path.join(homeDist, 'public'));
+replaceDirWithAllowlist(
+  path.join(root, 'public', 'bgVideos'),
+  path.join(homeDist, 'public', 'bgVideos'),
+  HOME_BG_VIDEOS,
+);
+replaceDirWithAllowlist(
+  path.join(root, 'public', 'models'),
+  path.join(homeDist, 'public', 'models'),
+  HOME_MODELS,
+);
 copyFontKit(path.join(root, 'fonts'), path.join(homeDist, 'fonts'));
 copyFile(path.join(root, '_redirects'), path.join(homeDist, '_redirects'));
 copyFile(path.join(root, '_headers'), path.join(homeDist, '_headers'));
@@ -99,7 +124,6 @@ const rootDirsFromHome = [
   'aboutUs',
   'bgVideos',
   'flags',
-  'legacy',
   'logoIcons',
   'models',
   'news',
@@ -122,13 +146,19 @@ const rootDirsFromHome = [
 ];
 
 for (const dir of rootDirsFromHome) {
+  // Leave the source media libraries in the repo. dist-home already has the
+  // allowlisted copies; wiping these would delete unused clips from git.
+  if (SOURCE_MEDIA_DIRS.has(dir)) continue;
   const from = path.join(homeDist, dir);
   if (!fs.existsSync(from)) continue;
+  if (dir === 'public') {
+    copyDir(from, path.join(root, dir));
+    continue;
+  }
   removeDir(path.join(root, dir));
   copyDir(from, path.join(root, dir));
 }
 
-copyDir(path.join(homeDist, 'src/pages'), path.join(root, 'src/pages'));
 copyFile(path.join(homeDist, '_redirects'), path.join(root, '_redirects'));
 copyFile(path.join(homeDist, 'sitemap.xml'), path.join(root, 'sitemap.xml'));
 copyFile(path.join(homeDist, 'robots.txt'), path.join(root, 'robots.txt'));
@@ -146,43 +176,7 @@ if (fs.existsSync(cardGalleriesSrc)) {
   }
 }
 
-// Past-project detail pages may still request /src/card.js; keep a public fallback.
-const cardJs = path.join(root, 'src/card.js');
-const publicCardJs = path.join(root, 'public/card.js');
-if (fs.existsSync(cardJs)) {
-  copyFile(cardJs, path.join(homeDist, 'src/card.js'));
-  copyFile(cardJs, publicCardJs);
-  copyFile(cardJs, path.join(homeDist, 'public/card.js'));
-} else if (fs.existsSync(publicCardJs)) {
-  copyFile(publicCardJs, path.join(homeDist, 'public/card.js'));
-} else {
-  console.warn('[postbuild] Missing card.js — past project card pages may break.');
-}
-
-// Legacy article template loads /src/article.js (restored for archive news).
-const articleJs = path.join(root, 'src/article.js');
-const publicArticleJs = path.join(root, 'public/article.js');
-if (fs.existsSync(articleJs)) {
-  copyFile(articleJs, path.join(homeDist, 'src/article.js'));
-  copyFile(articleJs, publicArticleJs);
-  copyFile(articleJs, path.join(homeDist, 'public/article.js'));
-} else if (fs.existsSync(publicArticleJs)) {
-  copyFile(publicArticleJs, path.join(homeDist, 'src/article.js'));
-  copyFile(publicArticleJs, path.join(homeDist, 'public/article.js'));
-  copyFile(publicArticleJs, articleJs);
-} else {
-  console.warn('[postbuild] Missing article.js — legacy article_template.html may break.');
-}
-
-// Static pages under /src/pages/*.html request relative styles.css → /src/pages/styles.css.
-const rootStyles = path.join(root, 'styles.css');
-if (fs.existsSync(rootStyles)) {
-  copyFile(rootStyles, path.join(root, 'src/pages/styles.css'));
-  copyFile(rootStyles, path.join(homeDist, 'src/pages/styles.css'));
-  copyFile(rootStyles, path.join(homeDist, 'styles.css'));
-}
-
-// Ensure legacy news logos/photos are present at both /public/news and /news.
+// Ensure news logos/photos are present at both /public/news and /news.
 const newsSrc = path.join(root, 'public/news');
 if (fs.existsSync(newsSrc)) {
   copyDir(newsSrc, path.join(homeDist, 'public/news'));
@@ -190,5 +184,44 @@ if (fs.existsSync(newsSrc)) {
   copyDir(newsSrc, path.join(root, 'news'));
 }
 
+// Current route shells and standalone index files are the only HTML shipped.
+// Old /src/pages and /legacy sources remain redirect aliases, never payloads.
+removeDir(path.join(homeDist, 'src'));
+removeDir(path.join(homeDist, 'legacy'));
+removeDir(path.join(homeDist, 'legacy-embed'));
+
+const publishedLegacyHtml = [
+  'aboutUs.html',
+  'Contact.html',
+  'ourWork.html',
+  'pastProjects.html',
+  'News.html',
+  'card.html',
+  'article_template.html',
+  'notableAwards.html',
+  'communityActivities.html',
+  'FAQs.html',
+  'recruitment.html',
+  'orgStructure.html',
+  'Home.html',
+  'Home_OLD.html',
+  'about-us-legacy.html',
+]
+function stripPublishedLegacyHtml(dir) {
+  if (!fs.existsSync(dir)) return
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const target = path.join(dir, entry.name)
+    if (entry.isDirectory()) {
+      if (entry.name === 'route-shells') continue
+      stripPublishedLegacyHtml(target)
+      continue
+    }
+    if (publishedLegacyHtml.includes(entry.name)) {
+      fs.rmSync(target, { force: true })
+    }
+  }
+}
+stripPublishedLegacyHtml(homeDist);
+
 // Quiet on success — the remaining console.warn calls above still surface real
-// problems (missing preview.jpg, card.js, article.js) during a build.
+// problems (for example a missing preview image) during a build.

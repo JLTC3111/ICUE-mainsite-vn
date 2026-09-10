@@ -4,42 +4,79 @@ import { MotionConfig } from 'motion/react'
 import App from './App.jsx'
 
 import { installGlobalDebugHandlers } from './lib/debugLog'
-import { normalizeUiLocale } from '../../shared/site-routes/mainSitePaths.js'
+import { normalizeUiLocale, withLocale } from '../../shared/site-routes/mainSitePaths.js'
 import { NOTABLE_AWARDS_REDIRECTS } from '../../shared/site-routes/notableAwardsRedirects.js'
+import { resolvePastProjectRedirect } from '../../shared/site-routes/pastProjectsRedirects.js'
+import { HOME_APP_HASH_PATHS, servesAllLocales } from './lib/routes'
 import i18n, { i18nReady } from './lib/i18n'
 import '../../styles.css'
 import './styles/footer-theme.css'
 import '@icue/styles/icue-base.css'
-// Last on purpose. As an injected legacy page this stylesheet sat in the body,
-// after every bundled sheet, so it won ties against styles.css on equal
-// specificity — see the header comment in AboutUsPage.css. Importing it from the
-// page component instead would pull it in ahead of styles.css and quietly change
-// the About page's layout.
-import './pages/AboutUsPage.css'
 
 installGlobalDebugHandlers()
 
-// `?lang=` and `?site=` are app-to-app transfer hints — the second is what
-// en.icue.vn's _redirects uses when it forwards /about-us here. i18n has
-// consumed and persisted whichever arrived by this point, so remove them
-// without disturbing unrelated query parameters.
+// `?lang=` is the canonical app-to-app transfer hint. `?site=` and
+// `?from=en-news` remain readable for old bookmarks, then drop out of newly
+// rewritten URLs. Keep `lang` on subpages (and on Home for non-English UI)
+// so the address bar stays shareable after i18n has consumed it.
 const entryParams = new URLSearchParams(window.location.search)
 const hasLocaleHint = normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))
+  || (entryParams.get('from') === 'en-news' ? 'en' : null)
+let storedLang = null
+try {
+  storedLang = normalizeUiLocale(localStorage.getItem('icue_news_lang'))
+} catch {
+  storedLang = null
+}
 const hasAwardsHash = window.location.hash === '#/notableAwards'
 const awardsEntryPath = hasAwardsHash ? '/notable-awards' : NOTABLE_AWARDS_REDIRECTS[window.location.pathname]
-if (hasLocaleHint) {
+const homeAppHashPath = HOME_APP_HASH_PATHS[window.location.hash]
+const externalHashPath = {
+  '#/Contact': '/contact',
+  '#/ourWork': '/our-work',
+  '#/orgStructure': '/structure/',
+  '#/meetOurExperts': '/people/experts',
+  '#/coreTeam': '/people/core-team',
+  '#/FAQs': '/faqs',
+  '#/faqs': '/faqs',
+  '#/recruitment': '/recruitment',
+  '#/communityActivities': '/community-activities',
+  '#/privacy': '/legal/privacy',
+  '#/terms': '/legal/terms',
+  '#/gdpr': '/legal/gdpr',
+  '#/cookies': '/legal/cookies',
+}[window.location.hash]
+const pastProjectsEntryPath = resolvePastProjectRedirect(
+  window.location.pathname,
+  window.location.search,
+  window.location.hash,
+)
+if (entryParams.has('site')) entryParams.delete('site')
+if (entryParams.get('from') === 'en-news') entryParams.delete('from')
+if (!servesAllLocales() && normalizeUiLocale(entryParams.get('lang')) === 'en') {
   entryParams.delete('lang')
-  entryParams.delete('site')
 }
-// Fragments never reach the server. Normalize the old awards bookmark before
-// BrowserRouter mounts, preserving unrelated query parameters and anchors.
-if (hasLocaleHint || awardsEntryPath) {
-  const search = entryParams.toString()
-  window.history.replaceState(
-    {},
-    '',
-    `${awardsEntryPath || window.location.pathname}${search ? `?${search}` : ''}${hasAwardsHash ? '' : window.location.hash}`,
+if (pastProjectsEntryPath) {
+  entryParams.delete('id')
+}
+// Fragments never reach the server. Normalize old awards / past-project
+// bookmarks before BrowserRouter mounts.
+if (externalHashPath) {
+  window.location.replace(
+    withLocale(`https://icue.vn${externalHashPath}`, hasLocaleHint || storedLang || 'vi'),
   )
+} else {
+  const nextPath = awardsEntryPath || pastProjectsEntryPath || homeAppHashPath || window.location.pathname
+  if (servesAllLocales(nextPath) && !entryParams.get('lang') && (hasLocaleHint || storedLang)) {
+    entryParams.set('lang', hasLocaleHint || storedLang)
+  }
+  const search = entryParams.toString()
+  const keepHash = !hasAwardsHash && window.location.hash !== '#/pastProjects' && !homeAppHashPath
+  const nextHref = `${nextPath}${search ? `?${search}` : ''}${keepHash ? window.location.hash : ''}`
+  const currentHref = `${window.location.pathname}${window.location.search}${window.location.hash}`
+  if (nextHref !== currentHref) {
+    window.history.replaceState({}, '', nextHref)
+  }
 }
 
 /*
@@ -58,9 +95,11 @@ function mountApp() {
   )
 }
 
-void i18nReady
-  .then(mountApp)
-  .catch(async () => {
-    await i18n.changeLanguage('vi')
-    mountApp()
-  })
+if (!externalHashPath) {
+  void i18nReady
+    .then(mountApp)
+    .catch(async () => {
+      await i18n.changeLanguage('vi')
+      mountApp()
+    })
+}

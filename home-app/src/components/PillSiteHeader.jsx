@@ -13,6 +13,16 @@ import './PillSiteHeader.css';
 const INTERNAL_PAGES = new Set(['Home', 'pastProjects', 'aboutUs']);
 const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
 
+function sameOriginNavigationTarget(href) {
+  try {
+    const url = new URL(href, window.location.href);
+    if (url.origin !== window.location.origin) return null;
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return null;
+  }
+}
+
 function getResponsiveMode() {
   if (window.matchMedia('(max-width: 768px)').matches) return 'mobile';
   if (window.matchMedia('(max-width: 1024px)').matches) return 'tablet';
@@ -62,8 +72,10 @@ function PillLink({ item, active, linkRef, onNavigate, compactLabels }) {
       href={item.href}
       onClick={INTERNAL_PAGES.has(item.page) && onNavigate
         ? (event) => {
+            const target = sameOriginNavigationTarget(item.href);
+            if (!target) return;
             event.preventDefault();
-            onNavigate(item.href);
+            onNavigate(target);
           }
         : undefined}
     >
@@ -155,8 +167,10 @@ export default function PillSiteHeader({
   const handleOverflowLink = (event, item) => {
     setOverflowOpen(false);
     if (INTERNAL_PAGES.has(item.page) && onNavigate) {
+      const target = sameOriginNavigationTarget(item.href);
+      if (!target) return;
       event.preventDefault();
-      onNavigate(item.href);
+      onNavigate(target);
     }
   };
 
@@ -169,8 +183,10 @@ export default function PillSiteHeader({
         aria-label={aria.home}
         onClick={onNavigate
           ? (event) => {
+              const target = sameOriginNavigationTarget(homeHref);
+              if (!target) return;
               event.preventDefault();
-              onNavigate(homeHref);
+              onNavigate(target);
             }
           : undefined}
       >

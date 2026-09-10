@@ -1,5 +1,6 @@
-/* Legacy awards layout, scoped to the React page. Motion owns entry animations;
- * the namespaced keyframes below only drive decorative hover/background effects.
+/* Legacy awards layout, scoped to the React page. Motion owns entry animations.
+ * Card edges use React Bits Star Border; leftover hover/background keyframes
+ * below are for the timeline only.
  */
 .notable-awards-page, :where(.notable-awards-page) * {
     margin: 0;
@@ -8,11 +9,72 @@
 }
 
 .notable-awards-page {
+    --awards-bg: #fffefe;
+    --awards-fg: #1e293b;
+    --awards-hero: #000;
+    --awards-muted: #64748b;
+    --awards-card: #fff;
+    --awards-soft: #f8fafc;
+    --awards-chip: rgba(0, 0, 0, 0.05);
+    --awards-link: #3b82f6;
+    --awards-accent: #033586;
+    --awards-accent-deep: #003384;
+    --awards-award-link: #003d9f;
+    --awards-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --awards-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --awards-shadow-timeline: 0 12px 32px rgba(0, 0, 0, 0.1);
+    --awards-highlight: #f1f5f9;
+    --awards-highlight-hover: #e2e8f0;
+    --awards-border-soft: #e2e8f0;
+    --awards-timeline-bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --awards-year-border: #fff;
+    --awards-arrow: #fff;
+    --star-border-glow: #d4a017;
+    --star-border-fill: #ffffff;
+    --star-border-line: #ead7a0;
+    --star-border-text: inherit;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #fffefe;
-    color: #1e293b;
+    background-color: var(--awards-bg);
+    color: var(--awards-fg);
     line-height: 1.6;
     overflow-wrap: anywhere;
+    color-scheme: light;
+}
+
+.notable-awards-page--dark {
+    --awards-bg: #0a0a0a;
+    --awards-fg: #f4f4f5;
+    --awards-hero: #f4f4f5;
+    --awards-muted: rgba(255, 255, 255, 0.72);
+    --awards-card: #141414;
+    --awards-soft: #1a1a1a;
+    --awards-chip: rgba(255, 255, 255, 0.08);
+    --awards-link: #9ec2ff;
+    --awards-accent: #60a5fa;
+    --awards-accent-deep: #93c5fd;
+    --awards-award-link: #93c5fd;
+    --awards-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --awards-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
+    --awards-shadow-timeline: 0 12px 32px rgba(0, 0, 0, 0.45);
+    --awards-highlight: #222;
+    --awards-highlight-hover: #2a2a2a;
+    --awards-border-soft: #2a2a2a;
+    --awards-timeline-bg: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    --awards-year-border: #141414;
+    --awards-arrow: #141414;
+    --star-border-glow: #ffffff;
+    --star-border-fill: #141414;
+    --star-border-line: #222222;
+    --star-border-text: #ffffff;
+    color-scheme: dark;
+}
+
+body:has(.notable-awards-page--dark) {
+    background-color: #0a0a0a;
+}
+
+body:has(.notable-awards-page--light) {
+    background-color: #fffefe;
 }
 
 :where(.notable-awards-page) ul,
@@ -28,7 +90,7 @@
 :where(.notable-awards-page) .hero-section {
     margin-top: 7.5%;
     background: transparent;
-    color: #000;
+    color: var(--awards-hero);
     padding: 80px 20px;
     text-align: center;
     position: relative;
@@ -105,13 +167,13 @@
 :where(.notable-awards-page) .section-title {
     font-size: clamp(1.25rem, 4.5vw, 2.5rem);
     font-weight: 700;
-    color: #1e293b;
+    color: var(--awards-fg);
     margin-bottom: 1rem;
 }
 
 :where(.notable-awards-page) .section-subtitle {
     font-size: clamp(0.8rem, 3vw, 1.2rem);
-    color: #64748b;
+    color: var(--awards-muted);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -123,69 +185,31 @@
     margin-bottom: 60px;
 }
 
+:where(.notable-awards-page) .award-star-border {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-shadow: var(--awards-shadow);
+}
+
+:where(.notable-awards-page) .certs-grid .award-star-border {
+    box-shadow: var(--awards-shadow-sm);
+}
+
 :where(.notable-awards-page) .award-card {
     width: 100%;
-    background: #fff;
+    background: transparent;
     padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     position: relative;
-    transition: all 0.15s ease;
-    z-index: 1;
-    isolation: isolate;
-    background-clip: padding-box;
 }
 
-@property --awards-angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-}
-:where(.notable-awards-page) .cert-card::after, :where(.notable-awards-page) .cert-card::before, :where(.notable-awards-page) .award-card::after, :where(.notable-awards-page) .award-card::before{
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: conic-gradient(from var(--awards-angle), #ff4545, #00ff99, #006aff, #ff0095, #ff4545);
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    z-index: -1;
-    padding: 3px;
-    border-radius: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-:where(.notable-awards-page) .cert-card::before, :where(.notable-awards-page) .award-card::before{
-    z-index: -2;
-}
-:where(.notable-awards-page) .cert-card::after, :where(.notable-awards-page) .award-card::after {
-    z-index: -1;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    padding: 3px;
-}
-:where(.notable-awards-page) .cert-card:hover::before,
-:where(.notable-awards-page) .cert-card:hover::after,
-:where(.notable-awards-page) .award-card:hover::before,
-:where(.notable-awards-page) .award-card:hover::after {
-    opacity: 0;
-    animation: 2.5s awards-spin linear infinite;
-}
-:where(.notable-awards-page) .cert-card:hover::after,
-:where(.notable-awards-page) .award-card:hover::after {
-    opacity: 1;
+:where(.notable-awards-page) .award-icon svg {
+    display: block;
 }
 
-
-@keyframes awards-spin{
-    from{
-        --awards-angle: 0deg;
-    }
-    to{
-        --awards-angle: 360deg;
-    }
+.notable-awards-page--dark .award-icon svg,
+.notable-awards-page--dark .timeline-icon svg {
+    filter: invert(1);
 }
 
 :where(.notable-awards-page) .award-icon {
@@ -201,47 +225,55 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--awards-chip);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: clamp(0.8rem, 2vw, 0.9rem);
     font-weight: 600;
-    color: #64748b;
+    color: var(--awards-muted);
 }
 
 :where(.notable-awards-page) .award-title {
     font-size: clamp(1rem, 2.5vw, 1.4rem);
     font-weight: 700;
-    color: #1e293b;
+    color: var(--awards-fg);
     margin-bottom: 12px;
     line-height: 1.3;
 }
 
+/* styles.css paints every h3 #111 and every h2 aqua on hover. :where() on this
+ * page adds no specificity, so those globals win unless we beat them here. */
+.notable-awards-page h2:hover,
+.notable-awards-page h3:hover {
+    color: var(--awards-fg);
+    transform: none;
+}
+
 :where(.notable-awards-page) .award-organization {
     font-size: clamp(0.875rem, 2.5vw, 1rem);
-    color: #3b82f6;
+    color: var(--awards-link);
     font-weight: 600;
     margin-bottom: 16px;
 }
 
 :where(.notable-awards-page) .award-description {
     font-size: clamp(0.875rem, 2.5vw, 1rem);
-    color: #64748b;
+    color: var(--awards-muted);
     line-height: 1.7;
     margin-bottom: 20px;
 }
 
 :where(.notable-awards-page) .award-project {
-    background: #f8fafc;
+    background: var(--awards-soft);
     padding: 16px;
     border-radius: 12px;
-    border-left: 4px solid #033586;
+    border-left: 4px solid var(--awards-accent);
 }
 
 :where(.notable-awards-page) .award-project-label {
     font-size: clamp(0.65rem, 2vw, 0.85rem);
     font-weight: 600;
-    color: #64748b;
+    color: var(--awards-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 4px;
@@ -250,11 +282,11 @@
 :where(.notable-awards-page) .award-project-name {
     font-size: clamp(0.875rem, 2.5vw, 1.1rem);
     font-weight: 600;
-    color: #1e293b;
+    color: var(--awards-fg);
 }
 
 :where(.notable-awards-page) .certifications-section {
-    background: #f8fafc;
+    background: var(--awards-soft);
 }
 
 :where(.notable-awards-page) .certs-grid {
@@ -266,13 +298,9 @@
 :where(.notable-awards-page) .cert-card {
     width: 100%;
     position: relative;
-    isolation: isolate;
-    background: white;
+    background: transparent;
     padding: 32px;
     text-align: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    border: 2px solid transparent;
-    transition: all 0.1s ease-in-out;
 }
 
 :where(.notable-awards-page) .cert-logo {
@@ -298,12 +326,12 @@
 :where(.notable-awards-page) .cert-name {
     font-size: clamp(1rem, 2.5vw, 1.2rem);
     font-weight: 700;
-    color: #1e293b;
+    color: var(--awards-fg);
     margin-bottom: 8px;
 }
 
 :where(.notable-awards-page) .cert-organization {
-    color: #64748b;
+    color: var(--awards-muted);
     font-size: clamp(0.875rem, 2.5vw, 0.95rem);
     margin-bottom: 12px;
 }
@@ -326,7 +354,7 @@
 }
 
 :where(.notable-awards-page) .timeline-section {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: var(--awards-timeline-bg);
     position: relative;
     overflow: hidden;
 }
@@ -381,10 +409,10 @@
     min-width: 0;
     flex: 0 0 calc(50% - 70px);
     max-width: calc(50% - 70px);
-    background: #fff;
+    background: var(--awards-card);
     padding: 35px;
     border-radius: 20px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--awards-shadow-timeline);
     margin: 0 40px;
     border: 2px solid transparent;
     position: relative;
@@ -402,20 +430,20 @@
 
 :where(.notable-awards-page) .timeline-item:nth-child(odd) .timeline-content::before {
     left: -30px;
-    border-right-color: white;
+    border-right-color: var(--awards-arrow);
     transform: translateY(-50%);
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(even) .timeline-content::before {
     right: -30px;
-    border-left-color: white;
+    border-left-color: var(--awards-arrow);
     transform: translateY(-50%);
 }
 
 :where(.notable-awards-page) .timeline-content:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
-    border-color: #003994;
+    border-color: var(--awards-accent);
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(odd) .timeline-content {
@@ -428,15 +456,15 @@
     transform: translateX(-50%);
     width: 100px;
     height: 100px;
-    background: #fff;
-    border: 6px solid rgb(255, 255, 255);
+    background: var(--awards-card);
+    border: 6px solid var(--awards-year-border);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     font-weight: 700;
-    color: #000;
+    color: var(--awards-fg);
     z-index: 3;
     box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
     transition: all 0.25s ease;
@@ -454,29 +482,29 @@
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(2) .timeline-year {
-    background: #fff;
+    background: var(--awards-card);
     box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(3) .timeline-year {
-    background: #fff;
+    background: var(--awards-card);
     box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(4) .timeline-year {
-    background: #fff;
+    background: var(--awards-card);
     box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
 }
 
 :where(.notable-awards-page) .timeline-item:nth-child(5) .timeline-year {
-    background: #fff;
+    background: var(--awards-card);
     box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
 }
 
 :where(.notable-awards-page) .timeline-title {
     font-size: clamp(1rem, 2.5vw, 1.5rem);
     font-weight: 700;
-    color: #1e293b;
+    color: var(--awards-fg);
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -504,14 +532,14 @@
 }
 
 :where(.notable-awards-page) .timeline-award {
-    color: #003d9f;
+    color: var(--awards-award-link);
     font-weight: 600;
     margin-bottom: 16px;
     font-size: clamp(0.875rem, 2.5vw, 1.1rem);
 }
 
 :where(.notable-awards-page) .timeline-description {
-    color: #64748b;
+    color: var(--awards-muted);
     line-height: 1.7;
     margin-bottom: 20px;
 }
@@ -528,20 +556,20 @@
 }
 
 :where(.notable-awards-page) .highlight-item {
-    background: #f1f5f9;
+    background: var(--awards-highlight);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: clamp(0.675rem, 2.5vw, 0.85rem);
     font-weight: 600;
-    color: #475569;
+    color: var(--awards-muted);
     border: 2px solid transparent;
     transition: all 0.3s ease;
 }
 
 :where(.notable-awards-page) .highlight-item:hover {
-    background: #e2e8f0;
-    border-color: #3b82f6;
-    color: #3b82f6;
+    background: var(--awards-highlight-hover);
+    border-color: var(--awards-link);
+    color: var(--awards-link);
 }
 
 :where(.notable-awards-page) .timeline-stats {
@@ -550,7 +578,7 @@
     gap: 16px;
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid var(--awards-border-soft);
 }
 
 :where(.notable-awards-page) .timeline-stat {
@@ -569,13 +597,13 @@
     display: block;
     font-size: clamp(1rem, 2.5vw, 1.8rem);
     font-weight: 700;
-    color: #003384;
+    color: var(--awards-accent-deep);
     margin-bottom: 4px;
 }
 
 :where(.notable-awards-page) .timeline-stat-label {
     font-size: 0.85rem;
-    color: #64748b;
+    color: var(--awards-muted);
     font-weight: 500;
 }
 
@@ -650,7 +678,7 @@
         left: -30px;
         right: auto;
         border-left-color: transparent;
-        border-right-color: white;
+        border-right-color: var(--awards-arrow);
     }
 
     :where(.notable-awards-page) .timeline-year {
@@ -668,11 +696,7 @@
         transform: none !important;
     }
 
-    :where(.notable-awards-page) .timeline-section::before,
-    :where(.notable-awards-page) .award-card::before,
-    :where(.notable-awards-page) .award-card::after,
-    :where(.notable-awards-page) .cert-card::before,
-    :where(.notable-awards-page) .cert-card::after {
+    :where(.notable-awards-page) .timeline-section::before {
         animation: none !important;
     }
 }

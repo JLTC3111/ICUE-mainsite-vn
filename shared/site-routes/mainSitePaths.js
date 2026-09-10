@@ -35,7 +35,7 @@ export function normalizeUiLocale(value, fallback = null) {
   return SUPPORTED_UI_LOCALE_SET.has(normalizedFallback) ? normalizedFallback : 'vi'
 }
 
-/** English keeps its dedicated host; every other localized home lives on icue.vn. */
+/** English keeps its dedicated home host; every other localized home lives on icue.vn. */
 export function mainSiteOriginForLocale(locale = 'vi') {
   return normalizeUiLocale(locale, 'vi') === 'en' ? SITES.en : SITES.vi
 }
@@ -58,6 +58,10 @@ export function withLocale(url, locale) {
   const path = queryAt >= 0 ? beforeHash.slice(0, queryAt) : beforeHash
   const params = new URLSearchParams(queryAt >= 0 ? beforeHash.slice(queryAt + 1) : '')
 
+  // `site=en` and `from=en-news` are retired language hints. Keep accepting
+  // them at app entry points, but never carry them into newly generated URLs.
+  params.delete('site')
+  if (params.get('from') === 'en-news') params.delete('from')
   params.set('lang', normalized)
   return `${path}?${params.toString()}${hash}`
 }
@@ -70,6 +74,39 @@ export function newsroomUrl(lang = 'vi') {
   return withLocale(`${SITES.vi}/newsroom/`, lang)
 }
 
+function normalizedPathname(pathname) {
+  const raw = String(pathname || '/')
+  if (raw.length > 1) return raw.replace(/\/+$/, '')
+  return raw || '/'
+}
+
+/**
+ * Absolute icue.vn URL for a path. Vietnamese is the unmarked default, so it
+ * omits `?lang=` and matches the sitemap `<loc>`. Every other UI language
+ * carries `?lang=` so a copied link opens in that locale.
+ */
+export function absoluteLocaleUrl(pathname, locale = 'vi') {
+  const path = normalizedPathname(pathname)
+  const href = `${SITES.vi}${path === '/' ? '/' : path}`
+  const code = normalizeUiLocale(locale, 'vi')
+  return code === 'vi' ? href : withLocale(href, code)
+}
+
+export function hreflangAlternates(pathname) {
+  const entries = SUPPORTED_UI_LOCALES.map((lang) => ({
+    hreflang: lang,
+    href: absoluteLocaleUrl(pathname, lang),
+  }))
+  entries.push({ hreflang: 'x-default', href: absoluteLocaleUrl(pathname, 'vi') })
+  return entries
+}
+
+export function hreflangLinkTags(pathname) {
+  return hreflangAlternates(pathname)
+    .map(({ hreflang, href }) => `<link rel="alternate" hreflang="${hreflang}" href="${href}" />`)
+    .join('\n    ')
+}
+
 /** Path routes keyed by legacy page id. */
 export const MAIN_SITE_PAGE_PATHS = {
   Home: '/',
@@ -77,8 +114,11 @@ export const MAIN_SITE_PAGE_PATHS = {
   aboutUs: '/about-us',
   ourWork: '/our-work',
   pastProjects: '/past-projects',
+  newsArchive: '/news-archive',
   recruitment: '/recruitment',
   News: '/newsroom/',
+  meetOurExperts: '/people/experts',
+  coreTeam: '/people/core-team',
   notableAwards: '/notable-awards',
   communityActivities: '/community-activities',
   FAQs: '/faqs',
@@ -91,60 +131,61 @@ export const MAIN_SITE_PAGE_PATHS = {
 }
 
 /**
- * Pages served only from icue.vn, regardless of UI language, so every app's
+ * Pages served from icue.vn, regardless of UI language, so every app's
  * link to them points at this host with `?lang=` carrying the reader's choice.
  *
- * The first four are standalone apps that were never built for en.icue.vn.
- * `aboutUs` joins them for a different reason: it used to exist twice, once per
- * host, and now exists once — the icue.vn copy renders all six languages and
- * en.icue.vn/about-us redirects to it.
- *
- * `FAQs` and `recruitment` are the same case as aboutUs. Until they became
- * their own apps they were Vietnamese-only pages injected into home-app, and a
- * reader who picked English on either was sent to en.icue.vn — a host this
- * repository does not build, which is where people-app's and structure-app's
- * footers were pointing English readers. Both now render all six languages
- * here. `FAQs` and `faqs` are both listed because MAIN_SITE_PAGE_PATHS carries
- * the id in both casings and callers use either. The four Legal documents are
- * also consolidated apps on icue.vn; without listing them, English links from
- * Structure, People and the other shared apps incorrectly target en.icue.vn's
- * retired static pages.
+ * Home is the only route that keeps a dedicated English host. Every subpage is
+ * implemented once in this repository, either by home-app or a standalone
+ * React app. Keeping this ownership list explicit prevents any English link
+ * from drifting back to a retired en.icue.vn subpath.
  */
-const VI_ONLY_APP_PAGES = new Set([
-  'News',
-  'orgStructure',
-  'ourWork',
-  'Contact',
-  'aboutUs',
-  'FAQs',
-  'faqs',
-  'recruitment',
-  'communityActivities',
-  'privacy',
-  'terms',
-  'gdpr',
-  'cookies',
-])
+export const ICUE_VN_HOSTED_PAGES = new Set(
+  Object.keys(MAIN_SITE_PAGE_PATHS).filter((page) => page !== 'Home'),
+)
 
-export function resolveMainSiteLink(page, lang, base) {
-  const locale = normalizeUiLocale(lang, 'vi')
+/** @deprecated Use ICUE_VN_HOSTED_PAGES; retained for compatibility. */
+export const VI_ONLY_APP_PAGES = ICUE_VN_HOSTED_PAGES
 
-  if (page === 'News') {
-    return newsroomUrl(locale)
-  }
+const DETAIL_PAGES = new Set(['pastProjects', 'newsArchive'])
 
+/**
+ * Keep `/past-projects/:id` and `/news-archive/:id` intact when the reader
+ * is already on a detail route. Listing pages and every other page resolve
+ * to their canonical path.
+ */
+export function hostedPathForPage(page, currentPathname = '') {
   const path = MAIN_SITE_PAGE_PATHS[page]
+  if (!path) return null
+
+  const current = String(currentPathname || '').replace(/\/+$/, '') || ''
+  if (DETAIL_PAGES.has(page) && (current === path || current.startsWith(`${path}/`))) {
+    return current
+  }
+  return path
+}
+
+export function resolveMainSiteDetailLink(page, id, lang) {
+  const locale = normalizeUiLocale(lang, 'vi')
+  const path = MAIN_SITE_PAGE_PATHS[page]
+  if (!path) return resolveMainSiteLink(page, locale)
+  if (id == null || id === '') return resolveMainSiteLink(page, locale)
+  return withLocale(`${SITES.vi}${path}/${encodeURIComponent(id)}`, locale)
+}
+
+export function resolveMainSiteLink(page, lang, base, currentPathname) {
+  const locale = normalizeUiLocale(lang, 'vi')
+  const origin = typeof base === 'string' && base.startsWith('http')
+    ? base.replace(/\/$/, '')
+    : mainSiteOriginForLocale(locale)
+
+  const path = hostedPathForPage(page, currentPathname)
   if (!path) {
-    return withLocale(`${String(base).replace(/\/$/, '')}/#/${page}`, locale)
+    return withLocale(`${SITES.vi}/#/${page}`, locale)
   }
 
-  if (VI_ONLY_APP_PAGES.has(page)) {
+  if (ICUE_VN_HOSTED_PAGES.has(page)) {
     return withLocale(`${SITES.vi}${path}`, locale)
   }
 
-  if (typeof base === 'string' && base.startsWith('http')) {
-    return withLocale(`${base.replace(/\/$/, '')}${path}`, locale)
-  }
-
-  return withLocale(path, locale)
+  return withLocale(`${origin}${path}`, locale)
 }

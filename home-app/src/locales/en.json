@@ -1,5 +1,29 @@
 {
   "instituteName": "Institute for Construction, Urban and Economic Research",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | Construction Economics and Urban Development",
+      "description": "Official site of ICUE Vietnam — research, consulting and innovation in construction economics, planning and sustainable urban development."
+    },
+    "aboutUs": {
+      "title": "About us | ICUE Vietnam",
+      "description": "Learn about the mission, experience, team and innovative direction of the Institute for Construction, Urban and Economic Research."
+    },
+    "notableAwards": {
+      "title": "Notable Awards | ICUE Vietnam",
+      "description": "Notable awards, recognition and professional milestones of ICUE Vietnam."
+    },
+    "pastProjects": {
+      "title": "Completed projects | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Browse research, planning, urban development and professional projects delivered by ICUE Vietnam."
+    },
+    "newsArchive": {
+      "title": "News archive | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "News, articles, events and professional updates from ICUE Vietnam."
+    }
+  },
   "lang": {
     "label": "Page language"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "Drag to resize menu",
       "homeVideo": "Toggle background video",
       "aboutUsVideo": "Toggle background video (About Us)",
-      "aboutUsTheme": "Switch between light and dark (About Us)"
+      "aboutUsTheme": "Switch between light and dark"
     },
     "contactWordmark": "About Us"
   },
@@ -57,6 +81,276 @@
     "cookies": "Cookies",
     "partner": "Let's Work Together!",
     "rights": "All rights reserved to ICUE."
+  },
+  "awards": {
+    "language": "en",
+    "hero": {
+      "title": "Awards & Recognition",
+      "description": "Honouring excellence in construction, planning and community development through industry awards and professional certifications.",
+      "stats": {
+        "industryAwards": "Industry Awards",
+        "certifications": "Certifications",
+        "years": "Years of Excellence"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "Recent Awards & Achievements",
+        "description": "Our commitment to excellence has been recognised by leading industry organisations and public authorities."
+      },
+      "certifications": {
+        "title": "Professional Certifications",
+        "description": "Our team maintains the highest professional standards through continuous training and certification."
+      },
+      "timeline": {
+        "title": "Recognition Timeline",
+        "description": "A journey of sustained excellence and growing recognition in our field."
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "Project Excellence Award",
+        "organization": "National Association of Construction Professionals",
+        "description": "Recognised for outstanding project management and for completing the Riverside Community Centre on schedule and 8% under budget while exceeding sustainability targets.",
+        "projectLabel": "Award-winning project",
+        "projectName": "Riverside Community Centre Expansion"
+      },
+      "planningInnovation": {
+        "title": "Planning Innovation Award",
+        "organization": "American Planning Association",
+        "description": "Honoured for pioneering the use of community-engagement technology and data-driven planning, increasing public participation by 340%.",
+        "projectLabel": "Innovation focus",
+        "projectName": "Digital Community Engagement Platform"
+      },
+      "sustainability": {
+        "title": "Sustainable Development Leadership",
+        "organization": "Green Building Council",
+        "description": "Awarded for leadership in sustainable construction, achieving LEED Platinum certification on three consecutive projects and reducing carbon emissions by 45%.",
+        "projectLabel": "Achievement",
+        "projectName": "Three-Project LEED Platinum Portfolio"
+      },
+      "safety": {
+        "title": "Accident-Free Safety Recognition",
+        "organization": "Occupational Safety & Health Administration",
+        "description": "More than 1,000 days without a recordable incident across all active projects, demonstrating a commitment to safety excellence and workforce training.",
+        "projectLabel": "Safety record",
+        "projectName": "1,247 Accident-Free Days"
+      },
+      "communityImpact": {
+        "title": "Community Impact Excellence",
+        "organization": "International City/County Management Association",
+        "description": "Recognised for outstanding public–private partnership, $4.2M of community infrastructure improvements and the creation of more than 200 jobs.",
+        "projectLabel": "Area of impact",
+        "projectName": "Downtown Regeneration Initiative"
+      },
+      "technology": {
+        "title": "Technology Integration Award",
+        "organization": "Construction Technology Association",
+        "description": "Led the adoption of BIM, drone surveying and AI project monitoring, shortening project timelines by 25% and improving accuracy by 40%.",
+        "projectLabel": "Technology focus",
+        "projectName": "Smart Construction Platform"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "LEED Accredited Professional",
+        "organization": "U.S. Green Building Council",
+        "logoAlt": "LEED logo"
+      },
+      "pmp": {
+        "name": "Project Management Professional",
+        "organization": "Project Management Institute",
+        "logoAlt": "PMP logo"
+      },
+      "pe": {
+        "name": "Professional Engineer",
+        "organization": "State Board of Professional Engineers",
+        "logoAlt": "PE logo"
+      },
+      "aicp": {
+        "name": "Certified Planner",
+        "organization": "American Institute of Certified Planners",
+        "logoAlt": "AICP logo"
+      },
+      "osha": {
+        "name": "OSHA 30-Hour Construction",
+        "organization": "Occupational Safety & Health Administration",
+        "logoAlt": "OSHA logo"
+      },
+      "mbe": {
+        "name": "Minority Business Enterprise",
+        "organization": "State Certification Agency",
+        "logoAlt": "MBE logo"
+      }
+    },
+    "statuses": {
+      "active": "Active",
+      "renewing": "Renewing"
+    },
+    "timeline": {
+      "2021": {
+        "title": "Community Developer",
+        "award": "Public Service Excellence Award",
+        "description": "Recognised for outstanding public–private partnership in the pandemic response, delivering critical infrastructure on an accelerated timetable. Led emergency construction across five districts.",
+        "highlights": [
+          "Pandemic response",
+          "Emergency construction",
+          "Five districts"
+        ],
+        "stats": [
+          "Emergency projects",
+          "↓ Construction time",
+          "People supported"
+        ]
+      },
+      "2022": {
+        "title": "Technology Pioneer",
+        "award": "Construction Technology Integration",
+        "description": "First in the region to fully integrate AI project monitoring and drone surveying, shortening timelines by 25%. Pioneered smart-construction methods that have become an industry benchmark.",
+        "highlights": [
+          "AI monitoring",
+          "Drone surveying",
+          "Smart BIM"
+        ],
+        "stats": [
+          "↓ Time",
+          "↑ Accuracy",
+          "Technology awards"
+        ]
+      },
+      "2023": {
+        "title": "Sustainability Leader",
+        "award": "Green Building & Safety Recognition",
+        "description": "Achieved LEED Platinum certification three times and a 1,000+ day safety record, confirming industry leadership in sustainable practice. A transformative approach to carbon-neutral construction.",
+        "highlights": [
+          "LEED Platinum x3",
+          "Accident-free",
+          "Carbon Neutral"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "Safe days",
+          "↓ Carbon"
+        ]
+      },
+      "2024": {
+        "title": "Year of Highest Recognition",
+        "award": "Project Excellence & Innovation Awards",
+        "description": "The most awarded year, with recognition from NACP and APA for innovation in community engagement and outstanding project management. Advanced digital platforms improved public participation.",
+        "highlights": [
+          "NACP Excellence",
+          "APA Innovation",
+          "Digital leadership"
+        ],
+        "stats": [
+          "Major awards",
+          "↑ Participation",
+          "Project value"
+        ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "New",
+      "ctaTitle": "ICUE's new newsroom",
+      "ctaSub": "Read the latest articles on our upgraded news platform.",
+      "ctaButton": "Open the newsroom →",
+      "readArticle": "Read article →",
+      "locationLabel": "Location",
+      "carouselLabel": "News articles",
+      "backToList": "← News archive",
+      "previous": "Previous",
+      "next": "Next",
+      "articleNav": "Adjacent articles",
+      "closeImage": "Close image",
+      "previousImage": "Previous media",
+      "nextImage": "Next media",
+      "download": "Download",
+      "videoLabel": "Video",
+      "playVideo": "Play video"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "Completed projects",
+      "description": "A selection of ICUE planning, applied research, construction economics and urban development work.",
+      "yearCompleted": "Year completed",
+      "descriptionLabel": "Description",
+      "locationLabel": "Location",
+      "backToList": "← All projects",
+      "previous": "Previous",
+      "next": "Next",
+      "articleNav": "Adjacent projects",
+      "closeImage": "Close image",
+      "previousImage": "Previous image",
+      "nextImage": "Next image"
+    },
+    "items": {
+      "laoCai": {
+        "title": "Adjustment of the Lào Cai city master plan",
+        "location": "Lào Cai City",
+        "scale": "Scale: 28,162.64 ha, through 2045",
+        "imageAlt": "Master plan for the city of Lào Cai",
+        "body": "The planning area covers 28,162.64 ha, with completion targeted for 2045. It is a long-term strategy for restructuring urban space so land can be used flexibly, sustainably and in ways that adapt to climate change. The plan balances housing, commercial and industrial land with public space and green areas, and expands transport, water, energy and digital infrastructure. It also sets a clear path for population growth and new residential districts, strengthening Lào Cai as a regional economic and transport hub."
+      },
+      "hopThanh": {
+        "title": "Detailed construction plan for Hợp Thành commune, scale 1/500",
+        "location": "Hợp Thành commune, Lào Cai City",
+        "scale": "Scale: 2,693.3 ha",
+        "imageAlt": "Detailed plan for Hợp Thành commune, Lào Cai",
+        "body": "This 2,693.3 ha 1/500 detailed construction plan translates the city-wide master plan into clear functional zones, a street network and technical and social infrastructure. It is intended as a foundation for sustainable urbanisation: a modern, coordinated and environmentally responsive district that can adapt to future economic and social demand, while upgrading existing infrastructure to serve residents and attract investment through 2025."
+      },
+      "subdivision6b": {
+        "title": "Subdivision plan 6B (Nguyễn Ái Quốc Ward)",
+        "location": "Hải Dương City",
+        "scale": "Scale: 1,159 ha",
+        "imageAlt": "Subdivision plan 6B, Nguyễn Ái Quốc Ward",
+        "body": "Subdivision 6B is a strategic step in restructuring Hải Dương, covering more than 1,100 ha in Nguyễn Ái Quốc Ward. The plan coordinates technical infrastructure, expands the city’s ecological urban space and establishes modern functional districts, shaping the city’s form after 2025."
+      },
+      "cocSan": {
+        "title": "Cốc San construction subdivision plan",
+        "location": "Lào Cai City",
+        "scale": "Scale: 1,173.1 ha",
+        "imageAlt": "Cốc San construction subdivision plan",
+        "body": "The Cốc San subdivision is a key part of Lào Cai’s urban expansion. It combines advanced technical infrastructure with the existing landscape to form a balanced ecological district, and prepares the ground for high-quality housing, commercial services and public facilities tied into the regional transport corridor."
+      },
+      "dongYen": {
+        "title": "Đông Yên urban master plan, Bắc Quang District",
+        "location": "Đồng Yên commune, Hà Giang City",
+        "scale": "Scale: 4,407.9 ha; to 2035, oriented to 2050",
+        "imageAlt": "Đông Yên urban master plan",
+        "body": "Đông Yên is an ambitious master plan of nearly 4,500 ha with a horizon to 2050. It sets out a smart satellite town that brings living, working and leisure together, and is intended as an investment destination and a model for sustainable modern urbanism in the northern uplands."
+      },
+      "naChi": {
+        "title": "Nà Chì urban master plan, Xín Mần District",
+        "location": "Nà Chì commune, Xín Mần, Hà Giang",
+        "scale": "Scale: 8,038.7 ha, to 2035, oriented to 2050",
+        "imageAlt": "Nà Chì urban master plan",
+        "body": "Nà Chì is one of the largest plans in Vietnam’s northern mountains. Covering more than 8,000 ha, it is meant to lift infrastructure, services and investment in Xín Mần while keeping highland identity and introducing smarter infrastructure models — an opening for Hà Giang."
+      },
+      "tanBac": {
+        "title": "Tân Bắc urban master plan, Quang Bình District",
+        "location": "Tân Bắc commune, Quang Bình, Hà Giang",
+        "scale": "Scale: 6,297.1 ha, to 2035, oriented to 2050",
+        "imageAlt": "Tân Bắc urban master plan",
+        "body": "Tân Bắc is emerging as a new centre for Quang Bình District. This plan of more than 6,000 ha focuses on contemporary living space, a green-technology ecosystem and coordinated public amenities. The 2050 horizon aims to make Tân Bắc a highland planning model that keeps local character while keeping pace with national urbanisation."
+      },
+      "namDong": {
+        "title": "Subdivision plan 5A (Nam Đồng Ward), Hải Dương City",
+        "location": "Hải Dương City, Hải Dương Province",
+        "scale": "Scale: 332.16 ha, 1/2000",
+        "imageAlt": "Subdivision plan 5A, Nam Đồng Ward",
+        "body": "Subdivision 5A is a core piece of Hải Dương’s sustainable-growth strategy. On just over 330 ha it concentrates on a modern urban layout, stronger connections and a more flexible urban ecosystem, raising living quality and the appeal of the Nam Đồng area in the next development phase."
+      },
+      "xuanAn": {
+        "title": "Detailed plan for Park City Xuân An eco-urban area",
+        "location": "Xuân An town, Nghi Xuân District, Hà Tĩnh Province",
+        "scale": "Scale: 27.7 ha, 1/500",
+        "imageAlt": "Park City Xuân An eco-urban area",
+        "body": "Park City Xuân An is a compact, carefully designed eco-urban district of nearly 28 ha. Guided by “live green, live well”, it combines generous green space with modern commercial amenities and coordinated infrastructure — a new high-quality, sustainable urban offer for Hà Tĩnh and central Vietnam."
+      }
+    }
   },
   "about": {
     "hero": {

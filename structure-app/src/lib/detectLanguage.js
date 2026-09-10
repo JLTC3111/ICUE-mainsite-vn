@@ -22,17 +22,15 @@ export function detectInitialLanguage() {
     return requested
   }
 
-  const saved = normalizeUiLocale(readLocalStorage(LANG_KEY))
-  if (saved) return saved
-
-  if (
-    params.get('from') === 'en-news'
-    || params.get('site') === 'en'
-    || isEnReferrer()
-  ) {
+  if (params.get('from') === 'en-news' || params.get('site') === 'en') {
     writeLocalStorage(LANG_KEY, 'en')
     return 'en'
   }
+
+  const saved = normalizeUiLocale(readLocalStorage(LANG_KEY))
+  if (saved) return saved
+
+  if (isEnReferrer()) return 'en'
 
   return 'vi'
 }

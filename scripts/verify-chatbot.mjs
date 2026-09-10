@@ -92,7 +92,6 @@ async function validateLegacyMirrors() {
   const paths = [
     '../src/script.js',
     '../legacy/script.js',
-    '../home-app/public/legacy/script.js',
   ]
   const [source, ...mirrors] = await Promise.all(
     paths.map((path) => readFile(new URL(path, import.meta.url), 'utf8')),

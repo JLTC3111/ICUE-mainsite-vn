@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { withLocale } from '@icue/site-routes/mainSitePaths.js'
+import { capabilityStatementFilename } from '@icue/site-routes/capabilityStatement.js'
 import { openZaloChat } from '@icue/zalo/zaloLink'
 import {
   CHAT,
@@ -127,14 +128,14 @@ export default function ContactRail() {
             now render all six languages themselves. Without withLocale they
             handed the reader a bare path and the locale survived only via
             localStorage — every other link on this page carries it. The
-            capability PDF is `external` and has no locale to carry. */}
+            capability PDF is a same-origin download: `target="_blank"` would
+            make many browsers ignore the locale-aware filename. */}
         {SHORTCUTS.map((item) => (
           <a
             key={item.id}
             className="ct-rail__link"
-            href={item.external ? item.href : withLocale(item.href, lang)}
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener noreferrer' : undefined}
+            href={item.download ? item.href : withLocale(item.href, lang)}
+            download={item.download ? capabilityStatementFilename(lang) : undefined}
           >
             {t(`shortcuts.${item.id}`)}
             <Arrow />

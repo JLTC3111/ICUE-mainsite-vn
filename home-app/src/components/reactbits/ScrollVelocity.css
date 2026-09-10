@@ -1,0 +1,51 @@
+.scroll-velocity {
+  width: 100%;
+}
+
+.scroll-velocity__parallax {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+
+.scroll-velocity .cursor-pointer,
+.scroll-velocity__parallax--draggable {
+  cursor: pointer;
+}
+
+.scroll-velocity__parallax--draggable.is-dragging,
+.scroll-velocity__parallax--draggable.is-dragging * {
+  cursor: grabbing;
+}
+
+.scroll-velocity__parallax img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.scroll-velocity__scroller {
+  display: flex;
+  width: max-content;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.scroll-velocity__copy {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.scroll-velocity--static .scroll-velocity__scroller {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.scroll-velocity--static .scroll-velocity__scroller::-webkit-scrollbar {
+  display: none;
+}

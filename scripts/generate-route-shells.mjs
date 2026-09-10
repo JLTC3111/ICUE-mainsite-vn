@@ -1,6 +1,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { PAST_PROJECTS } from '../home-app/src/data/pastProjectsContent.js'
+import { NEWS_ARCHIVE_ARTICLE_SHELL } from '../home-app/src/data/newsArchive/shell.js'
+import { NEWS_ARCHIVE_ARTICLE_META } from '../home-app/src/data/newsArchive/meta.js'
+import {
+  absoluteLocaleUrl,
+  hreflangAlternates,
+  hreflangLinkTags,
+} from '../shared/site-routes/mainSitePaths.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist-home')
@@ -87,6 +95,7 @@ const routes = [
   {
     key: 'news-archive',
     path: '/news-archive',
+    hreflang: true,
     title: 'Kho tin tức | ICUE Vietnam',
     description:
       'Kho tin tức, bài viết, sự kiện và cập nhật hoạt động chuyên môn của ICUE Vietnam.',
@@ -284,7 +293,7 @@ function renderShell(baseHtml, route) {
   )
   html = html.replace(
     '</head>',
-    `    <meta name="icue:route" content="${escapeHtml(route.path)}" />
+    `${route.hreflang ? `    ${hreflangLinkTags(canonicalPath)}\n` : ''}    <meta name="icue:route" content="${escapeHtml(route.path)}" />
     <script type="application/ld+json">${JSON.stringify(structuredData).replaceAll('<', '\\u003c')}</script>
     <style>
       .route-shell-fallback{max-width:760px;margin:0 auto;padding:clamp(5rem,12vw,9rem) 1.5rem 4rem;font-family:system-ui,sans-serif;line-height:1.65;color:#172033}
@@ -323,18 +332,51 @@ for (const route of routes) {
   shellCount += 1
 }
 
-const sitemapUrls = routes
-  .map((route) => {
-    const pathname = route.canonicalPath || route.path
-    const url = `${siteUrl}${pathname === '/' ? '/' : pathname}`
-    return `  <url><loc>${escapeHtml(url)}</loc></url>`
+for (const article of NEWS_ARCHIVE_ARTICLE_SHELL) {
+  const copy = NEWS_ARCHIVE_ARTICLE_META.vi?.[article.id]
+  if (!copy?.title) {
+    throw new Error(`News archive article ${article.id} is missing Vietnamese title/lead meta`)
+  }
+  const html = renderShell(baseHtml, {
+    key: `news-archive-${article.id}`,
+    path: `/news-archive/${article.id}`,
+    hreflang: true,
+    title: `${copy.title} | ICUE Vietnam`,
+    description: copy.lead,
+    heading: copy.title,
+    content: copy.lead,
   })
-  .join('\n')
+  fs.writeFileSync(path.join(shellDir, `news-archive-${article.id}.html`), html)
+  shellCount += 1
+}
+
+function sitemapEntry(pathname, { alternates = false } = {}) {
+  const loc = absoluteLocaleUrl(pathname, 'vi')
+  if (!alternates) {
+    return `  <url><loc>${escapeHtml(loc)}</loc></url>`
+  }
+  const links = hreflangAlternates(pathname)
+    .map(({ hreflang, href }) => (
+      `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeHtml(href)}" />`
+    ))
+    .join('\n')
+  return `  <url>\n    <loc>${escapeHtml(loc)}</loc>\n${links}\n  </url>`
+}
+
+const sitemapUrls = [
+  ...routes.map((route) => sitemapEntry(route.canonicalPath || route.path, {
+    alternates: route.key === 'news-archive',
+  })),
+  ...PAST_PROJECTS.map((project) => sitemapEntry(`/past-projects/${project.id}`)),
+  ...NEWS_ARCHIVE_ARTICLE_SHELL.map((article) => sitemapEntry(`/news-archive/${article.id}`, {
+    alternates: true,
+  })),
+].join('\n')
 
 fs.writeFileSync(
   path.join(dist, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${sitemapUrls}
 </urlset>
 `,

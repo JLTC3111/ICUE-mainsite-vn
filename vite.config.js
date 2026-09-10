@@ -4,6 +4,8 @@ import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
 import { NOTABLE_AWARDS_REDIRECTS } from './shared/site-routes/notableAwardsRedirects.js'
+import { resolvePastProjectRedirect } from './shared/site-routes/pastProjectsRedirects.js'
+import { resolveNewsArchiveRedirect } from './shared/site-routes/newsArchiveRedirects.js'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -93,30 +95,42 @@ function homeDevFallback() {
     '/faqs', '/recruitment', '/community-activities'];
   const viteInternals = ['/@vite', '/@fs', '/@id', '/@react-refresh'];
 
-  const legacyShellSrcPages = new Set([
-    '/src/pages/communityActivities.html',
-    ]);
-
-  // Mirrors the 301s in _redirects. Pages that became standalone apps have no
-  // legacy HTML left to serve, so in dev these are pure redirects — without
-  // them a legacy URL 404s here while working fine in production.
+  // Mirrors the forced legacy redirects in _redirects. These are always
+  // redirects; no request header may opt back into an HTML embed.
   const legacyPageRedirects = {
+    '/src/pages/Home.html': '/',
+    '/src/pages/Home_OLD.html': '/',
+    '/src/pages/aboutUs.html': '/about-us',
+    '/legacy/pages/aboutUs.html': '/about-us',
+    '/legacy-embed/pages/aboutUs.html': '/about-us',
+    '/about-us-legacy': '/about-us',
+    '/src/pages/Contact.html': '/contact',
     '/legacy/pages/Contact.html': '/contact',
+    '/legacy-embed/pages/Contact.html': '/contact',
+    '/src/pages/ourWork.html': '/our-work',
     '/legacy/pages/ourWork.html': '/our-work',
-    '/legacy/pages/News.html': '/news-archive',
+    '/legacy-embed/pages/ourWork.html': '/our-work',
+    '/src/pages/communityActivities.html': '/community-activities',
     '/legacy/pages/communityActivities.html': '/community-activities',
+    '/legacy-embed/pages/communityActivities.html': '/community-activities',
+    '/src/pages/FAQs.html': '/faqs',
+    '/legacy/pages/FAQs.html': '/faqs',
+    '/legacy-embed/pages/FAQs.html': '/faqs',
+    '/src/pages/recruitment.html': '/recruitment',
+    '/legacy/pages/recruitment.html': '/recruitment',
+    '/legacy-embed/pages/recruitment.html': '/recruitment',
+    '/src/pages/orgStructure.html': '/structure/',
+    '/legacy/pages/orgStructure.html': '/structure/',
+    '/legacy-embed/pages/orgStructure.html': '/structure/',
       '/legacy/pages/privacy.html': '/legal/privacy',
     '/legacy/pages/terms.html': '/legal/terms',
     '/legacy/pages/gdpr.html': '/legal/gdpr',
     '/legacy/pages/cookies.html': '/legal/cookies',
-  };
-
-  const staticSrcRedirects = {
-    '/src/pages/Contact.html': '/contact',
-    '/src/pages/ourWork.html': '/our-work',
-    '/src/pages/orgStructure.html': '/structure/',
-    '/src/pages/communityActivities.html': '/community-activities',
-      '/src/pages/privacy.html': '/legal/privacy',
+    '/legacy-embed/pages/privacy.html': '/legal/privacy',
+    '/legacy-embed/pages/terms.html': '/legal/terms',
+    '/legacy-embed/pages/gdpr.html': '/legal/gdpr',
+    '/legacy-embed/pages/cookies.html': '/legal/cookies',
+    '/src/pages/privacy.html': '/legal/privacy',
     '/src/pages/terms.html': '/legal/terms',
     '/src/pages/gdpr.html': '/legal/gdpr',
     '/src/pages/cookies.html': '/legal/cookies',
@@ -148,6 +162,22 @@ function homeDevFallback() {
           return;
         }
 
+        const pastProjectsRedirect = resolvePastProjectRedirect(urlPath, req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '');
+        if (pastProjectsRedirect && pastProjectsRedirect !== urlPath) {
+          res.statusCode = 302;
+          res.setHeader('Location', pastProjectsRedirect);
+          res.end();
+          return;
+        }
+
+        const newsArchiveRedirect = resolveNewsArchiveRedirect(urlPath, req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '');
+        if (newsArchiveRedirect && newsArchiveRedirect !== urlPath) {
+          res.statusCode = 302;
+          res.setHeader('Location', newsArchiveRedirect);
+          res.end();
+          return;
+        }
+
         if (retiredLegalRoutes[urlPath]) {
           res.statusCode = 302;
           res.setHeader('Location', retiredLegalRoutes[urlPath]);
@@ -155,51 +185,16 @@ function homeDevFallback() {
           return;
         }
 
-        const rel = urlPath.replace(/^\//, '');
-        const filePath = path.join(appDir, rel);
-        const hasExtension = Boolean(rel && path.extname(rel));
-
-        // Serve React shell for migrated static pages (nav + footer).
-        if (legacyShellSrcPages.has(urlPath)) {
-          const indexPath = path.join(appDir, 'index.html');
-          if (fs.existsSync(indexPath)) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            res.end(fs.readFileSync(indexPath, 'utf-8'));
-            return;
-          }
-        }
-
-        if (staticSrcRedirects[urlPath]) {
+        if (legacyPageRedirects[urlPath]) {
           res.statusCode = 302;
-          res.setHeader('Location', staticSrcRedirects[urlPath]);
+          res.setHeader('Location', legacyPageRedirects[urlPath]);
           res.end();
           return;
         }
 
-        // Direct browser visits to legacy embed files lack nav/footer — redirect to shell.
-        // LegacyHtmlPage fetches these URLs to embed body HTML; serve the file instead.
-        if (legacyPageRedirects[urlPath]) {
-          const wantsEmbed =
-            req.headers['x-icue-legacy-embed'] === '1' ||
-            req.headers['sec-fetch-dest'] === 'empty' ||
-            req.headers['sec-fetch-mode'] === 'cors';
-
-          if (!wantsEmbed) {
-            res.statusCode = 302;
-            res.setHeader('Location', legacyPageRedirects[urlPath]);
-            res.end();
-            return;
-          }
-
-          const legacyPath = path.join(appDir, urlPath.slice(1));
-          if (fs.existsSync(legacyPath)) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            res.end(fs.readFileSync(legacyPath, 'utf-8'));
-            return;
-          }
-        }
+        const rel = urlPath.replace(/^\//, '');
+        const filePath = path.join(appDir, rel);
+        const hasExtension = Boolean(rel && path.extname(rel));
 
         if (hasExtension) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {

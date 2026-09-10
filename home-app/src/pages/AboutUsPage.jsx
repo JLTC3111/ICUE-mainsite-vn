@@ -15,6 +15,7 @@ import {
   ABOUT_US_PEOPLE_IMAGES,
   WORDMARK_COLOR_SEQUENCES,
 } from '../data/aboutUsContent'
+import './AboutUsPage.css'
 
 /**
  * The About page.
@@ -41,8 +42,8 @@ import {
  *    It is passed down as a custom property instead — see `--about-greeting-echo`
  *    in AboutUsPage.css.
  *
- * This is also the only route on icue.vn that renders English; see
- * SHARED_LOCALE_PATHS in lib/routes.js for why.
+ * This is one of the icue.vn routes that render English in place. Home is the
+ * only page whose English selection still crosses to en.icue.vn.
  */
 
 /**
@@ -75,8 +76,7 @@ export default function AboutUsPage() {
   const { t } = useTranslation()
   const theme = useAboutTheme()
 
-  // The legacy About page sets this on <html> to swap in its static backdrop,
-  // and leaves it behind when the reader walks from /about-us-legacy to here.
+  // The legacy About page sets this on <html> to swap in its static backdrop.
   // This page carries its own backdrop, so a stale flag would only darken the
   // page for no reason.
   useEffect(() => {

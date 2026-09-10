@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import LanguageFlagMenu from '@icue/i18n/LanguageFlagMenu'
 import { buildLanguageSwitchTarget } from '@icue/main-site-nav/languageSwitcher'
@@ -7,24 +8,38 @@ import { servesAllLocales } from '../lib/routes'
 /**
  * Replaces the flag link in the injected nav.
  *
- * Five of the six entries change this app's UI language in place. The sixth,
- * English, is the crossing to en.icue.vn the flag has always been — and it
- * lands on the counterpart of the page you were reading, not the homepage.
- *
- * Except on About. That page is served for both hosts from here, and
- * en.icue.vn/about-us is a redirect back to it, so crossing would send the
- * reader out and immediately back to the page they were already on. There
- * English re-renders in place like the other five.
+ * Every language changes in place on a subpage because all subpages are
+ * canonical on icue.vn. Home is the sole exception: choosing English there
+ * crosses to the dedicated en.icue.vn React home.
  *
  * Module scope, not inline in App: a component identity that changed each
  * render would remount the whole nav.
  */
 export default function SiteLanguageMenu() {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const handleChange = (code) => {
     if (code !== CROSS_SITE_LANGUAGE.code || servesAllLocales()) {
       i18n.changeLanguage(code)
+      const params = new URLSearchParams(location.search)
+      params.delete('site')
+      if (params.get('from') === 'en-news') params.delete('from')
+      if (servesAllLocales() || code !== 'vi') {
+        params.set('lang', code)
+      } else {
+        params.delete('lang')
+      }
+      const search = params.toString()
+      navigate(
+        {
+          pathname: location.pathname,
+          search: search ? `?${search}` : '',
+          hash: location.hash,
+        },
+        { replace: true },
+      )
       return
     }
 

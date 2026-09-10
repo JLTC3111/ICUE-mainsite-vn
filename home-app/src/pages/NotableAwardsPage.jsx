@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import useAboutTheme from '../components/aboutUs/useAboutTheme'
 import AwardsHero from '../components/awards/AwardsHero'
 import AwardCard from '../components/awards/AwardCard'
 import CertificationCard from '../components/awards/CertificationCard'
@@ -22,12 +23,11 @@ function AwardsSection({ id, copy, className = '', children }) {
 
 export default function NotableAwardsPage() {
   const { t } = useTranslation()
+  const theme = useAboutTheme()
   const copy = t('awards', { returnObjects: true })
 
-  // Mark the actual content language even when the surrounding chrome uses a
-  // locale whose awards translation still falls back to Vietnamese.
   return (
-    <div className="notable-awards-page" lang={copy.language}>
+    <div className={`notable-awards-page notable-awards-page--${theme}`} lang={copy.language}>
       <AwardsHero copy={copy.hero} />
       <AwardsSection id="recent-awards" copy={copy.sections.recent}>
         <ul className="awards-grid" role="list">

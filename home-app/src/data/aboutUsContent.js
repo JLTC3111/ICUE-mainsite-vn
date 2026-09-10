@@ -18,13 +18,11 @@ import { GALLERY_PLACEHOLDERS } from './galleryPlaceholders'
  * text.
  *
  * Re-exported from vi.json rather than written out again. The JSX slider reads
- * the reader's own language from i18next; this export is the Vietnamese copy for
- * the legacy embed driver (legacy/aboutUsPage.js), which has no i18next of its
- * own and still serves /about-us-legacy. Sourcing both from the same file is
- * what keeps the two renderings from drifting apart.
+ * the reader's own language from i18next; this export is its Vietnamese
+ * fallback while a locale bundle is loading.
  *
  * `normalizeDeep` matches what i18n.js does to the same strings on the way in,
- * so the legacy page and the JSX page render identical glyphs.
+ * so the fallback and translated page render identical glyphs.
  */
 export const ABOUT_US_SLIDES = normalizeDeep(vi.about.slides)
 

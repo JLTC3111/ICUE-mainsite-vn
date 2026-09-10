@@ -1,6 +1,5 @@
 import {
   SITES,
-  newsroomUrl,
   resolveMainSiteLink,
   withLocale,
 } from '../site-routes/mainSitePaths.js';
@@ -36,19 +35,8 @@ const PAGE_MAPPING = {
   cookies: 'cookies',
   notableAwards: 'notableAwards',
   communityActivities: 'communityActivities',
+  newsArchive: 'newsArchive',
 };
-
-/*
- * Pages the VN<->EN domain flag can land on, which then need the legacy
- * runtime re-initialised on arrival. `faqs` and `recruitment` are no longer
- * among them: both render their own six-language menu (PageLanguageMenu)
- * rather than the domain flag, and both are pinned to icue.vn by
- * VI_ONLY_APP_PAGES, so the flag can never target them.
- */
-const STATIC_PAGES = [
-  'gdpr', 'privacy', 'terms',
-  'cookies', 'notableAwards', 'communityActivities',
-];
 
 /** Path routes for migrated main-site pages (no hash). */
 export const MIGRATED_PAGE_PATHS = {
@@ -58,7 +46,7 @@ export const MIGRATED_PAGE_PATHS = {
   ourWork: '/our-work',
   pastProjects: '/past-projects',
   recruitment: '/recruitment',
-  News: newsroomUrl('vi'),
+  News: '/newsroom/',
   newsArchive: '/news-archive',
   meetOurExperts: '/people/experts',
   coreTeam: '/people/core-team',
@@ -96,6 +84,8 @@ export function pageFromPathname(pathname) {
     if (pathSegments.includes('core-team')) return 'coreTeam';
     if (pathSegments.includes('experts')) return 'meetOurExperts';
   }
+  if (pathSegments[0] === 'past-projects') return 'pastProjects';
+  if (pathSegments[0] === 'news-archive') return 'newsArchive';
   if (pathSegments[0] === 'structure') return 'orgStructure';
   if (pathSegments[0] === 'newsroom') return 'News';
   if (pathSegments[0] === 'src' && pathSegments[1] === 'pages' && pathSegments[2] === 'News.html') {
@@ -104,9 +94,6 @@ export function pageFromPathname(pathname) {
 
   const pathPage = pathSegments[pathSegments.length - 1].replace('.html', '');
   if (pathPage === 'News') return 'newsArchive';
-  if (STATIC_PAGES.includes(pathPage.toLowerCase())) {
-    return pathPage;
-  }
   return pathPage;
 }
 
@@ -164,27 +151,15 @@ function mainSiteBase(siteLang) {
 }
 
 function buildTargetPath(targetPageName, targetSite) {
-  if (targetPageName === 'newsArchive') {
-    return withLocale(
-      `${mainSiteBase(targetSite.language)}/news-archive`,
-      targetSite.language,
-    );
-  }
-
+  const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
   const resolved = resolveMainSiteLink(
     targetPageName,
     targetSite.language,
     mainSiteBase(targetSite.language),
+    currentPath,
   );
-  if (resolved.startsWith('http')) {
+  if (resolved.startsWith('http') || MIGRATED_PAGE_PATHS[targetPageName]) {
     return resolved;
-  }
-
-  if (MIGRATED_PAGE_PATHS[targetPageName]) {
-    return resolved;
-  }
-  if (STATIC_PAGES.includes(targetPageName)) {
-    return `#/${targetPageName}`;
   }
   return targetPageName === 'Home' ? '#/Home' : `#/${targetPageName}`;
 }

@@ -19,8 +19,9 @@
  *
  * ORDER STILL MATTERS. In the legacy embed this block sat in the body, after
  * every bundled stylesheet, so it beat styles.css on equal specificity —
- * `.middle-text` is the rule that actually depends on it. main.jsx imports this
- * file LAST to keep that position.
+ * `.middle-text` is the rule that actually depends on it. AboutUsPage.jsx
+ * imports this file so the CSS lands in the About chunk, after the entry
+ * sheets, and does not ship on `/`.
  *
  * The legacy pipeline also rewrote `html` -> `:root`, `body` -> `.legacy-page`
  * and a bare `*` reset before injecting. This block contains none of those

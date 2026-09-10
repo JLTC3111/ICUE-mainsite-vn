@@ -1,5 +1,29 @@
 {
   "instituteName": "Viện Nghiên Cứu Kinh Tế Xây Dựng & Đô Thị",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | Kinh tế Xây dựng và Phát triển Đô thị",
+      "description": "Trang chính thức của ICUE Vietnam — nghiên cứu, tư vấn và đổi mới trong kinh tế xây dựng, quy hoạch và phát triển đô thị bền vững."
+    },
+    "aboutUs": {
+      "title": "Về chúng tôi | ICUE Vietnam",
+      "description": "Tìm hiểu sứ mệnh, kinh nghiệm, đội ngũ và định hướng đổi mới của Viện Nghiên Cứu Kinh Tế Xây Dựng và Đô Thị."
+    },
+    "notableAwards": {
+      "title": "Giải thưởng nổi bật | ICUE Vietnam",
+      "description": "Những giải thưởng, ghi nhận và dấu mốc chuyên môn nổi bật của ICUE Vietnam."
+    },
+    "pastProjects": {
+      "title": "Dự án đã thực hiện | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Xem các dự án nghiên cứu, quy hoạch, phát triển đô thị và hoạt động chuyên môn tiêu biểu đã được ICUE Vietnam thực hiện."
+    },
+    "newsArchive": {
+      "title": "Kho tin tức | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Kho tin tức, bài viết, sự kiện và cập nhật hoạt động chuyên môn của ICUE Vietnam."
+    }
+  },
   "lang": {
     "label": "Ngôn ngữ trang"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "Kéo để thay đổi kích thước trình đơn",
       "homeVideo": "Bật/tắt video nền",
       "aboutUsVideo": "Bật/tắt video nền (Giới thiệu)",
-      "aboutUsTheme": "Chuyển giao diện sáng/tối (Giới thiệu)"
+      "aboutUsTheme": "Chuyển giao diện sáng/tối"
     },
     "contactWordmark": "GIỚI THIỆU"
   },
@@ -223,6 +247,108 @@
           "↑ Tham Gia",
           "Giá Trị Dự Án"
         ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "Mới · New",
+      "ctaTitle": "Cổng bản tin mới của ICUE",
+      "ctaSub": "Khám phá các bài viết mới nhất trên nền tảng tin tức nâng cấp của chúng tôi.",
+      "ctaButton": "Xem bản tin mới →",
+      "readArticle": "Đọc bài viết →",
+      "locationLabel": "Địa Điểm",
+      "carouselLabel": "Các bài viết",
+      "backToList": "← Kho tin tức",
+      "previous": "Trước",
+      "next": "Xem Tiếp",
+      "articleNav": "Bài viết liền kề",
+      "closeImage": "Đóng",
+      "previousImage": "Trước",
+      "nextImage": "Tiếp",
+      "download": "Tải về",
+      "videoLabel": "Video",
+      "playVideo": "Phát video"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "Dự án đã thực hiện",
+      "description": "Danh mục dự án giới thiệu kinh nghiệm của ICUE trong quy hoạch, nghiên cứu ứng dụng, kinh tế xây dựng và phát triển đô thị.",
+      "yearCompleted": "Năm hoàn thành",
+      "descriptionLabel": "Mô tả",
+      "locationLabel": "Vị trí",
+      "backToList": "← Tất cả dự án",
+      "previous": "Trước",
+      "next": "Xem tiếp",
+      "articleNav": "Dự án liền kề",
+      "closeImage": "Đóng ảnh",
+      "previousImage": "Ảnh trước",
+      "nextImage": "Ảnh sau"
+    },
+    "items": {
+      "laoCai": {
+        "title": "Điều chỉnh quy hoạch chung thành phố Lào Cai",
+        "location": "Thành phố Lào Cai",
+        "scale": "Quy mô: 28.162,64 ha, đến năm 2045",
+        "imageAlt": "Quy hoạch chung thành phố Lào Cai",
+        "body": "Tổng diện tích quy hoạch lên đến 28.162,64 ha, với mục tiêu hoàn thành vào năm 2045. Đây là một chiến lược phát triển dài hạn, hướng đến việc tái cấu trúc không gian đô thị một cách hiệu quả, nhằm tận dụng tối đa tiềm năng sử dụng đất theo hướng linh hoạt, bền vững và thích ứng với biến đổi khí hậu. Kế hoạch đặt trọng tâm vào việc tối ưu hóa sử dụng đất đai, từ đất ở, đất thương mại, công nghiệp cho đến không gian công cộng và mảng xanh – tất cả được phân bổ khoa học, phục vụ cho sự phát triển cân bằng giữa kinh tế, xã hội và môi trường. Bên cạnh đó, quy hoạch cũng bao gồm các giải pháp cải thiện và mở rộng hệ thống hạ tầng giao thông, cấp thoát nước, năng lượng và công nghệ thông tin, tạo nền tảng vững chắc cho sự tăng trưởng bền vững. Đồng thời, kế hoạch cũng định hướng rõ ràng cho sự tăng trưởng dân số và phát triển các khu dân cư mới, phù hợp với nhu cầu về nhà ở, việc làm và dịch vụ đô thị. Mục tiêu cuối cùng là nâng cao vai trò và vị thế của thành phố như một trung tâm kinh tế – giao thông chiến lược trong khu vực, kết nối hiệu quả với các địa phương lân cận và hành lang kinh tế trọng điểm."
+      },
+      "hopThanh": {
+        "title": "Quy hoạch xây dựng chi tiết xã Hợp Thành tỷ lệ 1/500",
+        "location": "Xã Hợp Thành, thành phố Lào Cai",
+        "scale": "Quy mô: 2.693,3 ha",
+        "imageAlt": "Quy hoạch chi tiết xã Hợp Thành, Lào Cai",
+        "body": "Tổng diện tích quy hoạch là 2.693,3 ha, thuộc địa bàn xã Hợp Thành, thành phố Lào Cai. Đây là đồ án quy hoạch xây dựng chi tiết tỷ lệ 1/500, nhằm cụ thể hóa các định hướng phát triển đã được xác lập trong quy hoạch chung, đồng thời xác định rõ ràng các khu chức năng, mạng lưới giao thông, hệ thống hạ tầng kỹ thuật và xã hội. Mục tiêu của quy hoạch này là đặt nền tảng cho quá trình đô thị hóa bền vững, hướng tới việc hình thành một đô thị hiện đại, đồng bộ, thân thiện với môi trường và có khả năng thích ứng linh hoạt với nhu cầu phát triển kinh tế - xã hội trong tương lai. Kế hoạch cũng bao gồm việc phân khu chức năng hợp lý, cải tạo và nâng cấp hạ tầng hiện hữu, từ đó đáp ứng nhu cầu dân sinh và thu hút đầu tư. Dự kiến, toàn bộ hệ thống quy hoạch sẽ được triển khai theo lộ trình, với tầm nhìn đến năm 2025, phù hợp với định hướng phát triển đô thị của tỉnh Lào Cai nói chung và thành phố Lào Cai nói riêng."
+      },
+      "subdivision6b": {
+        "title": "Quy hoạch phân khu 6B (phường Nguyễn Ái Quốc)",
+        "location": "Thành phố Hải Dương",
+        "scale": "Quy mô: 1.159 ha",
+        "imageAlt": "Quy hoạch phân khu 6B, phường Nguyễn Ái Quốc",
+        "body": "Phân khu 6B đánh dấu một bước tiến chiến lược trong việc tái cấu trúc đô thị Hải Dương, nằm tại phường Nguyễn Ái Quốc. Với diện tích rộng lớn hơn 1.100 ha, quy hoạch này hướng đến phát triển đồng bộ hạ tầng kỹ thuật, mở rộng không gian sinh thái – đô thị và tạo lập các khu chức năng hiện đại. Dự án không chỉ góp phần thúc đẩy tăng trưởng đô thị bền vững mà còn định hình bộ mặt mới cho thành phố trong giai đoạn hậu 2025."
+      },
+      "cocSan": {
+        "title": "Quy hoạch phân khu xây dựng Cốc San",
+        "location": "Thành phố Lào Cai",
+        "scale": "Quy mô: 1.173,1 ha",
+        "imageAlt": "Quy hoạch phân khu xây dựng Cốc San",
+        "body": "Phân khu xây dựng Cốc San là một phần trọng điểm trong chiến lược mở rộng không gian đô thị của thành phố Lào Cai. Dự án không chỉ tập trung phát triển hạ tầng kỹ thuật tiên tiến mà còn khéo léo tích hợp các yếu tố cảnh quan tự nhiên để hình thành một đô thị sinh thái cân bằng. Đây là tiền đề để phát triển các khu dân cư chất lượng cao, khu thương mại – dịch vụ và các công trình công cộng liên kết chặt chẽ với trục giao thông liên vùng."
+      },
+      "dongYen": {
+        "title": "Quy hoạch chung đô thị Đông Yên, huyện Bắc Quang",
+        "location": "Xã Đồng Yên, thành phố Hà Giang",
+        "scale": "Quy mô: 4.407,9 ha; đến năm 2035, định hướng đến năm 2050",
+        "imageAlt": "Quy hoạch chung đô thị Đông Yên",
+        "body": "Đô thị Đông Yên là một quy hoạch tổng thể đầy tham vọng với quy mô gần 4.500 ha, mang trong mình tầm nhìn dài hạn đến năm 2050. Dự án nhắm đến việc xây dựng một đô thị vệ tinh thông minh, hội tụ đầy đủ các chức năng sống – làm việc – vui chơi. Với định hướng quy hoạch bài bản, Đông Yên kỳ vọng trở thành điểm đến hấp dẫn cho đầu tư, nơi khởi nguồn cho các mô hình đô thị hiện đại bền vững tại khu vực phía Bắc."
+      },
+      "naChi": {
+        "title": "Quy hoạch chung đô thị Nà Chì, huyện Xín Mần",
+        "location": "Xã Nà Chì, Xín Mần, Hà Giang",
+        "scale": "Quy mô: 8.038,7 ha, đến năm 2035, định hướng đến năm 2050",
+        "imageAlt": "Quy hoạch chung đô thị Nà Chì",
+        "body": "Dự án đô thị Nà Chì là một trong những quy hoạch có quy mô lớn nhất tại khu vực miền núi phía Bắc. Với hơn 8.000 ha, đây là bước đi chiến lược giúp Xín Mần bứt phá về hạ tầng, dịch vụ và khả năng thu hút đầu tư. Đô thị được định hướng phát triển bền vững, kết hợp hài hòa giữa bảo tồn bản sắc vùng cao và đưa vào các mô hình hạ tầng thông minh. Một cánh cửa mới đang mở ra cho Hà Giang."
+      },
+      "tanBac": {
+        "title": "Quy hoạch chung đô thị Tân Bắc, huyện Quang Bình",
+        "location": "Xã Tân Bắc, Quang Bình, Hà Giang",
+        "scale": "Quy mô: 6.297,1 ha, đến năm 2035, định hướng đến năm 2050",
+        "imageAlt": "Quy hoạch chung đô thị Tân Bắc",
+        "body": "Tân Bắc đang từng bước trở thành trung tâm mới nổi của huyện Quang Bình. Quy hoạch đô thị với hơn 6.000 ha này tập trung vào việc phát triển không gian sống hiện đại, hệ sinh thái công nghệ xanh và các tiện ích công cộng đồng bộ. Tầm nhìn đến năm 2050 mang tính cách mạng, biến Tân Bắc thành mô hình điển hình về quy hoạch vùng cao mang bản sắc địa phương, nhưng vẫn bắt nhịp kịp với tốc độ đô thị hóa quốc gia."
+      },
+      "namDong": {
+        "title": "Quy hoạch phân khu 5A (phường Nam Đồng), thành phố Hải Dương",
+        "location": "Thành phố Hải Dương, tỉnh Hải Dương",
+        "scale": "Quy mô: 332,16 ha, tỷ lệ 1/2000",
+        "imageAlt": "Quy hoạch phân khu 5A, phường Nam Đồng",
+        "body": "Phân khu 5A là một phần cốt lõi trong chiến lược phát triển bền vững của Hải Dương. Với diện tích trên 330 ha, dự án đặt trọng tâm vào quy hoạch không gian đô thị hiện đại, tăng cường khả năng kết nối và tạo lập hệ sinh thái đô thị linh hoạt. Đây là nỗ lực cụ thể nhằm nâng cao chất lượng sống cho cư dân và tăng cường sức hút cho khu vực Nam Đồng trong giai đoạn phát triển tiếp theo."
+      },
+      "xuanAn": {
+        "title": "Quy hoạch chi tiết khu đô thị sinh thái Park City Xuân An",
+        "location": "Thị trấn Xuân An, huyện Nghi Xuân, tỉnh Hà Tĩnh",
+        "scale": "Quy mô: 27,7 ha, tỷ lệ 1/500",
+        "imageAlt": "Khu đô thị sinh thái Park City Xuân An",
+        "body": "Park City Xuân An là một khu đô thị sinh thái cao cấp với thiết kế tinh tế, diện tích gần 28 ha và mật độ phát triển hợp lý. Với định hướng \"sống xanh, sống khỏe\", dự án tích hợp không gian xanh rộng lớn, các tiện ích thương mại – dịch vụ hiện đại và hạ tầng đồng bộ. Đây là một điểm sáng mới của thị trường bất động sản Hà Tĩnh, hứa hẹn tạo nên làn sóng đô thị hóa cao cấp và bền vững tại khu vực miền Trung."
       }
     }
   },

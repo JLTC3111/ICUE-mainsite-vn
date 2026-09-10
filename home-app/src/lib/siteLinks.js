@@ -8,9 +8,9 @@ export const SITES = {
 export { ROUTE_PATHS } from './routes'
 
 export function projectCardUrl(id) {
-  return `${SITES.vi}/src/pages/card.html?id=${id}`
+  return `/past-projects/${id}`
 }
 
 export function articleUrl(id) {
-  return `${SITES.vi}/src/pages/article_template.html?id=${id}`
+  return `/news-archive/${id}`
 }

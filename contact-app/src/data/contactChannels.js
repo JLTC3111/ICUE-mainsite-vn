@@ -1,3 +1,4 @@
+import { CAPABILITY_STATEMENT_URL } from '@icue/site-routes/capabilityStatement.js'
 import { ICUE_ZALO_PHONE, zaloWebUrl } from '@icue/zalo/zaloLink'
 
 /**
@@ -97,10 +98,11 @@ export const CHAT = {
 
 /**
  * Site-root paths, not app assets: the capability statement is ~88 MB and
- * lives once in public/docs/, which `_redirects` maps to /docs/*.
+ * lives once in public/docs/, which `_redirects` maps to /docs/*. `download`
+ * is a same-tab save with a locale-aware filename; it is not an external tab.
  */
 export const SHORTCUTS = [
-  { id: 'capability', href: '/docs/capability_statement.pdf', external: true },
-  { id: 'roles', href: '/recruitment', external: false },
-  { id: 'faqs', href: '/faqs', external: false },
+  { id: 'capability', href: CAPABILITY_STATEMENT_URL, download: true },
+  { id: 'roles', href: '/recruitment' },
+  { id: 'faqs', href: '/faqs' },
 ]

@@ -8,6 +8,8 @@ const DEFAULT_GRIDS = {
 
 export default function PixelImage({
   src,
+  srcSet,
+  sizes,
   alt = '',
   grid = '6x4',
   customGrid,
@@ -70,6 +72,8 @@ export default function PixelImage({
     >
       <img
         src={src}
+        srcSet={srcSet}
+        sizes={sizes}
         alt={alt}
         className="pixel-image__static"
         loading="lazy"

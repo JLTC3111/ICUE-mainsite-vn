@@ -6,10 +6,11 @@ const ROOT_ATTRIBUTE = 'data-about-theme'
 /**
  * The About page's own light/dark switch.
  *
- * It is deliberately not a site-wide theme. Nothing else on icue.vn has a dark
- * variant, and `data-about-theme` is only ever set while this page is mounted —
- * the cleanup below takes it off again, so the nav and footer never find
- * themselves styled for a page the reader has already left.
+ * It is deliberately not a site-wide theme. `data-about-theme` is only set
+ * while About, Past Projects or Notable Awards is mounted — the cleanup below
+ * takes it off again, so the nav and footer never find themselves styled for a
+ * page the reader has already left. Those pages share this preference so the
+ * chrome toggle in that slot stays consistent.
  *
  * `window.AboutUsThemeManager` is the same contract the background video used
  * to publish, for the same reason: MainSiteNav renders the toggle in the site

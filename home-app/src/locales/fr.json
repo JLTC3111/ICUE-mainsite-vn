@@ -1,5 +1,29 @@
 {
   "instituteName": "Institut d'économie de la construction et d'urbanisme",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | Économie de la construction et développement urbain",
+      "description": "Site officiel d'ICUE Vietnam — recherche, conseil et innovation en économie de la construction, urbanisme et développement urbain durable."
+    },
+    "aboutUs": {
+      "title": "À propos | ICUE Vietnam",
+      "description": "Découvrez la mission, l'expérience, l'équipe et l'orientation innovante de l'Institut d'économie de la construction et d'urbanisme."
+    },
+    "notableAwards": {
+      "title": "Distinctions | ICUE Vietnam",
+      "description": "Distinctions, reconnaissances et jalons professionnels marquants d'ICUE Vietnam."
+    },
+    "pastProjects": {
+      "title": "Projets réalisés | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Parcourez les projets de recherche, d'urbanisme, de développement urbain et les travaux professionnels réalisés par ICUE Vietnam."
+    },
+    "newsArchive": {
+      "title": "Archives d'actualités | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Actualités, articles, événements et mises à jour professionnelles d'ICUE Vietnam."
+    }
+  },
   "lang": {
     "label": "Langue de la page"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "Faire glisser pour redimensionner le menu",
       "homeVideo": "Activer ou désactiver la vidéo d'arrière-plan",
       "aboutUsVideo": "Activer ou désactiver la vidéo d'arrière-plan (À propos)",
-      "aboutUsTheme": "Basculer entre le thème clair et le thème sombre (À propos)"
+      "aboutUsTheme": "Basculer entre le thème clair et le thème sombre"
     },
     "contactWordmark": "À PROPOS"
   },
@@ -57,6 +81,276 @@
     "cookies": "Cookies",
     "partner": "Devenir partenaire",
     "rights": "Tous droits réservés, ICUE."
+  },
+  "awards": {
+    "language": "fr",
+    "hero": {
+      "title": "Distinctions & reconnaissance",
+      "description": "Nous honorons l'excellence en construction, en urbanisme et en développement communautaire à travers des distinctions professionnelles et des certifications.",
+      "stats": {
+        "industryAwards": "Distinctions sectorielles",
+        "certifications": "Certifications",
+        "years": "Années d'excellence"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "Distinctions et réussites récentes",
+        "description": "Notre exigence d'excellence a été reconnue par des organisations de premier plan et des autorités publiques."
+      },
+      "certifications": {
+        "title": "Certifications professionnelles",
+        "description": "Notre équipe maintient les plus hauts standards professionnels par une formation et une certification continues."
+      },
+      "timeline": {
+        "title": "Chronologie de la reconnaissance",
+        "description": "Un parcours d'excellence continue et d'une reconnaissance croissante dans notre domaine."
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "Prix d'excellence de projet",
+        "organization": "National Association of Construction Professionals",
+        "description": "Reconnu pour une gestion de projet exemplaire et l'achèvement du Riverside Community Centre dans les délais, 8 % sous budget, tout en dépassant les objectifs de durabilité.",
+        "projectLabel": "Projet primé",
+        "projectName": "Extension du Riverside Community Centre"
+      },
+      "planningInnovation": {
+        "title": "Prix de l'innovation en urbanisme",
+        "organization": "American Planning Association",
+        "description": "Honoré pour l'usage pionnier de technologies de participation citoyenne et d'une planification fondée sur les données, avec 340 % de participation publique en plus.",
+        "projectLabel": "Axe d'innovation",
+        "projectName": "Plateforme numérique de participation citoyenne"
+      },
+      "sustainability": {
+        "title": "Leadership en développement durable",
+        "organization": "Green Building Council",
+        "description": "Récompensé pour son leadership dans la construction durable : certification LEED Platinum sur trois projets consécutifs et réduction de 45 % des émissions de carbone.",
+        "projectLabel": "Réussite",
+        "projectName": "Portefeuille de trois projets LEED Platinum"
+      },
+      "safety": {
+        "title": "Reconnaissance pour la sécurité sans accident",
+        "organization": "Occupational Safety & Health Administration",
+        "description": "Plus de 1 000 jours sans incident déclarable sur l'ensemble des projets en cours, preuve d'un engagement pour la sécurité et la formation des équipes.",
+        "projectLabel": "Bilan de sécurité",
+        "projectName": "1 247 jours sans accident"
+      },
+      "communityImpact": {
+        "title": "Excellence de l'impact communautaire",
+        "organization": "International City/County Management Association",
+        "description": "Reconnu pour un partenariat public-privé exemplaire, 4,2 M$ d'améliorations d'infrastructures communautaires et la création de plus de 200 emplois.",
+        "projectLabel": "Zone d'impact",
+        "projectName": "Initiative de régénération du centre-ville"
+      },
+      "technology": {
+        "title": "Prix d'intégration technologique",
+        "organization": "Construction Technology Association",
+        "description": "Moteur de l'adoption du BIM, des levés par drone et du suivi de projet par IA, réduisant les délais de 25 % et améliorant la précision de 40 %.",
+        "projectLabel": "Axe technologique",
+        "projectName": "Plateforme de construction intelligente"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "LEED Accredited Professional",
+        "organization": "U.S. Green Building Council",
+        "logoAlt": "Logo LEED"
+      },
+      "pmp": {
+        "name": "Project Management Professional",
+        "organization": "Project Management Institute",
+        "logoAlt": "Logo PMP"
+      },
+      "pe": {
+        "name": "Professional Engineer",
+        "organization": "State Board of Professional Engineers",
+        "logoAlt": "Logo PE"
+      },
+      "aicp": {
+        "name": "Certified Planner",
+        "organization": "American Institute of Certified Planners",
+        "logoAlt": "Logo AICP"
+      },
+      "osha": {
+        "name": "OSHA 30 heures – Construction",
+        "organization": "Occupational Safety & Health Administration",
+        "logoAlt": "Logo OSHA"
+      },
+      "mbe": {
+        "name": "Minority Business Enterprise",
+        "organization": "Agence publique de certification",
+        "logoAlt": "Logo MBE"
+      }
+    },
+    "statuses": {
+      "active": "Actif",
+      "renewing": "En renouvellement"
+    },
+    "timeline": {
+      "2021": {
+        "title": "Développeur communautaire",
+        "award": "Prix d'excellence du service public",
+        "description": "Reconnu pour un partenariat public-privé exemplaire dans la réponse à la pandémie, en livrant des infrastructures essentielles selon un calendrier accéléré. Direction de constructions d'urgence dans cinq districts.",
+        "highlights": [
+          "Réponse à la pandémie",
+          "Construction d'urgence",
+          "5 districts"
+        ],
+        "stats": [
+          "Projets d'urgence",
+          "↓ Délai de construction",
+          "Personnes aidées"
+        ]
+      },
+      "2022": {
+        "title": "Pionnier technologique",
+        "award": "Intégration des technologies de construction",
+        "description": "Premier de la région à intégrer pleinement le suivi de projet par IA et les levés par drone, réduisant les délais de 25 %. Des méthodes de construction intelligente devenues une référence du secteur.",
+        "highlights": [
+          "Suivi par IA",
+          "Levés par drone",
+          "BIM intelligent"
+        ],
+        "stats": [
+          "↓ Délais",
+          "↑ Précision",
+          "Prix technologiques"
+        ]
+      },
+      "2023": {
+        "title": "Leader de la durabilité",
+        "award": "Reconnaissance construction verte & sécurité",
+        "description": "Triple certification LEED Platinum et plus de 1 000 jours sans accident, confirmant un leadership sectoriel en pratique durable. Une approche transformatrice de la construction neutre en carbone.",
+        "highlights": [
+          "LEED Platinum x3",
+          "Sans accident",
+          "Neutre en carbone"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "Jours sûrs",
+          "↓ Carbone"
+        ]
+      },
+      "2024": {
+        "title": "Année de plus haute reconnaissance",
+        "award": "Prix d'excellence de projet et d'innovation",
+        "description": "L'année la plus distinguée, avec la reconnaissance du NACP et de l'APA pour l'innovation dans la participation citoyenne et une gestion de projet exemplaire. Des plateformes numériques ont renforcé l'engagement public.",
+        "highlights": [
+          "Excellence NACP",
+          "Innovation APA",
+          "Leadership numérique"
+        ],
+        "stats": [
+          "Prix majeurs",
+          "↑ Participation",
+          "Valeur des projets"
+        ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "Nouveau",
+      "ctaTitle": "La nouvelle salle de presse d'ICUE",
+      "ctaSub": "Découvrez les derniers articles sur notre plateforme d'actualités.",
+      "ctaButton": "Ouvrir la salle de presse →",
+      "readArticle": "Lire l'article →",
+      "locationLabel": "Lieu",
+      "carouselLabel": "Articles",
+      "backToList": "← Archives",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "articleNav": "Articles voisins",
+      "closeImage": "Fermer",
+      "previousImage": "Média précédent",
+      "nextImage": "Média suivant",
+      "download": "Télécharger",
+      "videoLabel": "Vidéo",
+      "playVideo": "Lire la vidéo"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "Projets réalisés",
+      "description": "Une sélection des travaux d'ICUE en planification, recherche appliquée, économie de la construction et développement urbain.",
+      "yearCompleted": "Année d'achèvement",
+      "descriptionLabel": "Description",
+      "locationLabel": "Lieu",
+      "backToList": "← Tous les projets",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "articleNav": "Projets voisins",
+      "closeImage": "Fermer l'image",
+      "previousImage": "Image précédente",
+      "nextImage": "Image suivante"
+    },
+    "items": {
+      "laoCai": {
+        "title": "Ajustement du plan directeur de la ville de Lào Cai",
+        "location": "Ville de Lào Cai",
+        "scale": "Échelle : 28 162,64 ha, jusqu'en 2045",
+        "imageAlt": "Plan directeur de la ville de Lào Cai",
+        "body": "Le périmètre couvre 28 162,64 ha, avec un achèvement visé en 2045. Il s'agit d'une stratégie de long terme pour restructurer l'espace urbain afin d'utiliser le foncier de façon souple, durable et adaptée au climat. Le plan équilibre logements, activités, espaces publics et trame verte, et développe les réseaux de transport, d'eau, d'énergie et numériques, tout en préparant la croissance démographique et de nouveaux quartiers."
+      },
+      "hopThanh": {
+        "title": "Plan d'aménagement détaillé de la commune de Hợp Thành, échelle 1/500",
+        "location": "Commune de Hợp Thành, ville de Lào Cai",
+        "scale": "Échelle : 2 693,3 ha",
+        "imageAlt": "Plan détaillé de Hợp Thành, Lào Cai",
+        "body": "Ce plan détaillé de 2 693,3 ha au 1/500 traduit le plan directeur en zones fonctionnelles, voirie et infrastructures techniques et sociales. Il vise une urbanisation durable : un quartier moderne, cohérent et respectueux de l'environnement, capable de s'adapter à la demande future."
+      },
+      "subdivision6b": {
+        "title": "Plan de secteur 6B (quartier Nguyễn Ái Quốc)",
+        "location": "Ville de Hải Dương",
+        "scale": "Échelle : 1 159 ha",
+        "imageAlt": "Plan de secteur 6B, quartier Nguyễn Ái Quốc",
+        "body": "Le secteur 6B marque une étape stratégique dans la restructuration de Hải Dương, sur plus de 1 100 ha dans le quartier Nguyễn Ái Quốc. Le plan coordonne les infrastructures, élargit l'espace écologique urbain et définit des quartiers fonctionnels modernes."
+      },
+      "cocSan": {
+        "title": "Plan de secteur de construction de Cốc San",
+        "location": "Ville de Lào Cai",
+        "scale": "Échelle : 1 173,1 ha",
+        "imageAlt": "Plan de secteur de Cốc San",
+        "body": "Cốc San est un maillon essentiel de l'extension urbaine de Lào Cai. Le projet associe des infrastructures avancées au paysage existant pour former un quartier écologique équilibré, et prépare logements de qualité, services et équipements publics le long du corridor régional."
+      },
+      "dongYen": {
+        "title": "Plan directeur urbain de Đông Yên, district de Bắc Quang",
+        "location": "Commune de Đồng Yên, ville de Hà Giang",
+        "scale": "Échelle : 4 407,9 ha ; jusqu'en 2035, orientation 2050",
+        "imageAlt": "Plan directeur urbain de Đông Yên",
+        "body": "Đông Yên est un plan d'ensemble ambitieux de près de 4 500 ha, avec un horizon 2050. Il dessine une ville satellite intelligente qui réunit habitat, travail et loisirs, et vise à devenir un pôle d'investissement et un modèle d'urbanisme durable dans le Nord."
+      },
+      "naChi": {
+        "title": "Plan directeur urbain de Nà Chì, district de Xín Mần",
+        "location": "Commune de Nà Chì, Xín Mần, Hà Giang",
+        "scale": "Échelle : 8 038,7 ha, jusqu'en 2035, orientation 2050",
+        "imageAlt": "Plan directeur urbain de Nà Chì",
+        "body": "Nà Chì est l'un des plus vastes plans des montagnes du Nord. Sur plus de 8 000 ha, il doit renforcer les infrastructures, les services et l'investissement à Xín Mần tout en préservant l'identité des hauts plateaux."
+      },
+      "tanBac": {
+        "title": "Plan directeur urbain de Tân Bắc, district de Quang Bình",
+        "location": "Commune de Tân Bắc, Quang Bình, Hà Giang",
+        "scale": "Échelle : 6 297,1 ha, jusqu'en 2035, orientation 2050",
+        "imageAlt": "Plan directeur urbain de Tân Bắc",
+        "body": "Tân Bắc devient un nouveau centre du district de Quang Bình. Ce plan de plus de 6 000 ha privilégie des espaces de vie contemporains, un écosystème de technologies vertes et des équipements publics cohérents, sans perdre le caractère local."
+      },
+      "namDong": {
+        "title": "Plan de secteur 5A (quartier Nam Đồng), ville de Hải Dương",
+        "location": "Ville de Hải Dương, province de Hải Dương",
+        "scale": "Échelle : 332,16 ha, 1/2000",
+        "imageAlt": "Plan de secteur 5A, quartier Nam Đồng",
+        "body": "Le secteur 5A est un élément central de la stratégie de croissance durable de Hải Dương. Sur un peu plus de 330 ha, il vise une trame urbaine moderne, de meilleures connexions et un écosystème urbain plus souple."
+      },
+      "xuanAn": {
+        "title": "Plan détaillé de l'écoquartier Park City Xuân An",
+        "location": "Bourg de Xuân An, district de Nghi Xuân, province de Hà Tĩnh",
+        "scale": "Échelle : 27,7 ha, 1/500",
+        "imageAlt": "Écoquartier Park City Xuân An",
+        "body": "Park City Xuân An est un écoquartier compact d'environ 28 ha. Sous la devise « vivre vert, vivre bien », il associe de généreux espaces verts, des commerces contemporains et des infrastructures coordonnées — une offre urbaine durable pour Hà Tĩnh et le Centre."
+      }
+    }
   },
   "about": {
     "hero": {

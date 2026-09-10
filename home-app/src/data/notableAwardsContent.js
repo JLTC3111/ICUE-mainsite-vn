@@ -1,5 +1,5 @@
-// Shared structure and authored totals for the awards page. Vietnamese copy lives
-// in locales/vi.json under "awards"; totals describe more than the displayed cards.
+// Shared structure and authored totals for the awards page. Copy lives in
+// locales/*.json under "awards"; totals describe more than the displayed cards.
 export const AWARDS_STATS = [
   {
     id: "industryAwards",

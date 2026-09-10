@@ -161,10 +161,10 @@ function readBackground(el) {
   return parseColor(getComputedStyle(document.body).backgroundColor) ?? [248, 250, 252]
 }
 
-function mapCoverPointToSource(video, x, y) {
-  const rect = video.getBoundingClientRect()
-  const vw = video.videoWidth
-  const vh = video.videoHeight
+function mapCoverPointToSource(el, x, y, intrinsicW, intrinsicH) {
+  const rect = el.getBoundingClientRect()
+  const vw = intrinsicW
+  const vh = intrinsicH
   if (!vw || !vh) return null
 
   const fullViewport = coversViewport(rect)
@@ -413,7 +413,7 @@ export function readWarpBackgroundRgb(warpRoot) {
 function drawVideoRegion(canvas, video, x, y) {
   if (!(video instanceof HTMLVideoElement) || video.readyState < 2) return false
 
-  const mapped = mapCoverPointToSource(video, x, y)
+  const mapped = mapCoverPointToSource(video, x, y, video.videoWidth, video.videoHeight)
   if (!mapped) return false
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
@@ -592,6 +592,88 @@ export function readBackgroundSampleRgb(musicEl) {
     ))
 
     if (dynamicMediaAtPoint) return null
+    return readBackgroundAtPoint(target) ?? readBackground(document.body)
+  })
+}
+
+const BACKDROP_PATCH = 24
+
+function averageImageData(data) {
+  let r = 0
+  let g = 0
+  let b = 0
+  let count = 0
+
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] < 12) continue
+    r += data[i]
+    g += data[i + 1]
+    b += data[i + 2]
+    count += 1
+  }
+
+  return count ? [r / count, g / count, b / count] : null
+}
+
+function resolveImageFromHit(target) {
+  if (target instanceof HTMLImageElement) return target
+  if (!(target instanceof Element)) return null
+  const nested = target.querySelector('img')
+  if (nested instanceof HTMLImageElement) return nested
+  const slide = target.closest('.swiper-slide')?.querySelector('img')
+  return slide instanceof HTMLImageElement ? slide : null
+}
+
+function sampleImagePatch(img, x, y, size = BACKDROP_PATCH) {
+  if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth < 2) return null
+
+  const mapped = mapCoverPointToSource(img, x, y, img.naturalWidth, img.naturalHeight)
+  if (!mapped) return null
+
+  const ctx = getSampleContext()
+  if (!ctx || !sampleCanvas) return null
+
+  sampleCanvas.width = size
+  sampleCanvas.height = size
+
+  try {
+    ctx.drawImage(
+      img,
+      mapped.px - size / 2,
+      mapped.py - size / 2,
+      size,
+      size,
+      0,
+      0,
+      size,
+      size,
+    )
+    return averageImageData(ctx.getImageData(0, 0, size, size).data)
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Colour behind a control (e.g. a Swiper arrow sitting on a photograph).
+ * Same-origin images are sampled as a small patch; otherwise CSS backgrounds.
+ */
+export function readElementBackdropRgb(el) {
+  if (!el) return null
+
+  const rect = el.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return null
+
+  const sampleX = rect.left + rect.width * 0.5
+  const sampleY = rect.top + rect.height * 0.5
+
+  return withSidebarHidden(el, () => {
+    const target = document.elementFromPoint(sampleX, sampleY)
+    const img = resolveImageFromHit(target)
+    if (img) {
+      const patch = sampleImagePatch(img, sampleX, sampleY)
+      if (patch) return patch
+    }
     return readBackgroundAtPoint(target) ?? readBackground(document.body)
   })
 }

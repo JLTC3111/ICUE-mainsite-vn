@@ -165,8 +165,27 @@ export default function AnimatedViewToggle({
     if (disabled) return;
 
     const button = buttonRef.current;
+    if (!button) return;
+
+    const applyChange = () => {
+      onCheckedChange?.(!checked);
+    };
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Sticky clip-path layers (Scroll Expand) abort or trap the circular
+    // wipe, leaving `data-icue-view-toggle-vt` set so later clicks no-op.
+    const skipViewTransition =
+      reducedMotion
+      || typeof document.startViewTransition !== 'function'
+      || document.querySelector('[data-icue-skip-view-toggle-vt]') != null;
+    if (skipViewTransition) {
+      isTransitioningRef.current = false;
+      delete document.documentElement.dataset.icueViewToggleVt;
+      applyChange();
+      return;
+    }
+
     if (
-      !button ||
       isTransitioningRef.current ||
       document.documentElement.dataset.icueViewToggleVt === 'active'
     ) {
@@ -193,16 +212,6 @@ export default function AnimatedViewToggle({
       Math.max(x, viewportWidth - x),
       Math.max(y, viewportHeight - y),
     );
-
-    const applyChange = () => {
-      onCheckedChange?.(!checked);
-    };
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion || typeof document.startViewTransition !== 'function') {
-      applyChange();
-      return;
-    }
 
     const clipPath = getTransitionClipPaths(
       shape,
@@ -232,9 +241,14 @@ export default function AnimatedViewToggle({
       flushSync(applyChange);
     });
 
+    const safety = window.setTimeout(cleanup, duration + 250);
     if (typeof transition?.finished?.finally === 'function') {
-      transition.finished.finally(cleanup).catch(() => {});
+      transition.finished.finally(() => {
+        window.clearTimeout(safety);
+        cleanup();
+      }).catch(() => {});
     } else {
+      window.clearTimeout(safety);
       cleanup();
     }
 

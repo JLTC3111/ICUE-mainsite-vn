@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { HOME_BG_VIDEOS, HOME_MODELS } from './deployMedia.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const appRoot = path.resolve(__dirname, '..')
@@ -28,35 +29,47 @@ function copyDir(src, dest) {
   }
 }
 
+function copyAllowlistedFiles(srcDir, destDir, files) {
+  fs.rmSync(destDir, { recursive: true, force: true })
+  fs.mkdirSync(destDir, { recursive: true })
+  for (const file of files) {
+    const from = path.join(srcDir, file)
+    if (!fs.existsSync(from)) {
+      console.error(`Missing file: ${from}`)
+      process.exit(1)
+    }
+    copyFile(from, path.join(destDir, file))
+  }
+}
+
 const ASSET_DIRS = [
   'aboutUs',
-  'bgVideos',
   'certs',
-  'models',
   'pastProjects',
   'work',
-  // Full news tree: article photos + partner logos used by legacy News.html
+  // Full news tree: article photos + partner logos used by the archive page
   'news',
   'logoIcons',
   'flags',
 ]
 
-// Contact.html, ourWork.html, orgStructure.html, FAQs.html,
-// recruitment.html and communityActivities.html are deliberately absent: each
-// of those pages is its own app now (contact-app, ourwork-app, structure-app,
-// faq-app, recruitment-app, community-app).
-// `copyFile` below is unguarded, so re-adding a name here without the file in
-// src/pages/ fails the build rather than silently shipping nothing.
-// Notable awards now renders directly in home-app as NotableAwardsPage.jsx.
-const LEGACY_PAGES = [
-  'aboutUs.html',
-  'pastProjects.html',
-  'News.html',
-]
+// Home React uses the 540/720 playlist plus the title mask clip. Unused files
+// stay in the repo source trees — see deployMedia.mjs.
 
 for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
+
+copyAllowlistedFiles(
+  path.join(siteRoot, 'public', 'bgVideos'),
+  path.join(appRoot, 'public', 'bgVideos'),
+  HOME_BG_VIDEOS,
+)
+copyAllowlistedFiles(
+  path.join(siteRoot, 'public', 'models'),
+  path.join(appRoot, 'public', 'models'),
+  HOME_MODELS,
+)
 
 // Card detail galleries live under src/pages/public/pastProjects/project_*.
 // Merge them into public/pastProjects so /public/pastProjects/project_N/* resolves in production.
@@ -71,18 +84,25 @@ if (fs.existsSync(cardGalleriesSrc)) {
   }
 }
 
-for (const file of LEGACY_PAGES) {
+// Click-to-download only (article 1 speech, article 3 photo zip). Nothing
+// on the page prefetches these; they still have to live on this origin
+// because the archive links are same-host `/files/...` paths.
+for (const file of ['speech.pdf', 'photos.zip']) {
   copyFile(
-    path.join(siteRoot, 'src/pages', file),
-    path.join(appRoot, 'public/legacy/pages', file),
+    path.join(siteRoot, 'public/files', file),
+    path.join(appRoot, 'public/files', file),
   )
 }
 
-copyFile(path.join(siteRoot, 'src/script.js'), path.join(appRoot, 'public/legacy/script.js'))
+fs.rmSync(path.join(appRoot, 'public/legacy'), { recursive: true, force: true })
+fs.rmSync(path.join(appRoot, 'public/legacy-embed'), { recursive: true, force: true })
+fs.rmSync(path.join(appRoot, 'public/src'), { recursive: true, force: true })
 copyFile(path.join(siteRoot, '_redirects'), path.join(appRoot, 'public/_redirects'))
 copyFile(
   path.join(siteRoot, 'public/logoIcons/favicon.png'),
   path.join(appRoot, 'public/logoIcons/favicon.png'),
 )
 
-console.log(`Synced home-app assets: ${ASSET_DIRS.join(', ')}, card galleries, legacy pages, script.js`)
+console.log(
+  `Synced home-app assets: ${ASSET_DIRS.join(', ')}, ${HOME_BG_VIDEOS.length} bg videos, ${HOME_MODELS.length} models, card galleries, and redirects`,
+)

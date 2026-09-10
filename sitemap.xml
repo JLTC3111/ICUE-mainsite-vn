@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url><loc>https://icue.vn/</loc></url>
   <url><loc>https://icue.vn/contact</loc></url>
   <url><loc>https://icue.vn/about-us</loc></url>
   <url><loc>https://icue.vn/our-work</loc></url>
   <url><loc>https://icue.vn/past-projects</loc></url>
   <url><loc>https://icue.vn/recruitment</loc></url>
-  <url><loc>https://icue.vn/news-archive</loc></url>
+  <url>
+    <loc>https://icue.vn/news-archive</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive" />
+  </url>
   <url><loc>https://icue.vn/notable-awards</loc></url>
   <url><loc>https://icue.vn/community-activities</loc></url>
   <url><loc>https://icue.vn/faqs</loc></url>
@@ -14,4 +23,103 @@
   <url><loc>https://icue.vn/legal/terms</loc></url>
   <url><loc>https://icue.vn/legal/gdpr</loc></url>
   <url><loc>https://icue.vn/legal/cookies</loc></url>
+  <url><loc>https://icue.vn/past-projects/1</loc></url>
+  <url><loc>https://icue.vn/past-projects/2</loc></url>
+  <url><loc>https://icue.vn/past-projects/3</loc></url>
+  <url><loc>https://icue.vn/past-projects/4</loc></url>
+  <url><loc>https://icue.vn/past-projects/5</loc></url>
+  <url><loc>https://icue.vn/past-projects/6</loc></url>
+  <url><loc>https://icue.vn/past-projects/7</loc></url>
+  <url><loc>https://icue.vn/past-projects/8</loc></url>
+  <url><loc>https://icue.vn/past-projects/9</loc></url>
+  <url>
+    <loc>https://icue.vn/news-archive/1</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/1" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/1?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/1?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/1?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/1?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/1?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/1" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/2</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/2" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/2?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/2?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/2?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/2?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/2?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/2" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/3</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/3" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/3?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/3?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/3?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/3?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/3?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/3" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/4</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/4" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/4?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/4?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/4?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/4?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/4?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/4" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/5</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/5" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/5?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/5?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/5?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/5?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/5?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/5" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/6</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/6" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/6?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/6?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/6?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/6?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/6?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/6" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/7</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/7" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/7?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/7?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/7?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/7?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/7?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/7" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/8</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/8" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/8?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/8?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/8?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/8?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/8?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/8" />
+  </url>
+  <url>
+    <loc>https://icue.vn/news-archive/9</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://icue.vn/news-archive/9" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://icue.vn/news-archive/9?lang=en" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://icue.vn/news-archive/9?lang=de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://icue.vn/news-archive/9?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://icue.vn/news-archive/9?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://icue.vn/news-archive/9?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://icue.vn/news-archive/9" />
+  </url>
 </urlset>

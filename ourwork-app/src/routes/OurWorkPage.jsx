@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  CAPABILITY_STATEMENT_URL,
+  capabilityStatementFilename,
+} from '@icue/site-routes/capabilityStatement.js'
 import { getOurWorkContent, IMAGE_SIZES } from '../data/ourWorkScopes'
 import { assetUrl } from '../lib/assets'
 import { useOurWorkMotion } from '../hooks/useOurWorkMotion'
@@ -9,12 +13,6 @@ import SpotlightCard from '../components/reactbits/SpotlightCard'
 import { SplitFlapHeadline } from '../components/reactbits/SplitFlapText'
 import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
 import '../styles/ourWork.css'
-
-/**
- * Site-root path, not an app asset: the PDF is ~88 MB and lives once in
- * public/docs/. `_redirects` maps /docs/* → /public/docs/:splat.
- */
-const CAPABILITY_STATEMENT_URL = '/docs/capability_statement.pdf'
 
 /**
  * Stats are authored as display strings ('120+', '18') so each locale keeps
@@ -223,7 +221,7 @@ export default function OurWorkPage() {
           <a
             className="ow-btn ow-btn--primary"
             href={CAPABILITY_STATEMENT_URL}
-            download="ICUE-capability-statement.pdf"
+            download={capabilityStatementFilename(lang)}
           >
             <svg
               className="ow-btn__icon"

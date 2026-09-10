@@ -149,6 +149,44 @@ if (!fs.existsSync(publishDir)) {
       }
     }
   }
+
+  for (const leakedRoot of ['src/pages', 'legacy/pages', 'legacy-embed/pages', 'about-us-legacy.html']) {
+    if (fs.existsSync(path.join(publishDir, leakedRoot))) {
+      fail(`retired HTML crossed the publish boundary: ${leakedRoot}`)
+    }
+  }
+
+  const publishedLegacyNames = new Set([
+    'aboutUs.html',
+    'Contact.html',
+    'ourWork.html',
+    'pastProjects.html',
+    'News.html',
+    'card.html',
+    'article_template.html',
+    'notableAwards.html',
+    'communityActivities.html',
+    'FAQs.html',
+    'recruitment.html',
+    'orgStructure.html',
+    'Home.html',
+    'Home_OLD.html',
+  ])
+  const htmlPending = [publishDir]
+  while (htmlPending.length) {
+    const directory = htmlPending.pop()
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const absolutePath = path.join(directory, entry.name)
+      if (entry.isDirectory()) {
+        if (entry.name === 'route-shells') continue
+        htmlPending.push(absolutePath)
+        continue
+      }
+      if (publishedLegacyNames.has(entry.name)) {
+        fail(`retired HTML crossed the publish boundary: ${path.relative(publishDir, absolutePath)}`)
+      }
+    }
+  }
 }
 
 if (process.exitCode) process.exit(process.exitCode)

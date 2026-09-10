@@ -1,0 +1,14 @@
+---
+description: News-archive partner logos are images, not locale copy
+globs: home-app/src/data/newsArchive/**,home-app/src/pages/NewsArchive*.jsx
+alwaysApply: false
+---
+
+# Partner logos are not translations
+
+The `/news-archive` partner strip is a row of logo **images** in `NEWS_ARCHIVE_LOGOS` (`home-app/src/data/newsArchive/shell.js`). Brand artwork and alt strings (proper names such as GIZ, IKI) are language-invariant.
+
+Do not:
+- Put logo alts into `copy/*.js` or `locales/*.json`
+- Flag English logo alts as missing translations
+- Treat the logo strip as localizable UI chrome

@@ -3,6 +3,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { AWARDS_CERTIFICATIONS } from '../home-app/src/data/notableAwardsContent.js'
 import { NOTABLE_AWARDS_REDIRECTS } from '../shared/site-routes/notableAwardsRedirects.js'
+import { PAST_PROJECTS_LIST_REDIRECTS } from '../shared/site-routes/pastProjectsRedirects.js'
+import { NEWS_ARCHIVE_LIST_REDIRECTS } from '../shared/site-routes/newsArchiveRedirects.js'
+import { NEWS_ARCHIVE_ARTICLE_META } from '../home-app/src/data/newsArchive/meta.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist-home')
@@ -43,6 +46,49 @@ for (const [oldPath, target] of Object.entries(NOTABLE_AWARDS_REDIRECTS)) {
   }
   if (oldPath.endsWith('.html') && fs.existsSync(path.join(dist, oldPath.slice(1)))) {
     throw new Error(`Retired awards HTML is still being published: ${oldPath}`)
+  }
+}
+
+for (const [oldPath, target] of Object.entries(PAST_PROJECTS_LIST_REDIRECTS)) {
+  const escapedPath = oldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!new RegExp(`^${escapedPath}\\s+${target}\\s+301!?$`, 'm').test(redirects)) {
+    throw new Error(`Missing past-projects redirect: ${oldPath}`)
+  }
+}
+
+if (!/^\/src\/pages\/card\.html id=:id\s+\/past-projects\/:id\s+301!?$/m.test(redirects)) {
+  throw new Error('Missing forced redirect from /src/pages/card.html?id= to /past-projects/:id')
+}
+if (!/^\/past-projects\/\*\s+\/route-shells\/past-projects\.html\s+200$/m.test(redirects)) {
+  throw new Error('/past-projects/*: missing shell rewrite for project detail routes')
+}
+
+for (const [oldPath, target] of Object.entries(NEWS_ARCHIVE_LIST_REDIRECTS)) {
+  const escapedPath = oldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!new RegExp(`^${escapedPath}\\s+${target}\\s+301!?$`, 'm').test(redirects)) {
+    throw new Error(`Missing news-archive redirect: ${oldPath}`)
+  }
+}
+
+if (!/^\/src\/pages\/article_template\.html id=:id\s+\/news-archive\/:id\s+301!?$/m.test(redirects)) {
+  throw new Error('Missing forced redirect from /src/pages/article_template.html?id= to /news-archive/:id')
+}
+if (!/^\/news-archive\/\*\s+\/route-shells\/news-archive\.html\s+200$/m.test(redirects)) {
+  throw new Error('/news-archive/*: missing shell rewrite for archive article routes')
+}
+
+const newsArchiveSplatAt = redirects.search(/^\/news-archive\/\*\s+/m)
+for (const articleId of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+  const articleRewrite = new RegExp(
+    `^/news-archive/${articleId}\\s+/route-shells/news-archive-${articleId}\\.html\\s+200$`,
+    'm',
+  )
+  const articleAt = redirects.search(articleRewrite)
+  if (articleAt < 0) {
+    throw new Error(`/news-archive/${articleId}: missing article-specific shell rewrite`)
+  }
+  if (articleAt > newsArchiveSplatAt) {
+    throw new Error(`/news-archive/${articleId}: article shell rewrite must precede /news-archive/*`)
   }
 }
 
@@ -179,7 +225,7 @@ for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {
   ) {
     throw new Error(`/legal/${slug}: missing route-specific Netlify rewrite`)
   }
-  if (!new RegExp(`^/${slug}\\s+/legal/${slug}\\s+301$`, 'm').test(redirects)) {
+  if (!new RegExp(`^/${slug}\\s+/legal/${slug}\\s+301!?$`, 'm').test(redirects)) {
     throw new Error(`/${slug}: missing permanent redirect to the legal app`)
   }
 }
@@ -188,10 +234,51 @@ const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8')
 const robots = fs.readFileSync(path.join(dist, 'robots.txt'), 'utf8')
 if (
   !sitemap.includes('<urlset')
+  || !sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"')
   || !sitemap.includes('https://icue.vn/about-us')
+  || !sitemap.includes('https://icue.vn/past-projects/1')
+  || !sitemap.includes('https://icue.vn/news-archive/1')
+  || !sitemap.includes('https://icue.vn/news-archive/1?lang=en')
+  || !sitemap.includes('hreflang="ja"')
   || !sitemap.includes('https://icue.vn/legal/privacy')
 ) {
   throw new Error('sitemap.xml is missing expected routes')
+}
+if (
+  sitemap.includes('https://icue.vn/about-us?lang=')
+  || sitemap.includes('https://icue.vn/past-projects/1?lang=')
+) {
+  throw new Error('sitemap.xml must only emit xhtml locale alternates for news-archive URLs')
+}
+
+const listingShell = fs.readFileSync(path.join(dist, 'route-shells/news-archive.html'), 'utf8')
+if (
+  !listingShell.includes('hreflang="ja"')
+  || !listingShell.includes('https://icue.vn/news-archive?lang=en')
+  || listingShell.includes('https://icue.vn/news-archive?lang=vi')
+) {
+  throw new Error('news-archive listing shell is missing locale alternate tags')
+}
+
+const articleOneMeta = NEWS_ARCHIVE_ARTICLE_META.vi['1']
+const articleShell = fs.readFileSync(path.join(dist, 'route-shells/news-archive-1.html'), 'utf8')
+if (!articleOneMeta?.title) {
+  throw new Error('Vietnamese news-archive article 1 meta is missing')
+}
+if (
+  !articleShell.includes(`${articleOneMeta.title} | ICUE Vietnam`)
+  || !articleShell.includes(articleOneMeta.lead)
+  || !articleShell.includes('hreflang="ja"')
+  || !articleShell.includes('https://icue.vn/news-archive/1?lang=en')
+  || articleShell.includes('Kho tin tức | ICUE Vietnam')
+) {
+  throw new Error('news-archive article 1 shell is missing Vietnamese title/lead or locale alternates')
+}
+for (const articleId of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+  const articleFile = path.join(dist, `route-shells/news-archive-${articleId}.html`)
+  if (!fs.existsSync(articleFile)) {
+    throw new Error(`/news-archive/${articleId}: missing article shell`)
+  }
 }
 if (!robots.includes('Sitemap: https://icue.vn/sitemap.xml')) {
   throw new Error('robots.txt is missing the sitemap declaration')
@@ -203,6 +290,50 @@ const redirectRules = redirects
   .filter((line) => line && !line.startsWith('#'))
 if (redirectRules.at(-1) !== '/*                   /index.html                     200') {
   throw new Error('The future-route SPA catch-all must remain the final Netlify rule')
+}
+
+if (!/^\/about-us-legacy\s+\/about-us\s+301!?$/m.test(redirects)) {
+  throw new Error('/about-us-legacy must force-redirect to the React About page')
+}
+
+const publishedLegacyNames = new Set([
+  'aboutUs.html',
+  'Contact.html',
+  'ourWork.html',
+  'pastProjects.html',
+  'News.html',
+  'card.html',
+  'article_template.html',
+  'notableAwards.html',
+  'communityActivities.html',
+  'FAQs.html',
+  'recruitment.html',
+  'orgStructure.html',
+  'Home.html',
+  'Home_OLD.html',
+  'about-us-legacy.html',
+])
+const pending = [dist]
+while (pending.length) {
+  const directory = pending.pop()
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const absolutePath = path.join(directory, entry.name)
+    if (entry.isDirectory()) {
+      if (entry.name === 'route-shells') continue
+      pending.push(absolutePath)
+      continue
+    }
+    if (publishedLegacyNames.has(entry.name)) {
+      throw new Error(`Retired HTML is still being published: ${path.relative(dist, absolutePath)}`)
+    }
+  }
+}
+
+for (const routeFile of routes.map(([, relativeFile]) => path.join(dist, relativeFile))) {
+  const html = fs.readFileSync(routeFile, 'utf8')
+  if (html.includes('class="legacy-page"') || html.includes('data-legacy-standalone')) {
+    throw new Error(`Route shell still carries a legacy-page payload: ${path.relative(dist, routeFile)}`)
+  }
 }
 
 console.log(`Verified ${routes.length} route shells, sitemap.xml, robots.txt, and Netlify rewrites.`)

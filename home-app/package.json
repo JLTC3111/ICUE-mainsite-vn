@@ -6,6 +6,7 @@
   "scripts": {
     "sync-assets": "node scripts/sync-assets.mjs",
     "optimize-gallery-images": "node scripts/optimize-gallery-images.mjs",
+    "optimize-card-images": "node scripts/optimize-card-images.mjs",
     "gallery:placeholders": "node scripts/generate-gallery-placeholders.mjs",
     "dev": "vite",
     "predev": "npm run sync-assets",

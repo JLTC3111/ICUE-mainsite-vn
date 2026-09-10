@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
@@ -11,11 +11,15 @@ import RouteHead from './components/RouteHead'
 import SiteLanguageMenu from './components/SiteLanguageMenu'
 import HomePage from './pages/HomePage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
+import useAboutTheme from './components/aboutUs/useAboutTheme'
 import { debugLog } from './lib/debugLog'
 
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'))
-const LegacyHtmlPage = lazy(() => import('./pages/LegacyHtmlPage'))
+const PastProjectsPage = lazy(() => import('./pages/PastProjectsPage'))
+const PastProjectDetailPage = lazy(() => import('./pages/PastProjectDetailPage'))
+const NewsArchivePage = lazy(() => import('./pages/NewsArchivePage'))
+const NewsArchiveArticlePage = lazy(() => import('./pages/NewsArchiveArticlePage'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -23,6 +27,11 @@ function ScrollToTop() {
     window.scrollTo(0, 0)
   }, [pathname])
   return null
+}
+
+function PastProjectsLayout() {
+  const theme = useAboutTheme()
+  return <Outlet context={{ theme }} />
 }
 
 function NavSync() {
@@ -107,16 +116,17 @@ function AppShell() {
                 ROUTE_PATHS.contact stays — the drawer and footer still link to
                 it, as a real navigation. */}
             <Route path={ROUTE_PATHS.aboutUs} element={<AboutUsPage />} />
-            {/* The pre-conversion About page, kept reachable for side-by-side
-                comparison. Retire this route with LEGACY_PREVIEW_PATHS. */}
-            <Route path="/about-us-legacy" element={<LegacyHtmlPage />} />
-            <Route path={ROUTE_PATHS.pastProjects} element={<LegacyHtmlPage />} />
+            <Route element={<PastProjectsLayout />}>
+              <Route path={ROUTE_PATHS.pastProjects} element={<PastProjectsPage />} />
+              <Route path={`${ROUTE_PATHS.pastProjects}/:projectId`} element={<PastProjectDetailPage />} />
+            </Route>
             {/* No /faqs or /recruitment route: like /contact and /our-work, each
                 is a separate app now (faq-app, recruitment-app), and a
                 client-side route here would shadow it on in-app navigation.
                 ROUTE_PATHS keeps both — the drawer and footer still link to
                 them, as a real navigation. */}
-            <Route path={ROUTE_PATHS.newsArchive} element={<LegacyHtmlPage />} />
+            <Route path={ROUTE_PATHS.newsArchive} element={<NewsArchivePage />} />
+            <Route path={`${ROUTE_PATHS.newsArchive}/:articleId`} element={<NewsArchiveArticlePage />} />
             <Route path={ROUTE_PATHS.notableAwards} element={<NotableAwardsPage />} />
             {/* No /community-activities route: it is its own app now
                 (community-app), like /faqs and /recruitment above. */}

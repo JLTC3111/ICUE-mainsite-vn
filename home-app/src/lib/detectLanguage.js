@@ -9,15 +9,10 @@ const LANG_KEY = 'icue_news_lang'
 const UI_CODES = new Set(['vi', 'de', 'fr', 'ko', 'ja'])
 
 /**
- * English is not in the set above, and that is still deliberate: on this host
- * English means en.icue.vn, and a reader who lands on icue.vn/ with a stored
- * `en` gets the Vietnamese page the URL promised rather than being bounced
- * across domains on load. The flag menu still offers the crossing.
- *
- * About is the one exception. There is a single About page now and it lives
- * here — en.icue.vn/about-us redirects to it — so on that route English has to
- * render, or the redirect would deliver Vietnamese to an English reader. See
- * SHARED_LOCALE_PATHS in routes.js for the other half of that arrangement.
+ * English remains excluded for Home: there it means en.icue.vn, and a stored
+ * preference must not silently turn icue.vn/ into the English home. Every
+ * home-app subpage is different: it is canonical on icue.vn and accepts
+ * English in place.
  */
 function acceptedCodes() {
   return servesAllLocales() ? new Set([...UI_CODES, 'en']) : UI_CODES
@@ -43,14 +38,17 @@ export function detectInitialLanguage() {
   const params = new URLSearchParams(window.location.search)
   const accepted = acceptedCodes()
 
-  // `lang` is this app's own hand-off parameter. `site` is the one Contact and
-  // Our Work already answer to, and it is what en.icue.vn's _redirects sends
-  // when it forwards /about-us here — that file marks all three cross-domain
-  // hops the same way, so this page has to understand the same mark.
+  // `lang` is the canonical hand-off parameter. `site` and `from=en-news`
+  // remain readable for bookmarks created before the routing contract converged.
   const requested = normalizeUiLocale(params.get('lang') || params.get('site'))
   if (requested && accepted.has(requested)) {
     store(requested)
     return requested
+  }
+
+  if (params.get('from') === 'en-news' && accepted.has('en')) {
+    store('en')
+    return 'en'
   }
 
   const saved = readStored()

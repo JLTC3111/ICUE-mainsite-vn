@@ -1,5 +1,29 @@
 {
   "instituteName": "Institut für Bauökonomie und Stadtentwicklung",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | Bauökonomie und Stadtentwicklung",
+      "description": "Offizielle Seite von ICUE Vietnam — Forschung, Beratung und Innovation in Bauökonomie, Planung und nachhaltiger Stadtentwicklung."
+    },
+    "aboutUs": {
+      "title": "Über uns | ICUE Vietnam",
+      "description": "Erfahren Sie mehr über Auftrag, Erfahrung, Team und Innovationskurs des Instituts für Bauökonomie und Stadtentwicklung."
+    },
+    "notableAwards": {
+      "title": "Auszeichnungen | ICUE Vietnam",
+      "description": "Herausragende Auszeichnungen, Anerkennungen und fachliche Meilensteine von ICUE Vietnam."
+    },
+    "pastProjects": {
+      "title": "Abgeschlossene Projekte | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Forschungs-, Planungs- und Stadtentwicklungsprojekte sowie fachliche Arbeiten von ICUE Vietnam."
+    },
+    "newsArchive": {
+      "title": "Nachrichtenarchiv | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "Nachrichten, Beiträge, Veranstaltungen und fachliche Updates von ICUE Vietnam."
+    }
+  },
   "lang": {
     "label": "Seitensprache"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "Zum Ändern der Breite ziehen",
       "homeVideo": "Hintergrundvideo ein-/ausschalten",
       "aboutUsVideo": "Hintergrundvideo ein-/ausschalten (Über uns)",
-      "aboutUsTheme": "Zwischen hellem und dunklem Design wechseln (Über uns)"
+      "aboutUsTheme": "Zwischen hellem und dunklem Design wechseln"
     },
     "contactWordmark": "ÜBER UNS"
   },
@@ -57,6 +81,276 @@
     "cookies": "Cookies",
     "partner": "Partner werden",
     "rights": "Alle Rechte vorbehalten, ICUE."
+  },
+  "awards": {
+    "language": "de",
+    "hero": {
+      "title": "Auszeichnungen & Anerkennung",
+      "description": "Wir ehren Exzellenz in Bau, Planung und Gemeinwesenentwicklung durch Branchenpreise und berufliche Zertifizierungen.",
+      "stats": {
+        "industryAwards": "Branchenpreise",
+        "certifications": "Zertifikate",
+        "years": "Jahre der Exzellenz"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "Aktuelle Auszeichnungen & Erfolge",
+        "description": "Unser Einsatz für Exzellenz wurde von führenden Branchenorganisationen und öffentlichen Stellen anerkannt."
+      },
+      "certifications": {
+        "title": "Berufliche Zertifizierungen",
+        "description": "Unser Team hält die höchsten fachlichen Standards durch kontinuierliche Weiterbildung und Zertifizierung."
+      },
+      "timeline": {
+        "title": "Zeitachse der Anerkennung",
+        "description": "Ein Weg stetiger Exzellenz und wachsender Anerkennung in unserem Fachgebiet."
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "Preis für Projektexzellenz",
+        "organization": "National Association of Construction Professionals",
+        "description": "Anerkannt für herausragendes Projektmanagement und die termingerechte Fertigstellung des Riverside Community Centre 8 % unter Budget bei übertroffenen Nachhaltigkeitszielen.",
+        "projectLabel": "Preisgekröntes Projekt",
+        "projectName": "Erweiterung des Riverside Community Centre"
+      },
+      "planningInnovation": {
+        "title": "Preis für Planungsinnovation",
+        "organization": "American Planning Association",
+        "description": "Gewürdigt für den wegweisenden Einsatz von Bürgerbeteiligungs-Technologie und datengestützter Planung, mit 340 % mehr öffentlicher Mitwirkung.",
+        "projectLabel": "Innovationsschwerpunkt",
+        "projectName": "Digitale Plattform für Bürgerbeteiligung"
+      },
+      "sustainability": {
+        "title": "Führung in nachhaltiger Entwicklung",
+        "organization": "Green Building Council",
+        "description": "Ausgezeichnet für Führungsstärke im nachhaltigen Bauen: LEED Platinum für drei aufeinanderfolgende Projekte und 45 % weniger CO₂-Emissionen.",
+        "projectLabel": "Leistung",
+        "projectName": "LEED-Platinum-Portfolio aus drei Projekten"
+      },
+      "safety": {
+        "title": "Anerkennung für unfallfreie Sicherheit",
+        "organization": "Occupational Safety & Health Administration",
+        "description": "Mehr als 1.000 Tage ohne meldepflichtigen Zwischenfall auf allen laufenden Projekten – Ausdruck unseres Einsatzes für Sicherheit und Schulung.",
+        "projectLabel": "Sicherheitsbilanz",
+        "projectName": "1.247 unfallfreie Tage"
+      },
+      "communityImpact": {
+        "title": "Exzellenz in der Gemeinwirkung",
+        "organization": "International City/County Management Association",
+        "description": "Anerkennung für herausragende öffentlich-private Zusammenarbeit, Infrastrukturverbesserungen im Wert von 4,2 Mio. $ und die Schaffung von über 200 Arbeitsplätzen.",
+        "projectLabel": "Wirkungsbereich",
+        "projectName": "Initiative zur Erneuerung der Innenstadt"
+      },
+      "technology": {
+        "title": "Preis für Technologieintegration",
+        "organization": "Construction Technology Association",
+        "description": "Vorreiter bei BIM, Drohnenvermessung und KI-Projektüberwachung: 25 % kürzere Projektzeiten und 40 % höhere Genauigkeit.",
+        "projectLabel": "Technologieschwerpunkt",
+        "projectName": "Plattform für intelligentes Bauen"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "LEED Accredited Professional",
+        "organization": "U.S. Green Building Council",
+        "logoAlt": "LEED-Logo"
+      },
+      "pmp": {
+        "name": "Project Management Professional",
+        "organization": "Project Management Institute",
+        "logoAlt": "PMP-Logo"
+      },
+      "pe": {
+        "name": "Professional Engineer",
+        "organization": "State Board of Professional Engineers",
+        "logoAlt": "PE-Logo"
+      },
+      "aicp": {
+        "name": "Certified Planner",
+        "organization": "American Institute of Certified Planners",
+        "logoAlt": "AICP-Logo"
+      },
+      "osha": {
+        "name": "OSHA 30-Stunden Bau",
+        "organization": "Occupational Safety & Health Administration",
+        "logoAlt": "OSHA-Logo"
+      },
+      "mbe": {
+        "name": "Minority Business Enterprise",
+        "organization": "Staatliche Zertifizierungsstelle",
+        "logoAlt": "MBE-Logo"
+      }
+    },
+    "statuses": {
+      "active": "Aktiv",
+      "renewing": "In Verlängerung"
+    },
+    "timeline": {
+      "2021": {
+        "title": "Gemeinwesenentwickler",
+        "award": "Preis für Exzellenz im öffentlichen Dienst",
+        "description": "Anerkannt für herausragende öffentlich-private Zusammenarbeit in der Pandemiebewältigung und die schnelle Bereitstellung kritischer Infrastruktur. Leitung des Notfallbaus in fünf Bezirken.",
+        "highlights": [
+          "Pandemiebewältigung",
+          "Notfallbau",
+          "5 Bezirke"
+        ],
+        "stats": [
+          "Notfallprojekte",
+          "↓ Bauzeit",
+          "Unterstützte Menschen"
+        ]
+      },
+      "2022": {
+        "title": "Technologiepionier",
+        "award": "Integration von Bautechnologie",
+        "description": "Erste im Gebiet mit vollständiger Integration von KI-Projektüberwachung und Drohnenvermessung, 25 % kürzere Laufzeiten. Wegweisende Methoden des intelligenten Bauens wurden zum Branchenmaßstab.",
+        "highlights": [
+          "KI-Überwachung",
+          "Drohnenvermessung",
+          "Intelligentes BIM"
+        ],
+        "stats": [
+          "↓ Zeit",
+          "↑ Genauigkeit",
+          "Technologiepreise"
+        ]
+      },
+      "2023": {
+        "title": "Führung in Nachhaltigkeit",
+        "award": "Anerkennung für grünes Bauen & Sicherheit",
+        "description": "Dreimal LEED Platinum und eine Sicherheitsbilanz von über 1.000 Tagen – Bestätigung der Branchenführung in nachhaltiger Praxis. Ein transformativer Ansatz für klimaneutrales Bauen.",
+        "highlights": [
+          "LEED Platinum x3",
+          "Unfallfrei",
+          "Klimaneutral"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "Sichere Tage",
+          "↓ CO₂"
+        ]
+      },
+      "2024": {
+        "title": "Jahr der höchsten Anerkennung",
+        "award": "Preise für Projektexzellenz & Innovation",
+        "description": "Das preisreichste Jahr, mit Anerkennung von NACP und APA für Innovation in der Bürgerbeteiligung und herausragendes Projektmanagement. Digitale Plattformen steigerten die öffentliche Mitwirkung.",
+        "highlights": [
+          "NACP-Exzellenz",
+          "APA-Innovation",
+          "Digitale Führung"
+        ],
+        "stats": [
+          "Hauptpreise",
+          "↑ Mitwirkung",
+          "Projektwert"
+        ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "Neu",
+      "ctaTitle": "Der neue ICUE-Newsroom",
+      "ctaSub": "Lesen Sie die neuesten Beiträge auf unserer aktualisierten Nachrichtenplattform.",
+      "ctaButton": "Zum Newsroom →",
+      "readArticle": "Artikel lesen →",
+      "locationLabel": "Ort",
+      "carouselLabel": "Artikel",
+      "backToList": "← Nachrichtenarchiv",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "articleNav": "Benachbarte Artikel",
+      "closeImage": "Schließen",
+      "previousImage": "Vorheriges Medium",
+      "nextImage": "Nächstes Medium",
+      "download": "Herunterladen",
+      "videoLabel": "Video",
+      "playVideo": "Video abspielen"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "Abgeschlossene Projekte",
+      "description": "Eine Auswahl der ICUE-Arbeit in Planung, angewandter Forschung, Bauökonomie und Stadtentwicklung.",
+      "yearCompleted": "Fertigstellung",
+      "descriptionLabel": "Beschreibung",
+      "locationLabel": "Ort",
+      "backToList": "← Alle Projekte",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "articleNav": "Benachbarte Projekte",
+      "closeImage": "Bild schließen",
+      "previousImage": "Vorheriges Bild",
+      "nextImage": "Nächstes Bild"
+    },
+    "items": {
+      "laoCai": {
+        "title": "Anpassung des Flächennutzungsplans der Stadt Lào Cai",
+        "location": "Stadt Lào Cai",
+        "scale": "Umfang: 28.162,64 ha, bis 2045",
+        "imageAlt": "Flächennutzungsplan der Stadt Lào Cai",
+        "body": "Das Plangebiet umfasst 28.162,64 ha und soll bis 2045 umgesetzt werden. Es ist eine langfristige Strategie zur Neuordnung des Stadtraums, damit Flächen flexibel, nachhaltig und klimaanpassungsfähig genutzt werden können. Wohnen, Gewerbe, Industrie, öffentliche Räume und Grünflächen werden ausbalanciert, Verkehr, Wasser, Energie und digitale Netze ausgebaut. Zugleich wird das Wachstum der Bevölkerung und neuer Wohnquartiere gesteuert, damit Lào Cai als regionales Wirtschafts- und Verkehrszentrum gestärkt wird."
+      },
+      "hopThanh": {
+        "title": "Bebauungsplan der Gemeinde Hợp Thành im Maßstab 1/500",
+        "location": "Gemeinde Hợp Thành, Stadt Lào Cai",
+        "scale": "Umfang: 2.693,3 ha",
+        "imageAlt": "Bebauungsplan Hợp Thành, Lào Cai",
+        "body": "Dieser 2.693,3 ha große Bebauungsplan im Maßstab 1/500 übersetzt den gesamtstädtischen Plan in klare Funktionszonen, ein Straßennetz sowie technische und soziale Infrastruktur. Er soll die Grundlage für eine nachhaltige Urbanisierung bilden: ein modernes, abgestimmtes und umweltverträgliches Quartier, das sich an künftige wirtschaftliche und soziale Nachfrage anpassen kann."
+      },
+      "subdivision6b": {
+        "title": "Teilbebauungsplan 6B (Stadtteil Nguyễn Ái Quốc)",
+        "location": "Stadt Hải Dương",
+        "scale": "Umfang: 1.159 ha",
+        "imageAlt": "Teilbebauungsplan 6B, Stadtteil Nguyễn Ái Quốc",
+        "body": "Teilgebiet 6B ist ein strategischer Schritt zur Neuordnung von Hải Dương auf mehr als 1.100 ha im Stadtteil Nguyễn Ái Quốc. Der Plan stimmt die technische Infrastruktur ab, erweitert den ökologischen Stadtraum und legt moderne Funktionsquartiere fest."
+      },
+      "cocSan": {
+        "title": "Teilbebauungsplan Cốc San",
+        "location": "Stadt Lào Cai",
+        "scale": "Umfang: 1.173,1 ha",
+        "imageAlt": "Teilbebauungsplan Cốc San",
+        "body": "Cốc San ist ein Schlüsselgebiet der Stadterweiterung von Lào Cai. Fortschrittliche technische Infrastruktur wird mit der bestehenden Landschaft zu einem ausgewogenen ökologischen Quartier verbunden und schafft Raum für hochwertiges Wohnen, Dienstleistungen und öffentliche Einrichtungen an der regionalen Verkehrsachse."
+      },
+      "dongYen": {
+        "title": "Städtebaulicher Rahmenplan Đông Yên, Kreis Bắc Quang",
+        "location": "Gemeinde Đồng Yên, Stadt Hà Giang",
+        "scale": "Umfang: 4.407,9 ha; bis 2035, Orientierung 2050",
+        "imageAlt": "Rahmenplan Đông Yên",
+        "body": "Đông Yên ist ein ambitionierter Gesamtplan von fast 4.500 ha mit Horizont 2050. Geplant ist eine intelligente Satellitenstadt, die Wohnen, Arbeiten und Freizeit verbindet und als Investitionsstandort sowie Modell für nachhaltige Urbanität im Norden dienen soll."
+      },
+      "naChi": {
+        "title": "Städtebaulicher Rahmenplan Nà Chì, Kreis Xín Mần",
+        "location": "Gemeinde Nà Chì, Xín Mần, Hà Giang",
+        "scale": "Umfang: 8.038,7 ha, bis 2035, Orientierung 2050",
+        "imageAlt": "Rahmenplan Nà Chì",
+        "body": "Nà Chì gehört zu den größten Plänen im nördlichen Bergland. Auf mehr als 8.000 ha sollen Infrastruktur, Dienstleistungen und Investitionen in Xín Mần gestärkt werden, ohne die Identität der Hochlagen aufzugeben."
+      },
+      "tanBac": {
+        "title": "Städtebaulicher Rahmenplan Tân Bắc, Kreis Quang Bình",
+        "location": "Gemeinde Tân Bắc, Quang Bình, Hà Giang",
+        "scale": "Umfang: 6.297,1 ha, bis 2035, Orientierung 2050",
+        "imageAlt": "Rahmenplan Tân Bắc",
+        "body": "Tân Bắc entwickelt sich zu einem neuen Zentrum des Kreises Quang Bình. Der Plan von mehr als 6.000 ha konzentriert sich auf zeitgemäße Wohnräume, grüne Technologien und abgestimmte öffentliche Einrichtungen – ein Hochlandmodell mit lokalem Charakter."
+      },
+      "namDong": {
+        "title": "Teilbebauungsplan 5A (Stadtteil Nam Đồng), Stadt Hải Dương",
+        "location": "Stadt Hải Dương, Provinz Hải Dương",
+        "scale": "Umfang: 332,16 ha, Maßstab 1/2000",
+        "imageAlt": "Teilbebauungsplan 5A, Stadtteil Nam Đồng",
+        "body": "Teilgebiet 5A ist ein Kernstück der nachhaltigen Wachstumsstrategie von Hải Dương. Auf gut 330 ha stehen eine moderne Stadtstruktur, bessere Verbindungen und ein flexibleres städtisches Ökosystem im Mittelpunkt."
+      },
+      "xuanAn": {
+        "title": "Bebauungsplan für das Ökoquartier Park City Xuân An",
+        "location": "Markt Xuân An, Kreis Nghi Xuân, Provinz Hà Tĩnh",
+        "scale": "Umfang: 27,7 ha, Maßstab 1/500",
+        "imageAlt": "Ökoquartier Park City Xuân An",
+        "body": "Park City Xuân An ist ein kompaktes, sorgfältig entworfenes Ökoquartier von knapp 28 ha. Unter dem Leitgedanken „grün leben, gesund leben“ verbindet es großzügige Grünräume mit modernen Angeboten und abgestimmter Infrastruktur."
+      }
+    }
   },
   "about": {
     "hero": {

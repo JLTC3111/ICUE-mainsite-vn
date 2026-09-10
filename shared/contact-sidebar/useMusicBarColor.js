@@ -23,7 +23,7 @@ function contrastRatio(first, second) {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-function pickBarColor(rgb) {
+export function pickBarColor(rgb) {
   if (!rgb) return FALLBACK_COLOR
 
   const backgroundLuminance = relativeLuminance(rgb)

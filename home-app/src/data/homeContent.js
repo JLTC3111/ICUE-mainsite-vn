@@ -82,11 +82,10 @@ export function buildHero(t, locale) {
  * the reader's locale. `ourWork` was alone here while /recruitment was a
  * Vietnamese-only page injected into this app; it renders all six languages of
  * its own now, so its three cards were handing over a bare path and leaving the
- * locale to whatever localStorage happened to hold. The news and past-project
- * cards are absent on purpose: they point at legacy `?id=` templates that have
- * no locale to carry.
+ * locale to whatever localStorage happened to hold. News cards still point at
+ * the legacy article template. Past-project cards now use `/past-projects/:id`.
  */
-const LOCALIZED_CARD_SECTIONS = new Set(['ourWork', 'recruitment'])
+const LOCALIZED_CARD_SECTIONS = new Set(['ourWork', 'recruitment', 'pastProjects', 'news'])
 
 export function buildHomeSections(t, locale) {
   return SECTION_LAYOUT.map((section) => ({

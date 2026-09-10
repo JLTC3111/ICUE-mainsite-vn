@@ -68,6 +68,21 @@ function localeHrefForNavLink(link, locale) {
   return target;
 }
 
+function localeHomeHref(homeHref, locale) {
+  if (typeof window === 'undefined') return withLocale(homeHref, locale);
+
+  const host = window.location.hostname.toLowerCase();
+  if (host.includes('localhost') || host.includes('127.0.0.1')) {
+    return withLocale(homeHref, locale);
+  }
+
+  return resolveMainSiteLink(
+    'Home',
+    locale,
+    mainSiteOriginForLocale(locale),
+  );
+}
+
 function getPageFromHash() {
   const hash = window.location.hash || '#/Home';
   return hash.replace('#/', '') || 'Home';
@@ -77,7 +92,7 @@ function getPageVisibility(page) {
   return {
     showContactLink: true,
     showHomeVideoToggle: page === 'Home',
-    showAboutUsVideoToggle: page === 'aboutUs',
+    showAboutUsVideoToggle: page === 'aboutUs' || page === 'pastProjects' || page === 'notableAwards',
     // No page needs the dark nav any more: community-activities was the only
     // one, and it sits on the same light ground as the other apps now.
     darkNav: false,
@@ -374,7 +389,7 @@ export default function MainSiteNav({
     ),
     [labels, locale, pillOverflowItems],
   );
-  const localizedHomeHref = withLocale(homeHref, locale);
+  const localizedHomeHref = localeHomeHref(homeHref, locale);
   const localizedContactHref = withLocale(contactHref, locale);
 
   const { navLinks, people } = useMemo(

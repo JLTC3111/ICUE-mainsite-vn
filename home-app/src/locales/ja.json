@@ -1,5 +1,29 @@
 {
   "instituteName": "建設経済・都市計画研究所",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | 建設経済と都市開発",
+      "description": "ICUE Vietnamの公式サイト — 建設経済、都市計画、持続可能な都市開発における研究、コンサルティング、革新。"
+    },
+    "aboutUs": {
+      "title": "私たちについて | ICUE Vietnam",
+      "description": "建設経済・都市計画研究所の使命、経験、チーム、革新の方向性をご紹介します。"
+    },
+    "notableAwards": {
+      "title": "受賞歴 | ICUE Vietnam",
+      "description": "ICUE Vietnamの主な受賞、表彰、専門上の節目。"
+    },
+    "pastProjects": {
+      "title": "実施済みプロジェクト | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "ICUE Vietnamが実施した研究、計画、都市開発、専門プロジェクトをご覧ください。"
+    },
+    "newsArchive": {
+      "title": "ニュースアーカイブ | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "ICUE Vietnamのニュース、記事、イベント、専門活動の更新。"
+    }
+  },
   "lang": {
     "label": "ページの言語"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "ドラッグしてメニューの幅を変更",
       "homeVideo": "背景動画のオン/オフ",
       "aboutUsVideo": "背景動画のオン/オフ（私たちについて）",
-      "aboutUsTheme": "ライト/ダークテーマの切り替え（私たちについて）"
+      "aboutUsTheme": "ライト/ダークテーマの切り替え"
     },
     "contactWordmark": "私たちについて"
   },
@@ -57,6 +81,276 @@
     "cookies": "Cookie",
     "partner": "パートナーになる",
     "rights": "著作権はICUEに帰属します。"
+  },
+  "awards": {
+    "language": "ja",
+    "hero": {
+      "title": "受賞と表彰",
+      "description": "建設、都市計画、地域社会の発展における卓越性を、業界賞と専門資格を通じて称えます。",
+      "stats": {
+        "industryAwards": "業界賞",
+        "certifications": "資格認定",
+        "years": "卓越の年"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "近年の受賞と成果",
+        "description": "卓越性への取り組みは、主要な業界団体と公的機関から認められています。"
+      },
+      "certifications": {
+        "title": "専門資格",
+        "description": "私たちのチームは、継続的な研修と資格維持を通じて最高水準の専門基準を守っています。"
+      },
+      "timeline": {
+        "title": "表彰の歩み",
+        "description": "私たちの分野における継続的な卓越と、高まる認知の軌跡です。"
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "プロジェクト優秀賞",
+        "organization": "National Association of Construction Professionals",
+        "description": "優れたプロジェクト管理と、Riverside Community Centreを予定どおり、予算を8%下回って完成させ、持続可能性の目標を上回ったことが認められました。",
+        "projectLabel": "受賞プロジェクト",
+        "projectName": "Riverside Community Centre拡張"
+      },
+      "planningInnovation": {
+        "title": "計画イノベーション賞",
+        "organization": "American Planning Association",
+        "description": "住民参加技術とデータに基づく計画の先駆的活用が評価され、市民参加が340%増加しました。",
+        "projectLabel": "イノベーションの焦点",
+        "projectName": "デジタル住民参加プラットフォーム"
+      },
+      "sustainability": {
+        "title": "持続可能な開発のリーダーシップ",
+        "organization": "Green Building Council",
+        "description": "持続可能な建設におけるリーダーシップが評価され、連続3件のプロジェクトでLEED Platinumを取得し、炭素排出を45%削減しました。",
+        "projectLabel": "成果",
+        "projectName": "LEED Platinum 3プロジェクトの実績"
+      },
+      "safety": {
+        "title": "無事故安全表彰",
+        "organization": "Occupational Safety & Health Administration",
+        "description": "進行中の全プロジェクトで記録対象の事故なく1,000日超を達成し、安全と人材育成への取り組みを示しました。",
+        "projectLabel": "安全記録",
+        "projectName": "無事故1,247日"
+      },
+      "communityImpact": {
+        "title": "地域社会への貢献優秀賞",
+        "organization": "International City/County Management Association",
+        "description": "優れた官民連携、420万ドル規模の地域インフラ改善、200件超の雇用創出が認められました。",
+        "projectLabel": "影響分野",
+        "projectName": "都心再生イニシアチブ"
+      },
+      "technology": {
+        "title": "技術統合賞",
+        "organization": "Construction Technology Association",
+        "description": "BIM、ドローン測量、AIによるプロジェクト監視の導入を主導し、工期を25%短縮、精度を40%向上させました。",
+        "projectLabel": "技術の焦点",
+        "projectName": "スマート建設プラットフォーム"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "LEED Accredited Professional",
+        "organization": "U.S. Green Building Council",
+        "logoAlt": "LEEDロゴ"
+      },
+      "pmp": {
+        "name": "Project Management Professional",
+        "organization": "Project Management Institute",
+        "logoAlt": "PMPロゴ"
+      },
+      "pe": {
+        "name": "Professional Engineer",
+        "organization": "State Board of Professional Engineers",
+        "logoAlt": "PEロゴ"
+      },
+      "aicp": {
+        "name": "Certified Planner",
+        "organization": "American Institute of Certified Planners",
+        "logoAlt": "AICPロゴ"
+      },
+      "osha": {
+        "name": "OSHA建設30時間",
+        "organization": "Occupational Safety & Health Administration",
+        "logoAlt": "OSHAロゴ"
+      },
+      "mbe": {
+        "name": "Minority Business Enterprise",
+        "organization": "州認定機関",
+        "logoAlt": "MBEロゴ"
+      }
+    },
+    "statuses": {
+      "active": "有効",
+      "renewing": "更新中"
+    },
+    "timeline": {
+      "2021": {
+        "title": "コミュニティ開発者",
+        "award": "公共サービス優秀賞",
+        "description": "パンデミック対応における優れた官民連携が認められ、重要なインフラを迅速に提供しました。5つの地区で緊急建設を主導しました。",
+        "highlights": [
+          "パンデミック対応",
+          "緊急建設",
+          "5地区"
+        ],
+        "stats": [
+          "緊急プロジェクト",
+          "↓ 工期",
+          "支援した人々"
+        ]
+      },
+      "2022": {
+        "title": "技術の先駆者",
+        "award": "建設技術の統合",
+        "description": "地域で初めてAIプロジェクト監視とドローン測量を完全統合し、工期を25%短縮しました。スマート建設の手法は業界の基準となりました。",
+        "highlights": [
+          "AI監視",
+          "ドローン測量",
+          "スマートBIM"
+        ],
+        "stats": [
+          "↓ 時間",
+          "↑ 精度",
+          "技術賞"
+        ]
+      },
+      "2023": {
+        "title": "持続可能性のリーダー",
+        "award": "グリーンビルディングと安全の表彰",
+        "description": "LEED Platinumを3度取得し、1,000日超の無事故記録を達成して、持続可能な実践における業界のリーダーシップを示しました。カーボンニュートラル建設への革新的な取り組みです。",
+        "highlights": [
+          "LEED Platinum x3",
+          "無事故",
+          "カーボンニュートラル"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "安全日数",
+          "↓ 炭素"
+        ]
+      },
+      "2024": {
+        "title": "最も高い評価を受けた年",
+        "award": "プロジェクト優秀賞とイノベーション賞",
+        "description": "最も多くの賞を受けた年であり、住民参加の革新と優れたプロジェクト管理についてNACPとAPAから認められました。デジタルプラットフォームが市民参加を高めました。",
+        "highlights": [
+          "NACP優秀賞",
+          "APAイノベーション",
+          "デジタルリーダーシップ"
+        ],
+        "stats": [
+          "主要賞",
+          "↑ 参加",
+          "プロジェクト価値"
+        ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "新着",
+      "ctaTitle": "ICUEの新しいニュースルーム",
+      "ctaSub": "アップグレードされたニュース基盤で最新記事をご覧ください。",
+      "ctaButton": "ニュースルームを開く →",
+      "readArticle": "記事を読む →",
+      "locationLabel": "場所",
+      "carouselLabel": "記事",
+      "backToList": "← ニュースアーカイブ",
+      "previous": "前へ",
+      "next": "次へ",
+      "articleNav": "前後の記事",
+      "closeImage": "閉じる",
+      "previousImage": "前のメディア",
+      "nextImage": "次のメディア",
+      "download": "ダウンロード",
+      "videoLabel": "動画",
+      "playVideo": "動画を再生"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "実施済みプロジェクト",
+      "description": "都市計画、応用研究、建設経済、都市開発におけるICUEの実績を紹介する一覧です。",
+      "yearCompleted": "完成年",
+      "descriptionLabel": "概要",
+      "locationLabel": "位置",
+      "backToList": "← すべてのプロジェクト",
+      "previous": "前へ",
+      "next": "次へ",
+      "articleNav": "前後のプロジェクト",
+      "closeImage": "画像を閉じる",
+      "previousImage": "前の画像",
+      "nextImage": "次の画像"
+    },
+    "items": {
+      "laoCai": {
+        "title": "ラオカイ市総合計画の見直し",
+        "location": "ラオカイ市",
+        "scale": "規模：28,162.64ha、2045年まで",
+        "imageAlt": "ラオカイ市の総合計画",
+        "body": "計画面積は28,162.64ha、完成目標は2045年です。気候変動に適応しつつ、土地を柔軟かつ持続的に使うための長期的な都市再編です。住宅・商業・工業・公共空間・緑地の配分を整え、交通・上下水・エネルギー・情報通信を拡充し、人口増と新しい居住地を見据えてラオカイを広域の経済・交通拠点へと高めます。"
+      },
+      "hopThanh": {
+        "title": "ホップタイン社詳細建設計画 1/500",
+        "location": "ラオカイ市ホップタイン社",
+        "scale": "規模：2,693.3ha",
+        "imageAlt": "ラオカイ・ホップタインの詳細計画",
+        "body": "2,693.3ha、縮尺1/500の詳細建設計画で、総合計画の方針を機能分区、道路網、技術・社会インフラとして具体化します。将来の経済・社会需要に応えられる、現代的で環境に配慮した市街地の基盤づくりが目的です。"
+      },
+      "subdivision6b": {
+        "title": "分区計画6B（グエンアイクオック坊）",
+        "location": "ハイズオン市",
+        "scale": "規模：1,159ha",
+        "imageAlt": "分区計画6B、グエンアイクオック坊",
+        "body": "分区6Bはハイズオン再編の戦略的段階で、グエンアイクオック坊の1,100ha超にわたり技術インフラを整え、生態的な都市空間を広げ、現代的な機能地区を定めます。"
+      },
+      "cocSan": {
+        "title": "コックサン建設分区計画",
+        "location": "ラオカイ市",
+        "scale": "規模：1,173.1ha",
+        "imageAlt": "コックサン建設分区計画",
+        "body": "コックサン分区はラオカイの都市拡張の要です。高度な技術インフラと既存の景観を組み合わせ、均衡の取れた生態都市を形成し、良質な住宅・商業・公共施設を広域交通軸につなぎます。"
+      },
+      "dongYen": {
+        "title": "ドンイエン都市総合計画、バククアン県",
+        "location": "ハザン市ドンイエン社",
+        "scale": "規模：4,407.9ha、2035年まで、2050年を見据える",
+        "imageAlt": "ドンイエン都市総合計画",
+        "body": "ドンイエンは約4,500ha、2050年を見据えた総合計画です。住む・働く・楽しむを備えたスマート衛星都市を目指し、北部における持続可能で現代的な都市モデルとなることを狙っています。"
+      },
+      "naChi": {
+        "title": "ナーチー都市総合計画、シンマン県",
+        "location": "ハザン省シンマン県ナーチー社",
+        "scale": "規模：8,038.7ha、2035年まで、2050年を見据える",
+        "imageAlt": "ナーチー都市総合計画",
+        "body": "ナーチーは北部山岳部で最も大きな計画の一つです。8,000ha超の規模でシンマンのインフラ・サービス・投資を引き上げつつ、高地の個性を保ち、スマートな基盤モデルを導入します。"
+      },
+      "tanBac": {
+        "title": "タンバク都市総合計画、クアンビン県",
+        "location": "ハザン省クアンビン県タンバク社",
+        "scale": "規模：6,297.1ha、2035年まで、2050年を見据える",
+        "imageAlt": "タンバク都市総合計画",
+        "body": "タンバクはクアンビン県の新たな中心になりつつあります。6,000ha超の本計画は、現代的な居住空間、グリーン技術の生態系、整った公共施設に焦点を当てています。"
+      },
+      "namDong": {
+        "title": "分区計画5A（ナムドン坊）、ハイズオン市",
+        "location": "ハイズオン省ハイズオン市",
+        "scale": "規模：332.16ha、縮尺1/2000",
+        "imageAlt": "分区計画5A、ナムドン坊",
+        "body": "分区5Aはハイズオンの持続的成長戦略の中核です。330ha超の敷地で現代的な都市空間、接続性、柔軟な都市生態系を整え、ナムドン一帯の生活の質と魅力を高めます。"
+      },
+      "xuanAn": {
+        "title": "パークシティスアンアン生態都市詳細計画",
+        "location": "ハティン省ギスアン県スアンアン町",
+        "scale": "規模：27.7ha、縮尺1/500",
+        "imageAlt": "パークシティスアンアン生態都市",
+        "body": "パークシティスアンアンは約28haのコンパクトな高級生態都市です。「緑に生き、健やかに生きる」を指針に、広い緑地と現代的な商業施設、整ったインフラを組み合わせた、ハティンと中部への新しい都市提案です。"
+      }
+    }
   },
   "about": {
     "hero": {

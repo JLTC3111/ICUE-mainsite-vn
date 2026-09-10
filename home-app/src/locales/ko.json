@@ -1,5 +1,29 @@
 {
   "instituteName": "건설경제·도시계획연구소",
+  "meta": {
+    "home": {
+      "title": "ICUE Vietnam | 건설경제와 도시발전",
+      "description": "ICUE Vietnam 공식 사이트 — 건설경제, 도시계획, 지속가능한 도시발전 분야의 연구, 자문, 혁신."
+    },
+    "aboutUs": {
+      "title": "소개 | ICUE Vietnam",
+      "description": "건설경제·도시계획연구소의 사명, 경험, 팀, 혁신 방향을 알아보세요."
+    },
+    "notableAwards": {
+      "title": "수상 실적 | ICUE Vietnam",
+      "description": "ICUE Vietnam의 주요 수상, 인정, 전문 이정표."
+    },
+    "pastProjects": {
+      "title": "수행 프로젝트 | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "ICUE Vietnam이 수행한 연구, 계획, 도시발전, 전문 프로젝트를 살펴보세요."
+    },
+    "newsArchive": {
+      "title": "뉴스 아카이브 | ICUE Vietnam",
+      "itemTitle": "{{title}} | ICUE Vietnam",
+      "description": "ICUE Vietnam의 뉴스, 기사, 행사, 전문 활동 소식."
+    }
+  },
   "lang": {
     "label": "페이지 언어"
   },
@@ -38,7 +62,7 @@
       "resizeMenuTitle": "드래그하여 메뉴 크기 조절",
       "homeVideo": "배경 영상 켜기/끄기",
       "aboutUsVideo": "배경 영상 켜기/끄기 (소개)",
-      "aboutUsTheme": "밝은/어두운 테마 전환 (소개)"
+      "aboutUsTheme": "밝은/어두운 테마 전환"
     },
     "contactWordmark": "소개"
   },
@@ -57,6 +81,276 @@
     "cookies": "쿠키",
     "partner": "파트너십 문의",
     "rights": "저작권은 ICUE에 있습니다."
+  },
+  "awards": {
+    "language": "ko",
+    "hero": {
+      "title": "수상 및 인정",
+      "description": "건설, 도시계획, 지역사회 발전 분야의 탁월함을 업계 수상과 전문 자격으로 기립니다.",
+      "stats": {
+        "industryAwards": "업계 수상",
+        "certifications": "자격 인증",
+        "years": "탁월함의 해"
+      }
+    },
+    "sections": {
+      "recent": {
+        "title": "최근 수상 및 성과",
+        "description": "탁월함을 향한 우리의 노력은 주요 업계 기관과 공공기관으로부터 인정받았습니다."
+      },
+      "certifications": {
+        "title": "전문 자격",
+        "description": "우리 팀은 지속적인 교육과 자격 유지를 통해 최고 수준의 전문 기준을 지킵니다."
+      },
+      "timeline": {
+        "title": "인정 연혁",
+        "description": "우리 분야에서 이어 온 탁월함과 점점 커진 인정의 여정입니다."
+      }
+    },
+    "items": {
+      "projectExcellence": {
+        "title": "우수 프로젝트상",
+        "organization": "National Association of Construction Professionals",
+        "description": "탁월한 프로젝트 관리와 Riverside Community Centre를 일정에 맞춰, 예산보다 8% 절감하며 완공하고 지속가능성 목표를 초과 달성한 점을 인정받았습니다.",
+        "projectLabel": "수상 프로젝트",
+        "projectName": "Riverside Community Centre 증축"
+      },
+      "planningInnovation": {
+        "title": "계획 혁신상",
+        "organization": "American Planning Association",
+        "description": "시민 참여 기술과 데이터 기반 계획의 선도적 활용을 인정받았으며, 공공 참여가 340% 증가했습니다.",
+        "projectLabel": "혁신 초점",
+        "projectName": "디지털 시민 참여 플랫폼"
+      },
+      "sustainability": {
+        "title": "지속가능 발전 리더십",
+        "organization": "Green Building Council",
+        "description": "지속가능한 건설 분야의 리더십으로 선정되어, 연속 3개 프로젝트에서 LEED Platinum을 획득하고 탄소 배출을 45% 줄였습니다.",
+        "projectLabel": "성과",
+        "projectName": "LEED Platinum 3개 프로젝트 포트폴리오"
+      },
+      "safety": {
+        "title": "무사고 안전 인정",
+        "organization": "Occupational Safety & Health Administration",
+        "description": "진행 중인 모든 프로젝트에서 기록 가능한 사고 없이 1,000일 이상을 달성하며, 안전과 근로자 교육에 대한 의지를 보여 주었습니다.",
+        "projectLabel": "안전 기록",
+        "projectName": "1,247일 무사고"
+      },
+      "communityImpact": {
+        "title": "지역사회 영향 우수상",
+        "organization": "International City/County Management Association",
+        "description": "뛰어난 민관 협력, 420만 달러 규모의 지역 인프라 개선, 200개 이상의 일자리 창출을 인정받았습니다.",
+        "projectLabel": "영향 분야",
+        "projectName": "도심 재생 이니셔티브"
+      },
+      "technology": {
+        "title": "기술 통합상",
+        "organization": "Construction Technology Association",
+        "description": "BIM, 드론 측량, AI 프로젝트 모니터링 도입을 이끌어 사업 기간을 25% 단축하고 정확도를 40% 높였습니다.",
+        "projectLabel": "기술 초점",
+        "projectName": "스마트 건설 플랫폼"
+      }
+    },
+    "certifications": {
+      "leed": {
+        "name": "LEED Accredited Professional",
+        "organization": "U.S. Green Building Council",
+        "logoAlt": "LEED 로고"
+      },
+      "pmp": {
+        "name": "Project Management Professional",
+        "organization": "Project Management Institute",
+        "logoAlt": "PMP 로고"
+      },
+      "pe": {
+        "name": "Professional Engineer",
+        "organization": "State Board of Professional Engineers",
+        "logoAlt": "PE 로고"
+      },
+      "aicp": {
+        "name": "Certified Planner",
+        "organization": "American Institute of Certified Planners",
+        "logoAlt": "AICP 로고"
+      },
+      "osha": {
+        "name": "OSHA 건설 30시간",
+        "organization": "Occupational Safety & Health Administration",
+        "logoAlt": "OSHA 로고"
+      },
+      "mbe": {
+        "name": "Minority Business Enterprise",
+        "organization": "주 인증 기관",
+        "logoAlt": "MBE 로고"
+      }
+    },
+    "statuses": {
+      "active": "유효",
+      "renewing": "갱신 중"
+    },
+    "timeline": {
+      "2021": {
+        "title": "지역사회 개발자",
+        "award": "공공 서비스 우수상",
+        "description": "팬데믹 대응에서 뛰어난 민관 협력을 인정받아 핵심 인프라를 신속히 제공했습니다. 5개 지역의 긴급 건설을 이끌었습니다.",
+        "highlights": [
+          "팬데믹 대응",
+          "긴급 건설",
+          "5개 지역"
+        ],
+        "stats": [
+          "긴급 프로젝트",
+          "↓ 공사 기간",
+          "지원받은 사람들"
+        ]
+      },
+      "2022": {
+        "title": "기술 선구자",
+        "award": "건설 기술 통합",
+        "description": "지역 최초로 AI 프로젝트 모니터링과 드론 측량을 완전히 통합해 일정을 25% 단축했습니다. 스마트 건설 방법론은 업계 기준이 되었습니다.",
+        "highlights": [
+          "AI 모니터링",
+          "드론 측량",
+          "스마트 BIM"
+        ],
+        "stats": [
+          "↓ 시간",
+          "↑ 정확도",
+          "기술상"
+        ]
+      },
+      "2023": {
+        "title": "지속가능성 리더",
+        "award": "친환경 건축 및 안전 인정",
+        "description": "LEED Platinum을 세 차례 획득하고 1,000일 이상 무사고 기록을 세워 지속가능 관행의 업계 리더십을 확인했습니다. 탄소 중립 건설에 대한 혁신적 접근입니다.",
+        "highlights": [
+          "LEED Platinum x3",
+          "무사고",
+          "탄소 중립"
+        ],
+        "stats": [
+          "LEED Platinum",
+          "안전 일수",
+          "↓ 탄소"
+        ]
+      },
+      "2024": {
+        "title": "최고 인정의 해",
+        "award": "우수 프로젝트 및 혁신상",
+        "description": "가장 많은 상을 받은 해로, 시민 참여 혁신과 탁월한 프로젝트 관리에 대해 NACP와 APA의 인정을 받았습니다. 디지털 플랫폼이 공공 참여를 높였습니다.",
+        "highlights": [
+          "NACP 우수상",
+          "APA 혁신",
+          "디지털 리더십"
+        ],
+        "stats": [
+          "주요 수상",
+          "↑ 참여",
+          "프로젝트 가치"
+        ]
+      }
+    }
+  },
+  "newsArchive": {
+    "page": {
+      "ctaEyebrow": "신규",
+      "ctaTitle": "ICUE 새 뉴스룸",
+      "ctaSub": "업그레이드된 뉴스 플랫폼에서 최신 글을 확인하세요.",
+      "ctaButton": "뉴스룸 열기 →",
+      "readArticle": "기사 읽기 →",
+      "locationLabel": "장소",
+      "carouselLabel": "기사",
+      "backToList": "← 뉴스 아카이브",
+      "previous": "이전",
+      "next": "다음",
+      "articleNav": "인접 기사",
+      "closeImage": "닫기",
+      "previousImage": "이전 미디어",
+      "nextImage": "다음 미디어",
+      "download": "다운로드",
+      "videoLabel": "동영상",
+      "playVideo": "동영상 재생"
+    }
+  },
+  "projects": {
+    "page": {
+      "title": "수행 프로젝트",
+      "description": "ICUE의 도시계획, 응용 연구, 건설경제, 도시개발 경험을 보여주는 프로젝트 목록입니다.",
+      "yearCompleted": "준공 연도",
+      "descriptionLabel": "설명",
+      "locationLabel": "위치",
+      "backToList": "← 전체 프로젝트",
+      "previous": "이전",
+      "next": "다음",
+      "articleNav": "인접 프로젝트",
+      "closeImage": "이미지 닫기",
+      "previousImage": "이전 이미지",
+      "nextImage": "다음 이미지"
+    },
+    "items": {
+      "laoCai": {
+        "title": "라오까이시 도시기본계획 조정",
+        "location": "라오까이시",
+        "scale": "규모: 28,162.64ha, 2045년까지",
+        "imageAlt": "라오까이시 도시기본계획",
+        "body": "계획 면적은 28,162.64ha이며 목표는 2045년 완료입니다. 기후변화에 적응하면서 토지를 유연하고 지속가능하게 쓰도록 도시 공간을 재구성하는 장기 전략입니다. 주거·상업·산업·공공공간·녹지를 균형 있게 배분하고 교통·상하수도·에너지·정보통신 기반을 확충하며, 인구 증가와 신규 주거지를 계획해 라오까이를 지역 경제·교통 거점으로 높입니다."
+      },
+      "hopThanh": {
+        "title": "합타인 사 상세건설계획 1/500",
+        "location": "라오까이시 합타인 사",
+        "scale": "규모: 2,693.3ha",
+        "imageAlt": "라오까이 합타인 상세계획",
+        "body": "면적 2,693.3ha의 1/500 상세건설계획으로, 도시기본계획의 방향을 기능 구역, 도로망, 기술·사회 기반시설로 구체화합니다. 현대적이고 환경친화적인 지구를 만들어 향후 경제·사회 수요에 대응하고 기존 기반을 정비하는 것이 목표입니다."
+      },
+      "subdivision6b": {
+        "title": "6B 지구 계획 (응우옌아이꾸옥 동)",
+        "location": "하이즈엉시",
+        "scale": "규모: 1,159ha",
+        "imageAlt": "6B 지구 계획, 응우옌아이꾸옥 동",
+        "body": "6B 지구는 하이즈엉 도시 재편의 전략적 단계로, 응우옌아이꾸옥 동 1,100ha 이상에 걸쳐 기술 기반을 정비하고 생태 도시 공간을 넓히며 현대적 기능 지구를 만듭니다."
+      },
+      "cocSan": {
+        "title": "꼭산 건설 지구 계획",
+        "location": "라오까이시",
+        "scale": "규모: 1,173.1ha",
+        "imageAlt": "꼭산 건설 지구 계획",
+        "body": "꼭산 지구는 라오까이 도시 확장의 핵심입니다. 선진 기술 기반과 자연 경관을 결합해 균형 잡힌 생태 도시를 만들고, 양질의 주거·상업·공공시설을 광역 교통축과 연결합니다."
+      },
+      "dongYen": {
+        "title": "동옌 도시기본계획, 박꽝 현",
+        "location": "하장시 동옌 사",
+        "scale": "규모: 4,407.9ha, 2035년까지, 2050년 지향",
+        "imageAlt": "동옌 도시기본계획",
+        "body": "동옌은 약 4,500ha, 2050년을 내다본 종합계획입니다. 주거·일·여가가 모인 스마트 위성도시를 목표로 하며, 북부 지역의 지속가능한 현대 도시 모형이 되고자 합니다."
+      },
+      "naChi": {
+        "title": "나찌 도시기본계획, 신먼 현",
+        "location": "하장 신먼 나찌 사",
+        "scale": "규모: 8,038.7ha, 2035년까지, 2050년 지향",
+        "imageAlt": "나찌 도시기본계획",
+        "body": "나찌는 북부 산간에서 가장 큰 계획 중 하나입니다. 8,000ha가 넘는 규모로 신먼의 기반·서비스·투자를 끌어올리면서 고원 정체성을 지키고 스마트 기반 모형을 도입합니다."
+      },
+      "tanBac": {
+        "title": "떤박 도시기본계획, 꽝빈 현",
+        "location": "하장 꽝빈 떤박 사",
+        "scale": "규모: 6,297.1ha, 2035년까지, 2050년 지향",
+        "imageAlt": "떤박 도시기본계획",
+        "body": "떤박은 꽝빈 현의 새로운 중심으로 자리 잡고 있습니다. 6,000ha가 넘는 이 계획은 현대적 주거 공간, 녹색 기술 생태계, 정비된 공공 편의시설에 초점을 둡니다."
+      },
+      "namDong": {
+        "title": "5A 지구 계획 (남동 동), 하이즈엉시",
+        "location": "하이즈엉성 하이즈엉시",
+        "scale": "규모: 332.16ha, 축척 1/2000",
+        "imageAlt": "5A 지구 계획, 남동 동",
+        "body": "5A 지구는 하이즈엉의 지속가능 성장 전략의 핵심입니다. 330ha가 넘는 부지에 현대적 도시 공간, 연결성, 유연한 도시 생태계를 마련해 남동 일대의 삶의 질과 매력을 높입니다."
+      },
+      "xuanAn": {
+        "title": "팍시티 쑤언안 생태도시 상세계획",
+        "location": "하띤성 응히쑤언 현 쑤언안 읍",
+        "scale": "규모: 27.7ha, 축척 1/500",
+        "imageAlt": "팍시티 쑤언안 생태도시",
+        "body": "팍시티 쑤언안은 약 28ha의 고급 생태도시입니다. “푸르게, 건강하게”라는 방향 아래 넓은 녹지와 현대적 상업 시설, 정비된 기반을 결합한 하띤과 중부 지역의 새로운 도시 제안입니다."
+      }
+    }
   },
   "about": {
     "hero": {

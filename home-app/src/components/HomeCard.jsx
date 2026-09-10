@@ -1,6 +1,7 @@
 import BorderGlow from '@icue/ui/BorderGlow/BorderGlow'
 import AnimatedContent from './reactbits/AnimatedContent'
 import PixelImage from './magicui/PixelImage'
+import { coverSrcSet, HOME_CARD_SIZES } from '../lib/responsiveImage'
 
 function HomeCardSurface({
   image,
@@ -16,6 +17,8 @@ function HomeCardSurface({
       {imageOnly ? (
         <PixelImage
           src={image}
+          srcSet={coverSrcSet(image)}
+          sizes={HOME_CARD_SIZES}
           alt={imageAlt}
           customGrid={compactGrid}
         />
@@ -23,6 +26,8 @@ function HomeCardSurface({
         <a href={href} aria-label={title} className="home-card__media">
           <PixelImage
             src={image}
+            srcSet={coverSrcSet(image)}
+            sizes={HOME_CARD_SIZES}
             alt={imageAlt}
             customGrid={compactGrid}
           />
