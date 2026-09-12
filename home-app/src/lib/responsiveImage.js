@@ -48,6 +48,20 @@ export function coverSrcSet(src, intrinsicWidth) {
   return srcSetFrom(src, intrinsicWidth, VARIANT_WIDTHS)
 }
 
+/**
+ * Full-bleed heroes must not advertise the 480w card variant — browsers will
+ * pick it on mid-size screens and the frame looks like a stretched thumbnail.
+ * 960w exists for listing covers wider than 960 and for gallery files.
+ */
+export function heroSrcSet(src, intrinsicWidth) {
+  if (!src) return undefined
+  const width = intrinsicWidth || COVER_WIDTHS[src]
+  const canUse960 = width > 960 && (
+    src.includes('/pastProjects/project_') || (COVER_WIDTHS[src] || 0) > 960
+  )
+  return srcSetFrom(src, width, canUse960 ? [960] : [])
+}
+
 export function logoSrcSet(src, intrinsicWidth) {
   return srcSetFrom(src, intrinsicWidth, LOGO_VARIANT_WIDTHS)
 }

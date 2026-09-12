@@ -141,6 +141,7 @@ function DrawerMenuPanel({
         className={drawerPanelClass}
         id={drawerId}
         aria-hidden={!open}
+        inert={!open}
       >
         <LineSidebarNav
           links={links}

@@ -715,12 +715,12 @@ const AccordionGallery = ({
     }
   }, [scrollDriven, count])
 
-  const handleEnter = (i) => {
+  const handleEnter = (i, event) => {
     // Touch browsers synthesise mouseenter on tap. Letting it through would
     // select the panel before `handleClick` ran, so the click would find
     // `i === active` and open the photo — collapsing the two-stage tap the
     // tablet case depends on back into one.
-    if (trigger === 'hover' && !touch) setActive(i)
+    if (event.pointerType === 'mouse' && trigger === 'hover' && !touch) setActive(i)
   }
 
   const handleClick = (i, e) => {
@@ -852,8 +852,11 @@ const AccordionGallery = ({
             style={{ borderRadius: `${radius}px` }}
             href={item.link || undefined}
             onClick={(e) => handleClick(i, e)}
-            onMouseEnter={() => handleEnter(i)}
-            onFocus={() => setActive(i)}
+            onPointerEnter={(event) => handleEnter(i, event)}
+            onFocus={(event) => {
+              // A tap also focuses this panel before its click handler runs.
+              if (event.currentTarget.matches(':focus-visible')) setActive(i)
+            }}
             onKeyDown={(e) => {
               if ((e.key === 'Enter' || e.key === ' ') && i === active && !item.link) {
                 e.preventDefault()

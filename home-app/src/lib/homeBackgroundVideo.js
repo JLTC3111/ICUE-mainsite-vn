@@ -84,26 +84,53 @@ const HomeBackgroundVideoManager = (() => {
   let errorSwapAttempted = false;
   let currentIndex = -1;
   let warmupVideo = null;
+  let lifecycle = 0;
+  let playFallbackTimer = null;
+  let transitionTimer = null;
+  let warmupTask = null;
+  let warmupUsesIdle = false;
+  let canPlayHandler = null;
+  let metadataHandler = null;
 
   const logHomeBg = (...args) => console.log('[HomeBackgroundVideo]', ...args);
 
   const debounce = (fn, delay = 200) => {
     let timer;
-    return function debounced(...args) {
+    function debounced(...args) {
       clearTimeout(timer);
       timer = setTimeout(() => fn.apply(this, args), delay);
-    };
+    }
+    debounced.cancel = () => clearTimeout(timer);
+    return debounced;
+  };
+
+  const cancelWarmup = () => {
+    if (warmupTask === null) return;
+    if (warmupUsesIdle) window.cancelIdleCallback(warmupTask);
+    else clearTimeout(warmupTask);
+    warmupTask = null;
   };
 
   const scheduleIdleTask = (task) => {
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(task, { timeout: 2000 });
+    cancelWarmup();
+    const token = lifecycle;
+    const run = () => {
+      warmupTask = null;
+      if (token === lifecycle && videoEl && !shouldKeepStatic() && !document.hidden) task();
+    };
+    warmupUsesIdle = typeof window.requestIdleCallback === 'function';
+    if (warmupUsesIdle) {
+      warmupTask = window.requestIdleCallback(run, { timeout: 2000 });
     } else {
-      setTimeout(task, 100); // Small delay instead of 0 to avoid blocking main thread
+      warmupTask = setTimeout(run, 100);
     }
   };
 
-  const isMobileViewport = () => window.matchMedia('(max-width: 767px)').matches;
+  // Keep phones on the smaller asset after rotation, and include the 768px
+  // boundary used by the mobile layout.
+  const isMobileViewport = () => window.matchMedia(
+    '(max-width: 768px), (max-width: 1024px) and (max-height: 600px) and (pointer: coarse)',
+  ).matches;
 
   const getConnection = () => navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -195,6 +222,7 @@ const HomeBackgroundVideoManager = (() => {
     if (!videoEl) return;
     videoEl.pause();
     videoEl.removeAttribute('src');
+    videoEl.removeAttribute('data-active-src');
     videoEl.querySelectorAll('source').forEach(source => source.removeAttribute('src'));
     videoEl.load();
   };
@@ -233,7 +261,7 @@ const HomeBackgroundVideoManager = (() => {
       document.body.appendChild(warmupVideo);
     }
 
-    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const prefersMobile = isMobileViewport();
     const src = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!src) return;
 
@@ -246,26 +274,35 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const attemptPlay = (label = 'play') => {
-    if (!videoEl) return;
-    const playPromise = videoEl.play();
+    if (!videoEl || shouldKeepStatic() || document.hidden) return;
+    const el = videoEl;
+    const token = lifecycle;
+    const isCurrent = () => token === lifecycle && el === videoEl && !shouldKeepStatic() && !document.hidden;
+    const playPromise = el.play();
     if (playPromise?.catch) {
       playPromise.catch(err => {
+        if (!isCurrent()) return;
         console.warn('[HomeBackgroundVideo] Autoplay blocked:', err);
         logHomeBg('play failed', { label, err });
-        videoEl.muted = true;
-        videoEl.setAttribute('muted', '');
-        setTimeout(() => {
-          videoEl.play().catch(e2 => console.warn('[HomeBackgroundVideo] Retry play failed:', e2));
+        el.muted = true;
+        el.setAttribute('muted', '');
+        clearTimeout(playFallbackTimer);
+        playFallbackTimer = setTimeout(() => {
+          playFallbackTimer = null;
+          if (!isCurrent() || !el.paused) return;
+          el.play().catch(e2 => {
+            if (isCurrent()) console.warn('[HomeBackgroundVideo] Retry play failed:', e2);
+          });
         }, 200);
       });
     }
   };
 
   const activateVideo = (meta) => {
-    if (!videoEl || !meta) return;
+    if (!videoEl || !meta || shouldKeepStatic()) return;
     enforceVideoNonInteractive(videoEl);
 
-    const prefersMobile = window.matchMedia('(max-width: 767px)').matches;
+    const prefersMobile = isMobileViewport();
     const chosenSrc = prefersMobile && meta.mobile ? meta.mobile : meta.desktop;
     if (!chosenSrc) return;
     
@@ -275,6 +312,11 @@ const HomeBackgroundVideoManager = (() => {
       logHomeBg('skip activate - already active', meta.id);
       return;
     }
+
+    lifecycle += 1;
+    clearTimeout(playFallbackTimer);
+    if (canPlayHandler) videoEl.removeEventListener('canplay', canPlayHandler);
+    if (metadataHandler) videoEl.removeEventListener('loadedmetadata', metadataHandler);
     
     videoEl.src = chosenSrc;
     videoEl.setAttribute('data-active-src', chosenSrc);
@@ -295,8 +337,10 @@ const HomeBackgroundVideoManager = (() => {
     if (videoEl.readyState >= 2) {
       attemptPlay('ready');
     } else {
-      videoEl.addEventListener('loadedmetadata', () => logHomeBg('loadedmetadata', { duration: videoEl.duration, src: videoEl.currentSrc || videoEl.src }), { once: true });
-      videoEl.addEventListener('canplay', () => attemptPlay('canplay'), { once: true });
+      metadataHandler = () => logHomeBg('loadedmetadata', { duration: videoEl.duration, src: videoEl.currentSrc || videoEl.src });
+      canPlayHandler = () => attemptPlay('canplay');
+      videoEl.addEventListener('loadedmetadata', metadataHandler, { once: true });
+      videoEl.addEventListener('canplay', canPlayHandler, { once: true });
     }
 
     if (playRetryTimer) clearTimeout(playRetryTimer);
@@ -324,15 +368,15 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const handleEnded = () => {
-    if (!videoPlaylist.length || isTransitioning) return;
+    if (!videoEl || !videoPlaylist.length || isTransitioning || shouldKeepStatic() || document.hidden) return;
     isTransitioning = true;
     logHomeBg('handleEnded', { currentIndex, nextIndex: (currentIndex + 1) % videoPlaylist.length });
     goToIndex((currentIndex + 1) % videoPlaylist.length);
-    setTimeout(() => { isTransitioning = false; }, 500);
+    transitionTimer = setTimeout(() => { isTransitioning = false; }, 500);
   };
 
   const handleResize = () => {
-    if (currentIndex === -1 || !videoPlaylist[currentIndex]) return;
+    if (currentIndex === -1 || !videoPlaylist[currentIndex] || shouldKeepStatic() || document.hidden) return;
     activateVideo(videoPlaylist[currentIndex]);
   };
 
@@ -341,7 +385,8 @@ const HomeBackgroundVideoManager = (() => {
     if (document.hidden) {
       videoEl.pause();
     } else if (!shouldKeepStatic()) {
-      videoEl.play().catch(() => {});
+      handleResize();
+      attemptPlay('visible');
     }
   };
 
@@ -471,7 +516,20 @@ const HomeBackgroundVideoManager = (() => {
   };
 
   const destroy = () => {
+    // Invalidate rejected play promises before detaching the media element.
+    lifecycle += 1;
+    cancelWarmup();
+    clearTimeout(playFallbackTimer);
+    clearTimeout(transitionTimer);
+    playFallbackTimer = null;
+    transitionTimer = null;
+    isTransitioning = false;
+    activeMeta = null;
     if (videoEl) {
+      if (canPlayHandler) videoEl.removeEventListener('canplay', canPlayHandler);
+      if (metadataHandler) videoEl.removeEventListener('loadedmetadata', metadataHandler);
+      canPlayHandler = null;
+      metadataHandler = null;
       clearVideoSources();
       videoEl.pause();
       videoEl.removeEventListener('ended', handleEnded);
@@ -500,6 +558,7 @@ const HomeBackgroundVideoManager = (() => {
     }
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
+      resizeHandler.cancel();
       resizeHandler = null;
     }
     if (visibilityHandler) {

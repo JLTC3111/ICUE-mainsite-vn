@@ -142,7 +142,7 @@
   font-weight: 800;
 }
 
-.employee-badge-static img,
+.employee-badge-static > img,
 .employee-badge-static__monogram {
   width: 100%;
   height: 280px;
@@ -156,9 +156,16 @@
 .employee-badge-static__monogram {
   display: grid;
   place-items: center;
-  color: #80ecff;
-  font-size: 2.4rem;
-  font-weight: 800;
+}
+
+.employee-badge-static__monogram img {
+  width: 56%;
+  height: auto;
+  max-height: 56%;
+  margin: 0;
+  border-radius: 0;
+  object-fit: contain;
+  background: transparent;
 }
 
 .employee-badge-static strong,

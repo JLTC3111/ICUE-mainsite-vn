@@ -12,9 +12,10 @@
  */
 
 .icue-chat {
+  --icue-chat-bottom: max(55px, env(safe-area-inset-bottom, 0px));
   position: fixed;
-  bottom: 55px;
-  left: 25px;
+  bottom: calc(var(--icue-chat-bottom) + var(--icue-chat-keyboard-inset, 0px));
+  left: max(25px, env(safe-area-inset-left, 0px));
   z-index: 40;
   font-family: var(--icue-font-stack, system-ui, sans-serif);
 }
@@ -103,6 +104,8 @@
   left: 0;
   width: 350px;
   height: 500px;
+  max-height: calc(100vh - 76px - var(--icue-chat-bottom) - 12px);
+  max-height: calc(var(--icue-chat-viewport-height, 100dvh) - 76px - var(--icue-chat-bottom) - max(12px, env(safe-area-inset-top, 0px)));
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -138,6 +141,7 @@
 }
 
 .icue-chat__header {
+  flex-shrink: 0;
   background: linear-gradient(135deg, #23242a 0%, #070020 100%);
   color: #fff;
   padding: 10px 12px;
@@ -179,8 +183,10 @@
 
 .icue-chat__messages {
   flex: 1;
+  min-height: 0;
   padding: 20px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   background: #f8f9fa;
 }
 
@@ -244,6 +250,7 @@
 }
 
 .icue-chat__input-area {
+  flex-shrink: 0;
   padding: 16px 20px;
   border-top: 1px solid #e9ecef;
   background: #fff;
@@ -261,7 +268,7 @@
   padding: 12px 16px;
   border: 1px solid #e9ecef;
   border-radius: 24px;
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s ease;
 }
@@ -332,6 +339,23 @@
   border-color: #667eea;
 }
 
+.icue-chat--compact .icue-chat__input-area {
+  padding: 8px 12px;
+}
+
+.icue-chat--compact .icue-chat__messages {
+  padding: 12px;
+}
+
+.icue-chat--compact .icue-chat__suggestions {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.icue-chat--compact .icue-chat__suggestion {
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
   .icue-chat__window {
     width: min(300px, calc(100vw - 30px));
@@ -339,8 +363,8 @@
   }
 
   .icue-chat {
-    bottom: 15px;
-    left: 15px;
+    --icue-chat-bottom: max(15px, env(safe-area-inset-bottom, 0px));
+    left: max(15px, env(safe-area-inset-left, 0px));
   }
 
   .icue-chat__toggle {

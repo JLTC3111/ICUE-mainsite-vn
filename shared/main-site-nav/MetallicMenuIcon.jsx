@@ -47,7 +47,15 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
   const [paintMode, setPaintMode] = useState('checking');
   const [PaintComponent, setPaintComponent] = useState(null);
   const [readyLayers, setReadyLayers] = useState(EMPTY_READY_STATE);
-  const reducedMotion = prefersReducedMotion();
+  const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -113,7 +121,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             className="menu-icon-metallic__paint"
             imageSrc={MENU_MASK_SRC}
             speed={speed}
-            paused={isOpen}
+            paused={isOpen || reducedMotion}
             maskCoverageRange={ICON_MASK_COVERAGE_RANGE}
             onTextureReady={markMenuReady}
             onTextureError={useFallback}
@@ -132,7 +140,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             className="menu-icon-metallic__paint"
             imageSrc={CLOSE_MASK_SRC}
             speed={speed}
-            paused={!isOpen}
+            paused={!isOpen || reducedMotion}
             maskCoverageRange={ICON_MASK_COVERAGE_RANGE}
             onTextureReady={markCloseReady}
             onTextureError={useFallback}

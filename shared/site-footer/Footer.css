@@ -1,4 +1,6 @@
 .icue-footer {
+  /* Rotating letter boxes extend beyond the visible circular logo. */
+  overflow-x: clip;
   margin-top: 80px;
   background: var(--icue-gradient-dark);
   color: #cfd2cc;
@@ -86,6 +88,8 @@
 }
 
 .icue-footer__bottom {
+  /* This footer also runs on the legacy shell, which has no box-sizing reset. */
+  box-sizing: border-box;
   padding: 18px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;

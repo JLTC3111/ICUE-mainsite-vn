@@ -263,18 +263,6 @@ body:has(.news-archive-page--article) {
   font-style: italic;
 }
 
-.card:hover {
-  background: linear-gradient(to bottom right, #ff7e5f, #363330);
-  transform: scale(1.025);
-}
-
-.card:hover .description,
-.card:hover .location,
-.card:hover .date,
-.card:hover .card-info h3 {
-  color: #ffffff;
-}
-
 .image-card img {
   filter: grayscale(25%);
   width: 100%;
@@ -283,11 +271,6 @@ body:has(.news-archive-page--article) {
   display: block;
   border-radius: 4px;
   transition: filter 0.75s ease-in-out, transform 0.75s ease-in-out;
-}
-
-.image-card:hover img {
-  filter: grayscale(0%) brightness(1.05);
-  transform: translateY(-2px) scale(1.025);
 }
 
 .card-info {
@@ -808,7 +791,9 @@ body:has(.news-archive-page--article) {
 .news-archive-lightbox {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  /* Above the contact rail (140) and pill header (1240). Same band as
+     AccordionGallery’s photo viewer so chrome cannot cover the next arrow. */
+  z-index: 10001;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -817,6 +802,8 @@ body:has(.news-archive-page--article) {
 }
 
 .news-archive-lightbox img {
+  position: relative;
+  z-index: 0;
   max-width: min(92vw, 1100px);
   max-height: 85vh;
   object-fit: contain;
@@ -826,6 +813,10 @@ body:has(.news-archive-page--article) {
 .news-archive-lightbox__prev,
 .news-archive-lightbox__next {
   position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: 0;
   color: #fff;
@@ -835,6 +826,13 @@ body:has(.news-archive-page--article) {
 .news-archive-lightbox__close {
   top: 1rem;
   right: 1rem;
+}
+
+.news-archive-lightbox__prev,
+.news-archive-lightbox__next {
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.35rem;
 }
 
 .news-archive-lightbox__prev {

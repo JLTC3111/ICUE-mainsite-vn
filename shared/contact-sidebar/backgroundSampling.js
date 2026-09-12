@@ -615,19 +615,47 @@ function averageImageData(data) {
   return count ? [r / count, g / count, b / count] : null
 }
 
-function resolveImageFromHit(target) {
-  if (target instanceof HTMLImageElement) return target
-  if (!(target instanceof Element)) return null
-  const nested = target.querySelector('img')
-  if (nested instanceof HTMLImageElement) return nested
-  const slide = target.closest('.swiper-slide')?.querySelector('img')
-  return slide instanceof HTMLImageElement ? slide : null
+function resolveImageFromHit(target, x, y) {
+  let img = null
+  if (target instanceof HTMLImageElement) img = target
+  else if (target instanceof Element) {
+    const nested = target.querySelector('img')
+    if (nested instanceof HTMLImageElement) img = nested
+    else {
+      const slide = target.closest('.swiper-slide')?.querySelector('img')
+      if (slide instanceof HTMLImageElement) img = slide
+    }
+  }
+  if (!img) return null
+  const rect = img.getBoundingClientRect()
+  if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return null
+  return img
+}
+
+function mapContainPointToSource(el, x, y, intrinsicW, intrinsicH) {
+  const rect = el.getBoundingClientRect()
+  const vw = intrinsicW
+  const vh = intrinsicH
+  if (!vw || !vh || rect.width <= 0 || rect.height <= 0) return null
+
+  const scale = Math.min(rect.width / vw, rect.height / vh)
+  const dispW = vw * scale
+  const dispH = vh * scale
+  const offsetX = (rect.width - dispW) / 2
+  const offsetY = (rect.height - dispH) / 2
+  const nx = (x - rect.left - offsetX) / dispW
+  const ny = (y - rect.top - offsetY) / dispH
+  if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return null
+  return { px: nx * vw, py: ny * vh }
 }
 
 function sampleImagePatch(img, x, y, size = BACKDROP_PATCH) {
   if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth < 2) return null
 
-  const mapped = mapCoverPointToSource(img, x, y, img.naturalWidth, img.naturalHeight)
+  const fit = getComputedStyle(img).objectFit
+  const mapped = fit === 'contain'
+    ? mapContainPointToSource(img, x, y, img.naturalWidth, img.naturalHeight)
+    : mapCoverPointToSource(img, x, y, img.naturalWidth, img.naturalHeight)
   if (!mapped) return null
 
   const ctx = getSampleContext()
@@ -669,7 +697,7 @@ export function readElementBackdropRgb(el) {
 
   return withSidebarHidden(el, () => {
     const target = document.elementFromPoint(sampleX, sampleY)
-    const img = resolveImageFromHit(target)
+    const img = resolveImageFromHit(target, sampleX, sampleY)
     if (img) {
       const patch = sampleImagePatch(img, sampleX, sampleY)
       if (patch) return patch

@@ -256,8 +256,10 @@ export default function ScrollVelocity({
   return (
     <section
       className="scroll-velocity"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setPaused(true)
+      }}
+      onPointerLeave={() => setPaused(false)}
     >
       {texts.map((text, index) => (
         <VelocityText

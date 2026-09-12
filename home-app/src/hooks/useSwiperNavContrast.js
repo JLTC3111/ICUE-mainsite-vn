@@ -13,9 +13,38 @@ function galleryIsOnScreen(root) {
 function colourNavButtons(root) {
   if (document.hidden || !galleryIsOnScreen(root)) return
 
+  const activeImg = root.querySelector('.swiper-slide-active img')
+    || root.querySelector('.swiper-slide-duplicate-active img')
+    || root.querySelector('img')
+  const imgRect = activeImg instanceof HTMLElement ? activeImg.getBoundingClientRect() : null
+
   NAV_SELECTORS.forEach((selector) => {
     const button = root.querySelector(selector)
     if (!(button instanceof HTMLElement)) return
+    button.style.left = ''
+    button.style.right = ''
+    button.style.top = ''
+    button.style.marginTop = ''
+    button.style.transform = ''
+
+    const rect = button.getBoundingClientRect()
+    const x = rect.left + rect.width * 0.5
+    const y = rect.top + rect.height * 0.5
+    const overPhoto = Boolean(
+      imgRect
+      && x >= imgRect.left
+      && x <= imgRect.right
+      && y >= imgRect.top
+      && y <= imgRect.bottom,
+    )
+
+    if (!overPhoto) {
+      // Sit in the themed gutter: let `--pp-swiper-nav` follow light/dark.
+      button.style.color = ''
+      button.style.removeProperty('--swiper-navigation-color')
+      return
+    }
+
     const color = pickBarColor(readElementBackdropRgb(button))
     button.style.color = color
     button.style.setProperty('--swiper-navigation-color', color)
@@ -23,16 +52,18 @@ function colourNavButtons(root) {
 }
 
 /**
- * Recolour Swiper prev/next from the photograph under each arrow, using the
- * same white/navy contrast picker as the contact-sidebar music bars.
+ * Recolour Swiper prev/next from the pixels under each arrow.
+ * `paletteKey` should change when the page theme class updates so we resample
+ * after `--pp-gallery-bg` (and friends) have actually been applied.
  */
-export function useSwiperNavContrast(swiper) {
+export function useSwiperNavContrast(swiper, paletteKey) {
   useEffect(() => {
     const root = swiper?.el
     if (!root) return undefined
 
     let timer = null
     let lastAt = 0
+    let paintFrame = 0
 
     const run = () => {
       lastAt = performance.now()
@@ -57,6 +88,17 @@ export function useSwiperNavContrast(swiper) {
       }, THROTTLE_MS - elapsed)
     }
 
+    const scheduleAfterPaint = () => {
+      if (paintFrame) cancelAnimationFrame(paintFrame)
+      paintFrame = requestAnimationFrame(() => {
+        paintFrame = requestAnimationFrame(() => {
+          paintFrame = 0
+          lastAt = 0
+          run()
+        })
+      })
+    }
+
     run()
 
     swiper.on('slideChange', schedule)
@@ -68,12 +110,13 @@ export function useSwiperNavContrast(swiper) {
         if (timer !== null) window.clearTimeout(timer)
         timer = null
       } else {
-        schedule()
+        scheduleAfterPaint()
       }
     }
 
     window.addEventListener('resize', schedule)
-    window.addEventListener('icue:aboutUsTheme', schedule)
+    window.addEventListener('icue:aboutUsTheme', scheduleAfterPaint)
+    window.addEventListener('icue:aboutUsThemeManagerReady', scheduleAfterPaint)
     document.addEventListener('visibilitychange', onVisibility)
 
     const images = root.querySelectorAll('img')
@@ -84,16 +127,34 @@ export function useSwiperNavContrast(swiper) {
     }, { threshold: 0.2 })
     io.observe(root)
 
+    const themedPage = root.closest(
+      '.past-projects-page, .news-archive-page, .notable-awards-page, .about-us-page',
+    )
+    const classObserver = themedPage
+      ? new MutationObserver(scheduleAfterPaint)
+      : null
+    classObserver?.observe(themedPage, { attributes: true, attributeFilter: ['class'] })
+
+    const themeObserver = new MutationObserver(scheduleAfterPaint)
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-about-theme'],
+    })
+
     return () => {
       if (timer !== null) window.clearTimeout(timer)
+      if (paintFrame) cancelAnimationFrame(paintFrame)
       swiper.off('slideChange', schedule)
       swiper.off('slideChangeTransitionEnd', schedule)
       swiper.off('imagesReady', schedule)
       window.removeEventListener('resize', schedule)
-      window.removeEventListener('icue:aboutUsTheme', schedule)
+      window.removeEventListener('icue:aboutUsTheme', scheduleAfterPaint)
+      window.removeEventListener('icue:aboutUsThemeManagerReady', scheduleAfterPaint)
       document.removeEventListener('visibilitychange', onVisibility)
       images.forEach((img) => img.removeEventListener('load', schedule))
       io.disconnect()
+      classObserver?.disconnect()
+      themeObserver.disconnect()
     }
-  }, [swiper])
+  }, [swiper, paletteKey])
 }

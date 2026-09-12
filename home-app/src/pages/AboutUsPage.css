@@ -640,6 +640,11 @@
     -webkit-text-fill-color: transparent;
 }
 
+/* GSAP controls this fade; a CSS transition would delay a tap's full reveal. */
+:where(.about-us-page) .home-slider-text .highlight-text{
+    transition: none;
+}
+
 /* The slider types into .highlight-text, which pins its own fill colour. */
 [data-about-theme='dark'] :where(.about-us-page) .highlight-text{
     color: #e8edf6;

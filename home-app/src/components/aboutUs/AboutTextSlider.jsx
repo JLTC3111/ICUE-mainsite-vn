@@ -110,6 +110,7 @@ export default function AboutTextSlider() {
 
     if (slide.reveal) {
       typingRef.current = false
+      gsap.set(text, { opacity: 1, scale: 1, y: 0 })
       text.innerHTML = message
       return undefined
     }
@@ -198,8 +199,10 @@ export default function AboutTextSlider() {
         id="homeTextSlider"
         ref={sliderRef}
         onClick={handleSliderClick}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onPointerEnter={(event) => {
+          if (event.pointerType === 'mouse') setPaused(true)
+        }}
+        onPointerLeave={() => setPaused(false)}
       >
         <div className="home-slider-text" id="homeSliderText">
           {/* Written to directly by the typing effect above — React must not

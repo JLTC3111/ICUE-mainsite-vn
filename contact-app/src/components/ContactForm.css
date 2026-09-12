@@ -107,7 +107,7 @@
   border-radius: 0;
   background: var(--ct-field);
   font-family: var(--ct-sans);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--ct-ink);
   transition: background 0.18s ease, border-color 0.18s ease;

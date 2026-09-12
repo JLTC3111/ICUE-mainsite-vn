@@ -8,10 +8,10 @@ import {
   gallerySlideSrc,
   getAdjacentPastProjects,
   getPastProject,
-  pastProjectHeroSrc,
+  pastProjectHeroMedia,
   pastProjectPath,
 } from '../data/pastProjectsContent'
-import { coverSrcSet, PAST_PROJECT_HERO_SIZES } from '../lib/responsiveImage'
+import { heroSrcSet, PAST_PROJECT_HERO_SIZES } from '../lib/responsiveImage'
 import { ROUTE_PATHS } from '../lib/routes'
 import { useDesktopFinePointer, useDesktopScrollExpand } from '../hooks/useHeavyVisualEffects'
 import { useSwiperNavContrast } from '../hooks/useSwiperNavContrast'
@@ -85,6 +85,7 @@ export default function PastProjectDetailPage() {
   const copy = project ? items[project.key] : null
   const { previous, next } = getAdjacentPastProjects(projectId)
   const images = project?.images ?? []
+  const hero = project ? pastProjectHeroMedia(project) : null
   const [lightboxIndex, setLightboxIndex] = useState(null)
   const [swiper, setSwiper] = useState(null)
   const titleId = useId()
@@ -92,7 +93,7 @@ export default function PastProjectDetailPage() {
   const lightboxSrc = lightboxImage?.src
   const canStepLightbox = images.length > 1
 
-  useSwiperNavContrast(swiper)
+  useSwiperNavContrast(swiper, theme)
 
   const stepLightbox = useCallback((delta) => {
     setLightboxIndex((current) => {
@@ -136,7 +137,7 @@ export default function PastProjectDetailPage() {
   return (
     <div className={`past-projects-page past-projects-page--detail past-projects-page--${theme}`}>
       <article className="past-project-detail" aria-labelledby={titleId}>
-        <div className="past-project-detail__hero">
+        <div className={`past-project-detail__hero${expandEnabled ? ' past-project-detail__hero--expand' : ''}`}>
           <div className="past-project-detail__back-slot">
             <Link className="past-project-detail__back past-project-detail__back--hero" to={ROUTE_PATHS.pastProjects}>
               {page.backToList}
@@ -145,11 +146,11 @@ export default function PastProjectDetailPage() {
           <ProjectDetailHero
             key={project.id}
             expand={expandEnabled}
-            src={pastProjectHeroSrc(project)}
-            srcSet={coverSrcSet(pastProjectHeroSrc(project), project.width)}
+            src={hero.src}
+            srcSet={heroSrcSet(hero.src, hero.width)}
             sizes={PAST_PROJECT_HERO_SIZES}
-            width={project.width}
-            height={project.height}
+            width={hero.width}
+            height={hero.height}
             alt={copy.imageAlt}
             title={copy.title}
             location={copy.location}
@@ -170,7 +171,7 @@ export default function PastProjectDetailPage() {
           </div>
         </div>
 
-        <div className="past-project-detail__gallery">
+        <div className={`past-project-detail__gallery${desktopGallery ? ' past-project-detail__gallery--desktop' : ''}`}>
           <Swiper
             className="past-project-gallery"
             modules={[Navigation, Pagination]}

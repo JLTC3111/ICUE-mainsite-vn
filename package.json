@@ -58,6 +58,7 @@
     "verify:locales": "node scripts/verify-locale-routing.mjs",
     "verify:chatbot": "node scripts/verify-chatbot.mjs",
     "test:chatbot": "node --test shared/chatbot/lib/matching.test.mjs",
+    "test:home-media": "node --test home-app/src/lib/homeBackgroundVideo.test.js",
     "verify:publish": "node scripts/verify-publish-boundary.mjs && npm run verify:chatbot",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",

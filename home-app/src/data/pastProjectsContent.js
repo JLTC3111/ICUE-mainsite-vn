@@ -9,6 +9,8 @@ export const PAST_PROJECTS = [
     width: 720,
     height: 425,
     hero: '/pastProjects/pp_1.jpg',
+    heroWidth: 2394,
+    heroHeight: 1413,
     images: [
       { src: '/pastProjects/project_1/pp_1a.jpg', width: 2047, height: 1448 },
       { src: '/pastProjects/project_1/pp_1b.jpg', width: 1015, height: 657 },
@@ -40,6 +42,8 @@ export const PAST_PROJECTS = [
     width: 720,
     height: 801,
     hero: '/pastProjects/pp_3.jpg',
+    heroWidth: 1079,
+    heroHeight: 1200,
     images: [
       { src: '/pastProjects/project_3/pp_3a.jpg', width: 1125, height: 819 },
       { src: '/pastProjects/project_3/pp_3b.jpg', width: 1412, height: 1842 },
@@ -143,9 +147,29 @@ export function pastProjectPath(id) {
   return `/past-projects/${id}`
 }
 
-/** Full-bleed detail hero; listing cards keep the smaller `cover`. */
-export function pastProjectHeroSrc(project) {
-  return project.hero || project.cover
+function heroCandidate(src, width, height) {
+  return { src, width, height }
+}
+
+/**
+ * Full-bleed detail hero. Listing cards keep the smaller `cover`.
+ * Prefer the widest gallery image so a collage thumbnail is not blown up
+ * across the viewport.
+ */
+export function pastProjectHeroMedia(project) {
+  if (!project) return heroCandidate('', 0, 0)
+
+  let best = project.hero
+    ? heroCandidate(project.hero, project.heroWidth || project.width, project.heroHeight || project.height)
+    : heroCandidate(project.cover, project.width, project.height)
+
+  for (const image of project.images || []) {
+    if ((image.width || 0) > (best.width || 0)) {
+      best = heroCandidate(image.src, image.width, image.height)
+    }
+  }
+
+  return best
 }
 
 const GALLERY_PREVIEW_WIDTH = 960

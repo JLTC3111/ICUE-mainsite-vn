@@ -77,6 +77,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const [draft, setDraft] = useState('')
   const [isThinking, setIsThinking] = useState(false)
   const { messages, append, reload } = useChatHistory(locale)
+  const rootRef = useRef(null)
   const messagesRef = useRef(null)
   const inputRef = useRef(null)
   const timerRef = useRef(null)
@@ -122,13 +123,46 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
 
   useEffect(() => {
     if (!isOpen) return undefined
-    inputRef.current?.focus()
+    inputRef.current?.focus({ preventScroll: true })
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') setIsOpen(false)
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
+  }, [isOpen])
+
+  // Mobile keyboards can shrink only the visual viewport, leaving fixed
+  // elements anchored behind the keyboard in the layout viewport.
+  useEffect(() => {
+    if (!isOpen) return undefined
+    const root = rootRef.current
+    const viewport = window.visualViewport
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const height = viewport?.height ?? window.innerHeight
+      const inset = Math.max(0, window.innerHeight - height - (viewport?.offsetTop ?? 0))
+      root.style.setProperty('--icue-chat-viewport-height', `${height}px`)
+      root.style.setProperty('--icue-chat-keyboard-inset', `${inset}px`)
+      root.classList.toggle('icue-chat--compact', height < 600)
+    }
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update)
+    }
+    update()
+    viewport?.addEventListener('resize', schedule)
+    viewport?.addEventListener('scroll', schedule)
+    window.addEventListener('resize', schedule)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      viewport?.removeEventListener('resize', schedule)
+      viewport?.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      root.style.removeProperty('--icue-chat-viewport-height')
+      root.style.removeProperty('--icue-chat-keyboard-inset')
+      root.classList.remove('icue-chat--compact')
+    }
   }, [isOpen])
 
   const send = useCallback(
@@ -180,7 +214,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const hasTranscript = messages.length > 0
 
   return (
-    <div className="icue-chat">
+    <div className="icue-chat" ref={rootRef}>
       {isOpen && (
         <div className="icue-chat__window" role="dialog" aria-label={labels.title}>
           <div className="icue-chat__header">

@@ -11,6 +11,9 @@
   z-index: 1;
   flex: 1 0 auto;
   padding: 32px 24px 32px;
+  /* Keep off-screen profile panels and their outer glow within the page.
+     clip preserves document scrolling and the visible in-page glow. */
+  overflow-x: clip;
 }
 
 .page-shell__site-footer {

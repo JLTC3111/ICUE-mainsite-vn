@@ -11,13 +11,24 @@ export function useHomeBackgroundVideo() {
     HomeBackgroundVideoManager.bindToggleUI()
     HomeBackgroundVideoManager.init()
 
-    window.dispatchEvent(
+    const notify = () => window.dispatchEvent(
       new CustomEvent('icue:homeVideoEnabled', {
         detail: { enabled: HomeBackgroundVideoManager.isEnabled() },
       }),
     )
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+    const updateContext = () => {
+      HomeBackgroundVideoManager.init()
+      notify()
+    }
+    motionQuery.addEventListener('change', updateContext)
+    connection?.addEventListener('change', updateContext)
+    notify()
 
     return () => {
+      motionQuery.removeEventListener('change', updateContext)
+      connection?.removeEventListener('change', updateContext)
       HomeBackgroundVideoManager.destroy()
       delete window.HomeBackgroundVideoManager
     }

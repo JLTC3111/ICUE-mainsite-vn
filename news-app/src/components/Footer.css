@@ -1,4 +1,6 @@
 .icue-footer {
+  /* Contain the rotating logo's transformed boxes at the page edge. */
+  overflow-x: clip;
   margin-top: 80px;
   background: var(--icue-gradient-dark);
   color: #cfd2cc;

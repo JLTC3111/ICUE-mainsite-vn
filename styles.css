@@ -56,16 +56,6 @@ h2 {
   }
 }
 
-h2:hover {
-  color: aqua;
-  transition: color 0.5s ease-in-out;
-}
-
-h3:hover {
-  color: #111;
-  transform: scale(1.02);
-}
-
 /* Theme Variables */
 :root {
   --nav-bg: transparent;

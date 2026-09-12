@@ -8,7 +8,7 @@ import PageShell from '../components/PageShell'
 import OrgChart from '../components/OrgChart'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
-import { EMPLOYEE_LANYARD_PHONE_QUERY } from '../components/employeeLanyardConfig'
+import { EMPLOYEE_LANYARD_PHONE_QUERY, ICUE_BADGE_LOGO_SRC } from '../components/employeeLanyardConfig'
 import '../components/EmployeeLanyard.css'
 import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
@@ -38,7 +38,9 @@ function EmployeeLanyardPlaceholder() {
       <div className="employee-lanyard__stage" data-motion="reduced">
         <button type="button" className="employee-badge-static" disabled>
           <span className="employee-badge-static__brand">ICUE</span>
-          <span className="employee-badge-static__monogram">ICUE</span>
+          <span className="employee-badge-static__monogram">
+            <img src={ICUE_BADGE_LOGO_SRC} alt="" />
+          </span>
           <strong>{genericLabel}</strong>
           <span>{genericRole}</span>
         </button>

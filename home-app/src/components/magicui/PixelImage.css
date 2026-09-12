@@ -35,18 +35,20 @@
   filter: grayscale(1);
 }
 
-.pixel-image:hover .pixel-image__static {
-  opacity: 0;
-}
+@media (hover: hover) and (pointer: fine) {
+  .pixel-image:hover .pixel-image__static {
+    opacity: 0;
+  }
 
-.pixel-image:hover .pixel-image__grid {
-  visibility: visible;
-}
+  .pixel-image:hover .pixel-image__grid {
+    visibility: visible;
+  }
 
-.pixel-image:hover .pixel-image__piece {
-  animation:
-    pixel-piece-in 0.65s ease var(--piece-delay) forwards,
-    pixel-piece-color 0.65s ease calc(var(--piece-delay) + 650ms) forwards;
+  .pixel-image:hover .pixel-image__piece {
+    animation:
+      pixel-piece-in 0.65s ease var(--piece-delay) forwards,
+      pixel-piece-color 0.65s ease calc(var(--piece-delay) + 650ms) forwards;
+  }
 }
 
 @keyframes pixel-piece-in {

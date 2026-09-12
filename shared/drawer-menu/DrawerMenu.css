@@ -106,6 +106,9 @@
 }
 
 .nav-drawer {
+  /* The legacy/home shell has no universal border-box reset. Padding must
+     fit inside the viewport height so the final links remain reachable. */
+  box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
@@ -114,7 +117,7 @@
   width: min(380px, 90vw);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 6rem 2rem;
   background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.22), #05080d 72%);
   backdrop-filter: blur(40px);
@@ -126,6 +129,7 @@
   z-index: 1210;
   overflow-y: auto;
   overflow-x: visible;
+  overscroll-behavior-y: contain;
 }
 
 .nav-drawer.is-open {
@@ -136,6 +140,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  /* Auto margins center a short menu without putting overflowing links
+     above the scrollable area on phones in landscape. */
+  flex-shrink: 0;
+  margin-block: auto;
   /* Room for the LineSidebar ruler markers on the left */
   padding-left: 40px;
   --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));

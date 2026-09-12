@@ -1,6 +1,6 @@
 import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { EMPLOYEE_LANYARD_PHONE_QUERY } from './employeeLanyardConfig'
+import { EMPLOYEE_LANYARD_PHONE_QUERY, ICUE_BADGE_LOGO_SRC } from './employeeLanyardConfig'
 import './EmployeeLanyard.css'
 
 /*
@@ -94,6 +94,44 @@ function loadImage(src) {
   })
 }
 
+function drawLogoFallbackText(ctx, frame, fontFamily) {
+  ctx.font = `800 150px ${fontFamily}`
+  ctx.fillStyle = 'rgba(128, 236, 255, 0.9)'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('ICUE', frame.x + frame.width / 2, frame.y + frame.height / 2)
+  ctx.textAlign = 'start'
+  ctx.textBaseline = 'alphabetic'
+}
+
+/**
+ * Institute mark, contained in the photo well. Used when nobody is selected
+ * (and if a portrait fails to load) so the card still reads as ICUE rather
+ * than an empty frame or a typeset "ICUE" stand-in.
+ */
+async function drawBadgeLogo(ctx, frame, fontFamily) {
+  try {
+    const logo = await loadImage(ICUE_BADGE_LOGO_SRC)
+    const inset = Math.min(frame.width, frame.height) * 0.22
+    const maxWidth = frame.width - inset * 2
+    const maxHeight = frame.height - inset * 2
+    const scale = Math.min(maxWidth / logo.width, maxHeight / logo.height)
+    const width = logo.width * scale
+    const height = logo.height * scale
+    ctx.drawImage(
+      logo,
+      frame.x + (frame.width - width) / 2,
+      frame.y + (frame.height - height) / 2,
+      width,
+      height,
+    )
+    return true
+  } catch {
+    drawLogoFallbackText(ctx, frame, fontFamily)
+    return false
+  }
+}
+
 /**
  * Draw the badge artwork.
  *
@@ -163,11 +201,13 @@ async function createBadgeImage({
   ctx.lineWidth = 3
   ctx.stroke()
 
+  const photoFrame = { x: 42, y: 210, width: 684, height: 579 }
+  let drewPhoto = false
+
   if (profile?.img) {
     try {
       const photo = await loadImage(profile.img)
       ctx.save()
-      const photoFrame = { x: 42, y: 210, width: 684, height: 579 }
       roundedRect(
         ctx,
         photoFrame.x,
@@ -203,15 +243,14 @@ async function createBadgeImage({
         photoFrame.y + photoFrame.height - 560,
       )
       ctx.restore()
+      drewPhoto = true
     } catch {
-      // The text identity remains usable if a profile photo cannot load.
+      // Fall through to the institute mark if the portrait cannot load.
     }
-  } else {
-    ctx.font = `800 150px ${fontFamily}`
-    ctx.fillStyle = 'rgba(128, 236, 255, 0.9)'
-    ctx.textAlign = 'center'
-    ctx.fillText('ICUE', 384, 555)
-    ctx.textAlign = 'start'
+  }
+
+  if (!drewPhoto) {
+    await drawBadgeLogo(ctx, photoFrame, fontFamily)
   }
 
   const name = displayName || genericLabel
@@ -251,7 +290,13 @@ function StaticBadge({ profile, displayName, title, genericLabel, onOpen }) {
       disabled={!profile}
     >
       <span className="employee-badge-static__brand">ICUE</span>
-      {profile ? <img src={profile.img} alt="" /> : <span className="employee-badge-static__monogram">ICUE</span>}
+      {profile ? (
+        <img src={profile.img} alt="" />
+      ) : (
+        <span className="employee-badge-static__monogram">
+          <img src={ICUE_BADGE_LOGO_SRC} alt="" />
+        </span>
+      )}
       <strong>{displayName || genericLabel}</strong>
       <span>{title}</span>
     </button>

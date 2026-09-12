@@ -18,10 +18,15 @@
   --pp-bullet: #94a3b8;
   --pp-bullet-active: #60a5fa;
   --pp-swiper-nav: #fff;
+  --pp-canvas: #0a0a0a;
+  --pp-back-bg: rgba(10, 10, 10, 0.72);
+  --pp-back-fg: #fff;
+  --pp-back-border: rgba(255, 255, 255, 0.16);
 
   min-height: 100vh;
   padding: clamp(6.5rem, 12vw, 8.5rem) clamp(1rem, 4vw, 2.5rem) 3rem;
-  background: var(--pp-bg);
+  background-color: var(--pp-canvas);
+  background-image: var(--pp-bg);
   color: var(--pp-fg);
   color-scheme: dark;
 }
@@ -41,6 +46,10 @@
   --pp-bullet: #94a3b8;
   --pp-bullet-active: #2563eb;
   --pp-swiper-nav: #172033;
+  --pp-canvas: #eef0f4;
+  --pp-back-bg: rgba(255, 255, 255, 0.9);
+  --pp-back-fg: #172033;
+  --pp-back-border: rgba(23, 32, 51, 0.12);
   color-scheme: light;
 }
 
@@ -166,6 +175,7 @@ body:has(.past-projects-page--light) {
 .past-project-gallery .swiper-button-next,
 .past-project-gallery .swiper-button-prev {
   color: var(--pp-swiper-nav);
+  --swiper-navigation-color: var(--pp-swiper-nav);
 }
 
 .past-projects-page--detail {
@@ -186,11 +196,17 @@ body:has(.past-projects-page--light) {
 
 .past-project-detail__back-slot {
   position: sticky;
-  top: 6.25rem;
+  top: 5.75rem;
   z-index: 3;
   height: 0;
-  margin-left: clamp(1rem, 4vw, 2.5rem);
+  margin-left: clamp(1rem, 3.2vw, 3.5rem);
   pointer-events: none;
+}
+
+.past-project-detail__hero--expand .past-project-detail__back-slot {
+  /* ScrollExpand startWidth 42 / startHeight 58 → inset 29% / 21%. */
+  margin-left: calc(29% + 0.85rem);
+  top: max(5.75rem, calc(21svh + 0.75rem));
 }
 
 .past-project-detail__back {
@@ -202,9 +218,18 @@ body:has(.past-projects-page--light) {
 }
 
 .past-project-detail__back--hero {
+  display: inline-flex;
+  align-items: center;
   margin-bottom: 0;
-  color: #fff;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+  padding: 0.42rem 0.95rem;
+  border: 1px solid var(--pp-back-border);
+  border-radius: 999px;
+  background: var(--pp-back-bg);
+  color: var(--pp-back-fg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+  text-shadow: none;
   pointer-events: auto;
 }
 
@@ -212,8 +237,26 @@ body:has(.past-projects-page--light) {
   text-decoration: underline;
 }
 
+.past-project-detail__back--hero:hover {
+  text-decoration: none;
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .past-project-detail__back--hero {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--pp-canvas);
+  }
+
+  .past-projects-page--light .past-project-detail__back--hero {
+    background: #fff;
+  }
+}
+
 .past-project-detail__expand {
-  background: var(--pp-bg);
+  background-color: var(--pp-canvas);
+  background-image: var(--pp-bg);
 }
 
 .past-project-detail__expand .scroll-expand__frame {
@@ -232,7 +275,8 @@ body:has(.past-projects-page--light) {
 
 .past-project-detail__hero-static {
   position: relative;
-  background: var(--pp-bg);
+  background-color: var(--pp-canvas);
+  background-image: var(--pp-bg);
   touch-action: pan-y;
 }
 
@@ -288,18 +332,50 @@ body:has(.past-projects-page--light) {
   .past-project-detail__gallery {
     padding-right: max(clamp(1rem, 4vw, 2.5rem), 4.75rem);
   }
+
+  .past-project-detail__gallery--desktop .swiper-slide {
+    display: flex;
+    justify-content: center;
+  }
+
+  .past-project-detail__gallery--desktop .past-project-gallery img {
+    width: auto;
+    max-width: calc(100% - 6.5rem);
+    height: auto;
+    max-height: min(64vh, 680px);
+    object-fit: contain;
+    margin-inline: auto;
+  }
+
+  .past-project-detail__gallery--desktop .swiper-button-prev {
+    left: 0.15rem;
+  }
+
+  .past-project-detail__gallery--desktop .swiper-button-next {
+    right: 0.15rem;
+  }
 }
 
 .past-project-gallery {
   overflow: hidden;
 }
 
-.past-project-gallery__trigger {
+.past-project-gallery__trigger,
+.past-projects-page button.past-project-gallery__trigger,
+.past-projects-page button.past-project-gallery__trigger:hover,
+.past-projects-page button.past-project-gallery__trigger:focus,
+.past-projects-page button.past-project-gallery__trigger:active {
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
+  border-radius: 0;
   background: var(--pp-gallery-bg);
+  background-image: none;
+  box-shadow: none;
+  color: inherit;
+  font-size: inherit;
+  transform: none;
   cursor: zoom-in;
 }
 
