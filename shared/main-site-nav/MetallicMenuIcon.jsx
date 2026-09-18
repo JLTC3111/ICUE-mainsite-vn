@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../resilience/usePageResume.js';
+import { withDeadline } from '../resilience/requests.js';
 import { useCallback, useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { supportsMetallicMenuPaint } from './metallicPaintSupport';
@@ -45,6 +47,7 @@ function prefersReducedMotion() {
 
 export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
   const [paintMode, setPaintMode] = useState('checking');
+  const [revision] = useResumeRevision({ enabled: paintMode === 'fallback', minHiddenMs: 0 });
   const [PaintComponent, setPaintComponent] = useState(null);
   const [readyLayers, setReadyLayers] = useState(EMPTY_READY_STATE);
   const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion);
@@ -66,7 +69,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
       }
 
       try {
-        const module = await import('@icue/ui/MetallicPaint/MetallicPaint');
+        const module = await withDeadline(() => import('@icue/ui/MetallicPaint/MetallicPaint'));
         if (cancelled) return;
         setPaintComponent(() => module.default);
         setPaintMode('metallic');
@@ -79,7 +82,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
       cancelled = true;
       window.cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [revision]);
 
   const markMenuReady = useCallback(() => {
     setReadyLayers((current) => current.menu ? current : { ...current, menu: true });

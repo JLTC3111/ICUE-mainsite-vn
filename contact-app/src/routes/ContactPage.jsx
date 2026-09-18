@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import { STANDALONE_DRAWER_LINKS, PEOPLE_SUBMENU } from '@icue/main-site-nav/navLinks'
@@ -14,7 +15,7 @@ import { useMainSite } from '../hooks/useMainSite'
 import { useReveal } from '../hooks/useReveal'
 import '../styles/contact.css'
 
-const ContactSidebar = lazy(() => import('@icue/contact-sidebar'))
+const ContactSidebar = lazy(() => import('@icue/contact-sidebar'), { optional: true })
 
 function DeferredContactSidebar({ locale }) {
   const [ready, setReady] = useState(false)

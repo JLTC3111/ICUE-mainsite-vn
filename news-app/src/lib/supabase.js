@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { loadSupabaseConfig } from './supabaseConfig'
+import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 
 let client = createUnavailableClient()
 let configured = false
@@ -51,6 +52,7 @@ function createUnavailableClient() {
 
 function createConfiguredClient(url, anonKey) {
   return createClient(url, anonKey, {
+    global: { fetch: fetchWithDeadline },
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -82,7 +84,12 @@ export async function initSupabase() {
     return true
   })()
 
-  return initPromise
+  const result = await initPromise.catch((error) => {
+    initPromise = null
+    throw error
+  })
+  if (!result) initPromise = null
+  return result
 }
 
 export const supabase = new Proxy(

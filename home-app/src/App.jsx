@@ -1,5 +1,6 @@
+import { lazyWithRecovery as lazy } from '../../shared/resilience/lazyWithRecovery.jsx'
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { lazy, Suspense, useEffect, useMemo } from 'react'
+import { Suspense, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'

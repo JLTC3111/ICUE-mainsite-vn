@@ -1,3 +1,5 @@
+import { usePageResume } from '../../../shared/resilience/usePageResume.js'
+import { withDeadline } from '../../../shared/resilience/requests.js'
 import {
   createContext,
   useCallback,
@@ -19,34 +21,38 @@ export function AuthProvider({ children }) {
   const mountedRef = useRef(true)
   const subscriptionRef = useRef(null)
   const profileRequestRef = useRef(0)
+  const currentUserRef = useRef(null)
+  const profilePendingRef = useRef(new Map())
 
-  const fetchProfile = useCallback(async (user, client) => {
-    if (!user) return null
-
-    const { data } = await client
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .maybeSingle()
-
-    if (data) return data
-
-    // Self-heal: accounts created before the handle_new_user trigger existed
-    // have no profile row, which breaks the articles.author_id foreign key.
-    // Create one on the fly (allowed by the profiles_insert_self RLS policy).
-    const meta = user.user_metadata || {}
-    const email = user.email || ''
-    const { data: created } = await client
-      .from('profiles')
-      .insert({
+  const fetchProfile = useCallback((user, client) => {
+    if (!user) return Promise.resolve(null)
+    const pending = profilePendingRef.current
+    if (pending.has(user.id)) return pending.get(user.id)
+    const request = (async () => {
+      const read = () => client.from('profiles').select('*').eq('id', user.id).maybeSingle()
+      const { data, error } = await read()
+      if (error) throw error
+      if (data) return data
+      const meta = user.user_metadata || {}
+      const email = user.email || ''
+      const { data: created, error: insertError } = await client.from('profiles').insert({
         id: user.id,
         full_name: meta.full_name || email,
         display_name: meta.display_name || email.split('@')[0] || 'Author',
         avatar_url: meta.avatar_url || null,
-      })
-      .select('*')
-      .single()
-    return created ?? null
+      }).select('*').single()
+      // A second tab may create the same profile concurrently.
+      if (insertError?.code === '23505') {
+        const result = await read()
+        if (result.error) throw result.error
+        return result.data
+      }
+      if (insertError) throw insertError
+      return created ?? null
+    })()
+    pending.set(user.id, request)
+    request.finally(() => { if (pending.get(user.id) === request) pending.delete(user.id) }).catch(() => {})
+    return request
   }, [])
 
   const applyAuthSession = useCallback(async (nextSession, client) => {
@@ -54,6 +60,9 @@ export function AuthProvider({ children }) {
 
     const requestId = profileRequestRef.current + 1
     profileRequestRef.current = requestId
+    const userId = nextSession?.user?.id ?? null
+    if (currentUserRef.current !== userId) setProfile(null)
+    currentUserRef.current = userId
     setSession(nextSession)
 
     if (!nextSession?.user) {
@@ -67,9 +76,7 @@ export function AuthProvider({ children }) {
       if (!mountedRef.current || profileRequestRef.current !== requestId) return
       setProfile(nextProfile)
     } catch {
-      if (mountedRef.current && profileRequestRef.current === requestId) {
-        setProfile(null)
-      }
+      // Keep the known profile when a background read loses connectivity.
     } finally {
       if (mountedRef.current && profileRequestRef.current === requestId) {
         setLoading(false)
@@ -90,13 +97,29 @@ export function AuthProvider({ children }) {
     return client
   }, [applyAuthSession])
 
+  const restoreSession = useCallback(async () => {
+    if (!shouldRestoreSession && !currentUserRef.current && !mayHaveSupabaseSession()) return
+    const requestId = profileRequestRef.current
+    try {
+      const client = await connectAuthClient()
+      const { data, error } = await withDeadline(() => client.auth.getSession())
+      if (error) throw error
+      if (mountedRef.current && profileRequestRef.current === requestId) {
+        await applyAuthSession(data?.session ?? null, client)
+      }
+    } catch {
+      if (mountedRef.current) setLoading(false)
+    }
+  }, [applyAuthSession, connectAuthClient, shouldRestoreSession])
+  usePageResume(restoreSession, { minHiddenMs: 0 })
+
   useEffect(() => {
     mountedRef.current = true
 
     if (shouldRestoreSession) {
-      connectAuthClient().catch(() => {
-        if (mountedRef.current) setLoading(false)
-      })
+      // State updates in restoreSession follow the awaited client/session reads.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      void restoreSession()
     }
 
     return () => {
@@ -105,7 +128,7 @@ export function AuthProvider({ children }) {
       subscriptionRef.current?.unsubscribe()
       subscriptionRef.current = null
     }
-  }, [connectAuthClient, shouldRestoreSession])
+  }, [restoreSession, shouldRestoreSession])
 
   const signIn = useCallback(async (email, password) => {
     setLoading(true)
@@ -138,7 +161,8 @@ export function AuthProvider({ children }) {
 
   const refreshProfile = useCallback(async () => {
     const client = await connectAuthClient()
-    setProfile(await fetchProfile(session?.user, client))
+    const nextProfile = await fetchProfile(session?.user, client)
+    if (mountedRef.current && currentUserRef.current === session?.user?.id) setProfile(nextProfile)
   }, [connectAuthClient, fetchProfile, session])
 
   const value = useMemo(

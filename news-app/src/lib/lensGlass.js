@@ -1,3 +1,4 @@
+import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 /**
  * The 3D magnifying glass that rides the cursor inside <Lens>.
  *
@@ -318,7 +319,7 @@ function parseModel(buffer) {
 
 function loadModel() {
   if (!modelPromise) {
-    modelPromise = fetch(MODEL_URL, { credentials: 'omit' })
+    modelPromise = fetchWithDeadline(MODEL_URL, { credentials: 'omit' })
       .then((response) => {
         if (!response.ok) throw new Error(`lens model: HTTP ${response.status}`)
         return response.arrayBuffer()

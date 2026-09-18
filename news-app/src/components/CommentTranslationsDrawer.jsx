@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
@@ -41,36 +43,27 @@ export default function CommentTranslationsDrawer({ open, onClose, articleId }) 
   const [active, setActive] = useState(SUPPORTED_LANGUAGES[0]?.code || 'vi')
   const mtSupported = useMemo(() => isBrowserTranslationSupported(), [])
 
-  // Load comments once per open, so reopening reflects newly posted ones.
+  const [revision, retry] = useResumeRevision({ enabled: open && state !== 'ready', minHiddenMs: 0 })
+  // Keep fields disabled until BOTH comments and their translations arrive.
   useEffect(() => {
     if (!open || !articleId) return undefined
     let live = true
+    const controller = new AbortController()
+    // Reset only on article/locale/open changes or an initial read retry.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState('loading')
     setSaved('')
-    fetchComments(articleId)
-      .then((rows) => {
-        if (!live) return
-        setComments(rows)
-        setState('ready')
-      })
-      .catch(() => live && setState('error'))
-    return () => { live = false }
-  }, [open, articleId])
-
-  // Stored translations for the active tab.
-  useEffect(() => {
-    if (!open || !comments.length || !active) return undefined
-    let live = true
-    fetchCommentTranslations(comments.map((c) => c.id), active)
-      .then((rows) => {
-        if (!live) return
-        setStored(rows)
-        setEdits(rows)
-      })
-      .catch(() => {})
-    return () => { live = false }
-  }, [open, comments, active])
+    ;(async () => {
+      const rows = await fetchComments(articleId, { signal: controller.signal })
+      const translations = rows.length ? await fetchCommentTranslations(rows.map((row) => row.id), active) : {}
+      if (!live) return
+      setComments(rows)
+      setStored(translations)
+      setEdits(translations)
+      setState('ready')
+    })().catch(() => { if (live) setState('error') })
+    return () => { live = false; controller.abort() }
+  }, [open, articleId, active, revision])
 
   // Escape to close, and freeze the page behind the drawer so the author's
   // scroll position is exactly where they left it when it closes.
@@ -200,7 +193,7 @@ export default function CommentTranslationsDrawer({ open, onClose, articleId }) 
             <p className="captions-drawer__status">{t('translationsEditor.loading')}</p>
           )}
           {state === 'error' && (
-            <p className="captions-drawer__status is-error">{t('translationsEditor.loadError')}</p>
+            <RecoveryNotice onRetry={retry} />
           )}
 
           {state === 'ready' && comments.length === 0 && (

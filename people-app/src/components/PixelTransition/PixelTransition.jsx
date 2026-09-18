@@ -1,14 +1,8 @@
+import { createRetryableLoader } from '../../../../shared/resilience/requests.js'
 import { useRef, useEffect, useCallback } from 'react'
 import './PixelTransition.css'
 
-let gsapPromise = null
-
-function loadGsap() {
-  if (!gsapPromise) {
-    gsapPromise = import('gsap').then((module) => module.gsap || module.default)
-  }
-  return gsapPromise
-}
+const loadGsap = createRetryableLoader(() => import('gsap').then((module) => module.gsap || module.default))
 
 function PixelTransition({
   firstContent,

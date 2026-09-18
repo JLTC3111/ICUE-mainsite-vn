@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, CircleAlert, Trash2 } from 'lucide-react'
@@ -117,6 +119,8 @@ export default function ArticleTranslationsEditor({
   const [suggestingSources, setSuggestingSources] = useState(false)
   const browserTranslationSupported = useMemo(() => isBrowserTranslationSupported(), [])
 
+  const [revision, retry] = useResumeRevision({ enabled: state !== 'ready', minHiddenMs: 0 })
+
   useEffect(() => {
     let live = true
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -131,7 +135,7 @@ export default function ArticleTranslationsEditor({
       })
       .catch(() => live && setState('error'))
     return () => { live = false }
-  }, [articleId])
+  }, [articleId, revision])
 
   const current = drafts[active] || EMPTY
 
@@ -363,7 +367,7 @@ export default function ArticleTranslationsEditor({
 
       {state === 'loading' && <p className="translations-editor__status">{t('translationsEditor.loading')}</p>}
       {state === 'error' && (
-        <p className="translations-editor__status is-error">{t('translationsEditor.loadError')}</p>
+        <><p className="translations-editor__status is-error">{t('translationsEditor.loadError')}</p><RecoveryNotice onRetry={retry} /></>
       )}
 
       {state === 'ready' && (

@@ -1,3 +1,4 @@
+import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 import { supabase } from './supabase'
 
 const ENDPOINT = '/newsroom/api/gemini-article'
@@ -16,7 +17,7 @@ export async function askGeminiAssist({
     throw err
   }
 
-  const res = await fetch(ENDPOINT, {
+  const res = await fetchWithDeadline(ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

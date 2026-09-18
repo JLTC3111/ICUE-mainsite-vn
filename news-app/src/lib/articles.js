@@ -51,25 +51,26 @@ export async function fetchPublishedArticles({ limit = 24, language } = {}) {
  * them edit any article — without this they had the permission but no way to
  * reach another author's work. Authors always see only their own.
  */
-export async function fetchMyArticles(userId, { includeAll = false } = {}) {
+export async function fetchMyArticles(userId, { includeAll = false, signal } = {}) {
   const data = await runArticleSelect((select) => {
     const query = supabase.from('articles').select(select)
     return (includeAll ? query : query.eq('author_id', userId))
       .order('updated_at', { ascending: false })
+      .abortSignal(signal)
   })
   return (data ?? []).map(normalizeArticle)
 }
 
-export async function fetchArticleBySlug(slug) {
+export async function fetchArticleBySlug(slug, { signal } = {}) {
   const data = await runArticleSelect((select) =>
-    supabase.from('articles').select(select).eq('slug', slug).maybeSingle(),
+    supabase.from('articles').select(select).eq('slug', slug).maybeSingle().abortSignal(signal),
   )
   return normalizeArticle(data)
 }
 
-export async function fetchArticleById(id) {
+export async function fetchArticleById(id, { signal } = {}) {
   const data = await runArticleSelect((select) =>
-    supabase.from('articles').select(select).eq('id', id).maybeSingle(),
+    supabase.from('articles').select(select).eq('id', id).maybeSingle().abortSignal(signal),
   )
   return normalizeArticle(data)
 }
@@ -81,7 +82,8 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
   // Delete removed rows (+ their storage objects)
   const toDelete = originalItems.filter((m) => m.dbId && !keptIds.has(m.dbId))
   if (toDelete.length) {
-    await supabase.from('article_media').delete().in('id', toDelete.map((m) => m.dbId))
+    const { error: deleteError } = await supabase.from('article_media').delete().in('id', toDelete.map((m) => m.dbId))
+    if (deleteError) throw deleteError
     const paths = toDelete.map((m) => m.storage_path).filter(Boolean)
     if (paths.length) await supabase.storage.from(STORAGE_BUCKETS.media).remove(paths)
   }
@@ -108,10 +110,11 @@ async function syncMedia(articleId, userId, items, originalItems = []) {
       clientToDb.set(m.id, data.id)
     } else if (m.dbId) {
       clientToDb.set(m.id, m.dbId)
-      await supabase.from('article_media').update({
+      const { error: updateError } = await supabase.from('article_media').update({
         position,
         info: m.info || null,
       }).eq('id', m.dbId)
+      if (updateError) throw updateError
     }
   }
 

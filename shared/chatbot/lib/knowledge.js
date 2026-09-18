@@ -1,4 +1,5 @@
 import { getFaqEntries, isSupportedFaqLanguage } from '../../faq-content/index.js'
+import { withDeadline } from '../../resilience/requests.js'
 import {
   findQuickTopic,
   isAmbiguousIntentMatch,
@@ -212,11 +213,13 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
   const kbUrl = (language) => `${baseUrl.replace(/\/$/, '')}/chatbot/kb.${language}.json`
 
   async function loadKb(language) {
-    const res = await fetch(kbUrl(language))
-    if (!res.ok) throw new Error(`KB fetch failed: ${res.status}`)
-    const kb = await res.json()
-    if (!kb || !Array.isArray(kb.intents)) throw new Error('KB invalid shape')
-    return kb
+    return withDeadline(async (signal) => {
+      const res = await fetch(kbUrl(language), { signal })
+      if (!res.ok) throw new Error(`KB fetch failed: ${res.status}`)
+      const kb = await res.json()
+      if (!kb || !Array.isArray(kb.intents)) throw new Error('KB invalid shape')
+      return kb
+    })
   }
 
   function ensureKb(language) {
@@ -224,11 +227,12 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
     if (cache[safeLang]) return Promise.resolve(cache[safeLang])
     if (!loading[safeLang]) {
       loading[safeLang] = loadKb(safeLang)
-        .catch(() => fallbackKb(safeLang, copy(safeLang).fallback))
         .then((kb) => {
           cache[safeLang] = prepareKb(kb, safeLang, copy(safeLang).fallback)
           return cache[safeLang]
         })
+        .catch(() => prepareKb(fallbackKb(safeLang, copy(safeLang).fallback), safeLang, copy(safeLang).fallback))
+        .finally(() => { delete loading[safeLang] })
     }
     return loading[safeLang]
   }

@@ -72,7 +72,8 @@ const USABLE = new Set(['available', 'downloadable', 'downloading'])
 // locale reachable instead of only English.
 const PIVOT = 'en'
 
-const routeCache = new Map()
+import { ExpiringCache } from '../../../shared/resilience/ExpiringCache.js'
+const routeCache = new ExpiringCache(60_000)
 
 /**
  * How to get from `sourceLanguage` to `targetLanguage`: a list of hops plus the
@@ -109,6 +110,7 @@ export async function resolveTranslationRoute(sourceLanguage, targetLanguage) {
   })()
 
   routeCache.set(key, resolve)
+  resolve.then((route) => { if (!route && routeCache.get(key) === resolve) routeCache.delete(key) }, () => { if (routeCache.get(key) === resolve) routeCache.delete(key) })
   return resolve
 }
 

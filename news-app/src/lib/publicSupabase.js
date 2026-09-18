@@ -1,5 +1,6 @@
 import { loadSupabaseConfig } from './supabaseConfig'
 import { buildPostgrestUrl } from './postgrestRequest'
+import { withDeadline } from '../../../shared/resilience/requests.js'
 
 function unavailableError() {
   return {
@@ -15,34 +16,39 @@ function unavailableError() {
  * realtime, functions and storage SDK on the critical path is unnecessary.
  * RLS remains authoritative: requests still use the project's anon key.
  */
-export async function publicSelect(table, query) {
+export async function publicSelect(table, query, { signal } = {}) {
   const config = await loadSupabaseConfig()
   if (!config) return { data: null, error: unavailableError() }
 
   const url = buildPostgrestUrl(config.url, table, query)
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        apikey: config.anonKey,
-        Authorization: `Bearer ${config.anonKey}`,
-      },
-    })
-    const payload = await response.json().catch(() => null)
-
-    if (!response.ok) {
-      return {
-        data: null,
-        error: {
-          ...(payload && typeof payload === 'object' ? payload : {}),
-          status: response.status,
-          message: payload?.message || `Supabase request failed (${response.status}).`,
+    return await withDeadline(async (requestSignal) => {
+      const response = await fetch(url, {
+        signal: requestSignal,
+        cache: 'no-store',
+        headers: {
+          Accept: 'application/json',
+          apikey: config.anonKey,
+          Authorization: `Bearer ${config.anonKey}`,
         },
-      }
-    }
+      })
+      const payload = await response.json().catch(() => null)
 
-    return { data: payload, error: null }
+      if (!response.ok) {
+        return {
+          data: null,
+          error: {
+            ...(payload && typeof payload === 'object' ? payload : {}),
+            status: response.status,
+            message: payload?.message || `Supabase request failed (${response.status}).`,
+          },
+        }
+      }
+
+      if (!Array.isArray(payload)) throw new Error('Invalid Supabase response')
+      return { data: payload, error: null }
+    }, { signal })
   } catch (error) {
     return {
       data: null,

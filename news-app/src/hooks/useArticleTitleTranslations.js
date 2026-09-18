@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   fetchArticleTranslation,
   fetchArticleTitleTranslations,
+  clearPublicTranslateCache,
 } from '../lib/publicTranslate'
+import { usePageResume } from './usePageResume'
 import {
   normalizeLang,
   shouldTranslateArticle,
@@ -11,16 +13,19 @@ import {
 const EMPTY = {}
 
 /** Fold a finished lookup into the store, dropping it if the locale moved on. */
-function mergeLookup(current, lang, ids, result) {
+function mergeLookup(current, lang, ids, result, revision, failed = false) {
   const base = current.lang === lang
     ? current
     : { lang, titles: EMPTY, subtitles: EMPTY, resolved: EMPTY }
   const resolved = { ...base.resolved }
-  for (const id of ids) resolved[id] = true
+  for (const id of ids) resolved[id] = revision
+  const titles = { ...base.titles }
+  const subtitles = { ...base.subtitles }
+  if (!failed) for (const id of ids) { delete titles[id]; delete subtitles[id] }
   return {
     lang,
-    titles: { ...base.titles, ...(result.titles || EMPTY) },
-    subtitles: { ...base.subtitles, ...(result.subtitles || EMPTY) },
+    titles: { ...titles, ...(result.titles || EMPTY) },
+    subtitles: { ...subtitles, ...(result.subtitles || EMPTY) },
     resolved,
   }
 }
@@ -38,8 +43,14 @@ export function useArticleTitleTranslations(
   articles,
   locale,
   fetchTitles = fetchArticleTitleTranslations,
+  clearCache = clearPublicTranslateCache,
 ) {
   const uiLang = normalizeLang(locale)
+  const [revision, setRevision] = useState(0)
+  usePageResume(() => {
+    clearCache()
+    setRevision((value) => value + 1)
+  }, { minHiddenMs: 0 })
   const [store, setStore] = useState(
     () => ({ lang: uiLang, titles: EMPTY, subtitles: EMPTY, resolved: EMPTY }),
   )
@@ -60,10 +71,10 @@ export function useArticleTitleTranslations(
   const missingKey = useMemo(() => {
     const missing = []
     for (const id of needsTranslation) {
-      if (!isCurrentLang || !store.resolved[id]) missing.push(id)
+      if (!isCurrentLang || store.resolved[id] !== revision) missing.push(id)
     }
     return missing.join(',')
-  }, [needsTranslation, isCurrentLang, store.resolved])
+  }, [needsTranslation, isCurrentLang, store.resolved, revision])
 
   useEffect(() => {
     if (!uiLang || !missingKey) return undefined
@@ -73,17 +84,16 @@ export function useArticleTitleTranslations(
 
     fetchTitles(ids, uiLang)
       .then((result) => {
-        if (active) setStore((current) => mergeLookup(current, uiLang, ids, result))
+        if (active) setStore((current) => mergeLookup(current, uiLang, ids, result, revision))
       })
       .catch(() => {
-        // Record the ids as looked-up regardless. A failure is indistinguishable
-        // from "nothing stored" to the reader, and leaving them missing would
-        // re-fire the request on the next keystroke.
-        if (active) setStore((current) => mergeLookup(current, uiLang, ids, EMPTY))
+        // Avoid a render/request loop, but retry this failed lookup on the
+        // next resume/reconnect. Keep any previously translated headlines.
+        if (active) setStore((current) => mergeLookup(current, uiLang, ids, EMPTY, revision, true))
       })
 
     return () => { active = false }
-  }, [fetchTitles, missingKey, uiLang])
+  }, [fetchTitles, missingKey, uiLang, revision])
 
   const titles = isCurrentLang ? store.titles : EMPTY
   const subtitles = isCurrentLang ? store.subtitles : EMPTY
@@ -93,14 +103,19 @@ export function useArticleTitleTranslations(
   // headline while other articles in the same list are still being fetched.
   const isTitlePending = useCallback((articleId) => {
     const id = String(articleId)
-    return needsTranslation.has(id) && !(isCurrentLang && store.resolved[id])
-  }, [needsTranslation, isCurrentLang, store.resolved])
+    return needsTranslation.has(id) && !(isCurrentLang && (store.resolved[id] === revision || store.titles[id]))
+  }, [needsTranslation, isCurrentLang, store.resolved, store.titles, revision])
 
   return { titles, subtitles, isTitlePending, pending }
 }
 
 /** Full selected-locale text for the one article that owns the grid excerpt. */
 export function useArticlePreviewTranslation(article, locale) {
+  const [revision, setRevision] = useState(0)
+  usePageResume(() => {
+    clearPublicTranslateCache(article?.id, locale)
+    setRevision((value) => value + 1)
+  }, { minHiddenMs: 0 })
   const [result, setResult] = useState({ key: '', translation: null })
   const uiLang = normalizeLang(locale)
   const needsTranslation = Boolean(
@@ -121,13 +136,13 @@ export function useArticlePreviewTranslation(article, locale) {
         })
       })
       .catch(() => {
-        if (active) setResult({ key: requestKey, translation: null })
+        if (active) setResult((current) => current.key === requestKey ? current : { key: requestKey, translation: null })
       })
 
     return () => {
       active = false
     }
-  }, [article?.id, requestKey, uiLang])
+  }, [article?.id, requestKey, uiLang, revision])
 
   const isCurrent = result.key === requestKey
   return {

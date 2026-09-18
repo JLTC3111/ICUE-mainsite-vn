@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import PhosphorHandsClapping from './icons/PhosphorHandsClapping'
 import { getClaps, toggleClap } from '../lib/engagement'
@@ -12,21 +13,27 @@ export default function ClapButton({ articleId }) {
   const [busy, setBusy] = useState(false)
   const [ready, setReady] = useState(false)
 
+  const busyRef = useRef(false)
+  const [revision] = useResumeRevision({ minHiddenMs: 0 })
+
   useEffect(() => {
+    if (busy) return undefined
     let active = true
-    getClaps(articleId)
+    const controller = new AbortController()
+    getClaps(articleId, { signal: controller.signal })
       .then((r) => {
-        if (!active) return
+        if (!active || busyRef.current) return
         setClapped(r.clapped)
         setCount(r.count)
         setReady(true)
       })
       .catch(() => active && setReady(true))
-    return () => { active = false }
-  }, [articleId])
+    return () => { active = false; controller.abort() }
+  }, [articleId, busy, revision])
 
   const onClick = useCallback(async () => {
-    if (busy) return
+    if (busyRef.current) return
+    busyRef.current = true
     setBusy(true)
     setClapped((v) => !v)
     setCount((c) => (clapped ? c - 1 : c + 1))
@@ -38,9 +45,10 @@ export default function ClapButton({ articleId }) {
       setClapped((v) => !v)
       setCount((c) => (clapped ? c + 1 : c - 1))
     } finally {
+      busyRef.current = false
       setBusy(false)
     }
-  }, [articleId, busy, clapped])
+  }, [articleId, clapped])
 
   return (
     <button

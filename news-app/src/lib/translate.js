@@ -7,6 +7,7 @@ import { supabase } from './supabase'
 import { normalizeLang } from './translateUtils.js'
 import { clearPublicTranslateCache } from './publicTranslate'
 import { sanitizeArticleHtml } from '@icue/text/sanitizeArticleHtml'
+import { ExpiringCache } from '../../../shared/resilience/ExpiringCache.js'
 
 export {
   inferSourceLanguage,
@@ -18,7 +19,8 @@ export {
 
 const TRANSLATION_COLUMNS = 'title,subtitle,content_html,cover_info,sources,media'
 
-const memoryCache = new Map()
+const memoryCache = new ExpiringCache()
+let cacheRevision = 0
 
 function normalizeTranslationRow(row = {}) {
   return {
@@ -36,6 +38,7 @@ function cacheKey(articleId, locale) {
 }
 
 export function clearTranslateCache(articleId, locale) {
+  cacheRevision += 1
   clearPublicTranslateCache(articleId, locale)
 
   if (!articleId) {
@@ -62,6 +65,7 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
 
   const key = cacheKey(articleId, target)
   if (memoryCache.has(key)) return memoryCache.get(key)
+  const revision = cacheRevision
 
   const { data, error } = await supabase
     .from('article_translations')
@@ -91,7 +95,7 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
       original: true,
     }
 
-  memoryCache.set(key, result)
+  if (revision === cacheRevision) memoryCache.set(key, result)
   return result
 }
 
@@ -103,6 +107,7 @@ export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
 
   const key = `titles::${target}::${[...ids].sort().join('|')}`
   if (memoryCache.has(key)) return memoryCache.get(key)
+  const revision = cacheRevision
 
   const { data, error } = await supabase
     .from('article_translations')
@@ -110,7 +115,7 @@ export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
     .eq('locale', target)
     .in('article_id', ids)
 
-  if (error) return { locale: target, titles: {}, subtitles: {} }
+  if (error) throw error
 
   const titles = {}
   const subtitles = {}
@@ -120,7 +125,7 @@ export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
   }
 
   const result = { locale: target, titles, subtitles }
-  memoryCache.set(key, result)
+  if (revision === cacheRevision) memoryCache.set(key, result)
   return result
 }
 

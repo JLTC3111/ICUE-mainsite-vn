@@ -1,3 +1,4 @@
+import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 /** Map Supabase auth errors to i18n keys under login.* */
 export function authErrorKey(error) {
   if (!error) return 'login.resetError'
@@ -40,7 +41,7 @@ export function authErrorKey(error) {
 /** Server-side password reset (Netlify function / dev proxy). */
 export async function sendPasswordResetEmail(email, redirectTo) {
   try {
-    const res = await fetch(`${import.meta.env.BASE_URL}api/auth-forgot-password`, {
+    const res = await fetchWithDeadline(`${import.meta.env.BASE_URL}api/auth-forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, redirectTo }),

@@ -28,6 +28,7 @@ export function useContactForm() {
   const [status, setStatus] = useState('idle')
   const [sentDesk, setSentDesk] = useState(null)
 
+  const sendingRef = useRef(false)
   const fieldRefs = useRef({})
   const refSetters = useRef({})
 
@@ -76,6 +77,7 @@ export function useContactForm() {
 
   const submit = useCallback(
     async (language) => {
+      if (sendingRef.current) return
       setAttempted(true)
 
       if (missing.length > 0) {
@@ -85,6 +87,7 @@ export function useContactForm() {
         return
       }
 
+      sendingRef.current = true
       setStatus('sending')
       try {
         await submitToNetlify({
@@ -105,7 +108,7 @@ export function useContactForm() {
         // Values are kept on purpose: the failure panel offers to hand them to
         // a mail client, which only works if they are still here.
         setStatus('error')
-      }
+      } finally { sendingRef.current = false }
     },
     [missing, values],
   )

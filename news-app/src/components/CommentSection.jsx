@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchComments, addComment } from '../lib/engagement'
@@ -50,14 +52,20 @@ export default function CommentSection({ articleId, canEdit = false }) {
   const mtSupported = useMemo(() => isBrowserTranslationSupported(), [])
   // Ids already machine-translated this session, so re-running the batch is cheap.
   const autoDoneRef = useRef(new Set())
+  const postingRef = useRef(false)
+  const translatingRef = useRef(false)
+  const [readError, setReadError] = useState(false)
+  const [revision, retry] = useResumeRevision({ minHiddenMs: 0 })
 
   useEffect(() => {
+    if (busy) return undefined
     let active = true
-    fetchComments(articleId)
-      .then((rows) => active && setComments(rows))
-      .catch(() => {})
-    return () => { active = false }
-  }, [articleId])
+    const controller = new AbortController()
+    fetchComments(articleId, { signal: controller.signal })
+      .then((rows) => { if (active && !postingRef.current) { setComments(rows); setReadError(false) } })
+      .catch(() => { if (active) setReadError(true) })
+    return () => { active = false; controller.abort() }
+  }, [articleId, busy, revision])
 
   // Hand-authored translations for the active locale.
   useEffect(() => {
@@ -89,6 +97,8 @@ export default function CommentSection({ articleId, canEdit = false }) {
   }, [])
 
   const runBrowserTranslation = useCallback(async () => {
+    if (translatingRef.current) return
+    translatingRef.current = true
     setMtPhase('busy')
     setProgress(0)
     try {
@@ -107,7 +117,10 @@ export default function CommentSection({ articleId, canEdit = false }) {
           setAuto((prev) => ({ ...prev, [autoKey(uiLang, comment.id)]: output }))
         }
       }
+    } catch {
+      // Optional machine translation must not break reading or posting.
     } finally {
+      translatingRef.current = false
       setMtPhase('idle')
     }
   }, [pending, uiLang, resolveSource])
@@ -130,7 +143,7 @@ export default function CommentSection({ articleId, canEdit = false }) {
       } else {
         setMtPhase('needs-download')
       }
-    })()
+    })().catch(() => {})
 
     return () => { cancelled = true }
     // `untranslated` shrinks as results land, which re-runs this harmlessly and
@@ -164,7 +177,8 @@ export default function CommentSection({ articleId, canEdit = false }) {
     async (e) => {
       e.preventDefault()
       const text = body.trim()
-      if (!text || busy) return
+      if (!text || postingRef.current) return
+      postingRef.current = true
       setBusy(true)
       setError('')
       try {
@@ -174,10 +188,11 @@ export default function CommentSection({ articleId, canEdit = false }) {
       } catch {
         setError(t('engagement.error'))
       } finally {
+        postingRef.current = false
         setBusy(false)
       }
     },
-    [articleId, body, name, busy, t],
+    [articleId, body, name, t],
   )
 
   // The bar only appears once the probe has decided: a spinner while the model
@@ -209,6 +224,7 @@ export default function CommentSection({ articleId, canEdit = false }) {
           rows={3}
           maxLength={2000}
         />
+        {readError && <RecoveryNotice onRetry={retry} />}
         {error && <p className="comments__error">{error}</p>}
         <div className="comments__actions">
           <button className="btn btn-accent btn-sm" type="submit" disabled={busy || !body.trim()}>

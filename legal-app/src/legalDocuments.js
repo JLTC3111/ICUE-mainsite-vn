@@ -1,3 +1,4 @@
+import { withDeadline } from '../../shared/resilience/requests.js'
 import { LEGAL_STRUCTURE } from './legal/structure.js'
 import vi from './legal/content/vi.js'
 import en from './legal/content/en.js'
@@ -59,7 +60,7 @@ export function buildLegalDocuments(language) {
 /** Pull in a lazily-shipped language, then make it available synchronously. */
 export async function ensureLegalContent(language) {
   if (CONTENT[language] || !LAZY_CONTENT[language]) return
-  const module = await LAZY_CONTENT[language]()
+  const module = await withDeadline(LAZY_CONTENT[language])
   CONTENT[language] = module.default
 }
 

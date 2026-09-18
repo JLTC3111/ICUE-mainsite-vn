@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Eye, EyeOff } from 'lucide-react'
@@ -28,6 +28,9 @@ export default function Login() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [status, setStatus] = useState('idle') // idle | loading | error | success
   const [message, setMessage] = useState('')
+  const busyRef = useRef(false)
+  const navigationTimerRef = useRef(null)
+  useEffect(() => () => clearTimeout(navigationTimerRef.current), [])
 
   const close = useCallback(() => {
     if (window.history.length > 1) navigate(-1)
@@ -51,86 +54,84 @@ export default function Login() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault()
-      setStatus('loading')
-      setMessage('')
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault()
+    if (busyRef.current) return
+    busyRef.current = true
+    setStatus('loading')
+    setMessage('')
+    try {
       const { error } = await signIn(email.trim(), password)
-      if (error) {
-        setStatus('error')
-        setMessage(t('login.error'))
-        return
-      }
+      if (error) throw error
       navigate(redirectTo, { replace: true })
-    },
-    [email, password, signIn, navigate, redirectTo, t],
-  )
+    } catch {
+      setStatus('error')
+      setMessage(t('login.error'))
+    } finally {
+      busyRef.current = false
+    }
+  }, [email, password, signIn, navigate, redirectTo, t])
 
   const handleReset = useCallback(async () => {
+    if (busyRef.current) return
     const trimmed = email.trim()
     if (!trimmed) {
       setStatus('error')
       setMessage(t('login.resetNeedEmail'))
       return
     }
-
+    busyRef.current = true
     setStatus('loading')
     setMessage('')
-
-    const redirectTo = getAuthRedirectUrl('login')
-    let { error } = await sendPasswordResetEmail(trimmed, redirectTo)
-
-    // Fallback when the serverless proxy is not deployed yet.
-    if (error && (
-      String(error.code || '').startsWith('http_404')
-      || String(error.code || '').startsWith('http_502')
-      || error.code === 'network_error'
-    )) {
-      ;({ error } = await supabase.auth.resetPasswordForEmail(trimmed, { redirectTo }))
-    }
-
-    if (error) {
+    try {
+      const redirectTo = getAuthRedirectUrl('login')
+      let { error } = await sendPasswordResetEmail(trimmed, redirectTo)
+      // Only an absent endpoint is safe to fall back from. A lost response may
+      // mean the reset email was already sent, so do not replay that POST.
+      if (error && String(error.code || '').startsWith('http_404')) {
+        ;({ error } = await supabase.auth.resetPasswordForEmail(trimmed, { redirectTo }))
+      }
+      if (error) throw error
+      setStatus('success')
+      setMessage(t('login.resetSent'))
+    } catch (error) {
       setStatus('error')
       setMessage(t(authErrorKey(error)))
-      return
+    } finally {
+      busyRef.current = false
     }
-
-    setStatus('success')
-    setMessage(t('login.resetSent'))
   }, [email, t])
 
-  const handleUpdatePassword = useCallback(
-    async (e) => {
-      e.preventDefault()
-      setMessage('')
-
-      if (newPassword.length < MIN_PASSWORD_LEN) {
-        setStatus('error')
-        setMessage(t('login.resetTooShort'))
-        return
-      }
-      if (newPassword !== confirmPassword) {
-        setStatus('error')
-        setMessage(t('login.resetMismatch'))
-        return
-      }
-
-      setStatus('loading')
+  const handleUpdatePassword = useCallback(async (e) => {
+    e.preventDefault()
+    if (busyRef.current) return
+    setMessage('')
+    if (newPassword.length < MIN_PASSWORD_LEN) {
+      setStatus('error')
+      setMessage(t('login.resetTooShort'))
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setStatus('error')
+      setMessage(t('login.resetMismatch'))
+      return
+    }
+    busyRef.current = true
+    setStatus('loading')
+    try {
       const { error } = await supabase.auth.updateUser({ password: newPassword })
-      if (error) {
-        setStatus('error')
-        setMessage(t(authErrorKey(error)))
-        return
-      }
-
+      if (error) throw error
       setStatus('success')
       setMessage(t('login.resetSuccess'))
       window.history.replaceState({}, '', getAuthRedirectUrl('login'))
-      setTimeout(() => navigate(redirectTo, { replace: true }), 1200)
-    },
-    [newPassword, confirmPassword, navigate, redirectTo, t],
-  )
+      navigationTimerRef.current = setTimeout(() => navigate(redirectTo, { replace: true }), 1200)
+    } catch (error) {
+      setStatus('error')
+      setMessage(t(authErrorKey(error)))
+    } finally {
+      busyRef.current = false
+    }
+  }, [newPassword, confirmPassword, navigate, redirectTo, t])
 
   const isRecovery = mode === 'recovery'
 

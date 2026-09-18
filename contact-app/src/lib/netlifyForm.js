@@ -1,3 +1,4 @@
+import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 /**
  * Netlify Forms, submitted over fetch instead of a native POST so the page can
  * keep the reader's words on screen and show its own confirmation.
@@ -20,7 +21,7 @@ const POST_TARGET = '/'
 export async function submitToNetlify(fields) {
   const body = new URLSearchParams({ 'form-name': FORM_NAME, ...fields })
 
-  const response = await fetch(POST_TARGET, {
+  const response = await fetchWithDeadline(POST_TARGET, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: body.toString(),
