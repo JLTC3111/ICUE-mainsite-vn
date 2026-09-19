@@ -95,21 +95,63 @@ aside.contact-sidebar button:hover {
   padding: 0;
   color: #ffffff;
   box-shadow: none;
-  transition: transform 0.12s ease, color 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .contact-sidebar__music:hover svg {
-  transform: scale(1.25);
-  transition: transform 0.3s ease-in-out;
+  transform: scale(1.1);
 }
 
 .contact-sidebar__music svg {
   width: 30px;
   height: 30px;
+  transition: transform 0.3s ease-in-out;
 }
 
-.contact-sidebar__music svg path {
+.contact-sidebar__music-bar {
   fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scaleY(var(--music-rest-scale, 0.5));
+  animation: contactMusicEqualizer 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-play-state: paused;
+}
+
+.contact-sidebar__music-bar:nth-child(1) {
+  --music-rest-scale: 0.45;
+  animation-duration: 1.3s;
+  animation-delay: -0.3s;
+}
+
+.contact-sidebar__music-bar:nth-child(2) {
+  --music-rest-scale: 0.8;
+  animation-duration: 1.1s;
+  animation-delay: -0.7s;
+}
+
+.contact-sidebar__music-bar:nth-child(3) {
+  --music-rest-scale: 0.6;
+  animation-duration: 1.5s;
+  animation-delay: -0.5s;
+}
+
+.contact-sidebar__music-bar:nth-child(4) {
+  --music-rest-scale: 0.35;
+  animation-duration: 1.2s;
+  animation-delay: -0.9s;
+}
+
+.contact-sidebar__music[data-animating='true'] .contact-sidebar__music-bar {
+  animation-play-state: running;
+}
+
+/* Different periods and starting phases keep the bars from marching together. */
+@keyframes contactMusicEqualizer {
+  0%, 100% { transform: scaleY(0.25); }
+  20% { transform: scaleY(0.85); }
+  40% { transform: scaleY(0.4); }
+  60% { transform: scaleY(1); }
+  80% { transform: scaleY(0.55); }
 }
 
 .contact-sidebar__divider {
@@ -199,5 +241,13 @@ aside.contact-sidebar button:hover {
     animation: none;
     opacity: 1;
     visibility: visible;
+  }
+
+  .contact-sidebar__music-bar {
+    animation: none;
+  }
+
+  .contact-sidebar__music svg {
+    transition: none;
   }
 }

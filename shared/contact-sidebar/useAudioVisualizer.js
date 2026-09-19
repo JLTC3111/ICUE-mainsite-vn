@@ -1,81 +1,55 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const AUDIO_SRC = '/public/music/mixkit-driving-ambition-32.mp3'
 
-function getOrCreateVisualizer() {
+function getOrCreateAudio() {
   if (typeof window === 'undefined') return null
-  if (window.__icueAudioVisualizer) return window.__icueAudioVisualizer
-
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext
-  if (!AudioContextClass) return null
-
-  const audio = new Audio(AUDIO_SRC)
-  const ctx = new AudioContextClass()
-  const source = ctx.createMediaElementSource(audio)
-  const analyser = ctx.createAnalyser()
-  source.connect(analyser)
-  analyser.connect(ctx.destination)
-  const freqData = new Uint8Array(analyser.frequencyBinCount)
-  window.__icueAudioVisualizer = { audio, ctx, analyser, freqData }
-  return window.__icueAudioVisualizer
+  if (!window.__icueBackgroundAudio) {
+    const audio = new Audio(AUDIO_SRC)
+    audio.preload = 'none'
+    window.__icueBackgroundAudio = audio
+  }
+  return window.__icueBackgroundAudio
 }
 
-export function useAudioVisualizer(barRef) {
-  const rafRef = useRef(null)
-
-  const stopLoop = useCallback(() => {
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = null
-    }
-    if (barRef.current) barRef.current.style.transform = 'scale(1)'
-  }, [barRef])
-
-  const runLoop = useCallback(function updateVisualizer() {
-    const el = barRef.current
-    const av = window.__icueAudioVisualizer
-    if (!el || !av?.analyser || av.audio.paused || document.hidden) {
-      stopLoop()
-      return
-    }
-
-    av.analyser.getByteFrequencyData(av.freqData)
-    const value = av.freqData[0] || 0
-    const scale = Math.max(0.85, 1 + value / 512)
-    el.style.transform = `scale(${scale})`
-    rafRef.current = requestAnimationFrame(updateVisualizer)
-  }, [barRef, stopLoop])
-
-  const startLoop = useCallback(() => {
-    if (rafRef.current !== null || document.hidden) return
-    rafRef.current = requestAnimationFrame(runLoop)
-  }, [runLoop])
-
-  const toggle = useCallback(async () => {
-    const av = getOrCreateVisualizer()
-    if (!av) return
-    if (av.audio.paused) {
-      if (av.ctx.state === 'suspended') await av.ctx.resume().catch(() => {})
-      await av.audio.play().then(startLoop).catch(() => {})
-    } else {
-      av.audio.pause()
-      stopLoop()
-    }
-  }, [startLoop, stopLoop])
+export function useAudioVisualizer() {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      const av = window.__icueAudioVisualizer
-      if (document.hidden || !av || av.audio.paused) stopLoop()
-      else startLoop()
-    }
+    const audio = getOrCreateAudio()
+    if (!audio) return
 
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+    const syncPlayback = () => {
+      setIsPlaying(!audio.paused && !audio.ended && audio.readyState >= 3)
+    }
+    const stopAnimation = () => setIsPlaying(false)
+    const syncVisibility = () => setIsVisible(!document.hidden)
+    const stopEvents = ['pause', 'ended', 'waiting', 'emptied', 'error']
+
+    audio.addEventListener('playing', syncPlayback)
+    stopEvents.forEach((event) => audio.addEventListener(event, stopAnimation))
+    document.addEventListener('visibilitychange', syncVisibility)
+    syncPlayback()
+    syncVisibility()
+
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      stopLoop()
+      audio.removeEventListener('playing', syncPlayback)
+      stopEvents.forEach((event) => audio.removeEventListener(event, stopAnimation))
+      document.removeEventListener('visibilitychange', syncVisibility)
     }
-  }, [startLoop, stopLoop])
+  }, [])
 
-  return { toggle }
+  const toggle = useCallback(async () => {
+    const audio = getOrCreateAudio()
+    if (!audio) return
+
+    if (audio.paused) {
+      await audio.play().catch(() => setIsPlaying(false))
+    } else {
+      audio.pause()
+    }
+  }, [])
+
+  return { toggle, isPlaying, isAnimating: isPlaying && isVisible }
 }
