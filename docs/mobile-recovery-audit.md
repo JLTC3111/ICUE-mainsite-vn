@@ -3,9 +3,10 @@
 - Repository: `JLTC3111/ICUE-mainsite-vn`
 - Base: `570f566bae2d4141ec1f44aedce68e9401696999`
 - Repair branch: `fix/mobile-resume-recovery`
+- Laptop branch: `codex/laptop-music-bars`
 - Integration branch: `integration/mobile-recovery`
-- Revalidated: 2026-09-18
-- Draft PR: [#4](https://github.com/JLTC3111/ICUE-mainsite-vn/pull/4)
+- Revalidated: 2026-09-19 (combined iPhone and laptop work)
+- iPhone repair PR: [#4](https://github.com/JLTC3111/ICUE-mainsite-vn/pull/4)
 
 ## Scope and result
 
@@ -65,17 +66,18 @@ This is source, build, and targeted behavior coverage. It does not certify every
 | Publish boundary | 12 required files and 83 self-hosted fonts verified. |
 | Chatbot content | 26 intents and 16 FAQ records verified in six languages; the existing nine variable claims remain held for review. |
 | ESLint | All 42 changed newsroom JavaScript/JSX sources pass without warnings. |
+| Production browser preview | Desktop/mobile music controls, independent bar motion, keyboard playback, reduced motion, and track completion pass. Background video continues when music pauses or ends; no page runtime errors. |
 | `git diff --check` | Pass. |
 
 The regression harness executes the actual source modules with real React and mocks only platform/service boundaries. Cases cover lifecycle event ordering, deadlines, cancelled requests, loader retries, real i18next backend failure, cache invalidation races, draft preservation, auth/profile races, duplicate submissions, hung notification counts, and article refresh without duplicate view writes.
 
-Tracked assets, legacy files, and fonts omitted by the restored sparse checkout were restored before the full build. Existing bundle-size warnings remain. No production deployment or merge to main was performed.
+Tracked assets, legacy files, and fonts omitted by the restored sparse checkout were restored before the initial full build. The combined result was rebuilt on the laptop with the locked dependencies. Existing bundle-size warnings remain. These local checks do not perform production writes.
 
 ## Integration status
 
-The repair branch is published in draft PR #4. The GitHub tree for the recovered runtime code was verified to match the local source tree exactly. An integration branch is prepared from current main plus these repairs, ready to receive the laptop work. The other remote branches inspected contain work dated July or September 1; none identifies the latest laptop changes.
+The iPhone repair commit `9e75e6850d936c08fdfac93697681a1ec4ec21b5` is published in PR #4. The latest laptop music-bar changes were committed and pushed separately as `8a796db8c0964e46c97a94853734d83704f6e8d7` on `codex/laptop-music-bars`.
 
-Before a final main merge, commit and push the latest laptop work to a separate branch, merge that branch into `integration/mobile-recovery`, resolve conflicts, and rerun the checks above on the combined result. Then open one integration PR to main. The repair draft can be closed as superseded after integration. Keep uncommitted laptop edits safe before switching branches.
+Both branches are combined in `integration/mobile-recovery` by merge commit `850d4304e84639a1f7964d5a3a092f49108adf1f`, with no conflicts and both source commits preserved. All checks above were rerun successfully on this combined tree before preparing one integration PR to main. The music icon uses four independently eased bars, follows playback state, and respects reduced motion; background video remains independently controlled.
 
 ## Remaining validation and limitations
 
@@ -85,7 +87,7 @@ Before a final main merge, commit and push the latest laptop work to a separate 
 - Multi-step article/media uploads remain nontransactional. Partial or uncertain server writes can require reconciliation before a manual retry; no automatic mutation replay was added.
 - Unsaved in-memory drafts survive resume refreshes but are not persisted across browser/OS process termination.
 - Generic runtime exceptions expose Retry/Reload. Only loading failures automatically retry; deterministic render bugs still require a code fix.
-- The build/test result covers the repair branch alone. Future laptop integration must be validated again.
+- The build/test result covers the combined iPhone and laptop integration described above; future source changes require their own validation.
 
 ## Complete production-source inventory
 
