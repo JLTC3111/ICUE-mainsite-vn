@@ -122,14 +122,14 @@ export default function ArticleDetail() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState('loading')
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslation(null)
     setSourceTranslation(null)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslatedLang(null)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setShowOriginal(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslateError(false)
     setTranslateResolved(false)
     setPageProgress(null)
@@ -189,27 +189,25 @@ export default function ArticleDetail() {
     if (!needsArticleTranslation && !needsSourceTranslation) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslation(null)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslatedLang(null)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslateBusy(false)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslateResolved(true)
       setSourceTranslation(null)
       return undefined
     }
 
     let active = true
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslateBusy(needsArticleTranslation)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslateError(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslateResolved(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    // Keep ready translations during background revalidation.
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslateBusy(needsArticleTranslation)
+
+    setTranslateError(false)
+
+    setTranslateResolved(false)
+
+    // Keep ready translations during background revalidation.
 
 
     fetchArticleTranslation(article.id, uiLang)

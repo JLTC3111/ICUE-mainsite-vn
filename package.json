@@ -63,6 +63,8 @@
     "verify:publish": "node scripts/verify-publish-boundary.mjs && npm run verify:chatbot",
     "dev:home": "npm run dev --prefix home-app",
     "build:home": "npm run build --prefix home-app",
-    "dev:structure": "npm run dev --prefix structure-app"
+    "dev:structure": "npm run dev --prefix structure-app",
+    "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js",
+    "audit:recovery": "node scripts/audit-recovery-sources.mjs"
   }
 }
