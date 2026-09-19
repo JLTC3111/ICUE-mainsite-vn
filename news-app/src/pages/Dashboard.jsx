@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -21,15 +23,21 @@ export default function Dashboard() {
   const [translations, setTranslations] = useState({})
   const [translationsState, setTranslationsState] = useState('loading')
 
-  useEffect(() => {
-    if (!user) return undefined
-    let live = true
+  const userId = user?.id
+  const [revision, retry] = useResumeRevision({ minHiddenMs: state === 'ready' ? 30_000 : 0 })
+  const [error, setError] = useState(false)
 
-    fetchMyArticles(user.id, { includeAll: isAdmin })
+  useEffect(() => {
+    if (!userId) return undefined
+    let live = true
+    const controller = new AbortController()
+
+    fetchMyArticles(userId, { includeAll: isAdmin, signal: controller.signal })
       .then((data) => {
         if (!live) return
         setArticles(data)
         setState('ready')
+        setError(false)
 
         fetchArticleTranslationsForArticles(data.map((article) => article.id))
           .then((rows) => {
@@ -45,12 +53,13 @@ export default function Dashboard() {
       })
       .catch(() => {
         if (!live) return
-        setState('error')
+        setState((current) => current === 'ready' ? current : 'error')
+        setError(true)
         setTranslationsState('error')
       })
 
-    return () => { live = false }
-  }, [user, isAdmin])
+    return () => { live = false; controller.abort() }
+  }, [userId, isAdmin, revision])
 
   const translationStatuses = useMemo(() => Object.fromEntries(
     articles.map((article) => [
@@ -65,8 +74,10 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     if (!window.confirm(t('common.confirmDelete'))) return
-    await deleteArticle(id)
-    setArticles((prev) => prev.filter((a) => a.id !== id))
+    try {
+      await deleteArticle(id)
+      setArticles((prev) => prev.filter((a) => a.id !== id))
+    } catch { setError(true) }
   }
 
   return (
@@ -76,6 +87,7 @@ export default function Dashboard() {
         <Link to="/write" className="btn btn-accent btn-sm">{t('nav.write')}</Link>
       </div>
 
+      {error && <RecoveryNotice onRetry={retry} />}
       {state === 'loading' && <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>}
       {state === 'ready' && articles.length === 0 && <p className="dash__empty">{t('news.empty')}</p>}
 

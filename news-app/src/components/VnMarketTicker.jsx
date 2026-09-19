@@ -1,3 +1,4 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchVnMarketQuotes } from '../lib/vnMarketTicker'
@@ -45,6 +46,7 @@ export default function VnMarketTicker() {
   const { vnTickerHoverToPlay } = usePerformanceProfile()
   const [quotes, setQuotes] = useState([])
   const [status, setStatus] = useState('loading')
+  const [revision] = useResumeRevision({ minHiddenMs: 0 })
   const [tabVisible, setTabVisible] = useState(
     () => typeof document === 'undefined' || document.visibilityState === 'visible',
   )
@@ -59,14 +61,16 @@ export default function VnMarketTicker() {
     if (!tabVisible) return undefined
 
     let active = true
+    let sequence = 0
     const load = () => {
+      const requestId = ++sequence
       fetchVnMarketQuotes()
         .then((data) => {
-          if (!active) return
+          if (!active || requestId !== sequence) return
           setQuotes(data)
           setStatus('ready')
         })
-        .catch(() => active && setStatus('error'))
+        .catch(() => active && requestId === sequence && setStatus('error'))
     }
     load()
     const id = setInterval(load, 60 * 1000)
@@ -74,7 +78,7 @@ export default function VnMarketTicker() {
       active = false
       clearInterval(id)
     }
-  }, [tabVisible])
+  }, [tabVisible, revision])
 
   if (status === 'error' && !quotes.length) {
     return (

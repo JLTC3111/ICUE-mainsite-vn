@@ -1,3 +1,4 @@
+import { usePageResume } from '../../../shared/resilience/usePageResume.js'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import {
@@ -33,6 +34,8 @@ export default function useNotifications() {
   const [available, setAvailable] = useState(true)
   const [loadedOnce, setLoadedOnce] = useState(false)
   const countRequestRef = useRef(null)
+  const countAbortRef = useRef(null)
+  const listAbortRef = useRef(null)
   const pendingReadIdsRef = useRef(new Set())
   const pendingDismissIdsRef = useRef(new Set())
   const markAllPendingRef = useRef(false)
@@ -49,16 +52,20 @@ export default function useNotifications() {
     setError(true)
   }, [])
 
-  const refreshCount = useCallback(async () => {
+  const refreshCount = useCallback(async ({ force = false } = {}) => {
     if (!userId) return
     if (pendingMutationCountRef.current > 0) return
-    if (countRequestRef.current) return countRequestRef.current
+    if (countRequestRef.current && !force) return countRequestRef.current
+    countAbortRef.current?.abort()
+    const controller = new AbortController()
+    countAbortRef.current = controller
 
     const mutationVersion = mutationVersionRef.current
-    const request = fetchUnreadCount()
+    const request = fetchUnreadCount({ signal: controller.signal })
     countRequestRef.current = request
     try {
       const nextCount = await request
+      if (controller.signal.aborted) return
       if (
         pendingMutationCountRef.current > 0
         || mutationVersion !== mutationVersionRef.current
@@ -68,7 +75,7 @@ export default function useNotifications() {
       setUnreadCount(nextCount)
       setError(false)
     } catch (e) {
-      handleError(e)
+      if (!controller.signal.aborted) handleError(e)
     } finally {
       if (countRequestRef.current === request) countRequestRef.current = null
     }
@@ -82,9 +89,13 @@ export default function useNotifications() {
     }
 
     const mutationVersion = mutationVersionRef.current
+    listAbortRef.current?.abort()
+    const controller = new AbortController()
+    listAbortRef.current = controller
     setLoading(true)
     try {
-      const [rows, count] = await Promise.all([fetchNotifications(), fetchUnreadCount()])
+      const [rows, count] = await Promise.all([fetchNotifications({ signal: controller.signal }), fetchUnreadCount({ signal: controller.signal })])
+      if (controller.signal.aborted) return
       if (
         pendingMutationCountRef.current > 0
         || mutationVersion !== mutationVersionRef.current
@@ -100,11 +111,21 @@ export default function useNotifications() {
       setError(false)
       setLoadedOnce(true)
     } catch (e) {
-      handleError(e)
+      if (!controller.signal.aborted) handleError(e)
     } finally {
-      setLoading(false)
+      if (listAbortRef.current === controller) setLoading(false)
     }
   }, [userId, handleError])
+
+  usePageResume(() => {
+    if (!isAuthed || !available) return
+    void refreshCount({ force: true })
+    if (loadedOnce) void refreshList()
+  }, { minHiddenMs: 0 })
+  useEffect(() => () => {
+    countAbortRef.current?.abort()
+    listAbortRef.current?.abort()
+  }, [])
 
   useEffect(() => {
     if (!isAuthed || !userId || !available) return undefined

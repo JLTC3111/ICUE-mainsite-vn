@@ -1,3 +1,4 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchMarketQuotes } from '../lib/marketTicker'
@@ -26,19 +27,22 @@ const GLOBAL_POLL_MS = 5 * 60 * 1000
 function useQuoteFeed(fetcher, pollMs, { paused, tabVisible }) {
   const [quotes, setQuotes] = useState([])
   const [status, setStatus] = useState('loading')
+  const [revision] = useResumeRevision({ minHiddenMs: 0 })
 
   useEffect(() => {
     if (!tabVisible) return undefined
 
     let active = true
+    let sequence = 0
     const load = () => {
+      const requestId = ++sequence
       fetcher()
         .then((data) => {
-          if (!active) return
+          if (!active || requestId !== sequence) return
           setQuotes(data)
           setStatus('ready')
         })
-        .catch(() => active && setStatus('error'))
+        .catch(() => active && requestId === sequence && setStatus('error'))
     }
 
     load()
@@ -49,7 +53,7 @@ function useQuoteFeed(fetcher, pollMs, { paused, tabVisible }) {
       active = false
       clearInterval(id)
     }
-  }, [fetcher, pollMs, paused, tabVisible])
+  }, [fetcher, pollMs, paused, tabVisible, revision])
 
   return { quotes, status }
 }

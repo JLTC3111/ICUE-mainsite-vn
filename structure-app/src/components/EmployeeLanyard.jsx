@@ -1,4 +1,5 @@
-import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
+import { Component, Suspense, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EMPLOYEE_LANYARD_PHONE_QUERY, ICUE_BADGE_LOGO_SRC } from './employeeLanyardConfig'
 import './EmployeeLanyard.css'

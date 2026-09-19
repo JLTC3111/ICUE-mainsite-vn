@@ -1,3 +1,4 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { fetchMarketQuotes } from '../lib/marketTicker'
@@ -9,6 +10,7 @@ export default function MarketTicker() {
   const { pauseTickers } = usePerformanceProfile()
   const [quotes, setQuotes] = useState([])
   const [status, setStatus] = useState('loading')
+  const [revision] = useResumeRevision({ minHiddenMs: 0 })
   const [tabVisible, setTabVisible] = useState(
     () => typeof document === 'undefined' || document.visibilityState === 'visible',
   )
@@ -23,14 +25,16 @@ export default function MarketTicker() {
     if (!tabVisible) return undefined
 
     let active = true
+    let sequence = 0
     const load = () => {
+      const requestId = ++sequence
       fetchMarketQuotes()
         .then((data) => {
-          if (!active) return
+          if (!active || requestId !== sequence) return
           setQuotes(data)
           setStatus('ready')
         })
-        .catch(() => active && setStatus('error'))
+        .catch(() => active && requestId === sequence && setStatus('error'))
     }
     load()
     if (pauseTickers) {
@@ -43,7 +47,7 @@ export default function MarketTicker() {
       active = false
       clearInterval(id)
     }
-  }, [pauseTickers, tabVisible])
+  }, [pauseTickers, tabVisible, revision])
 
   if (status === 'error' && !quotes.length) {
     return (

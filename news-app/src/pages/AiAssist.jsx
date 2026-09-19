@@ -1,10 +1,11 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { fetchMyArticles } from '../lib/articles'
-import { fetchArticleTitleTranslations as fetchAuthenticatedTitleTranslations } from '../lib/translate'
+import { fetchArticleTitleTranslations as fetchAuthenticatedTitleTranslations, clearTranslateCache } from '../lib/translate'
 import { askAssist, ASSIST_ERROR } from '../lib/assistClient'
 import { generateFluxImage } from '../lib/fluxAssist'
 import { saveAiDraft } from '../lib/aiDraft'
@@ -246,15 +247,19 @@ export default function AiAssist() {
     titles: translatedTitles,
     isTitlePending,
     pending: titlesPending,
-  } = useArticleTitleTranslations(articles, uiLang, fetchAuthenticatedTitleTranslations)
+  } = useArticleTitleTranslations(articles, uiLang, fetchAuthenticatedTitleTranslations, clearTranslateCache)
 
   const translateActive = titlesPending || localizing
 
+  const userId = user?.id
+  const [revision] = useResumeRevision({ minHiddenMs: 0 })
+  const threadRequestRef = useRef(0)
   const refreshThreads = useCallback(async () => {
-    if (!user) return
-    setHistoryState('loading')
+    if (!userId) return
+    const requestId = ++threadRequestRef.current
     try {
       const result = await listAssistThreads()
+      if (requestId !== threadRequestRef.current) return
       if (result.unavailable) {
         setThreads([])
         setHistoryState('unavailable')
@@ -263,23 +268,30 @@ export default function AiAssist() {
       setThreads(result.threads || [])
       setHistoryState('ready')
     } catch {
-      setHistoryState('error')
+      if (requestId === threadRequestRef.current) setHistoryState((current) => current === 'ready' ? current : 'error')
     }
-  }, [user])
+  }, [userId])
 
   useEffect(() => {
-    if (!user) return
-    setArticlesState('loading')
-    fetchMyArticles(user.id)
+    if (!userId) return undefined
+    let active = true
+    const controller = new AbortController()
+    fetchMyArticles(userId, { signal: controller.signal })
       .then((rows) => {
+        if (!active) return
         setArticles(rows)
         setArticlesState('ready')
       })
-      .catch(() => setArticlesState('error'))
-    refreshThreads()
-  }, [user, refreshThreads])
+      .catch(() => { if (active) setArticlesState((current) => current === 'ready' ? current : 'error') })
+    // refreshThreads updates state after awaiting the server response.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void refreshThreads()
+    return () => { active = false; controller.abort(); threadRequestRef.current += 1 }
+  }, [userId, refreshThreads, revision])
 
   useEffect(() => {
+    // A user-selected language starts a new localized conversation. Resume leaves it intact.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMessages([])
     setError('')
     setLocalizing(false)
@@ -320,7 +332,7 @@ export default function AiAssist() {
     const list = greetingList(t(`aiAssist.emptyGreetings.${period}`, { returnObjects: true }))
     if (list.length) return list
     return greetingList(t('aiAssist.emptyGreetings.afternoon', { returnObjects: true }))
-  }, [t, uiLang])
+  }, [t])
 
   const toggleArticle = useCallback((id) => {
     setSelectedIds((prev) => {

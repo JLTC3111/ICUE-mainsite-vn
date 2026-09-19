@@ -1,8 +1,9 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../../../../shared/resilience/lazyWithRecovery.jsx'
+import { Suspense, useEffect, useState } from 'react'
 import { ICUE_GALAXY_PRESET } from './galaxyPreset'
 import './InteractiveBackground.css'
 
-const Galaxy = lazy(() => import('./Galaxy/Galaxy'))
+const Galaxy = lazy(() => import('./Galaxy/Galaxy'), { optional: true })
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches

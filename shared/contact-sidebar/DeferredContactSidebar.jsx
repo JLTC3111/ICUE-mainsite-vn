@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../resilience/lazyWithRecovery.jsx'
+import { Suspense, useEffect, useState } from 'react'
 
-const ContactSidebar = lazy(() => import('./ContactSidebar.jsx'))
+const ContactSidebar = lazy(() => import('./ContactSidebar.jsx'), { optional: true })
 
 /** Keep the floating utility rail from competing with the page's first paint. */
 export default function DeferredContactSidebar({ idleTimeout = 1600, ...props }) {

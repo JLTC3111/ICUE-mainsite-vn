@@ -1,4 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
@@ -13,7 +14,7 @@ import { getProgrammes } from '../data/programmes'
 import { useMainSite } from '../hooks/useMainSite'
 import '../styles/community.css'
 
-const ContactSidebar = lazy(() => import('@icue/contact-sidebar'))
+const ContactSidebar = lazy(() => import('@icue/contact-sidebar'), { optional: true })
 
 function useIdle() {
   const [ready, setReady] = useState(false)

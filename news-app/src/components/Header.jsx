@@ -1,4 +1,5 @@
-import { lazy, memo, Suspense, useState, useCallback, useEffect, useRef } from 'react'
+import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
+import { memo, Suspense, useState, useCallback, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'

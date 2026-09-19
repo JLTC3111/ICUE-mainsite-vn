@@ -1,3 +1,4 @@
+import { subscribeToPageResume } from '../../../shared/resilience/pageResume.js';
 export const HOME_BG_VIDEO_STORAGE_KEY = 'home_bg_video_enabled';
 
 export function readHomeBackgroundVideoEnabledPreference() {
@@ -66,6 +67,9 @@ const HomeBackgroundVideoManager = (() => {
     },
   ];
 
+  let unsubscribeResume = null;
+  let recoveryMetadataHandler = null;
+  let needsMediaRecovery = false;
   let videoEl = null;
   let resizeHandler = null;
   let visibilityHandler = null;
@@ -425,11 +429,12 @@ const HomeBackgroundVideoManager = (() => {
         lastLogTime = now;
       }
     };
-    playHandler = () => throttleLog('playing', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    playHandler = () => { needsMediaRecovery = false; throttleLog('playing', { currentIndex }); };
     pauseHandler = () => throttleLog('pause', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
     waitingHandler = () => throttleLog('waiting', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
-    stalledHandler = () => throttleLog('stalled', { currentIndex, src: videoEl?.currentSrc || videoEl?.src });
+    stalledHandler = () => { needsMediaRecovery = true; throttleLog('stalled', { currentIndex }); };
     errorHandler = () => {
+      needsMediaRecovery = true;
       const currentSrc = videoEl?.currentSrc || videoEl?.src;
       logHomeBg('error', { error: videoEl?.error, currentSrc, active: videoEl?.getAttribute('data-active-src') });
       if (!activeMeta || errorSwapAttempted) return;
@@ -513,9 +518,35 @@ const HomeBackgroundVideoManager = (() => {
     window.addEventListener('resize', resizeHandler, { passive: true });
     visibilityHandler = handleVisibilityChange;
     document.addEventListener('visibilitychange', visibilityHandler, { passive: true });
+    unsubscribeResume = subscribeToPageResume(() => {
+      if (!videoEl || shouldKeepStatic()) return;
+      handleResize();
+      if (needsMediaRecovery || videoEl.error) {
+        const el = videoEl;
+        const token = lifecycle;
+        const position = el.currentTime;
+        if (recoveryMetadataHandler) el.removeEventListener('loadedmetadata', recoveryMetadataHandler);
+        recoveryMetadataHandler = () => {
+          if (el !== videoEl || lifecycle !== token || shouldKeepStatic()) return;
+          if (Number.isFinite(position) && position > 0 && position < el.duration) {
+            try { el.currentTime = position; } catch { /* Browser can reject a seek. */ }
+          }
+          attemptPlay('reconnected-media');
+        };
+        el.addEventListener('loadedmetadata', recoveryMetadataHandler, { once: true });
+        needsMediaRecovery = false;
+        el.load();
+      }
+      attemptPlay('resume');
+    }, { minHiddenMs: 0 });
   };
 
   const destroy = () => {
+    unsubscribeResume?.();
+    unsubscribeResume = null;
+    needsMediaRecovery = false;
+    if (videoEl && recoveryMetadataHandler) videoEl.removeEventListener('loadedmetadata', recoveryMetadataHandler);
+    recoveryMetadataHandler = null;
     // Invalidate rejected play promises before detaching the media element.
     lifecycle += 1;
     cancelWarmup();

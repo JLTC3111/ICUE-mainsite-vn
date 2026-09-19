@@ -35,6 +35,7 @@ import {
 } from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
 import { resolveArticlePreviewText } from '../lib/translateUtils'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import './NewsGrid.css'
 
 const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
@@ -358,13 +359,17 @@ export default function NewsGrid() {
   const { isDark } = useNewsroomTheme()
   const { archiveLink, hashLink } = useMainSite()
   const requestIdRef = useRef(0)
+  const requestAbortRef = useRef(null)
   const locale = i18n.resolvedLanguage
 
   const loadArticles = useCallback(({ background = false } = {}) => {
     const requestId = requestIdRef.current + 1
     requestIdRef.current = requestId
+    requestAbortRef.current?.abort()
+    const controller = new AbortController()
+    requestAbortRef.current = controller
 
-    return fetchPublishedArticles({ limit: 120 })
+    return fetchPublishedArticles({ limit: 120, signal: controller.signal })
       .then((data) => {
         if (requestId !== requestIdRef.current) return
         setArticles(data)
@@ -380,13 +385,13 @@ export default function NewsGrid() {
 
   useEffect(() => {
     loadArticles()
-    return () => { requestIdRef.current += 1 }
+    return () => { requestIdRef.current += 1; requestAbortRef.current?.abort() }
   }, [loadArticles])
 
   const refreshArticlesOnResume = useCallback(() => {
     loadArticles({ background: true })
   }, [loadArticles])
-  usePageResume(refreshArticlesOnResume)
+  usePageResume(refreshArticlesOnResume, { minHiddenMs: state === 'ready' ? 30_000 : 0 })
 
   const rotatingTags = useMemo(() => {
     const tags = t('hero.rotatingTags', { returnObjects: true })
@@ -571,7 +576,7 @@ export default function NewsGrid() {
             {hasActiveFilters ? t('search.noFilteredResults') : t('news.empty')}
           </p>
         )}
-        {(state === 'error') && <p className="news-empty">{t('news.empty')}</p>}
+        {state === 'error' && <RecoveryNotice onRetry={loadArticles} />}
 
         {state === 'ready' && lead && (
           <LeadStory card={lead} t={t} query={searchQuery} />

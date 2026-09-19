@@ -1,4 +1,4 @@
-let configPromise = null
+import { createRetryableLoader, withDeadline } from '../../../shared/resilience/requests.js'
 
 function isValidConfig(url, anonKey) {
   return Boolean(url && anonKey && !url.includes('YOUR-PROJECT-ref'))
@@ -13,9 +13,11 @@ async function resolveRuntimeConfig() {
 
   try {
     const base = import.meta.env.BASE_URL || '/'
-    const res = await fetch(`${base}supabase-config.json`, { cache: 'no-store' })
-    if (!res.ok) return null
-    const json = await res.json()
+    const json = await withDeadline(async (signal) => {
+      const res = await fetch(`${base}supabase-config.json`, { cache: 'no-store', signal })
+      if (!res.ok) throw new Error(`Configuration request failed (${res.status})`)
+      return res.json()
+    })
     if (isValidConfig(json?.url, json?.anonKey)) {
       return { url: json.url, anonKey: json.anonKey }
     }
@@ -26,7 +28,12 @@ async function resolveRuntimeConfig() {
   return null
 }
 
+const loadConfig = createRetryableLoader(async () => {
+  const config = await resolveRuntimeConfig()
+  if (!config) throw new Error('Supabase configuration is unavailable')
+  return config
+})
+
 export function loadSupabaseConfig() {
-  if (!configPromise) configPromise = resolveRuntimeConfig()
-  return configPromise
+  return loadConfig().catch(() => null)
 }

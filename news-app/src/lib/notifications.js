@@ -50,21 +50,23 @@ export function notificationLink(notification) {
   return `/article/${notification.articleSlug}`
 }
 
-export async function fetchNotifications({ limit = 30 } = {}) {
+export async function fetchNotifications({ limit = 30, signal } = {}) {
   const { data, error } = await supabase
     .from('newsroom_notifications')
     .select(NOTIFICATION_SELECT)
     .order('created_at', { ascending: false })
     .limit(limit)
+    .abortSignal(signal)
   if (error) throw error
   return (data ?? []).map(normalize)
 }
 
-export async function fetchUnreadCount() {
+export async function fetchUnreadCount({ signal } = {}) {
   const { count, error } = await supabase
     .from('newsroom_notifications')
     .select('id', { count: 'exact', head: true })
     .is('read_at', null)
+    .abortSignal(signal)
   if (error) throw error
   return count ?? 0
 }

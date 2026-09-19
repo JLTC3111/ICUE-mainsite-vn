@@ -1,3 +1,4 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -15,13 +16,16 @@ export default function ArticleMoreStories({ article, profile }) {
   const isDesktop = useMediaQuery('(min-width: 1025px)')
   const [relatedState, setRelatedState] = useState({ articleId: null, rows: [] })
 
+  const [revision] = useResumeRevision()
+
   useEffect(() => {
     if (!isDesktop || !article?.id || article.status !== 'published') {
       return undefined
     }
 
     let active = true
-    fetchPublishedArticles({ limit: 20 })
+    const controller = new AbortController()
+    fetchPublishedArticles({ limit: 20, signal: controller.signal })
       .then((published) => {
         if (!active) return
         const related = published
@@ -35,13 +39,14 @@ export default function ArticleMoreStories({ article, profile }) {
         setRelatedState({ articleId: article.id, rows: related })
       })
       .catch(() => {
-        if (active) setRelatedState({ articleId: article.id, rows: [] })
+        // Keep the current related stories through a transient failure.
       })
 
     return () => {
       active = false
+      controller.abort()
     }
-  }, [article?.category, article?.id, article?.status, isDesktop])
+  }, [article?.category, article?.id, article?.status, isDesktop, revision])
 
   const articles = useMemo(
     () => (relatedState.articleId === article?.id ? relatedState.rows : []),

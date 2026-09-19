@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +18,8 @@ export default function Edit() {
   const [originalItems, setOriginalItems] = useState([])
   const [state, setState] = useState('loading') // loading | ready | error
 
+  const [revision, retry] = useResumeRevision({ enabled: state !== 'ready', minHiddenMs: 0 })
+
   useDocumentTitle(
     state === 'ready' && article?.title
       ? `${t('editor.editTitle')}: ${article.title}`
@@ -24,7 +28,8 @@ export default function Edit() {
 
   useEffect(() => {
     let active = true
-    fetchArticleById(id)
+    const controller = new AbortController()
+    fetchArticleById(id, { signal: controller.signal })
       .then((data) => {
         if (!active) return
         if (!data) return setState('error')
@@ -36,8 +41,8 @@ export default function Edit() {
         setState('ready')
       })
       .catch(() => active && setState('error'))
-    return () => { active = false }
-  }, [id])
+    return () => { active = false; controller.abort() }
+  }, [id, revision])
 
   const handleSubmit = useCallback(
     async ({ form, items, coverFile, coverAltFile, status }) => {
@@ -61,7 +66,7 @@ export default function Edit() {
     return <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
   }
   if (state === 'error') {
-    return <div className="icue-container" style={{ padding: '80px 24px', textAlign: 'center' }}>{t('common.notFound')}</div>
+    return <div className="icue-container" style={{ padding: '80px 24px', textAlign: 'center' }}><RecoveryNotice onRetry={retry} /></div>
   }
 
   return (

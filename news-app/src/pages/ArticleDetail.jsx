@@ -1,4 +1,6 @@
-import { useEffect, useState, useMemo, useCallback } from 'react'
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { ScanSearch } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -48,10 +50,7 @@ function useLensCapable(disableLens = false) {
   const [capable, setCapable] = useState(false)
 
   useEffect(() => {
-    if (disableLens) {
-      setCapable(false)
-      return undefined
-    }
+    if (disableLens) return undefined
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const sync = () => setCapable(fine.matches && !motion.matches)
@@ -64,7 +63,7 @@ function useLensCapable(disableLens = false) {
     }
   }, [disableLens])
 
-  return capable
+  return !disableLens && capable
 }
 
 function readLensPreference() {
@@ -103,6 +102,9 @@ export default function ArticleDetail() {
 
   const [article, setArticle] = useState(null)
   const [state, setState] = useState('loading')
+  const [refreshError, setRefreshError] = useState(false)
+  const viewedRef = useRef(null)
+  const [revision, retry] = useResumeRevision({ minHiddenMs: state === 'ready' ? 30_000 : 0 })
   const [viewCount, setViewCount] = useState(0)
   const [translation, setTranslation] = useState(null)
   const [sourceTranslation, setSourceTranslation] = useState(null)
@@ -118,38 +120,54 @@ export default function ArticleDetail() {
   useDocumentTitle(state === 'ready' && article?.title ? article.title : null)
 
   useEffect(() => {
-    let active = true
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState('loading')
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslation(null)
     setSourceTranslation(null)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslatedLang(null)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setShowOriginal(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslateError(false)
     setTranslateResolved(false)
     setPageProgress(null)
-    fetchArticleBySlug(slug)
-      .then((data) => {
-        if (!active) return
-        if (!data) return setState('error')
-        setArticle(data)
-        setViewCount(data.view_count ?? 0)
-        setState('ready')
-        if (data.status === 'published') {
-          recordArticleView(data.id)
-            .then((result) => active && setViewCount(result.count))
-            .catch(() => {})
-        }
-      })
-      .catch(() => active && setState('error'))
-    return () => { active = false }
+    setArticle(null)
+    viewedRef.current = null
   }, [slug])
 
   useEffect(() => {
+    let active = true
+    const controller = new AbortController()
+    clearTranslateCache()
+    fetchArticleBySlug(slug, { signal: controller.signal })
+      .then((data) => {
+        if (!active) return
+        if (!data) { setArticle(null); setState('missing'); return }
+        setArticle(data)
+        setViewCount(data.view_count ?? 0)
+        setState('ready')
+        setRefreshError(false)
+        if (data.status === 'published' && viewedRef.current !== data.id) {
+          viewedRef.current = data.id
+          recordArticleView(data.id).then((result) => active && setViewCount(result.count)).catch(() => {})
+        }
+      })
+      .catch(() => {
+        if (!active) return
+        setRefreshError(true)
+        setState((current) => current === 'ready' ? current : 'error')
+      })
+    return () => { active = false; controller.abort() }
+  }, [slug, revision])
+
+  useEffect(() => {
+    // Discard the previous language only when the reader explicitly selects another one.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTranslation(null)
+    setSourceTranslation(null)
+    setTranslatedLang(null)
     setShowOriginal(false)
     setTranslateError(false)
     setTranslateResolved(false)
@@ -171,28 +189,26 @@ export default function ArticleDetail() {
     if (!needsArticleTranslation && !needsSourceTranslation) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTranslation(null)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslatedLang(null)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslateBusy(false)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setTranslateResolved(true)
       setSourceTranslation(null)
       return undefined
     }
 
     let active = true
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslateBusy(needsArticleTranslation)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslateError(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setTranslateResolved(false)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslation(null)
-    setSourceTranslation(null)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTranslatedLang(null)
+
+    // Keep ready translations during background revalidation.
+
 
     fetchArticleTranslation(article.id, uiLang)
       .then((result) => {
@@ -231,7 +247,6 @@ export default function ArticleDetail() {
       })
       .catch(() => {
         if (!active) return
-        setSourceTranslation(null)
         if (needsArticleTranslation) setTranslateError(true)
       })
       .finally(() => {
@@ -249,7 +264,7 @@ export default function ArticleDetail() {
     setShowOriginal(false)
     setTranslateError(false)
     setTranslateAttempt((attempt) => attempt + 1)
-  }, [article?.id, i18n.resolvedLanguage])
+  }, [article, i18n.resolvedLanguage])
 
   const { images, videos } = useMemo(() => {
     const media = (article?.media || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
@@ -305,7 +320,8 @@ export default function ArticleDetail() {
       </div>
     )
   }
-  if (state === 'error') {
+  if (state === 'error') return <RecoveryNotice onRetry={retry} />
+  if (state === 'missing') {
     return (
       <div className="article-detail__missing icue-container">
         <p>{t('common.notFound')}</p>
@@ -322,8 +338,10 @@ export default function ArticleDetail() {
 
   const handleDelete = async () => {
     if (!window.confirm(t('common.confirmDelete'))) return
-    await deleteArticle(article.id)
-    navigate('/dashboard')
+    try {
+      await deleteArticle(article.id)
+      navigate('/dashboard')
+    } catch { setRefreshError(true) }
   }
 
   const usingTranslation = translation && !showOriginal
@@ -367,6 +385,7 @@ export default function ArticleDetail() {
       className={`article-detail${isViContent ? ' article-detail--vi' : ''}`}
       lang={contentLang}
     >
+      {refreshError && <RecoveryNotice onRetry={retry} />}
       {showScrollProgress ? (
         <ScrollProgress progress={pageProgress ?? undefined} />
       ) : null}

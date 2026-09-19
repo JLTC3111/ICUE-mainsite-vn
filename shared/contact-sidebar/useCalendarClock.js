@@ -1,3 +1,4 @@
+import { usePageResume } from '../resilience/usePageResume.js'
 import { useEffect, useMemo, useState } from 'react'
 
 function formatClock(now, locale) {
@@ -10,6 +11,8 @@ function formatClock(now, locale) {
 
 export function useCalendarClock(locale = 'vi') {
   const [now, setNow] = useState(() => new Date())
+
+  usePageResume(() => setNow(new Date()), { minHiddenMs: 0 })
 
   useEffect(() => {
     const tick = () => setNow(new Date())

@@ -1,3 +1,4 @@
+import { withDeadline } from '../../../shared/resilience/requests.js'
 const PAGES_WITH_MODEL_VIEWER = new Set(['aboutUs'])
 
 let loadPromise = null
@@ -13,7 +14,7 @@ export async function loadModelViewer() {
   }
 
   if (!loadPromise) {
-    loadPromise = import('@google/model-viewer')
+    loadPromise = withDeadline(() => import('@google/model-viewer'))
       .then(() => {})
       .catch((err) => {
         loadPromise = null

@@ -1,3 +1,4 @@
+import { subscribeToPageResume } from '../../../../shared/resilience/pageResume.js'
 import { useEffect, useRef } from 'react'
 import { loadModelViewer, upgradeModelViewers } from '../../legacy/modelViewer'
 
@@ -15,12 +16,15 @@ export default function AboutModelViewer({ alt }) {
 
   useEffect(() => {
     let cancelled = false
+    let loaded = false
     let idleId = null
     let timerId = null
 
     const load = () => {
+      if (loaded) return
       void loadModelViewer()
         .then(() => {
+          loaded = true
           if (!cancelled) upgradeModelViewers(hostRef.current?.parentNode)
         })
         .catch((err) => {
@@ -28,6 +32,7 @@ export default function AboutModelViewer({ alt }) {
         })
     }
 
+    const unsubscribe = subscribeToPageResume(load, { minHiddenMs: 0 })
     if (typeof window.requestIdleCallback === 'function') {
       idleId = window.requestIdleCallback(load, { timeout: 1200 })
     } else {
@@ -36,6 +41,7 @@ export default function AboutModelViewer({ alt }) {
 
     return () => {
       cancelled = true
+      unsubscribe()
       if (idleId != null) window.cancelIdleCallback(idleId)
       if (timerId != null) window.clearTimeout(timerId)
     }

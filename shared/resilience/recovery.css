@@ -1,0 +1,6 @@
+.icue-recovery { display: grid; place-content: center; gap: 12px; min-height: 180px; padding: 24px; text-align: center; font: inherit; color: inherit; }
+.icue-recovery p { margin: 0; }
+.icue-recovery--compact { min-height: 0; padding: 12px; font-size: 0.875rem; }
+.icue-recovery__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.icue-recovery button { padding: 10px 16px; min-height: 44px; border: 1px solid currentColor; border-radius: 8px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.icue-recovery button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

@@ -1,15 +1,11 @@
-let clientPromise = null
+import { createRetryableLoader } from '../../../shared/resilience/requests.js'
 
 /** Load and configure the full Supabase browser SDK only when a route needs it. */
-export function loadSupabaseClient() {
-  if (!clientPromise) {
-    clientPromise = import('./supabase').then(async (module) => {
-      await module.initSupabase()
-      return module.supabase
-    })
-  }
-  return clientPromise
-}
+export const loadSupabaseClient = createRetryableLoader(async () => {
+  const module = await import('./supabase')
+  if (!await module.initSupabase()) throw new Error('Supabase configuration is unavailable')
+  return module.supabase
+})
 
 /**
  * Supabase's default browser storage key is `sb-<project-ref>-auth-token`.

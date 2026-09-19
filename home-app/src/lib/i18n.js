@@ -1,3 +1,5 @@
+import { withDeadline } from '../../../shared/resilience/requests.js'
+import { installLocaleRecovery } from '../../../shared/resilience/localeRecovery.js'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { normalizeDeep } from '@icue/text/normalizeUnicode'
@@ -57,7 +59,7 @@ const lazyLocaleBackend = {
       return
     }
 
-    load()
+    withDeadline(load)
       .then((module) => done(null, normalizeDeep(module.default)))
       .catch((error) => done(error, false))
   },
@@ -90,3 +92,6 @@ i18n.on('languageChanged', (language) => {
 })
 
 export default i18n
+
+const stopLocaleRecovery = installLocaleRecovery(i18n, localeLoaders, normalizeDeep)
+if (import.meta.hot) import.meta.hot.dispose(stopLocaleRecovery)

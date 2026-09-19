@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
@@ -59,6 +61,8 @@ export default function CaptionsDrawer({
   const [saved, setSaved] = useState('')
 
   // Load once per open, so reopening always reflects what is actually stored.
+  const [revision, retry] = useResumeRevision({ enabled: state !== 'ready', minHiddenMs: 0 })
+
   useEffect(() => {
     if (!open || !articleId) return undefined
     let live = true
@@ -82,7 +86,7 @@ export default function CaptionsDrawer({
       })
       .catch(() => live && setState('error'))
     return () => { live = false }
-  }, [open, articleId])
+  }, [open, articleId, revision])
 
   // Escape to close, and freeze the page behind the drawer so the author's
   // scroll position is exactly where they left it when it closes.
@@ -191,7 +195,7 @@ export default function CaptionsDrawer({
             <p className="captions-drawer__status">{t('translationsEditor.loading')}</p>
           )}
           {state === 'error' && (
-            <p className="captions-drawer__status is-error">{t('translationsEditor.loadError')}</p>
+            <><p className="captions-drawer__status is-error">{t('translationsEditor.loadError')}</p><RecoveryNotice onRetry={retry} /></>
           )}
 
           {state === 'ready' && captionSources.length === 0 && !String(coverInfo || '').trim() && (

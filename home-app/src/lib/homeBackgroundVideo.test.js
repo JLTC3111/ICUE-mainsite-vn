@@ -150,3 +150,17 @@ test('leaving Home removes pending media event listeners', async t => {
   t.mock.timers.tick(2000);
   assert.equal(video.playCalls, 0);
 });
+
+test('reconnect reloads failed home video and preserves playback position', async t => {
+  const { manager, video, window, document } = await createFixture(t);
+  manager.init(); video.currentTime = 12; video.dispatchEvent(new Event('stalled'));
+  document.hidden = true; document.dispatchEvent(new Event('visibilitychange'));
+  const before = video.loads; window.dispatchEvent(new Event('online')); assert.equal(video.loads, before);
+  document.hidden = false; document.dispatchEvent(new Event('visibilitychange')); assert.equal(video.loads, before + 1);
+  video.currentTime = 0; video.dispatchEvent(new Event('loadedmetadata')); assert.equal(video.currentTime, 12);
+});
+test('reconnect respects the home video toggle and removes its recovery listeners', async t => {
+  const { manager, video, window } = await createFixture(t);
+  manager.init(); video.dispatchEvent(new Event('stalled')); manager.setEnabled(false);
+  const before = video.loads; window.dispatchEvent(new Event('online')); assert.equal(video.loads, before); assert.equal(video.src, '');
+});

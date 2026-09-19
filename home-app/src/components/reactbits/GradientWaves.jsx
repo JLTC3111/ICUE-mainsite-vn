@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Renderer, Program, Mesh, Triangle } from 'ogl'
 import './GradientWaves.css'
 
@@ -185,6 +185,7 @@ const GradientWaves = ({
   className = '',
 }) => {
   const containerRef = useRef(null)
+  const [contextRevision, setContextRevision] = useState(0)
   const enableMouseRef = useRef(mouseInteraction)
   const pausedRef = useRef(paused)
   const loopRef = useRef(null)
@@ -299,6 +300,7 @@ const GradientWaves = ({
     canvas.addEventListener('pointermove', onPointerMove)
     canvas.addEventListener('pointerleave', onPointerLeave)
 
+    let contextLost = false
     let raf = 0
     let isVisible = true
     let isPageVisible = !document.hidden
@@ -307,6 +309,7 @@ const GradientWaves = ({
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     const loop = (t) => {
+      if (contextLost) return
       program.uniforms.iTime.value = (t - t0) * 0.001
       const tx = enableMouseRef.current ? targetMouse[0] : 0.5
       const ty = enableMouseRef.current ? targetMouse[1] : 0.5
@@ -319,6 +322,7 @@ const GradientWaves = ({
     }
 
     const tryStart = () => {
+      if (contextLost) return
       if (pausedRef.current || reducedMotionQuery.matches) {
         // Still worth one frame: a static wave field beats an empty backdrop.
         renderer.render({ scene: mesh })
@@ -332,6 +336,15 @@ const GradientWaves = ({
         raf = 0
       }
     }
+
+    const onContextLost = (event) => {
+      event.preventDefault()
+      contextLost = true
+      tryStop()
+    }
+    const onContextRestored = () => setContextRevision((value) => value + 1)
+    canvas.addEventListener('webglcontextlost', onContextLost)
+    canvas.addEventListener('webglcontextrestored', onContextRestored)
 
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -369,6 +382,8 @@ const GradientWaves = ({
       io.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
       reducedMotionQuery.removeEventListener('change', onReducedMotionChange)
+      canvas.removeEventListener('webglcontextlost', onContextLost)
+      canvas.removeEventListener('webglcontextrestored', onContextRestored)
       canvas.removeEventListener('pointermove', onPointerMove)
       canvas.removeEventListener('pointerleave', onPointerLeave)
       loopRef.current = null
@@ -380,7 +395,7 @@ const GradientWaves = ({
       }
       gl.getExtension('WEBGL_lose_context')?.loseContext()
     }
-  }, [maxDpr, renderScale])
+  }, [maxDpr, renderScale, contextRevision])
 
   useEffect(() => {
     pausedRef.current = paused
@@ -435,6 +450,7 @@ const GradientWaves = ({
     // stopped — reduced motion and `paused` both render exactly one frame.
     if (pausedRef.current) ctx.renderer.render({ scene: ctx.mesh })
   }, [
+    contextRevision,
     horizonColor,
     waveColor,
     crestColor,

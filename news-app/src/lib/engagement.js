@@ -1,11 +1,12 @@
+import { withDeadline } from '../../../shared/resilience/requests.js'
 import { supabase } from './supabase'
 
 // Visitor engagement (no login). Hearts, claps + comments are keyed server-side
 // to a hash of the visitor's IP via SECURITY DEFINER RPCs — see supabase/schema.sql.
 // Hearts and claps are independent — a visitor may leave both on the same article.
 
-export async function getHearts(articleId) {
-  const { data, error } = await supabase.rpc('get_hearts', { p_article: articleId })
+export async function getHearts(articleId, { signal } = {}) {
+  const { data, error } = await withDeadline((requestSignal) => supabase.rpc('get_hearts', { p_article: articleId }).abortSignal(requestSignal), { signal })
   if (error) throw error
   return { liked: !!data?.liked, count: data?.count ?? 0 }
 }
@@ -16,8 +17,8 @@ export async function toggleHeart(articleId) {
   return { liked: !!data?.liked, count: data?.count ?? 0 }
 }
 
-export async function getClaps(articleId) {
-  const { data, error } = await supabase.rpc('get_claps', { p_article: articleId })
+export async function getClaps(articleId, { signal } = {}) {
+  const { data, error } = await withDeadline((requestSignal) => supabase.rpc('get_claps', { p_article: articleId }).abortSignal(requestSignal), { signal })
   if (error) throw error
   return { clapped: !!data?.clapped, count: data?.count ?? 0 }
 }
@@ -28,12 +29,13 @@ export async function toggleClap(articleId) {
   return { clapped: !!data?.clapped, count: data?.count ?? 0 }
 }
 
-export async function fetchComments(articleId) {
+export async function fetchComments(articleId, { signal } = {}) {
   const { data, error } = await supabase
     .from('article_comments')
     .select('id, author_name, body, created_at')
     .eq('article_id', articleId)
     .order('created_at', { ascending: false })
+    .abortSignal(signal)
   if (error) throw error
   return data ?? []
 }

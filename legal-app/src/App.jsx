@@ -1,3 +1,5 @@
+import { useResumeRevision } from '../../shared/resilience/usePageResume.js'
+import { RecoveryNotice } from '../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -259,26 +261,29 @@ function useLegalDocuments(language) {
   // calling hasLegalContent() inside the dependency array instead would read
   // a mutable module value during render.
   const [loadedCount, setLoadedCount] = useState(0)
+  const [failedLanguage, setFailedLanguage] = useState(null)
+  const [revision, retry] = useResumeRevision({ minHiddenMs: 0 })
 
   useEffect(() => {
     if (hasLegalContent(language)) return undefined
     let cancelled = false
     ensureLegalContent(language).then(() => {
-      if (!cancelled) setLoadedCount((count) => count + 1)
-    })
+      if (!cancelled) { setLoadedCount((count) => count + 1); setFailedLanguage(null) }
+    }).catch(() => { if (!cancelled) setFailedLanguage(language) })
     return () => {
       cancelled = true
     }
-  }, [language])
+  }, [language, revision])
 
-  return useMemo(() => buildLegalDocuments(language), [language, loadedCount])
+  const documents = useMemo(() => buildLegalDocuments(language), [language, loadedCount])
+  return { documents, error: failedLanguage === language, retry }
 }
 
 function LegalDocumentPage() {
   const { slug } = useParams()
   const { i18n } = useTranslation()
   const language = i18n.resolvedLanguage || i18n.language || AUTHORITATIVE_LANGUAGE
-  const documents = useLegalDocuments(language)
+  const { documents, error, retry } = useLegalDocuments(language)
   const document = documents.find((entry) => entry.slug === slug)
 
   useEffect(() => {
@@ -287,7 +292,7 @@ function LegalDocumentPage() {
 
   if (!document) return <Navigate to="/privacy" replace />
 
-  return <LegalDocument document={document} documents={documents} />
+  return <>{error && <RecoveryNotice onRetry={retry} />}<LegalDocument document={document} documents={documents} /></>
 }
 
 function LegalDocument({ document, documents }) {

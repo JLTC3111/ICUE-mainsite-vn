@@ -1,3 +1,4 @@
+import { subscribeToPageResume } from '../../../shared/resilience/pageResume.js'
 import { useEffect } from 'react'
 
 /**
@@ -40,7 +41,9 @@ export function useReveal(rootRef, deps = []) {
       observer.observe(el)
     })
 
-    return () => observer.disconnect()
+    const timeout = setTimeout(revealAll, 2600)
+    const unsubscribe = subscribeToPageResume(revealAll, { minHiddenMs: 0 })
+    return () => { observer.disconnect(); clearTimeout(timeout); unsubscribe() }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }

@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { orgProfiles, orgChartLevels } from '../data/orgProfiles'

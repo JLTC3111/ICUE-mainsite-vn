@@ -1,9 +1,11 @@
 import { sanitizeArticleHtml } from '@icue/text/sanitizeArticleHtml'
 import { publicSelect } from './publicSupabase'
 import { normalizeLang } from './translateUtils'
+import { ExpiringCache } from '../../../shared/resilience/ExpiringCache.js'
 
 const TRANSLATION_COLUMNS = 'title,subtitle,content_html,cover_info,sources,media'
-const memoryCache = new Map()
+const memoryCache = new ExpiringCache()
+let cacheRevision = 0
 
 /**
  * Public reads have their own cache so anonymous pages never pull in the full
@@ -11,6 +13,7 @@ const memoryCache = new Map()
  * to the grid in the same tab can show the value that was cached before save.
  */
 export function clearPublicTranslateCache(articleId, locale) {
+  cacheRevision += 1
   if (!articleId) {
     memoryCache.clear()
     return
@@ -47,6 +50,7 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
 
   const key = `${articleId}::${target}`
   if (memoryCache.has(key)) return memoryCache.get(key)
+  const revision = cacheRevision
 
   const { data, error } = await publicSelect('article_translations', {
     select: TRANSLATION_COLUMNS,
@@ -62,7 +66,7 @@ export async function fetchArticleTranslation(articleId, targetLocale) {
     ? { locale: target, ...normalizeTranslationRow(row), original: !usable }
     : { locale: target, ...normalizeTranslationRow(), original: true }
 
-  memoryCache.set(key, result)
+  if (revision === cacheRevision) memoryCache.set(key, result)
   return result
 }
 
@@ -73,13 +77,14 @@ export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
 
   const key = `titles::${target}::${[...ids].sort().join('|')}`
   if (memoryCache.has(key)) return memoryCache.get(key)
+  const revision = cacheRevision
 
   const { data, error } = await publicSelect('article_translations', {
     select: 'article_id,title,subtitle',
     locale: `eq.${target}`,
     article_id: `in.(${ids.join(',')})`,
   })
-  if (error) return { locale: target, titles: {}, subtitles: {} }
+  if (error) throw error
 
   const titles = {}
   const subtitles = {}
@@ -89,6 +94,6 @@ export async function fetchArticleTitleTranslations(articleIds, targetLocale) {
   }
 
   const result = { locale: target, titles, subtitles }
-  memoryCache.set(key, result)
+  if (revision === cacheRevision) memoryCache.set(key, result)
   return result
 }
