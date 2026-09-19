@@ -101,7 +101,7 @@ function MessengerIcon() {
 
 function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
   const musicRef = useRef(null)
-  const { toggle: toggleMusic } = useAudioVisualizer(musicRef)
+  const { toggle: toggleMusic, isPlaying, isAnimating } = useAudioVisualizer()
   const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null, contentKey)
   const musicColor = musicIconColor ?? sampledMusicColor
   const calendarLocale = normalizeUiLocale(locale, 'vi')
@@ -118,21 +118,29 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
           ref={musicRef}
           onClick={toggleMusic}
           aria-label="Toggle background music"
+          aria-pressed={isPlaying}
+          data-animating={isAnimating}
           style={{ color: musicColor }}
         >
           <svg
             width="30"
             height="30"
-            viewBox="0 0 512 512"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
             style={{ color: musicColor }}
           >
-            <path
-              fill="currentColor"
-              style={{ fill: musicColor }}
-              d="M42.7,486.7h42.7v-256H42.7V486.7z M469.3,17.3h-42.7v256h42.7V17.3z M85.3,17.3H42.7V60h42.7V17.3z M277.3,17.3h-42.7 v149.3h42.7V17.3z M0,188h128v-85.3H0V188z M21.3,124h85.3v42.7H21.3V124z M234.7,486.7h42.7V337.3h-42.7V486.7z M426.7,486.7h42.7 V444h-42.7V486.7z M384,316v85.3h128V316H384z M490.7,380h-85.3v-42.7h85.3V380z M192,294.7h128v-85.3H192V294.7z M213.3,230.7h85.3 v42.7h-85.3V230.7z"
-            />
+            {[3, 8, 13, 18].map((x) => (
+              <rect
+                key={x}
+                className="contact-sidebar__music-bar"
+                x={x}
+                y="3"
+                width="3"
+                height="18"
+                rx="1.5"
+              />
+            ))}
           </svg>
         </button>
 
