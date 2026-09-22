@@ -1,5 +1,6 @@
 import {
   mainSiteOriginForLocale,
+  normalizeUiLocale,
   newsroomUrl,
   resolveMainSiteLink,
   SITES,
@@ -38,23 +39,14 @@ const ENTRY_SITE_KEY = 'icue_recruitment_entry_site'
  * which site the visitor came from so chrome links send them back there.
  */
 export function detectEntrySite() {
-  const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
-  if (cached === 'en' || cached === 'vi') return cached
-
-  const params = new URLSearchParams(window.location.search)
-  if (params.get('site') === 'en') {
-    sessionStorage.setItem(ENTRY_SITE_KEY, 'en')
-    return 'en'
-  }
-
-  const fromReferrer = referrerSiteHint()
-  if (fromReferrer) {
-    sessionStorage.setItem(ENTRY_SITE_KEY, fromReferrer)
-    return fromReferrer
-  }
-
-  sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
-  return 'vi'
+  try {
+    const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
+    if (cached === 'en' || cached === 'vi') return cached
+  } catch { /* Storage may be blocked on a restored/private tab. */ }
+  const site = new URLSearchParams(window.location.search).get('site') === 'en'
+    ? 'en' : referrerSiteHint() || 'vi'
+  try { sessionStorage.setItem(ENTRY_SITE_KEY, site) } catch { /* Optional hint. */ }
+  return site
 }
 
 export function getMainSiteBase(lang) {
@@ -90,9 +82,10 @@ export function newsroomLink(lang) {
 export function cleanSiteParams() {
   const params = new URLSearchParams(window.location.search)
   if (!params.has('site') && !params.has('lang')) return
+  const language = normalizeUiLocale(params.get('lang') || params.get('site'))
   params.delete('site')
-  params.delete('lang')
+  if (language) params.set('lang', language)
   const qs = params.toString()
   const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
-  window.history.replaceState({}, '', next)
+  window.history.replaceState(window.history.state, '', next)
 }

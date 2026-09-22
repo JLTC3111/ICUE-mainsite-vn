@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
+import { bootRecovery } from '../shared/vite/bootRecovery.js'
 import { NOTABLE_AWARDS_REDIRECTS } from '../shared/site-routes/notableAwardsRedirects.js'
 import { resolvePastProjectRedirect } from '../shared/site-routes/pastProjectsRedirects.js'
 import { resolveNewsArchiveRedirect } from '../shared/site-routes/newsArchiveRedirects.js'
@@ -57,6 +58,7 @@ export default defineConfig({
   base: '/',
   assetsInclude: ['**/*.glb'],
   plugins: [
+    bootRecovery(),
     serveSiteFonts(path.resolve(__dirname, '..')),
     react(),
     {

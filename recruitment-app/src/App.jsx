@@ -11,6 +11,9 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.lang = i18n.resolvedLanguage || i18n.language || 'vi'
+    const url = new URL(window.location.href)
+    url.searchParams.set('lang', i18n.language || 'vi')
+    window.history.replaceState(window.history.state, '', url.href)
   }, [i18n.language, i18n.resolvedLanguage])
 
   return <Page />

@@ -16,7 +16,7 @@ import useAboutTheme from './components/aboutUs/useAboutTheme'
 import { debugLog } from './lib/debugLog'
 
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
-const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'))
+const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'), { recoverDocument: true })
 const PastProjectsPage = lazy(() => import('./pages/PastProjectsPage'))
 const PastProjectDetailPage = lazy(() => import('./pages/PastProjectDetailPage'))
 const NewsArchivePage = lazy(() => import('./pages/NewsArchivePage'))
@@ -60,7 +60,12 @@ function AppShell() {
 
   useEffect(() => {
     document.documentElement.lang = lang
-  }, [lang])
+    if (pathname.replace(/\/$/, '') === ROUTE_PATHS.notableAwards) {
+      const url = new URL(window.location.href)
+      url.searchParams.set('lang', i18n.language || 'vi')
+      window.history.replaceState(window.history.state, '', url.href)
+    }
+  }, [lang, i18n.language, pathname])
 
   // The nav and footer are injected chrome shared with the other ICUE apps —
   // they take their copy as a prop. Without these both fall back to their

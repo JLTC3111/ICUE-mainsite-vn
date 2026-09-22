@@ -53,8 +53,7 @@ function useMobileLayout() {
   return isMobile
 }
 
-function Answer({ entry }) {
-  const [expanded, setExpanded] = useState(false)
+function Answer({ entry, expanded, onToggle }) {
   const id = useId()
   const { t } = useTranslation()
 
@@ -65,7 +64,7 @@ function Answer({ entry }) {
         className={`fq-answer__question${expanded ? ' is-expanded' : ''}`}
         aria-expanded={expanded}
         aria-controls={`${id}-body`}
-        onClick={() => setExpanded((open) => !open)}
+        onClick={onToggle}
       >
         <span className="fq-answer__label">{t('labels.question')}</span>
         {entry.q}
@@ -80,7 +79,7 @@ function Answer({ entry }) {
   )
 }
 
-function CategoryPanel({ category, panelId, triggerId }) {
+function CategoryPanel({ category, panelId, triggerId, expandedAnswers, onToggleAnswer }) {
   return (
     <div
       className="fq-panel"
@@ -90,8 +89,8 @@ function CategoryPanel({ category, panelId, triggerId }) {
     >
       <h3 className="fq-panel__heading">{category.label}</h3>
       <div className="fq-panel__answers">
-        {category.entries.map((entry) => (
-          <Answer key={entry.q} entry={entry} />
+        {category.entries.map((entry, index) => (
+          <Answer key={entry.q} entry={entry} expanded={Boolean(expandedAnswers[index])} onToggle={() => onToggleAnswer(index)} />
         ))}
       </div>
     </div>
@@ -101,6 +100,9 @@ function CategoryPanel({ category, panelId, triggerId }) {
 export default function FaqAccordion({ categories }) {
   const { t } = useTranslation()
   const [openKey, setOpenKey] = useState(null)
+  // The panel moves between grid cells and the desktop row on rotation.
+  // Keep answer state above that move so a reader does not lose their place.
+  const [expandedAnswers, setExpandedAnswers] = useState({})
   const isMobile = useMobileLayout()
   const id = useId()
 
@@ -108,6 +110,10 @@ export default function FaqAccordion({ categories }) {
   // (src/script.js:3039-3042). Only one category is open at a time.
   const toggle = useCallback((key) => {
     setOpenKey((current) => (current === key ? null : key))
+    setExpandedAnswers({})
+  }, [])
+  const toggleAnswer = useCallback((index) => {
+    setExpandedAnswers(current => ({ ...current, [index]: !current[index] }))
   }, [])
 
   const open = categories.find((category) => category.key === openKey) || null
@@ -158,6 +164,8 @@ export default function FaqAccordion({ categories }) {
                   category={category}
                   panelId={panelId}
                   triggerId={triggerId}
+                  expandedAnswers={expandedAnswers}
+                  onToggleAnswer={toggleAnswer}
                 />
               )}
             </div>
@@ -170,6 +178,8 @@ export default function FaqAccordion({ categories }) {
           category={open}
           panelId={`${id}-${open.key}-panel`}
           triggerId={`${id}-${open.key}-trigger`}
+          expandedAnswers={expandedAnswers}
+          onToggleAnswer={toggleAnswer}
         />
       )}
     </>

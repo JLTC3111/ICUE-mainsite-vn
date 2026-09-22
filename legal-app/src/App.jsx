@@ -287,8 +287,11 @@ function LegalDocumentPage() {
   const document = documents.find((entry) => entry.slug === slug)
 
   useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('lang', i18n.language || AUTHORITATIVE_LANGUAGE)
+    window.history.replaceState(window.history.state, '', url.href)
     window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [slug])
+  }, [slug, i18n.language])
 
   if (!document) return <Navigate to="/privacy" replace />
 

@@ -2,9 +2,9 @@ import { useRef } from 'react'
 import {
   AnimatePresence,
   motion,
-  useInView,
   useReducedMotion,
 } from 'motion/react'
+import { useRevealOnce } from '../../../shared/resilience/useRevealOnce.js'
 
 /**
  * Adapted from Magic UI's Blur Fade component. The legal app keeps the
@@ -18,9 +18,8 @@ export default function BlurFade({
   inView = true,
 }) {
   const ref = useRef(null)
-  const visible = useInView(ref, { once: true, margin: '-48px' })
   const reduceMotion = useReducedMotion()
-  const shouldShow = !inView || visible
+  const shouldShow = useRevealOnce(ref, { disabled: !inView || reduceMotion, margin: '-48px' })
 
   const variants = reduceMotion
     ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }

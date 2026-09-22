@@ -1,4 +1,5 @@
 import { withDeadline } from '../../../shared/resilience/requests.js'
+import { loadBootResource } from '../../../shared/resilience/bootResource.js'
 import { installLocaleRecovery } from '../../../shared/resilience/localeRecovery.js'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -59,7 +60,8 @@ const lazyLocaleBackend = {
       return
     }
 
-    withDeadline(load)
+    const request = i18n.isInitialized ? withDeadline(load) : loadBootResource(load, 'initial-locale')
+    request
       .then((module) => done(null, normalizeDeep(module.default)))
       .catch((error) => done(error, false))
   },
