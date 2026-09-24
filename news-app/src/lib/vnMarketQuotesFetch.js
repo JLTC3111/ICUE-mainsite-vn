@@ -160,8 +160,8 @@ async function fetchSsiStocks() {
 }
 
 export async function fetchVnMarketQuotes() {
-  let indexes = []
-  let stocks = []
+  let indexes
+  let stocks
 
   try {
     indexes = await fetchVpsIndexes()

@@ -11,8 +11,8 @@ import './index.css'
 import '@icue/styles/icue-base.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
-import { NewsroomThemeProvider } from './context/NewsroomThemeContext'
-import { PerformanceProfileProvider } from './context/PerformanceProfileContext'
+import { NewsroomThemeProvider } from './context/NewsroomThemeProvider'
+import { PerformanceProfileProvider } from './context/PerformanceProfileProvider'
 
 // Strip entry hints after i18n + detectEntrySite have read them.
 cleanSiteParams()

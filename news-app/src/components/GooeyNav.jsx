@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect, useState } from 'react'
+import { useCallback, useRef, useEffect, useEffectEvent, useState } from 'react'
 import './GooeyNav.css'
 
 const randomNoise = (amount = 1) => amount / 2 - Math.random() * amount
@@ -140,7 +140,7 @@ export default function GooeyNav({
     }
   }
 
-  const updateEffectPosition = (element, label) => {
+  const updateEffectPosition = useCallback((element, label) => {
     if (!containerRef.current || !filterRef.current) return
     const containerRect = containerRef.current.getBoundingClientRect()
     const pos = element.getBoundingClientRect()
@@ -157,7 +157,7 @@ export default function GooeyNav({
       Object.assign(textRef.current.style, styles)
       textRef.current.innerText = label
     }
-  }
+  }, [showTextEffect])
 
   const applyVisual = (liEl, index, { animateParticles = true } = {}) => {
     if (index < 0 || !liEl) return
@@ -210,20 +210,28 @@ export default function GooeyNav({
     e.currentTarget.click()
   }
 
+  // Initialize only when the requested starting selection changes. Reading
+  // fresh visual settings here must not reset a later user selection.
+  const onInitialize = useEffectEvent((index) => {
+    const activeLi = navRef.current?.querySelectorAll('li')[index]
+    if (activeLi) {
+      applyVisual(activeLi, index, { animateParticles: false })
+    }
+  })
+
+  const onResize = useEffectEvent(() => {
+    const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex]
+    if (currentActiveLi && activeIndex >= 0) {
+      updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
+    }
+  })
+
   useEffect(() => {
     if (activateOnHover || initialActiveIndex < 0) return undefined
     if (!navRef.current || !containerRef.current) return undefined
-    const activeLi = navRef.current.querySelectorAll('li')[initialActiveIndex]
-    if (activeLi) {
-      applyVisual(activeLi, initialActiveIndex, { animateParticles: false })
-    }
+    onInitialize(initialActiveIndex)
 
-    const resizeObserver = new ResizeObserver(() => {
-      const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex]
-      if (currentActiveLi && activeIndex >= 0) {
-        updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
-      }
-    })
+    const resizeObserver = new ResizeObserver(onResize)
 
     resizeObserver.observe(containerRef.current)
     return () => resizeObserver.disconnect()
@@ -235,7 +243,7 @@ export default function GooeyNav({
     if (currentActiveLi) {
       updateEffectPosition(currentActiveLi, items[activeIndex]?.label || '')
     }
-  }, [activeIndex, items, showTextEffect])
+  }, [activeIndex, items, updateEffectPosition])
 
   useEffect(() => () => {
     effectGenerationRef.current += 1

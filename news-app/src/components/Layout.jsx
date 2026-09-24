@@ -5,7 +5,7 @@ import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar
 import Header from './Header'
 import Footer from './Footer'
 import MarketStrip from './MarketStrip'
-import { NewsroomSearchProvider } from '../context/NewsroomSearchContext'
+import { NewsroomSearchProvider } from '../context/NewsroomSearchProvider'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'

@@ -2,7 +2,7 @@
 
 import { normalizeHtmlUnicode, normalizeUnicode } from '@icue/text/normalizeUnicode'
 import { sanitizeArticleHtml, sanitizePlainText } from '@icue/text/sanitizeArticleHtml'
-import { formatDate, formatDateTime } from './dateFormatting.js'
+import { formatDate } from './dateFormatting.js'
 
 export {
   formatCalendarDate,

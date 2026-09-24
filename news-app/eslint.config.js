@@ -18,4 +18,16 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    files: [
+      'eslint.config.js',
+      'vite*.js',
+      'scripts/**/*.{js,mjs}',
+      'src/lib/*Server.js',
+      'src/lib/serverEnv.js',
+    ],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 ])

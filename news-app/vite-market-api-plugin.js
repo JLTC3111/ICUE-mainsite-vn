@@ -58,7 +58,7 @@ async function handleForgotPassword(body, env) {
   })
 
   const text = await res.text()
-  let parsed = {}
+  let parsed
   try { parsed = text ? JSON.parse(text) : {} } catch { parsed = { msg: text } }
 
   if (!res.ok) {

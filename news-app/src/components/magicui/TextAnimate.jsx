@@ -198,7 +198,7 @@ function TextAnimateBase({
     return <StaticComponent className={className}>{children}</StaticComponent>
   }
 
-  let segments = []
+  let segments
   switch (by) {
     case 'word':
       segments = children.split(/(\s+)/)
