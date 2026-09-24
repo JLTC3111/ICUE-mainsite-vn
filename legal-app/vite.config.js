@@ -11,7 +11,7 @@ export default defineConfig({
   base: '/legal/',
   plugins: [bootRecovery(), react(), serveSiteFonts(path.resolve(__dirname, '..'))],
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),

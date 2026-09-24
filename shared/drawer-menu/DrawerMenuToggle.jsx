@@ -34,15 +34,14 @@ const DrawerMenuToggle = forwardRef(function DrawerMenuToggle({
       aria-expanded={open}
       {...props}
     >
-      {open ? (
-        <DrawerMenuCloseIcon />
-      ) : (
-        <>
-          <span />
-          <span />
-          <span />
-        </>
-      )}
+      <span className="nav-drawer__toggle-bars" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </span>
+      <svg className="nav-drawer__toggle-x" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
     </button>
   )
 })

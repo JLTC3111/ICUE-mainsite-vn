@@ -82,6 +82,8 @@ function Header() {
             peopleLink={peopleLink}
             orgHref={structureLink()}
             currentPage="work"
+            morphToggle
+            showClose={false}
           />
         </div>
       </div>

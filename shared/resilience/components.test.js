@@ -46,7 +46,7 @@ async function editFixture(t, fetchArticleById, params = { id: 'a' }) {
   const mod = await sourceModule('news-app/src/pages/Edit.jsx', { globals: f, imports: {
     'react-i18next': i18n, 'react-router-dom': { useNavigate: () => () => {}, useParams: () => params },
     '../context/AuthContext': { useAuth: () => ({ user: { id: 'u' } }) }, '../components/ArticleForm': { default: Form },
-    '../lib/articles': { fetchArticleById, updateArticle: async () => ({}), toEditorMedia: v => v }, '../hooks/useDocumentTitle': title,
+    '../lib/articles': { fetchArticleById, updateArticle: async () => ({}), toEditorMedia: v => v, createArticleSaveSession: () => ({}) }, '../hooks/useDocumentTitle': title,
   } })
   let renderer; await act(async () => { renderer = create(React.createElement(mod.default)) }); return { ...f, renderer, Component: mod.default }
 }

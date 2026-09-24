@@ -23,7 +23,8 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "assist": "ワークスペース",
-    "authorTools": "執筆ツール"
+    "authorTools": "執筆ツール",
+    "more": "その他"
   },
   "drawer": {
     "menu": "メニュー",

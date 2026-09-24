@@ -1,0 +1,245 @@
+<div id="newsroom-motion-comparison">
+  <div class="viz-controls">
+    <label class="form-label">Approach
+      <select class="form-select" aria-label="Menu motion approach">
+        <option value="panel">A · X enters with drawer</option>
+        <option value="fade">B · X fades in at the corner</option>
+        <option value="header">C · Hamburger morphs in place</option>
+      </select>
+    </label>
+  </div>
+<div id="icue-menu-motion" data-mode="panel" role="group" aria-label="Newsroom menu motion comparison">
+  <style>
+    #icue-menu-motion {
+      --nm-page: light-dark(#f7f8fa, #0c0c0c);
+      --nm-surface: light-dark(#ffffff, #141414);
+      --nm-ink: light-dark(#172234, #f3f4f6);
+      --nm-muted: light-dark(#586575, #aeb8c5);
+      --nm-border: light-dark(#dbe2ea, #343434);
+      --nm-accent: light-dark(#2173c5, #75bcff);
+      --nm-drawer: light-dark(#05080d, #05080d);
+      --nm-drawer-ink: light-dark(#f8fafc, #f8fafc);
+      --nm-drawer-muted: light-dark(#9cabbf, #9cabbf);
+      --nm-open-button: light-dark(#0f172a, #0f172a);
+      --nm-scrim: light-dark(#02060c99, #02060ca6);
+      --nm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      width: 100%;
+      color: var(--nm-ink);
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    #icue-menu-motion * { box-sizing: border-box; }
+    #icue-menu-motion .nm-window {
+      position: relative;
+      min-width: 0;
+      height: 424px;
+      overflow: hidden;
+      isolation: isolate;
+      border: 1px solid var(--nm-border);
+      border-radius: 14px;
+      background: var(--nm-page);
+    }
+    #icue-menu-motion .nm-ticker {
+      height: 32px;
+      padding: 8px 20px;
+      background: var(--nm-surface);
+      color: var(--nm-muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    #icue-menu-motion .nm-header {
+      position: relative;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 20px 0 96px;
+      border-block: 1px solid var(--nm-border);
+      background: var(--nm-surface);
+    }
+    #icue-menu-motion .nm-brand { font-size: 22px; font-weight: 700; }
+    #icue-menu-motion .nm-badge {
+      padding: 3px 7px;
+      border-radius: 5px;
+      color: var(--nm-accent);
+      background: color-mix(in srgb, var(--nm-accent) 12%, var(--nm-surface));
+      font-size: 12px;
+      font-weight: 600;
+    }
+    #icue-menu-motion .nm-content { padding: 38px 32px; }
+    #icue-menu-motion .nm-eyebrow { color: var(--nm-muted); font-size: 12px; }
+    #icue-menu-motion .nm-title { margin: 9px 0 22px; font-size: clamp(23px, 4vw, 32px); font-weight: 600; }
+    #icue-menu-motion .nm-rule { width: 44px; height: 3px; background: var(--nm-accent); }
+    #icue-menu-motion .nm-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: var(--nm-scrim);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 400ms ease, visibility 400ms ease;
+    }
+    #icue-menu-motion .nm-drawer {
+      position: absolute;
+      inset: 0 auto 0 0;
+      z-index: 3;
+      width: min(330px, 88%);
+      padding: 76px 28px 18px;
+      color: var(--nm-drawer-ink);
+      background: radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--nm-accent) 19%, var(--nm-drawer)), var(--nm-drawer) 72%);
+      transform: translateX(-100%);
+      transition: transform 450ms var(--nm-ease);
+    }
+    #icue-menu-motion .nm-links { list-style: none; padding: 0 0 0 16px; margin: 0; border-left: 1px solid var(--nm-drawer-muted); }
+    #icue-menu-motion .nm-links li { display: flex; align-items: center; gap: 18px; min-height: 35px; white-space: nowrap; }
+    #icue-menu-motion .nm-index { min-width: 20px; color: var(--nm-drawer-muted); font-size: 11px; }
+    #icue-menu-motion .nm-trigger,
+    #icue-menu-motion .nm-close {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--nm-accent);
+      border-radius: 12px;
+      background: var(--nm-surface);
+      color: var(--nm-accent);
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+    }
+    #icue-menu-motion .nm-trigger { top: 46px; left: 40px; z-index: 1; }
+    #icue-menu-motion .nm-close { top: 10px; left: 24px; color: var(--nm-drawer-ink); background: var(--nm-open-button); border-color: var(--nm-drawer-muted); }
+    #icue-menu-motion .nm-close svg { display: block; width: 22px; height: 22px; margin: auto; }
+    #icue-menu-motion .nm-fixed-close {
+      z-index: 4;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 160ms ease, visibility 0s linear 160ms;
+    }
+    #icue-menu-motion[data-mode="fade"] .nm-panel-close,
+    #icue-menu-motion[data-mode="header"] .nm-panel-close { display: none; }
+    #icue-menu-motion[data-mode="fade"][data-open="true"] .nm-fixed-close {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 160ms ease 80ms, visibility 0s;
+    }
+    #icue-menu-motion .nm-bar {
+      position: absolute;
+      top: 20px;
+      left: 10px;
+      width: 22px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transition: transform 260ms var(--nm-ease), opacity 140ms ease;
+    }
+    #icue-menu-motion .nm-bar:nth-child(1) { transform: translateY(-6px); }
+    #icue-menu-motion .nm-bar:nth-child(3) { transform: translateY(6px); }
+    #icue-menu-motion[data-open="true"] .nm-overlay { opacity: 1; visibility: visible; }
+    #icue-menu-motion[data-open="true"] .nm-drawer { transform: translateX(0); }
+    #icue-menu-motion[data-mode="header"] .nm-header { z-index: 4; }
+    #icue-menu-motion[data-mode="header"] .nm-trigger { z-index: 5; }
+    #icue-menu-motion[data-mode="header"] .nm-drawer { top: 104px; padding-top: 20px; }
+    #icue-menu-motion[data-mode="header"] .nm-overlay { top: 104px; }
+    #icue-menu-motion[data-mode="header"][data-open="true"] .nm-bar:nth-child(1) { transform: rotate(45deg); }
+    #icue-menu-motion[data-mode="header"][data-open="true"] .nm-bar:nth-child(2) { transform: scaleX(0.25); opacity: 0; }
+    #icue-menu-motion[data-mode="header"][data-open="true"] .nm-bar:nth-child(3) { transform: rotate(-45deg); }
+    #icue-menu-motion[data-switching] .nm-window * { transition: none !important; }
+    #icue-menu-motion .nm-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @media (max-width: 480px) {
+      #icue-menu-motion .nm-trigger { left: 12px; }
+      #icue-menu-motion .nm-header { padding-left: 70px; }
+      #icue-menu-motion .nm-content { padding-inline: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #icue-menu-motion .nm-trigger,
+      #icue-menu-motion .nm-fixed-close,
+      #icue-menu-motion[data-mode="fade"][data-open="true"] .nm-fixed-close,
+      #icue-menu-motion .nm-bar,
+      #icue-menu-motion .nm-drawer,
+      #icue-menu-motion .nm-overlay { transition: none; }
+    }
+  </style>
+  <div class="nm-window">
+    <div class="nm-ticker">ICUE · NEWSROOM</div>
+    <div class="nm-header"><span class="nm-brand">ICUE</span><span class="nm-badge">Newsroom</span></div>
+    <div class="nm-content">
+      <div class="nm-eyebrow">ICUE VIỆT NAM</div>
+      <div class="nm-title">Tin tức &amp; Sự kiện</div>
+      <div class="nm-rule" aria-hidden="true"></div>
+    </div>
+    <div class="nm-overlay" aria-hidden="true"></div>
+    <aside class="nm-drawer" id="icue-motion-drawer" aria-label="Site navigation preview" aria-hidden="true" inert>
+      <button class="nm-close nm-panel-close" type="button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+      <ul class="nm-links">
+        <li><span class="nm-index">01</span>Trang chủ</li>
+        <li><span class="nm-index">02</span>Cơ cấu tổ chức</li>
+        <li><span class="nm-index">03</span>Lĩnh vực hoạt động</li>
+        <li><span class="nm-index">04</span>Dự án</li>
+        <li><span class="nm-index">05</span>Tin tức &amp; Sự kiện</li>
+        <li><span class="nm-index">06</span>Về chúng tôi</li>
+        <li><span class="nm-index">07</span>Liên hệ</li>
+        <li><span class="nm-index">08</span>Đội ngũ</li>
+      </ul>
+    </aside>
+    <button class="nm-close nm-fixed-close" type="button" aria-label="Close menu" aria-hidden="true" inert>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <button class="nm-trigger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="icue-motion-drawer">
+      <span class="nm-bar" aria-hidden="true"></span>
+      <span class="nm-bar" aria-hidden="true"></span>
+      <span class="nm-bar" aria-hidden="true"></span>
+    </button>
+  </div>
+  <span class="nm-status" aria-live="polite"></span>
+  <script>
+    (() => {
+      const container = document.getElementById('newsroom-motion-comparison');
+      const root = container.querySelector('#icue-menu-motion');
+      const selector = container.querySelector('select');
+      const toggle = root.querySelector('.nm-trigger');
+      const drawer = root.querySelector('.nm-drawer');
+      const overlay = root.querySelector('.nm-overlay');
+      const panelClose = root.querySelector('.nm-panel-close');
+      const fixedClose = root.querySelector('.nm-fixed-close');
+      const status = root.querySelector('.nm-status');
+      let open = false;
+      let mode = 'panel';
+      const setOpen = (next, moveFocus = true) => {
+        open = next;
+        root.dataset.open = String(open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open && mode === 'header' ? 'Close menu' : 'Open menu');
+        toggle.inert = open && mode !== 'header';
+        fixedClose.inert = !(open && mode === 'fade');
+        fixedClose.setAttribute('aria-hidden', String(fixedClose.inert));
+        drawer.setAttribute('aria-hidden', String(!open));
+        drawer.inert = !open;
+        status.textContent = open ? 'Menu open' : 'Menu closed';
+        if (moveFocus) {
+          const target = !open || mode === 'header' ? toggle : mode === 'fade' ? fixedClose : panelClose;
+          target.focus({ preventScroll: true });
+        }
+      };
+      toggle.addEventListener('click', () => setOpen(!open));
+      panelClose.addEventListener('click', () => setOpen(false));
+      fixedClose.addEventListener('click', () => setOpen(false));
+      overlay.addEventListener('click', () => setOpen(false));
+      container.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && open) setOpen(false);
+      });
+      selector.addEventListener('change', () => {
+        root.dataset.switching = 'true';
+        mode = selector.value;
+        root.dataset.mode = mode;
+        setOpen(false, false);
+        void root.offsetWidth;
+        delete root.dataset.switching;
+      });
+    })();
+  </script>
+</div>
+</div>

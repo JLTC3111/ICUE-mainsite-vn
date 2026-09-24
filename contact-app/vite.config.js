@@ -10,7 +10,7 @@ export default defineConfig({
   base: '/contact/',
   plugins: [react(), serveSiteFonts(path.resolve(__dirname, '..'))],
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),
@@ -29,6 +29,7 @@ export default defineConfig({
          component the route shells inject rather than a lookalike. */
       '@icue/pill-header': path.resolve(__dirname, '../home-app/src/components/PillSiteHeader.jsx'),
       'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'),
+      'motion/react': path.resolve(__dirname, 'node_modules/motion/react'),
     },
   },
   build: {

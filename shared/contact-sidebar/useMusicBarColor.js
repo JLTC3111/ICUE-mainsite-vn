@@ -134,8 +134,21 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     const rootObserver = new MutationObserver(scheduleSample)
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme'],
+      attributeFilter: ['class', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme'],
     })
+    if (document.body) {
+      rootObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+      })
+    }
+    const appRoot = document.querySelector('.icue-app')
+    if (appRoot) {
+      rootObserver.observe(appRoot, {
+        attributes: true,
+        attributeFilter: ['class'],
+      })
+    }
 
     return () => {
       if (sampleTimer !== null) window.clearTimeout(sampleTimer)

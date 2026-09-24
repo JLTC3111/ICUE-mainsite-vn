@@ -141,20 +141,21 @@ function replaceNodeWithEmbed(doc, node, info, label) {
 
 function replaceAnchorWithEmbed(doc, anchor, info) {
   const label = labelFromAnchor(anchor)
-  const parent = anchor.parentElement
+  const parent = anchor.closest('p')
 
   if (parent?.tagName === 'P') {
     const paragraphText = parent.textContent?.replace(/\s+/g, ' ').trim()
     const anchorText = anchor.textContent?.replace(/\s+/g, ' ').trim()
-    const href = anchor.getAttribute('href')?.trim()
     const onlyLink = paragraphText === anchorText
-      || paragraphText === href
-      || parent.querySelectorAll('a').length === 1
+      && parent.querySelectorAll('a').length === 1
+      && !parent.querySelector('img, video, iframe, figure')
 
     if (onlyLink) {
       parent.replaceWith(makeEmbedFigure(doc, info, label))
-      return
     }
+    // Keep links embedded in prose as links. A figure inside a paragraph is
+    // invalid HTML, and replacing the paragraph discards the surrounding copy.
+    return
   }
 
   replaceNodeWithEmbed(doc, anchor, info, label)

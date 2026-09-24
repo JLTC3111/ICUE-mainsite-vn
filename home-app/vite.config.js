@@ -122,7 +122,7 @@ export default defineConfig({
     },
   ],
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
       '@': path.resolve(__dirname, '..'),
       '@icue/main-site-nav': path.resolve(__dirname, '../shared/main-site-nav'),

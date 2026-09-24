@@ -45,14 +45,16 @@ async function handleForgotPassword(body, env) {
     throw err
   }
 
-  const res = await fetch(`${url}/auth/v1/recover`, {
+  const endpoint = new URL(`${url.replace(/\/$/, '')}/auth/v1/recover`)
+  endpoint.searchParams.set('redirect_to', redirectTo)
+  const res = await fetch(endpoint.toString(), {
     method: 'POST',
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, redirect_to: redirectTo }),
+    body: JSON.stringify({ email }),
   })
 
   const text = await res.text()

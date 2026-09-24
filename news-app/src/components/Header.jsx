@@ -193,6 +193,20 @@ function Header() {
     setSearchOpen(next)
     if (next) setOpen(false)
   }, [])
+
+  useEffect(() => {
+    if (!open || !usesOverflowNav) return undefined
+    const onKey = (event) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [open, usesOverflowNav])
   const handleSignOut = useCallback(async () => {
     await signOut()
     close()
@@ -206,6 +220,7 @@ function Header() {
           hashLink={hashLink}
           peopleLink={peopleLink}
           orgHref={structureLink()}
+          drawerClassName="nav-drawer--fade-close"
         />
 
         <div className="icue-header__brand-box">
@@ -245,28 +260,34 @@ function Header() {
         )}
 
         <button
+          type="button"
           className={`icue-header__burger ${open ? 'is-open' : ''}`}
-          aria-label={t('nav.news')}
+          aria-label={open ? t('drawer.close') : t('nav.more')}
           aria-expanded={open}
+          aria-controls="icue-newsroom-menu"
           onClick={() => {
             setSearchOpen(false)
             setOpen((v) => !v)
           }}
         >
-          {open ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <circle cx="12" cy="5" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="12" cy="19" r="2" />
-            </svg>
-          )}
+          <svg className="icue-header__kebab" viewBox="0 0 24 24" aria-hidden="true">
+            <g className="icue-header__kebab-dot icue-header__kebab-dot--top">
+              <circle cx="12" cy="5" r="1.85" />
+            </g>
+            <g className="icue-header__kebab-dot icue-header__kebab-dot--mid">
+              <circle cx="12" cy="12" r="1.85" />
+            </g>
+            <g className="icue-header__kebab-dot icue-header__kebab-dot--bot">
+              <circle cx="12" cy="19" r="1.85" />
+            </g>
+          </svg>
         </button>
 
-        <nav className={`icue-header__nav ${open ? 'is-open' : ''}`}>
+        <nav
+          id="icue-newsroom-menu"
+          className={`icue-header__nav ${open ? 'is-open' : ''}`}
+          aria-hidden={usesOverflowNav && !open ? true : undefined}
+        >
           <div className="icue-header__primary-links" aria-hidden={compactSearchOpen || undefined}>
             <a href={base} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72} animate={false}>
@@ -309,6 +330,16 @@ function Header() {
           </div>
         </nav>
       </div>
+      {usesOverflowNav && (
+        <button
+          type="button"
+          className={`icue-header__backdrop${open ? ' is-open' : ''}`}
+          aria-label={t('drawer.close')}
+          aria-hidden={open ? undefined : true}
+          tabIndex={-1}
+          onClick={close}
+        />
+      )}
     </header>
   )
 }

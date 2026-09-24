@@ -23,7 +23,8 @@
     "login": "Connexion",
     "logout": "Déconnexion",
     "assist": "Espace de travail",
-    "authorTools": "Outils auteur"
+    "authorTools": "Outils auteur",
+    "more": "Plus"
   },
   "drawer": {
     "menu": "Menu",

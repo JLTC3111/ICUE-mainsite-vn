@@ -11,7 +11,7 @@ export default defineConfig({
   base: '/recruitment/',
   plugins: [bootRecovery(), react(), serveSiteFonts(path.resolve(__dirname, '..'))],
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
       '@icue/chatbot': path.resolve(__dirname, '../shared/chatbot'),
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),

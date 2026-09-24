@@ -6,7 +6,6 @@ import {
   useState,
 } from 'react';
 import DrawerMenuPanel from '@icue/drawer-menu/DrawerMenuPanel.jsx';
-import DrawerMenuToggle from '@icue/drawer-menu/DrawerMenuToggle.jsx';
 import { registerMainSiteNavBridge } from './bridge';
 import { pageFromPathname } from './languageSwitcher';
 import {
@@ -604,7 +603,7 @@ export default function MainSiteNav({
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         showToggle={false}
-        showFloatingClose={false}
+        showClose={false}
         portal={false}
         resizable
         drawerId="drawerMenu"

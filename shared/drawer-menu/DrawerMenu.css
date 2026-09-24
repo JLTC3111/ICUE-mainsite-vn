@@ -1,5 +1,5 @@
-/* Drawer menu mirroring the main icue.vn site: a hamburger that animates to an
-   X, and a left slide-in panel with a blurred dark backdrop. */
+/* Drawer menu: Our Work’s hamburger crossfades into an X. The other apps hide
+   that control while the drawer is open and use the panel’s own X. */
 
 .nav-drawer__toggle {
   position: relative;
@@ -9,7 +9,6 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  gap: 5px;
   width: 42px;
   min-width: 42px;
   height: 42px;
@@ -22,7 +21,13 @@
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.nav-drawer__toggle.is-open:not(.nav-drawer__toggle--morph) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .nav-drawer__toggle-placeholder {
@@ -40,7 +45,24 @@
   color: var(--icue-blue, #368adf);
 }
 
-.nav-drawer__toggle span {
+.nav-drawer__toggle-bars,
+.nav-drawer__toggle-x {
+  transition: opacity 0.35s ease, transform 0.5s ease, visibility 0.35s ease;
+  transform-origin: center;
+}
+
+.nav-drawer__toggle-bars {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+  transform: rotate(0deg) scale(1);
+}
+
+.nav-drawer__toggle-bars > span {
   display: block;
   height: 2px;
   min-height: 2px;
@@ -48,35 +70,95 @@
   min-width: 18px;
   border-radius: 2px !important;
   background: currentColor;
-  transition: transform 0.35s ease, opacity 0.25s ease, background 0.2s ease;
-  transform-origin: center;
+  transition: background 0.2s ease;
 }
 
-.nav-drawer__toggle:hover span {
+.nav-drawer__toggle-x {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-90deg) scale(0.85);
+}
+
+.nav-drawer__toggle-x path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+}
+
+.nav-drawer__toggle--morph.is-open .nav-drawer__toggle-bars {
+  opacity: 0;
+  visibility: hidden;
+  transform: rotate(90deg) scale(0.85);
+}
+
+.nav-drawer__toggle--morph.is-open .nav-drawer__toggle-x {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+.nav-drawer__toggle:hover .nav-drawer__toggle-bars > span {
   background: currentColor;
 }
 
-.nav-drawer__toggle.is-open {
-  background: rgba(15, 23, 42, 0.88);
-  border-color: rgba(248, 250, 252, 0.35);
-  color: #f8fafc;
+.nav-drawer__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  margin: 0 0 0.25rem;
+  padding: calc(env(safe-area-inset-top, 0px) + 11px) 0 0.65rem calc(env(safe-area-inset-left, 0px) + 8px);
 }
 
-.nav-drawer__toggle.is-open:hover {
+.nav-drawer__close {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(248, 250, 252, 0.35);
+  border-radius: 12px !important;
+  background: rgba(15, 23, 42, 0.55);
+  color: #f8fafc;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.5s ease,
+    opacity 0.35s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.nav-drawer__close:hover {
   background: rgba(15, 23, 42, 0.95);
   border-color: rgba(255, 255, 255, 0.55);
 }
 
-.nav-drawer__toggle--floating {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 11px);
-  left: calc(env(safe-area-inset-left, 0px) + 24px);
-  z-index: 99999;
-  margin: 0;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+.nav-drawer__close:focus,
+.nav-drawer__close:focus-visible {
+  outline: none;
+}
+
+.nav-drawer__close-icon,
+.nav-drawer__close-icon path {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.5s ease, opacity 0.35s ease, visibility 0.35s ease;
 }
 
 .nav-drawer__close-icon {
@@ -86,6 +168,26 @@
   margin: auto;
   flex-shrink: 0;
   pointer-events: none;
+  overflow: visible;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.85);
+}
+
+.nav-drawer.is-open .nav-drawer__close-icon {
+  opacity: 1;
+  visibility: visible;
+  transform: rotate(0deg) scale(1);
+  transition: transform 0.5s ease, opacity 0.35s ease, visibility 0.35s ease;
+}
+
+/* Structure and People: the panel stays put while the X fades out, then slides away. */
+.nav-drawer.nav-drawer--fade-close:not(.is-open) {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+}
+
+.nav-drawer.nav-drawer--fade-close:not(.is-open) .nav-drawer__close-icon,
+.nav-drawer.nav-drawer--fade-close:not(.is-open) .nav-drawer__close-icon path {
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
 }
 
 .nav-drawer__overlay {
@@ -118,7 +220,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 6rem 2rem;
+  padding: 0 2rem max(2rem, env(safe-area-inset-bottom, 0px));
   background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.22), #05080d 72%);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
@@ -486,9 +588,8 @@
 }
 
 @media (max-width: 768px) {
-  .nav-drawer__toggle--floating {
-    top: calc(env(safe-area-inset-top, 0px) + 7px);
-    left: calc(env(safe-area-inset-left, 0px) + 24px);
+  .nav-drawer__header {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 7px);
   }
 
   .nav-drawer__overlay {

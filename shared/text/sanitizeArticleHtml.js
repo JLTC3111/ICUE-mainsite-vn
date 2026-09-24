@@ -350,14 +350,13 @@ function sanitizeNodeTree(root) {
       }
     }
 
-    if (tag === 'B') {
-      const strong = doc.createElement('strong')
-      strong.innerHTML = element.innerHTML
-      element.replaceWith(strong)
-    } else if (tag === 'I') {
-      const em = doc.createElement('em')
-      em.innerHTML = element.innerHTML
-      element.replaceWith(em)
+    if (tag === 'B' || tag === 'I') {
+      const replacement = doc.createElement(tag === 'B' ? 'strong' : 'em')
+      for (const attr of [...element.attributes]) replacement.setAttribute(attr.name, attr.value)
+      // Keep the original descendants: the traversal above still needs to
+      // sanitize them. Copying innerHTML would create unvisited, unsafe nodes.
+      while (element.firstChild) replacement.appendChild(element.firstChild)
+      element.replaceWith(replacement)
     }
   }
 

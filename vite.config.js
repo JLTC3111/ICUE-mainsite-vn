@@ -6,6 +6,7 @@ import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
 import { NOTABLE_AWARDS_REDIRECTS } from './shared/site-routes/notableAwardsRedirects.js'
 import { resolvePastProjectRedirect } from './shared/site-routes/pastProjectsRedirects.js'
 import { resolveNewsArchiveRedirect } from './shared/site-routes/newsArchiveRedirects.js'
+import { resolveStaticPath, denyStaticPath } from './shared/vite/staticPath.js'
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -49,13 +50,14 @@ function spaDevFallback({ name, basePath, outDirName, buildScript }) {
           return next();
         }
         const rel = urlPath.replace(new RegExp(`^${basePath.replace('/', '\\/')}\\/?`), '');
-        const filePath = path.join(appDir, rel);
-        const hasExtension = Boolean(rel && path.extname(rel));
+        const filePath = resolveStaticPath(appDir, rel);
+        if (!filePath) return denyStaticPath(res);
+        const hasExtension = Boolean(rel && path.extname(filePath));
 
         if (hasExtension) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;
-            res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
+            res.setHeader('Content-Type', MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream');
             res.setHeader('Cache-Control', 'no-store');
             res.end(fs.readFileSync(filePath));
             return;
@@ -67,10 +69,12 @@ function spaDevFallback({ name, basePath, outDirName, buildScript }) {
           return;
         }
 
-        const routeIndexPath = path.join(filePath, 'index.html');
+        const routeIndexPath = resolveStaticPath(appDir, rel ? `${rel}/index.html` : 'index.html');
+        if (!routeIndexPath) return denyStaticPath(res);
         const indexPath = fs.existsSync(routeIndexPath)
           ? routeIndexPath
-          : path.join(appDir, 'index.html');
+          : resolveStaticPath(appDir, 'index.html');
+        if (!indexPath) return denyStaticPath(res);
         if (fs.existsSync(indexPath)) {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -193,20 +197,22 @@ function homeDevFallback() {
         }
 
         const rel = urlPath.replace(/^\//, '');
-        const filePath = path.join(appDir, rel);
-        const hasExtension = Boolean(rel && path.extname(rel));
+        const filePath = resolveStaticPath(appDir, rel);
+        if (!filePath) return denyStaticPath(res);
+        const hasExtension = Boolean(rel && path.extname(filePath));
 
         if (hasExtension) {
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;
-            res.setHeader('Content-Type', MIME[path.extname(rel).toLowerCase()] || 'application/octet-stream');
+            res.setHeader('Content-Type', MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream');
             res.end(fs.readFileSync(filePath));
             return;
           }
 
           // Netlify serves /public/* from repo root; map to dist-home copies when present.
           if (urlPath.startsWith('/public/')) {
-            const publicPath = path.join(appDir, rel.replace(/^public\//, ''));
+            const publicPath = resolveStaticPath(appDir, rel.replace(/^public\//, ''));
+            if (!publicPath) return denyStaticPath(res);
             if (fs.existsSync(publicPath) && fs.statSync(publicPath).isFile()) {
               res.statusCode = 200;
               res.setHeader('Content-Type', MIME[path.extname(publicPath).toLowerCase()] || 'application/octet-stream');
@@ -218,7 +224,8 @@ function homeDevFallback() {
           return next();
         }
 
-        const indexPath = path.join(appDir, 'index.html');
+        const indexPath = resolveStaticPath(appDir, 'index.html');
+        if (!indexPath) return denyStaticPath(res);
         if (!fs.existsSync(indexPath)) {
           res.statusCode = 503;
           res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -252,8 +259,12 @@ export default {
     homeDevFallback(),
   ],
   resolve: {
+    dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
       '@': path.resolve(__dirname),
+      // No root node_modules in the app build. The legacy entry still imports
+      // the shared nav, which imports lucide-react by bare name.
+      'lucide-react': path.resolve(__dirname, 'home-app/node_modules/lucide-react'),
       '@icue/main-site-nav': path.resolve(__dirname, 'shared/main-site-nav'),
       '@icue/drawer-menu': path.resolve(__dirname, 'shared/drawer-menu'),
       '@icue/home-layout': path.resolve(__dirname, 'shared/home-layout'),

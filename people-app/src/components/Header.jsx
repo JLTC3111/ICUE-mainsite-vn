@@ -24,6 +24,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle })
           peopleLink={peopleLink}
           orgHref={structureLink()}
           currentPage={currentPage}
+          drawerClassName="nav-drawer--fade-close"
         />
 
         <a href={base} className="people-header__brand" aria-label={t('nav.mainAria')}>

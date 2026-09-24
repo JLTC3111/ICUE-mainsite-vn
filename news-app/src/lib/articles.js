@@ -75,54 +75,84 @@ export async function fetchArticleById(id, { signal } = {}) {
   return normalizeArticle(data)
 }
 
-// Persist media: upload any new files, then reconcile rows for the article.
-async function syncMedia(articleId, userId, items, originalItems = []) {
-  const keptIds = new Set(items.filter((m) => !m.isNew && m.dbId).map((m) => m.dbId))
+// One session per editor. Retain identities even when a request commits at the
+// server but its response is lost, so a manual retry resumes the same save.
+export function createArticleSaveSession() {
+  return { id: crypto.randomUUID(), slug: null, uploads: new WeakMap(), mediaIds: new Map() }
+}
+
+async function uploadArticleFile(session, userId, file, subdir = 'media') {
+  let saved = session.uploads.get(file)
+  if (!saved) {
+    saved = { path: `${userId}/${subdir}/${crypto.randomUUID()}.${fileExt(file.name)}` }
+    session.uploads.set(file, saved)
+  }
+  if (!saved.url) {
+    const bucket = supabase.storage.from(STORAGE_BUCKETS.media)
+    const { error } = await bucket.upload(saved.path, file, {
+      cacheControl: '31536000',
+      upsert: true,
+      contentType: file.type || undefined,
+    })
+    if (error) throw error
+    saved.url = bucket.getPublicUrl(saved.path).data.publicUrl
+  }
+  return saved
+}
+
+// Read the current rows on each attempt: the previous request may have saved
+// some of them before losing connectivity. Upload files before removing rows.
+async function syncMedia(articleId, userId, items, session) {
+  const { data: current, error: readError } = await supabase.from('article_media')
+    .select('id, storage_path').eq('article_id', articleId)
+  if (readError) throw readError
+  const existingIds = new Set((current || []).map((row) => row.id))
+  const rows = []
   const clientToDb = new Map()
-  // Delete removed rows (+ their storage objects)
-  const toDelete = originalItems.filter((m) => m.dbId && !keptIds.has(m.dbId))
-  if (toDelete.length) {
-    const { error: deleteError } = await supabase.from('article_media').delete().in('id', toDelete.map((m) => m.dbId))
-    if (deleteError) throw deleteError
-    const paths = toDelete.map((m) => m.storage_path).filter(Boolean)
-    if (paths.length) await supabase.storage.from(STORAGE_BUCKETS.media).remove(paths)
-  }
 
-  // Insert new items (preserving order via position)
-  let position = 0
-  for (const m of items) {
-    position += 1
-    if (m.isNew && m.file) {
-      const { url, path } = await uploadFile(STORAGE_BUCKETS.media, userId, m.file)
-      const { data, error } = await supabase
-        .from('article_media')
-        .insert({
-          article_id: articleId,
-          kind: m.kind,
-          url,
-          storage_path: path,
-          info: m.info || null,
-          position,
-        })
-        .select('id')
-        .single()
-      if (error) throw error
-      clientToDb.set(m.id, data.id)
-    } else if (m.dbId) {
-      clientToDb.set(m.id, m.dbId)
-      const { error: updateError } = await supabase.from('article_media').update({
-        position,
-        info: m.info || null,
-      }).eq('id', m.dbId)
-      if (updateError) throw updateError
+  for (const [index, item] of items.entries()) {
+    let id = item.dbId
+    let uploaded
+    if (item.isNew && item.file) {
+      if (!session.mediaIds.has(item.id)) session.mediaIds.set(item.id, crypto.randomUUID())
+      id = session.mediaIds.get(item.id)
+      uploaded = await uploadArticleFile(session, userId, item.file)
     }
+    if (!id) continue
+    clientToDb.set(item.id, id)
+    rows.push({
+      id,
+      article_id: articleId,
+      info: item.info || null,
+      position: index + 1,
+      ...(uploaded ? { kind: item.kind, url: uploaded.url, storage_path: uploaded.path } : {}),
+    })
   }
 
+  const keptIds = new Set(rows.map((row) => row.id))
+  const toDelete = (current || []).filter((row) => !keptIds.has(row.id))
+  if (toDelete.length) {
+    const { error: deleteError } = await supabase.from('article_media').delete()
+      .eq('article_id', articleId).in('id', toDelete.map((row) => row.id))
+    if (deleteError) throw deleteError
+  }
+
+  for (const row of rows) {
+    // Avoid INSERT ... ON CONFLICT: the media-cap BEFORE INSERT trigger also
+    // runs for conflicts and would reject retries of a full gallery.
+    const query = existingIds.has(row.id)
+      ? supabase.from('article_media').update(row).eq('id', row.id).eq('article_id', articleId)
+      : supabase.from('article_media').insert(row)
+    const { error } = await query
+    if (error) throw error
+  }
+
+  const paths = toDelete.map((row) => row.storage_path).filter(Boolean)
+  if (paths.length) await supabase.storage.from(STORAGE_BUCKETS.media).remove(paths)
   return clientToDb
 }
 
-async function saveCoverComparison(
-  articleId,
+function coverComparisonPayload(
   comparison,
   clientToDb,
   { coverUrl, coverAltUrl, editorImages },
@@ -133,76 +163,47 @@ async function saveCoverComparison(
     Boolean(coverUrl),
     Boolean(coverAltUrl),
   )
-  const payload = enrichCoverComparisonForSave(
+  return enrichCoverComparisonForSave(
     resolved,
     coverUrl,
     coverAltUrl,
     editorImages,
     clientToDb,
   )
-  const { error } = await supabase
-    .from('articles')
-    .update({ cover_comparison: payload })
-    .eq('id', articleId)
-  if (error && !isMissingMediaComparison(error)) throw error
 }
 
 // Create a brand-new article (Component 2).
-export async function createArticle({ form, items, coverFile, coverAltFile, userId, status }) {
-  let coverUrl = form.coverImageUrl || null
-  let coverAltUrl = form.coverImageAltUrl || null
-  if (coverFile) {
-    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverFile, 'covers')
-    coverUrl = url
+export async function createArticle({ form, items, coverFile, coverAltFile, userId, status, saveSession = createArticleSaveSession() }) {
+  saveSession.slug ||= uniqueSlug(form.title)
+  const { data: existing, error: readError } = await supabase.from('articles')
+    .select('id').eq('id', saveSession.id).maybeSingle()
+  if (readError) throw readError
+  if (!existing) {
+    const { error } = await supabase.from('articles').insert({
+      id: saveSession.id,
+      slug: saveSession.slug,
+      title: sanitizePlainText(form.title.trim()),
+      content_html: sanitizeArticleHtml(form.contentHtml || ''),
+      author_id: userId,
+      status: 'draft',
+    })
+    if (error) throw error
   }
-  if (coverAltFile) {
-    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverAltFile, 'covers')
-    coverAltUrl = url
-  }
-
-  const payload = {
-    slug: uniqueSlug(form.title),
-    title: sanitizePlainText(form.title.trim()),
-    subtitle: form.subtitle?.trim() ? sanitizePlainText(form.subtitle.trim()) : null,
-    content_html: sanitizeArticleHtml(form.contentHtml || ''),
-    content_json: form.contentJson || null,
-    cover_image_url: coverUrl,
-    cover_image_alt_url: coverAltUrl,
-    cover_info: form.coverInfo?.trim() ? sanitizePlainText(form.coverInfo.trim()) : null,
-    author_id: userId,
-    author_name: form.author?.trim() ? sanitizePlainText(form.author.trim()) : null,
-    status,
-    language: form.language || 'vi',
-    category: form.category || 'general',
-    article_date: form.date || null,
-    article_time: form.time || null,
-    read_minutes: readMinutes(form.contentHtml),
-    published_at: status === 'published' ? new Date().toISOString() : null,
-    sources: sanitizeSourcesForSave(form.sources),
-  }
-
-  const { data, error } = await supabase.from('articles').insert(payload).select('id, slug').single()
-  if (error) throw error
-
-  const clientToDb = await syncMedia(data.id, userId, items)
-  await saveCoverComparison(data.id, form.coverComparison, clientToDb, {
-    coverUrl,
-    coverAltUrl,
-    editorImages: items,
+  return updateArticle({
+    id: saveSession.id, form, items, coverFile, coverAltFile, userId, status, saveSession,
   })
-  return data
 }
 
 // Update an existing article (Component 3).
-export async function updateArticle({ id, form, items, originalItems, coverFile, coverAltFile, userId, status }) {
+export async function updateArticle({ id, form, items, coverFile, coverAltFile, userId, status, saveSession = createArticleSaveSession() }) {
   let coverUrl = form.coverImageUrl ?? null
   let coverAltUrl = form.coverImageAltUrl ?? null
   if (coverFile) {
-    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverFile, 'covers')
+    const { url } = await uploadArticleFile(saveSession, userId, coverFile, 'covers')
     coverUrl = url
   }
   if (coverAltFile) {
-    const { url } = await uploadFile(STORAGE_BUCKETS.media, userId, coverAltFile, 'covers')
+    const { url } = await uploadArticleFile(saveSession, userId, coverAltFile, 'covers')
     coverAltUrl = url
   }
 
@@ -238,20 +239,21 @@ export async function updateArticle({ id, form, items, originalItems, coverFile,
     }
   }
 
-  const { data, error } = await supabase
-    .from('articles')
-    .update(payload)
-    .eq('id', id)
-    .select('id, slug')
-    .single()
-  if (error) throw error
-
-  const clientToDb = await syncMedia(id, userId, items, originalItems)
-  await saveCoverComparison(id, form.coverComparison, clientToDb, {
+  const clientToDb = await syncMedia(id, userId, items, saveSession)
+  payload.cover_comparison = coverComparisonPayload(form.coverComparison, clientToDb, {
     coverUrl,
     coverAltUrl,
     editorImages: items,
   })
+  // Publication is the final database write, after every media upload and row
+  // succeeds. A failed save leaves a new article private and safe to retry.
+  const save = () => supabase.from('articles').update(payload).eq('id', id).select('id, slug').single()
+  let { data, error } = await save()
+  if (error && isMissingMediaComparison(error)) {
+    delete payload.cover_comparison
+    ;({ data, error } = await save())
+  }
+  if (error) throw error
   return data
 }
 

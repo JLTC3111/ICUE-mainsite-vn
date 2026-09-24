@@ -375,17 +375,31 @@
 
 .ow-header__actions .nav-drawer__toggle {
   padding: 0.5rem;
-  gap: 4px;
   border-radius: 50% !important;
   border-color: var(--icue-chrome-border);
   background: transparent;
   color: var(--icue-chrome-text);
 }
 
-.ow-header__actions .nav-drawer__toggle:hover {
-  border-color: var(--icue-chrome-accent);
-  background: rgba(255, 255, 255, 0.07);
-  color: var(--icue-chrome-accent);
+.ow-header__actions .nav-drawer__toggle-bars {
+  gap: 4px;
+}
+
+.ow-header__actions .nav-drawer__toggle:hover,
+.ow-header__actions .nav-drawer__toggle:hover .nav-drawer__toggle-bars {
+  border-color: var(--icue-chrome-border);
+  background: transparent;
+  color: var(--icue-chrome-text);
+}
+
+/* Keep the pills, and the hamburger crossfade, above the drawer. The panel
+   has no close control here, so the links clear the bar themselves. */
+body.nav-drawer-open .ow-header {
+  z-index: 1300;
+}
+
+body.nav-drawer-open .nav-drawer {
+  padding-top: calc(22px + 3.25rem + 10px);
 }
 
 .ow-header__actions .nav-drawer__toggle:focus-visible,
@@ -447,6 +461,10 @@
     --ow-nav-h: 3rem;
     --ow-inset: 16px;
     --ow-header-padx: 20px;
+  }
+
+  body.nav-drawer-open .nav-drawer {
+    padding-top: calc(16px + 3rem + 10px);
   }
 
   .ow-header.is-top {

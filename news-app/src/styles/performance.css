@@ -11,9 +11,17 @@
 }
 
 .icue-app--perf-minimal .icue-header__nav,
+.icue-app--perf-minimal .icue-header__backdrop,
+.icue-app--perf-minimal .icue-header__burger,
 .icue-app--perf-minimal .category-filter__menu {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Header blur is off in this mode, so fixed menus anchor to the viewport again. */
+.icue-app--perf-minimal .icue-header__nav,
+.icue-app--perf-minimal .icue-header__backdrop {
+  top: var(--icue-chrome-top);
 }
 
 .icue-app--perf-minimal .article-parallax__slide:not(.is-active) .article-parallax__layer,

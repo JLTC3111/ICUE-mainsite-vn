@@ -170,6 +170,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   }, [])
 
   const [busy, setBusy] = useState(null) // 'draft' | 'publish' | 'update'
+  const savingRef = useRef(false)
   const [error, setError] = useState('')
 
   const galleryImages = useMemo(
@@ -260,6 +261,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
 
   const submit = useCallback(
     async (status) => {
+      if (savingRef.current) return
       const plain = contentHtml.replace(/<[^>]*>/g, '').trim()
       if (!title.trim()) {
         setError(t('editor.needTitle'))
@@ -269,6 +271,7 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         setError(t('editor.needContent'))
         return
       }
+      savingRef.current = true
       setError('')
       setBusy(status === 'published' ? (mode === 'edit' ? 'update' : 'publish') : 'draft')
       try {
@@ -297,6 +300,8 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
       } catch (err) {
         setError(err.message || t('editor.uploadError'))
         setBusy(null)
+      } finally {
+        savingRef.current = false
       }
     },
     [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, articleLanguage, onSubmit, mode, t],

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import ArticleForm from '../components/ArticleForm'
-import { fetchArticleById, updateArticle, toEditorMedia } from '../lib/articles'
+import { fetchArticleById, updateArticle, toEditorMedia, createArticleSaveSession } from '../lib/articles'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function Edit() {
@@ -15,7 +15,7 @@ export default function Edit() {
   const navigate = useNavigate()
 
   const [article, setArticle] = useState(null)
-  const [originalItems, setOriginalItems] = useState([])
+  const [saveSession] = useState(createArticleSaveSession)
   const [state, setState] = useState('loading') // loading | ready | error
 
   const [revision, retry] = useResumeRevision({ enabled: state !== 'ready', minHiddenMs: 0 })
@@ -37,7 +37,6 @@ export default function Edit() {
           .sort((a, b) => (a.position || 0) - (b.position || 0))
           .map(toEditorMedia)
         setArticle({ ...data, items })
-        setOriginalItems(items)
         setState('ready')
       })
       .catch(() => active && setState('error'))
@@ -50,7 +49,7 @@ export default function Edit() {
         id,
         form,
         items,
-        originalItems,
+        saveSession,
         coverFile,
         coverAltFile,
         userId: user.id,
@@ -59,7 +58,7 @@ export default function Edit() {
       if (status === 'published') navigate(`/article/${res.slug}`)
       else navigate('/dashboard')
     },
-    [id, originalItems, user, navigate],
+    [id, saveSession, user, navigate],
   )
 
   if (state === 'loading') {
