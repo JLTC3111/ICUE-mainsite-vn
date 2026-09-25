@@ -1,8 +1,9 @@
+import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import AppRecovery from '../../shared/resilience/AppRecovery.jsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
-import './lib/i18n'
+import i18n from './lib/i18n'
 import App from './App'
 import './legal.css'
 import '@icue/styles/icue-base.css'
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
       <AppRecovery>
       <MotionConfig reducedMotion="user">
         <App />
+        <SiteChatbot i18n={i18n} />
       </MotionConfig>
     </AppRecovery>
     </StrictMode>,

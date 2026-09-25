@@ -13,6 +13,7 @@ import SlidingNumber from './magicui/SlidingNumber'
 import ArticleHtmlContent from './ArticleHtmlContent'
 import { paginateArticleHtml } from '../lib/articlePagination'
 import { markDropCapInHtml } from '../lib/articleDropCap'
+import useEmblaSelection from '../hooks/useEmblaSelection'
 import './ArticlePagedContent.css'
 
 function useReducedMotion() {
@@ -72,9 +73,6 @@ export default function ArticlePagedContent({
   const rootRef = useRef(null)
   const readerRef = useRef(null)
   const skipScrollRef = useRef(true)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [canScrollPrev, setCanScrollPrev] = useState(false)
-  const [canScrollNext, setCanScrollNext] = useState(false)
   const [arrowsVisible, setArrowsVisible] = useState(false)
 
   const totalPages = pages.length
@@ -87,6 +85,7 @@ export default function ArticlePagedContent({
     duration: reduceMotion ? 0 : 32,
     startIndex: 0,
   })
+  const { selectedIndex, canScrollPrev, canScrollNext } = useEmblaSelection(emblaApi)
 
   const scrollReaderToTop = useCallback(() => {
     const reader = readerRef.current
@@ -101,9 +100,6 @@ export default function ArticlePagedContent({
   const syncIndex = useCallback(() => {
     if (!emblaApi) return
     const index = emblaApi.selectedScrollSnap()
-    setSelectedIndex(index)
-    setCanScrollPrev(emblaApi.canScrollPrev())
-    setCanScrollNext(emblaApi.canScrollNext())
     onPageChange?.(index, totalPages)
 
     if (!skipScrollRef.current) {
@@ -195,7 +191,6 @@ export default function ArticlePagedContent({
     skipScrollRef.current = true
     const index = readPageFromHash(totalPages)
     emblaApi.scrollTo(index, true)
-    setSelectedIndex(index)
     requestAnimationFrame(() => {
       skipScrollRef.current = false
     })
@@ -215,12 +210,13 @@ export default function ArticlePagedContent({
   }, [isMultipage, contentKey])
 
   useEffect(() => {
-    if (!isMultipage) return undefined
+    // Wait for Embla to restore the incoming page before mirroring selection.
+    if (!isMultipage || !emblaApi) return undefined
     const hash = `#page-${selectedIndex + 1}`
     if (window.location.hash !== hash) {
       window.history.replaceState(null, '', hash)
     }
-  }, [selectedIndex, isMultipage])
+  }, [selectedIndex, isMultipage, emblaApi])
 
   const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev()

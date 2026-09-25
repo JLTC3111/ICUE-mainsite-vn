@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
+      '@icue/chatbot': path.resolve(__dirname, '../shared/chatbot'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),

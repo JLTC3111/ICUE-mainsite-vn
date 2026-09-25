@@ -1,0 +1,50 @@
+{
+  "title": "ICUE-Assistent",
+  "greeting": "Hallo! Ich bin der ICUE-Assistent. Ich helfe Ihnen bei Fragen zu Leistungen, Ablauf, Honoraren und Kontakt. Was brauchen Sie?",
+  "placeholder": "Fragen Sie einfach …",
+  "send": "Nachricht senden",
+  "open": "ICUE-Assistenten öffnen",
+  "close": "ICUE-Assistenten schließen",
+  "badge": "Auto",
+  "thinking": "Antwort wird verfasst …",
+  "transcript": "Gesprächsverlauf",
+  "error": "Entschuldigung — gerade war keine Antwort möglich. Bitte versuchen Sie es noch einmal.",
+  "suggestions": [
+    "Leistungen",
+    "Honorare",
+    "Kontakt"
+  ],
+  "sync": {
+    "title": "Verlauf synchronisieren",
+    "back": "Zurück zum Chat",
+    "description": "Setzen Sie das Gespräch auf Ihren Geräten fort. Nachrichten werden vor dem Hochladen verschlüsselt. Kein Konto erforderlich.",
+    "start": "Privaten Kopplungscode erstellen",
+    "join": "Dieses Gerät verbinden",
+    "code": "Privater Kopplungscode",
+    "hint": "Code vom anderen Gerät einfügen.",
+    "secret": "Jeder mit diesem Code kann den synchronisierten Verlauf lesen und ändern. Bewahren Sie ihn sicher auf.",
+    "show": "Code anzeigen",
+    "hide": "Code verbergen",
+    "copy": "Code kopieren",
+    "copied": "Kopiert",
+    "copyFailed": "Code auswählen und kopieren.",
+    "retry": "Jetzt synchronisieren",
+    "disconnect": "Dieses Gerät trennen",
+    "remove": "Cloud-Verlauf löschen",
+    "confirmRemove": "Cloud-Kopie löschen und alle Geräte trennen? Lokale Nachrichten bleiben erhalten.",
+    "cancel": "Abbrechen",
+    "confirm": "Cloud-Kopie löschen",
+    "sessionOnly": "Dieser Browser kann die Verbindung nicht speichern. Bewahren Sie den Code zum erneuten Verbinden auf.",
+    "scope": "Bis zu 50 aktuelle Nachrichten pro Sprache. Lokale Gespräche werden beim Koppeln zusammengeführt.",
+    "status": {
+      "local": "Auf diesem Gerät gespeichert",
+      "syncing": "Wird synchronisiert…",
+      "ready": "Verlauf synchronisiert",
+      "offline": "Offline — Änderungen bleiben bis zur erneuten Verbindung auf diesem Gerät.",
+      "missing": "Zu diesem Code gibt es keinen Cloud-Verlauf. Er wurde möglicherweise gelöscht. Trennen Sie die Verbindung, um einen neuen Code zu erstellen.",
+      "unavailable": "Synchronisierung derzeit nicht verfügbar. Der lokale Chat funktioniert weiterhin.",
+      "invalid": "Prüfen Sie den Kopplungscode und versuchen Sie es erneut.",
+      "error": "Synchronisierung fehlgeschlagen. Lokale Nachrichten sind sicher; versuchen Sie es erneut."
+    }
+  }
+}

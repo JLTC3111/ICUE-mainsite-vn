@@ -11,13 +11,19 @@ export default function ArticleViewCounter({ count = 0, compact = false, tone = 
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const parsed = Number(count)
   const safeCount = Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : 0
-  const [displayValue, setDisplayValue] = useState(safeCount)
+  const [counter, setCounter] = useState({ count: safeCount, value: safeCount })
   const animRef = useRef(null)
+
+  // Reset only this component's animation state before children render a new
+  // count. The SlidingNumber instance stays mounted for its normal transition.
+  if (counter.count !== safeCount) {
+    setCounter({ count: safeCount, value: safeCount })
+  }
+  const displayValue = counter.count === safeCount ? counter.value : safeCount
 
   useEffect(() => {
     animRef.current?.stop()
     animRef.current = null
-    setDisplayValue(safeCount)
   }, [safeCount])
 
   useEffect(() => () => {
@@ -28,12 +34,16 @@ export default function ArticleViewCounter({ count = 0, compact = false, tone = 
     if (reduceMotion || safeCount <= 0) return
 
     animRef.current?.stop()
-    setDisplayValue(0)
+    setCounter({ count: safeCount, value: 0 })
     animRef.current = animate(0, safeCount, {
       ...SLOW_SPRING,
-      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
+      onUpdate: (latest) => setCounter((current) => current.count === safeCount
+        ? { count: safeCount, value: Math.round(latest) }
+        : current),
       onComplete: () => {
-        setDisplayValue(safeCount)
+        setCounter((current) => current.count === safeCount
+          ? { count: safeCount, value: safeCount }
+          : current)
         animRef.current = null
       },
     })

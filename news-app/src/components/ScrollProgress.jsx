@@ -19,7 +19,6 @@ function cn(...classes) {
 export default function ScrollProgress({ className, springOptions, containerRef, progress: externalProgress }) {
   const { scrollYProgress } = useScroll({
     container: containerRef,
-    layoutEffect: Boolean(containerRef?.current),
   })
   const pageProgress = useMotionValue(typeof externalProgress === 'number' ? externalProgress : 0)
 

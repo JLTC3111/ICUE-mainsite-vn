@@ -18,7 +18,6 @@ export function usePopoverPosition(open, triggerRef, {
 
   useLayoutEffect(() => {
     if (!open) {
-      setStyle(null)
       return undefined
     }
 
@@ -79,5 +78,5 @@ export function usePopoverPosition(open, triggerRef, {
     }
   }, [open, triggerRef, minWidth, maxWidth, offset])
 
-  return style
+  return open ? style : null
 }

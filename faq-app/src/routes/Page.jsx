@@ -7,7 +7,6 @@ import PillSiteHeader from '@icue/pill-header'
 import Footer from '@icue/site-footer/Footer'
 import { useDocumentMeta } from '@icue/site-meta/useDocumentMeta'
 import { getFaqCategories } from '@icue/faq-content'
-import { Chatbot } from '@icue/chatbot'
 import PageLanguageMenu from '../components/PageLanguageMenu'
 import FaqAccordion from '../components/FaqAccordion'
 import { useMainSite } from '../hooks/useMainSite'
@@ -70,12 +69,6 @@ export default function Page() {
     [t, lang],
   )
 
-  const chatLabels = useMemo(() => t('chat', { returnObjects: true }), [t, lang])
-  const chatLinks = useMemo(
-    () => ({ faqs: pageLink('FAQs'), contact: pageLink('Contact') }),
-    [pageLink],
-  )
-
   return (
     <>
       <a className="fq-skip" href="#faq-categories">
@@ -116,8 +109,6 @@ export default function Page() {
       </main>
 
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-
-      <Chatbot locale={lang} labels={chatLabels} links={chatLinks} />
 
       {sidebarReady && (
         <Suspense fallback={null}>

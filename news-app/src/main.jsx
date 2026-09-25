@@ -1,3 +1,4 @@
+import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import AppRecovery from '../../shared/resilience/AppRecovery.jsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -32,6 +33,7 @@ function mountApp() {
             <AuthProvider>
               <NewsroomThemeProvider>
                 <App />
+                <SiteChatbot i18n={i18n} />
               </NewsroomThemeProvider>
             </AuthProvider>
           </PerformanceProfileProvider>

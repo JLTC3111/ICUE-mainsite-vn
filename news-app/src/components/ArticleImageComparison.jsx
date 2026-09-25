@@ -40,11 +40,10 @@ function loadImageSize(url) {
 }
 
 function useFitContentHeight(beforeUrl, afterUrl, enabled, frameRef) {
-  const [height, setHeight] = useState(null)
+  const [measurement, setMeasurement] = useState(null)
 
   useEffect(() => {
     if (!enabled || !beforeUrl || !afterUrl) {
-      setHeight(null)
       return undefined
     }
 
@@ -64,9 +63,9 @@ function useFitContentHeight(beforeUrl, afterUrl, enabled, frameRef) {
 
         const beforeHeight = (beforeSize.height / beforeSize.width) * width
         const afterHeight = (afterSize.height / afterSize.width) * width
-        setHeight(Math.ceil(Math.max(beforeHeight, afterHeight)))
+        setMeasurement({ beforeUrl, afterUrl, height: Math.ceil(Math.max(beforeHeight, afterHeight)) })
       } catch {
-        if (!cancelled) setHeight(null)
+        if (!cancelled) setMeasurement(null)
       }
     }
 
@@ -88,7 +87,10 @@ function useFitContentHeight(beforeUrl, afterUrl, enabled, frameRef) {
     }
   }, [afterUrl, beforeUrl, enabled, frameRef])
 
-  return height
+  // A previous image pair's dimensions must not size newly selected images.
+  return enabled && measurement && measurement.beforeUrl === beforeUrl && measurement.afterUrl === afterUrl
+    ? measurement.height
+    : null
 }
 
 export default function ArticleImageComparison({

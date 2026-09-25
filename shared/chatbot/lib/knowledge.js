@@ -198,9 +198,10 @@ function formatClarification(template, first, second) {
  * @param {object} options
  * @param {string} options.siteLang     the reader's current UI language
  * @param {string} options.baseUrl      import.meta.env.BASE_URL of the host app
+ * @param {object} [options.urls]       optional Vite asset URLs for each locale
  * @param {(lang: string) => object} options.copy  UI strings for bot-authored replies
  */
-export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy }) {
+export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, copy }) {
   const cache = Object.create(null)
   const loading = Object.create(null)
 
@@ -210,7 +211,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', copy })
    * production, where a _redirects rule rewrote /public/*, and it was fetched
    * with `cache: 'no-store'` so every mount paid for it again.
    */
-  const kbUrl = (language) => `${baseUrl.replace(/\/$/, '')}/chatbot/kb.${language}.json`
+  const kbUrl = (language) => urls?.[language] || `${baseUrl.replace(/\/$/, '')}/chatbot/kb.${language}.json`
 
   async function loadKb(language) {
     return withDeadline(async (signal) => {

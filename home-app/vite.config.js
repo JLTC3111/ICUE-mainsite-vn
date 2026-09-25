@@ -124,6 +124,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'lucide-react'],
     alias: {
+      '@icue/chatbot': path.resolve(__dirname, '../shared/chatbot'),
       '@': path.resolve(__dirname, '..'),
       '@icue/main-site-nav': path.resolve(__dirname, '../shared/main-site-nav'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),

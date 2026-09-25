@@ -20,6 +20,10 @@
 #
 # Server credentials are read only from the Functions runtime environment. Do
 # not expose them to Builds unless another build step explicitly requires them.
+#
+# Optional chat-history sync needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
+# in Functions only, plus the chatbot_device_sync migration. The service key
+# must never be a VITE_ variable. Only encrypted transcripts reach this endpoint.
 
 [functions]
   directory = "netlify/functions"

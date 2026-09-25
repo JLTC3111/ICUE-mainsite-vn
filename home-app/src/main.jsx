@@ -1,3 +1,4 @@
+import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import AppRecovery from '../../shared/resilience/AppRecovery.jsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -23,7 +24,7 @@ installGlobalDebugHandlers()
 const entryParams = new URLSearchParams(window.location.search)
 const hasLocaleHint = normalizeUiLocale(entryParams.get('lang') || entryParams.get('site'))
   || (entryParams.get('from') === 'en-news' ? 'en' : null)
-let storedLang = null
+let storedLang
 try {
   storedLang = normalizeUiLocale(localStorage.getItem('icue_news_lang'))
 } catch {
@@ -92,6 +93,7 @@ function mountApp() {
       <AppRecovery>
         <MotionConfig reducedMotion="user">
           <App />
+          <SiteChatbot i18n={i18n} />
         </MotionConfig>
       </AppRecovery>
     </StrictMode>,

@@ -1,0 +1,50 @@
+{
+  "title": "Trợ lý ICUE",
+  "greeting": "Xin chào! Tôi là trợ lý của ICUE. Tôi có thể giúp bạn tìm hiểu về dịch vụ, quy trình, chi phí và cách liên hệ. Bạn cần hỗ trợ gì?",
+  "placeholder": "Hỏi bất cứ điều gì…",
+  "send": "Gửi tin nhắn",
+  "open": "Mở trợ lý ICUE",
+  "close": "Đóng trợ lý ICUE",
+  "badge": "Tự động",
+  "thinking": "Đang soạn trả lời…",
+  "transcript": "Nội dung trò chuyện",
+  "error": "Xin lỗi, hiện chưa trả lời được. Bạn thử lại giúp mình nhé.",
+  "suggestions": [
+    "Dịch vụ",
+    "Chi phí",
+    "Liên hệ"
+  ],
+  "sync": {
+    "title": "Đồng bộ hội thoại",
+    "back": "Quay lại trò chuyện",
+    "description": "Tiếp tục hội thoại trên các thiết bị của bạn. Tin nhắn được mã hóa trước khi tải lên. Không cần tài khoản.",
+    "start": "Tạo mã ghép nối riêng tư",
+    "join": "Kết nối thiết bị này",
+    "code": "Mã ghép nối riêng tư",
+    "hint": "Dán mã từ thiết bị còn lại.",
+    "secret": "Bất kỳ ai có mã này đều có thể đọc và thay đổi lịch sử đã đồng bộ. Hãy giữ kín mã.",
+    "show": "Hiện mã",
+    "hide": "Ẩn mã",
+    "copy": "Sao chép mã",
+    "copied": "Đã sao chép",
+    "copyFailed": "Chọn và sao chép mã.",
+    "retry": "Đồng bộ ngay",
+    "disconnect": "Ngắt kết nối thiết bị này",
+    "remove": "Xóa lịch sử trên đám mây",
+    "confirmRemove": "Xóa bản sao trên đám mây và ngắt mọi thiết bị? Tin nhắn trên thiết bị vẫn được giữ.",
+    "cancel": "Hủy",
+    "confirm": "Xóa bản sao trên đám mây",
+    "sessionOnly": "Trình duyệt này không thể lưu kết nối. Hãy giữ mã để kết nối lại.",
+    "scope": "Lưu tối đa 50 tin nhắn gần nhất cho mỗi ngôn ngữ. Hội thoại trên thiết bị được hợp nhất khi ghép nối.",
+    "status": {
+      "local": "Đã lưu trên thiết bị này",
+      "syncing": "Đang đồng bộ…",
+      "ready": "Đã đồng bộ hội thoại",
+      "offline": "Đang ngoại tuyến — thay đổi được giữ trên thiết bị đến khi kết nối lại.",
+      "missing": "Mã này không có lịch sử trên đám mây. Lịch sử có thể đã bị xóa. Ngắt kết nối để tạo mã mới.",
+      "unavailable": "Hiện chưa thể đồng bộ. Trò chuyện trên thiết bị vẫn hoạt động.",
+      "invalid": "Kiểm tra mã ghép nối và thử lại.",
+      "error": "Không thể đồng bộ. Tin nhắn trên thiết bị vẫn an toàn; vui lòng thử lại."
+    }
+  }
+}

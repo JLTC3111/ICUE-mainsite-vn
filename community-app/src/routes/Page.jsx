@@ -6,7 +6,6 @@ import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/nav
 import PillSiteHeader from '@icue/pill-header'
 import Footer from '@icue/site-footer/Footer'
 import { useDocumentMeta } from '@icue/site-meta/useDocumentMeta'
-import { Chatbot } from '@icue/chatbot'
 import PageLanguageMenu from '../components/PageLanguageMenu'
 import ProgrammeSection from '../components/ProgrammeSection'
 import Lightbox from '../components/Lightbox'
@@ -32,7 +31,7 @@ function useIdle() {
 export default function Page() {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
-  const { base, pageLink } = useMainSite()
+  const { base } = useMainSite()
   const sidebarReady = useIdle()
   const [openId, setOpenId] = useState(null)
 
@@ -94,12 +93,6 @@ export default function Page() {
     [t, lang],
   )
 
-  const chatLabels = useMemo(() => t('chat', { returnObjects: true }), [t, lang])
-  const chatLinks = useMemo(
-    () => ({ faqs: pageLink('FAQs'), contact: pageLink('Contact') }),
-    [pageLink],
-  )
-
   return (
     <>
       <a className="cm-skip" href="#programmes">
@@ -150,8 +143,6 @@ export default function Page() {
       />
 
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-
-      <Chatbot locale={lang} labels={chatLabels} links={chatLinks} />
 
       {sidebarReady && (
         <Suspense fallback={null}>

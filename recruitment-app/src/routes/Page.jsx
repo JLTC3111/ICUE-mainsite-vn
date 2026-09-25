@@ -6,7 +6,6 @@ import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/nav
 import PillSiteHeader from '@icue/pill-header'
 import Footer from '@icue/site-footer/Footer'
 import { useDocumentMeta } from '@icue/site-meta/useDocumentMeta'
-import { Chatbot } from '@icue/chatbot'
 import PageLanguageMenu from '../components/PageLanguageMenu'
 import JobSearch from '../components/JobSearch'
 import JobCard from '../components/JobCard'
@@ -94,12 +93,6 @@ export default function Page() {
     [t, lang],
   )
 
-  const chatLabels = useMemo(() => t('chat', { returnObjects: true }), [t, lang])
-  const chatLinks = useMemo(
-    () => ({ faqs: pageLink('FAQs'), contact: pageLink('Contact') }),
-    [pageLink],
-  )
-
   const contactHref = pageLink('Contact')
 
   return (
@@ -168,8 +161,6 @@ export default function Page() {
       </main>
 
       <Footer linkMode="standalone" labels={footerLabels} locale={lang} />
-
-      <Chatbot locale={lang} labels={chatLabels} links={chatLinks} />
 
       {sidebarReady && (
         <Suspense fallback={null}>

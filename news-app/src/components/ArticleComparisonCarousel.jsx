@@ -3,12 +3,12 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import useEmblaCarousel from 'embla-carousel-react'
 import { bindEmblaParallax } from '../lib/emblaParallax'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
+import useEmblaSelection from '../hooks/useEmblaSelection'
 import ArticleImageComparison from './ArticleImageComparison'
 import './ArticleComparisonCarousel.css'
 
@@ -25,7 +25,6 @@ export default function ArticleComparisonCarousel({
   const reduceMotion = profileReduceMotion
   const tweenNodesRef = useRef([])
   const tweenFactorRef = useRef(0)
-  const [selectedIndex, setSelectedIndex] = useState(0)
 
   const slideCount = pairs.length
   const useParallax = slideCount > 1 && !reduceMotion && !disableParallax
@@ -38,10 +37,7 @@ export default function ArticleComparisonCarousel({
     startIndex: 0,
   })
 
-  const syncIndex = useCallback(() => {
-    if (!emblaApi) return
-    setSelectedIndex(emblaApi.selectedScrollSnap())
-  }, [emblaApi])
+  const { selectedIndex } = useEmblaSelection(emblaApi)
 
   const scrollTo = useCallback(
     (index) => {
@@ -49,19 +45,6 @@ export default function ArticleComparisonCarousel({
     },
     [emblaApi],
   )
-
-  useEffect(() => {
-    if (!emblaApi) return undefined
-
-    syncIndex()
-    emblaApi.on('select', syncIndex)
-    emblaApi.on('reInit', syncIndex)
-
-    return () => {
-      emblaApi.off('select', syncIndex)
-      emblaApi.off('reInit', syncIndex)
-    }
-  }, [emblaApi, syncIndex])
 
   useEffect(() => {
     if (!emblaApi || !useParallax) return undefined
@@ -79,15 +62,13 @@ export default function ArticleComparisonCarousel({
     if (!emblaApi) return undefined
 
     emblaApi.reInit()
-    syncIndex()
 
     const id = requestAnimationFrame(() => {
       emblaApi.reInit()
-      syncIndex()
     })
 
     return () => cancelAnimationFrame(id)
-  }, [emblaApi, slideCount, syncIndex])
+  }, [emblaApi, slideCount])
 
   if (!slideCount) return null
 

@@ -1,0 +1,50 @@
+{
+  "title": "Assistant ICUE",
+  "greeting": "Bonjour ! Je suis l’assistant ICUE. Je peux vous orienter sur nos prestations, notre façon de travailler, les honoraires et comment nous joindre. Que cherchez-vous ?",
+  "placeholder": "Posez votre question…",
+  "send": "Envoyer le message",
+  "open": "Ouvrir l’assistant ICUE",
+  "close": "Fermer l’assistant ICUE",
+  "badge": "Auto",
+  "thinking": "Rédaction de la réponse…",
+  "transcript": "Fil de la conversation",
+  "error": "Désolé — je n’ai pas pu répondre à l’instant. Merci de réessayer.",
+  "suggestions": [
+    "Prestations",
+    "Honoraires",
+    "Contact"
+  ],
+  "sync": {
+    "title": "Synchroniser l’historique",
+    "back": "Retour au chat",
+    "description": "Poursuivez la conversation sur vos appareils. Les messages sont chiffrés avant leur envoi. Aucun compte nécessaire.",
+    "start": "Créer un code privé",
+    "join": "Associer cet appareil",
+    "code": "Code d’association privé",
+    "hint": "Collez le code de votre autre appareil.",
+    "secret": "Toute personne possédant ce code peut lire et modifier l’historique synchronisé. Gardez-le privé.",
+    "show": "Afficher le code",
+    "hide": "Masquer le code",
+    "copy": "Copier le code",
+    "copied": "Copié",
+    "copyFailed": "Sélectionnez et copiez le code.",
+    "retry": "Synchroniser maintenant",
+    "disconnect": "Déconnecter cet appareil",
+    "remove": "Supprimer l’historique cloud",
+    "confirmRemove": "Supprimer la copie cloud et déconnecter tous les appareils ? Les messages locaux seront conservés.",
+    "cancel": "Annuler",
+    "confirm": "Supprimer la copie cloud",
+    "sessionOnly": "Ce navigateur ne peut pas enregistrer la connexion. Conservez le code pour vous reconnecter.",
+    "scope": "Jusqu’à 50 messages récents par langue. Les conversations locales sont fusionnées lors de l’association.",
+    "status": {
+      "local": "Enregistré sur cet appareil",
+      "syncing": "Synchronisation…",
+      "ready": "Historique synchronisé",
+      "offline": "Hors ligne — les modifications restent sur cet appareil jusqu’à la reconnexion.",
+      "missing": "Aucun historique cloud pour ce code. Il a peut-être été supprimé. Déconnectez-vous pour créer un nouveau code.",
+      "unavailable": "Synchronisation indisponible pour le moment. Le chat local fonctionne toujours.",
+      "invalid": "Vérifiez le code d’association et réessayez.",
+      "error": "Échec de la synchronisation. Les messages locaux sont conservés ; réessayez."
+    }
+  }
+}

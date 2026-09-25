@@ -1,0 +1,50 @@
+{
+  "title": "ICUE Assistant",
+  "greeting": "Hello! I’m the ICUE assistant. I can help you find your way around our services, how we work, fees and how to reach us. What do you need?",
+  "placeholder": "Ask anything…",
+  "send": "Send message",
+  "open": "Open the ICUE assistant",
+  "close": "Close the ICUE assistant",
+  "badge": "Auto",
+  "thinking": "Writing a reply…",
+  "transcript": "Conversation transcript",
+  "error": "Sorry — I could not answer just now. Please try again.",
+  "suggestions": [
+    "Services",
+    "Fees",
+    "Contact"
+  ],
+  "sync": {
+    "title": "Sync history",
+    "back": "Back to chat",
+    "description": "Keep this conversation across your devices. Messages are encrypted before upload. No account is needed.",
+    "start": "Create a private pairing code",
+    "join": "Link this device",
+    "code": "Private pairing code",
+    "hint": "Paste the code from your other device.",
+    "secret": "Anyone with this code can read and change your synced history. Keep it private.",
+    "show": "Show code",
+    "hide": "Hide code",
+    "copy": "Copy code",
+    "copied": "Copied",
+    "copyFailed": "Select and copy the code.",
+    "retry": "Sync now",
+    "disconnect": "Disconnect this device",
+    "remove": "Delete cloud history",
+    "confirmRemove": "Delete the cloud copy and disconnect every device? Local messages will remain.",
+    "cancel": "Cancel",
+    "confirm": "Delete cloud copy",
+    "sessionOnly": "This browser cannot save the connection. Keep your code to reconnect.",
+    "scope": "Up to 50 recent messages per language are kept. Local conversations are merged when you pair devices.",
+    "status": {
+      "local": "Saved on this device",
+      "syncing": "Syncing…",
+      "ready": "History synced",
+      "offline": "Offline — changes stay on this device until you reconnect.",
+      "missing": "This code has no cloud history. It may have been deleted. Disconnect to create a new code.",
+      "unavailable": "Sync is currently unavailable. Your local chat still works.",
+      "invalid": "Check the pairing code and try again.",
+      "error": "Could not sync. Your local messages are safe; try again."
+    }
+  }
+}

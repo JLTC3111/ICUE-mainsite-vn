@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 
 /**
  * Call `handler` when a pointerdown happens outside `ref`.
@@ -6,14 +6,13 @@ import { useEffect, useRef } from 'react'
  * @param {() => void} handler
  */
 export default function useClickOutside(ref, handler) {
-  const handlerRef = useRef(handler)
-  handlerRef.current = handler
+  const onOutside = useEffectEvent(handler)
 
   useEffect(() => {
     const onPointerDown = (event) => {
       const el = ref.current
       if (!el || el.contains(event.target)) return
-      handlerRef.current()
+      onOutside()
     }
     document.addEventListener('pointerdown', onPointerDown)
     return () => document.removeEventListener('pointerdown', onPointerDown)

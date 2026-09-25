@@ -32,6 +32,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       dedupe: ['react', 'react-dom'],
       alias: {
+        '@icue/chatbot': path.resolve(__dirname, '../shared/chatbot'),
         '@': path.resolve(__dirname, 'src'),
         '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
         '@icue/styles': path.resolve(__dirname, '../shared/styles'),

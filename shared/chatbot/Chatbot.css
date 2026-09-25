@@ -3,9 +3,8 @@
  * runtime injected into every legacy page.
  *
  * Class names are prefixed `icue-chat` rather than reusing the legacy
- * `.chatbot-*` names. The legacy chatbot still exists and still ships its own
- * global CSS on the pages that load src/script.js; keeping the two namespaces
- * apart means neither can restyle the other if they ever land on one document.
+ * `.chatbot-*` names. The archived legacy CSS is still imported by home-app;
+ * keeping the namespaces apart prevents it from restyling this component.
  *
  * Colours come from tokens with literal fallbacks, so the component renders
  * correctly in an app that has not defined them.
@@ -13,17 +12,30 @@
 
 .icue-chat {
   --icue-chat-bottom: max(55px, env(safe-area-inset-bottom, 0px));
+  --icue-chat-left: max(25px, env(safe-area-inset-left, 0px));
+  --icue-chat-right: max(15px, env(safe-area-inset-right, 0px));
+  --icue-chat-launcher-space: 88px;
+  --icue-chat-top: max(12px, env(safe-area-inset-top, 0px));
   position: fixed;
   bottom: calc(var(--icue-chat-bottom) + var(--icue-chat-keyboard-inset, 0px));
-  left: max(25px, env(safe-area-inset-left, 0px));
+  left: var(--icue-chat-left);
   z-index: 40;
   font-family: var(--icue-font-stack, system-ui, sans-serif);
+  line-height: 1.4;
 }
 
+.icue-chat, .icue-chat * {
+  box-sizing: border-box;
+}
+
+/* The contact rail uses 140; navigation drawers use 1200+. Keep the open
+   conversation above the rail so it cannot intercept the close/send buttons. */
+.icue-chat--open { z-index: 150; }
+
 .icue-chat__toggle {
-  width: 78px;
-  height: 72px;
-  display: inline-flex;
+  width: 80px;
+  height: 80px;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -32,7 +44,6 @@
   border: 0;
   border-radius: 24px;
   background: none;
-  color: #48dad5;
   font: inherit;
   line-height: 1;
   isolation: isolate;
@@ -40,33 +51,9 @@
   transition: transform 0.2s ease;
 }
 
-.icue-chat__mark {
-  display: block;
-  flex: none;
-  overflow: visible;
-  filter:
-    drop-shadow(0 8px 10px rgba(7, 18, 36, 0.34))
-    drop-shadow(0 0 6px rgba(72, 218, 213, 0.16));
-  transition: filter 0.2s ease;
-}
-
-.icue-chat__mark-bubble {
-  fill: var(--icue-chat-mark, #48dad5);
-}
-
-.icue-chat__mark-dot {
-  fill: var(--icue-chat-ink, #0d192b);
-}
-
 @media (hover: hover) {
   .icue-chat__toggle:hover {
-    transform: translateY(-2px) scale(1.04);
-  }
-
-  .icue-chat__toggle:hover .icue-chat__mark {
-    filter:
-      drop-shadow(0 10px 13px rgba(7, 18, 36, 0.38))
-      drop-shadow(0 0 9px rgba(72, 218, 213, 0.24));
+    transform: scale(1.04);
   }
 }
 
@@ -74,38 +61,24 @@
   transform: translateY(0) scale(0.98);
 }
 
-.icue-chat__toggle:focus-visible {
-  outline: 3px solid rgba(72, 218, 213, 0.72);
+.icue-chat button:focus-visible {
+  outline: 3px solid #187fbd;
   outline-offset: 4px;
 }
 
-.icue-chat__badge {
-  position: absolute;
-  top: 0;
-  right: -3px;
-  z-index: 1;
-  padding: 5px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  background: var(--icue-chat-accent, #ff5c67);
-  box-shadow: 0 5px 12px rgba(7, 18, 36, 0.3);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  white-space: nowrap;
-  pointer-events: none;
+.icue-chat__header button:focus-visible {
+  outline-color: #a2f9ff;
+  outline-offset: 1px;
 }
 
 .icue-chat__window {
   position: absolute;
-  bottom: 76px;
+  bottom: var(--icue-chat-launcher-space);
   left: 0;
-  width: 350px;
+  width: min(350px, calc(100vw - var(--icue-chat-left) - var(--icue-chat-right)));
   height: 500px;
-  max-height: calc(100vh - 76px - var(--icue-chat-bottom) - 12px);
-  max-height: calc(var(--icue-chat-viewport-height, 100dvh) - 76px - var(--icue-chat-bottom) - max(12px, env(safe-area-inset-top, 0px)));
+  max-height: calc(100vh - var(--icue-chat-launcher-space) - var(--icue-chat-bottom) - 12px);
+  max-height: calc(var(--icue-chat-viewport-height, 100dvh) - var(--icue-chat-launcher-space) - var(--icue-chat-bottom) - var(--icue-chat-top));
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -134,9 +107,9 @@
     animation: none;
   }
 
-  .icue-chat__toggle,
-  .icue-chat__mark {
-    transition: none;
+  .icue-chat button, .icue-chat button svg {
+    transition: none !important;
+    transform: none !important;
   }
 }
 
@@ -156,29 +129,43 @@
   gap: 8px;
   font-weight: 600;
   font-size: 16px;
+  min-width: 0;
 }
 
-.icue-chat__close {
+.icue-chat__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.icue-chat__subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: #b9cedf;
+}
+
+.icue-chat__header-actions { display: flex; align-items: center; flex: none; }
+
+.icue-chat__close,
+.icue-chat__sync {
   background: none;
   border: none;
   color: #fff;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background 0.2s ease, transform 0.2s ease;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 8px;
+  transition: background 0.2s ease;
 }
 
-.icue-chat__close:hover {
-  transform: scale(1.25);
+.icue-chat__close:hover,
+.icue-chat__sync:hover {
   background: rgba(255, 255, 255, 0.2);
-}
-
-.icue-chat__close svg {
-  transition: transform 0.25s ease;
-}
-
-.icue-chat__close:hover svg {
-  transform: rotate(-360deg);
 }
 
 .icue-chat__messages {
@@ -221,6 +208,7 @@
   padding: 12px 16px;
   border-radius: 18px;
   max-width: 250px;
+  min-width: 0;
   font-size: 14px;
   line-height: 1.4;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -274,12 +262,13 @@
 }
 
 .icue-chat__input:focus {
-  border-color: #667eea;
+  border-color: #187fbd;
+  box-shadow: 0 0 0 1px #187fbd;
 }
 
 .icue-chat__send {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   background: #0d2ec0;
   border: none;
@@ -290,14 +279,6 @@
   align-items: center;
   justify-content: center;
   transition: filter 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.icue-chat__send svg {
-  transition: transform 0.75s ease-in-out;
-}
-
-.icue-chat__send:hover svg {
-  transform: rotate(-360deg);
 }
 
 .icue-chat__send:hover {
@@ -343,6 +324,22 @@
   padding: 8px 12px;
 }
 
+/* Recover the launcher's vertical space when a keyboard or landscape viewport
+   leaves little room. The header retains an accessible 44px close button. */
+.icue-chat--compact {
+  --icue-chat-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  --icue-chat-launcher-space: 0px;
+  --icue-chat-top: max(76px, calc(env(safe-area-inset-top, 0px) + 60px));
+}
+
+.icue-chat--compact.icue-chat--open .icue-chat__toggle {
+  display: none;
+}
+
+.icue-chat--compact .icue-chat__window {
+  animation: none;
+}
+
 .icue-chat--compact .icue-chat__messages {
   padding: 12px;
 }
@@ -358,29 +355,23 @@
 
 @media (max-width: 768px) {
   .icue-chat__window {
-    width: min(300px, calc(100vw - 30px));
+    width: min(320px, calc(100vw - var(--icue-chat-left) - var(--icue-chat-right)));
     height: 450px;
   }
 
   .icue-chat {
     --icue-chat-bottom: max(15px, env(safe-area-inset-bottom, 0px));
-    left: max(15px, env(safe-area-inset-left, 0px));
+    --icue-chat-left: max(15px, env(safe-area-inset-left, 0px));
+    --icue-chat-launcher-space: 72px;
   }
 
   .icue-chat__toggle {
-    width: 66px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
   }
 
-  .icue-chat__mark {
-    width: 52px;
-    height: 52px;
-  }
-
-  .icue-chat__badge {
-    top: 0;
-    right: -2px;
-    padding: 4px 7px;
-    font-size: 9px;
+  .icue-chat--compact {
+    --icue-chat-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    --icue-chat-launcher-space: 0px;
   }
 }
