@@ -32,7 +32,7 @@
     "vite": "^6.3.2"
   },
   "scripts": {
-    "dev": "npm run build:home && npm run build:newsroom && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/sync-home-dev.mjs && vite",
+    "dev": "npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/sync-home-dev.mjs && vite",
     "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix contact-app && npm ci --prefix legal-app && npm ci --prefix home-app && npm ci --prefix faq-app && npm ci --prefix recruitment-app && npm ci --prefix community-app",
     "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/postbuild.mjs && npm run verify:locales && npm run verify:routes && npm run verify:publish",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",

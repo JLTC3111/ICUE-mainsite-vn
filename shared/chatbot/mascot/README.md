@@ -3,7 +3,7 @@
 ```jsx
 import { ChatMascot } from '@icue/chatbot'
 
-<ChatMascot state="thinking" variant="header" />
+<ChatMascot state="thinking" />
 ```
 
 `state`: `idle`, `greeting`, `curious`, `thinking`, `speaking`, `happy`,
@@ -17,6 +17,16 @@ hover/focus wakes its face and opening chat gives a greeting.
 subscriptions. `active={false}` pauses a hidden instance. `interactive` enables
 the curious hover/focus expression when idle or sleeping. All instances are decorative;
 the host must provide the accessible button label and localized textual status.
+The visible launcher remains animated while chat is open; its inactivity-sleep
+timer and curious hover face are disabled during the conversation.
+
+Assistant messages and the pending-reply row use the exported `AssistantAvatar`
+component: a static 28px pale SVG badge with contrasting navy pixel expressions
+(`> _`, `^ ^`, `> <`, `- -`) selected from the reply state. The header contains
+the chat title and controls; the full bird lives only in the floating launcher.
+Transcript badges are decorative and preserve the avatar spacing and top alignment.
+On hover or keyboard focus, the launcher jumps and spreads both wings widely;
+the open panel limits jump height to its available gap. Its button stays transparent.
 
 The independent SVG face uses pixel paths rather than typography. Coordinates
 use a 100 × 100 canvas aligned to the square artwork; symbols occupy x=43–73,
@@ -25,11 +35,16 @@ alignment at launcher, header and avatar sizes. No translated text is in the art
 
 Greeting, success and fallback reactions settle to idle after 1.8 seconds.
 One timeout, cleared on state change/unmount, controls each brief reaction.
-Breathing, occasional blink, thinking tilt, wing tucks/flutters, tail sways,
-foot taps/steps and staggered dots use CSS transform and opacity. Animated
-instances compose a clean body with SVG-masked appendages from the original
-asset. Static avatars use the original single image. A separate cleaned-up
-one-shot timeout controls sleeping; no animation interval runs in JavaScript. Visibility, pagehide/pageshow and freeze/resume pause motion;
+Breathing, occasional blink, thinking tilt, paired idle wing wiggles, tail sways,
+foot taps/steps and staggered dots use CSS transform and opacity. The tail flaps
+throughout `thinking`, `speaking` and the brief `happy` response reaction;
+the head feathers gently rise and fall while sleeping. Animated instances
+compose a clean body with SVG-masked appendages from the original
+asset. A curved cutout separates the crest from the core image, with an overlap
+at the roots so it stays attached as it moves. Static avatars use the original
+single image. A separate cleaned-up one-shot timeout controls sleeping; no
+animation interval runs in JavaScript. Visibility, pagehide/pageshow and
+freeze/resume pause motion;
 `prefers-reduced-motion` removes all movement and fades. The component is memoized
 so typing in the chat input does not rerender unchanged mascot instances.
 
@@ -62,6 +77,10 @@ current generated layers are suitable for these compact UI sizes.
 Every app has the `@icue/chatbot` alias, so other components can import
 `ChatMascot`. `SiteChatbot` is mounted once in each app entry; do not mount extra
 chat dialogs in individual routes.
+
+Root `npm run dev` serves built copies of all ten apps on port 5173. Restart that
+command after shared mascot edits to rebuild them, then refresh the page. For
+live mascot updates on the home app, use `npm run dev:home` on port 5175.
 
 ## Generation prompt
 

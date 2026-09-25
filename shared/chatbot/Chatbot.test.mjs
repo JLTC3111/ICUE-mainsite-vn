@@ -48,7 +48,7 @@ async function fixture(t, getResponse, { touch = false } = {}) {
     } })
   })
   const find = className => renderer.root.findByProps({ className })
-  const state = () => find('icue-mascot icue-mascot--header').props['data-state']
+  const state = () => find('icue-mascot icue-mascot--launcher').props['data-state']
   const open = () => act(async () => find('icue-chat__toggle').props.onClick())
   const send = () => act(async () => renderer.root.findAllByProps({ className: 'icue-chat__suggestion' })[0].props.onClick())
   const advance = async ms => {
@@ -76,13 +76,20 @@ test('real chat lifecycle selects reactions, preserves textual errors, and recov
   })
   await f.open()
   assert.equal(f.state(), 'greeting')
+  const launcher = () => f.find('icue-mascot icue-mascot--launcher')
+  assert.equal(launcher().props['data-paused'], false, 'the visible launcher keeps moving while chat is open')
+  assert.equal(launcher().props['data-interactive'], false, 'the launcher cannot fall asleep during an open conversation')
   await f.advance(1800)
   assert.equal(f.state(), 'idle')
   await f.send()
   assert.equal(f.state(), 'thinking')
+  assert.equal(launcher().props['data-state'], 'thinking')
+  assert.equal(launcher().props['data-paused'], false)
   assert.equal(f.find('icue-chat__bubble icue-chat__pending').props.children, vi.chat.thinking)
   await f.advance(700)
   assert.equal(f.state(), 'happy')
+  assert.equal(launcher().props['data-state'], 'happy')
+  assert.equal(launcher().props['data-paused'], false)
   await f.advance(1800)
   assert.equal(f.state(), 'idle')
   response = { content: kb.fallback.answer, meta: { source: 'fallback' } }
@@ -146,12 +153,12 @@ test('touch opening preserves the keyboard, and hidden/resumed state pauses moti
   assert.equal(f.focused, 'icue-chat__close')
   f.document.hidden = true
   await act(async () => f.document.dispatchEvent(new Event('visibilitychange')))
-  assert.equal(f.find('icue-mascot icue-mascot--header').props['data-paused'], true)
+  assert.equal(f.find('icue-mascot icue-mascot--launcher').props['data-paused'], true)
   f.window.dispatchEvent(new Event('resize'))
   assert.equal(f.frames.size, 0)
   f.document.hidden = false
   await act(async () => f.document.dispatchEvent(new Event('visibilitychange')))
-  assert.equal(f.find('icue-mascot icue-mascot--header').props['data-paused'], false)
+  assert.equal(f.find('icue-mascot icue-mascot--launcher').props['data-paused'], false)
   assert.equal(f.frames.size, 1)
   await act(async () => f.find('icue-chat__close').props.onClick())
   assert.equal(f.focused, 'icue-chat__toggle')

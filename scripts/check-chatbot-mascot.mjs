@@ -20,12 +20,12 @@ const kb = JSON.parse(await fs.readFile(new URL('../public/chatbot/kb.en.json', 
 const question = 'do you supervise construction'
 const expectedAnswer = kb.intents.find(intent => intent.id === 'supervision').answer
 
-const headerState = (page, state) => page.locator(`.icue-mascot--header[data-state="${state}"]`).waitFor()
+const mascotState = (page, state) => page.locator(`.icue-mascot--launcher[data-state="${state}"]`).waitFor({ state: 'attached' })
 const shot = (page, name) => page.screenshot({ path: path.join(output, `${engine}-${name}.png`) })
 async function send(page, value) {
   await page.locator('.icue-chat__input').fill(value)
   await page.locator('.icue-chat__send').click()
-  await headerState(page, 'thinking')
+  await mascotState(page, 'thinking')
 }
 async function panelFits(page) {
   const result = await page.locator('.icue-chat__window').evaluate(panel => {
@@ -89,7 +89,7 @@ try {
       await page.waitForFunction(() => getComputedStyle(document.querySelector('.icue-mascot--launcher [data-face="curious"]')).opacity === '1')
       await shot(page, `${name}-hover`)
       await launcher.focus(); await page.keyboard.press('Enter')
-      await headerState(page, 'greeting')
+      await mascotState(page, 'greeting')
       await page.mouse.move(800, 500)
       await page.waitForTimeout(350)
       await panelFits(page)
@@ -97,12 +97,12 @@ try {
       await shot(page, `${name}-open`)
       await send(page, question)
       await shot(page, `${name}-thinking`)
-      await headerState(page, 'happy')
+      await mascotState(page, 'happy')
       assert.ok((await page.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
       await shot(page, `${name}-happy`)
-      await headerState(page, 'idle')
+      await mascotState(page, 'idle')
       await send(page, 'quux quasar zyzzyva')
-      await headerState(page, 'confused')
+      await mascotState(page, 'confused')
       await shot(page, `${name}-fallback`)
       await page.keyboard.press('Escape')
       assert.equal(await launcher.getAttribute('aria-expanded'), 'false')
@@ -145,8 +145,8 @@ try {
         document.dispatchEvent(new Event('visibilitychange'))
         window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }))
       })
-      await page.locator('.icue-mascot--header[data-paused="true"]').waitFor()
-      assert.equal(await page.locator('.icue-mascot--header .icue-mascot__bird').evaluate(el => getComputedStyle(el).animationPlayState), 'paused')
+      await page.locator('.icue-mascot--launcher[data-paused="true"]').waitFor({ state: 'attached' })
+      assert.equal(await page.locator('.icue-mascot--launcher .icue-mascot__bird').evaluate(el => getComputedStyle(el).animationPlayState), 'paused')
       await context.setOffline(true)
       await context.setOffline(false)
       await page.evaluate(() => {
@@ -156,7 +156,7 @@ try {
         document.dispatchEvent(new Event('visibilitychange'))
         window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }))
       })
-      await page.locator('.icue-mascot--header[data-paused="false"]').waitFor()
+      await page.locator('.icue-mascot--launcher[data-paused="false"]').waitFor({ state: 'attached' })
       assert.equal(await page.locator('.icue-chat__input').inputValue(), 'Draft survives a browser resume')
       await page.setViewportSize({ width: 844, height: 390 })
       await page.waitForTimeout(200)
@@ -165,7 +165,7 @@ try {
       await page.setViewportSize({ width: 390, height: 844 })
       await page.waitForTimeout(200)
       await panelFits(page)
-      await send(page, question); await headerState(page, 'happy')
+      await send(page, question); await mascotState(page, 'happy')
       assert.ok((await page.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
       await page.locator('.icue-chat__close').click()
     })
@@ -177,7 +177,7 @@ try {
     await panelFits(page)
     assert.ok((await page.locator('.icue-mascot *').evaluateAll(elements => elements.map(el => getComputedStyle(el).animationName))).every(name => name === 'none'))
     await shot(page, 'small-phone-reduced-motion')
-    await send(page, question); await headerState(page, 'happy')
+    await send(page, question); await mascotState(page, 'happy')
     await panelFits(page)
   })
 
@@ -192,13 +192,13 @@ try {
     await page.locator('.icue-chat__toggle').click()
     await context.setOffline(true)
     await send(page, question)
-    await headerState(page, 'confused')
+    await mascotState(page, 'confused')
     assert.ok(blocked > 0)
     assert.ok(!(await page.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
     blockKnowledge = false
     await context.setOffline(false)
     await send(page, question)
-    await headerState(page, 'happy')
+    await mascotState(page, 'happy')
     assert.ok((await page.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
     await shot(page, 'reconnected')
   })
@@ -212,21 +212,21 @@ try {
       window.restoreChatSegmenter = Intl.Segmenter.prototype.segment
       Intl.Segmenter.prototype.segment = function () { throw new Error('QA: segmentation unavailable') }
     })
-    await send(page, question); await headerState(page, 'error')
+    await send(page, question); await mascotState(page, 'error')
     assert.ok((await page.locator('.icue-chat__messages').innerText()).includes(labels.error))
     await shot(page, 'error')
     await page.evaluate(() => {
       Intl.Segmenter.prototype.segment = window.restoreChatSegmenter
       delete window.restoreChatSegmenter
     })
-    await send(page, question); await headerState(page, 'happy')
+    await send(page, question); await mascotState(page, 'happy')
     assert.ok((await page.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
   })
 
   await run('site-wide-history-and-sleep', { viewport: { width: 1440, height: 1000 } }, async page => {
     await page.goto(`${origin}/faqs/?lang=en`)
     await page.locator('.icue-chat__toggle').click()
-    await send(page, question); await headerState(page, 'happy')
+    await send(page, question); await mascotState(page, 'happy')
     for (const route of ['/our-work/', '/people/experts', '/legal/privacy', '/newsroom/']) {
       await page.goto(`${origin}${route}?lang=en`)
       await page.locator('.icue-chat__toggle').click()
@@ -243,7 +243,7 @@ try {
     // CSS transition time in WebKit is independent of the mocked JS clock.
     await page.waitForFunction(() => getComputedStyle(document.querySelector('.icue-mascot--launcher [data-face="curious"]')).opacity === '1')
     await page.locator('.icue-chat__toggle').click()
-    await headerState(page, 'greeting')
+    await mascotState(page, 'greeting')
   })
 
   if (process.env.ICUE_SYNC_QA === '1') {
@@ -256,7 +256,7 @@ try {
       try {
         await page.goto(`${origin}/faqs/?lang=en`)
         await page.locator('.icue-chat__toggle').click()
-        await send(page, question); await headerState(page, 'happy')
+        await send(page, question); await mascotState(page, 'happy')
         await settings(page)
         await page.getByRole('button', { name: ui.start, exact: true }).click()
         await status(page, 'ready')
@@ -272,7 +272,7 @@ try {
         await other.getByRole('button', { name: ui.back, exact: false }).click()
         assert.ok((await other.locator('.icue-chat__messages').innerText()).includes(expectedAnswer))
         await second.setOffline(true)
-        await send(other, 'quux quasar zyzzyva'); await headerState(other, 'confused')
+        await send(other, 'quux quasar zyzzyva'); await mascotState(other, 'confused')
         await settings(other); await status(other, 'offline')
         await second.setOffline(false)
         await status(other, 'ready')
@@ -306,7 +306,7 @@ try {
       await page.waitForTimeout(350)
       await panelFits(page)
       await page.getByRole('button', { name: copy.suggestions[0], exact: true }).click()
-      await headerState(page, 'happy')
+      await mascotState(page, 'happy')
       assert.ok(!(await page.locator('.icue-chat__messages').innerText()).includes(copy.error))
       await page.getByRole('button', { name: copy.close, exact: true }).first().click()
     })

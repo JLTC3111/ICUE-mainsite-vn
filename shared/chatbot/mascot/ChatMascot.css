@@ -12,6 +12,9 @@
 
 .icue-mascot--header { width: 42px; height: 42px; }
 .icue-mascot--avatar { width: 28px; height: 28px; }
+.icue-mascot--launcher { --icue-jump-height: -72px; }
+/* The open panel leaves only a small gap above the launcher. */
+.icue-chat--open .icue-mascot--launcher { --icue-jump-height: -8px; }
 
 .icue-mascot__bird,
 .icue-mascot__art,
@@ -52,7 +55,6 @@
 @media (hover: hover) {
   .icue-mascot[data-interactive="true"]:is([data-state="idle"], [data-state="sleeping"]):hover :is([data-face="idle"], [data-face="sleeping"]) { opacity: 0; }
   .icue-mascot[data-interactive="true"]:is([data-state="idle"], [data-state="sleeping"]):hover [data-face="curious"] { opacity: 1; }
-  .icue-mascot[data-interactive="true"]:is([data-state="idle"], [data-state="sleeping"]):hover .icue-mascot__bird { animation: none; transform: rotate(-2deg); }
 }
 
 button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"], [data-state="sleeping"]) :is([data-face="idle"], [data-face="sleeping"]) { opacity: 0; }
@@ -60,6 +62,7 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
 
 .icue-mascot__bird { transition: transform 200ms ease; }
 .icue-mascot__part { transform-box: view-box; }
+.icue-mascot__part--crest { transform-origin: 55% 20%; }
 .icue-mascot__part--tail { transform-origin: 34% 75%; }
 .icue-mascot__part--wing-left { transform-origin: 41% 68%; --icue-wing-angle: 10deg; }
 .icue-mascot__part--wing-right { transform-origin: 68% 68%; --icue-wing-angle: -10deg; }
@@ -67,15 +70,17 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
 .icue-mascot__part--foot-right { transform-origin: 58% 89%; }
 
 .icue-mascot[data-animated="true"][data-state="idle"] .icue-mascot__part--tail { animation: icue-bird-tail 9s ease-in-out infinite; }
-.icue-mascot[data-animated="true"][data-state="idle"] :is(.icue-mascot__part--wing-left, .icue-mascot__part--wing-right) { animation: icue-bird-wing-rest 8s ease-in-out infinite; }
+.icue-mascot[data-animated="true"][data-state="idle"] :is(.icue-mascot__part--wing-left, .icue-mascot__part--wing-right) { animation: icue-bird-wing-rest 4.8s ease-in-out infinite; }
+.icue-mascot[data-animated="true"][data-state="idle"] .icue-mascot__part--wing-right { animation-delay: 120ms; }
 .icue-mascot[data-animated="true"][data-state="idle"] .icue-mascot__part--foot-right { animation: icue-bird-foot 13s ease-in-out infinite; }
 .icue-mascot[data-animated="true"]:is([data-state="greeting"], [data-state="happy"]) :is(.icue-mascot__part--wing-left, .icue-mascot__part--wing-right) { animation: icue-bird-wing 600ms ease-in-out 2; }
-.icue-mascot[data-animated="true"]:is([data-state="greeting"], [data-state="happy"]) .icue-mascot__part--tail { animation: icue-bird-tail-greet 600ms ease-in-out 2; }
+.icue-mascot[data-animated="true"][data-state="greeting"] .icue-mascot__part--tail { animation: icue-bird-tail-greet 600ms ease-in-out 2; }
 .icue-mascot[data-animated="true"]:is([data-state="greeting"], [data-state="happy"]) .icue-mascot__part--foot-left { animation: icue-bird-step 500ms ease-in-out; }
 .icue-mascot[data-animated="true"]:is([data-state="greeting"], [data-state="happy"]) .icue-mascot__part--foot-right { animation: icue-bird-step 500ms ease-in-out 200ms; }
-.icue-mascot[data-animated="true"][data-state="thinking"] .icue-mascot__part--tail { animation: icue-bird-tail 6s ease-in-out infinite; }
+.icue-mascot[data-animated="true"]:is([data-state="thinking"], [data-state="speaking"], [data-state="happy"]) .icue-mascot__part--tail { animation: icue-bird-tail-flap 650ms ease-in-out infinite; }
 .icue-mascot[data-animated="true"][data-state="confused"] .icue-mascot__bird { animation: icue-bird-puzzle 800ms ease-in-out; }
 .icue-mascot[data-animated="true"][data-state="sleeping"] .icue-mascot__bird { animation: icue-bird-sleep 7s ease-in-out infinite; }
+.icue-mascot[data-animated="true"][data-state="sleeping"] .icue-mascot__part--crest { animation: icue-bird-crest-sleep 3.5s ease-in-out infinite; }
 
 .icue-mascot--launcher[data-animated="true"][data-state="idle"] .icue-mascot__bird {
   animation: icue-bird-breathe 6s ease-in-out infinite;
@@ -96,6 +101,18 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
 .icue-mascot__dot--3 { --icue-dot-delay: 360ms; }
 .icue-mascot[data-animated="true"]:is([data-state="greeting"], [data-state="happy"]) .icue-mascot__bird {
   animation: icue-bird-greet 420ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .icue-chat__toggle:is(:hover, :focus-visible) .icue-mascot--launcher[data-animated="true"] .icue-mascot__bird {
+    animation: icue-bird-hover-jump 1.1s ease-in-out infinite;
+  }
+  .icue-chat__toggle:is(:hover, :focus-visible) .icue-mascot--launcher[data-animated="true"] :is(.icue-mascot__part--wing-left, .icue-mascot__part--wing-right) {
+    animation: icue-bird-hover-wing 360ms ease-in-out infinite;
+  }
+  .icue-chat__toggle:is(:hover, :focus-visible) .icue-mascot--launcher[data-animated="true"] .icue-mascot__shadow {
+    animation: icue-bird-hover-shadow 1.1s ease-in-out infinite;
+  }
 }
 
 .icue-mascot[data-paused="true"] * { animation-play-state: paused !important; }
@@ -127,8 +144,9 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
   90% { transform: rotate(-2deg); }
 }
 @keyframes icue-bird-wing-rest {
-  0%, 60%, 100% { transform: rotate(0); }
-  80% { transform: rotate(calc(var(--icue-wing-angle) * 0.2)); }
+  0%, 12%, 50%, 100% { transform: rotate(0); }
+  21%, 39% { transform: rotate(calc(var(--icue-wing-angle) * 1.25)); }
+  30% { transform: rotate(calc(var(--icue-wing-angle) * -0.45)); }
 }
 @keyframes icue-bird-wing {
   0%, 100% { transform: rotate(0); }
@@ -137,6 +155,11 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
 @keyframes icue-bird-tail-greet {
   0%, 100% { transform: rotate(0); }
   50% { transform: rotate(-5deg); }
+}
+@keyframes icue-bird-tail-flap {
+  0%, 100% { transform: rotate(0); }
+  30% { transform: rotate(12deg); }
+  70% { transform: rotate(-10deg); }
 }
 @keyframes icue-bird-foot {
   0%, 87%, 95%, 100% { transform: rotate(0); }
@@ -153,6 +176,24 @@ button:focus-visible .icue-mascot[data-interactive="true"]:is([data-state="idle"
 @keyframes icue-bird-sleep {
   0%, 100% { transform: translateY(0) rotate(1deg); }
   50% { transform: translateY(0.7px) rotate(1deg) scaleY(0.99); }
+}
+@keyframes icue-bird-crest-sleep {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: translateY(-0.4%) rotate(-1.5deg) scaleY(1.18); }
+}
+@keyframes icue-bird-hover-jump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  12%, 90% { transform: translateY(0) scale(1.06, 0.94); }
+  40%, 55% { transform: translateY(var(--icue-jump-height)) rotate(-3deg) scale(1.05); }
+  78% { transform: translateY(-5px) rotate(1deg); }
+}
+@keyframes icue-bird-hover-wing {
+  0%, 100% { transform: rotate(calc(var(--icue-wing-angle) * 0.8)) scale(1); }
+  45% { transform: rotate(calc(var(--icue-wing-angle) * 7.5)) scale(1.8); }
+}
+@keyframes icue-bird-hover-shadow {
+  0%, 12%, 90%, 100% { transform: scale(1); opacity: 1; }
+  40%, 55% { transform: scale(0.55); opacity: 0.3; }
 }
 
 @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-/** Retrieval metadata is shared by the live reaction and transcript avatars. */
+/** Retrieval metadata selects the live mascot's response reaction. */
 export function responseExpression(meta) {
   if (meta?.source === 'error') return 'error'
   if (['fallback', 'clarification', 'unsupported'].includes(meta?.source)) return 'confused'

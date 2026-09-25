@@ -48,7 +48,9 @@ export default function HistorySettings({ sync, state, labels, onBack }) {
           <form onSubmit={async event => { event.preventDefault(); if (await sync.join(input)) setInput('') }}>
             <label htmlFor={id}>{labels.code}</label>
             <input id={id} className="icue-chat-sync__code" type="password" value={input} onChange={event => setInput(event.target.value)} placeholder={labels.hint} autoComplete="off" autoCapitalize="none" spellCheck="false" maxLength={60} required />
-            <button type="submit" disabled={state.busy || !input.trim()}>{labels.join}</button>
+            <span className="icue-chat-sync__join">
+              <button type="submit" disabled={state.busy || !input.trim()}>{labels.join}</button>
+            </span>
           </form>
         </>
       )}

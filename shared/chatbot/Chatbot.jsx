@@ -5,6 +5,7 @@ import { knowledgeUrls } from './lib/knowledgeAssets.js'
 import { useChatHistory } from './hooks/useChatHistory'
 import { useHistorySync } from './hooks/useHistorySync.js'
 import HistorySettings from './HistorySettings.jsx'
+import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
 import { responseExpression } from './mascot/expressions.js'
 import './Chatbot.css'
@@ -40,9 +41,7 @@ function Message({ message, onLinkClick }) {
   return (
     <div className={`icue-chat__message icue-chat__message--${isUser ? 'user' : 'bot'}`}>
       <div className="icue-chat__avatar">
-        {isUser ? <UserAvatar /> : (
-          <ChatMascot variant="avatar" animated={false} state={message.meta ? responseExpression(message.meta) : 'idle'} />
-        )}
+        {isUser ? <UserAvatar /> : <AssistantAvatar state={message.meta ? responseExpression(message.meta) : 'idle'} />}
       </div>
       <div className="icue-chat__bubble">
         {/* Rendered as text, never as markup: the knowledge base is authored,
@@ -262,9 +261,6 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
 
   const suggestions = Array.isArray(labels.suggestions) ? labels.suggestions : []
   const hasTranscript = messages.length > 0
-  const headerExpression = showSync && syncState.busy ? 'thinking'
-    : showSync && ['error', 'unavailable', 'offline', 'missing', 'invalid'].includes(syncState.status) ? 'error'
-      : showSync && syncState.status === 'ready' ? 'happy' : mascotState
 
   return (
     <div className={`icue-chat${isOpen ? ' icue-chat--open' : ''}`} ref={rootRef}>
@@ -272,7 +268,6 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         <div id={dialogId} className="icue-chat__window" role="dialog" aria-label={labels.title}>
           <div className="icue-chat__header">
             <div className="icue-chat__title">
-              <ChatMascot variant="header" state={isThinking ? 'thinking' : headerExpression} />
               <span className="icue-chat__heading">
                 <span>{labels.title}</span>
                 <span className="icue-chat__subtitle">{labels.badge}</span>
@@ -317,7 +312,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             {isThinking && (
               <div className="icue-chat__message icue-chat__message--bot">
                 <div className="icue-chat__avatar">
-                  <ChatMascot variant="avatar" state="thinking" animated={false} />
+                  <AssistantAvatar state="thinking" />
                 </div>
                 <div className="icue-chat__bubble icue-chat__pending">{labels.thinking}</div>
               </div>
@@ -393,7 +388,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         aria-haspopup="dialog"
         aria-label={isOpen ? labels.close : labels.open}
       >
-        <ChatMascot state={isThinking ? 'thinking' : mascotState} active={!isOpen} interactive />
+        <ChatMascot state={isThinking ? 'thinking' : mascotState} interactive={!isOpen} />
       </button>
     </div>
   )

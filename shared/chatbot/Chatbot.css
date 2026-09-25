@@ -51,10 +51,10 @@
   transition: transform 0.2s ease;
 }
 
-@media (hover: hover) {
-  .icue-chat__toggle:hover {
-    transform: scale(1.04);
-  }
+/* Override legacy button:hover gradients without moving the click target. */
+.icue-chat__toggle:is(:hover, :focus, :active) {
+  background: none;
+  box-shadow: none;
 }
 
 .icue-chat__toggle:active {
@@ -206,7 +206,7 @@
 .icue-chat__bubble {
   background: #fff;
   padding: 12px 16px;
-  border-radius: 18px;
+  border-radius: 8px;
   max-width: 250px;
   min-width: 0;
   font-size: 14px;

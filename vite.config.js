@@ -159,6 +159,9 @@ function homeDevFallback() {
         }
         if (viteInternals.some((prefix) => urlPath.startsWith(prefix))) return next();
 
+        // Like sibling app previews, always serve the current local build.
+        res.setHeader('Cache-Control', 'no-store');
+
         if (NOTABLE_AWARDS_REDIRECTS[urlPath]) {
           res.statusCode = 302;
           res.setHeader('Location', NOTABLE_AWARDS_REDIRECTS[urlPath] + req.url.slice(urlPath.length));

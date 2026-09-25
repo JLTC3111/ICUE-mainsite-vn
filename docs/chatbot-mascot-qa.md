@@ -27,7 +27,7 @@ are not persisted across a full reload; the transcript is.
 | `home-app/vite.config.js`, `news-app/vite.config.js`, `people-app/vite.config.js`, `structure-app/vite.config.js`, `ourwork-app/vite.config.js`, `contact-app/vite.config.js`, `legal-app/vite.config.js` | Make `@icue/chatbot` available to other components; the remaining three apps already had the alias. |
 | FAQ, recruitment and community `src/routes/Page.jsx` | Remove former route-level chatbot mounts and obsolete bindings; preserve existing page links. |
 | `shared/chatbot/SiteChatbot.jsx`, `index.js`, `locales/{vi,en,de,fr,ko,ja}.json` | Shared integration, reusable exports and six-language labels, including optional sync controls. Existing app-specific chat labels take precedence. |
-| `shared/chatbot/Chatbot.jsx`, `Chatbot.css` | Bird launcher/header/static avatars, state mapping, keyboard/touch focus, safe-area/viewport handling, sync panel, duplicate-send and stale-response guards. |
+| `shared/chatbot/Chatbot.jsx`, `Chatbot.css` | Bird launcher, text-only header, terminal message badges, state mapping, keyboard/touch focus, safe-area/viewport handling, sync panel, duplicate-send and stale-response guards. |
 | `shared/chatbot/mascot/ChatMascot.jsx`, `ChatMascot.css`, `expressions.js` | Independent SVG terminal face, layered body, wing/tail/foot motion, sleeping and lifecycle handling. |
 | `shared/chatbot/mascot/icue-bird.webp`, `icue-bird-core.webp`, `source/*.png`, `README.md` | Transparent production assets, editable generated sources, provenance and component API. Source PNGs are not bundled. |
 | `shared/chatbot/lib/knowledgeAssets.js`, `knowledge.js` | Bundle the canonical authored KB files with valid URLs in every app; retrieval behavior unchanged. |
@@ -57,11 +57,16 @@ The reusable API accepts `idle`, `greeting`, `curious`, `thinking`, `speaking`,
 for future streaming use; the current retrieval assistant uses `thinking`.
 
 Greeting, happy and confused reactions settle after 1.8 seconds. Idle adds
-small wing tucks, an occasional foot tap, tail sway, breathing and blinking.
-Greetings briefly move both wings and feet. Sleeping settles the appendages
-and slows breathing. Motion uses CSS transform/opacity; facial glyphs are pixel
+paired wing wiggles, an occasional foot tap, tail sway, breathing and blinking.
+The tail flaps while preparing/speaking an answer and during the brief happy
+response reaction. Greetings briefly move both wings and feet. Sleeping settles
+the wings and tail, slows breathing, and gently lifts and lowers the head feathers.
+Motion uses CSS transform/opacity; facial glyphs are pixel
 paths rather than fonts. The navy visor/reflection and live cyan glyphs are
-separate layers. Static 28px transcript avatars have no motion or listeners.
+separate layers. Static 28px transcript badges use a pale background with navy
+pixel `> _`, `^ ^`, `> <`, or `- -` expressions and have no motion or listeners.
+Message bubbles use 8px corners. The transparent launcher jumps up to 72px and
+spreads its wings on hover/focus, with the hop reduced below an open panel.
 
 ## History
 
@@ -162,4 +167,4 @@ To reproduce elsewhere, set `ICUE_PLAYWRIGHT_MODULE`, `ICUE_MASCOT_ENGINE`,
   are engine/platform simulations, not a claim of physical-device testing.
 - The transparent isolated artwork is usable now. A purpose-drawn layered/vector
   original could improve joint contours at larger sizes or stronger wing motion;
-  no replacement asset is required for these compact launcher/header/avatar sizes.
+  no replacement asset is required for the compact launcher.

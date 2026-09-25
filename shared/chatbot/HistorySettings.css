@@ -27,6 +27,13 @@
   cursor: pointer;
 }
 .icue-chat-sync button:disabled { opacity: 0.5; cursor: default; }
+.icue-chat-sync__join { display: block; cursor: pointer; }
+.icue-chat-sync__join > button:disabled { pointer-events: none; cursor: pointer; }
+.icue-chat-sync button:hover:not(.icue-chat-sync__back) {
+  background: #d7e8f6;
+  color: #174c73;
+  border-color: #8eb4d0;
+}
 .icue-chat-sync .icue-chat-sync__back { width: auto; background: transparent; }
 .icue-chat-sync__actions { display: flex; gap: 8px; }
 .icue-chat-sync__code {

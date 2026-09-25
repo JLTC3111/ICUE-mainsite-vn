@@ -1,5 +1,6 @@
 export { default as Chatbot } from './Chatbot.jsx'
 export { default as SiteChatbot } from './SiteChatbot.jsx'
 export { default as ChatMascot } from './mascot/ChatMascot.jsx'
+export { default as AssistantAvatar } from './AssistantAvatar.jsx'
 export { createChatbotKnowledge, KB_LANGUAGES } from './lib/knowledge.js'
 export { createBotCopy } from './lib/botCopy.js'

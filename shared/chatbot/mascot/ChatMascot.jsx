@@ -57,20 +57,30 @@ function TerminalFace() {
 
 // Native vector masks reuse the original tiny WebP. The clean body beneath
 // them prevents duplicate wings/feet from showing when an appendage moves.
+// The crest overlaps the body's curved cutout to keep its roots attached.
 const PARTS = {
+  crest: 'M27 0H61V19.5C50 16.5 37 19 27 28Z',
   tail: 'M12 57H30L37 73L33 85H12Z',
   'foot-left': 'M35 87H50V97H35Z',
   'foot-right': 'M51 87H70V97H51Z',
   'wing-left': 'M38 66C47 64 48 70 45 78C43 83 39 87 36 86L34 87C30 88 27 87 28 83C25 81 27 77 30 73Z',
   'wing-right': 'M66 66C70 66 77 73 77 80C78 85 74 87 72 85C69 88 66 87 66 85C67 79 67 73 66 66Z',
 }
+const BODY_CLIP = 'M0 0H27V27C37 18 50 15.5 61 18.5V0H100V100H0Z'
 
 function BirdPart({ name, id }) {
   const clipId = `${id}-${name}`
   return (
     <svg className={`icue-mascot__part icue-mascot__part--${name}`} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-      <defs><clipPath id={clipId}><path d={PARTS[name]} /></clipPath></defs>
-      <image href={birdUrl} width="100" height="100" clipPath={`url(#${clipId})`} />
+      <defs>
+        <clipPath id={clipId}><path d={PARTS[name]} /></clipPath>
+        {name === 'crest' && (
+          <clipPath id={`${id}-body`} clipPathUnits="objectBoundingBox">
+            <path d={BODY_CLIP} transform="scale(0.01)" />
+          </clipPath>
+        )}
+      </defs>
+      <image href={name === 'crest' ? coreUrl : birdUrl} width="100" height="100" clipPath={`url(#${clipId})`} />
     </svg>
   )
 }
@@ -78,7 +88,7 @@ function BirdPart({ name, id }) {
 /**
  * Decorative companion; its host supplies localized labels and textual status.
  * `animated={false}` makes transcript avatars entirely static. `active={false}`
- * suspends hidden instances, including the launcher while the dialog is open.
+ * suspends inactive instances. A visible launcher stays animated during replies.
  * Only brief reactions use a timer; breathing, blinking and dots are CSS.
  */
 function ChatMascot({ state = 'idle', variant = 'launcher', animated = true, active = true, interactive = false }) {
@@ -146,8 +156,13 @@ function ChatMascot({ state = 'idle', variant = 'launcher', animated = true, act
     >
       <span className="icue-mascot__shadow" />
       <span className="icue-mascot__bird">
-        {animated && ['tail', 'foot-left', 'foot-right'].map(name => <BirdPart key={name} name={name} id={id} />)}
-        <img className="icue-mascot__art" src={animated ? coreUrl : birdUrl} width="256" height="256" alt="" draggable="false" decoding="async" />
+        {animated && ['tail', 'foot-left', 'foot-right', 'crest'].map(name => <BirdPart key={name} name={name} id={id} />)}
+        <img
+          className="icue-mascot__art"
+          src={animated ? coreUrl : birdUrl}
+          style={animated ? { clipPath: `url(#${id}-body)` } : undefined}
+          width="256" height="256" alt="" draggable="false" decoding="async"
+        />
         {animated && ['wing-right', 'wing-left'].map(name => <BirdPart key={name} name={name} id={id} />)}
         <TerminalFace />
       </span>
