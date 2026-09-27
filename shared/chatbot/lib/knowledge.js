@@ -267,7 +267,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
     return botLanguage
   }
 
-  async function getResponse(userMessage) {
+  async function getResponse(userMessage, { onRetrieval } = {}) {
     const raw = String(userMessage || '').trim()
     if (!raw) {
       const kb = await ensureKb(botLanguage)
@@ -301,6 +301,9 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
       }
     }
 
+    // The host can show a reading accessory only when we actually consult
+    // authored knowledge. Quick topics and unsupported replies skip this.
+    onRetrieval?.()
     const detectedLang = directLanguage || await routeLanguage(raw, queryNorm)
     const queryTokens = tokenize(queryNorm, detectedLang)
     const kb = await ensureKb(detectedLang)

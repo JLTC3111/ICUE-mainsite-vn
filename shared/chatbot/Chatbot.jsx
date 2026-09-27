@@ -7,7 +7,7 @@ import { useHistorySync } from './hooks/useHistorySync.js'
 import HistorySettings from './HistorySettings.jsx'
 import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
-import { responseExpression } from './mascot/expressions.js'
+import { responseEffect, responseExpression } from './mascot/expressions.js'
 import './Chatbot.css'
 
 /**
@@ -222,7 +222,11 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
       // question. Kept from the legacy implementation.
       timerRef.current = setTimeout(async () => {
         try {
-          const response = await knowledge.getResponse(message)
+          const response = await knowledge.getResponse(message, {
+            onRetrieval: () => {
+              if (request === requestRef.current) setActivity({ locale, state: 'thinking', effect: 'book' })
+            },
+          })
           if (request !== requestRef.current) return
           append({
             role: 'bot',
@@ -230,7 +234,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             links: response.links || [],
             meta: response.meta || { source: 'unknown' },
           })
-          setActivity({ locale, state: responseExpression(response.meta) })
+          setActivity({ locale, state: responseExpression(response.meta), effect: responseEffect(response.meta) })
           emitEvent('response', response.meta || { source: 'unknown' })
         } catch {
           if (request !== requestRef.current) return
@@ -388,7 +392,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         aria-haspopup="dialog"
         aria-label={isOpen ? labels.close : labels.open}
       >
-        <ChatMascot state={isThinking ? 'thinking' : mascotState} interactive={!isOpen} />
+        <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} interactive={!isOpen} />
       </button>
     </div>
   )

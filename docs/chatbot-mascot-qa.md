@@ -3,6 +3,88 @@
 Completed locally on 2026-09-24–25. No commit, push, deployment, or production
 database change has been made.
 
+## 2026-09-27 final state and body-pose update
+
+The inactivity sequence has three stages: at 30 seconds the bird walks while
+listening to music with headphones, a gentle head nod, alternating steps,
+swaying wings and two drifting notes. At 60 seconds it puts the headphones
+away, sits down with `^^` and holds a small plain muted blue-grey coffee mug
+with subtle steam. The mug is 78% of its original size and uses subdued shading.
+At 120 seconds it puts away the mug and lies down with its head turned toward the right,
+keeping `> _` with one eye open. The rounded body rests behind the head, with
+folded wings and small tucked toe tips. The mug, steam, headphones and notes
+are SVG; the folded wings reuse masks of the original artwork. Headphones
+follow the head's motion wrapper, with the band behind the crest and earcups
+at the sides of the head. Music is decorative and does not play audio.
+
+The three deadlines reset on keyboard/pointer input or hover. Opening chat or
+hiding the page cancels all three; returning to the page starts a fresh cycle.
+Regression checks cover all stages, interruptions, the one-eye-open glyphs,
+prop removal, open-chat suppression, visibility and timer cleanup (36 chatbot
+tests passed). Earlier verification below predates this final pose refinement.
+
+The earlier in-app browser review covered the preceding 30/60-second
+coffee/sleep sequence. The final 30/60/120-second sequence is checked locally
+with the updated regression suite and Chromium/WebKit review described below.
+No new bitmap assets were created, and HR/Contract were not changed.
+
+Final pose review: all 15 expressions and three composed reply states were
+rendered on light and dark backgrounds in Chromium and WebKit. Animation
+progress, alternating walking steps, fitted head-attached headphones,
+the smaller mug, exact 30/60/120-second boundaries,
+accessory cleanup, hover/keyboard wake, open-chat suppression and page resume
+passed at 1440px, 390px and 320px (reduced motion). The right-facing sleep pose
+is retained when motion is disabled. Screenshots and test results are in
+`/private/tmp/icue-final-mascot-review/`. Timing checks pause the test clock to
+keep real elapsed time from crossing a boundary during assertions. Walking
+checks sample after movement starts, when the feet occupy opposite stride
+phases. The temporary gallery was removed after review.
+
+All 36 chatbot tests and targeted mascot ESLint passed. All ten app builds,
+publish checks, route checks and 2,052 locale-preserving transitions passed.
+The existing large-bundle build warning remains.
+
+The rebuilt site's final music-at-30s, coffee-at-60s and sleep-at-120s sequence,
+accessory removal, hover wake and chat opening passed in both Chromium and
+WebKit. Results are in `/private/tmp/icue-final-mascot-regression/final-rest/`.
+The broader integration pass covered all ten sections, six locales, phone
+layouts, reduced motion and network/retrieval recovery; its boundary-timing
+case was rerun with the paused clock against the final build.
+
+The existing WebPs now form a reusable head/torso/appendage rig. Sleep lies down
+with the cheek on a folded wing, feet tucked away, a horizontal body and a slow
+belly breath. Reading sits and holds the book; thinking brings a wing to the
+chin; idea, happy, affectionate completion, handoff and error have distinct
+body language. The face follows the head; floating effects remain upright.
+Pose wrappers transition separately from animation, so reduced motion retains
+the correct still pose. Hover wakes the whole bird and restarts inactivity.
+
+Validation: 35 chatbot tests passed, including sleep/wake timing and reading
+pose priority during pending retrieval and completed document replies. Browser
+inspection covered the nine poses, lying down and returning to idle, and the
+real 390px Main launcher sleeping and holding a book after a document reply.
+The temporary pose preview was removed after review. No new bitmap assets,
+animation intervals, or changes to HR/Contract were introduced.
+
+## 2026-09-26 micro-animation update
+
+Main-site bird only; HR and Contract repositories/accessories are untouched.
+`ChatMascot` now accepts independent `expression`/`effect` props while preserving
+the existing `state` and size variants. `BirdEffects.jsx` supplies the book,
+bulb, hearts, sparkles and drifting sleep symbols as SVG paths. No images or
+dependencies were added. Handoff is available in the component API but remains
+untriggered until the app has an actual cross-app transfer action.
+
+Validation for this update: 35 chatbot tests passed, including once-per-opening
+sequencing, interrupted reactions, real retrieval notification, effect cleanup,
+sleep/wake, composable static variants and unchanged conversation/history flows.
+Targeted ESLint and the home production build passed (existing bundle-size
+warnings remain). In-app browser review covered the actual document/book,
+process/bulb and greeting/hearts responses, plus desktop and 390px mobile panel
+clearance. Reduced-motion CSS disables all mascot animations and transitions;
+the timed state progression still removes temporary effects. The broader
+cross-engine results below belong to the earlier 2026-09-24–25 audit.
+
 ## Inspection and scope
 
 The existing chatbot was shared by FAQ, recruitment and community. It is an
@@ -45,28 +127,39 @@ are not persisted across a full reload; the transcript is.
 | Actual trigger | Face |
 | --- | --- |
 | Closed/settled companion | `> _` |
-| Launcher hover or keyboard focus | `> ?` |
-| Open chat / successful reply | `^ ^` |
+| Closed launcher hover or keyboard focus | `^^` |
+| Open chat | `><` + one small hop/flutter/sparkles → `^^` → `>_` |
+| Successful authored reply | `^^` + two brief hearts |
+| Knowledge lookup / sourced FAQ or document answer | `>...` / `^^` + open book |
+| Authored planning/process/application guidance | `^^` + brief bulb |
 | Response delay and retrieval promise, or an active sync operation in settings | `> ...` |
 | Fallback / clarification / unsupported-language response | `> ?` |
 | Retrieval exception or sync failure shown in settings | `! x` |
-| Closed launcher after 60 seconds without pointer/key interaction | `- -` |
+| Closed launcher after 30 seconds without pointer/key interaction | `^^` + walking with headphones, gentle head nod and drifting music notes |
+| Closed launcher after 60 seconds without pointer/key interaction | `^^` + seated coffee break with a small plain blue-grey mug |
+| Closed launcher after 120 seconds without pointer/key interaction | `> _` + lying down facing right with three drifting `z` symbols |
 
-The reusable API accepts `idle`, `greeting`, `curious`, `thinking`, `speaking`,
-`happy`, `confused`, `error`, and `sleeping`. `speaking` supplies a pulsing `> _`
+The reusable API accepts `idle`, `greeting`, `excited`, `curious`, `thinking`, `speaking`,
+`happy`, `reading`, `idea`, `handoff`, `confused`, `error`, `coffee`, `listening`, and `sleeping`.
+Expressions and SVG effects can be composed independently. Handoff provides
+`>→` for a future actual app-transfer action; no such action currently exists in
+the Main chatbot. `speaking` supplies a pulsing `> _`
 for future streaming use; the current retrieval assistant uses `thinking`.
 
-Greeting, happy and confused reactions settle after 1.8 seconds. Idle adds
+Opening settles to happy after 650ms, then idle after 1.8 seconds. Happy and
+confused reactions settle after 1.8 seconds. Idle adds
 paired wing wiggles, an occasional foot tap, tail sway, breathing and blinking.
-The tail flaps while preparing/speaking an answer and during the brief happy
-response reaction. Greetings briefly move both wings and feet. Sleeping settles
-the wings and tail, slows breathing, and gently lifts and lowers the head feathers.
+Speaking gently flaps the tail. Greetings briefly raise/flutter both wings.
+Reading holds the book in a seated pose; sleeping folds the wings, tucks the
+feet and rests the head on the ground while the belly breathes slowly.
 Motion uses CSS transform/opacity; facial glyphs are pixel
 paths rather than fonts. The navy visor/reflection and live cyan glyphs are
 separate layers. Static 28px transcript badges use a pale background with navy
 pixel `> _`, `^ ^`, `> <`, or `- -` expressions and have no motion or listeners.
-Message bubbles use 8px corners. The transparent launcher jumps up to 72px and
-spreads its wings on hover/focus, with the hop reduced below an open panel.
+Message bubbles use 8px corners. The transparent launcher is 104px on desktop,
+64px on mobile, and plays one 8px hop below an open panel. Hover does not loop
+the hop, wings, hearts, sparkles or bulb. Effects use the same vector layer and
+respect reduced motion; the existing WebP assets are unchanged.
 
 ## History
 

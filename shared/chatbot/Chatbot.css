@@ -11,10 +11,10 @@
  */
 
 .icue-chat {
-  --icue-chat-bottom: max(55px, env(safe-area-inset-bottom, 0px));
+  --icue-chat-bottom: max(12px, env(safe-area-inset-bottom, 0px));
   --icue-chat-left: max(25px, env(safe-area-inset-left, 0px));
   --icue-chat-right: max(15px, env(safe-area-inset-right, 0px));
-  --icue-chat-launcher-space: 88px;
+  --icue-chat-launcher-space: 112px;
   --icue-chat-top: max(12px, env(safe-area-inset-top, 0px));
   position: fixed;
   bottom: calc(var(--icue-chat-bottom) + var(--icue-chat-keyboard-inset, 0px));
@@ -33,8 +33,8 @@
 .icue-chat--open { z-index: 150; }
 
 .icue-chat__toggle {
-  width: 80px;
-  height: 80px;
+  width: 104px;
+  height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;

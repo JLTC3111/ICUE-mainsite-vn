@@ -3,47 +3,112 @@
 ```jsx
 import { ChatMascot } from '@icue/chatbot'
 
-<ChatMascot state="thinking" />
+<ChatMascot expression="thinking" effect="book" />
+<ChatMascot expression="excited" effect="sparkles" reactionKey={openingId} />
 ```
 
-`state`: `idle`, `greeting`, `curious`, `thinking`, `speaking`, `happy`,
-`confused`, `error`, `sleeping`. `speaking` is available for future streaming
-use. This retrieval chatbot uses `thinking` during its actual response work.
-The closed launcher sleeps after 60 seconds without a pointer/key interaction;
-hover/focus wakes its face and opening chat gives a greeting.
+`expression` (or the compatible `state` prop): `idle`, `greeting`, `excited`,
+`curious`, `thinking`, `speaking`, `happy`, `reading`, `idea`, `handoff`,
+`confused`, `error`, `coffee`, `listening`, `sleeping`. `effect`: `auto` (default), `none`, `sparkles`,
+`book`, `coffee`, `music`, `bulb`, `hearts`, or `zzz`. An explicit effect overrides the default
+for that expression. Increment a stable `reactionKey` for a new event with the
+same expression; typing and unrelated renders do not replay a reaction.
+`speaking` is available for future streaming use. This retrieval chatbot uses
+`thinking` during its actual response work. Existing artwork and size variants
+are preserved; this implementation changes only the Main-site repository.
+The closed launcher walks while listening to music after 30 seconds without
+a pointer/key interaction, sits for coffee at 60 seconds, then lies down
+facing right at 120 seconds. Music adds fitted headphones, a gentle head nod,
+alternating steps, swaying wings and two drifting notes; it does not play audio.
+The short walking loop stays around the launcher. Coffee puts away the
+headphones and uses `^^`, a small plain muted blue-grey mug with subtle ceramic
+shading and steam. Sleep puts away the mug and keeps `> _` (one eye open) with three drifting `z`
+symbols. Hover, a pointer press or a key press wakes the whole bird and restarts
+all three deadlines. Opening chat gives a greeting.
 
-`variant`: `launcher` (80px / 64px on mobile), `header` (42px), `avatar` (28px).
+`variant`: `launcher` (104px / 64px on mobile), `header` (42px), `avatar` (28px).
+The desktop launcher uses a 12px bottom inset; mobile keeps its 15px inset.
+Both respect the device safe area. The panel reserves the launcher's height plus an 8px gap.
 `animated={false}` renders a static transcript avatar without timers or lifecycle
 subscriptions. `active={false}` pauses a hidden instance. `interactive` enables
-the curious hover/focus expression when idle or sleeping. All instances are decorative;
+the three-stage inactivity timer. All instances are decorative;
 the host must provide the accessible button label and localized textual status.
-The visible launcher remains animated while chat is open; its inactivity-sleep
-timer and curious hover face are disabled during the conversation.
+The visible launcher remains animated while chat is open; all inactivity
+deadlines are disabled during the conversation and while the page is hidden.
 
 Assistant messages and the pending-reply row use the exported `AssistantAvatar`
 component: a static 28px pale SVG badge with contrasting navy pixel expressions
 (`> _`, `^ ^`, `> <`, `- -`) selected from the reply state. The header contains
 the chat title and controls; the full bird lives only in the floating launcher.
 Transcript badges are decorative and preserve the avatar spacing and top alignment.
-On hover or keyboard focus, the launcher jumps and spreads both wings widely;
-the open panel limits jump height to its available gap. Its button stays transparent.
+On hover or keyboard focus, the closed, awake idle launcher smiles `^^`.
+The eyes squeeze and crossfade from their current expression; activity states
+take priority. Opening the chat plays `><`, one small hop, two brief wing
+flutters and two sparkles. At 650ms it settles to `^^`, then after another
+1.8 seconds to `>_`. Hover never loops the hop or replays opening effects.
+The panel keeps an 8px gap above the bird. Its button stays transparent.
+
+Real knowledge lookups call `getResponse(message, { onRetrieval })`, showing
+`>...` with a small open SVG book while the lookup is pending. FAQ and document
+answers retain the book briefly. A bulb accompanies authored planning, process,
+sustainability, proposal and application guidance; other successful authored
+replies show `^^` with two rising hearts. Fallbacks never celebrate. Errors
+show `!x` with one small wobble. Sleep shows a steady `> _` without blinking.
+The `handoff` expression provides `>→` and a brief pointing wing for an actual
+cross-app handoff. The current chatbot has no HR/Contract handoff action, so it
+does not trigger that state on ordinary contact/FAQ links.
+
+Sparkles, hearts and bulbs play once and are removed, including under reduced
+motion. Only ongoing states (idle, thinking, reading, coffee, listening and sleep) use loops.
+Effects are decorative SVG paths: no additional bitmap assets or timers per frame.
+
+## Body poses
+
+Pose is derived from expression and effect, independently of the eye glyphs.
+The original core image is split with SVG masks into a head and torso; pose
+wrappers move these together with the existing wings, feet and tail. No new
+state images are used. The eye overlay stays attached to the head, while sleep
+symbols and other floating effects remain upright.
+
+- Awake idle stands and breathes gently.
+- Listening walks with alternating feet, swaying wings and a gentle head nod.
+  The headphone band sits behind the crest and the earcups at the sides of the
+  head, inside its motion wrapper; floating notes stay upright.
+- Coffee sits with feet forward and both wings wrapped around a small mug.
+  The mug is scaled to 78% of its original SVG geometry and uses subdued shading.
+- Sleep lowers and turns the head to the right onto a folded wing, curls a rounded body
+  behind it and leaves only tucked toe tips visible. The other wing rests
+  alongside the body. Only the belly breathes. Hover,
+  keyboard or pointer interaction wakes the whole bird and resets inactivity.
+- Reading sits with feet forward and wings in front of the book to hold it.
+- Thinking/curiosity brings a wing to the chin and tilts the head.
+- Ideas raise a wing toward the bulb; happy opening raises both wings.
+- Friendly completion sits with wings clasped, alongside the existing hearts.
+- Handoff extends a pointing wing; errors crouch slightly during the wobble.
+
+Pose transforms ease between states over 650ms. Reduced motion stops animation
+and transitions but preserves each pose, including lying down. Static launcher
+and header instances keep their poses; static tiny avatars retain the original
+single-image rendering. A composed `thinking` or `happy` expression with a
+`book` effect always uses the reading pose.
 
 The independent SVG face uses pixel paths rather than typography. Coordinates
 use a 100 × 100 canvas aligned to the square artwork; symbols occupy x=43–73,
 y=39–50, within the blank visor. Replacing the artwork requires checking that
 alignment at launcher, header and avatar sizes. No translated text is in the art.
 
-Greeting, success and fallback reactions settle to idle after 1.8 seconds.
-One timeout, cleared on state change/unmount, controls each brief reaction.
+Success, idea, handoff and fallback reactions settle after 1.8 seconds.
+Opening uses two short timeouts for its excited/happy/idle sequence; burst
+effects have a cleanup timeout. All are cleared on state change/unmount.
 Breathing, occasional blink, thinking tilt, paired idle wing wiggles, tail sways,
-foot taps/steps and staggered dots use CSS transform and opacity. The tail flaps
-throughout `thinking`, `speaking` and the brief `happy` response reaction;
-the head feathers gently rise and fall while sleeping. Animated instances
-compose a clean body with SVG-masked appendages from the original
-asset. A curved cutout separates the crest from the core image, with an overlap
-at the roots so it stays attached as it moves. Static avatars use the original
-single image. A separate cleaned-up one-shot timeout controls sleeping; no
-animation interval runs in JavaScript. Visibility, pagehide/pageshow and
+foot taps and staggered dots use CSS transform and opacity. The speaking tail
+flaps gently; reading and sleeping stop the standing wing/tail routines.
+Layered instances compose the original core with SVG-masked appendages. A
+curved cutout separates the crest, with overlap at the roots. A small neck
+overlap keeps the head attached during tilts. Static avatars use the original
+single image. Three cleaned-up one-shot timeouts control coffee, listening and sleep; no
+animation interval runs in JavaScript. Returning to a visible page starts a
+fresh inactivity cycle. Visibility, pagehide/pageshow and
 freeze/resume pause motion;
 `prefers-reduced-motion` removes all movement and fades. The component is memoized
 so typing in the chat input does not rerender unchanged mascot instances.
@@ -73,6 +138,9 @@ cwebp -q 88 -m 6 -resize 256 256 -alpha_q 100 \
 No additional asset is required. A purpose-drawn layered/vector original could
 improve joint contours during larger wing movements or large renderings; the
 current generated layers are suitable for these compact UI sizes.
+The unbranded coffee mug, steam, headphones and music notes are reusable SVG
+geometry. The mug's muted blue-grey shading fits the site's background. Folded wings reuse the
+original left-wing mask, mirrored for the right side.
 
 Every app has the `@icue/chatbot` alias, so other components can import
 `ChatMascot`. `SiteChatbot` is mounted once in each app entry; do not mount extra

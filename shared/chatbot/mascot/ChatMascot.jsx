@@ -1,7 +1,8 @@
-import { memo, useEffect, useId, useMemo, useState } from 'react'
+import { memo, useEffect, useId, useMemo, useRef, useState } from 'react'
 import birdUrl from './icue-bird.webp'
 import coreUrl from './icue-bird-core.webp'
-import { GLYPH_PATHS, MASCOT_STATES, REACTION_MS } from './expressions.js'
+import { COFFEE_AFTER_MS, EXCITED_MS, GLYPH_PATHS, LISTEN_AFTER_MS, MASCOT_EFFECTS, MASCOT_STATES, REACTION_MS, SLEEP_AFTER_MS, mascotPose } from './expressions.js'
+import BirdEffects, { BirdHeadphones } from './BirdEffects.jsx'
 import './ChatMascot.css'
 
 function Glyph({ name, x, y = 39, scale = 1.4, className }) {
@@ -16,10 +17,6 @@ function TerminalFace() {
           <Glyph name="prompt" x={43} />
           <Glyph name="dash" x={64} y={47} className="icue-mascot__cursor" />
         </g>
-      </g>
-      <g className="icue-mascot__expression" data-face="greeting">
-        <Glyph name="caret" x={43} y={41} />
-        <Glyph name="caret" x={65} y={41} />
       </g>
       <g className="icue-mascot__expression" data-face="curious">
         <Glyph name="prompt" x={43} />
@@ -39,6 +36,14 @@ function TerminalFace() {
         <Glyph name="caret" x={43} y={41} />
         <Glyph name="caret" x={65} y={41} />
       </g>
+      <g className="icue-mascot__expression" data-face="excited">
+        <Glyph name="prompt" x={49} />
+        <path d={GLYPH_PATHS.prompt} transform="translate(66 39) scale(-1.4 1.4)" />
+      </g>
+      <g className="icue-mascot__expression" data-face="handoff">
+        <Glyph name="prompt" x={43} />
+        <Glyph name="arrow" x={62} y={39} />
+      </g>
       <g className="icue-mascot__expression" data-face="confused">
         <Glyph name="prompt" x={43} />
         <Glyph name="question" x={65} />
@@ -48,17 +53,17 @@ function TerminalFace() {
         <Glyph name="cross" x={64} y={41} />
       </g>
       <g className="icue-mascot__expression" data-face="sleeping">
-        <Glyph name="dash" x={43} y={44} />
-        <Glyph name="dash" x={65} y={44} />
+        <Glyph name="prompt" x={43} />
+        <Glyph name="dash" x={64} y={47} />
       </g>
     </svg>
   )
 }
 
-// Native vector masks reuse the original tiny WebP. The clean body beneath
-// them prevents duplicate wings/feet from showing when an appendage moves.
-// The crest overlaps the body's curved cutout to keep its roots attached.
+// Native masks reuse the original WebPs. Head, neck/torso and appendages move
+// independently; overlap at the neck and crest keeps the joints connected.
 const PARTS = {
+  body: 'M38 61H66V65H100V100H0V65H38Z',
   crest: 'M27 0H61V19.5C50 16.5 37 19 27 28Z',
   tail: 'M12 57H30L37 73L33 85H12Z',
   'foot-left': 'M35 87H50V97H35Z',
@@ -66,7 +71,8 @@ const PARTS = {
   'wing-left': 'M38 66C47 64 48 70 45 78C43 83 39 87 36 86L34 87C30 88 27 87 28 83C25 81 27 77 30 73Z',
   'wing-right': 'M66 66C70 66 77 73 77 80C78 85 74 87 72 85C69 88 66 87 66 85C67 79 67 73 66 66Z',
 }
-const BODY_CLIP = 'M0 0H27V27C37 18 50 15.5 61 18.5V0H100V100H0Z'
+const HEAD_CLIP = 'M0 0H27V27C37 18 50 15.5 61 18.5V0H100V66.5H0Z'
+const DEFAULT_EFFECTS = { coffee: 'coffee', listening: 'music', sleeping: 'zzz', excited: 'sparkles', reading: 'book', idea: 'bulb', happy: 'hearts' }
 
 function BirdPart({ name, id }) {
   const clipId = `${id}-${name}`
@@ -74,32 +80,57 @@ function BirdPart({ name, id }) {
     <svg className={`icue-mascot__part icue-mascot__part--${name}`} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
       <defs>
         <clipPath id={clipId}><path d={PARTS[name]} /></clipPath>
+        {name === 'wing-right' && <clipPath id={`${clipId}-folded`}><path d={PARTS['wing-left']} /></clipPath>}
         {name === 'crest' && (
-          <clipPath id={`${id}-body`} clipPathUnits="objectBoundingBox">
-            <path d={BODY_CLIP} transform="scale(0.01)" />
+          <clipPath id={`${id}-head`} clipPathUnits="objectBoundingBox">
+            <path d={HEAD_CLIP} transform="scale(0.01)" />
           </clipPath>
         )}
       </defs>
-      <image href={name === 'crest' ? coreUrl : birdUrl} width="100" height="100" clipPath={`url(#${clipId})`} />
+      <image className={name === 'wing-right' ? 'icue-mascot__wing-outside' : undefined} href={['crest', 'body'].includes(name) ? coreUrl : birdUrl} width="100" height="100" clipPath={`url(#${clipId})`} />
+      {name === 'wing-right' && (
+        <g className="icue-mascot__wing-folded" transform="translate(109 0) scale(-1 1)">
+          <image href={birdUrl} width="100" height="100" clipPath={`url(#${clipId}-folded)`} />
+        </g>
+      )}
     </svg>
   )
+}
+
+function BirdJoint({ name, id }) {
+  return <span className={`icue-mascot__joint icue-mascot__joint--${name}`}><BirdPart name={name} id={id} /></span>
 }
 
 /**
  * Decorative companion; its host supplies localized labels and textual status.
  * `animated={false}` makes transcript avatars entirely static. `active={false}`
  * suspends inactive instances. A visible launcher stays animated during replies.
- * Only brief reactions use a timer; breathing, blinking and dots are CSS.
+ * `expression` and `effect` compose independently; `state` remains an alias.
+ * `reactionKey` retriggers a new event with the same expression. Keep it stable
+ * between events. Brief reactions use timeouts; all frame motion is CSS.
  */
-function ChatMascot({ state = 'idle', variant = 'launcher', animated = true, active = true, interactive = false }) {
-  const safeState = MASCOT_STATES.includes(state) ? state : 'idle'
-  const reaction = useMemo(() => ({ state: safeState }), [safeState])
+function ChatMascot({ state = 'idle', expression: requestedExpression = state, effect = 'auto', reactionKey = 0, variant = 'launcher', animated = true, active = true, interactive = false }) {
+  const safeState = MASCOT_STATES.includes(requestedExpression) ? requestedExpression : 'idle'
+  const reaction = useMemo(() => ({ state: safeState, key: reactionKey }), [safeState, reactionKey])
   const [settledReaction, setSettledReaction] = useState(null)
+  const [happyReaction, setHappyReaction] = useState(null)
+  const [expiredEffect, setExpiredEffect] = useState(null)
   const [hidden, setHidden] = useState(() => typeof document !== 'undefined' && document.hidden)
-  const [sleeping, setSleeping] = useState(false)
-  const awakeExpression = settledReaction === reaction ? 'idle' : safeState
-  const canSleep = animated && active && interactive && awakeExpression === 'idle' && !hidden
-  const expression = canSleep && sleeping ? 'sleeping' : awakeExpression
+  const [restStage, setRestStage] = useState('idle')
+  const wakeRef = useRef(null)
+  const opening = ['greeting', 'excited'].includes(safeState)
+  const awakeExpression = settledReaction === reaction ? 'idle'
+    : opening ? (happyReaction === reaction ? 'happy' : 'excited') : safeState
+  const canRest = animated && active && interactive && awakeExpression === 'idle' && !hidden
+  const resting = canRest && restStage !== 'idle'
+  const expression = resting ? restStage : awakeExpression
+  const defaultEffect = opening && expression === 'happy' ? 'none' : DEFAULT_EFFECTS[expression] || 'none'
+  const selectedEffect = resting || settledReaction === reaction ? defaultEffect
+    : effect === 'auto' ? defaultEffect : MASCOT_EFFECTS.includes(effect) ? effect : 'none'
+  const effectCycle = useMemo(() => ({ effect: selectedEffect, reaction }), [selectedEffect, reaction])
+  const visibleEffect = expiredEffect === effectCycle ? 'none' : selectedEffect
+  const pose = mascotPose(expression, visibleEffect)
+  const layered = animated || variant !== 'avatar'
   const id = useId()
 
   useEffect(() => {
@@ -122,49 +153,79 @@ function ChatMascot({ state = 'idle', variant = 'launcher', animated = true, act
   }, [active, animated])
 
   useEffect(() => {
-    if (!active || !animated || !['greeting', 'happy', 'confused'].includes(reaction.state)) return undefined
-    const timer = window.setTimeout(() => setSettledReaction(reaction), REACTION_MS)
-    return () => window.clearTimeout(timer)
-  }, [active, animated, reaction])
+    if (!active || !animated || !['greeting', 'excited', 'happy', 'idea', 'handoff', 'confused'].includes(reaction.state)) return undefined
+    const happyTimer = opening ? window.setTimeout(() => setHappyReaction(reaction), EXCITED_MS) : null
+    const settleTimer = window.setTimeout(() => setSettledReaction(reaction), REACTION_MS + (opening ? EXCITED_MS : 0))
+    return () => {
+      window.clearTimeout(happyTimer)
+      window.clearTimeout(settleTimer)
+    }
+  }, [active, animated, opening, reaction])
 
   useEffect(() => {
-    if (!canSleep) return undefined
-    let timer
+    if (!active || !animated || !['sparkles', 'hearts', 'bulb'].includes(effectCycle.effect)) return undefined
+    const timer = window.setTimeout(() => setExpiredEffect(effectCycle), REACTION_MS)
+    return () => window.clearTimeout(timer)
+  }, [active, animated, effectCycle])
+
+  useEffect(() => {
+    if (!canRest) return undefined
+    let coffeeTimer, listenTimer, sleepTimer
     const wake = () => {
-      setSleeping(false)
-      window.clearTimeout(timer)
-      timer = window.setTimeout(() => setSleeping(true), 60_000)
+      setRestStage('idle')
+      window.clearTimeout(coffeeTimer)
+      window.clearTimeout(listenTimer)
+      window.clearTimeout(sleepTimer)
+      coffeeTimer = window.setTimeout(() => setRestStage('coffee'), COFFEE_AFTER_MS)
+      listenTimer = window.setTimeout(() => setRestStage('listening'), LISTEN_AFTER_MS)
+      sleepTimer = window.setTimeout(() => setRestStage('sleeping'), SLEEP_AFTER_MS)
     }
+    wakeRef.current = wake
     wake()
     document.addEventListener('pointerdown', wake, { passive: true })
     document.addEventListener('keydown', wake)
     return () => {
-      window.clearTimeout(timer)
+      wakeRef.current = null
+      window.clearTimeout(coffeeTimer)
+      window.clearTimeout(listenTimer)
+      window.clearTimeout(sleepTimer)
       document.removeEventListener('pointerdown', wake)
       document.removeEventListener('keydown', wake)
     }
-  }, [canSleep])
+  }, [canRest])
 
   return (
     <span
       className={`icue-mascot icue-mascot--${variant}`}
       data-state={expression}
+      data-effect={visibleEffect}
+      data-pose={pose}
       data-animated={animated}
       data-paused={!active || hidden}
       data-interactive={interactive}
+      onPointerEnter={() => wakeRef.current?.()}
       aria-hidden="true"
     >
       <span className="icue-mascot__shadow" />
-      <span className="icue-mascot__bird">
-        {animated && ['tail', 'foot-left', 'foot-right', 'crest'].map(name => <BirdPart key={name} name={name} id={id} />)}
-        <img
-          className="icue-mascot__art"
-          src={animated ? coreUrl : birdUrl}
-          style={animated ? { clipPath: `url(#${id}-body)` } : undefined}
-          width="256" height="256" alt="" draggable="false" decoding="async"
-        />
-        {animated && ['wing-right', 'wing-left'].map(name => <BirdPart key={name} name={name} id={id} />)}
-        <TerminalFace />
+      <span key={reactionKey} className="icue-mascot__bird">
+        {layered && ['tail', 'foot-left', 'foot-right', 'body'].map(name => <BirdJoint key={name} name={name} id={id} />)}
+        <span className={layered ? 'icue-mascot__joint icue-mascot__joint--head' : 'icue-mascot__static'}>
+          <span className="icue-mascot__head-motion">
+            {visibleEffect === 'music' && <BirdHeadphones layer="band" />}
+            {layered && <BirdPart name="crest" id={id} />}
+            <img
+              className="icue-mascot__art"
+              src={layered ? coreUrl : birdUrl}
+              style={layered ? { clipPath: `url(#${id}-head)` } : undefined}
+              width="256" height="256" alt="" draggable="false" decoding="async"
+            />
+            <TerminalFace />
+            {visibleEffect === 'music' && <BirdHeadphones />}
+          </span>
+        </span>
+        {['book', 'coffee'].includes(visibleEffect) && <span className="icue-mascot__prop"><BirdEffects effect={visibleEffect} /></span>}
+        {layered && ['wing-right', 'wing-left'].map(name => <BirdJoint key={name} name={name} id={id} />)}
+        {!['book', 'coffee'].includes(visibleEffect) && <BirdEffects key={`${reactionKey}:${visibleEffect}`} effect={visibleEffect} />}
       </span>
     </span>
   )

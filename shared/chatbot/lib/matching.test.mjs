@@ -188,6 +188,27 @@ test('the knowledge engine returns authored intent answers in every added locale
   }
 })
 
+test('retrieval activity is emitted only for an actual knowledge lookup', async () => {
+  const originalFetch = globalThis.fetch
+  globalThis.fetch = async url => ({ ok: true, json: async () => readKb(String(url).match(/kb\.([a-z]{2})\.json$/)[1]) })
+  const copy = createBotCopy({ faqsUrl: '/faqs', contactUrl: '/contact' })
+  try {
+    let lookups = 0
+    const options = { onRetrieval: () => { lookups++ } }
+    const knowledge = createChatbotKnowledge({ siteLang: 'de', copy })
+    await Promise.all(KB_LANGUAGES.map(language => knowledge.ensureKb(language)))
+    await knowledge.getResponse('Honorare', options)
+    assert.equal(lookups, 0, 'a quick topic does not consult the KB')
+    await knowledge.getResponse('Hola, necesito ayuda', options)
+    assert.equal(lookups, 0, 'unsupported-language copy does not consult the KB')
+    const result = await knowledge.getResponse('Pressekontakt', options)
+    assert.equal(lookups, 1)
+    assert.equal(result.meta.intentId, 'media_press')
+  } finally {
+    globalThis.fetch = originalFetch
+  }
+})
+
 test('localized non-Latin FAQ questions remain searchable', async () => {
   const kb = await readKb('en')
   assert.deepEqual(
