@@ -5,233 +5,1429 @@
     {
       "id": "greeting",
       "label": "Begrüßung",
-      "keywords": ["hallo", "guten morgen", "guten tag", "guten abend"],
-      "phrases": ["hallo", "guten tag", "schönen guten tag"],
-      "answer": "Hallo! Ich helfe Ihnen, Informationen zu den Leistungen, Projekten, Stellenangeboten, Richtlinien und Kontaktdaten von ICUE zu finden. Wonach suchen Sie?"
+      "keywords": [
+        "hallo",
+        "guten morgen",
+        "guten tag",
+        "guten abend"
+      ],
+      "phrases": [
+        "hallo",
+        "guten tag",
+        "schönen guten tag"
+      ],
+      "answer": "Hallo! Ich helfe Ihnen, Informationen zu den Leistungen, Projekten, Stellenangeboten, Richtlinien und Kontaktdaten von ICUE zu finden. Wonach suchen Sie?",
+      "aliases": []
     },
     {
       "id": "services",
       "label": "Leistungen",
-      "keywords": ["leistungen", "beratung", "beratungsleistungen"],
-      "phrases": ["welche leistungen bieten sie an", "wobei können sie helfen", "welche beratung bieten sie an"],
+      "keywords": [
+        "leistungen",
+        "beratung",
+        "beratungsleistungen"
+      ],
+      "phrases": [
+        "welche leistungen bieten sie an",
+        "wobei können sie helfen",
+        "welche beratung bieten sie an"
+      ],
       "answer": "ICUE berät zu Planung und Entwurf, Projektmanagement, Verfahrensunterstützung und nachhaltigkeitsorientierten Lösungen. Für eine projektspezifische Einschätzung senden Sie Projekttyp, Standort und gewünschten Leistungsumfang über die Kontaktseite.",
       "links": [
-        { "label": "Projekte / Leistungen", "url": "/our-work" },
-        { "label": "FAQ", "url": "/faqs" },
-        { "label": "Kontakt", "url": "/contact" }
-      ]
+        {
+          "label": "Projekte / Leistungen",
+          "url": "/our-work"
+        },
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        },
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "planning_design",
       "label": "Planung und Entwurf",
-      "keywords": ["planung", "stadtplanung", "masterplan", "entwurf", "konzeptentwurf", "detailplanung"],
-      "phrases": ["übernehmen sie planungsleistungen", "können sie beim entwurf helfen", "masterplanung"],
+      "keywords": [
+        "planung",
+        "stadtplanung",
+        "masterplan",
+        "entwurf",
+        "konzeptentwurf",
+        "detailplanung"
+      ],
+      "phrases": [
+        "übernehmen sie planungsleistungen",
+        "können sie beim entwurf helfen",
+        "masterplanung"
+      ],
       "answer": "ICUE kann je nach Projektanforderungen Planung und Entwurf unterstützen. Eine hilfreiche Anfrage nennt Standort, Ziele und aktuellen Stand (Idee / Konzept / Detailplanung), damit das Team einen geeigneten Ablauf bestätigen kann.",
       "links": [
-        { "label": "Projekte", "url": "/our-work" },
-        { "label": "Kontakt", "url": "/contact" }
+        {
+          "label": "Projekte",
+          "url": "/our-work"
+        },
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "Stadtplanung und Gestaltung",
+        "Masterplanung"
       ]
     },
     {
       "id": "project_management",
       "label": "Projektmanagement",
-      "keywords": ["projektmanagement", "projektsteuerung", "koordination", "umsetzung", "projektabwicklung"],
-      "phrases": ["können sie mein projekt managen", "unterstützung beim projektmanagement"],
+      "keywords": [
+        "projektmanagement",
+        "projektsteuerung",
+        "koordination",
+        "umsetzung",
+        "projektabwicklung"
+      ],
+      "phrases": [
+        "können sie mein projekt managen",
+        "unterstützung beim projektmanagement"
+      ],
       "answer": "ICUE kann abhängig vom Umfang Projektmanagement und Koordination übernehmen. Nennen Sie in Ihrer Anfrage Zeitplan, Beteiligte und erwartete Ergebnisse, damit das Team die Aufgabe bewerten kann.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "Projektkoordination",
+        "Projektsteuerung"
+      ]
     },
     {
       "id": "supervision",
       "label": "Bauüberwachung",
-      "keywords": ["bauüberwachung", "überwachung", "baubegleitung", "qualitätskontrolle"],
-      "phrases": ["überwachen sie bauarbeiten", "unterstützung bei der bauüberwachung"],
+      "keywords": [
+        "bauüberwachung",
+        "überwachung",
+        "baubegleitung",
+        "qualitätskontrolle"
+      ],
+      "phrases": [
+        "überwachen sie bauarbeiten",
+        "unterstützung bei der bauüberwachung"
+      ],
       "answer": "Ob eine Überwachung oder Begleitung möglich ist, hängt von Projekttyp, Standort und Phase (Planung / Ausschreibung / Bau) ab. Senden Sie diese Angaben über die Kontaktseite, damit ICUE den möglichen Umfang bestätigen kann.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "Bauüberwachung",
+        "Baustellenaufsicht"
+      ]
     },
     {
       "id": "permits_legal",
       "label": "Genehmigungen und Verfahren",
-      "keywords": ["genehmigung", "genehmigungen", "rechtlich", "verfahren", "baugenehmigung", "behördliche zustimmung"],
-      "phrases": ["können sie bei genehmigungen helfen", "unterstützung bei behördlichen verfahren"],
+      "keywords": [
+        "genehmigung",
+        "genehmigungen",
+        "rechtlich",
+        "verfahren",
+        "baugenehmigung",
+        "behördliche zustimmung"
+      ],
+      "phrases": [
+        "können sie bei genehmigungen helfen",
+        "unterstützung bei behördlichen verfahren"
+      ],
       "answer": "ICUE kann je nach Projekt und Zuständigkeitsbereich bei Verfahren und der Vorbereitung von Unterlagen unterstützen. Teilen Sie Stadt oder Provinz und Projekttyp mit, damit Umfang und voraussichtliche Unterlagen bestätigt werden können.",
       "links": [
-        { "label": "FAQ", "url": "/faqs" },
-        { "label": "Kontakt", "url": "/contact" }
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        },
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "Hilfe bei der Baugenehmigung"
       ]
     },
     {
       "id": "documents_required",
       "label": "Erforderliche Unterlagen",
-      "keywords": ["unterlagen", "dokumente", "anforderungen", "grundstücksunterlagen", "bestandspläne"],
-      "phrases": ["welche unterlagen benötige ich", "erforderliche dokumente"],
+      "keywords": [
+        "unterlagen",
+        "dokumente",
+        "anforderungen",
+        "grundstücksunterlagen",
+        "bestandspläne"
+      ],
+      "phrases": [
+        "welche unterlagen benötige ich",
+        "erforderliche dokumente"
+      ],
       "answer": "Zu den üblichen Ausgangsunterlagen gehören grundlegende Standortinformationen, Ziele und Umfang, vorhandene Pläne sowie relevante Landnutzungs- oder Rechtsdokumente. Die endgültigen Anforderungen hängen vom Projekt ab und sollten mit ICUE bestätigt werden.",
       "links": [
-        { "label": "Kontakt", "url": "/contact" },
-        { "label": "FAQ", "url": "/faqs" }
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        },
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": [
+        "welche Unterlagen brauche ich für mein Projekt",
+        "welche Dokumente soll ich vorbereiten"
       ]
     },
     {
       "id": "pricing_fees",
       "label": "Leistungshonorare",
-      "keywords": ["preis", "preise", "honorar", "honorare", "kosten", "budget", "kostenvoranschlag"],
-      "phrases": ["wie viel kostet es", "wie werden die honorare berechnet", "kann ich eine kostenschätzung erhalten"],
+      "keywords": [
+        "preis",
+        "preise",
+        "honorar",
+        "honorare",
+        "kosten",
+        "budget",
+        "kostenvoranschlag"
+      ],
+      "phrases": [
+        "wie viel kostet es",
+        "wie werden die honorare berechnet",
+        "kann ich eine kostenschätzung erhalten"
+      ],
       "answer": "Die Honorare richten sich nach Umfang, Zeitplan und Komplexität des Projekts. Senden Sie über die Kontaktseite eine kurze Beschreibung mit Projekttyp, Standort, Größe, Zeitplan und gewünschtem Ergebnis, um eine projektspezifische Einschätzung zu erhalten.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "wie viel kostet die Beratung",
+        "Beratungskosten"
+      ]
     },
     {
       "id": "payment_installments",
       "label": "Zahlungsbedingungen",
-      "keywords": ["zahlung", "ratenzahlung", "teilzahlung", "meilenstein", "vertrag"],
-      "phrases": ["kann ich in raten zahlen", "welche zahlungsbedingungen gelten"],
+      "keywords": [
+        "zahlung",
+        "ratenzahlung",
+        "teilzahlung",
+        "meilenstein",
+        "vertrag"
+      ],
+      "phrases": [
+        "kann ich in raten zahlen",
+        "welche zahlungsbedingungen gelten"
+      ],
       "answer": "Zahlungsbedingungen können an vereinbarte Meilensteine gekoppelt werden, zum Beispiel Konzept → Entwurf → Abschluss. Der geltende Zahlungsplan muss im schriftlichen Angebot oder Vertrag bestätigt werden.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "process_steps",
       "label": "Projektablauf",
-      "keywords": ["prozess", "ablauf", "arbeitsablauf", "schritte", "projektablauf"],
-      "phrases": ["wie ist ihr ablauf", "wie arbeiten wir zusammen"],
+      "keywords": [
+        "prozess",
+        "ablauf",
+        "arbeitsablauf",
+        "schritte",
+        "projektablauf"
+      ],
+      "phrases": [
+        "wie ist ihr ablauf",
+        "wie arbeiten wir zusammen"
+      ],
       "answer": "Ein typischer Ablauf ist: Erstgespräch → Anforderungen → Prüfung von Standort und Kontext → Entwurf der Ergebnisse → vereinbarte Überarbeitungen → finale Übergabe. Die genauen Phasen und Überarbeitungsgrenzen werden für jedes Projekt festgelegt.",
-      "links": [{ "label": "FAQ", "url": "/faqs" }]
+      "links": [
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": [
+        "wie beginnen wir die Zusammenarbeit"
+      ]
     },
     {
       "id": "timeline_duration",
       "label": "Projektzeitplan",
-      "keywords": ["zeitplan", "dauer", "wie lange", "projektlaufzeit", "terminplan"],
-      "phrases": ["wie lange dauert es", "wie sieht der zeitplan aus"],
+      "keywords": [
+        "zeitplan",
+        "dauer",
+        "wie lange",
+        "projektlaufzeit",
+        "terminplan"
+      ],
+      "phrases": [
+        "wie lange dauert es",
+        "wie sieht der zeitplan aus"
+      ],
       "answer": "Der Zeitplan hängt von Umfang, Genehmigungen und den benötigten Ergebnissen ab. Nennen Sie ICUE Ihre Frist und ob Sie ein Konzept oder ein vollständiges Paket benötigen, damit ein realistischer Zeitplan bewertet werden kann.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "wie lange dauert ein Projekt",
+        "Bearbeitungsdauer"
+      ]
     },
     {
       "id": "bim_3d",
       "label": "BIM und 3D",
-      "keywords": ["bim", "3d", "modell", "rendering", "visualisierung"],
-      "phrases": ["nutzen sie bim", "erstellen sie ein 3d modell"],
+      "keywords": [
+        "bim",
+        "3d",
+        "modell",
+        "rendering",
+        "visualisierung"
+      ],
+      "phrases": [
+        "nutzen sie bim",
+        "erstellen sie ein 3d modell"
+      ],
       "answer": "ICUE kann BIM- und 3D-Modellierung einsetzen, wenn dies für Visualisierung und Planungskoordination sinnvoll ist. Verfügbare Ergebnisse wie Modelle, Ansichten oder technische Koordination werden im Projektumfang festgelegt.",
-      "links": [{ "label": "Projekte", "url": "/our-work" }]
+      "links": [
+        {
+          "label": "Projekte",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": [
+        "Building Information Modeling",
+        "Gebäudedatenmodellierung"
+      ]
     },
     {
       "id": "green_sustainability",
       "label": "Nachhaltigkeit",
-      "keywords": ["nachhaltig", "nachhaltigkeit", "grün", "klima", "umwelt", "energieeffizienz"],
-      "phrases": ["nachhaltige planung", "nachhaltige lösungen"],
+      "keywords": [
+        "nachhaltig",
+        "nachhaltigkeit",
+        "grün",
+        "klima",
+        "umwelt",
+        "energieeffizienz"
+      ],
+      "phrases": [
+        "nachhaltige planung",
+        "nachhaltige lösungen"
+      ],
       "answer": "ICUE kann je nach Projektkontext Nachhaltigkeitsziele wie Materialwahl, Energieverbrauch und Klimaresilienz berücksichtigen. Prioritäten und Einschränkungen sollten in der Projektbeschreibung enthalten sein.",
-      "links": [{ "label": "Projekte", "url": "/our-work" }]
+      "links": [
+        {
+          "label": "Projekte",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "sectors_clients",
       "label": "Auftraggeber und Sektoren",
-      "keywords": ["kunden", "auftraggeber", "sektoren", "öffentliche hand", "unternehmen", "privatperson"],
-      "phrases": ["mit wem arbeiten sie", "wer sind ihre kunden"],
+      "keywords": [
+        "kunden",
+        "auftraggeber",
+        "sektoren",
+        "öffentliche hand",
+        "unternehmen",
+        "privatperson"
+      ],
+      "phrases": [
+        "mit wem arbeiten sie",
+        "wer sind ihre kunden"
+      ],
       "answer": "ICUE arbeitet je nach Programm oder Projekt mit Privatpersonen, Organisationen und Unternehmen sowie Akteuren des öffentlichen Sektors zusammen. Veröffentlichte Beispiele finden Sie unter Frühere Projekte.",
-      "links": [{ "label": "Frühere Projekte", "url": "/past-projects" }]
+      "links": [
+        {
+          "label": "Frühere Projekte",
+          "url": "/past-projects"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "locations",
       "label": "Einsatzorte",
-      "keywords": ["wo", "standort", "hanoi", "vietnam", "provinz", "remote", "vor ort"],
-      "phrases": ["wo sind sie tätig", "wo befindet sich icue"],
+      "keywords": [
+        "wo",
+        "standort",
+        "hanoi",
+        "vietnam",
+        "provinz",
+        "remote",
+        "vor ort"
+      ],
+      "phrases": [
+        "wo sind sie tätig",
+        "wo befindet sich icue"
+      ],
       "answer": "Die Durchführbarkeit hängt vom Projektstandort und davon ab, ob Unterstützung aus der Ferne oder vor Ort benötigt wird. Senden Sie Stadt oder Provinz und die bevorzugte Arbeitsweise über die Kontaktseite zur Bestätigung.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "portfolio_projects",
       "label": "Frühere Projekte",
-      "keywords": ["portfolio", "frühere projekte", "referenzprojekte", "fallstudie", "referenzen"],
-      "phrases": ["portfolio anzeigen", "welche projekte haben sie durchgeführt"],
+      "keywords": [
+        "portfolio",
+        "frühere projekte",
+        "referenzprojekte",
+        "fallstudie",
+        "referenzen"
+      ],
+      "phrases": [
+        "portfolio anzeigen",
+        "welche projekte haben sie durchgeführt"
+      ],
       "answer": "Unter Projekte und Frühere Projekte finden Sie veröffentlichte Vorhaben und Aktivitäten, darunter Arbeiten zu Stadtentwicklung, Umwelt und Gemeinschaft.",
       "links": [
-        { "label": "Frühere Projekte", "url": "/past-projects" },
-        { "label": "Projekte", "url": "/our-work" }
-      ]
+        {
+          "label": "Frühere Projekte",
+          "url": "/past-projects"
+        },
+        {
+          "label": "Projekte",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "news_updates",
       "label": "Neuigkeiten",
-      "keywords": ["nachrichten", "neuigkeiten", "aktuelles", "artikel"],
-      "phrases": ["aktuelle nachrichten", "neueste artikel"],
+      "keywords": [
+        "nachrichten",
+        "neuigkeiten",
+        "aktuelles",
+        "artikel"
+      ],
+      "phrases": [
+        "aktuelle nachrichten",
+        "neueste artikel"
+      ],
       "answer": "Aktuelle Meldungen und Artikel finden Sie auf der Nachrichtenseite.",
-      "links": [{ "label": "Nachrichten", "url": "/newsroom/" }]
+      "links": [
+        {
+          "label": "Nachrichten",
+          "url": "/newsroom/"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "community",
       "label": "Gemeinschaftsaktivitäten",
-      "keywords": ["gemeinschaft", "community", "veranstaltungen", "aktivitäten", "workshop", "schulung"],
-      "phrases": ["gemeinschaftsaktivitäten", "veranstaltungen von icue"],
+      "keywords": [
+        "gemeinschaft",
+        "community",
+        "veranstaltungen",
+        "aktivitäten",
+        "workshop",
+        "schulung"
+      ],
+      "phrases": [
+        "gemeinschaftsaktivitäten",
+        "veranstaltungen von icue"
+      ],
       "answer": "ICUE organisiert oder unterstützt auch Gemeinschaftsaktivitäten und Programme. Weitere Informationen finden Sie auf der Seite Gemeinschaftsaktivitäten.",
-      "links": [{ "label": "Gemeinschaftsaktivitäten", "url": "/community-activities" }]
+      "links": [
+        {
+          "label": "Gemeinschaftsaktivitäten",
+          "url": "/community-activities"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "recruitment",
       "label": "Stellen und Karriere",
-      "keywords": ["stellen", "jobs", "karriere", "bewerben", "einstellung", "recruitment"],
-      "phrases": ["stellen sie ein", "wie kann ich mich bewerben", "offene stellen"],
+      "keywords": [
+        "stellen",
+        "jobs",
+        "karriere",
+        "bewerben",
+        "einstellung",
+        "recruitment"
+      ],
+      "phrases": [
+        "stellen sie ein",
+        "wie kann ich mich bewerben",
+        "offene stellen"
+      ],
       "answer": "Auf der Karriereseite finden Sie aktuelle Stellen und veröffentlichte Anforderungen. Passen Sie Ihren Lebenslauf und Ihre Bewerbung an die genannten Aufgaben an und heben Sie unmittelbar relevante Erfahrung hervor.",
-      "links": [{ "label": "Karriere", "url": "/recruitment" }]
+      "links": [
+        {
+          "label": "Karriere",
+          "url": "/recruitment"
+        }
+      ],
+      "aliases": [
+        "welche Unterlagen brauche ich für eine Bewerbung",
+        "wohin sende ich meinen Lebenslauf"
+      ]
     },
     {
       "id": "internship",
       "label": "Praktika",
-      "keywords": ["praktikant", "praktikum", "trainee", "student"],
-      "phrases": ["bieten sie praktika an", "praktikumsmöglichkeiten"],
+      "keywords": [
+        "praktikant",
+        "praktikum",
+        "trainee",
+        "student"
+      ],
+      "phrases": [
+        "bieten sie praktika an",
+        "praktikumsmöglichkeiten"
+      ],
       "answer": "Informationen zu Praktika finden Sie zuerst auf der Karriereseite. Eine kurze Bewerbung sollte relevante Ausbildung, praktische Fähigkeiten, Portfolioarbeiten und Ihre Lernziele hervorheben.",
-      "links": [{ "label": "Karriere", "url": "/recruitment" }]
+      "links": [
+        {
+          "label": "Karriere",
+          "url": "/recruitment"
+        }
+      ],
+      "aliases": [
+        "Unterlagen für ein Praktikum"
+      ]
     },
     {
       "id": "partnership",
       "label": "Partnerschaften",
-      "keywords": ["partner", "partnerschaft", "zusammenarbeit", "kooperation", "moU"],
-      "phrases": ["ich möchte partner werden", "möglichkeiten zur zusammenarbeit"],
+      "keywords": [
+        "partner",
+        "partnerschaft",
+        "zusammenarbeit",
+        "kooperation",
+        "moU"
+      ],
+      "phrases": [
+        "ich möchte partner werden",
+        "möglichkeiten zur zusammenarbeit"
+      ],
       "answer": "ICUE ist offen für Gespräche über Zusammenarbeit, wenn Ziele und Umfang zusammenpassen. Eine hilfreiche Anfrage nennt Ihre Organisation, das Thema, Ihren Vorschlag und das angestrebte Ergebnis.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "media_press",
       "label": "Medien und Presse",
-      "keywords": ["medien", "presse", "interview", "redner", "zitat"],
-      "phrases": ["medienanfrage", "pressekontakt", "icue in einem artikel zitieren"],
+      "keywords": [
+        "medien",
+        "presse",
+        "interview",
+        "redner",
+        "zitat"
+      ],
+      "phrases": [
+        "medienanfrage",
+        "pressekontakt",
+        "icue in einem artikel zitieren"
+      ],
       "answer": "Bei Medien- oder Presseanfragen kontaktieren Sie ICUE mit Frist, Thema, Publikation und gewünschtem Beitrag (Zitat / Interview / Vortrag).",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "schedule_meeting",
       "label": "Beratungstermin",
-      "keywords": ["termin", "gespräch", "anruf", "besprechung", "beratungstermin"],
-      "phrases": ["können wir ein gespräch vereinbaren", "termin buchen", "beratung vereinbaren"],
+      "keywords": [
+        "termin",
+        "gespräch",
+        "anruf",
+        "besprechung",
+        "beratungstermin"
+      ],
+      "phrases": [
+        "können wir ein gespräch vereinbaren",
+        "termin buchen",
+        "beratung vereinbaren"
+      ],
       "answer": "Um ein Beratungsgespräch anzufragen, nutzen Sie die Kontaktseite und nennen Sie Ihr bevorzugtes Zeitfenster, Ihre Zeitzone und das Gesprächsthema.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "request_proposal",
       "label": "Angebote und Ausschreibungen",
-      "keywords": ["angebot", "projektvorschlag", "ausschreibung", "leistungsbeschreibung", "rfp", "tor", "sow"],
-      "phrases": ["können sie ein angebot senden", "antwort auf eine ausschreibung"],
+      "keywords": [
+        "angebot",
+        "projektvorschlag",
+        "ausschreibung",
+        "leistungsbeschreibung",
+        "rfp",
+        "tor",
+        "sow"
+      ],
+      "phrases": [
+        "können sie ein angebot senden",
+        "antwort auf eine ausschreibung"
+      ],
       "answer": "Ja — wenn Sie Ziele, Ergebnisse, Zeitplan und, falls vorhanden, einen Budgetrahmen mitteilen, kann ICUE mit einer Angebotsstruktur und den nächsten Schritten antworten.",
-      "links": [{ "label": "Kontakt", "url": "/contact" }]
+      "links": [
+        {
+          "label": "Kontakt",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "RFP",
+        "Angebotsanfrage"
+      ]
     },
     {
       "id": "policies",
       "label": "Richtlinien",
-      "keywords": ["datenschutz", "dsgvo", "nutzungsbedingungen", "cookies"],
-      "phrases": ["datenschutzerklärung", "nutzungsbedingungen", "cookie richtlinie"],
+      "keywords": [
+        "datenschutz",
+        "dsgvo",
+        "nutzungsbedingungen",
+        "cookies"
+      ],
+      "phrases": [
+        "datenschutzerklärung",
+        "nutzungsbedingungen",
+        "cookie richtlinie"
+      ],
       "answer": "Über die folgenden Links können Sie die Seiten von ICUE zu Datenschutz, DSGVO, Nutzungsbedingungen und Cookies aufrufen.",
       "links": [
-        { "label": "Datenschutz", "url": "/legal/privacy" },
-        { "label": "DSGVO", "url": "/legal/gdpr" },
-        { "label": "Nutzungsbedingungen", "url": "/legal/terms" },
-        { "label": "Cookies", "url": "/legal/cookies" }
-      ]
+        {
+          "label": "Datenschutz",
+          "url": "/legal/privacy"
+        },
+        {
+          "label": "DSGVO",
+          "url": "/legal/gdpr"
+        },
+        {
+          "label": "Nutzungsbedingungen",
+          "url": "/legal/terms"
+        },
+        {
+          "label": "Cookies",
+          "url": "/legal/cookies"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "faq",
       "label": "Häufige Fragen",
-      "keywords": ["faq", "häufige fragen", "häufig gestellte fragen"],
-      "phrases": ["faq", "häufig gestellte fragen"],
+      "keywords": [
+        "faq",
+        "häufige fragen",
+        "häufig gestellte fragen"
+      ],
+      "phrases": [
+        "faq",
+        "häufig gestellte fragen"
+      ],
       "answer": "Auf der FAQ-Seite finden Sie schnelle Antworten. Fragen im Chat werden ausschließlich mit von ICUE verfassten Intent- und FAQ-Inhalten abgeglichen.",
-      "links": [{ "label": "FAQ", "url": "/faqs" }]
+      "links": [
+        {
+          "label": "FAQ",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "id": "about_icue",
+      "label": "Über ICUE",
+      "keywords": [
+        "Über ICUE",
+        "was ist ICUE",
+        "was macht das Institut"
+      ],
+      "phrases": [],
+      "answer": "Ein Team von Fachleuten für Planung, für klimaresiliente Stadtentwicklung und für den Schutz der natürlichen Umwelt – im Inland wie international",
+      "links": [
+        {
+          "label": "Über ICUE",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json",
+        "url": "/about-us",
+        "contentHash": "5e64f1ed19fdbfbe10bf3a9a241665596dcb7f93e20157499de6c77eb266f652"
+      }
+    },
+    {
+      "id": "institute_history",
+      "label": "Geschichte des Instituts",
+      "keywords": [
+        "Geschichte des Instituts",
+        "wann wurde ICUE gegründet",
+        "Gründungsjahr"
+      ],
+      "phrases": [],
+      "answer": "Das Institut für Bau-, Stadt- und Wirtschaftsforschung (im Folgenden: das Institut)  wurde mit Beschluss Nr. 29/QĐ/THXDVN vom 16. April 2013 des Präsidiums des Vietnamesischen Bauverbands gegründet",
+      "links": [
+        {
+          "label": "Geschichte des Instituts",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json",
+        "url": "/about-us",
+        "contentHash": "20f57f517c3263a25ce52a2d51f971d27eedd5debb095bdf9016d9b548b02f7c"
+      }
+    },
+    {
+      "id": "research_activities",
+      "label": "Forschungsaktivitäten",
+      "keywords": [
+        "Forschungsaktivitäten",
+        "was erforscht ICUE",
+        "wissenschaftliche Forschung"
+      ],
+      "phrases": [],
+      "answer": "Grundlagenforschung, angewandte Forschung und Technologieentwicklung im Bauwesen, in der Beratung, in der Stadtentwicklungsplanung, der Stadtökonomie, der Bauökonomie und im Umweltschutz.",
+      "links": [
+        {
+          "label": "Forschungsaktivitäten",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json",
+        "url": "/about-us",
+        "contentHash": "896b3b66a36d6d94d4aa9e658b95fa99a25c260afddc0e34fd63988cbd14c451"
+      }
+    },
+    {
+      "id": "technology_transfer",
+      "label": "Technologietransfer",
+      "keywords": [
+        "Technologietransfer",
+        "Konferenzen und Workshops",
+        "grüner Wandel"
+      ],
+      "phrases": [],
+      "answer": "Transfer wissenschaftlicher Technologien und grüner Wandel. Informationsdienste sowie die Ausrichtung von Konferenzen und Workshops im In- und Ausland. Zusammenarbeit und Partnerschaften mit nationalen und internationalen Organisationen in den Bereichen Planung, Stadtentwicklung und Umweltschutz  wirksam , und Vernetzung – für Städte, die  für die Zukunft bereit sind .",
+      "links": [
+        {
+          "label": "Technologietransfer",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json",
+        "url": "/about-us",
+        "contentHash": "9d1e9fb417b390a2874be72f8df2b872dbaaf7f3ffc72c66dd45a84a8a27ffc9"
+      }
+    },
+    {
+      "id": "project_lao_cai",
+      "label": "Anpassung des Flächennutzungsplans der Stadt Lào Cai",
+      "keywords": [
+        "Anpassung des Flächennutzungsplans der Stadt Lào Cai",
+        "Lào Cai",
+        "Lao Cai master plan",
+        "Informationen zum Projekt Lào Cai",
+        "Informationen zum Projekt Lao Cai master plan"
+      ],
+      "phrases": [],
+      "answer": "Anpassung des Flächennutzungsplans der Stadt Lào Cai\nStadt Lào Cai. Umfang: 28.162,64 ha, bis 2045\n\nDas Plangebiet umfasst 28.162,64 ha und soll bis 2045 umgesetzt werden. Es ist eine langfristige Strategie zur Neuordnung des Stadtraums, damit Flächen flexibel, nachhaltig und klimaanpassungsfähig genutzt werden können. Wohnen, Gewerbe, Industrie, öffentliche Räume und Grünflächen werden ausbalanciert, Verkehr, Wasser, Energie und digitale Netze ausgebaut. Zugleich wird das Wachstum der Bevölkerung und neuer Wohnquartiere gesteuert, damit Lào Cai als regionales Wirtschafts- und Verkehrszentrum gestärkt wird.",
+      "links": [
+        {
+          "label": "Anpassung des Flächennutzungsplans der Stadt Lào Cai",
+          "url": "/past-projects/1"
+        }
+      ],
+      "facts": {
+        "location": "Stadt Lào Cai",
+        "scale": "Umfang: 28.162,64 ha, bis 2045"
+      },
+      "entities": [
+        "Lào Cai",
+        "Lao Cai master plan"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.laoCai",
+        "url": "/past-projects/1",
+        "contentHash": "91c6ee698824433f65480d03e009c100a87a27ca35bd084408010368ca247880"
+      }
+    },
+    {
+      "id": "project_hop_thanh",
+      "label": "Bebauungsplan der Gemeinde Hợp Thành im Maßstab 1/500",
+      "keywords": [
+        "Bebauungsplan der Gemeinde Hợp Thành im Maßstab 1/500",
+        "Hop Thanh",
+        "Informationen zum Projekt Hop Thanh"
+      ],
+      "phrases": [],
+      "answer": "Bebauungsplan der Gemeinde Hợp Thành im Maßstab 1/500\nGemeinde Hợp Thành, Stadt Lào Cai. Umfang: 2.693,3 ha\n\nDieser 2.693,3 ha große Bebauungsplan im Maßstab 1/500 übersetzt den gesamtstädtischen Plan in klare Funktionszonen, ein Straßennetz sowie technische und soziale Infrastruktur. Er soll die Grundlage für eine nachhaltige Urbanisierung bilden: ein modernes, abgestimmtes und umweltverträgliches Quartier, das sich an künftige wirtschaftliche und soziale Nachfrage anpassen kann.",
+      "links": [
+        {
+          "label": "Bebauungsplan der Gemeinde Hợp Thành im Maßstab 1/500",
+          "url": "/past-projects/2"
+        }
+      ],
+      "facts": {
+        "location": "Gemeinde Hợp Thành, Stadt Lào Cai",
+        "scale": "Umfang: 2.693,3 ha"
+      },
+      "entities": [
+        "Hop Thanh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.hopThanh",
+        "url": "/past-projects/2",
+        "contentHash": "34ef79497c9c4cc35c6cc84b9b7215231814ba676c3ccce3b1770681e5912459"
+      }
+    },
+    {
+      "id": "project_subdivision6b",
+      "label": "Teilbebauungsplan 6B (Stadtteil Nguyễn Ái Quốc)",
+      "keywords": [
+        "Teilbebauungsplan 6B (Stadtteil Nguyễn Ái Quốc)",
+        "Phân khu 6B",
+        "Subdivision 6B",
+        "Nguyễn Ái Quốc",
+        "Informationen zum Projekt Phân khu 6B",
+        "Informationen zum Projekt Subdivision 6B",
+        "Informationen zum Projekt Nguyễn Ái Quốc"
+      ],
+      "phrases": [],
+      "answer": "Teilbebauungsplan 6B (Stadtteil Nguyễn Ái Quốc)\nStadt Hải Dương. Umfang: 1.159 ha\n\nTeilgebiet 6B ist ein strategischer Schritt zur Neuordnung von Hải Dương auf mehr als 1.100 ha im Stadtteil Nguyễn Ái Quốc. Der Plan stimmt die technische Infrastruktur ab, erweitert den ökologischen Stadtraum und legt moderne Funktionsquartiere fest.",
+      "links": [
+        {
+          "label": "Teilbebauungsplan 6B (Stadtteil Nguyễn Ái Quốc)",
+          "url": "/past-projects/3"
+        }
+      ],
+      "facts": {
+        "location": "Stadt Hải Dương",
+        "scale": "Umfang: 1.159 ha"
+      },
+      "entities": [
+        "Phân khu 6B",
+        "Subdivision 6B",
+        "Nguyễn Ái Quốc"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.subdivision6b",
+        "url": "/past-projects/3",
+        "contentHash": "3b369ab5b9ac2883aa20f0670600e453411bd1b957258f9957ba2146265ad720"
+      }
+    },
+    {
+      "id": "project_coc_san",
+      "label": "Teilbebauungsplan Cốc San",
+      "keywords": [
+        "Teilbebauungsplan Cốc San",
+        "Coc San",
+        "Informationen zum Projekt Coc San"
+      ],
+      "phrases": [],
+      "answer": "Teilbebauungsplan Cốc San\nStadt Lào Cai. Umfang: 1.173,1 ha\n\nCốc San ist ein Schlüsselgebiet der Stadterweiterung von Lào Cai. Fortschrittliche technische Infrastruktur wird mit der bestehenden Landschaft zu einem ausgewogenen ökologischen Quartier verbunden und schafft Raum für hochwertiges Wohnen, Dienstleistungen und öffentliche Einrichtungen an der regionalen Verkehrsachse.",
+      "links": [
+        {
+          "label": "Teilbebauungsplan Cốc San",
+          "url": "/past-projects/4"
+        }
+      ],
+      "facts": {
+        "location": "Stadt Lào Cai",
+        "scale": "Umfang: 1.173,1 ha"
+      },
+      "entities": [
+        "Coc San"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.cocSan",
+        "url": "/past-projects/4",
+        "contentHash": "a3b8fd8aae143a51043c0ef90c02d44cedbcc9a5e310b184050dfc5fb2e453a2"
+      }
+    },
+    {
+      "id": "project_dong_yen",
+      "label": "Städtebaulicher Rahmenplan Đông Yên, Kreis Bắc Quang",
+      "keywords": [
+        "Städtebaulicher Rahmenplan Đông Yên, Kreis Bắc Quang",
+        "Dong Yen",
+        "Informationen zum Projekt Dong Yen"
+      ],
+      "phrases": [],
+      "answer": "Städtebaulicher Rahmenplan Đông Yên, Kreis Bắc Quang\nGemeinde Đồng Yên, Stadt Hà Giang. Umfang: 4.407,9 ha; bis 2035, Orientierung 2050\n\nĐông Yên ist ein ambitionierter Gesamtplan von fast 4.500 ha mit Horizont 2050. Geplant ist eine intelligente Satellitenstadt, die Wohnen, Arbeiten und Freizeit verbindet und als Investitionsstandort sowie Modell für nachhaltige Urbanität im Norden dienen soll.",
+      "links": [
+        {
+          "label": "Städtebaulicher Rahmenplan Đông Yên, Kreis Bắc Quang",
+          "url": "/past-projects/5"
+        }
+      ],
+      "facts": {
+        "location": "Gemeinde Đồng Yên, Stadt Hà Giang",
+        "scale": "Umfang: 4.407,9 ha; bis 2035, Orientierung 2050"
+      },
+      "entities": [
+        "Dong Yen"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.dongYen",
+        "url": "/past-projects/5",
+        "contentHash": "6fd96d8e9b3b834b9ac9e1f13a48b7c4b9213eb38c7ca7aebdcfbb194d172d33"
+      }
+    },
+    {
+      "id": "project_na_chi",
+      "label": "Städtebaulicher Rahmenplan Nà Chì, Kreis Xín Mần",
+      "keywords": [
+        "Städtebaulicher Rahmenplan Nà Chì, Kreis Xín Mần",
+        "Na Chi",
+        "Informationen zum Projekt Na Chi"
+      ],
+      "phrases": [],
+      "answer": "Städtebaulicher Rahmenplan Nà Chì, Kreis Xín Mần\nGemeinde Nà Chì, Xín Mần, Hà Giang. Umfang: 8.038,7 ha, bis 2035, Orientierung 2050\n\nNà Chì gehört zu den größten Plänen im nördlichen Bergland. Auf mehr als 8.000 ha sollen Infrastruktur, Dienstleistungen und Investitionen in Xín Mần gestärkt werden, ohne die Identität der Hochlagen aufzugeben.",
+      "links": [
+        {
+          "label": "Städtebaulicher Rahmenplan Nà Chì, Kreis Xín Mần",
+          "url": "/past-projects/6"
+        }
+      ],
+      "facts": {
+        "location": "Gemeinde Nà Chì, Xín Mần, Hà Giang",
+        "scale": "Umfang: 8.038,7 ha, bis 2035, Orientierung 2050"
+      },
+      "entities": [
+        "Na Chi"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.naChi",
+        "url": "/past-projects/6",
+        "contentHash": "7519a2a92f5d28337338bf65d75588272b571a3bb717199dfaecda7c863bc31f"
+      }
+    },
+    {
+      "id": "project_tan_bac",
+      "label": "Städtebaulicher Rahmenplan Tân Bắc, Kreis Quang Bình",
+      "keywords": [
+        "Städtebaulicher Rahmenplan Tân Bắc, Kreis Quang Bình",
+        "Tan Bac",
+        "Informationen zum Projekt Tan Bac"
+      ],
+      "phrases": [],
+      "answer": "Städtebaulicher Rahmenplan Tân Bắc, Kreis Quang Bình\nGemeinde Tân Bắc, Quang Bình, Hà Giang. Umfang: 6.297,1 ha, bis 2035, Orientierung 2050\n\nTân Bắc entwickelt sich zu einem neuen Zentrum des Kreises Quang Bình. Der Plan von mehr als 6.000 ha konzentriert sich auf zeitgemäße Wohnräume, grüne Technologien und abgestimmte öffentliche Einrichtungen – ein Hochlandmodell mit lokalem Charakter.",
+      "links": [
+        {
+          "label": "Städtebaulicher Rahmenplan Tân Bắc, Kreis Quang Bình",
+          "url": "/past-projects/7"
+        }
+      ],
+      "facts": {
+        "location": "Gemeinde Tân Bắc, Quang Bình, Hà Giang",
+        "scale": "Umfang: 6.297,1 ha, bis 2035, Orientierung 2050"
+      },
+      "entities": [
+        "Tan Bac"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.tanBac",
+        "url": "/past-projects/7",
+        "contentHash": "c813a278dc713fecdb905ef696941726f044f2a33fb1a3b765bea5f0d5d54f89"
+      }
+    },
+    {
+      "id": "project_nam_dong",
+      "label": "Teilbebauungsplan 5A (Stadtteil Nam Đồng), Stadt Hải Dương",
+      "keywords": [
+        "Teilbebauungsplan 5A (Stadtteil Nam Đồng), Stadt Hải Dương",
+        "Nam Dong",
+        "Subdivision 5A",
+        "Informationen zum Projekt Nam Dong",
+        "Informationen zum Projekt Subdivision 5A"
+      ],
+      "phrases": [],
+      "answer": "Teilbebauungsplan 5A (Stadtteil Nam Đồng), Stadt Hải Dương\nStadt Hải Dương, Provinz Hải Dương. Umfang: 332,16 ha, Maßstab 1/2000\n\nTeilgebiet 5A ist ein Kernstück der nachhaltigen Wachstumsstrategie von Hải Dương. Auf gut 330 ha stehen eine moderne Stadtstruktur, bessere Verbindungen und ein flexibleres städtisches Ökosystem im Mittelpunkt.",
+      "links": [
+        {
+          "label": "Teilbebauungsplan 5A (Stadtteil Nam Đồng), Stadt Hải Dương",
+          "url": "/past-projects/8"
+        }
+      ],
+      "facts": {
+        "location": "Stadt Hải Dương, Provinz Hải Dương",
+        "scale": "Umfang: 332,16 ha, Maßstab 1/2000"
+      },
+      "entities": [
+        "Nam Dong",
+        "Subdivision 5A"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.namDong",
+        "url": "/past-projects/8",
+        "contentHash": "cd6053f83d3c76a394d9ad8205ee0c5092aa5a99a418ac6f039eee70e3dc2417"
+      }
+    },
+    {
+      "id": "project_xuan_an",
+      "label": "Bebauungsplan für das Ökoquartier Park City Xuân An",
+      "keywords": [
+        "Bebauungsplan für das Ökoquartier Park City Xuân An",
+        "Park City Xuân An",
+        "Xuan An",
+        "Informationen zum Projekt Park City Xuân An",
+        "Informationen zum Projekt Xuan An"
+      ],
+      "phrases": [],
+      "answer": "Bebauungsplan für das Ökoquartier Park City Xuân An\nMarkt Xuân An, Kreis Nghi Xuân, Provinz Hà Tĩnh. Umfang: 27,7 ha, Maßstab 1/500\n\nPark City Xuân An ist ein kompaktes, sorgfältig entworfenes Ökoquartier von knapp 28 ha. Unter dem Leitgedanken „grün leben, gesund leben“ verbindet es großzügige Grünräume mit modernen Angeboten und abgestimmter Infrastruktur.",
+      "links": [
+        {
+          "label": "Bebauungsplan für das Ökoquartier Park City Xuân An",
+          "url": "/past-projects/9"
+        }
+      ],
+      "facts": {
+        "location": "Markt Xuân An, Kreis Nghi Xuân, Provinz Hà Tĩnh",
+        "scale": "Umfang: 27,7 ha, Maßstab 1/500"
+      },
+      "entities": [
+        "Park City Xuân An",
+        "Xuan An"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/de.json#projects.items.xuanAn",
+        "url": "/past-projects/9",
+        "contentHash": "2ab8dd3f5a26a938e50ed9c7feab523166deb969dbd189001c59c21bc82394c5"
+      }
+    },
+    {
+      "id": "person_nguyen_hong_hanh",
+      "label": "Nguyen Hong Hanh",
+      "keywords": [
+        "Nguyen Hong Hanh",
+        "Wer ist Nguyen Hong Hanh"
+      ],
+      "phrases": [],
+      "answer": "PhD Nguyen Hong Hanh — Direktorin, Institut für Bauwirtschaft und Stadtplanung (Vietnamesischer Bauverband)\n\nExpertin für Planungsberatung, Stadtentwicklung und Baumanagement. Ehemalige stellvertretende Direktorin der Abteilung für Stadtentwicklung (Bauministerium, 2008–2013); ständige stellvertretende Institutsdirektorin (2013–2018); Direktorin seit März 2018. Leitet wichtige Initiativen zu grüner Stadtentwicklung, Klimawandel und Biodiversität; Technologietransfer für grüne Transformation in Landwirtschaft und städtischer Wirtschaft; sowie Rechts- und Politikberatung für nationale und regionale Planung.",
+      "links": [
+        {
+          "label": "Nguyen Hong Hanh",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Hong Hanh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-hong-hanh.i18n.de",
+        "url": "/people/experts",
+        "contentHash": "8d44a33e2c0fdfca13c85f173aaa4dfb1ae316ded7683924d04b3b80d3b8519d"
+      }
+    },
+    {
+      "id": "person_tran_thi_lan_anh",
+      "label": "Tran Thi Lan Anh",
+      "keywords": [
+        "Tran Thi Lan Anh",
+        "Wer ist Tran Thi Lan Anh"
+      ],
+      "phrases": [],
+      "answer": "PhD, M.Arch Tran Thi Lan Anh — Stellvertretende Direktorin\n\nExpertin für Stadtplanung und -entwicklung, Strategieentwicklung, Politikgestaltung und nachhaltige Entwicklung. Promotion und Masterabschluss an der Universität Tokio mit fundierter Expertise in Klimaanpassung, urbaner Umstrukturierung und nationaler Entwicklungsstrategie. Ehemalige stellvertretende Direktorin der Abteilung für Stadtentwicklung (Bauministerium), mit Beiträgen zu großen Programmen der Stadtentwicklung und Planung.",
+      "links": [
+        {
+          "label": "Tran Thi Lan Anh",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Tran Thi Lan Anh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#tran-thi-lan-anh.i18n.de",
+        "url": "/people/experts",
+        "contentHash": "09dd967fcbe3f2df5368fd39fa51b7407e02c06e02ae1df5c2aab586f3f1e7d4"
+      }
+    },
+    {
+      "id": "person_tran_quoc_toan",
+      "label": "Tran Quoc Toan",
+      "keywords": [
+        "Tran Quoc Toan",
+        "Wer ist Tran Quoc Toan"
+      ],
+      "phrases": [],
+      "answer": "Ing. Tran Quoc Toan — Stellvertretender Direktor\n\nErfahren im Bereich Verkehrsinfrastrukturtechnik. Ehemaliger stellvertretender Direktor der Bewertungsabteilung (Verkehrsministerium) und aktiv in Fachverbänden. Berät zu Politik, intelligenter Planung, grüner Wachstumsstrategie und großen nationalen Projekten.",
+      "links": [
+        {
+          "label": "Tran Quoc Toan",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Tran Quoc Toan"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#tran-quoc-toan.i18n.de",
+        "url": "/people/experts",
+        "contentHash": "d1a355a6cc819361faf45419800bb9151b59251a2231743888f87557c3d91922"
+      }
+    },
+    {
+      "id": "person_nguyen_thanh_tam",
+      "label": "Nguyen Thanh Tam",
+      "keywords": [
+        "Nguyen Thanh Tam",
+        "Wer ist Nguyen Thanh Tam"
+      ],
+      "phrases": [],
+      "answer": "M.Arch Nguyen Thanh Tam — Stellvertretender Direktor\n\nTätig in der Stadtplanung mit Beteiligung an Forschung und Management von Planungsprojekten, die staatliche Steuerung und regulierte städtische Raumentwicklung unterstützen.",
+      "links": [
+        {
+          "label": "Nguyen Thanh Tam",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Thanh Tam"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-thanh-tam.i18n.de",
+        "url": "/people/experts",
+        "contentHash": "ba986274756855955ed475786a9d70fbf486bb1043f9ef1129bfc64c8370b83a"
+      }
+    },
+    {
+      "id": "person_do_bao_long",
+      "label": "Do Bao Long",
+      "keywords": [
+        "Do Bao Long",
+        "Wer ist Do Bao Long"
+      ],
+      "phrases": [],
+      "answer": "Do Bao Long — Projektmanager\n\nEngagierter Projektmanager mit MSc in Projektmanagement von der University of Salford, UK, sowie CCNA- und Cybersicherheitszertifizierungen. Über fünf Jahre Erfahrung in Banking, Einzelhandel, Smart-Contract-Management und Finanzen. Führt komplexe Projekte effektiv durch und verbindet starke technische Fähigkeiten mit praktischer Umsetzung und reibungsloser Koordination zwischen Teams und Stakeholdern.",
+      "links": [
+        {
+          "label": "Do Bao Long",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Do Bao Long"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#do-bao-long.i18n.de",
+        "url": "/people/experts",
+        "contentHash": "ae377abec8dc7b39b45f66c54c5a2e8eab10c31f373c116f0096baf96e5c7d30"
+      }
+    },
+    {
+      "id": "person_nguyen_thi_ly",
+      "label": "Nguyen Thi Ly",
+      "keywords": [
+        "Nguyen Thi Ly",
+        "Wer ist Nguyen Thi Ly"
+      ],
+      "phrases": [],
+      "answer": "Nguyen Thi Ly — Forschungsmitarbeiterin\n\nSolide akademische Ausbildung in Stadtplanung, nachhaltiger Stadtentwicklung, Infrastrukturmanagement und Gestaltung öffentlicher Räume. Trägt zu Forschungs- und technischen Unterstützungsprojekten bei, die sich auf öffentliche Räume, Gemeinschaftsentwicklung und städtische Programme konzentrieren. Ausgezeichnete Teamarbeit, klare Organisationsfähigkeiten und hohes Verantwortungsbewusstsein.",
+      "links": [
+        {
+          "label": "Nguyen Thi Ly",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Thi Ly"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-thi-ly.i18n.de",
+        "url": "/people/core-team",
+        "contentHash": "9e1d3c056982d0c8f26f9212bec2562381fa1515a2c34e2dc6c7ab555bedd7a2"
+      }
+    },
+    {
+      "id": "person_dinh_tung_duong",
+      "label": "Dinh Tung Duong",
+      "keywords": [
+        "Dinh Tung Duong",
+        "Wer ist Dinh Tung Duong"
+      ],
+      "phrases": [],
+      "answer": "Dinh Tung Duong — Forschungsmitarbeiter\n\nAbsolvent des Studiengangs Stadtverwaltung an der Architekturuniversität Hanoi, ausgezeichnet als Bester Absolvent Hanois im Jahr 2023. In den vergangenen zwei Jahren aktiv an Stadtentwicklungsprojekten mit Schwerpunkt Raumplanung, Landschaftsverbesserung und nachhaltiges städtisches Leben beteiligt. Starke analytische und organisatorische Fähigkeiten, versiert in Büro- und Fachsoftware.",
+      "links": [
+        {
+          "label": "Dinh Tung Duong",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Dinh Tung Duong"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#dinh-tung-duong.i18n.de",
+        "url": "/people/core-team",
+        "contentHash": "e64a33d9c4ace71e17d28063490a715d8587300bd2dac037c882cbf4f25a3fdd"
+      }
+    },
+    {
+      "id": "person_trinh_thi_tinh",
+      "label": "Trinh Thi Tinh",
+      "keywords": [
+        "Trinh Thi Tinh",
+        "Wer ist Trinh Thi Tinh"
+      ],
+      "phrases": [],
+      "answer": "Trinh Thi Tinh — Verwaltungsmitarbeiterin\n\nAbsolventin der Betriebswirtschaft am Tourismuscollege Hanoi. Neben der Verwaltung der Büroorganisation unterstützt sie verschiedene Forschungsprojekte. Eine dynamische und verantwortungsbewusste Fachkraft, stets lernbereit und entwicklungsorientiert.",
+      "links": [
+        {
+          "label": "Trinh Thi Tinh",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Trinh Thi Tinh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#trinh-thi-tinh.i18n.de",
+        "url": "/people/core-team",
+        "contentHash": "7c328d892eb97a43cf5e6847008308073af9873eddd5c04abecaff60ebe4bde8"
+      }
+    },
+    {
+      "id": "person_nguyen_quynh_ly",
+      "label": "Nguyen Quynh Ly",
+      "keywords": [
+        "Nguyen Quynh Ly",
+        "Wer ist Nguyen Quynh Ly"
+      ],
+      "phrases": [],
+      "answer": "Nguyen Quynh Ly — Forschungsmitarbeiterin\n\nAbsolventin der Nationalen Wirtschaftsuniversität mit fundierter Ausbildung und hohem Verantwortungsbewusstsein. Erfahren in der Ausschreibung von Maschinen- und Ausrüstungsprojekten sowie in stadtplanungsbezogenen Arbeiten. Übernimmt zudem verschiedene administrative Aufgaben.",
+      "links": [
+        {
+          "label": "Nguyen Quynh Ly",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Quynh Ly"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-quynh-ly.i18n.de",
+        "url": "/people/core-team",
+        "contentHash": "5844345ddba06c9da34ffff93cb249d51654bbb229e1c2c70ee6920ff3b0638a"
+      }
+    },
+    {
+      "id": "person_pham_thi_hien",
+      "label": "Pham Thi Hien",
+      "keywords": [
+        "Pham Thi Hien",
+        "Wer ist Pham Thi Hien"
+      ],
+      "phrases": [],
+      "answer": "Pham Thi Hien — Buchhalterin\n\nAbsolventin der Rechnungswesen-Studiengänge an der Open University Hanoi. Derzeit im Rechnungswesen tätig mit fundiertem Wissen und Fähigkeiten in Buchführung, Finanzberichterstattung und Datenanalyse. Legt stets Wert auf Genauigkeit und Transparenz in der Arbeit.",
+      "links": [
+        {
+          "label": "Pham Thi Hien",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Pham Thi Hien"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#pham-thi-hien.i18n.de",
+        "url": "/people/core-team",
+        "contentHash": "7f6426c4b1c31d2b4d691941111574f02fed60e1af796cb1a7641dc6ab3a75b1"
+      }
+    },
+    {
+      "id": "job_tech_assistant",
+      "label": "Assistenz der Technologieleitung",
+      "keywords": [
+        "Assistenz der Technologieleitung",
+        "Anforderungen für die Stelle Assistenz der Technologieleitung"
+      ],
+      "phrases": [],
+      "answer": "Assistenz der Technologieleitung — Hanoi, Vietnam\n\nWir suchen eine technisch versierte, gut organisierte Person zur Unterstützung des CTO und der Technologieleitung. Sie begleiten Projekte, verbessern unsere Arbeitsabläufe und halten den Entwicklungsteams den Rücken frei.\n\nTechnisches Verständnis, Verwaltungs- und Projektkompetenz · JavaScript · Ausgeprägte Kommunikations- und Organisationsstärke · Eigeninitiative und Problemlösungsdenken · Vollzeit",
+      "links": [
+        {
+          "label": "Assistenz der Technologieleitung",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "Hanoi, Vietnam",
+        "requirements": "Technisches Verständnis, Verwaltungs- und Projektkompetenz · JavaScript · Ausgeprägte Kommunikations- und Organisationsstärke · Eigeninitiative und Problemlösungsdenken · Vollzeit"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#techAssistant.de",
+        "url": "/recruitment",
+        "contentHash": "981e9dd1db8cc3a3ee9cb3fe87a7710aa296da873377862e18c7ee10a948f066"
+      }
+    },
+    {
+      "id": "job_research_intern",
+      "label": "Praktikant·in Forschung",
+      "keywords": [
+        "Praktikant·in Forschung",
+        "Anforderungen für die Stelle Praktikant·in Forschung"
+      ],
+      "phrases": [],
+      "answer": "Praktikant·in Forschung — Hanoi, Vietnam\n\nKommen Sie zu uns, um neue Technologien zu erkunden, wegweisende Projekte zu begleiten und von erfahrenen Fachleuten des Gebiets zu lernen. Das Praktikum ist eine Teilzeitstelle mit flexiblen Arbeitszeiten.\n\nNeugier und echte Freude an Forschung · Bereitschaft zu lernen und beizutragen · Gutes analytisches und lösungsorientiertes Denken · Teilzeit",
+      "links": [
+        {
+          "label": "Praktikant·in Forschung",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "Hanoi, Vietnam",
+        "requirements": "Neugier und echte Freude an Forschung · Bereitschaft zu lernen und beizutragen · Gutes analytisches und lösungsorientiertes Denken · Teilzeit"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#researchIntern.de",
+        "url": "/recruitment",
+        "contentHash": "f4bcedbd884a01901d01b79753bf193b413b0488c2429b82996ef84a9dc1aced"
+      }
+    },
+    {
+      "id": "job_data_analyst",
+      "label": "Datenanalyst·in",
+      "keywords": [
+        "Datenanalyst·in",
+        "Anforderungen für die Stelle Datenanalyst·in"
+      ],
+      "phrases": [],
+      "answer": "Datenanalyst·in — Ho-Chi-Minh-Stadt, Vietnam\n\nEnergiedaten auswerten, um die Leistung zu verbessern und Trends vorherzusagen — mit Python, SQL und Machine-Learning-Werkzeugen.\n\nPython · SQL · Machine Learning · Analytik · Vollzeit",
+      "links": [
+        {
+          "label": "Datenanalyst·in",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "Ho-Chi-Minh-Stadt, Vietnam",
+        "requirements": "Python · SQL · Machine Learning · Analytik · Vollzeit"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#dataAnalyst.de",
+        "url": "/recruitment",
+        "contentHash": "d69baf3c1e6ba4da00b3dd81f21b340201bd41ba1c5fceebba2559d91d96e089"
+      }
     }
   ],
   "fallback": {
     "answer": "Ich bin nicht sicher, ob ich Ihre Frage richtig verstanden habe. Können Sie präzisieren, ob es um Leistungen, Projekte, Karriere, Kontakt oder Richtlinien geht?"
-  }
+  },
+  "entityNames": [
+    "Lào Cai",
+    "Lao Cai master plan",
+    "Hop Thanh",
+    "Phân khu 6B",
+    "Subdivision 6B",
+    "Nguyễn Ái Quốc",
+    "Coc San",
+    "Dong Yen",
+    "Na Chi",
+    "Tan Bac",
+    "Nam Dong",
+    "Subdivision 5A",
+    "Park City Xuân An",
+    "Xuan An",
+    "Nguyen Hong Hanh",
+    "Tran Thi Lan Anh",
+    "Tran Quoc Toan",
+    "Nguyen Thanh Tam",
+    "Do Bao Long",
+    "Nguyen Thi Ly",
+    "Dinh Tung Duong",
+    "Trinh Thi Tinh",
+    "Nguyen Quynh Ly",
+    "Pham Thi Hien"
+  ]
 }

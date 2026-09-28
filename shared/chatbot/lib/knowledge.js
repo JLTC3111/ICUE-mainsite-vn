@@ -1,5 +1,6 @@
 import { getFaqEntries, isSupportedFaqLanguage } from '../../faq-content/index.js'
 import { withDeadline } from '../../resilience/requests.js'
+import { answerFollowUp, FAQ_CONTEXT, followUpType } from './conversation.js'
 import {
   findQuickTopic,
   isAmbiguousIntentMatch,
@@ -16,7 +17,7 @@ export { normalizeForSearch, scoreTokens, tokenize } from './matching.js'
  * `createChatbotKnowledge()` in src/script.js:4210-4535.
  *
  * It is a lexical scorer, not a model: every answer comes from an authored
- * intent in public/chatbot/kb.<lang>.json or from the FAQ corpus. The shared
+ * intent or site-derived record in public/chatbot/kb.<lang>.json, or the FAQ corpus. The shared
  * implementation also:
  *
  *  - the FAQ corpus is imported rather than read off a `window.__icueFaqData`
@@ -35,7 +36,7 @@ export const FAQ_THRESHOLD = 0.58
 /** Every language exposed by the site has a complete authored intent database. */
 export const KB_LANGUAGES = ['vi', 'en', 'de', 'fr', 'ko', 'ja']
 
-export function detectUserLanguage(text) {
+export function detectUserLanguage(text, entityNames = []) {
   const raw = String(text || '')
   if (/[가-힯]/.test(raw)) return 'ko'
   if (/[぀-ヿ]/.test(raw)) return 'ja'
@@ -43,7 +44,13 @@ export function detectUserLanguage(text) {
   // Latin-script languages are distinguished by common query words. This also
   // handles Vietnamese typed without diacritics and avoids treating French
   // accents such as é/à as proof that a message is Vietnamese.
-  const tokens = normalizeForSearch(raw).split(' ').filter(Boolean)
+  // Names are shared by translated site pages: “Hợp Thành” is not evidence
+  // that an otherwise English/French question should receive Vietnamese copy.
+  let languageText = ` ${normalizeForSearch(raw)} `
+  for (const name of [...entityNames].sort((a, b) => b.length - a.length)) {
+    languageText = languageText.replaceAll(` ${normalizeForSearch(name)} `, ' ')
+  }
+  const tokens = languageText.trim().split(' ').filter(Boolean)
   if (!tokens.length) return null
 
   const hintSets = {
@@ -55,14 +62,17 @@ export function detectUserLanguage(text) {
       'hello', 'what', 'how', 'where', 'when', 'services', 'service', 'projects',
       'project', 'recruitment', 'privacy', 'pricing', 'proposal', 'meeting',
       'internship', 'partner', 'press',
+      'tell', 'who', 'founded', 'requirements',
     ]),
     de: new Set([
       'hallo', 'danke', 'welche', 'was', 'wie', 'wo', 'leistungen', 'beratung',
       'kosten', 'honorar', 'projekt', 'karriere', 'datenschutz', 'termin',
+      'wer', 'gegrundet', 'anforderungen', 'informationen',
     ]),
     fr: new Set([
       'bonjour', 'merci', 'quelles', 'comment', 'ou', 'prestations', 'conseil',
       'cout', 'honoraires', 'projet', 'recrutement', 'confidentialite', 'rendez',
+      'parlez', 'qui', 'quand', 'fonde',
     ]),
   }
 
@@ -133,6 +143,7 @@ function prepareKb(kb, language, fallbackAnswer) {
     version: kb?.version || 2,
     language: kb?.language || language,
     intents: Array.isArray(kb?.intents) ? kb.intents : [],
+    entityNames: Array.isArray(kb?.entityNames) ? kb.entityNames : [],
     fallback: kb?.fallback || fallbackKb(language, fallbackAnswer).fallback,
   }
 
@@ -141,11 +152,12 @@ function prepareKb(kb, language, fallbackAnswer) {
     .map((it) => {
       const keywords = Array.isArray(it.keywords) ? it.keywords.filter(Boolean) : []
       const phrases = Array.isArray(it.phrases) ? it.phrases.filter(Boolean) : []
+      const aliases = Array.isArray(it.aliases) ? it.aliases.filter(Boolean) : []
       const ambiguousKeywords = Array.isArray(it.ambiguousKeywords)
         ? it.ambiguousKeywords.filter(Boolean)
         : []
       const links = Array.isArray(it.links) ? it.links.filter((l) => l && l.label && l.url) : []
-      const candidates = [...keywords, ...phrases, ...ambiguousKeywords]
+      const candidates = [...keywords, ...phrases, ...aliases, ...ambiguousKeywords]
         .map((s) => normalizeForSearch(String(s)))
         .filter(Boolean)
       return {
@@ -153,6 +165,8 @@ function prepareKb(kb, language, fallbackAnswer) {
         label: String(it.label || it.id || 'intent'),
         answer: String(it.answer),
         links,
+        facts: it.facts || {},
+        entityCandidates: (it.entities || []).map(normalizeForSearch),
         candidates,
         candidateTokens: candidates.map((candidate) => tokenize(candidate, language)),
       }
@@ -241,8 +255,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
   /** The language the *bot* should answer in — one of KB_LANGUAGES. */
   const botLanguage = KB_LANGUAGES.includes(siteLang) ? siteLang : 'en'
 
-  async function routeLanguage(raw, queryNorm) {
-    const direct = detectUserLanguage(raw)
+  async function routeLanguage(queryNorm, direct) {
     if (direct) return direct
 
     // Detection was inconclusive: compare all six authored databases and only
@@ -267,7 +280,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
     return botLanguage
   }
 
-  async function getResponse(userMessage, { onRetrieval } = {}) {
+  async function getResponse(userMessage, { onRetrieval, context } = {}) {
     const raw = String(userMessage || '').trim()
     if (!raw) {
       const kb = await ensureKb(botLanguage)
@@ -275,7 +288,6 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
     }
 
     const queryNorm = normalizeForSearch(raw)
-    const directLanguage = detectUserLanguage(raw)
     const unsupported = detectUnsupportedLanguage(raw)
     const uiStrings = copy(botLanguage)
     const quickTopic = findQuickTopic(uiStrings.quickTopics, raw)
@@ -290,6 +302,8 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
         content: quickTopic.answer,
         links: topicLinks,
         meta: { source: 'quick_topic', topic: quickTopic.id },
+        context: ['services', 'pricing'].includes(quickTopic.id)
+          ? { intentId: quickTopic.id === 'pricing' ? 'pricing_fees' : 'services', language: botLanguage } : null,
       }
     }
 
@@ -304,7 +318,16 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
     // The host can show a reading accessory only when we actually consult
     // authored knowledge. Quick topics and unsupported replies skip this.
     onRetrieval?.()
-    const detectedLang = directLanguage || await routeLanguage(raw, queryNorm)
+    const primaryKb = await ensureKb(botLanguage)
+    const directLanguage = detectUserLanguage(raw, primaryKb.entityNames)
+    const followLanguage = directLanguage || context?.language || botLanguage
+    const followType = followUpType(raw, followLanguage)
+    if (followType && context?.language === followLanguage) {
+      const followKb = await ensureKb(followLanguage)
+      const reply = answerFollowUp(followKb, followType, context, followLanguage, copy(followLanguage))
+      if (reply) return reply
+    }
+    const detectedLang = await routeLanguage(queryNorm, directLanguage)
     const queryTokens = tokenize(queryNorm, detectedLang)
     const kb = await ensureKb(detectedLang)
     const strings = copy(detectedLang)
@@ -328,6 +351,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
           category: localizedFaq.category,
           score: faqScore,
         },
+        context: FAQ_CONTEXT[localizedFaq.id] ? { intentId: FAQ_CONTEXT[localizedFaq.id], language: detectedLang } : null,
       }
     }
 
@@ -352,6 +376,7 @@ export function createChatbotKnowledge({ siteLang = 'vi', baseUrl = '/', urls, c
         content: bestIntent.intent.answer,
         links: bestIntent.intent.links || [],
         meta: { source: 'intent', intentId: bestIntent.intent.id, score: intentScore },
+        context: { intentId: bestIntent.intent.id, language: detectedLang },
       }
     }
 

@@ -58,8 +58,8 @@
     "dev:community": "npm run dev --prefix community-app",
     "verify:routes": "node scripts/verify-route-shells.mjs",
     "verify:locales": "node scripts/verify-locale-routing.mjs",
-    "verify:chatbot": "node scripts/verify-chatbot.mjs",
-    "test:chatbot": "node --experimental-vm-modules --test shared/chatbot/lib/matching.test.mjs shared/chatbot/Chatbot.test.mjs shared/chatbot/history.test.mjs",
+    "verify:chatbot": "node scripts/build-chatbot-knowledge.mjs --check && node scripts/verify-chatbot.mjs",
+    "test:chatbot": "node --experimental-vm-modules --test shared/chatbot/lib/matching.test.mjs shared/chatbot/lib/knowledge.test.mjs shared/chatbot/Chatbot.test.mjs shared/chatbot/history.test.mjs",
     "test:home-media": "node --test home-app/src/lib/homeBackgroundVideo.test.js",
     "test:security": "node --experimental-vm-modules --test tests/security/*.test.mjs",
     "test:react": "node --experimental-vm-modules --test tests/react/*.test.mjs",
@@ -68,6 +68,7 @@
     "build:home": "npm run build --prefix home-app",
     "dev:structure": "npm run dev --prefix structure-app",
     "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js",
-    "audit:recovery": "node scripts/audit-recovery-sources.mjs"
+    "audit:recovery": "node scripts/audit-recovery-sources.mjs",
+    "prepare:chatbot": "node scripts/build-chatbot-knowledge.mjs"
   }
 }

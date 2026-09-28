@@ -242,11 +242,28 @@ try {
     await page.locator('.icue-mascot--launcher[data-state="listening"][data-pose="listening"]').waitFor()
     assert.equal(await page.locator('.icue-mascot__coffee').count(), 0)
     assert.equal(await page.locator('.icue-mascot__head-motion .icue-mascot__headphones').count(), 1)
+    // Stop at a visible walking offset so settling into coffee must preserve
+    // an actual displaced frame, rather than accidentally testing a neutral one.
+    await page.locator('.icue-mascot--launcher .icue-mascot__bird').evaluate(el => {
+      const walk = el.getAnimations().find(animation => animation.animationName === 'icue-bird-music-walk')
+      walk.pause()
+      walk.currentTime = 1200
+    })
     await page.clock.fastForward(30_000)
     await page.locator('.icue-mascot--launcher[data-state="coffee"][data-pose="coffee"]').waitFor()
     assert.equal(await page.locator('.icue-mascot__coffee').count(), 1)
     assert.equal(await page.locator('.icue-mascot__coffee-logo').count(), 0)
     assert.equal(await page.locator('.icue-mascot__headphones').count(), 0)
+    assert.ok(await page.locator('.icue-mascot--launcher .icue-mascot__bird').evaluate(el =>
+      el.getAnimations().some(animation => animation.effect?.composite === 'add'),
+    ), 'walking eases into coffee from the visible frame')
+    await page.waitForFunction(() => !document.querySelector('.icue-mascot--launcher').getAnimations({ subtree: true })
+      .some(animation => animation.effect?.composite === 'add'))
+    const tail = page.locator('.icue-mascot--launcher .icue-mascot__part--tail')
+    assert.equal(await tail.evaluate(el => getComputedStyle(el).animationName), 'icue-bird-coffee-tail')
+    const tailFrame = await tail.evaluate(el => getComputedStyle(el).transform)
+    await page.waitForTimeout(450)
+    assert.notEqual(await tail.evaluate(el => getComputedStyle(el).transform), tailFrame, 'the seated coffee tail wiggles')
     await page.clock.fastForward(59_999)
     await mascotState(page, 'coffee')
     await page.clock.fastForward(1)

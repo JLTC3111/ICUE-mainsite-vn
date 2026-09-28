@@ -1,10 +1,19 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const HEADERS = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
 
-function supabaseConfig() {
+async function supabaseConfig() {
   const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL
   const key = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY
-  return { url, key }
+  if (url && key) return { url, key }
+
+  // The public newsroom config is bundled by netlify.toml. Builds may have
+  // Supabase configured even when Functions have no environment variables.
+  const { resolveServerEnv } = await import('../../news-app/src/lib/serverEnv.js')
+  const env = resolveServerEnv()
+  return {
+    url: url || env.SUPABASE_URL,
+    key: key || env.SUPABASE_ANON_KEY,
+  }
 }
 
 exports.handler = async (event) => {
@@ -12,7 +21,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: HEADERS, body: JSON.stringify({ error: 'method not allowed' }) }
   }
 
-  const { url, key } = supabaseConfig()
+  const { url, key } = await supabaseConfig()
   if (!url || !key) {
     return {
       statusCode: 503,

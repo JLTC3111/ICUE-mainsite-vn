@@ -31,6 +31,7 @@ function validateKb(kb, expectedLanguage) {
     const groups = [
       ['keyword', intent.keywords],
       ['phrase', intent.phrases],
+      ['alias', intent.aliases || []],
       ['ambiguous', intent.ambiguousKeywords || []],
     ]
     assert.ok(groups.some(([, values]) => Array.isArray(values) && values.length > 0),
@@ -50,6 +51,12 @@ function validateKb(kb, expectedLanguage) {
     for (const link of intent.links || []) {
       assert.ok(String(link.label || '').trim(), `${expectedLanguage}:${intent.id}: link label missing`)
       assert.match(link.url || '', /^\/[a-z0-9/_-]*$/i, `${expectedLanguage}:${intent.id}: invalid link`)
+    }
+    if (intent.source) {
+      assert.equal(intent.source.kind, 'site')
+      assert.ok(intent.source.path, `${intent.id}: missing source file`)
+      assert.match(intent.source.contentHash || '', /^[a-f0-9]{64}$/)
+      assert.ok(intent.links.some(link => link.url === intent.source.url), `${intent.id}: missing source link`)
     }
   }
 

@@ -1,4 +1,4 @@
-// Import the canonical authored files as assets. Every standalone app gets
+// Import the authored and site-derived knowledge as assets. Every standalone app gets
 // base-aware URLs; no dependency on a different app's public directory.
 import vi from '../../../public/chatbot/kb.vi.json?url'
 import en from '../../../public/chatbot/kb.en.json?url'

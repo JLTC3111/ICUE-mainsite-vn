@@ -6,9 +6,9 @@
   "scripts": {
     "sync-assets": "node scripts/sync-assets.mjs && node scripts/build-lens-model.mjs",
     "dev": "vite",
-    "predev": "npm run sync-assets",
+    "predev": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets",
     "build": "vite build",
-    "prebuild": "npm run sync-assets && node scripts/write-supabase-config.mjs && node scripts/check-env.mjs",
+    "prebuild": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets && node scripts/write-supabase-config.mjs && node scripts/check-env.mjs",
     "build:watch": "vite build --watch",
     "lint": "eslint .",
     "test": "node --test \"src/**/*.test.js\"",

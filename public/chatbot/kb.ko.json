@@ -5,233 +5,1426 @@
     {
       "id": "greeting",
       "label": "인사",
-      "keywords": ["안녕하세요", "안녕", "좋은 아침", "좋은 오후", "좋은 저녁"],
-      "phrases": ["안녕하세요", "반갑습니다", "안녕하십니까"],
-      "answer": "안녕하세요! ICUE의 서비스, 프로젝트, 채용, 정책 및 연락처 정보를 찾는 데 도움을 드릴 수 있습니다. 무엇을 찾고 계신가요?"
+      "keywords": [
+        "안녕하세요",
+        "안녕",
+        "좋은 아침",
+        "좋은 오후",
+        "좋은 저녁"
+      ],
+      "phrases": [
+        "안녕하세요",
+        "반갑습니다",
+        "안녕하십니까"
+      ],
+      "answer": "안녕하세요! ICUE의 서비스, 프로젝트, 채용, 정책 및 연락처 정보를 찾는 데 도움을 드릴 수 있습니다. 무엇을 찾고 계신가요?",
+      "aliases": []
     },
     {
       "id": "services",
       "label": "서비스",
-      "keywords": ["서비스", "컨설팅", "자문", "자문 서비스"],
-      "phrases": ["어떤 서비스를 제공하나요", "무엇을 도와줄 수 있나요", "어떤 자문을 제공하나요"],
+      "keywords": [
+        "서비스",
+        "컨설팅",
+        "자문",
+        "자문 서비스"
+      ],
+      "phrases": [
+        "어떤 서비스를 제공하나요",
+        "무엇을 도와줄 수 있나요",
+        "어떤 자문을 제공하나요"
+      ],
       "answer": "ICUE는 계획 및 설계, 프로젝트 관리, 절차 지원, 지속가능성 중심 솔루션과 관련된 자문을 제공합니다. 프로젝트별 검토를 위해 프로젝트 유형, 위치, 필요한 업무 범위를 문의 페이지로 보내 주세요.",
       "links": [
-        { "label": "프로젝트 / 서비스", "url": "/our-work" },
-        { "label": "자주 묻는 질문", "url": "/faqs" },
-        { "label": "문의", "url": "/contact" }
-      ]
+        {
+          "label": "프로젝트 / 서비스",
+          "url": "/our-work"
+        },
+        {
+          "label": "자주 묻는 질문",
+          "url": "/faqs"
+        },
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "planning_design",
       "label": "계획 및 설계",
-      "keywords": ["계획", "도시 계획", "마스터플랜", "설계", "개념 설계", "상세 설계"],
-      "phrases": ["계획 업무도 하나요", "설계를 도와줄 수 있나요", "마스터플랜 수립"],
+      "keywords": [
+        "계획",
+        "도시 계획",
+        "마스터플랜",
+        "설계",
+        "개념 설계",
+        "상세 설계"
+      ],
+      "phrases": [
+        "계획 업무도 하나요",
+        "설계를 도와줄 수 있나요",
+        "마스터플랜 수립"
+      ],
       "answer": "ICUE는 프로젝트 요구에 따라 계획 및 설계를 지원할 수 있습니다. 부지 또는 위치, 목표, 현재 단계(아이디어 / 개념 / 상세 설계)를 문의에 포함하면 팀이 적절한 진행 방식을 확인할 수 있습니다.",
       "links": [
-        { "label": "프로젝트", "url": "/our-work" },
-        { "label": "문의", "url": "/contact" }
+        {
+          "label": "프로젝트",
+          "url": "/our-work"
+        },
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "도시 설계 자문",
+        "도시계획 설계"
       ]
     },
     {
       "id": "project_management",
       "label": "프로젝트 관리",
-      "keywords": ["프로젝트 관리", "사업 관리", "조정", "실행", "프로젝트 수행"],
-      "phrases": ["프로젝트를 관리해 줄 수 있나요", "프로젝트 관리 지원"],
+      "keywords": [
+        "프로젝트 관리",
+        "사업 관리",
+        "조정",
+        "실행",
+        "프로젝트 수행"
+      ],
+      "phrases": [
+        "프로젝트를 관리해 줄 수 있나요",
+        "프로젝트 관리 지원"
+      ],
       "answer": "ICUE는 업무 범위에 따라 프로젝트 관리와 조정을 지원할 수 있습니다. 일정, 이해관계자, 예상 산출물을 문의에 포함하면 팀이 업무를 검토할 수 있습니다.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "프로젝트 조정",
+        "사업 관리"
+      ]
     },
     {
       "id": "supervision",
       "label": "현장 감독",
-      "keywords": ["감독", "모니터링", "현장 감독", "공사 감독", "품질 관리"],
-      "phrases": ["공사를 감독하나요", "현장 감독 지원"],
+      "keywords": [
+        "감독",
+        "모니터링",
+        "현장 감독",
+        "공사 감독",
+        "품질 관리"
+      ],
+      "phrases": [
+        "공사를 감독하나요",
+        "현장 감독 지원"
+      ],
       "answer": "감독 또는 모니터링 지원 여부는 프로젝트 유형, 위치, 단계(설계 / 입찰 / 시공)에 따라 달라집니다. 해당 정보를 문의 페이지로 보내면 ICUE가 가능한 지원 범위를 확인할 수 있습니다.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "건설 현장 감리"
+      ]
     },
     {
       "id": "permits_legal",
       "label": "인허가 및 절차",
-      "keywords": ["허가", "인허가", "법률", "행정 절차", "건축 허가", "승인"],
-      "phrases": ["인허가를 도와줄 수 있나요", "법적 절차 지원"],
+      "keywords": [
+        "허가",
+        "인허가",
+        "법률",
+        "행정 절차",
+        "건축 허가",
+        "승인"
+      ],
+      "phrases": [
+        "인허가를 도와줄 수 있나요",
+        "법적 절차 지원"
+      ],
       "answer": "ICUE는 프로젝트와 관할 지역에 따라 절차 및 서류 준비를 지원할 수 있습니다. 도시 또는 성과 프로젝트 유형을 알려 주시면 업무 범위와 예상 필요 서류를 확인할 수 있습니다.",
       "links": [
-        { "label": "자주 묻는 질문", "url": "/faqs" },
-        { "label": "문의", "url": "/contact" }
+        {
+          "label": "자주 묻는 질문",
+          "url": "/faqs"
+        },
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "건축 허가 지원"
       ]
     },
     {
       "id": "documents_required",
       "label": "필요 서류",
-      "keywords": ["서류", "문서", "필요 자료", "토지 서류", "현황 도면"],
-      "phrases": ["어떤 서류가 필요한가요", "필요한 문서"],
+      "keywords": [
+        "서류",
+        "문서",
+        "필요 자료",
+        "토지 서류",
+        "현황 도면"
+      ],
+      "phrases": [
+        "어떤 서류가 필요한가요",
+        "필요한 문서"
+      ],
       "answer": "일반적인 시작 자료에는 기본 부지 정보, 목표와 업무 범위, 기존 도면(있는 경우), 관련 토지 이용 또는 법적 서류가 포함됩니다. 최종 요구 사항은 프로젝트에 따라 달라지므로 ICUE와 확인해야 합니다.",
       "links": [
-        { "label": "문의", "url": "/contact" },
-        { "label": "자주 묻는 질문", "url": "/faqs" }
+        {
+          "label": "문의",
+          "url": "/contact"
+        },
+        {
+          "label": "자주 묻는 질문",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": [
+        "프로젝트에 필요한 서류는 무엇인가요",
+        "어떤 자료를 준비해야 하나요"
       ]
     },
     {
       "id": "pricing_fees",
       "label": "서비스 비용",
-      "keywords": ["가격", "비용", "수수료", "예산", "견적"],
-      "phrases": ["비용이 얼마인가요", "서비스 비용은 어떻게 계산하나요", "견적을 받을 수 있나요"],
+      "keywords": [
+        "가격",
+        "비용",
+        "수수료",
+        "예산",
+        "견적"
+      ],
+      "phrases": [
+        "비용이 얼마인가요",
+        "서비스 비용은 어떻게 계산하나요",
+        "견적을 받을 수 있나요"
+      ],
       "answer": "비용은 업무 범위, 일정, 프로젝트 복잡도에 따라 달라집니다. 프로젝트별 견적을 위해 프로젝트 유형, 위치, 규모, 일정, 필요한 결과물을 간단히 정리해 문의 페이지로 보내 주세요.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "자문 비용이 얼마인가요"
+      ]
     },
     {
       "id": "payment_installments",
       "label": "결제 조건",
-      "keywords": ["결제", "분할 결제", "단계별 지급", "마일스톤", "계약"],
-      "phrases": ["분할 납부가 가능한가요", "결제 조건은 무엇인가요"],
+      "keywords": [
+        "결제",
+        "분할 결제",
+        "단계별 지급",
+        "마일스톤",
+        "계약"
+      ],
+      "phrases": [
+        "분할 납부가 가능한가요",
+        "결제 조건은 무엇인가요"
+      ],
       "answer": "결제 조건은 합의된 단계에 맞출 수 있습니다(예: 개념 → 초안 → 최종본). 실제 결제 일정은 서면 제안서 또는 계약서에서 확인되어야 합니다.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "process_steps",
       "label": "프로젝트 절차",
-      "keywords": ["절차", "진행 과정", "업무 흐름", "단계", "협업 방식"],
-      "phrases": ["진행 절차가 어떻게 되나요", "어떻게 함께 일하나요"],
+      "keywords": [
+        "절차",
+        "진행 과정",
+        "업무 흐름",
+        "단계",
+        "협업 방식"
+      ],
+      "phrases": [
+        "진행 절차가 어떻게 되나요",
+        "어떻게 함께 일하나요"
+      ],
       "answer": "일반적인 흐름은 초기 논의 → 요구 사항 정리 → 부지 및 맥락 검토 → 초안 산출물 → 합의된 수정 → 최종 납품입니다. 정확한 단계와 수정 횟수는 프로젝트별로 확정됩니다.",
-      "links": [{ "label": "자주 묻는 질문", "url": "/faqs" }]
+      "links": [
+        {
+          "label": "자주 묻는 질문",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": [
+        "협업을 어떻게 시작하나요"
+      ]
     },
     {
       "id": "timeline_duration",
       "label": "프로젝트 일정",
-      "keywords": ["일정", "기간", "얼마나 걸리나요", "프로젝트 스케줄", "완료 시기"],
-      "phrases": ["완료까지 얼마나 걸리나요", "프로젝트 일정이 어떻게 되나요"],
+      "keywords": [
+        "일정",
+        "기간",
+        "얼마나 걸리나요",
+        "프로젝트 스케줄",
+        "완료 시기"
+      ],
+      "phrases": [
+        "완료까지 얼마나 걸리나요",
+        "프로젝트 일정이 어떻게 되나요"
+      ],
       "answer": "일정은 업무 범위, 승인 절차, 필요한 산출물에 따라 달라집니다. ICUE에 문의할 때 희망 마감일과 개념안 또는 전체 패키지 중 무엇이 필요한지 알려 주시면 일정을 검토할 수 있습니다.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "프로젝트는 얼마나 걸리나요"
+      ]
     },
     {
       "id": "bim_3d",
       "label": "BIM 및 3D",
-      "keywords": ["bim", "3d", "모델", "렌더링", "시각화"],
-      "phrases": ["bim을 사용하나요", "3d 모델"],
+      "keywords": [
+        "bim",
+        "3d",
+        "모델",
+        "렌더링",
+        "시각화"
+      ],
+      "phrases": [
+        "bim을 사용하나요",
+        "3d 모델"
+      ],
       "answer": "ICUE는 시각화와 설계 조정에 적합한 경우 BIM 및 3D 모델링을 사용할 수 있습니다. 모델, 뷰, 기술 조정 등 제공 가능한 산출물은 프로젝트 업무 범위에서 확정됩니다.",
-      "links": [{ "label": "프로젝트", "url": "/our-work" }]
+      "links": [
+        {
+          "label": "프로젝트",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": [
+        "건설 정보 모델링",
+        "Building Information Modeling"
+      ]
     },
     {
       "id": "green_sustainability",
       "label": "지속가능성",
-      "keywords": ["지속가능", "지속가능성", "친환경", "기후", "환경", "에너지 절약"],
-      "phrases": ["친환경 설계", "지속가능한 솔루션"],
+      "keywords": [
+        "지속가능",
+        "지속가능성",
+        "친환경",
+        "기후",
+        "환경",
+        "에너지 절약"
+      ],
+      "phrases": [
+        "친환경 설계",
+        "지속가능한 솔루션"
+      ],
       "answer": "ICUE는 프로젝트 맥락에 따라 자재, 에너지 사용, 기후 회복력과 같은 지속가능성 목표를 반영할 수 있습니다. 우선순위와 제약 조건을 프로젝트 설명에 포함해 주세요.",
-      "links": [{ "label": "프로젝트", "url": "/our-work" }]
+      "links": [
+        {
+          "label": "프로젝트",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "sectors_clients",
       "label": "고객 및 분야",
-      "keywords": ["고객", "분야", "정부", "공공 부문", "기업", "개인"],
-      "phrases": ["누구와 일하나요", "주요 고객은 누구인가요"],
+      "keywords": [
+        "고객",
+        "분야",
+        "정부",
+        "공공 부문",
+        "기업",
+        "개인"
+      ],
+      "phrases": [
+        "누구와 일하나요",
+        "주요 고객은 누구인가요"
+      ],
       "answer": "ICUE는 프로그램이나 프로젝트에 따라 개인, 조직과 기업, 공공 부문 이해관계자와 협력합니다. 공개된 사례는 이전 프로젝트 페이지에서 확인할 수 있습니다.",
-      "links": [{ "label": "이전 프로젝트", "url": "/past-projects" }]
+      "links": [
+        {
+          "label": "이전 프로젝트",
+          "url": "/past-projects"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "locations",
       "label": "서비스 지역",
-      "keywords": ["어디", "위치", "하노이", "베트남", "지방", "원격", "현장"],
-      "phrases": ["어디에서 일하나요", "어디에 위치해 있나요"],
+      "keywords": [
+        "어디",
+        "위치",
+        "하노이",
+        "베트남",
+        "지방",
+        "원격",
+        "현장"
+      ],
+      "phrases": [
+        "어디에서 일하나요",
+        "어디에 위치해 있나요"
+      ],
       "answer": "서비스 가능 여부는 프로젝트 위치와 원격 또는 현장 지원 필요 여부에 따라 달라집니다. 확인을 위해 도시 또는 성과 선호하는 업무 방식을 문의 페이지로 보내 주세요.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "portfolio_projects",
       "label": "이전 프로젝트",
-      "keywords": ["포트폴리오", "이전 프로젝트", "수행 프로젝트", "사례 연구", "실적"],
-      "phrases": ["포트폴리오를 보여 주세요", "어떤 프로젝트를 수행했나요"],
+      "keywords": [
+        "포트폴리오",
+        "이전 프로젝트",
+        "수행 프로젝트",
+        "사례 연구",
+        "실적"
+      ],
+      "phrases": [
+        "포트폴리오를 보여 주세요",
+        "어떤 프로젝트를 수행했나요"
+      ],
       "answer": "프로젝트 및 이전 프로젝트 페이지에서 도시, 환경, 커뮤니티 관련 작업을 포함한 공개 프로젝트와 활동을 확인할 수 있습니다.",
       "links": [
-        { "label": "이전 프로젝트", "url": "/past-projects" },
-        { "label": "프로젝트", "url": "/our-work" }
-      ]
+        {
+          "label": "이전 프로젝트",
+          "url": "/past-projects"
+        },
+        {
+          "label": "프로젝트",
+          "url": "/our-work"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "news_updates",
       "label": "뉴스 및 소식",
-      "keywords": ["뉴스", "소식", "업데이트", "기사"],
-      "phrases": ["최신 뉴스", "최근 기사"],
+      "keywords": [
+        "뉴스",
+        "소식",
+        "업데이트",
+        "기사"
+      ],
+      "phrases": [
+        "최신 뉴스",
+        "최근 기사"
+      ],
       "answer": "최근 소식과 기사는 뉴스 페이지에서 확인할 수 있습니다.",
-      "links": [{ "label": "뉴스", "url": "/newsroom/" }]
+      "links": [
+        {
+          "label": "뉴스",
+          "url": "/newsroom/"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "community",
       "label": "커뮤니티 활동",
-      "keywords": ["커뮤니티", "행사", "활동", "워크숍", "교육"],
-      "phrases": ["커뮤니티 활동", "icue 행사"],
+      "keywords": [
+        "커뮤니티",
+        "행사",
+        "활동",
+        "워크숍",
+        "교육"
+      ],
+      "phrases": [
+        "커뮤니티 활동",
+        "icue 행사"
+      ],
       "answer": "ICUE는 커뮤니티 활동과 프로그램을 운영하거나 참여하기도 합니다. 자세한 내용은 커뮤니티 활동 페이지에서 확인해 주세요.",
-      "links": [{ "label": "커뮤니티 활동", "url": "/community-activities" }]
+      "links": [
+        {
+          "label": "커뮤니티 활동",
+          "url": "/community-activities"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "recruitment",
       "label": "채용",
-      "keywords": ["채용", "일자리", "경력", "지원", "구인"],
-      "phrases": ["현재 채용 중인가요", "어떻게 지원하나요", "채용 공고"],
+      "keywords": [
+        "채용",
+        "일자리",
+        "경력",
+        "지원",
+        "구인"
+      ],
+      "phrases": [
+        "현재 채용 중인가요",
+        "어떻게 지원하나요",
+        "채용 공고"
+      ],
       "answer": "현재 채용 공고와 공개된 자격 요건은 채용 페이지에서 확인해 주세요. 이력서와 지원 메시지를 기재된 업무에 맞추고 직접 관련된 경험을 포함하는 것이 좋습니다.",
-      "links": [{ "label": "채용", "url": "/recruitment" }]
+      "links": [
+        {
+          "label": "채용",
+          "url": "/recruitment"
+        }
+      ],
+      "aliases": [
+        "입사 지원에 필요한 서류",
+        "이력서는 어디로 보내나요"
+      ]
     },
     {
       "id": "internship",
       "label": "인턴십",
-      "keywords": ["인턴", "인턴십", "연수생", "학생"],
-      "phrases": ["인턴십을 제공하나요", "인턴 기회"],
+      "keywords": [
+        "인턴",
+        "인턴십",
+        "연수생",
+        "학생"
+      ],
+      "phrases": [
+        "인턴십을 제공하나요",
+        "인턴 기회"
+      ],
       "answer": "인턴십 정보는 먼저 채용 페이지에서 확인해 주세요. 간결한 지원서에는 관련 전공, 실무 기술, 포트폴리오 작업, 배우고 싶은 내용을 포함하는 것이 좋습니다.",
-      "links": [{ "label": "채용", "url": "/recruitment" }]
+      "links": [
+        {
+          "label": "채용",
+          "url": "/recruitment"
+        }
+      ],
+      "aliases": [
+        "인턴 지원 서류"
+      ]
     },
     {
       "id": "partnership",
       "label": "파트너십",
-      "keywords": ["파트너", "파트너십", "협업", "협력", "업무 협약"],
-      "phrases": ["파트너로 협력하고 싶습니다", "협업 기회"],
+      "keywords": [
+        "파트너",
+        "파트너십",
+        "협업",
+        "협력",
+        "업무 협약"
+      ],
+      "phrases": [
+        "파트너로 협력하고 싶습니다",
+        "협업 기회"
+      ],
       "answer": "ICUE는 목표와 업무 범위가 부합하는 경우 협업을 논의할 수 있습니다. 소속, 주제, 제안 내용, 기대 결과를 문의에 포함해 주세요.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "media_press",
       "label": "미디어 및 언론",
-      "keywords": ["미디어", "언론", "보도", "인터뷰", "연사", "인용"],
-      "phrases": ["언론 문의", "보도 문의", "기사에서 icue를 인용하고 싶습니다"],
+      "keywords": [
+        "미디어",
+        "언론",
+        "보도",
+        "인터뷰",
+        "연사",
+        "인용"
+      ],
+      "phrases": [
+        "언론 문의",
+        "보도 문의",
+        "기사에서 icue를 인용하고 싶습니다"
+      ],
       "answer": "미디어 또는 언론 문의는 마감일, 주제, 매체명, 요청하는 참여 형태(인용 / 인터뷰 / 연사)를 포함해 ICUE에 보내 주세요.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "schedule_meeting",
       "label": "상담 예약",
-      "keywords": ["미팅", "통화", "약속", "예약", "상담"],
-      "phrases": ["통화를 예약하고 싶습니다", "미팅 예약", "상담 일정을 잡고 싶습니다"],
+      "keywords": [
+        "미팅",
+        "통화",
+        "약속",
+        "예약",
+        "상담"
+      ],
+      "phrases": [
+        "통화를 예약하고 싶습니다",
+        "미팅 예약",
+        "상담 일정을 잡고 싶습니다"
+      ],
       "answer": "상담을 요청하려면 문의 페이지에서 원하는 시간대, 시간대 정보, 논의할 주제를 함께 보내 주세요.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "request_proposal",
       "label": "제안서 및 RFP",
-      "keywords": ["제안서", "rfp", "과업지시서", "업무 범위", "sow", "입찰"],
-      "phrases": ["제안서를 보내주실 수 있나요", "입찰 제안"],
+      "keywords": [
+        "제안서",
+        "rfp",
+        "과업지시서",
+        "업무 범위",
+        "sow",
+        "입찰"
+      ],
+      "phrases": [
+        "제안서를 보내주실 수 있나요",
+        "입찰 제안"
+      ],
       "answer": "가능합니다. 목표, 산출물, 일정, 가능한 경우 예산 범위를 포함한 간단한 업무 범위를 보내 주시면 ICUE가 제안서 구성과 다음 단계를 안내할 수 있습니다.",
-      "links": [{ "label": "문의", "url": "/contact" }]
+      "links": [
+        {
+          "label": "문의",
+          "url": "/contact"
+        }
+      ],
+      "aliases": [
+        "RFP",
+        "제안 요청서"
+      ]
     },
     {
       "id": "policies",
       "label": "정책",
-      "keywords": ["개인정보", "개인정보 보호", "gdpr", "이용 약관", "쿠키"],
-      "phrases": ["개인정보 처리방침", "이용 약관", "쿠키 정책"],
+      "keywords": [
+        "개인정보",
+        "개인정보 보호",
+        "gdpr",
+        "이용 약관",
+        "쿠키"
+      ],
+      "phrases": [
+        "개인정보 처리방침",
+        "이용 약관",
+        "쿠키 정책"
+      ],
       "answer": "아래 링크에서 ICUE의 개인정보 보호, GDPR, 이용 약관 및 쿠키 페이지를 확인할 수 있습니다.",
       "links": [
-        { "label": "개인정보 보호", "url": "/legal/privacy" },
-        { "label": "GDPR", "url": "/legal/gdpr" },
-        { "label": "이용 약관", "url": "/legal/terms" },
-        { "label": "쿠키", "url": "/legal/cookies" }
-      ]
+        {
+          "label": "개인정보 보호",
+          "url": "/legal/privacy"
+        },
+        {
+          "label": "GDPR",
+          "url": "/legal/gdpr"
+        },
+        {
+          "label": "이용 약관",
+          "url": "/legal/terms"
+        },
+        {
+          "label": "쿠키",
+          "url": "/legal/cookies"
+        }
+      ],
+      "aliases": []
     },
     {
       "id": "faq",
       "label": "자주 묻는 질문",
-      "keywords": ["faq", "자주 묻는 질문", "질문과 답변"],
-      "phrases": ["faq", "자주 묻는 질문"],
+      "keywords": [
+        "faq",
+        "자주 묻는 질문",
+        "질문과 답변"
+      ],
+      "phrases": [
+        "faq",
+        "자주 묻는 질문"
+      ],
       "answer": "빠른 답변은 자주 묻는 질문 페이지에서 확인할 수 있습니다. 여기에서 입력한 질문은 ICUE가 작성한 의도 및 FAQ 콘텐츠와만 비교됩니다.",
-      "links": [{ "label": "자주 묻는 질문", "url": "/faqs" }]
+      "links": [
+        {
+          "label": "자주 묻는 질문",
+          "url": "/faqs"
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "id": "about_icue",
+      "label": "ICUE 소개",
+      "keywords": [
+        "ICUE 소개",
+        "ICUE는 무엇인가요",
+        "어떤 연구소인가요"
+      ],
+      "phrases": [],
+      "answer": "국내외에서 도시 계획, 기후 변화에 대응하는 도시 개발, 그리고 자연환경 보호를 담당하는 전문가 팀입니다",
+      "links": [
+        {
+          "label": "ICUE 소개",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json",
+        "url": "/about-us",
+        "contentHash": "3ba00890126872b19d5b54f5216f2789bdad8aa8700d8b88da2226d57456a1bb"
+      }
+    },
+    {
+      "id": "institute_history",
+      "label": "연구소 연혁",
+      "keywords": [
+        "연구소 연혁",
+        "ICUE는 언제 설립되었나요",
+        "설립 연도"
+      ],
+      "phrases": [],
+      "answer": "건설·도시경제연구원(이하 '연구원')은  2013년 4월 16일 베트남건설총회 상임위원회의 결정 제29/QĐ/THXDVN호에 따라 설립되었습니다",
+      "links": [
+        {
+          "label": "연구소 연혁",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json",
+        "url": "/about-us",
+        "contentHash": "1565b22d12c9ec123e922461ba8f364cd15336c640f48bde7293fbea7a9891a7"
+      }
+    },
+    {
+      "id": "research_activities",
+      "label": "연구 활동",
+      "keywords": [
+        "연구 활동",
+        "ICUE는 어떤 연구를 하나요",
+        "과학 연구"
+      ],
+      "phrases": [],
+      "answer": "건설, 자문, 도시 개발 계획 수립, 도시경제, 건설경제 및 환경 보호 분야의 기초 연구, 응용 연구와 기술 개발.",
+      "links": [
+        {
+          "label": "연구 활동",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json",
+        "url": "/about-us",
+        "contentHash": "05dd7b6c476317aa4e9c3e0a67651e1ded77006793af3753e1f81c8ba0b688e3"
+      }
+    },
+    {
+      "id": "technology_transfer",
+      "label": "기술 이전",
+      "keywords": [
+        "기술 이전",
+        "컨퍼런스 및 워크숍",
+        "녹색 전환"
+      ],
+      "phrases": [],
+      "answer": "과학 기술 이전과 녹색 전환. 정보 서비스 제공, 국내외 회의 및 세미나 개최. 도시 계획, 도시 개발, 환경 보호 분야에서 국내외 기관과의 협력 및 연계를  효과적으로  추진하고, 연결성을 높여  미래에 대비한  도시를 만들어 갑니다.",
+      "links": [
+        {
+          "label": "기술 이전",
+          "url": "/about-us"
+        }
+      ],
+      "facts": {},
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json",
+        "url": "/about-us",
+        "contentHash": "9ea463e8a03acb9b9f3ead8676b78ddba591495a5f4e07221a0eb3caa0c08ba6"
+      }
+    },
+    {
+      "id": "project_lao_cai",
+      "label": "라오까이시 도시기본계획 조정",
+      "keywords": [
+        "라오까이시 도시기본계획 조정",
+        "Lào Cai",
+        "Lao Cai master plan",
+        "Lào Cai 프로젝트에 대해 알려 주세요",
+        "Lao Cai master plan 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "라오까이시 도시기본계획 조정\n라오까이시. 규모: 28,162.64ha, 2045년까지\n\n계획 면적은 28,162.64ha이며 목표는 2045년 완료입니다. 기후변화에 적응하면서 토지를 유연하고 지속가능하게 쓰도록 도시 공간을 재구성하는 장기 전략입니다. 주거·상업·산업·공공공간·녹지를 균형 있게 배분하고 교통·상하수도·에너지·정보통신 기반을 확충하며, 인구 증가와 신규 주거지를 계획해 라오까이를 지역 경제·교통 거점으로 높입니다.",
+      "links": [
+        {
+          "label": "라오까이시 도시기본계획 조정",
+          "url": "/past-projects/1"
+        }
+      ],
+      "facts": {
+        "location": "라오까이시",
+        "scale": "규모: 28,162.64ha, 2045년까지"
+      },
+      "entities": [
+        "Lào Cai",
+        "Lao Cai master plan"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.laoCai",
+        "url": "/past-projects/1",
+        "contentHash": "07cecf2c1b18b59a0ff7338cb041c6947f225c2593ddba52ec991a0dee662915"
+      }
+    },
+    {
+      "id": "project_hop_thanh",
+      "label": "합타인 사 상세건설계획 1/500",
+      "keywords": [
+        "합타인 사 상세건설계획 1/500",
+        "Hop Thanh",
+        "Hop Thanh 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "합타인 사 상세건설계획 1/500\n라오까이시 합타인 사. 규모: 2,693.3ha\n\n면적 2,693.3ha의 1/500 상세건설계획으로, 도시기본계획의 방향을 기능 구역, 도로망, 기술·사회 기반시설로 구체화합니다. 현대적이고 환경친화적인 지구를 만들어 향후 경제·사회 수요에 대응하고 기존 기반을 정비하는 것이 목표입니다.",
+      "links": [
+        {
+          "label": "합타인 사 상세건설계획 1/500",
+          "url": "/past-projects/2"
+        }
+      ],
+      "facts": {
+        "location": "라오까이시 합타인 사",
+        "scale": "규모: 2,693.3ha"
+      },
+      "entities": [
+        "Hop Thanh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.hopThanh",
+        "url": "/past-projects/2",
+        "contentHash": "1b89d94b639bd53b3d3190110eae8e642971b54c90e9021b643aa4df7aff67b2"
+      }
+    },
+    {
+      "id": "project_subdivision6b",
+      "label": "6B 지구 계획 (응우옌아이꾸옥 동)",
+      "keywords": [
+        "6B 지구 계획 (응우옌아이꾸옥 동)",
+        "Phân khu 6B",
+        "Subdivision 6B",
+        "Nguyễn Ái Quốc",
+        "Phân khu 6B 프로젝트에 대해 알려 주세요",
+        "Subdivision 6B 프로젝트에 대해 알려 주세요",
+        "Nguyễn Ái Quốc 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "6B 지구 계획 (응우옌아이꾸옥 동)\n하이즈엉시. 규모: 1,159ha\n\n6B 지구는 하이즈엉 도시 재편의 전략적 단계로, 응우옌아이꾸옥 동 1,100ha 이상에 걸쳐 기술 기반을 정비하고 생태 도시 공간을 넓히며 현대적 기능 지구를 만듭니다.",
+      "links": [
+        {
+          "label": "6B 지구 계획 (응우옌아이꾸옥 동)",
+          "url": "/past-projects/3"
+        }
+      ],
+      "facts": {
+        "location": "하이즈엉시",
+        "scale": "규모: 1,159ha"
+      },
+      "entities": [
+        "Phân khu 6B",
+        "Subdivision 6B",
+        "Nguyễn Ái Quốc"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.subdivision6b",
+        "url": "/past-projects/3",
+        "contentHash": "aada352cf66d603e43b6c433340d893ca5588f0d37efed2278ec795f92728539"
+      }
+    },
+    {
+      "id": "project_coc_san",
+      "label": "꼭산 건설 지구 계획",
+      "keywords": [
+        "꼭산 건설 지구 계획",
+        "Coc San",
+        "Coc San 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "꼭산 건설 지구 계획\n라오까이시. 규모: 1,173.1ha\n\n꼭산 지구는 라오까이 도시 확장의 핵심입니다. 선진 기술 기반과 자연 경관을 결합해 균형 잡힌 생태 도시를 만들고, 양질의 주거·상업·공공시설을 광역 교통축과 연결합니다.",
+      "links": [
+        {
+          "label": "꼭산 건설 지구 계획",
+          "url": "/past-projects/4"
+        }
+      ],
+      "facts": {
+        "location": "라오까이시",
+        "scale": "규모: 1,173.1ha"
+      },
+      "entities": [
+        "Coc San"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.cocSan",
+        "url": "/past-projects/4",
+        "contentHash": "c0ac081461f8c675a386c3a4053e2786fc8bba10f9ad27da6abef51d774507c8"
+      }
+    },
+    {
+      "id": "project_dong_yen",
+      "label": "동옌 도시기본계획, 박꽝 현",
+      "keywords": [
+        "동옌 도시기본계획, 박꽝 현",
+        "Dong Yen",
+        "Dong Yen 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "동옌 도시기본계획, 박꽝 현\n하장시 동옌 사. 규모: 4,407.9ha, 2035년까지, 2050년 지향\n\n동옌은 약 4,500ha, 2050년을 내다본 종합계획입니다. 주거·일·여가가 모인 스마트 위성도시를 목표로 하며, 북부 지역의 지속가능한 현대 도시 모형이 되고자 합니다.",
+      "links": [
+        {
+          "label": "동옌 도시기본계획, 박꽝 현",
+          "url": "/past-projects/5"
+        }
+      ],
+      "facts": {
+        "location": "하장시 동옌 사",
+        "scale": "규모: 4,407.9ha, 2035년까지, 2050년 지향"
+      },
+      "entities": [
+        "Dong Yen"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.dongYen",
+        "url": "/past-projects/5",
+        "contentHash": "1540d3257e386e58ca5c37e49e2a4bde9ac6af62ea1b4b74f702250bf047a6fa"
+      }
+    },
+    {
+      "id": "project_na_chi",
+      "label": "나찌 도시기본계획, 신먼 현",
+      "keywords": [
+        "나찌 도시기본계획, 신먼 현",
+        "Na Chi",
+        "Na Chi 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "나찌 도시기본계획, 신먼 현\n하장 신먼 나찌 사. 규모: 8,038.7ha, 2035년까지, 2050년 지향\n\n나찌는 북부 산간에서 가장 큰 계획 중 하나입니다. 8,000ha가 넘는 규모로 신먼의 기반·서비스·투자를 끌어올리면서 고원 정체성을 지키고 스마트 기반 모형을 도입합니다.",
+      "links": [
+        {
+          "label": "나찌 도시기본계획, 신먼 현",
+          "url": "/past-projects/6"
+        }
+      ],
+      "facts": {
+        "location": "하장 신먼 나찌 사",
+        "scale": "규모: 8,038.7ha, 2035년까지, 2050년 지향"
+      },
+      "entities": [
+        "Na Chi"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.naChi",
+        "url": "/past-projects/6",
+        "contentHash": "5d284b8c447396e71ddf11d335b2d323c3becfa4932ad36b68f4ce026c61a52d"
+      }
+    },
+    {
+      "id": "project_tan_bac",
+      "label": "떤박 도시기본계획, 꽝빈 현",
+      "keywords": [
+        "떤박 도시기본계획, 꽝빈 현",
+        "Tan Bac",
+        "Tan Bac 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "떤박 도시기본계획, 꽝빈 현\n하장 꽝빈 떤박 사. 규모: 6,297.1ha, 2035년까지, 2050년 지향\n\n떤박은 꽝빈 현의 새로운 중심으로 자리 잡고 있습니다. 6,000ha가 넘는 이 계획은 현대적 주거 공간, 녹색 기술 생태계, 정비된 공공 편의시설에 초점을 둡니다.",
+      "links": [
+        {
+          "label": "떤박 도시기본계획, 꽝빈 현",
+          "url": "/past-projects/7"
+        }
+      ],
+      "facts": {
+        "location": "하장 꽝빈 떤박 사",
+        "scale": "규모: 6,297.1ha, 2035년까지, 2050년 지향"
+      },
+      "entities": [
+        "Tan Bac"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.tanBac",
+        "url": "/past-projects/7",
+        "contentHash": "c069b76d6bdc3335fd22f5f2077159a9efe49f4855ce1619bf1cbcde44e23d1e"
+      }
+    },
+    {
+      "id": "project_nam_dong",
+      "label": "5A 지구 계획 (남동 동), 하이즈엉시",
+      "keywords": [
+        "5A 지구 계획 (남동 동), 하이즈엉시",
+        "Nam Dong",
+        "Subdivision 5A",
+        "Nam Dong 프로젝트에 대해 알려 주세요",
+        "Subdivision 5A 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "5A 지구 계획 (남동 동), 하이즈엉시\n하이즈엉성 하이즈엉시. 규모: 332.16ha, 축척 1/2000\n\n5A 지구는 하이즈엉의 지속가능 성장 전략의 핵심입니다. 330ha가 넘는 부지에 현대적 도시 공간, 연결성, 유연한 도시 생태계를 마련해 남동 일대의 삶의 질과 매력을 높입니다.",
+      "links": [
+        {
+          "label": "5A 지구 계획 (남동 동), 하이즈엉시",
+          "url": "/past-projects/8"
+        }
+      ],
+      "facts": {
+        "location": "하이즈엉성 하이즈엉시",
+        "scale": "규모: 332.16ha, 축척 1/2000"
+      },
+      "entities": [
+        "Nam Dong",
+        "Subdivision 5A"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.namDong",
+        "url": "/past-projects/8",
+        "contentHash": "cd6de866492c9d36eb36006056609f2e97ae7aa20d2b2a9731e579af4bb24613"
+      }
+    },
+    {
+      "id": "project_xuan_an",
+      "label": "팍시티 쑤언안 생태도시 상세계획",
+      "keywords": [
+        "팍시티 쑤언안 생태도시 상세계획",
+        "Park City Xuân An",
+        "Xuan An",
+        "Park City Xuân An 프로젝트에 대해 알려 주세요",
+        "Xuan An 프로젝트에 대해 알려 주세요"
+      ],
+      "phrases": [],
+      "answer": "팍시티 쑤언안 생태도시 상세계획\n하띤성 응히쑤언 현 쑤언안 읍. 규모: 27.7ha, 축척 1/500\n\n팍시티 쑤언안은 약 28ha의 고급 생태도시입니다. “푸르게, 건강하게”라는 방향 아래 넓은 녹지와 현대적 상업 시설, 정비된 기반을 결합한 하띤과 중부 지역의 새로운 도시 제안입니다.",
+      "links": [
+        {
+          "label": "팍시티 쑤언안 생태도시 상세계획",
+          "url": "/past-projects/9"
+        }
+      ],
+      "facts": {
+        "location": "하띤성 응히쑤언 현 쑤언안 읍",
+        "scale": "규모: 27.7ha, 축척 1/500"
+      },
+      "entities": [
+        "Park City Xuân An",
+        "Xuan An"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "home-app/src/locales/ko.json#projects.items.xuanAn",
+        "url": "/past-projects/9",
+        "contentHash": "c79f3b0a6d89bde1cc7421c4db59e9adcb36a0bbec86e1180b4a476d80b31b23"
+      }
+    },
+    {
+      "id": "person_nguyen_hong_hanh",
+      "label": "Nguyen Hong Hanh",
+      "keywords": [
+        "Nguyen Hong Hanh",
+        "Nguyen Hong Hanh 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "PhD Nguyen Hong Hanh — 베트남건설협회 건설경제·도시연구소 소장\n\n계획 자문, 도시 개발, 건설 관리 분야의 전문가입니다. 전 건설부 도시개발국 부국장(2008–2013), 연구소 상임 부소장(2013–2018), 2018년 3월부터 소장을 역임하고 있습니다. 녹색 도시 개발, 기후 변화, 생물 다양성 관련 주요 사업을 이끌며, 농업·도시 경제의 녹색 전환을 위한 기술 이전과 국가·지역 계획을 위한 법률·정책 자문을 수행합니다.",
+      "links": [
+        {
+          "label": "Nguyen Hong Hanh",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Hong Hanh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-hong-hanh.i18n.ko",
+        "url": "/people/experts",
+        "contentHash": "d2b24ac7edbcc0ad5ed5a32291ff51d662ba3033fd413b6b87c3c16b94363d56"
+      }
+    },
+    {
+      "id": "person_tran_thi_lan_anh",
+      "label": "Tran Thi Lan Anh",
+      "keywords": [
+        "Tran Thi Lan Anh",
+        "Tran Thi Lan Anh 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "PhD, M.Arch Tran Thi Lan Anh — 부소장\n\n도시 계획 및 개발, 전략 수립, 정책 수립, 지속 가능한 개발 분야의 전문가입니다. 도쿄대학교 박사 및 석사 학위를 보유하고 있으며, 기후 적응, 도시 재구조화, 국가 발전 전략에 대한 깊은 전문성을 갖추고 있습니다. 전 건설부 도시개발국 부국장으로서 주요 도시 개발 및 계획 프로그램에 기여했습니다.",
+      "links": [
+        {
+          "label": "Tran Thi Lan Anh",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Tran Thi Lan Anh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#tran-thi-lan-anh.i18n.ko",
+        "url": "/people/experts",
+        "contentHash": "0297fe758b4d108e7858f43c87992fb0980432547d727b3492989f13377f0fc1"
+      }
+    },
+    {
+      "id": "person_tran_quoc_toan",
+      "label": "Tran Quoc Toan",
+      "keywords": [
+        "Tran Quoc Toan",
+        "Tran Quoc Toan 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Eng. Tran Quoc Toan — 부소장\n\n교통 인프라 공학 분야의 경험을 보유하고 있습니다. 전 교통부 감정국 부국장 및 기술 협회 활동 경력이 있으며, 정책, 스마트 계획, 녹색 성장 전략, 주요 국가 프로젝트에 대해 자문합니다.",
+      "links": [
+        {
+          "label": "Tran Quoc Toan",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Tran Quoc Toan"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#tran-quoc-toan.i18n.ko",
+        "url": "/people/experts",
+        "contentHash": "17394c3340b28778a582c17d043d8785689b546b57c13e102d86357b27eeb686"
+      }
+    },
+    {
+      "id": "person_nguyen_thanh_tam",
+      "label": "Nguyen Thanh Tam",
+      "keywords": [
+        "Nguyen Thanh Tam",
+        "Nguyen Thanh Tam 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "M.Arch Nguyen Thanh Tam — 부소장\n\n도시 계획 분야에서 활동하며, 국가 거버넌스와 규제에 따른 도시 공간 개발을 지원하는 계획 프로젝트의 연구 및 관리에 참여합니다.",
+      "links": [
+        {
+          "label": "Nguyen Thanh Tam",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Thanh Tam"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-thanh-tam.i18n.ko",
+        "url": "/people/experts",
+        "contentHash": "102e783a45a68e926ed114d3c07da6ca13ffe2ce929d7ec98c620d2aad66631b"
+      }
+    },
+    {
+      "id": "person_do_bao_long",
+      "label": "Do Bao Long",
+      "keywords": [
+        "Do Bao Long",
+        "Do Bao Long 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Do Bao Long — 프로젝트 매니저\n\n영국 Salford 대학교 프로젝트 관리 석사 학위와 CCNA 및 사이버 보안 자격증을 보유한 헌신적인 프로젝트 담당자입니다. 은행, 소매, 스마트 계약 관리, 금융 분야에서 5년 이상의 경험을 갖추고 있습니다. 강력한 기술 역량과 실무 실행력을 바탕으로 복잡한 프로젝트를 효과적으로 수행하며 팀과 이해관계자 간 원활한 협업을 이끕니다.",
+      "links": [
+        {
+          "label": "Do Bao Long",
+          "url": "/people/experts"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Do Bao Long"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#do-bao-long.i18n.ko",
+        "url": "/people/experts",
+        "contentHash": "599003b24475972f68e4718079e65f9670acdba207adfad587b4f5bf839733c6"
+      }
+    },
+    {
+      "id": "person_nguyen_thi_ly",
+      "label": "Nguyen Thi Ly",
+      "keywords": [
+        "Nguyen Thi Ly",
+        "Nguyen Thi Ly 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Nguyen Thi Ly — 연구원\n\n도시 계획, 지속 가능한 도시 개발, 인프라 관리, 공공 공간 설계 분야의 탄탄한 학문적 배경을 갖추고 있습니다. 공공 공간, 지역사회 개발, 도시 프로그램에 초점을 맞춘 연구 및 기술 지원 프로젝트에 기여합니다. 뛰어난 팀워크, 명확한 조직 능력, 강한 책임감으로 알려져 있습니다.",
+      "links": [
+        {
+          "label": "Nguyen Thi Ly",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Thi Ly"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-thi-ly.i18n.ko",
+        "url": "/people/core-team",
+        "contentHash": "f2806d897040b2ed35c465603a9129b9631e12ec513594160a71b408a5cd07f4"
+      }
+    },
+    {
+      "id": "person_dinh_tung_duong",
+      "label": "Dinh Tung Duong",
+      "keywords": [
+        "Dinh Tung Duong",
+        "Dinh Tung Duong 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Dinh Tung Duong — 연구원\n\n하노이건축대학교 도시관리학과를 졸업했으며, 2023년 하노이 수석 졸업생으로 선정되었습니다. 지난 2년간 공간 계획, 경관 개선, 지속 가능한 도시 생활에 초점을 맞춘 도시 개발 프로젝트에 적극적으로 기여해 왔습니다. 강한 분석 및 조직 능력과 사무 및 기술 소프트웨어 숙련도를 갖추고 있습니다.",
+      "links": [
+        {
+          "label": "Dinh Tung Duong",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Dinh Tung Duong"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#dinh-tung-duong.i18n.ko",
+        "url": "/people/core-team",
+        "contentHash": "4c0dc75719cbf036afa7d2092ae0d70876f90afc4f2e2ae332c72431c11f0e23"
+      }
+    },
+    {
+      "id": "person_trinh_thi_tinh",
+      "label": "Trinh Thi Tinh",
+      "keywords": [
+        "Trinh Thi Tinh",
+        "Trinh Thi Tinh 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Trinh Thi Tinh — 행정 담당\n\n하노이관광대학교 경영학 전공을 졸업했습니다. 사무 행정 업무를 관리하는 동시에 다양한 연구 프로젝트를 지원합니다. 역동적이고 책임감 있는 전문가로, 항상 배우고 성장하려는 자세를 갖추고 있습니다.",
+      "links": [
+        {
+          "label": "Trinh Thi Tinh",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Trinh Thi Tinh"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#trinh-thi-tinh.i18n.ko",
+        "url": "/people/core-team",
+        "contentHash": "80c2a62da08cceacff3e6bc4ca11d0c4706e021ec7ead53e2e075866b9063b1b"
+      }
+    },
+    {
+      "id": "person_nguyen_quynh_ly",
+      "label": "Nguyen Quynh Ly",
+      "keywords": [
+        "Nguyen Quynh Ly",
+        "Nguyen Quynh Ly 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Nguyen Quynh Ly — 연구원\n\n국립경제대학교를 졸업했으며, 체계적인 교육과 높은 책임감을 갖추고 있습니다. 기계·장비 프로젝트 입찰 및 도시 계획 관련 업무 경험이 있으며, 다양한 행정 업무도 수행합니다.",
+      "links": [
+        {
+          "label": "Nguyen Quynh Ly",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Nguyen Quynh Ly"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#nguyen-quynh-ly.i18n.ko",
+        "url": "/people/core-team",
+        "contentHash": "70b1a11a97bc648074afacd60ee9c0628defec6a2e20b48a6d95e470a5052962"
+      }
+    },
+    {
+      "id": "person_pham_thi_hien",
+      "label": "Pham Thi Hien",
+      "keywords": [
+        "Pham Thi Hien",
+        "Pham Thi Hien 누구인가요"
+      ],
+      "phrases": [],
+      "answer": "Pham Thi Hien — 회계 담당\n\n하노이오픈대학교 회계학 전공을 존업했습니다. 현재 회계 분야에서 근무하며, 부기, 재무 보고, 데이터 분석에 대한 탄탄한 지식과 기술을 갖추고 있습니다. 업무에서 정확성과 투명성을 항상 최우선으로 합니다.",
+      "links": [
+        {
+          "label": "Pham Thi Hien",
+          "url": "/people/core-team"
+        }
+      ],
+      "facts": {},
+      "entities": [
+        "Pham Thi Hien"
+      ],
+      "source": {
+        "kind": "site",
+        "path": "people-app/src/data/people.json#pham-thi-hien.i18n.ko",
+        "url": "/people/core-team",
+        "contentHash": "a1556011c7e17d60ba31d4c14c0522c6961855b7b5903e8c6cd4ae2ab4421a32"
+      }
+    },
+    {
+      "id": "job_tech_assistant",
+      "label": "기술부문장 어시스턴트",
+      "keywords": [
+        "기술부문장 어시스턴트",
+        "기술부문장 어시스턴트 직무의 자격 요건"
+      ],
+      "phrases": [],
+      "answer": "기술부문장 어시스턴트 — 하노이, 베트남\n\nCTO와 기술 리더십을 지원할, 기술에 밝고 체계적인 동료를 찾습니다. 프로젝트 운영을 돕고 업무 방식을 개선하며 엔지니어링 팀이 원활히 움직이도록 지원합니다.\n\n기술 이해도와 행정·프로젝트 관리 역량 · JavaScript · 뛰어난 커뮤니케이션과 조직력 · 주도적인 문제 해결 성향 · 정규직",
+      "links": [
+        {
+          "label": "기술부문장 어시스턴트",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "하노이, 베트남",
+        "requirements": "기술 이해도와 행정·프로젝트 관리 역량 · JavaScript · 뛰어난 커뮤니케이션과 조직력 · 주도적인 문제 해결 성향 · 정규직"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#techAssistant.ko",
+        "url": "/recruitment",
+        "contentHash": "46b003ddb14d3da501f349aca51530df892e63249049b476f9955a4ea9004d56"
+      }
+    },
+    {
+      "id": "job_research_intern",
+      "label": "연구 인턴",
+      "keywords": [
+        "연구 인턴",
+        "연구 인턴 직무의 자격 요건"
+      ],
+      "phrases": [],
+      "answer": "연구 인턴 — 하노이, 베트남\n\n새로운 기술을 탐색하고, 앞서가는 프로젝트를 지원하며, 분야에서 가장 경험 많은 전문가들과 함께 배우실 분을 찾습니다. 근무 시간을 유연하게 조정할 수 있는 파트타임 인턴 자리입니다.\n\n호기심과 연구에 대한 진정한 열의 · 배우고 기여할 준비 · 뛰어난 분석력과 문제 해결 능력 · 파트타임",
+      "links": [
+        {
+          "label": "연구 인턴",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "하노이, 베트남",
+        "requirements": "호기심과 연구에 대한 진정한 열의 · 배우고 기여할 준비 · 뛰어난 분석력과 문제 해결 능력 · 파트타임"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#researchIntern.ko",
+        "url": "/recruitment",
+        "contentHash": "a31be863af03d9de7bbfda24a1f842b84b8b2f0f4c15718a0c5affd40a87de20"
+      }
+    },
+    {
+      "id": "job_data_analyst",
+      "label": "데이터 분석가",
+      "keywords": [
+        "데이터 분석가",
+        "데이터 분석가 직무의 자격 요건"
+      ],
+      "phrases": [],
+      "answer": "데이터 분석가 — 호치민시, 베트남\n\n에너지 데이터를 분석해 성능을 개선하고 추세를 예측합니다. Python, SQL, 머신러닝 도구를 활용합니다.\n\nPython · SQL · 머신러닝 · 분석 · 정규직",
+      "links": [
+        {
+          "label": "데이터 분석가",
+          "url": "/recruitment"
+        }
+      ],
+      "facts": {
+        "location": "호치민시, 베트남",
+        "requirements": "Python · SQL · 머신러닝 · 분석 · 정규직"
+      },
+      "entities": [],
+      "source": {
+        "kind": "site",
+        "path": "recruitment-app/src/data/jobs.js#dataAnalyst.ko",
+        "url": "/recruitment",
+        "contentHash": "163c2ab41d1cba4667e8733efe43206d8b263648bd85a9398c359d3cb7019f87"
+      }
     }
   ],
   "fallback": {
     "answer": "질문을 정확히 이해하지 못했습니다. 서비스, 프로젝트, 채용, 문의 또는 정책 중 어떤 내용인지 조금 더 구체적으로 알려 주세요."
-  }
+  },
+  "entityNames": [
+    "Lào Cai",
+    "Lao Cai master plan",
+    "Hop Thanh",
+    "Phân khu 6B",
+    "Subdivision 6B",
+    "Nguyễn Ái Quốc",
+    "Coc San",
+    "Dong Yen",
+    "Na Chi",
+    "Tan Bac",
+    "Nam Dong",
+    "Subdivision 5A",
+    "Park City Xuân An",
+    "Xuan An",
+    "Nguyen Hong Hanh",
+    "Tran Thi Lan Anh",
+    "Tran Quoc Toan",
+    "Nguyen Thanh Tam",
+    "Do Bao Long",
+    "Nguyen Thi Ly",
+    "Dinh Tung Duong",
+    "Trinh Thi Tinh",
+    "Nguyen Quynh Ly",
+    "Pham Thi Hien"
+  ]
 }

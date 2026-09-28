@@ -76,6 +76,7 @@ symbols and other floating effects remain upright.
   head, inside its motion wrapper; floating notes stay upright.
 - Coffee sits with feet forward and both wings wrapped around a small mug.
   The mug is scaled to 78% of its original SVG geometry and uses subdued shading.
+  Once seated, its tail gives a gentle paired wiggle with a short pause between cycles.
 - Sleep lowers and turns the head to the right onto a folded wing, curls a rounded body
   behind it and leaves only tucked toe tips visible. The other wing rests
   alongside the body. Only the belly breathes. Hover,
@@ -86,7 +87,14 @@ symbols and other floating effects remain upright.
 - Friendly completion sits with wings clasped, alongside the existing hearts.
 - Handoff extends a pointing wing; errors crouch slightly during the wobble.
 
-Pose transforms ease between states over 650ms. Reduced motion stops animation
+Pose transforms ease between states over 650ms. `MascotMotion` snapshots the
+visible moving layers before a state change and eases their current offsets
+into the next CSS loop over the same duration. Walking, nodding and stepping
+therefore settle from the frame on screen, including during rapid interruptions.
+The handoffs run in the browser's animation engine, with no JavaScript frame
+loop, and are canceled when hidden, inactive, unmounted or reduced motion is
+enabled. The coffee mug and headphones enter with gentle fades.
+Reduced motion stops animation
 and transitions but preserves each pose, including lying down. Static launcher
 and header instances keep their poses; static tiny avatars retain the original
 single-image rendering. A composed `thinking` or `happy` expression with a

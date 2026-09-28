@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { loadSupabaseConfig } from './supabaseConfig'
+import { capturePasswordRecoveryUrl } from './authRedirect'
 import { fetchWithDeadline } from '../../../shared/resilience/requests.js'
 
 let client = createUnavailableClient()
@@ -51,6 +52,7 @@ function createUnavailableClient() {
 }
 
 function createConfiguredClient(url, anonKey) {
+  capturePasswordRecoveryUrl()
   return createClient(url, anonKey, {
     global: { fetch: fetchWithDeadline },
     auth: {

@@ -2,18 +2,47 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { EventEmitter } from 'node:events'
+import { readFileSync } from 'node:fs'
 import { marketApiPlugin } from '../../news-app/vite-market-api-plugin.js'
 
 const require = createRequire(import.meta.url)
 const { handler } = require('../../netlify/functions/auth-forgot-password.js')
 
-function configureAuth(t) {
-  for (const [name, value] of Object.entries({ SUPABASE_URL: 'https://auth.example.invalid/', SUPABASE_ANON_KEY: 'test-public-key' })) {
+function configureAuth(t, values = {}) {
+  for (const [name, value] of Object.entries({ SUPABASE_URL: 'https://auth.example.invalid/', SUPABASE_ANON_KEY: 'test-public-key', VITE_SUPABASE_URL: '', VITE_SUPABASE_ANON_KEY: '', ...values })) {
     const old = process.env[name]
     process.env[name] = value
     t.after(() => { if (old === undefined) delete process.env[name]; else process.env[name] = old })
   }
 }
+
+test('password reset works with the bundled public config when Functions env is empty', async t => {
+  configureAuth(t, { SUPABASE_URL: '', SUPABASE_ANON_KEY: '' })
+  const config = JSON.parse(readFileSync(new URL('../../news-app/public/supabase-config.json', import.meta.url)))
+  const fetch = t.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(new URL(url).origin, new URL(config.url).origin)
+    assert.equal(options.headers.apikey, config.anonKey)
+    assert.equal(new URL(url).searchParams.get('redirect_to'), 'https://icue.vn/newsroom/login')
+    return new Response('{}', { status: 200 })
+  })
+  const response = await handler({ httpMethod: 'POST', body: JSON.stringify({ email: 'editor@example.invalid' }) })
+  assert.equal(response.statusCode, 200)
+  assert.equal(fetch.mock.callCount(), 1)
+})
+
+test('explicit Vite environment credentials take precedence over bundled config', async t => {
+  configureAuth(t, {
+    SUPABASE_URL: '', SUPABASE_ANON_KEY: '',
+    VITE_SUPABASE_URL: 'https://preview.example.invalid', VITE_SUPABASE_ANON_KEY: 'preview-public-key',
+  })
+  t.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(new URL(url).origin, 'https://preview.example.invalid')
+    assert.equal(options.headers.apikey, 'preview-public-key')
+    return new Response('{}', { status: 200 })
+  })
+  const response = await handler({ httpMethod: 'POST', body: JSON.stringify({ email: 'editor@example.invalid' }) })
+  assert.equal(response.statusCode, 200)
+})
 
 test('production password reset passes the exact callback as a query parameter', async t => {
   configureAuth(t)

@@ -298,6 +298,33 @@ test('duplicate clicks cannot start concurrent replies, including before React c
   await unmount(f.renderer)
 })
 
+test('follow-up context survives closing, clears on uncertainty and locale changes, and stays out of history', async t => {
+  const contexts = []
+  const anchor = { intentId: 'planning_design', language: 'vi' }
+  let reply = { ...authoredReply, context: anchor }
+  const f = await fixture(t, (_message, _locale, options) => {
+    contexts.push(options.context)
+    return reply
+  })
+  await f.open(); await f.send(); await f.advance(700)
+  assert.equal(contexts[0], null)
+  await act(async () => f.find('icue-chat__close').props.onClick())
+  await f.open(); await f.send(); await f.advance(700)
+  assert.deepEqual(contexts[1], anchor)
+  const history = JSON.parse(f.storage.get('icueChatbotHistory:vi'))
+  assert.ok(history.every(message => !message.context))
+  reply = { content: 'Please clarify.', meta: { source: 'fallback' } }
+  await f.send(); await f.advance(700)
+  await f.send(); await f.advance(700)
+  assert.equal(contexts[3], null)
+  reply = { ...authoredReply, context: anchor }
+  await f.send(); await f.advance(700)
+  await f.update({ locale: 'en', labels: en.chat })
+  await f.send(); await f.advance(700)
+  assert.equal(contexts[5], null)
+  await unmount(f.renderer)
+})
+
 test('a reply finishing after a locale change cannot alter the new transcript or mascot', async t => {
   const pending = deferred()
   const f = await fixture(t, () => pending.promise)

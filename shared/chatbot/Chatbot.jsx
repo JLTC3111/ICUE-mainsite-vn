@@ -87,6 +87,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const inputRef = useRef(null)
   const timerRef = useRef(null)
   const requestRef = useRef(0)
+  const contextRef = useRef(null)
   const sendingRef = useRef(false)
   const launcherRef = useRef(null)
   const closeRef = useRef(null)
@@ -124,6 +125,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   // Each language keeps its own transcript; switching flag swaps the thread.
   useEffect(() => {
     sendingRef.current = false
+    contextRef.current = null
     // A late reply from the previous locale/unmounted page must not update the
     // new transcript or leave its mascot in a stale thinking/error state.
     return () => {
@@ -223,11 +225,13 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
       timerRef.current = setTimeout(async () => {
         try {
           const response = await knowledge.getResponse(message, {
+            context: contextRef.current,
             onRetrieval: () => {
               if (request === requestRef.current) setActivity({ locale, state: 'thinking', effect: 'book' })
             },
           })
           if (request !== requestRef.current) return
+          contextRef.current = response.context || null
           append({
             role: 'bot',
             content: response.content,
@@ -238,6 +242,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
           emitEvent('response', response.meta || { source: 'unknown' })
         } catch {
           if (request !== requestRef.current) return
+          contextRef.current = null
           append({ role: 'bot', content: labels.error, links: [], meta: { source: 'error' } })
           setActivity({ locale, state: 'error' })
           emitEvent('error')
@@ -280,7 +285,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             <div className="icue-chat__header-actions">
               {labels.sync && (
                 <button ref={syncButtonRef} type="button" className="icue-chat__sync" aria-label={labels.sync.title} aria-expanded={showSync} onClick={() => setShowSync(value => !value)}>
-                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                     <path d="M20 7a8 8 0 0 0-14-1L3 9m0-6v6h6M4 17a8 8 0 0 0 14 1l3-3m0 6v-6h-6" />
                   </svg>
                 </button>

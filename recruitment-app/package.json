@@ -6,9 +6,9 @@
   "scripts": {
     "sync-assets": "node scripts/sync-assets.mjs",
     "dev": "vite",
-    "predev": "npm run sync-assets && npm run generate:head",
+    "predev": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets && npm run generate:head",
     "build": "vite build",
-    "prebuild": "npm run sync-assets && npm run generate:head && npm run verify:content",
+    "prebuild": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets && npm run generate:head && npm run verify:content",
     "preview": "vite preview",
     "verify:content": "node scripts/verify-content.mjs",
     "generate:head": "node scripts/generate-head.mjs"

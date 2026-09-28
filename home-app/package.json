@@ -9,9 +9,9 @@
     "optimize-card-images": "node scripts/optimize-card-images.mjs",
     "gallery:placeholders": "node scripts/generate-gallery-placeholders.mjs",
     "dev": "vite",
-    "predev": "npm run sync-assets",
+    "predev": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets",
     "build": "vite build && node ../scripts/generate-route-shells.mjs",
-    "prebuild": "npm run sync-assets",
+    "prebuild": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets",
     "preview": "vite preview"
   },
   "dependencies": {

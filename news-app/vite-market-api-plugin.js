@@ -5,6 +5,7 @@ import { fetchYahooQuotes } from './src/lib/marketQuotesFetch.js'
 import { fetchVnMarketQuotes } from './src/lib/vnMarketQuotesFetch.js'
 import { handleGeminiArticleRequest } from './src/lib/geminiServer.js'
 import { handleFluxImageRequest } from './src/lib/fluxServer.js'
+import { resolveServerEnv } from './src/lib/serverEnv.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -33,8 +34,9 @@ const FLUX_PATHS = new Set([
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 async function handleForgotPassword(body, env) {
-  const url = env.SUPABASE_URL || env.VITE_SUPABASE_URL
-  const key = env.SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY
+  const configured = resolveServerEnv(env)
+  const url = env.SUPABASE_URL || env.VITE_SUPABASE_URL || configured.SUPABASE_URL
+  const key = env.SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || configured.SUPABASE_ANON_KEY
   if (!url || !key) throw new Error('config_missing')
 
   const email = String(body.email || '').trim().toLowerCase()

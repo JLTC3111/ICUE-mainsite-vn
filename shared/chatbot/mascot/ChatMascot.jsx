@@ -3,6 +3,7 @@ import birdUrl from './icue-bird.webp'
 import coreUrl from './icue-bird-core.webp'
 import { COFFEE_AFTER_MS, EXCITED_MS, GLYPH_PATHS, LISTEN_AFTER_MS, MASCOT_EFFECTS, MASCOT_STATES, REACTION_MS, SLEEP_AFTER_MS, mascotPose } from './expressions.js'
 import BirdEffects, { BirdHeadphones } from './BirdEffects.jsx'
+import MascotMotion from './MascotMotion.jsx'
 import './ChatMascot.css'
 
 function Glyph({ name, x, y = 39, scale = 1.4, className }) {
@@ -107,7 +108,8 @@ function BirdJoint({ name, id }) {
  * suspends inactive instances. A visible launcher stays animated during replies.
  * `expression` and `effect` compose independently; `state` remains an alias.
  * `reactionKey` retriggers a new event with the same expression. Keep it stable
- * between events. Brief reactions use timeouts; all frame motion is CSS.
+ * between events. Brief reactions use timeouts; loops are CSS and state
+ * handoffs use short browser-native animations without a JavaScript frame loop.
  */
 function ChatMascot({ state = 'idle', expression: requestedExpression = state, effect = 'auto', reactionKey = 0, variant = 'launcher', animated = true, active = true, interactive = false }) {
   const safeState = MASCOT_STATES.includes(requestedExpression) ? requestedExpression : 'idle'
@@ -195,16 +197,20 @@ function ChatMascot({ state = 'idle', expression: requestedExpression = state, e
   }, [canRest])
 
   return (
-    <span
-      className={`icue-mascot icue-mascot--${variant}`}
-      data-state={expression}
-      data-effect={visibleEffect}
-      data-pose={pose}
-      data-animated={animated}
-      data-paused={!active || hidden}
-      data-interactive={interactive}
-      onPointerEnter={() => wakeRef.current?.()}
-      aria-hidden="true"
+    <MascotMotion
+      enabled={animated && active && !hidden}
+      phase={`${expression}:${pose}:${visibleEffect}:${reactionKey}`}
+      rootProps={{
+        className: `icue-mascot icue-mascot--${variant}`,
+        'data-state': expression,
+        'data-effect': visibleEffect,
+        'data-pose': pose,
+        'data-animated': animated,
+        'data-paused': !active || hidden,
+        'data-interactive': interactive,
+        onPointerEnter: () => wakeRef.current?.(),
+        'aria-hidden': true,
+      }}
     >
       <span className="icue-mascot__shadow" />
       <span key={reactionKey} className="icue-mascot__bird">
@@ -227,7 +233,7 @@ function ChatMascot({ state = 'idle', expression: requestedExpression = state, e
         {layered && ['wing-right', 'wing-left'].map(name => <BirdJoint key={name} name={name} id={id} />)}
         {!['book', 'coffee'].includes(visibleEffect) && <BirdEffects key={`${reactionKey}:${visibleEffect}`} effect={visibleEffect} />}
       </span>
-    </span>
+    </MascotMotion>
   )
 }
 

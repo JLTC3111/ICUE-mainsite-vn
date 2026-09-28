@@ -36,6 +36,7 @@ function prepareKb(kb) {
       const candidates = [
         ...(intent.keywords || []),
         ...(intent.phrases || []),
+        ...(intent.aliases || []),
         ...(intent.ambiguousKeywords || []),
       ].map(normalizeForSearch)
       return {
@@ -80,6 +81,18 @@ test('a contained generic word no longer receives a near-perfect score', () => {
 test('normalization retains Korean and Japanese text', () => {
   assert.notEqual(normalizeForSearch('어떤 자문 서비스를 제공하나요?'), '')
   assert.notEqual(normalizeForSearch('どのようなコンサルティングを提供していますか。'), '')
+})
+
+test('typing errors are bounded and language-specific filler never erases an English duration', () => {
+  assert.deepEqual(tokenize('how long', 'en'), ['long'])
+  assert.deepEqual(tokenize('vui long', 'vi'), [])
+  for (const typo of ['managment', 'managemnet', 'managemant']) {
+    assert.ok(scoreTokens([typo], ['management'], typo, 'management') >= INTENT_THRESHOLD)
+    assert.ok(scoreTokens([typo], ['management'], typo, 'management') < 1)
+  }
+  assert.equal(scoreTokens(['2045'], ['2046'], '2045', '2046'), 0)
+  assert.equal(scoreTokens(['cat'], ['car'], 'cat', 'car'), 0)
+  assert.equal(scoreTokens(['발전'], ['발견'], '발전', '발견'), 0)
 })
 
 test('language routing recognizes every authored locale', () => {

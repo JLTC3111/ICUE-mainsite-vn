@@ -1,9 +1,9 @@
-const STOP_WORDS = new Set([
-  'la', 'va', 'hoac', 'cua', 'cho', 've', 'o', 'toi', 'ban', 'minh', 'chung',
-  'xin', 'vui', 'long', 'nhe', 'a', 'oi',
-  'the', 'an', 'to', 'for', 'and', 'or', 'of', 'in', 'on', 'at', 'is', 'are',
-  'am', 'i', 'you', 'we', 'our', 'about', 'please',
-])
+const STOP_WORDS = {
+  vi: new Set(['la', 'va', 'hoac', 'cua', 'cho', 've', 'o', 'toi', 'ban', 'minh', 'chung', 'xin', 'vui', 'long', 'nhe', 'a', 'oi']),
+  en: new Set(['the', 'a', 'an', 'to', 'for', 'and', 'or', 'of', 'in', 'on', 'at', 'is', 'are', 'am', 'i', 'you', 'we', 'our', 'about', 'please', 'what', 'how', 'who', 'which', 'does', 'do', 'can', 'could', 'would', 'should', 'it', 'me', 'tell']),
+  de: new Set(['was', 'wie', 'wer', 'welche', 'der', 'die', 'das', 'ein', 'eine', 'im', 'in', 'am', 'zum', 'zur', 'zu', 'mit', 'von', 'und', 'oder', 'ist', 'sind', 'ich', 'sie', 'es', 'bitte', 'mir', 'uber', 'konnen', 'kann']),
+  fr: new Set(['qui', 'quel', 'quels', 'quelle', 'quelles', 'comment', 'je', 'me', 'moi', 'vous', 'il', 'elle', 'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'd', 'a', 'au', 'aux', 'et', 'ou', 'est', 'sont', 'pour', 'sur', 'en', 'ce', 'cette', 'parlez']),
+}
 
 const segmenters = new Map()
 
@@ -39,10 +39,26 @@ function getSegmenter(language) {
   return segmenters.get(key)
 }
 
-function keepToken(token) {
-  if (!token || STOP_WORDS.has(token)) return false
+function keepToken(token, language) {
+  if (!token || STOP_WORDS[language || 'en']?.has(token)) return false
   // One-character Han/Kana tokens can be meaningful; short Latin noise is not.
   return /[^a-z0-9]/i.test(token) || token.length >= 2
+}
+
+/** One Latin typing error, including a swapped pair; never fuzzy-match numbers,
+ * short words or CJK characters. Exact matches are always worth more. */
+function isNearToken(left, right) {
+  if (!/^[a-z]{5,}$/.test(left) || !/^[a-z]{5,}$/.test(right)
+    || Math.abs(left.length - right.length) > 1) return false
+  let index = 0
+  while (index < Math.min(left.length, right.length) && left[index] === right[index]) index++
+  if (left.length === right.length) {
+    return left.slice(index + 1) === right.slice(index + 1)
+      || (left[index] === right[index + 1] && left[index + 1] === right[index]
+        && left.slice(index + 2) === right.slice(index + 2))
+  }
+  const [shorter, longer] = left.length < right.length ? [left, right] : [right, left]
+  return shorter.slice(index) === longer.slice(index + 1)
 }
 
 export function tokenize(normText, language) {
@@ -54,10 +70,10 @@ export function tokenize(normText, language) {
     return [...segmenter.segment(value)]
       .filter((part) => part.isWordLike)
       .map((part) => part.segment.trim())
-      .filter(keepToken)
+      .filter(token => keepToken(token, language))
   }
 
-  return value.split(' ').map((token) => token.trim()).filter(keepToken)
+  return value.split(' ').map((token) => token.trim()).filter(token => keepToken(token, language))
 }
 
 /**
@@ -74,7 +90,19 @@ export function scoreTokens(queryTokens, candidateTokens, queryNorm, candidateNo
   if (querySet.size === 0 || candidateSet.size === 0) return 0
 
   let intersection = 0
-  for (const token of candidateSet) if (querySet.has(token)) intersection += 1
+  const remaining = new Set(querySet)
+  const unmatched = []
+  for (const token of candidateSet) {
+    if (remaining.delete(token)) intersection++
+    else unmatched.push(token)
+  }
+  for (const token of unmatched) {
+    const near = [...remaining].find(query => isNearToken(query, token))
+    if (near) {
+      intersection += 0.82
+      remaining.delete(near)
+    }
+  }
   if (intersection === 0) return 0
 
   const union = querySet.size + candidateSet.size - intersection
@@ -112,6 +140,12 @@ export function rankIntents(intents, queryNorm, queryTokens) {
         }
       }
 
+      // A named project/person is more specific than a broad service keyword.
+      // The small boost only breaks near ties; an exact authored question wins.
+      const entities = intent.entityCandidates || (intent.entities || []).map(normalizeForSearch)
+      const named = entities.some(entity => ` ${queryNorm} `.includes(` ${entity} `))
+      if (named) score = Math.min(1, score + 0.04)
+      else if (entities.length && score < 1) score = 0
       return { intent, score, candidate, candidateSize, order }
     })
     .sort((left, right) =>

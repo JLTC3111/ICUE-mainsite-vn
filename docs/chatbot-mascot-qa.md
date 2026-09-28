@@ -5,6 +5,26 @@ database change has been made.
 
 ## 2026-09-27 final state and body-pose update
 
+Coffee now adds a gentle tail wiggle after the seated pose settles. A small
+`MascotMotion` wrapper captures moving layers before state changes and eases
+their offsets into the next CSS animation. This removes snapping when walking,
+head nods, footsteps and other loops stop or change. Pose easing remains 650ms;
+the mug and headphones fade in, and sleep shading eases with the body.
+Handoffs cancel on hide, reduced motion, deactivation and unmount, and an
+interrupted handoff starts from the currently visible frame. No animation
+frame loop, dependency or additional artwork was added.
+
+The tail and transition refinement passed Chromium and WebKit review at
+1200px and 390px. Seven state changes were checked for transform continuity,
+along with rapid interruptions, handoff cleanup, a moving coffee tail,
+reduced-motion changes, page hiding and unmounting. Evidence is in
+`/private/tmp/icue-mascot-transition-qa/`; the WebKit desktop cleanup assertion
+was rerun after allowing the excited-to-happy transition to finish. The
+rebuilt site's idle sequence also passed in both engines, with persistent
+regression checks for the walking-to-coffee handoff and coffee tail movement.
+All 36 chatbot tests, targeted ESLint, ten app builds and publish/content
+verification passed after this refinement.
+
 The inactivity sequence has three stages: at 30 seconds the bird walks while
 listening to music with headphones, a gentle head nod, alternating steps,
 swaying wings and two drifting notes. At 60 seconds it puts the headphones

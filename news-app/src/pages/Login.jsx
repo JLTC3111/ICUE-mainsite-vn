@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
-import { getAuthRedirectUrl, isPasswordRecoveryUrl } from '../lib/authRedirect'
+import { clearPasswordRecoveryUrl, getAuthRedirectUrl, isPasswordRecoveryUrl } from '../lib/authRedirect'
 import { authErrorKey, sendPasswordResetEmail } from '../lib/authReset'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import LanguageSwitcher from '../components/LanguageSwitcher'
@@ -27,12 +27,13 @@ export default function Login() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [status, setStatus] = useState('idle') // idle | loading | error | success
-  const [message, setMessage] = useState('')
+  const [messageKey, setMessageKey] = useState('')
   const busyRef = useRef(false)
   const navigationTimerRef = useRef(null)
   useEffect(() => () => clearTimeout(navigationTimerRef.current), [])
 
   const close = useCallback(() => {
+    clearPasswordRecoveryUrl()
     if (window.history.length > 1) navigate(-1)
     else navigate('/')
   }, [navigate])
@@ -47,7 +48,7 @@ export default function Login() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setMode('recovery')
-        setMessage('')
+        setMessageKey('')
         setStatus('idle')
       }
     })
@@ -59,30 +60,30 @@ export default function Login() {
     if (busyRef.current) return
     busyRef.current = true
     setStatus('loading')
-    setMessage('')
+    setMessageKey('')
     try {
       const { error } = await signIn(email.trim(), password)
       if (error) throw error
       navigate(redirectTo, { replace: true })
     } catch {
       setStatus('error')
-      setMessage(t('login.error'))
+      setMessageKey('login.error')
     } finally {
       busyRef.current = false
     }
-  }, [email, password, signIn, navigate, redirectTo, t])
+  }, [email, password, signIn, navigate, redirectTo])
 
   const handleReset = useCallback(async () => {
     if (busyRef.current) return
     const trimmed = email.trim()
     if (!trimmed) {
       setStatus('error')
-      setMessage(t('login.resetNeedEmail'))
+      setMessageKey('login.resetNeedEmail')
       return
     }
     busyRef.current = true
     setStatus('loading')
-    setMessage('')
+    setMessageKey('')
     try {
       const redirectTo = getAuthRedirectUrl('login')
       let { error } = await sendPasswordResetEmail(trimmed, redirectTo)
@@ -93,27 +94,27 @@ export default function Login() {
       }
       if (error) throw error
       setStatus('success')
-      setMessage(t('login.resetSent'))
+      setMessageKey('login.resetSent')
     } catch (error) {
       setStatus('error')
-      setMessage(t(authErrorKey(error)))
+      setMessageKey(authErrorKey(error))
     } finally {
       busyRef.current = false
     }
-  }, [email, t])
+  }, [email])
 
   const handleUpdatePassword = useCallback(async (e) => {
     e.preventDefault()
     if (busyRef.current) return
-    setMessage('')
+    setMessageKey('')
     if (newPassword.length < MIN_PASSWORD_LEN) {
       setStatus('error')
-      setMessage(t('login.resetTooShort'))
+      setMessageKey('login.resetTooShort')
       return
     }
     if (newPassword !== confirmPassword) {
       setStatus('error')
-      setMessage(t('login.resetMismatch'))
+      setMessageKey('login.resetMismatch')
       return
     }
     busyRef.current = true
@@ -122,16 +123,17 @@ export default function Login() {
       const { error } = await supabase.auth.updateUser({ password: newPassword })
       if (error) throw error
       setStatus('success')
-      setMessage(t('login.resetSuccess'))
+      setMessageKey('login.resetSuccess')
       window.history.replaceState({}, '', getAuthRedirectUrl('login'))
+      clearPasswordRecoveryUrl()
       navigationTimerRef.current = setTimeout(() => navigate(redirectTo, { replace: true }), 1200)
     } catch (error) {
       setStatus('error')
-      setMessage(t(authErrorKey(error)))
+      setMessageKey(authErrorKey(error))
     } finally {
       busyRef.current = false
     }
-  }, [newPassword, confirmPassword, navigate, redirectTo, t])
+  }, [newPassword, confirmPassword, navigate, redirectTo])
 
   const isRecovery = mode === 'recovery'
 
@@ -190,9 +192,9 @@ export default function Login() {
               />
             </div>
 
-            {message && (
+            {messageKey && (
               <p className={`login__msg ${status === 'error' ? 'is-error' : ''} ${status === 'success' ? 'is-success' : ''}`}>
-                {message}
+                {t(messageKey)}
               </p>
             )}
 
@@ -248,9 +250,9 @@ export default function Login() {
               </div>
             </div>
 
-            {message && (
+            {messageKey && (
               <p className={`login__msg ${status === 'error' ? 'is-error' : ''} ${status === 'success' ? 'is-success' : ''}`}>
-                {message}
+                {t(messageKey)}
               </p>
             )}
 

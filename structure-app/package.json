@@ -6,9 +6,9 @@
   "scripts": {
     "sync-assets": "node scripts/sync-assets.mjs",
     "dev": "vite",
-    "predev": "npm run sync-assets",
+    "predev": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets",
     "build": "vite build",
-    "prebuild": "npm run sync-assets",
+    "prebuild": "node ../scripts/build-chatbot-knowledge.mjs && npm run sync-assets",
     "preview": "vite preview"
   },
   "dependencies": {

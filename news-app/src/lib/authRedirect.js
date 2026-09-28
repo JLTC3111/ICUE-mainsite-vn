@@ -1,3 +1,5 @@
+let passwordRecoveryPending = false
+
 /** Absolute URL for Supabase auth redirects (must match Supabase dashboard allowlist). */
 export function getAuthRedirectUrl(path = 'login') {
   const base = import.meta.env.BASE_URL || '/'
@@ -16,9 +18,21 @@ function canonicalOrigin() {
   return window.location.origin
 }
 
-/** True when the current URL is a Supabase password-recovery callback. */
+/** Capture before the SDK consumes the hash and before the lazy login mounts. */
+export function capturePasswordRecoveryUrl() {
+  passwordRecoveryPending = isPasswordRecoveryUrl()
+}
+
+/** Clear the captured intent when recovery completes or the modal is closed. */
+export function clearPasswordRecoveryUrl() {
+  passwordRecoveryPending = false
+}
+
+/** True for a recovery callback, including one already consumed by the SDK. */
 export function isPasswordRecoveryUrl() {
-  const hash = window.location.hash || ''
-  const search = window.location.search || ''
-  return hash.includes('type=recovery') || search.includes('type=recovery')
+  if (passwordRecoveryPending) return true
+  if (typeof window === 'undefined') return false
+  const hash = new URLSearchParams((window.location.hash || '').replace(/^#/, ''))
+  const search = new URLSearchParams(window.location.search || '')
+  return hash.get('type') === 'recovery' || search.get('type') === 'recovery'
 }
