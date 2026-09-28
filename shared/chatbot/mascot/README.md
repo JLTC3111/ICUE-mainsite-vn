@@ -16,22 +16,28 @@ same expression; typing and unrelated renders do not replay a reaction.
 `speaking` is available for future streaming use. This retrieval chatbot uses
 `thinking` during its actual response work. Existing artwork and size variants
 are preserved; this implementation changes only the Main-site repository.
-The closed launcher walks while listening to music after 30 seconds without
-a pointer/key interaction, sits for coffee at 60 seconds, then lies down
-facing right at 120 seconds. Music adds fitted headphones, a gentle head nod,
-alternating steps, swaying wings and two drifting notes; it does not play audio.
+The launcher walks while the site's background music is actually playing.
+Playback adds fitted headphones, a gentle head nod, alternating steps, swaying
+wings and two drifting notes. The music controls and chatbot subscribe to the
+same audio element; the mascot itself never starts playback. Music takes priority
+over chat reactions, hover and keyboard/pointer input, and cancels inactivity
+deadlines. Pausing, ending, buffering or failing playback removes the listening
+pose. Each stop starts a fresh idle countdown: the closed launcher sits for
+coffee at 60 seconds, then lies down facing right at 120 seconds. Resuming
+playback immediately restores listening and resets that countdown again.
 The short walking loop stays around the launcher. Coffee puts away the
 headphones and uses `^^`, a small plain muted blue-grey mug with subtle ceramic
 shading and steam. Sleep puts away the mug and keeps `> _` (one eye open) with three drifting `z`
 symbols. Hover, a pointer press or a key press wakes the whole bird and restarts
-all three deadlines. Opening chat gives a greeting.
+both deadlines when music is stopped. Opening chat gives a greeting when music is stopped.
 
 `variant`: `launcher` (104px / 64px on mobile), `header` (42px), `avatar` (28px).
 The desktop launcher uses a 12px bottom inset; mobile keeps its 15px inset.
 Both respect the device safe area. The panel reserves the launcher's height plus an 8px gap.
+`musicPlaying` binds an animated instance to the host's playback state.
 `animated={false}` renders a static transcript avatar without timers or lifecycle
 subscriptions. `active={false}` pauses a hidden instance. `interactive` enables
-the three-stage inactivity timer. All instances are decorative;
+the coffee/sleep inactivity timer. All instances are decorative;
 the host must provide the accessible button label and localized textual status.
 The visible launcher remains animated while chat is open; all inactivity
 deadlines are disabled during the conversation and while the page is hidden.
@@ -114,7 +120,7 @@ flaps gently; reading and sleeping stop the standing wing/tail routines.
 Layered instances compose the original core with SVG-masked appendages. A
 curved cutout separates the crest, with overlap at the roots. A small neck
 overlap keeps the head attached during tilts. Static avatars use the original
-single image. Three cleaned-up one-shot timeouts control coffee, listening and sleep; no
+single image. Two cleaned-up one-shot timeouts control coffee and sleep; no
 animation interval runs in JavaScript. Returning to a visible page starts a
 fresh inactivity cycle. Visibility, pagehide/pageshow and
 freeze/resume pause motion;

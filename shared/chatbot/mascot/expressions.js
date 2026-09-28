@@ -47,6 +47,5 @@ export const MASCOT_STATES = ['idle', 'greeting', 'excited', 'curious', 'thinkin
 export const MASCOT_EFFECTS = ['none', 'sparkles', 'book', 'coffee', 'music', 'bulb', 'hearts', 'zzz']
 export const EXCITED_MS = 650
 export const REACTION_MS = 1800
-export const LISTEN_AFTER_MS = 30_000
 export const COFFEE_AFTER_MS = 60_000
 export const SLEEP_AFTER_MS = 120_000

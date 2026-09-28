@@ -1,7 +1,7 @@
 import { memo, useEffect, useId, useMemo, useRef, useState } from 'react'
 import birdUrl from './icue-bird.webp'
 import coreUrl from './icue-bird-core.webp'
-import { COFFEE_AFTER_MS, EXCITED_MS, GLYPH_PATHS, LISTEN_AFTER_MS, MASCOT_EFFECTS, MASCOT_STATES, REACTION_MS, SLEEP_AFTER_MS, mascotPose } from './expressions.js'
+import { COFFEE_AFTER_MS, EXCITED_MS, GLYPH_PATHS, MASCOT_EFFECTS, MASCOT_STATES, REACTION_MS, SLEEP_AFTER_MS, mascotPose } from './expressions.js'
 import BirdEffects, { BirdHeadphones } from './BirdEffects.jsx'
 import MascotMotion from './MascotMotion.jsx'
 import './ChatMascot.css'
@@ -111,23 +111,27 @@ function BirdJoint({ name, id }) {
  * between events. Brief reactions use timeouts; loops are CSS and state
  * handoffs use short browser-native animations without a JavaScript frame loop.
  */
-function ChatMascot({ state = 'idle', expression: requestedExpression = state, effect = 'auto', reactionKey = 0, variant = 'launcher', animated = true, active = true, interactive = false }) {
+function ChatMascot({ state = 'idle', expression: requestedExpression = state, effect = 'auto', reactionKey = 0, variant = 'launcher', animated = true, active = true, interactive = false, musicPlaying = false }) {
   const safeState = MASCOT_STATES.includes(requestedExpression) ? requestedExpression : 'idle'
   const reaction = useMemo(() => ({ state: safeState, key: reactionKey }), [safeState, reactionKey])
   const [settledReaction, setSettledReaction] = useState(null)
   const [happyReaction, setHappyReaction] = useState(null)
   const [expiredEffect, setExpiredEffect] = useState(null)
   const [hidden, setHidden] = useState(() => typeof document !== 'undefined' && document.hidden)
-  const [restStage, setRestStage] = useState('idle')
+  const [rest, setRest] = useState(null)
   const wakeRef = useRef(null)
   const opening = ['greeting', 'excited'].includes(safeState)
   const awakeExpression = settledReaction === reaction ? 'idle'
     : opening ? (happyReaction === reaction ? 'happy' : 'excited') : safeState
-  const canRest = animated && active && interactive && awakeExpression === 'idle' && !hidden
+  const listeningToMusic = musicPlaying && animated && active
+  const canRest = animated && active && interactive && awakeExpression === 'idle' && !hidden && !musicPlaying
+  // Old rest poses cannot reappear when music stops or the page becomes visible.
+  const restCycle = useMemo(() => ({ enabled: canRest }), [canRest])
+  const restStage = rest?.cycle === restCycle ? rest.stage : 'idle'
   const resting = canRest && restStage !== 'idle'
-  const expression = resting ? restStage : awakeExpression
+  const expression = listeningToMusic ? 'listening' : resting ? restStage : awakeExpression
   const defaultEffect = opening && expression === 'happy' ? 'none' : DEFAULT_EFFECTS[expression] || 'none'
-  const selectedEffect = resting || settledReaction === reaction ? defaultEffect
+  const selectedEffect = listeningToMusic || resting || settledReaction === reaction ? defaultEffect
     : effect === 'auto' ? defaultEffect : MASCOT_EFFECTS.includes(effect) ? effect : 'none'
   const effectCycle = useMemo(() => ({ effect: selectedEffect, reaction }), [selectedEffect, reaction])
   const visibleEffect = expiredEffect === effectCycle ? 'none' : selectedEffect
@@ -171,16 +175,14 @@ function ChatMascot({ state = 'idle', expression: requestedExpression = state, e
   }, [active, animated, effectCycle])
 
   useEffect(() => {
-    if (!canRest) return undefined
-    let coffeeTimer, listenTimer, sleepTimer
+    if (!restCycle.enabled) return undefined
+    let coffeeTimer, sleepTimer
     const wake = () => {
-      setRestStage('idle')
+      setRest({ cycle: restCycle, stage: 'idle' })
       window.clearTimeout(coffeeTimer)
-      window.clearTimeout(listenTimer)
       window.clearTimeout(sleepTimer)
-      coffeeTimer = window.setTimeout(() => setRestStage('coffee'), COFFEE_AFTER_MS)
-      listenTimer = window.setTimeout(() => setRestStage('listening'), LISTEN_AFTER_MS)
-      sleepTimer = window.setTimeout(() => setRestStage('sleeping'), SLEEP_AFTER_MS)
+      coffeeTimer = window.setTimeout(() => setRest({ cycle: restCycle, stage: 'coffee' }), COFFEE_AFTER_MS)
+      sleepTimer = window.setTimeout(() => setRest({ cycle: restCycle, stage: 'sleeping' }), SLEEP_AFTER_MS)
     }
     wakeRef.current = wake
     wake()
@@ -189,12 +191,11 @@ function ChatMascot({ state = 'idle', expression: requestedExpression = state, e
     return () => {
       wakeRef.current = null
       window.clearTimeout(coffeeTimer)
-      window.clearTimeout(listenTimer)
       window.clearTimeout(sleepTimer)
       document.removeEventListener('pointerdown', wake)
       document.removeEventListener('keydown', wake)
     }
-  }, [canRest])
+  }, [restCycle])
 
   return (
     <MascotMotion

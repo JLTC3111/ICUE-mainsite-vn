@@ -65,7 +65,7 @@ async function run(name, device, task) {
     results.push({ name, passed: true })
     process.stdout.write(`PASS ${engine}: ${name}\n`)
   } catch (error) {
-    results.push({ name, passed: false, error: error.message, pageErrors: errors })
+    results.push({ name, passed: false, error: error.stack, pageErrors: errors })
     await shot(page, `${name}-FAILED`).catch(() => {})
     process.stderr.write(`FAIL ${engine}: ${name}: ${error.message}\n`)
   } finally { await context.close() }
@@ -236,31 +236,41 @@ try {
     await page.locator('.icue-chat__close').click()
     await page.clock.install({ time: new Date('2026-09-27T03:00:00Z') })
     await page.clock.pauseAt(new Date('2026-09-27T03:01:00Z'))
-    // Restart the idle timer using a real interaction, then advance browser time.
-    await page.keyboard.press('Shift')
-    await page.clock.fastForward(30_000)
+    const music = page.getByRole('button', { name: 'Toggle background music', exact: true })
+    await music.click()
     await page.locator('.icue-mascot--launcher[data-state="listening"][data-pose="listening"]').waitFor()
     assert.equal(await page.locator('.icue-mascot__coffee').count(), 0)
     assert.equal(await page.locator('.icue-mascot__head-motion .icue-mascot__headphones').count(), 1)
-    // Stop at a visible walking offset so settling into coffee must preserve
+    // Stop at a visible walking offset so settling into idle must preserve
     // an actual displaced frame, rather than accidentally testing a neutral one.
     await page.locator('.icue-mascot--launcher .icue-mascot__bird').evaluate(el => {
       const walk = el.getAnimations().find(animation => animation.animationName === 'icue-bird-music-walk')
       walk.pause()
       walk.currentTime = 1200
     })
-    await page.clock.fastForward(30_000)
-    await page.locator('.icue-mascot--launcher[data-state="coffee"][data-pose="coffee"]').waitFor()
-    assert.equal(await page.locator('.icue-mascot__coffee').count(), 1)
-    assert.equal(await page.locator('.icue-mascot__coffee-logo').count(), 0)
+    await music.click()
+    await mascotState(page, 'idle')
     assert.equal(await page.locator('.icue-mascot__headphones').count(), 0)
     assert.ok(await page.locator('.icue-mascot--launcher .icue-mascot__bird').evaluate(el =>
       el.getAnimations().some(animation => animation.effect?.composite === 'add'),
-    ), 'walking eases into coffee from the visible frame')
+    ), 'walking eases into idle from the visible frame')
+    await page.waitForFunction(() => !document.querySelector('.icue-mascot--launcher').getAnimations({ subtree: true })
+      .some(animation => animation.effect?.composite === 'add'))
+    await page.clock.fastForward(59_999)
+    await mascotState(page, 'idle')
+    await page.clock.fastForward(1)
+    await page.locator('.icue-mascot--launcher[data-state="coffee"][data-pose="coffee"]').waitFor()
+    assert.equal(await page.locator('.icue-mascot__coffee').count(), 1)
+    assert.equal(await page.locator('.icue-mascot__coffee-logo').count(), 0)
     await page.waitForFunction(() => !document.querySelector('.icue-mascot--launcher').getAnimations({ subtree: true })
       .some(animation => animation.effect?.composite === 'add'))
     const tail = page.locator('.icue-mascot--launcher .icue-mascot__part--tail')
     assert.equal(await tail.evaluate(el => getComputedStyle(el).animationName), 'icue-bird-coffee-tail')
+    await page.waitForFunction(() => {
+      const animation = document.querySelector('.icue-mascot--launcher .icue-mascot__part--tail')
+        .getAnimations().find(animation => animation.animationName === 'icue-bird-coffee-tail')
+      return animation && animation.currentTime >= animation.effect.getTiming().delay
+    })
     const tailFrame = await tail.evaluate(el => getComputedStyle(el).transform)
     await page.waitForTimeout(450)
     assert.notEqual(await tail.evaluate(el => getComputedStyle(el).transform), tailFrame, 'the seated coffee tail wiggles')
@@ -276,6 +286,72 @@ try {
     await page.locator('.icue-chat__toggle').click()
     await mascotState(page, 'excited')
   })
+
+  for (const [name, device] of [
+    ['desktop', { viewport: { width: 1440, height: 1000 } }],
+    ['phone', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+    ['reduced-motion', { viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' }],
+  ]) {
+    await run(`background-music-${name}`, device, async page => {
+      await page.goto(`${origin}/?lang=vi`)
+      const music = page.getByRole('button', { name: 'Toggle background music', exact: true })
+      await music.waitFor()
+      await page.locator('.icue-mascot__art').evaluate(img => img.decode())
+      await page.clock.install({ time: new Date('2026-09-28T03:00:00Z') })
+      await page.clock.pauseAt(new Date('2026-09-28T03:00:01Z'))
+      await page.keyboard.press('Shift')
+      await page.clock.fastForward(59_000)
+      await mascotState(page, 'idle')
+      await music.click()
+      await mascotState(page, 'listening')
+      assert.equal(await music.getAttribute('aria-pressed'), 'true')
+      assert.equal(await page.locator('.icue-mascot--launcher').getAttribute('data-effect'), 'music')
+      const walking = await page.locator('.icue-mascot__bird').evaluate(el => getComputedStyle(el).animationName)
+      assert.equal(walking, name === 'reduced-motion' ? 'none' : 'icue-bird-music-walk')
+      await page.clock.fastForward(180_000)
+      await mascotState(page, 'listening')
+      await page.keyboard.press('Shift')
+      await page.locator('.icue-chat__toggle').hover()
+      await mascotState(page, 'listening')
+      await page.locator('.icue-chat__toggle').click()
+      await mascotState(page, 'listening')
+      await page.locator('.icue-chat__close').click()
+      await mascotState(page, 'listening')
+      await shot(page, `music-${name}-playing`)
+
+      for (let cycle = 0; cycle < 2; cycle++) {
+        await music.click()
+        await mascotState(page, 'idle')
+        assert.equal(await music.getAttribute('aria-pressed'), 'false')
+        assert.equal(await page.locator('.icue-mascot__headphones').count(), 0)
+        assert.equal(await page.locator('.icue-mascot__bird').evaluate(el => getComputedStyle(el).animationName), name === 'reduced-motion' ? 'none' : 'icue-bird-breathe')
+        await page.clock.fastForward(59_999)
+        await mascotState(page, 'idle')
+        await page.clock.fastForward(1)
+        await mascotState(page, 'coffee')
+        await page.clock.fastForward(60_000)
+        await mascotState(page, 'sleeping')
+        await music.click()
+        await mascotState(page, 'listening')
+        await page.clock.fastForward(180_000)
+        await mascotState(page, 'listening')
+      }
+
+      // Let the real media element finish its track; do not synthesize an ended event.
+      await page.evaluate(() => {
+        const audio = window.__icueBackgroundAudio
+        audio.currentTime = audio.duration - 0.2
+      })
+      await page.waitForFunction(() => window.__icueBackgroundAudio.ended)
+      await mascotState(page, 'idle')
+      assert.equal(await music.getAttribute('aria-pressed'), 'false')
+      await music.click()
+      await mascotState(page, 'listening')
+      await music.click()
+      await mascotState(page, 'idle')
+      await shot(page, `music-${name}-stopped`)
+    })
+  }
 
   if (process.env.ICUE_SYNC_QA === '1') {
     await run('encrypted-cross-device-sync', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }, async (page, context) => {

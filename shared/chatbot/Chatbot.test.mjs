@@ -8,7 +8,7 @@ const en = JSON.parse(await fs.readFile(new URL('../../faq-app/src/locales/en.js
 const kb = JSON.parse(await fs.readFile(new URL('../../public/chatbot/kb.vi.json', import.meta.url)))
 const authoredReply = { content: kb.intents[0].answer, meta: { source: 'intent' } }
 
-async function fixture(t, getResponse, { touch = false } = {}) {
+async function fixture(t, getResponse, { touch = false, musicPlaying = false } = {}) {
   silenceRenderer(t)
   const f = platform()
   const storage = new Map()
@@ -26,6 +26,22 @@ async function fixture(t, getResponse, { touch = false } = {}) {
   f.window.cancelAnimationFrame = id => frames.delete(id)
   f.window.setTimeout = setTimer
   f.window.clearTimeout = clearTimer
+  const audio = Object.assign(new EventTarget(), {
+    paused: !musicPlaying, ended: false, readyState: musicPlaying ? 4 : 0, error: null,
+    play() {
+      this.paused = false
+      this.ended = false
+      this.error = null
+      this.readyState = 4
+      this.dispatchEvent(new Event('playing'))
+      return Promise.resolve()
+    },
+    pause() {
+      this.paused = true
+      this.dispatchEvent(new Event('pause'))
+    },
+  })
+  f.window.__icueBackgroundAudio = audio
   const { default: Chatbot } = await sourceModule('shared/chatbot/Chatbot.jsx', {
     imports: {
       './icue-bird.webp': { default: '/bird.webp' },
@@ -62,7 +78,7 @@ async function fixture(t, getResponse, { touch = false } = {}) {
     }
     time = end
   }
-  return { ...f, renderer, find, state, open, send, advance, storage, timers, frames,
+  return { ...f, renderer, find, state, open, send, advance, storage, timers, frames, audio,
     get focused() { return focused },
     update: next => act(async () => renderer.update(element(next))),
   }
@@ -172,25 +188,13 @@ test('retrieval, sourced documents, guidance and uncertain replies get meaningfu
   assert.equal(f.timers.size, 0)
 })
 
-test('inactivity progresses through music, coffee and right-facing sleep with clean wake-up', async t => {
+test('silent inactivity progresses through coffee and right-facing sleep with clean wake-up', async t => {
   const f = await fixture(t, () => authoredReply)
   const mascot = () => f.find('icue-mascot icue-mascot--launcher')
+  await f.advance(30_000)
+  assert.equal(f.state(), 'idle', 'silence never starts the music pose')
   await f.advance(29_999)
   assert.equal(f.state(), 'idle')
-  await f.advance(1)
-  assert.equal(f.state(), 'listening')
-  assert.equal(mascot().props['data-pose'], 'listening')
-  assert.equal(mascot().props['data-effect'], 'music')
-  assert.equal(f.renderer.root.findAllByProps({ className: 'icue-mascot__coffee' }).length, 0)
-  const headMotion = mascot().findByProps({ className: 'icue-mascot__head-motion' })
-  assert.equal(headMotion.findAllByProps({ className: 'icue-mascot__headphones' }).length, 1, 'earcups move with the head')
-  assert.equal(headMotion.findAllByProps({ className: 'icue-mascot__headphone-band' }).length, 1, 'the band follows the head behind the artwork')
-  await act(async () => f.document.dispatchEvent(new Event('keydown')))
-  assert.equal(f.state(), 'idle', 'keyboard interaction interrupts music')
-  await f.advance(30_000)
-  assert.equal(f.state(), 'listening')
-  await f.advance(29_999)
-  assert.equal(f.state(), 'listening')
   await f.advance(1)
   assert.equal(f.state(), 'coffee')
   assert.equal(mascot().props['data-pose'], 'coffee')
@@ -217,7 +221,7 @@ test('inactivity progresses through music, coffee and right-facing sleep with cl
   assert.equal(f.state(), 'idle', 'hover wakes the entire bird, not only its eyes')
   assert.equal(mascot().props['data-pose'], 'idle')
   await f.advance(59_999)
-  assert.equal(f.state(), 'listening')
+  assert.equal(f.state(), 'idle')
   await f.advance(1)
   assert.equal(f.state(), 'coffee', 'wake restarts the coffee deadline')
   await act(async () => f.document.dispatchEvent(new Event('keydown')))
@@ -231,17 +235,17 @@ test('inactivity progresses through music, coffee and right-facing sleep with cl
   assert.equal(f.timers.size, 0)
 })
 
-test('opening chat or hiding the page cancels all three inactivity stages', async t => {
+test('opening chat or hiding the page cancels inactivity stages', async t => {
   const f = await fixture(t, () => authoredReply)
-  await f.advance(30_000)
-  assert.equal(f.state(), 'listening')
+  await f.advance(60_000)
+  assert.equal(f.state(), 'coffee')
   await f.open()
   assert.equal(f.state(), 'excited')
   await f.advance(150_000)
   assert.equal(f.state(), 'idle', 'an open conversation never enters a rest pose')
   await f.open()
-  await f.advance(30_000)
-  assert.equal(f.state(), 'listening')
+  await f.advance(60_000)
+  assert.equal(f.state(), 'coffee')
   await act(async () => {
     f.document.hidden = true
     f.document.dispatchEvent(new Event('visibilitychange'))
@@ -253,12 +257,117 @@ test('opening chat or hiding the page cancels all three inactivity stages', asyn
     f.document.dispatchEvent(new Event('visibilitychange'))
   })
   assert.equal(f.state(), 'idle', 'returning to the page starts a fresh inactivity cycle')
-  await f.advance(29_999)
+  await f.advance(59_999)
   assert.equal(f.state(), 'idle')
   await f.advance(1)
-  assert.equal(f.state(), 'listening')
+  assert.equal(f.state(), 'coffee')
   await unmount(f.renderer)
   assert.equal(f.timers.size, 0)
+})
+
+test('music holds the walking pose and every stop starts a fresh idle countdown', async t => {
+  const f = await fixture(t, () => authoredReply)
+  const mascot = () => f.find('icue-mascot icue-mascot--launcher')
+  await f.advance(59_000)
+  await act(async () => f.audio.play())
+  assert.equal(f.state(), 'listening')
+  assert.equal(mascot().props['data-pose'], 'listening')
+  assert.equal(mascot().props['data-effect'], 'music')
+  const headMotion = mascot().findByProps({ className: 'icue-mascot__head-motion' })
+  assert.equal(headMotion.findAllByProps({ className: 'icue-mascot__headphones' }).length, 1)
+  assert.equal(headMotion.findAllByProps({ className: 'icue-mascot__headphone-band' }).length, 1)
+  assert.equal(f.timers.size, 0, 'playback cancels every inactivity deadline')
+  await act(async () => {
+    f.document.dispatchEvent(new Event('pointerdown'))
+    f.document.dispatchEvent(new Event('keydown'))
+    mascot().props.onPointerEnter()
+  })
+  await f.advance(300_000)
+  assert.equal(f.state(), 'listening', 'interaction and long playback never interrupt listening')
+  assert.equal(f.timers.size, 0)
+  await act(async () => f.audio.pause())
+  assert.equal(f.state(), 'idle')
+  assert.equal(mascot().props['data-pose'], 'idle')
+  assert.equal(mascot().props['data-effect'], 'none')
+  assert.equal(mascot().findAllByProps({ className: 'icue-mascot__headphones' }).length, 0)
+  await f.advance(59_999)
+  assert.equal(f.state(), 'idle', 'time before playback is discarded')
+  await f.advance(1)
+  assert.equal(f.state(), 'coffee')
+
+  for (const restState of ['coffee', 'sleeping']) {
+    if (restState === 'sleeping') await f.advance(60_000)
+    assert.equal(f.state(), restState)
+    await act(async () => f.audio.play())
+    assert.equal(f.state(), 'listening', `resuming wakes the bird from ${restState}`)
+    assert.equal(f.timers.size, 0)
+    await f.advance(180_000)
+    assert.equal(f.state(), 'listening')
+    await act(async () => f.audio.pause())
+    assert.equal(f.state(), 'idle', 'stopping never restores a stale rest pose')
+    await f.advance(59_999)
+    assert.equal(f.state(), 'idle')
+    await f.advance(1)
+    assert.equal(f.state(), 'coffee', 'each stop restarts the full countdown')
+  }
+  await unmount(f.renderer)
+  assert.equal(f.timers.size, 0)
+})
+
+test('existing playback survives page visibility and stops for native media interruptions', async t => {
+  const f = await fixture(t, () => authoredReply, { musicPlaying: true })
+  const mascot = () => f.find('icue-mascot icue-mascot--launcher')
+  assert.equal(f.state(), 'listening', 'a late-mounted bird joins current playback')
+  await act(async () => {
+    f.document.hidden = true
+    f.document.dispatchEvent(new Event('visibilitychange'))
+  })
+  assert.equal(mascot().props['data-paused'], true)
+  await f.advance(180_000)
+  await act(async () => {
+    f.document.hidden = false
+    f.document.dispatchEvent(new Event('visibilitychange'))
+  })
+  assert.equal(f.state(), 'listening')
+  assert.equal(mascot().props['data-paused'], false)
+  assert.equal(f.timers.size, 0)
+
+  for (const event of ['waiting', 'ended', 'emptied', 'error', 'pause']) {
+    await act(async () => {
+      f.audio.readyState = 0
+      f.audio.dispatchEvent(new Event(event))
+    })
+    assert.equal(f.state(), 'idle', `${event} stops the listening pose`)
+    await f.advance(40_000)
+    assert.equal(f.state(), 'idle')
+    await act(async () => f.audio.play())
+    assert.equal(f.state(), 'listening', `playback resumes after ${event}`)
+    assert.equal(f.timers.size, 0)
+  }
+  await unmount(f.renderer)
+  assert.equal(f.timers.size, 0)
+})
+
+test('chat interactions keep the bird listening while preserving actual reply status', async t => {
+  const pending = deferred()
+  const f = await fixture(t, () => pending.promise, { musicPlaying: true })
+  await f.open()
+  assert.equal(f.state(), 'listening')
+  await f.send()
+  await f.advance(700)
+  assert.equal(f.state(), 'listening')
+  assert.equal(f.find('icue-chat__bubble icue-chat__pending').props.children, vi.chat.thinking)
+  await act(async () => f.audio.pause())
+  assert.equal(f.state(), 'thinking', 'stopping music reveals the ongoing reply')
+  await act(async () => f.audio.play())
+  assert.equal(f.state(), 'listening')
+  await act(async () => pending.resolve(authoredReply))
+  await f.advance(1800)
+  assert.equal(f.state(), 'listening')
+  await f.open()
+  assert.equal(f.state(), 'listening', 'closing chat does not restart inactivity during music')
+  assert.equal(f.timers.size, 0)
+  await unmount(f.renderer)
 })
 
 test('the reusable mascot composes expressions and SVG effects without changing static variants', async t => {

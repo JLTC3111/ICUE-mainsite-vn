@@ -8,6 +8,7 @@ import HistorySettings from './HistorySettings.jsx'
 import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
 import { responseEffect, responseExpression } from './mascot/expressions.js'
+import { useBackgroundMusic } from '../contact-sidebar/useBackgroundMusic.js'
 import './Chatbot.css'
 
 /**
@@ -74,6 +75,7 @@ function Message({ message, onLinkClick }) {
  *   events deliberately exclude the visitor's message text
  */
 export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
+  const { isPlaying: musicPlaying } = useBackgroundMusic()
   const [isOpen, setIsOpen] = useState(false)
   const [showSync, setShowSync] = useState(false)
   const { sync, state: syncState } = useHistorySync(isOpen)
@@ -397,7 +399,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         aria-haspopup="dialog"
         aria-label={isOpen ? labels.close : labels.open}
       >
-        <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} interactive={!isOpen} />
+        <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} musicPlaying={musicPlaying} interactive={!isOpen} />
       </button>
     </div>
   )

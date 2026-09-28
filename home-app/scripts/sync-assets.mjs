@@ -60,6 +60,12 @@ for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
 
+// The home dev server also needs the sidebar's on-demand background track.
+copyFile(
+  path.join(siteRoot, 'public/music/mixkit-driving-ambition-32.mp3'),
+  path.join(appRoot, 'public/music/mixkit-driving-ambition-32.mp3'),
+)
+
 copyAllowlistedFiles(
   path.join(siteRoot, 'public', 'bgVideos'),
   path.join(appRoot, 'public', 'bgVideos'),

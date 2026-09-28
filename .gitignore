@@ -13,6 +13,9 @@ dist-home/
 # Certificate assets are synced from public/certs before home-app dev/build.
 /home-app/public/certs/
 
+# Background music is copied from public/music for the home dev server.
+/home-app/public/music/
+
 # Home-app hashed bundles and generated HTML copied to repo root by postbuild.
 /assets/
 /route-shells/

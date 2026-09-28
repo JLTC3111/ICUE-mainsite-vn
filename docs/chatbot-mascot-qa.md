@@ -3,6 +3,31 @@
 Completed locally on 2026-09-24–25. No commit, push, deployment, or production
 database change has been made.
 
+## 2026-09-28 background music synchronization
+
+The launcher now follows actual background audio playback through the same
+`useBackgroundMusic` hook as the utility rail. Playing or resuming immediately
+selects walking with headphones and music notes, including while chat is open.
+Pointer/keyboard input and long playback cannot interrupt listening. Playback
+cancels the idle deadlines; pause, end, buffering or an audio error returns the
+bird to its current chat reaction or idle. Every stopped interval starts a
+fresh countdown to coffee at 60 seconds and sleep at 120 seconds. Idle stages
+belong to their own cycle, so restarting music cannot leave a stale coffee or
+sleep pose to reappear on the next pause. Visibility still pauses animation.
+
+This replaces the earlier automatic 30-second listening stage described below:
+silence no longer starts the walking/headphone animation. Chat replies retain
+their textual status while playback controls the decorative bird. The home
+development asset sync now includes the existing background track on demand.
+
+Validation: 55 chatbot tests and 15 React tests passed, including repeated
+play/pause, late mounting during playback, native media interruptions, hidden
+pages, rejected playback and listener cleanup. Targeted ESLint, all ten app
+builds, locale/route checks and publish/content checks passed. Real playback
+checks passed in Chromium and WebKit at desktop and phone sizes and with
+reduced motion, including replay after the media element reaches its end.
+Screenshots and results are in `/private/tmp/icue-music-browser-qa/`.
+
 ## 2026-09-27 final state and body-pose update
 
 Coffee now adds a gentle tail wiggle after the seated pose settles. A small
@@ -155,9 +180,9 @@ are not persisted across a full reload; the transcript is.
 | Response delay and retrieval promise, or an active sync operation in settings | `> ...` |
 | Fallback / clarification / unsupported-language response | `> ?` |
 | Retrieval exception or sync failure shown in settings | `! x` |
-| Closed launcher after 30 seconds without pointer/key interaction | `^^` + walking with headphones, gentle head nod and drifting music notes |
-| Closed launcher after 60 seconds without pointer/key interaction | `^^` + seated coffee break with a small plain blue-grey mug |
-| Closed launcher after 120 seconds without pointer/key interaction | `> _` + lying down facing right with three drifting `z` symbols |
+| Background music playing (takes priority over other reactions) | `^^` + walking with headphones, gentle head nod and drifting music notes |
+| Closed launcher after 60 seconds without music or pointer/key interaction | `^^` + seated coffee break with a small plain blue-grey mug |
+| Closed launcher after 120 seconds without music or pointer/key interaction | `> _` + lying down facing right with three drifting `z` symbols |
 
 The reusable API accepts `idle`, `greeting`, `excited`, `curious`, `thinking`, `speaking`,
 `happy`, `reading`, `idea`, `handoff`, `confused`, `error`, `coffee`, `listening`, and `sleeping`.
