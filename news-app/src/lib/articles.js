@@ -2,12 +2,12 @@ import { supabase, STORAGE_BUCKETS } from './supabase'
 import { fileExt, readMinutes, uniqueSlug } from './helpers'
 import { sanitizeArticleHtml, sanitizePlainText } from '@icue/text/sanitizeArticleHtml'
 import { sanitizeSourcesForSave } from './articleSources'
+import { articleStoragePath, cleanupArticleStorage } from './articleStorage'
 import {
   resolveCoverComparisonForSave,
   enrichCoverComparisonForSave,
 } from './mediaComparison'
 import {
-  isMissingMediaComparison,
   normalizeArticle,
   runArticleSelect,
 } from './articleReadModel'
@@ -100,13 +100,9 @@ async function uploadArticleFile(session, userId, file, subdir = 'media') {
   return saved
 }
 
-// Read the current rows on each attempt: the previous request may have saved
-// some of them before losing connectivity. Upload files before removing rows.
-async function syncMedia(articleId, userId, items, session) {
-  const { data: current, error: readError } = await supabase.from('article_media')
-    .select('id, storage_path').eq('article_id', articleId)
-  if (readError) throw readError
-  const existingIds = new Set((current || []).map((row) => row.id))
+// Prepare uploads without touching any live database row. Article + gallery
+// mutations happen in one RPC transaction only after all uploads succeed.
+async function prepareMedia(userId, items, session) {
   const rows = []
   const clientToDb = new Map()
 
@@ -122,34 +118,16 @@ async function syncMedia(articleId, userId, items, session) {
     clientToDb.set(item.id, id)
     rows.push({
       id,
-      article_id: articleId,
-      info: item.info || null,
+      kind: item.kind,
+      url: uploaded?.url || item.url,
+      storage_path: uploaded?.path || item.storage_path || null,
+      poster_url: item.poster_url || null,
+      info: item.info ? sanitizePlainText(item.info) : null,
       position: index + 1,
-      ...(uploaded ? { kind: item.kind, url: uploaded.url, storage_path: uploaded.path } : {}),
     })
   }
 
-  const keptIds = new Set(rows.map((row) => row.id))
-  const toDelete = (current || []).filter((row) => !keptIds.has(row.id))
-  if (toDelete.length) {
-    const { error: deleteError } = await supabase.from('article_media').delete()
-      .eq('article_id', articleId).in('id', toDelete.map((row) => row.id))
-    if (deleteError) throw deleteError
-  }
-
-  for (const row of rows) {
-    // Avoid INSERT ... ON CONFLICT: the media-cap BEFORE INSERT trigger also
-    // runs for conflicts and would reject retries of a full gallery.
-    const query = existingIds.has(row.id)
-      ? supabase.from('article_media').update(row).eq('id', row.id).eq('article_id', articleId)
-      : supabase.from('article_media').insert(row)
-    const { error } = await query
-    if (error) throw error
-  }
-
-  const paths = toDelete.map((row) => row.storage_path).filter(Boolean)
-  if (paths.length) await supabase.storage.from(STORAGE_BUCKETS.media).remove(paths)
-  return clientToDb
+  return { rows, clientToDb }
 }
 
 function coverComparisonPayload(
@@ -174,7 +152,8 @@ function coverComparisonPayload(
 
 // Create a brand-new article (Component 2).
 export async function createArticle({ form, items, coverFile, coverAltFile, userId, status, saveSession = createArticleSaveSession() }) {
-  saveSession.slug ||= uniqueSlug(form.title)
+  if (!userId) throw new Error('Sign in to save an article')
+  saveSession.slug ||= uniqueSlug(form.title || 'draft')
   const { data: existing, error: readError } = await supabase.from('articles')
     .select('id').eq('id', saveSession.id).maybeSingle()
   if (readError) throw readError
@@ -182,7 +161,7 @@ export async function createArticle({ form, items, coverFile, coverAltFile, user
     const { error } = await supabase.from('articles').insert({
       id: saveSession.id,
       slug: saveSession.slug,
-      title: sanitizePlainText(form.title.trim()),
+      title: sanitizePlainText((form.title || '').trim()),
       content_html: sanitizeArticleHtml(form.contentHtml || ''),
       author_id: userId,
       status: 'draft',
@@ -196,25 +175,35 @@ export async function createArticle({ form, items, coverFile, coverAltFile, user
 
 // Update an existing article (Component 3).
 export async function updateArticle({ id, form, items, coverFile, coverAltFile, userId, status, saveSession = createArticleSaveSession() }) {
+  if (!userId) throw new Error('Sign in to save an article')
+  const { data: owner, error: ownerError } = await supabase.from('articles')
+    .select('author_id').eq('id', id).single()
+  if (ownerError) throw ownerError
+  if (!owner?.author_id) throw new Error('Article not found')
+  // Admin edits use the article owner's folder. The owner can later remove
+  // those assets under the same storage policy as their own uploads.
+  const storageUserId = owner.author_id
   let coverUrl = form.coverImageUrl ?? null
   let coverAltUrl = form.coverImageAltUrl ?? null
   if (coverFile) {
-    const { url } = await uploadArticleFile(saveSession, userId, coverFile, 'covers')
+    const { url } = await uploadArticleFile(saveSession, storageUserId, coverFile, 'covers')
     coverUrl = url
   }
   if (coverAltFile) {
-    const { url } = await uploadArticleFile(saveSession, userId, coverAltFile, 'covers')
+    const { url } = await uploadArticleFile(saveSession, storageUserId, coverAltFile, 'covers')
     coverAltUrl = url
   }
 
   const payload = {
-    title: sanitizePlainText(form.title.trim()),
+    title: sanitizePlainText((form.title || '').trim()),
     subtitle: form.subtitle?.trim() ? sanitizePlainText(form.subtitle.trim()) : null,
     author_name: form.author?.trim() ? sanitizePlainText(form.author.trim()) : null,
     content_html: sanitizeArticleHtml(form.contentHtml || ''),
     content_json: form.contentJson || null,
     cover_image_url: coverUrl,
     cover_image_alt_url: coverAltUrl,
+    cover_storage_path: articleStoragePath(coverUrl),
+    cover_alt_storage_path: articleStoragePath(coverAltUrl),
     cover_info: form.coverInfo?.trim() ? sanitizePlainText(form.coverInfo.trim()) : null,
     language: form.language || 'vi',
     category: form.category || 'general',
@@ -223,43 +212,37 @@ export async function updateArticle({ id, form, items, coverFile, coverAltFile, 
     read_minutes: readMinutes(form.contentHtml),
     sources: sanitizeSourcesForSave(form.sources),
   }
-  if (status) {
-    payload.status = status
-    // Only stamp published_at on first publish — never overwrite on later updates.
-    if (status === 'published') {
-      const { data: existing, error: existingError } = await supabase
-        .from('articles')
-        .select('published_at')
-        .eq('id', id)
-        .single()
-      if (existingError) throw existingError
-      if (!existing?.published_at) {
-        payload.published_at = new Date().toISOString()
-      }
-    }
-  }
-
-  const clientToDb = await syncMedia(id, userId, items, saveSession)
+  if (status) payload.status = status
+  const { rows, clientToDb } = await prepareMedia(storageUserId, items || [], saveSession)
   payload.cover_comparison = coverComparisonPayload(form.coverComparison, clientToDb, {
     coverUrl,
     coverAltUrl,
     editorImages: items,
   })
-  // Publication is the final database write, after every media upload and row
-  // succeeds. A failed save leaves a new article private and safe to retry.
-  const save = () => supabase.from('articles').update(payload).eq('id', id).select('id, slug').single()
-  let { data, error } = await save()
-  if (error && isMissingMediaComparison(error)) {
-    delete payload.cover_comparison
-    ;({ data, error } = await save())
+  const signature = JSON.stringify([id, payload, rows])
+  if (saveSession.signature !== signature) {
+    saveSession.signature = signature
+    saveSession.saveId = crypto.randomUUID()
   }
+  const { data, error } = await supabase.rpc('save_article', {
+    p_id: id,
+    p_save_id: saveSession.saveId,
+    p_payload: payload,
+    p_media: rows,
+    p_expected_updated_at: saveSession.updatedAt || form.expectedUpdatedAt || null,
+  })
   if (error) throw error
+  saveSession.updatedAt = data.updated_at
+  // The save has succeeded. Cleanup failures must not prompt users to replay
+  // an already committed edit; the durable queue will retry independently.
+  void cleanupArticleStorage().catch(() => {})
   return data
 }
 
 export async function deleteArticle(id) {
   const { error } = await supabase.from('articles').delete().eq('id', id)
   if (error) throw error
+  void cleanupArticleStorage().catch(() => {})
 }
 
 // Map a DB media row to the editor's working item shape.
@@ -270,6 +253,7 @@ export function toEditorMedia(row) {
     kind: row.kind,
     url: row.url,
     storage_path: row.storage_path,
+    poster_url: row.poster_url,
     info: row.info || '',
     isNew: false,
   }

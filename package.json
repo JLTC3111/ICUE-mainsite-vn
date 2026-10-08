@@ -2,16 +2,12 @@
   "name": "icue-main-site-vietnamese",
   "version": "1.0.0",
   "description": "ICUE Vietnam website and connected applications",
-  "main": "server.js",
   "dependencies": {
     "@emotion/is-prop-valid": "1.4.0",
     "@google/model-viewer": "^4.1.0",
     "@tailwindcss/vite": "^4.1.7",
     "aos": "^2.3.4",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "4.22.3",
     "fast-average-color": "^9.5.2",
     "gsap": "^3.15.0",
     "lucide-react": "^1.24.0",
@@ -25,20 +21,16 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
-    "cpy": "^11.1.0",
     "jsdom": "26.1.0",
-    "nodemon": "^3.1.14",
     "react-test-renderer": "19.2.7",
     "vite": "^6.3.2"
   },
   "scripts": {
     "dev": "npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/sync-home-dev.mjs && vite",
     "install:apps": "npm ci --prefix news-app && npm ci --prefix people-app && npm ci --prefix structure-app && npm ci --prefix ourwork-app && npm ci --prefix contact-app && npm ci --prefix legal-app && npm ci --prefix home-app && npm ci --prefix faq-app && npm ci --prefix recruitment-app && npm ci --prefix community-app",
-    "build": "npm run install:apps && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/postbuild.mjs && npm run verify:locales && npm run verify:routes && npm run verify:publish",
+    "build": "npm run install:apps && npm test && npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/postbuild.mjs && npm run verify:locales && npm run verify:routes && npm run verify:publish",
     "dev:legacy": "node scripts/restore-dev-index.mjs && vite",
-    "preview": "vite preview",
-    "server": "node server.js",
-    "server-dev": "nodemon server.js",
+    "preview": "vite preview --outDir dist-home",
     "build:newsroom": "npm run build --prefix news-app",
     "dev:newsroom": "npm run dev --prefix news-app",
     "build:people": "npm run build --prefix people-app",
@@ -69,6 +61,13 @@
     "dev:structure": "npm run dev --prefix structure-app",
     "test:recovery": "node --experimental-vm-modules --test shared/resilience/*.test.js",
     "audit:recovery": "node scripts/audit-recovery-sources.mjs",
-    "prepare:chatbot": "node scripts/build-chatbot-knowledge.mjs"
+    "prepare:chatbot": "node scripts/build-chatbot-knowledge.mjs",
+    "prepare:schema": "node scripts/build-newsroom-schema.mjs",
+    "verify:schema": "node scripts/build-newsroom-schema.mjs --check",
+    "test": "npm run verify:schema && npm run test:security && npm run test:react && npm run test:recovery && npm run test:chatbot && npm run test:home-media && npm test --prefix news-app && npm run lint --prefix news-app",
+    "test:database": "node scripts/test-newsroom-database.mjs"
+  },
+  "overrides": {
+    "source-map-js": "1.2.2"
   }
 }

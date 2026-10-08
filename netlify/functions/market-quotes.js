@@ -10,7 +10,8 @@ const INDEXES = [
 
 async function fetchQuote({ symbol, label }) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=2d`
-  const res = await fetch(url, {
+  const { serverFetch } = await import('../../news-app/src/lib/serverFetch.js')
+  const res = await serverFetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ICUE-Newsroom/1.0)' },
   })
   if (!res.ok) throw new Error(`quote ${symbol}`)

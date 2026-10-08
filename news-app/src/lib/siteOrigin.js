@@ -1,3 +1,4 @@
+import { readSessionStorage, writeSessionStorage } from '../../../shared/storage/safeSessionStorage.js'
 import {
   mainSiteOriginForLocale,
   normalizeUiLocale,
@@ -50,7 +51,7 @@ export function detectEntrySite() {
   const requestedLocale = normalizeUiLocale(params.get('lang'))
   if (requestedLocale) {
     const requestedSite = requestedLocale === 'en' ? 'en' : 'vi'
-    sessionStorage.setItem(ENTRY_SITE_KEY, requestedSite)
+    writeSessionStorage(ENTRY_SITE_KEY, requestedSite)
     return requestedSite
   }
 
@@ -58,27 +59,27 @@ export function detectEntrySite() {
     params.get('site') === 'en'
     || params.get('from') === 'en-news'
   ) {
-    sessionStorage.setItem(ENTRY_SITE_KEY, 'en')
+    writeSessionStorage(ENTRY_SITE_KEY, 'en')
     return 'en'
   }
   if (
     params.get('site') === 'vi'
     || params.get('from') === 'vi-news'
   ) {
-    sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
+    writeSessionStorage(ENTRY_SITE_KEY, 'vi')
     return 'vi'
   }
 
-  const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
+  const cached = readSessionStorage(ENTRY_SITE_KEY)
   if (cached === 'en' || cached === 'vi') return cached
 
   const fromReferrer = referrerSiteHint()
   if (fromReferrer) {
-    sessionStorage.setItem(ENTRY_SITE_KEY, fromReferrer)
+    writeSessionStorage(ENTRY_SITE_KEY, fromReferrer)
     return fromReferrer
   }
 
-  sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
+  writeSessionStorage(ENTRY_SITE_KEY, 'vi')
   return 'vi'
 }
 

@@ -530,5 +530,19 @@
     "empty": "Chưa có bình luận nào để dịch.",
     "suggest": "Gợi ý bằng bản dịch trên máy",
     "suggestHint": "Điền vào các ô trống bằng trình dịch có sẵn của trình duyệt. Không có gì được lưu cho đến khi bạn nhấn Lưu."
+  },
+  "drafts": {
+    "myDrafts": "Bản nháp của tôi",
+    "all": "Tất cả bài viết",
+    "drafts": "Bản nháp đã lưu",
+    "published": "Đã xuất bản",
+    "filterLabel": "Lọc bài viết",
+    "empty": "Chưa có bản nháp. Viết bài mới và chọn Lưu nháp.",
+    "resume": "Tiếp tục viết",
+    "untitled": "Bản nháp chưa có tiêu đề",
+    "saving": "Đang lưu bản nháp…",
+    "saved": "Đã lưu bản nháp vào tài khoản.",
+    "unsaved": "Bạn có thay đổi chưa được lưu.",
+    "hint": "Lưu bài viết chưa hoàn thành vào tài khoản để tiếp tục sau."
   }
 }

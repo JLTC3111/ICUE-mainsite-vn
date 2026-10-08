@@ -530,5 +530,19 @@
     "empty": "Aucun commentaire à traduire pour le moment.",
     "suggest": "Proposer avec la traduction locale",
     "suggestHint": "Remplit les champs vides avec le traducteur intégré de votre navigateur. Rien n’est enregistré tant que vous n’avez pas cliqué sur Enregistrer."
+  },
+  "drafts": {
+    "myDrafts": "Mes brouillons",
+    "all": "Tous les articles",
+    "drafts": "Brouillons enregistrés",
+    "published": "Publiés",
+    "filterLabel": "Filtrer les articles",
+    "empty": "Aucun brouillon. Commencez un article et enregistrez le brouillon.",
+    "resume": "Reprendre",
+    "untitled": "Brouillon sans titre",
+    "saving": "Enregistrement…",
+    "saved": "Brouillon enregistré dans votre compte.",
+    "unsaved": "Modifications non enregistrées.",
+    "hint": "Enregistrez un article inachevé pour le reprendre plus tard."
   }
 }

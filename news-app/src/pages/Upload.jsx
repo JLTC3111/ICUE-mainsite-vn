@@ -8,9 +8,13 @@ import { consumeAiDraft } from '../lib/aiDraft'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function Upload() {
+  const { user } = useAuth()
+  return <AccountUpload key={user.id} user={user} />
+}
+
+function AccountUpload({ user }) {
   const { t } = useTranslation()
   useDocumentTitle(t('editor.writeTitle'))
-  const { user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [saveSession] = useState(createArticleSaveSession)
@@ -32,7 +36,8 @@ export default function Upload() {
     async ({ form, items, coverFile, coverAltFile, status }) => {
       const res = await createArticle({ form, items, coverFile, coverAltFile, userId: user.id, status, saveSession })
       if (status === 'published') navigate(`/article/${res.slug}`)
-      else navigate('/dashboard')
+      else navigate(`/edit/${res.id}`, { replace: true, state: { draftSaved: true } })
+      return res
     },
     [user, navigate, saveSession],
   )
@@ -40,7 +45,7 @@ export default function Upload() {
   return (
     <>
       <h1 className="visually-hidden">{t('editor.writeTitle')}</h1>
-      <ArticleForm mode="create" initial={initial} onSubmit={handleSubmit} />
+      <ArticleForm key={user.id} mode="create" initial={initial} onSubmit={handleSubmit} />
     </>
   )
 }

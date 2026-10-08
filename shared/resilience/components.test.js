@@ -9,7 +9,7 @@ test('sign-in rejection leaves loading state and allows an explicit retry withou
     'lucide-react': { Eye: () => null, EyeOff: () => null },
     '../context/AuthContext': { useAuth: () => ({ signIn: () => { calls++; return pending.promise } }) },
     '../lib/supabase': { supabase: { auth: { onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) } } },
-    '../lib/authRedirect': { getAuthRedirectUrl: () => '/login', isPasswordRecoveryUrl: () => false },
+    '../lib/authRedirect': { getAuthRedirectUrl: () => '/login', isPasswordRecoveryUrl: () => false, clearPasswordRecoveryUrl() {} },
     '../lib/authReset': { authErrorKey: () => 'login.resetError', sendPasswordResetEmail() {} },
     '../hooks/useDocumentTitle': title, '../components/LanguageSwitcher': { default: () => null },
   } })
@@ -44,7 +44,7 @@ async function editFixture(t, fetchArticleById, params = { id: 'a' }) {
   silenceRenderer(t); const f = platform()
   function Form({ initial }) { const [draft, setDraft] = React.useState(initial.title); return React.createElement('input', { value: draft, onChange: e => setDraft(e.target.value) }) }
   const mod = await sourceModule('news-app/src/pages/Edit.jsx', { globals: f, imports: {
-    'react-i18next': i18n, 'react-router-dom': { useNavigate: () => () => {}, useParams: () => params },
+    'react-i18next': i18n, 'react-router-dom': { useNavigate: () => () => {}, useParams: () => params, useLocation: () => ({}) },
     '../context/AuthContext': { useAuth: () => ({ user: { id: 'u' } }) }, '../components/ArticleForm': { default: Form },
     '../lib/articles': { fetchArticleById, updateArticle: async () => ({}), toEditorMedia: v => v, createArticleSaveSession: () => ({}) }, '../hooks/useDocumentTitle': title,
   } })

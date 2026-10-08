@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
@@ -33,7 +33,7 @@ import './ArticleForm.css'
 const todayStr = () => new Date().toISOString().slice(0, 10)
 const nowTime = () => new Date().toTimeString().slice(0, 5)
 
-export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
+export default function ArticleForm({ mode = 'create', initial, onSubmit, draftSaved = false }) {
   const { t } = useTranslation()
   const { profile } = useAuth()
   const navigate = useNavigate()
@@ -172,6 +172,21 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
   const [busy, setBusy] = useState(null) // 'draft' | 'publish' | 'update'
   const savingRef = useRef(false)
   const [error, setError] = useState('')
+  const canSaveDraft = initial?.status !== 'published'
+  const fingerprint = JSON.stringify([title, subtitle, author, date, time, category, contentHtml,
+    contentJson, sources, coverComparison, items, coverPreview, coverAltPreview, coverInfo])
+  const [savedFingerprint, setSavedFingerprint] = useState(fingerprint)
+  const [hasSaved, setHasSaved] = useState(Boolean(initial?.id) || draftSaved)
+  const hasContent = Boolean(title.trim() || subtitle.trim() || contentHtml.replace(/<[^>]*>/g, '').trim()
+    || items.length || coverPreview || coverAltPreview || sources.length)
+  const dirty = fingerprint !== savedFingerprint || (!hasSaved && hasContent)
+
+  useEffect(() => {
+    if (!dirty) return undefined
+    const warn = (event) => { event.preventDefault(); event.returnValue = '' }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [dirty])
 
   const galleryImages = useMemo(
     () => items.filter((item) => item.kind === 'image'),
@@ -263,17 +278,17 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
     async (status) => {
       if (savingRef.current) return
       const plain = contentHtml.replace(/<[^>]*>/g, '').trim()
-      if (!title.trim()) {
+      if (status === 'published' && !title.trim()) {
         setError(t('editor.needTitle'))
         return
       }
-      if (!plain) {
+      if (status === 'published' && !plain) {
         setError(t('editor.needContent'))
         return
       }
       savingRef.current = true
       setError('')
-      setBusy(status === 'published' ? (mode === 'edit' ? 'update' : 'publish') : 'draft')
+      setBusy(status === 'published' ? (canSaveDraft ? 'publish' : 'update') : 'draft')
       try {
         await onSubmit({
           form: {
@@ -291,20 +306,23 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
             coverImageAltUrl: coverAltUrl || null,
             language: articleLanguage,
             category,
+            expectedUpdatedAt: initial?.updated_at || null,
           },
           items,
           coverFile: coverFileRef.current,
           coverAltFile: coverAltFileRef.current,
           status,
         })
+        setSavedFingerprint(fingerprint)
+        setHasSaved(true)
       } catch (err) {
         setError(err.message || t('editor.uploadError'))
-        setBusy(null)
       } finally {
         savingRef.current = false
+        setBusy(null)
       }
     },
-    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, articleLanguage, onSubmit, mode, t],
+    [title, subtitle, author, date, time, category, contentHtml, contentJson, sources, coverComparison, items, coverUrl, coverAltUrl, coverInfo, articleLanguage, onSubmit, t, initial, fingerprint, canSaveDraft],
   )
 
   // The currently logged-in account (the editor), shown in the top bar.
@@ -324,16 +342,17 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
         </div>
 
         <div className="article-form__actions">
+          <Link to="/dashboard?tab=drafts" className="btn btn-ghost btn-sm">{t('drafts.myDrafts')}</Link>
           <button className="btn btn-ghost btn-sm" disabled={!!busy} onClick={goBack}>
             {t('common.cancel')}
           </button>
-          <button className="btn btn-ghost btn-sm" disabled={!!busy} onClick={() => submit('draft')}>
+          {canSaveDraft && <button className="btn btn-ghost btn-sm" disabled={!!busy} onClick={() => submit('draft')}>
             {busy === 'draft' ? <span className="spin" style={{ borderColor: '#ccc', borderTopColor: '#111' }} /> : t('editor.saveDraft')}
-          </button>
+          </button>}
           <button className="btn btn-accent btn-sm" disabled={!!busy} onClick={() => submit('published')}>
             {busy === 'publish' || busy === 'update' ? (
               <><span className="spin" style={{ borderColor: 'rgba(255,255,255,.35)', borderTopColor: '#fff' }} />{t('editor.publishing')}</>
-            ) : mode === 'edit' ? t('editor.update') : t('editor.publish')}
+            ) : canSaveDraft ? t('editor.publish') : t('editor.update')}
           </button>
         </div>
       </div>
@@ -345,7 +364,10 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit }) {
           onNavigate={handleOutlineNavigate}
         />
 
-      <div className="article-form__canvas" lang={articleLanguage}>
+      <div className="article-form__canvas" lang={articleLanguage} inert={busy ? true : undefined}>
+        {canSaveDraft && <p className="article-form__draft-status" role="status">
+          {busy === 'draft' ? t('drafts.saving') : dirty ? t('drafts.unsaved') : hasSaved ? t('drafts.saved') : t('drafts.hint')}
+        </p>}
         {error && <p className="article-form__error">{error}</p>}
 
         <EditorSection

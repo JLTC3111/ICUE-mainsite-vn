@@ -2,6 +2,9 @@
 .dash__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
 .dash__head h1 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .dash__empty { color: var(--icue-text-faint); padding: 50px 0; text-align: center; }
+.dash__tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.dash__tab { border: 1px solid var(--icue-border); border-radius: 999px; padding: 8px 14px; background: var(--icue-surface); color: var(--icue-text-soft); cursor: pointer; font: inherit; font-size: 13px; }
+.dash__tab--active { background: var(--icue-text); color: var(--icue-surface); }
 
 .dash__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .dash__row {

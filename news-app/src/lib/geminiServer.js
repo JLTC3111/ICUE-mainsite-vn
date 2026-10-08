@@ -1,3 +1,4 @@
+import { withDeadline } from '../../../shared/resilience/requests.js'
 import { resolveServerEnv, envString } from './serverEnv.js'
 
 const CORS = {
@@ -99,12 +100,13 @@ function truncate(text, max) {
   return `${s.slice(0, max)}…`
 }
 
-async function verifyUser(accessToken, env) {
+async function verifyUser(accessToken, env, signal) {
   const { url, anonKey } = supabaseConfig(env)
   if (!url || !anonKey) throw Object.assign(new Error('supabase_not_configured'), { status: 500 })
   if (!accessToken) throw Object.assign(new Error('unauthorized'), { status: 401 })
 
   const res = await fetch(`${url}/auth/v1/user`, {
+    signal,
     headers: {
       apikey: anonKey,
       Authorization: `Bearer ${accessToken}`,
@@ -116,13 +118,13 @@ async function verifyUser(accessToken, env) {
   return user
 }
 
-async function fetchArticlesForUser(articleIds, accessToken, env) {
+async function fetchArticlesForUser(articleIds, accessToken, env, signal) {
   const { url, anonKey } = supabaseConfig(env)
   if (!url || !anonKey || !articleIds.length) return []
 
   const ids = articleIds
     .map((id) => String(id || '').trim())
-    .filter(Boolean)
+    .filter(id => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))
     .slice(0, MAX_ARTICLES)
   if (!ids.length) return []
 
@@ -132,6 +134,7 @@ async function fetchArticlesForUser(articleIds, accessToken, env) {
   const res = await fetch(
     `${url}/rest/v1/articles?id=in.(${inList})&select=${select}`,
     {
+      signal,
       headers: {
         apikey: anonKey,
         Authorization: `Bearer ${accessToken}`,
@@ -261,14 +264,16 @@ function parseDraft(text) {
   return { reply: reply || '', draft }
 }
 
-async function callGeminiOnce({ apiKey, model, system, messages }) {
+async function callGeminiOnce({ apiKey, model, system, messages, signal }) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`
   const contents = messages.map((m) => ({
     role: m.role,
     parts: [{ text: m.content }],
   }))
 
+  signal.throwIfAborted()
   const res = await fetch(url, {
+    signal,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -309,7 +314,7 @@ async function callGeminiOnce({ apiKey, model, system, messages }) {
  * Retry transient Gemini errors, then try alternate Flash models.
  * New API keys often get 404 on older Flash ids ("no longer available to new users").
  */
-async function callGemini({ apiKey, models, system, messages }) {
+async function callGemini({ apiKey, models, system, messages, signal }) {
   let lastErr = null
 
   for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
@@ -317,8 +322,9 @@ async function callGemini({ apiKey, models, system, messages }) {
     const maxAttempts = 3
 
     for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+      signal.throwIfAborted()
       try {
-        return await callGeminiOnce({ apiKey, model, system, messages })
+        return await callGeminiOnce({ apiKey, model, system, messages, signal })
       } catch (err) {
         lastErr = err
         const canRetry = shouldRetrySameModel(err) && attempt < maxAttempts - 1
@@ -338,7 +344,7 @@ async function callGemini({ apiKey, models, system, messages }) {
   throw lastErr || Object.assign(new Error('gemini failed'), { status: 502, code: 'gemini_failed' })
 }
 
-export async function handleGeminiArticleRequest(event, rawEnv = process.env) {
+async function handleRequest(event, rawEnv, signal) {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS, body: '' }
   }
@@ -358,13 +364,17 @@ export async function handleGeminiArticleRequest(event, rawEnv = process.env) {
       ? authHeader.slice(7).trim()
       : ''
 
-    await verifyUser(accessToken, env)
+    await verifyUser(accessToken, env, signal)
+    signal.throwIfAborted()
 
     let body = {}
     try {
       body = JSON.parse(event.body || '{}')
     } catch {
       return json(400, { error: 'invalid json', code: 'invalid_json' })
+    }
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return json(400, { error: 'invalid payload', code: 'invalid_payload' })
     }
 
     const mode = MODES.has(body.mode) ? body.mode : 'chat'
@@ -375,7 +385,7 @@ export async function handleGeminiArticleRequest(event, rawEnv = process.env) {
     }
 
     const articleIds = Array.isArray(body.articleIds) ? body.articleIds : []
-    const articles = await fetchArticlesForUser(articleIds, accessToken, env)
+    const articles = await fetchArticlesForUser(articleIds, accessToken, env, signal)
 
     if ((mode === 'review' || mode === 'improve') && !articles.length) {
       return json(400, {
@@ -386,7 +396,7 @@ export async function handleGeminiArticleRequest(event, rawEnv = process.env) {
 
     const system = buildSystemPrompt({ mode, language, articles })
     const models = geminiModelCandidates(env)
-    const { text: rawText, model } = await callGemini({ apiKey, models, system, messages })
+    const { text: rawText, model } = await callGemini({ apiKey, models, system, messages, signal })
     const { reply, draft } = parseDraft(rawText)
 
     return json(200, {
@@ -409,6 +419,18 @@ export async function handleGeminiArticleRequest(event, rawEnv = process.env) {
       error: err?.message || 'gemini failed',
       code,
       model: err?.model || undefined,
+    })
+  }
+}
+
+// One deadline covers authentication, context reads, retries and provider bodies.
+export async function handleGeminiArticleRequest(event, rawEnv = process.env, { timeoutMs = 25_000 } = {}) {
+  try {
+    return await withDeadline(signal => handleRequest(event, rawEnv, signal), { timeoutMs })
+  } catch (error) {
+    return json(error?.name === 'TimeoutError' ? 504 : 502, {
+      error: 'The request could not complete. Please try again.',
+      code: error?.name === 'TimeoutError' ? 'request_timeout' : 'network_error',
     })
   }
 }

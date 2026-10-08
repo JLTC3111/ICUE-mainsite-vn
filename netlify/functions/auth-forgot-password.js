@@ -56,17 +56,20 @@ exports.handler = async (event) => {
     // GoTrue reads redirect_to from the query, not from a JSON body. Its
     // configured redirect allowlist remains authoritative.
     endpoint.searchParams.set('redirect_to', redirectTo)
-    const res = await fetch(endpoint.toString(), {
-      method: 'POST',
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    })
-
-    const text = await res.text()
+    const { withDeadline } = await import('../../shared/resilience/requests.js')
+    const { res, text } = await withDeadline(async (signal) => {
+      const res = await fetch(endpoint.toString(), {
+        signal,
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+      return { res, text: await res.text() }
+    }, { timeoutMs: 25_000 })
     let body = {}
     try { body = text ? JSON.parse(text) : {} } catch { body = { msg: text } }
 

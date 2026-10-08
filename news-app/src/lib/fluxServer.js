@@ -1,3 +1,4 @@
+import { withDeadline } from '../../../shared/resilience/requests.js'
 import { resolveServerEnv, envString } from './serverEnv.js'
 
 const CORS = {
@@ -38,12 +39,13 @@ export function fluxModel(env = {}) {
   return envString(env, ['CLOUDFLARE_FLUX_MODEL', 'CF_FLUX_MODEL']) || DEFAULT_MODEL
 }
 
-async function verifyUser(accessToken, env) {
+async function verifyUser(accessToken, env, signal) {
   const { url, anonKey } = supabaseConfig(env)
   if (!url || !anonKey) throw Object.assign(new Error('supabase_not_configured'), { status: 500 })
   if (!accessToken) throw Object.assign(new Error('unauthorized'), { status: 401, code: 'unauthorized' })
 
   const res = await fetch(`${url}/auth/v1/user`, {
+    signal,
     headers: {
       apikey: anonKey,
       Authorization: `Bearer ${accessToken}`,
@@ -65,9 +67,11 @@ function normalizeSteps(raw) {
   return Math.max(1, Math.min(8, Math.round(n)))
 }
 
-async function runFlux({ accountId, token, model, prompt, steps }) {
+async function runFlux({ accountId, token, model, prompt, steps, signal }) {
   const endpoint = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${model}`
+  signal.throwIfAborted()
   const res = await fetch(endpoint, {
+    signal,
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -103,7 +107,7 @@ async function runFlux({ accountId, token, model, prompt, steps }) {
   }
 }
 
-export async function handleFluxImageRequest(event, rawEnv = process.env) {
+async function handleRequest(event, rawEnv, signal) {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS, body: '' }
   }
@@ -126,13 +130,17 @@ export async function handleFluxImageRequest(event, rawEnv = process.env) {
     const accessToken = authHeader.startsWith('Bearer ')
       ? authHeader.slice(7).trim()
       : ''
-    await verifyUser(accessToken, env)
+    await verifyUser(accessToken, env, signal)
+    signal.throwIfAborted()
 
     let body = {}
     try {
       body = JSON.parse(event.body || '{}')
     } catch {
       return json(400, { error: 'invalid json', code: 'invalid_json' })
+    }
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return json(400, { error: 'invalid payload', code: 'invalid_payload' })
     }
 
     const prompt = normalizePrompt(body.prompt)
@@ -142,7 +150,7 @@ export async function handleFluxImageRequest(event, rawEnv = process.env) {
 
     const steps = normalizeSteps(body.steps)
     const model = fluxModel(env)
-    const result = await runFlux({ accountId, token, model, prompt, steps })
+    const result = await runFlux({ accountId, token, model, prompt, steps, signal })
     const dataUri = result.image.startsWith('data:')
       ? result.image
       : `data:image/jpeg;charset=utf-8;base64,${result.image}`
@@ -160,6 +168,18 @@ export async function handleFluxImageRequest(event, rawEnv = process.env) {
     return json(status, {
       error: err?.message || 'image generation failed',
       code,
+    })
+  }
+}
+
+// One deadline covers authentication, context reads, retries and provider bodies.
+export async function handleFluxImageRequest(event, rawEnv = process.env, { timeoutMs = 25_000 } = {}) {
+  try {
+    return await withDeadline(signal => handleRequest(event, rawEnv, signal), { timeoutMs })
+  } catch (error) {
+    return json(error?.name === 'TimeoutError' ? 504 : 502, {
+      error: 'The request could not complete. Please try again.',
+      code: error?.name === 'TimeoutError' ? 'request_timeout' : 'network_error',
     })
   }
 }

@@ -1,6 +1,7 @@
 import { normalizeDeep, normalizeHtmlUnicode } from '@icue/text/normalizeUnicode'
 import { sanitizeArticleHtml } from '@icue/text/sanitizeArticleHtml'
 import { normalizeSources } from './articleSources'
+import { readSessionStorage, writeSessionStorage } from '../../../shared/storage/safeSessionStorage.js'
 import {
   normalizeMediaComparisonField,
   normalizeCoverComparisonField,
@@ -18,19 +19,17 @@ const ARTICLE_SELECT = `
 const MISSING_COLUMNS_KEY = 'icue:articles:missing-columns:v3'
 
 function getKnownMissingColumns() {
-  if (typeof sessionStorage === 'undefined') return new Set()
   try {
-    return new Set(JSON.parse(sessionStorage.getItem(MISSING_COLUMNS_KEY) || '[]'))
+    return new Set(JSON.parse(readSessionStorage(MISSING_COLUMNS_KEY) || '[]'))
   } catch {
     return new Set()
   }
 }
 
 function markColumnMissing(column) {
-  if (typeof sessionStorage === 'undefined') return
   const missing = getKnownMissingColumns()
   missing.add(column)
-  sessionStorage.setItem(MISSING_COLUMNS_KEY, JSON.stringify([...missing]))
+  writeSessionStorage(MISSING_COLUMNS_KEY, JSON.stringify([...missing]))
 }
 
 function buildArticleSelect() {
@@ -42,6 +41,7 @@ function buildArticleSelect() {
 }
 
 const SCHEMA_COLUMN_ALIASES = {
+  cover_info: ['cover_info'],
   cover_comparison: ['cover_comparison'],
   cover_image_alt_url: ['cover_image_alt_url', 'cover image alt url'],
   media_comparison: ['media_comparison'],
@@ -78,7 +78,7 @@ export function isMissingMediaComparison(error) {
 export async function runArticleSelect(runQuery) {
   let select = buildArticleSelect()
 
-  for (let attempt = 0; attempt < 8; attempt += 1) {
+  for (let attempt = 0; attempt <= Object.keys(SCHEMA_COLUMN_ALIASES).length; attempt += 1) {
     const { data, error } = await runQuery(select)
     if (!error) return data
 

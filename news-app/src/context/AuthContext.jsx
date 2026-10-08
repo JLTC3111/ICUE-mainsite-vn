@@ -34,11 +34,10 @@ export function AuthProvider({ children }) {
       if (error) throw error
       if (data) return data
       const meta = user.user_metadata || {}
-      const email = user.email || ''
       const { data: created, error: insertError } = await client.from('profiles').insert({
         id: user.id,
-        full_name: meta.full_name || email,
-        display_name: meta.display_name || email.split('@')[0] || 'Author',
+        full_name: meta.full_name || null,
+        display_name: meta.display_name || 'Author',
         avatar_url: meta.avatar_url || null,
       }).select('*').single()
       // A second tab may create the same profile concurrently.

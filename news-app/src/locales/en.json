@@ -530,5 +530,19 @@
     "empty": "No comments to translate yet.",
     "suggest": "Suggest with on-device translation",
     "suggestHint": "Fills empty boxes using your browser's built-in translator. Nothing is saved until you press Save."
+  },
+  "drafts": {
+    "myDrafts": "My drafts",
+    "all": "All articles",
+    "drafts": "Saved drafts",
+    "published": "Published",
+    "filterLabel": "Filter articles",
+    "empty": "No saved drafts yet. Start an article and select Save draft.",
+    "resume": "Resume draft",
+    "untitled": "Untitled draft",
+    "saving": "Saving draft…",
+    "saved": "Draft saved to your account.",
+    "unsaved": "You have unsaved changes.",
+    "hint": "Save an incomplete article to your account and resume it here."
   }
 }

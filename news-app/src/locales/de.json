@@ -530,5 +530,19 @@
     "empty": "Noch keine Kommentare zum Übersetzen.",
     "suggest": "Mit lokaler Übersetzung vorschlagen",
     "suggestHint": "Füllt leere Felder mit dem integrierten Übersetzer Ihres Browsers. Es wird nichts gespeichert, bis Sie auf Speichern klicken."
+  },
+  "drafts": {
+    "myDrafts": "Meine Entwürfe",
+    "all": "Alle Artikel",
+    "drafts": "Gespeicherte Entwürfe",
+    "published": "Veröffentlicht",
+    "filterLabel": "Artikel filtern",
+    "empty": "Keine Entwürfe. Beginnen Sie einen Artikel und speichern Sie den Entwurf.",
+    "resume": "Entwurf fortsetzen",
+    "untitled": "Unbenannter Entwurf",
+    "saving": "Entwurf wird gespeichert…",
+    "saved": "Entwurf in Ihrem Konto gespeichert.",
+    "unsaved": "Sie haben ungespeicherte Änderungen.",
+    "hint": "Speichern Sie einen unfertigen Artikel, um ihn später fortzusetzen."
   }
 }

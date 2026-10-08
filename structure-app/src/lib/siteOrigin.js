@@ -1,3 +1,4 @@
+import { readSessionStorage, writeSessionStorage } from '../../../shared/storage/safeSessionStorage.js'
 import {
   mainSiteOriginForLocale,
   newsroomUrl,
@@ -36,22 +37,22 @@ function referrerSiteHint() {
 const ENTRY_SITE_KEY = 'icue_structure_entry_site'
 
 export function detectEntrySite() {
-  const cached = sessionStorage.getItem(ENTRY_SITE_KEY)
+  const cached = readSessionStorage(ENTRY_SITE_KEY)
   if (cached === 'en' || cached === 'vi') return cached
 
   const params = new URLSearchParams(window.location.search)
   if (params.get('site') === 'en') {
-    sessionStorage.setItem(ENTRY_SITE_KEY, 'en')
+    writeSessionStorage(ENTRY_SITE_KEY, 'en')
     return 'en'
   }
 
   const fromReferrer = referrerSiteHint()
   if (fromReferrer) {
-    sessionStorage.setItem(ENTRY_SITE_KEY, fromReferrer)
+    writeSessionStorage(ENTRY_SITE_KEY, fromReferrer)
     return fromReferrer
   }
 
-  sessionStorage.setItem(ENTRY_SITE_KEY, 'vi')
+  writeSessionStorage(ENTRY_SITE_KEY, 'vi')
   return 'vi'
 }
 

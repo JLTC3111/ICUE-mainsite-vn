@@ -111,7 +111,7 @@ function ssiRowToQuote(row) {
 
 async function fetchVpsIndexes() {
   const codes = Object.keys(VN_INDEX_CODES).join(',')
-  const res = await fetch(`${VPS_INDEX_URL}/${codes}`, {
+  const res = await serverFetch(`${VPS_INDEX_URL}/${codes}`, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ICUE-Newsroom/1.0)' },
   })
   if (!res.ok) throw new Error('vps indexes')
@@ -122,7 +122,7 @@ async function fetchVpsIndexes() {
 
 async function fetchVpsStocks(tickers) {
   if (!tickers.length) return []
-  const res = await fetch(`${VPS_STOCK_URL}/${tickers.map((t) => t.symbol).join(',')}`, {
+  const res = await serverFetch(`${VPS_STOCK_URL}/${tickers.map((t) => t.symbol).join(',')}`, {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ICUE-Newsroom/1.0)' },
   })
   if (!res.ok) throw new Error('vps stocks')
@@ -142,7 +142,7 @@ async function fetchSsiStocks() {
   const wanted = new Set(VN_STOCK_TICKERS.map((t) => t.symbol))
   const found = []
   for (const ex of exchanges) {
-    const res = await fetch(`${SSI_STOCK_URL}/${ex}?boardId=MAIN&page=1&pageSize=200`, {
+    const res = await serverFetch(`${SSI_STOCK_URL}/${ex}?boardId=MAIN&page=1&pageSize=200`, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ICUE-Newsroom/1.0)' },
     })
     if (!res.ok) continue
@@ -183,3 +183,4 @@ export async function fetchVnMarketQuotes() {
   if (!data.length) throw new Error('vn market unavailable')
   return data
 }
+import { serverFetch } from './serverFetch.js'

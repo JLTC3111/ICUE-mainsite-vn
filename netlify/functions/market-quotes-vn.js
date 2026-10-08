@@ -101,8 +101,9 @@ function ssiRowToQuote(row) {
 }
 
 async function fetchVpsIndexes() {
+  const { serverFetch } = await import('../../news-app/src/lib/serverFetch.js')
   const codes = Object.keys(VN_INDEX_CODES).join(',')
-  const res = await fetch(`${VPS_INDEX_URL}/${codes}`, { headers: UA })
+  const res = await serverFetch(`${VPS_INDEX_URL}/${codes}`, { headers: UA })
   if (!res.ok) throw new Error('vps indexes')
   const json = await res.json()
   if (!Array.isArray(json)) throw new Error('vps indexes shape')
@@ -110,7 +111,8 @@ async function fetchVpsIndexes() {
 }
 
 async function fetchVpsStocks() {
-  const res = await fetch(
+  const { serverFetch } = await import('../../news-app/src/lib/serverFetch.js')
+  const res = await serverFetch(
     `${VPS_STOCK_URL}/${VN_STOCK_TICKERS.map((t) => t.symbol).join(',')}`,
     { headers: UA },
   )
@@ -122,10 +124,11 @@ async function fetchVpsStocks() {
 }
 
 async function fetchSsiStocks() {
+  const { serverFetch } = await import('../../news-app/src/lib/serverFetch.js')
   const wanted = new Set(VN_STOCK_TICKERS.map((t) => t.symbol))
   const found = []
   for (const ex of ['hose', 'hnx', 'upcom']) {
-    const res = await fetch(`${SSI_STOCK_URL}/${ex}?boardId=MAIN&page=1&pageSize=200`, { headers: UA })
+    const res = await serverFetch(`${SSI_STOCK_URL}/${ex}?boardId=MAIN&page=1&pageSize=200`, { headers: UA })
     if (!res.ok) continue
     const json = await res.json()
     for (const row of json?.data || []) {

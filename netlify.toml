@@ -24,6 +24,8 @@
 # Optional chat-history sync needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
 # in Functions only, plus the chatbot_device_sync migration. The service key
 # must never be a VITE_ variable. Only encrypted transcripts reach this endpoint.
+# Scheduled article-media-cleanup uses the same Functions-only credentials to
+# finish queued gallery/cover deletions, including disconnected browser saves.
 
 [functions]
   directory = "netlify/functions"
@@ -44,5 +46,7 @@
     "news-app/public/supabase-config.json",
     "news-app/package.json",
     "news-app/src/lib/**",
-    "shared/text/**"
+    "shared/text/**",
+    "shared/resilience/requests.js",
+    "shared/resilience/package.json"
   ]
