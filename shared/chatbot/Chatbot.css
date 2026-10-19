@@ -32,6 +32,38 @@
    conversation above the rail so it cannot intercept the close/send buttons. */
 .icue-chat--open { z-index: 150; }
 
+.icue-chat__launcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icue-chat__launcher .floating-collapse-controls { flex-direction: column; }
+
+.icue-chat__mascot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.icue-chat__mascot[hidden],
+.icue-chat__compact-icon { display: none; }
+
+.icue-chat--collapsed .icue-chat__compact-icon { display: block; }
+
+.icue-chat--collapsed .icue-chat__toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #fff;
+  background: #18334d;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
+}
+
+.icue-chat--collapsed .icue-chat__toggle:hover { background: #234968; }
+
 .icue-chat__toggle {
   width: 104px;
   height: 104px;

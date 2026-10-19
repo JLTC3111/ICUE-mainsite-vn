@@ -9,6 +9,9 @@ import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
 import { responseEffect, responseExpression } from './mascot/expressions.js'
 import { useBackgroundMusic } from '../contact-sidebar/useBackgroundMusic.js'
+import useFloatingCollapse from '../ui/useFloatingCollapse.js'
+import FloatingCollapseControls from '../ui/FloatingCollapseControls.jsx'
+import { floatingCollapseCopy } from '../ui/floatingCollapseCopy.js'
 import './Chatbot.css'
 
 /**
@@ -77,6 +80,9 @@ function Message({ message, onLinkClick }) {
 export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const { isPlaying: musicPlaying } = useBackgroundMusic()
   const [isOpen, setIsOpen] = useState(false)
+  const collapse = useFloatingCollapse({ storageKey: 'icue:chat-mascot:collapse', keepOpen: isOpen })
+  const collapseCopy = floatingCollapseCopy(locale)
+  const mascotId = useId()
   const [showSync, setShowSync] = useState(false)
   const { sync, state: syncState } = useHistorySync(isOpen)
   const [draft, setDraft] = useState('')
@@ -274,7 +280,12 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const hasTranscript = messages.length > 0
 
   return (
-    <div className={`icue-chat${isOpen ? ' icue-chat--open' : ''}`} ref={rootRef}>
+    <div
+      className={`icue-chat${isOpen ? ' icue-chat--open' : ''}${collapse.collapsed ? ' icue-chat--collapsed' : ''}`}
+      ref={rootRef}
+      data-collapsed={collapse.collapsed}
+      data-auto-collapse={collapse.automatic}
+    >
       {isOpen && (
         <div id={dialogId} className="icue-chat__window" role="dialog" aria-label={labels.title}>
           <div className="icue-chat__header">
@@ -383,24 +394,42 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
         </div>
       )}
 
-      <button
-        ref={launcherRef}
-        type="button"
-        className="icue-chat__toggle"
-        onClick={() => {
-          if (isOpen) closeChat()
-          else {
-            if (!isThinking) setActivity({ locale, state: 'greeting' })
-            setIsOpen(true)
-          }
-        }}
-        aria-expanded={isOpen}
-        aria-controls={isOpen ? dialogId : undefined}
-        aria-haspopup="dialog"
-        aria-label={isOpen ? labels.close : labels.open}
-      >
-        <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} musicPlaying={musicPlaying} interactive={!isOpen} />
-      </button>
+      <div className="icue-chat__launcher" {...collapse.interactionProps}>
+        <button
+          ref={launcherRef}
+          type="button"
+          className="icue-chat__toggle"
+          onClick={() => {
+            if (isOpen) closeChat()
+            else {
+              if (!isThinking) setActivity({ locale, state: 'greeting' })
+              setIsOpen(true)
+            }
+          }}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? dialogId : undefined}
+          aria-haspopup="dialog"
+          aria-label={isOpen ? labels.close : labels.open}
+        >
+          <span id={mascotId} className="icue-chat__mascot" hidden={collapse.collapsed}>
+            <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} musicPlaying={musicPlaying} interactive={!isOpen} active={!collapse.collapsed} />
+          </span>
+          <svg className="icue-chat__compact-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-1 1v-9.5A8.5 8.5 0 0 1 11.5 3h1a8.5 8.5 0 0 1 8.5 8.5Z" />
+            <path strokeLinecap="round" d="M7.5 11.5h9M7.5 15h5" />
+          </svg>
+        </button>
+        {!isOpen && (
+          <FloatingCollapseControls
+            collapse={collapse}
+            controlsId={mascotId}
+            expandLabel={collapseCopy.expandMascot}
+            collapseLabel={collapseCopy.collapseMascot}
+            copy={collapseCopy}
+            side="left"
+          />
+        )}
+      </div>
     </div>
   )
 }

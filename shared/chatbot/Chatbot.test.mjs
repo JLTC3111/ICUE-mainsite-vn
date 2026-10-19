@@ -8,10 +8,10 @@ const en = JSON.parse(await fs.readFile(new URL('../../faq-app/src/locales/en.js
 const kb = JSON.parse(await fs.readFile(new URL('../../public/chatbot/kb.vi.json', import.meta.url)))
 const authoredReply = { content: kb.intents[0].answer, meta: { source: 'intent' } }
 
-async function fixture(t, getResponse, { touch = false, musicPlaying = false } = {}) {
+async function fixture(t, getResponse, { touch = false, musicPlaying = false, collapseMode = 'expanded' } = {}) {
   silenceRenderer(t)
   const f = platform()
-  const storage = new Map()
+  const storage = new Map(collapseMode ? [['icue:chat-mascot:collapse', collapseMode]] : [])
   const timers = new Map()
   const frames = new Map()
   let time = 0, serial = 0, focused = null
@@ -19,7 +19,7 @@ async function fixture(t, getResponse, { touch = false, musicPlaying = false } =
   const clearTimer = id => timers.delete(id)
   const root = { style: { setProperty() {}, removeProperty() {} }, classList: { toggle() {}, remove() {} } }
   f.window.innerHeight = 844
-  f.window.matchMedia = () => ({ matches: !touch })
+  f.window.matchMedia = query => ({ matches: query.includes('pointer') ? !touch : touch })
   f.window.location = { pathname: '/faqs/' }
   f.window.visualViewport = Object.assign(new EventTarget(), { height: 844, offsetTop: 0 })
   f.window.requestAnimationFrame = callback => { const id = ++serial; frames.set(id, callback); return id }
@@ -479,6 +479,47 @@ test('touch opening preserves the keyboard, and hidden/resumed state pauses moti
   await act(async () => f.find('icue-chat__close').props.onClick())
   assert.equal(f.focused, 'icue-chat__toggle')
   assert.equal(f.frames.size, 0)
+  await unmount(f.renderer)
+  assert.equal(f.timers.size, 0)
+})
+
+
+test('automatic mascot collapse leaves chat accessible and never interrupts a draft', async t => {
+  const f = await fixture(t, () => authoredReply, { collapseMode: null })
+  const root = () => f.renderer.root.find(node => node.type === 'div' && node.props.className?.split(' ').includes('icue-chat'))
+  assert.equal(root().props['data-collapsed'], false)
+  await f.advance(12_000)
+  assert.equal(root().props['data-collapsed'], true)
+  assert.equal(f.find('icue-chat__mascot').props.hidden, true)
+  assert.equal(f.find('icue-mascot icue-mascot--launcher').props['data-paused'], true)
+  await f.open()
+  assert.equal(root().props['data-collapsed'], false)
+  await act(async () => f.find('icue-chat__input').props.onChange({ target: { value: 'Keep this draft' } }))
+  await f.advance(60_000)
+  assert.equal(root().props['data-collapsed'], false)
+  assert.equal(f.find('icue-chat__input').props.value, 'Keep this draft')
+  await act(async () => f.find('icue-chat__close').props.onClick())
+  assert.equal(root().props['data-collapsed'], true)
+  await act(async () => f.find('floating-collapse__toggle').props.onClick())
+  assert.equal(root().props['data-collapsed'], false)
+  assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'expanded')
+  await f.advance(60_000)
+  assert.equal(root().props['data-collapsed'], false, 'manual expansion disables automatic collapse')
+  await unmount(f.renderer)
+  assert.equal(f.timers.size, 0)
+})
+
+test('a manually collapsed mobile mascot opens chat in one tap and restores the preference on close', async t => {
+  const f = await fixture(t, () => authoredReply, { touch: true, collapseMode: 'collapsed' })
+  assert.equal(f.find('icue-chat__mascot').props.hidden, true)
+  await f.open()
+  assert.equal(f.find('icue-chat__mascot').props.hidden, false)
+  await f.send()
+  await f.advance(700)
+  assert.equal(f.state(), 'happy')
+  await act(async () => f.find('icue-chat__close').props.onClick())
+  assert.equal(f.find('icue-chat__mascot').props.hidden, true)
+  assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'collapsed')
   await unmount(f.renderer)
   assert.equal(f.timers.size, 0)
 })

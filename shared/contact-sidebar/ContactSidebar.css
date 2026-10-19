@@ -8,7 +8,8 @@ aside.contact-sidebar {
   max-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
-  gap: 12.5px;
+  align-items: center;
+  gap: 8px;
   z-index: 140;
   background: transparent;
   border-radius: 0;
@@ -20,10 +21,39 @@ aside.contact-sidebar {
   animation: none;
   opacity: 1;
   visibility: visible;
+  transition: gap 0.2s ease;
+}
+
+.contact-sidebar__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows 0.22s ease, opacity 0.18s ease, visibility 0.22s;
+}
+
+.contact-sidebar__actions {
+  min-height: 0;
+  max-height: calc(100dvh - 100px);
+  overflow: auto;
+  scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12.5px;
+  padding-inline: 12px;
+}
+
+aside.contact-sidebar[data-collapsed='true'] { gap: 0; width: 44px; }
+
+.contact-sidebar[data-collapsed='true'] .contact-sidebar__body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* Legacy styles.css sets a global blue gradient on all <button> elements. */
-aside.contact-sidebar button {
+aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse__auto) {
   padding: 0;
   background: transparent;
   border: none;
@@ -33,7 +63,7 @@ aside.contact-sidebar button {
   color: inherit;
 }
 
-aside.contact-sidebar button:hover {
+aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse__auto):hover {
   background: transparent;
 }
 
@@ -237,6 +267,9 @@ aside.contact-sidebar button:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .contact-sidebar__body,
+  aside.contact-sidebar { transition: none; }
+
   aside.contact-sidebar {
     animation: none;
     opacity: 1;

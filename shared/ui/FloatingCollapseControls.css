@@ -1,0 +1,41 @@
+.floating-collapse-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: none;
+}
+
+.floating-collapse-controls > button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(20, 38, 58, 0.16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #18334d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  font: 600 10px/1.2 var(--icue-font-stack, system-ui, sans-serif);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.floating-collapse-controls > button:hover {
+  background: #e7f4fc;
+}
+
+.floating-collapse-controls > button:focus-visible {
+  outline: 3px solid #187fbd;
+  outline-offset: 2px;
+}
+
+.floating-collapse-controls > button[aria-pressed='true'] {
+  color: #fff;
+  background: #18334d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-collapse-controls > button { transition: none; }
+}
