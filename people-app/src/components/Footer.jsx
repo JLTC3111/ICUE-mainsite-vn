@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { useMainSite } from '../hooks/useMainSite'
 import CircularText from './CircularText/CircularText'
 import './Footer.css'
+import StaffPortalLinks from '../../../shared/app-switcher/StaffPortalLinks.jsx'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
 function Footer() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { hashLink, newsroomHref } = useMainSite()
   const year = new Date().getFullYear()
 
@@ -25,6 +26,7 @@ function Footer() {
           <h4>{t('footer.otherPages')}</h4>
           <a href={hashLink('FAQs')}>{t('footer.faqs')}</a>
           <a href={hashLink('recruitment')}>{t('footer.recruitment')}</a>
+          <StaffPortalLinks locale={i18n.resolvedLanguage || i18n.language} />
         </div>
         <div className="icue-footer__brand">
           <div className="icue-footer__logo-wrap">

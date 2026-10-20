@@ -10,6 +10,7 @@ import { getFaqCategories } from '@icue/faq-content'
 import PageLanguageMenu from '../components/PageLanguageMenu'
 import FaqAccordion from '../components/FaqAccordion'
 import { useMainSite } from '../hooks/useMainSite'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 import '../styles/faq.css'
 
 /*
@@ -33,6 +34,7 @@ function useIdle() {
 }
 
 export default function Page() {
+  const pageTheme = usePageTheme('faqs')
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
   const { base, pageLink } = useMainSite()
@@ -76,6 +78,7 @@ export default function Page() {
       </a>
 
       <MainSiteNav
+        pageTheme={pageTheme}
         variant="standalone"
         usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}

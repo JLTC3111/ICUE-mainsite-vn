@@ -1,0 +1,121 @@
+{
+  "checked": "2026-10-20",
+  "variant": "JavaScript + CSS",
+  "components": [
+    {
+      "name": "AccordionGallery",
+      "registry": "https://reactbits.dev/r/AccordionGallery-JS-CSS.json",
+      "sha256": "a176e546b9436774e3ac10a49e6c5c2dc3d0035c0dd723185cb9f9765ee19cec"
+    },
+    {
+      "name": "AnimatedContent",
+      "registry": "https://reactbits.dev/r/AnimatedContent-JS-CSS.json",
+      "sha256": "2f07597b8ba28e90251607176d7eabd5fbb508c3876ddfda4bd9606cf70372e9"
+    },
+    {
+      "name": "BorderGlow",
+      "registry": "https://reactbits.dev/r/BorderGlow-JS-CSS.json",
+      "sha256": "db1cc35798973fe1f0cddafa117ddb3c0a17a7f658bc3b61c426eb10fdefb576"
+    },
+    {
+      "name": "CircularText",
+      "registry": "https://reactbits.dev/r/CircularText-JS-CSS.json",
+      "sha256": "9347739f55ea32aedd537055f7c4604a78b6594099a0f90f08f5c36d1168a92c"
+    },
+    {
+      "name": "CountUp",
+      "registry": "https://reactbits.dev/r/CountUp-JS-CSS.json",
+      "sha256": "aad5fe28effd91ee282d08f5f4f0dfff044f2a621d473a52bd0ad764f39f5340"
+    },
+    {
+      "name": "Galaxy",
+      "registry": "https://reactbits.dev/r/Galaxy-JS-CSS.json",
+      "sha256": "36c0951a2e96a303a092ca35cf31c5ac97e608380040d69f0d851849a4255731"
+    },
+    {
+      "name": "GooeyNav",
+      "registry": "https://reactbits.dev/r/GooeyNav-JS-CSS.json",
+      "sha256": "29559c6f4a822c24e453264e27a79dc6604af58d3978a4ab110f6a9515e16b16"
+    },
+    {
+      "name": "GradientWaves",
+      "registry": "https://reactbits.dev/r/GradientWaves-JS-CSS.json",
+      "sha256": "9219517e87c65a259a802a7a2959e966fda01bce54aeda158c005f117368a81e"
+    },
+    {
+      "name": "Lanyard",
+      "registry": "https://reactbits.dev/r/Lanyard-JS-CSS.json",
+      "sha256": "be3a04d16f87ddfc7a500ebf257bbedec9e963f64d8073de6eb47b5d2f77b278"
+    },
+    {
+      "name": "LineSidebar",
+      "registry": "https://reactbits.dev/r/LineSidebar-JS-CSS.json",
+      "sha256": "9d8877a490ca089b5be70d3a1981d49ab32b7f30a61bedcd0d59e1f867324b1c"
+    },
+    {
+      "name": "MaskedHeading",
+      "registry": "https://reactbits.dev/r/MaskedHeading-JS-CSS.json",
+      "sha256": "1cf2112b6cfd5a7a968e3e6abb2727c47dd3f1b36c080f46f8bc6cbf98ccf0c8"
+    },
+    {
+      "name": "MetallicPaint",
+      "registry": "https://reactbits.dev/r/MetallicPaint-JS-CSS.json",
+      "sha256": "a64a0f9c15623a8fb58ca7eb2251480346f0d2cfb969b01446cde0c89f436044"
+    },
+    {
+      "name": "PixelTransition",
+      "registry": "https://reactbits.dev/r/PixelTransition-JS-CSS.json",
+      "sha256": "b66d1464a734e5d857a75b26859073784ef82dc91068e988f5fd596470b95fe8"
+    },
+    {
+      "name": "ProfileCard",
+      "registry": "https://reactbits.dev/r/ProfileCard-JS-CSS.json",
+      "sha256": "a2cd4728e455f68a6a19fe337684999c614f0a93ffcfa8be356104a583d35273"
+    },
+    {
+      "name": "RotatingText",
+      "registry": "https://reactbits.dev/r/RotatingText-JS-CSS.json",
+      "sha256": "3434afdd5ed627393bd747dd75cf3af8dcaa6cb23ef1639eab9b19682fdc980e"
+    },
+    {
+      "name": "ScrollExpand",
+      "registry": "https://reactbits.dev/r/ScrollExpand-JS-CSS.json",
+      "sha256": "c35b0ffdc0c49d6961cd114a37e362458bdf754582ac0c8fef6897affda7e797"
+    },
+    {
+      "name": "ScrollReveal",
+      "registry": "https://reactbits.dev/r/ScrollReveal-JS-CSS.json",
+      "sha256": "17d9702a23be14d436552a361d907ec09105cc8513a964a94e33ac235e46e89d"
+    },
+    {
+      "name": "ScrollVelocity",
+      "registry": "https://reactbits.dev/r/ScrollVelocity-JS-CSS.json",
+      "sha256": "f4d49c0daa0dc882ca7498116348367be1460a3bff232a925d74a4bcf939739a"
+    },
+    {
+      "name": "SplitFlapText",
+      "registry": "https://reactbits.dev/r/SplitFlapText-JS-CSS.json",
+      "sha256": "0fc06dfd069006711016134d9bf3ed649cc6db0fd4ce6b39171d150e4033ea6c"
+    },
+    {
+      "name": "SpotlightCard",
+      "registry": "https://reactbits.dev/r/SpotlightCard-JS-CSS.json",
+      "sha256": "c20166b02fa49e563b2b3d78abcb5e22d07c496fa31cf846697c8fedac1ba3f3"
+    },
+    {
+      "name": "StarBorder",
+      "registry": "https://reactbits.dev/r/StarBorder-JS-CSS.json",
+      "sha256": "f42c627fcd08026817cb97b0499b27f1ce622439c716e5b5a1e1a169fae0964d"
+    },
+    {
+      "name": "TiltedCard",
+      "registry": "https://reactbits.dev/r/TiltedCard-JS-CSS.json",
+      "sha256": "084a77b0e13bf0044601eb3c042cd39adcd351726ad9c5c0bf9742857953fcde"
+    },
+    {
+      "name": "MagicBento",
+      "registry": "https://reactbits.dev/r/MagicBento-JS-CSS.json",
+      "sha256": "24c1b2c2f38db957695a4be8b44fcade3ae04da39c79b649157306c54a29079a"
+    }
+  ]
+}

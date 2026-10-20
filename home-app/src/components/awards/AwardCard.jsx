@@ -2,10 +2,20 @@ import StarBorder from '../reactbits/StarBorder'
 import AwardIcon from './AwardIcon'
 import AwardsReveal from './AwardsReveal'
 
-export default function AwardCard({ award, copy, index }) {
+export default function AwardCard({ award, copy, index, theme }) {
   return (
     <AwardsReveal className="awards-grid-item" index={index}>
-      <StarBorder as="div" className="award-star-border" speed="5s" thickness={3}>
+      <StarBorder
+        as="div"
+        className="award-star-border"
+        theme={theme}
+        radius={0}
+        duration={5}
+        thickness={1}
+        backgroundColor="var(--awards-card)"
+        textColor="var(--awards-fg)"
+        borderColor="var(--awards-border-soft)"
+      >
         <article className="award-card" aria-labelledby={`award-${award.id}`}>
           <time className="award-year" dateTime={award.year}>{award.year}</time>
           <div className="award-icon"><AwardIcon name={award.icon} /></div>

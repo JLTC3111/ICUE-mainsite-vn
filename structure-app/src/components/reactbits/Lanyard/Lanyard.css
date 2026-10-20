@@ -1,4 +1,4 @@
-.lanyard-wrapper {
+.lanyard {
   position: relative;
   z-index: 0;
   width: 100%;
@@ -11,7 +11,7 @@
   touch-action: pan-y;
 }
 
-.lanyard-wrapper canvas {
+.lanyard-canvas {
   display: block;
   width: 100%;
   height: 100%;

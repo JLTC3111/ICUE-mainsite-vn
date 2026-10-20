@@ -32,7 +32,7 @@ export default function NotableAwardsPage() {
       <AwardsSection id="recent-awards" copy={copy.sections.recent}>
         <ul className="awards-grid" role="list">
           {NOTABLE_AWARDS.map((award, index) => (
-            <AwardCard key={award.id} award={award} copy={copy.items[award.id]} index={index} />
+            <AwardCard key={award.id} award={award} copy={copy.items[award.id]} index={index} theme={theme} />
           ))}
         </ul>
       </AwardsSection>
@@ -44,6 +44,7 @@ export default function NotableAwardsPage() {
               certificate={certificate}
               copy={copy.certifications[certificate.id]}
               statuses={copy.statuses}
+              theme={theme}
               index={index}
             />
           ))}

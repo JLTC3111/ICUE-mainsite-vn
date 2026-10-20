@@ -45,16 +45,18 @@ function useElementWidth(ref) {
     }
 
     updateWidth()
-    const observer = new ResizeObserver(updateWidth)
-    observer.observe(el)
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateWidth)
+    observer?.observe(el)
     window.addEventListener('resize', updateWidth)
-    el.querySelectorAll('img').forEach((img) => {
+    const images = el.querySelectorAll('img')
+    images.forEach((img) => {
       if (!img.complete) img.addEventListener('load', updateWidth, { once: true })
     })
 
     return () => {
-      observer.disconnect()
+      observer?.disconnect()
       window.removeEventListener('resize', updateWidth)
+      images.forEach(img => img.removeEventListener('load', updateWidth))
     }
   }, [ref])
 
@@ -94,8 +96,14 @@ function VelocityText({
   scrollerStyle,
   paused = false,
   draggable = true,
+  skewWithVelocity = 0,
+  scaleWithVelocity = 0,
 }) {
   const baseX = useMotionValue(0)
+  const skewX = useMotionValue(0)
+  const scaleY = useMotionValue(1)
+  const fling = useRef(0)
+  const lastDrag = useRef({ x: 0, time: 0, velocity: 0 })
   const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {}
   const { scrollY } = useScroll(scrollOptions)
   const scrollVelocity = useVelocity(scrollY)
@@ -124,21 +132,31 @@ function VelocityText({
   })
 
   useAnimationFrame((_time, delta) => {
-    if (pausedRef.current || draggingRef.current || copyWidth === 0) return
+    if (document.hidden || pausedRef.current || draggingRef.current || copyWidth === 0) return
 
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
+    const elapsed = Math.min(delta, 64)
+    let moveBy = directionFactor.current * baseVelocity * (elapsed / 1000)
     const factor = velocityFactor.get()
 
     if (factor < 0) directionFactor.current = -1
     else if (factor > 0) directionFactor.current = 1
 
     moveBy += directionFactor.current * moveBy * factor
+    moveBy += fling.current * elapsed / 1000
+    fling.current *= Math.exp(-elapsed / 420)
+    if (Math.abs(fling.current) < 4) fling.current = 0
     baseX.set(baseX.get() + moveBy)
+    const surge = Math.max(Math.tanh(Math.abs(smoothVelocity.get()) / 1600), Math.tanh(Math.abs(fling.current) / 2000))
+    const easing = 1 - Math.exp(-elapsed / 110)
+    skewX.set(skewX.get() + (-Math.sign(moveBy) * skewWithVelocity * surge - skewX.get()) * easing)
+    scaleY.set(scaleY.get() + (1 + scaleWithVelocity * surge - scaleY.get()) * easing)
   })
 
   const endDrag = (event) => {
     if (!draggingRef.current) return
     draggingRef.current = false
+    fling.current = event.type === 'pointercancel' || event.type === 'lostpointercapture' || event.timeStamp - lastDrag.current.time > 90
+      ? 0 : Math.max(-5000, Math.min(5000, lastDrag.current.velocity))
     if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId)
     }
@@ -151,7 +169,9 @@ function VelocityText({
     suppressClickRef.current = false
     dragOriginX.current = event.clientX
     dragOriginBaseX.current = baseX.get()
-    event.currentTarget.setPointerCapture(event.pointerId)
+    lastDrag.current = { x: event.clientX, time: event.timeStamp, velocity: 0 }
+    fling.current = 0
+    event.currentTarget.setPointerCapture?.(event.pointerId)
   }
 
   const onPointerMove = (event) => {
@@ -160,6 +180,11 @@ function VelocityText({
     if (Math.abs(dx) < DRAG_THRESHOLD && !suppressClickRef.current) return
     suppressClickRef.current = true
     setDragging(true)
+    const dt = Math.max(1, event.timeStamp - lastDrag.current.time)
+    const velocity = (event.clientX - lastDrag.current.x) / dt * 1000
+    lastDrag.current.velocity += (velocity - lastDrag.current.velocity) * (1 - Math.exp(-dt / 50))
+    lastDrag.current.x = event.clientX
+    lastDrag.current.time = event.timeStamp
     if (dx > 0) directionFactor.current = 1
     else if (dx < 0) directionFactor.current = -1
     baseX.set(dragOriginBaseX.current + dx)
@@ -208,7 +233,7 @@ function VelocityText({
     >
       <motion.div
         className={`scroll-velocity__scroller ${scrollerClassName}`.trim()}
-        style={{ x, ...scrollerStyle }}
+        style={{ x, skewX, scaleY, ...scrollerStyle }}
       >
         {copies}
       </motion.div>
@@ -230,6 +255,10 @@ export default function ScrollVelocity({
   parallaxStyle,
   scrollerStyle,
   draggable = true,
+  pauseOnHover = true,
+  fadeEdges = false,
+  skewWithVelocity = 0,
+  scaleWithVelocity = 0,
 }) {
   const reduceMotion = usePrefersReducedMotion()
   const [paused, setPaused] = useState(false)
@@ -256,10 +285,13 @@ export default function ScrollVelocity({
   return (
     <section
       className="scroll-velocity"
+      style={fadeEdges ? { maskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)' } : undefined}
       onPointerEnter={(event) => {
-        if (event.pointerType === 'mouse') setPaused(true)
+        if (pauseOnHover && event.pointerType === 'mouse') setPaused(true)
       }}
       onPointerLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false) }}
     >
       {texts.map((text, index) => (
         <VelocityText
@@ -277,6 +309,8 @@ export default function ScrollVelocity({
           scrollerStyle={scrollerStyle}
           paused={paused}
           draggable={draggable}
+          skewWithVelocity={skewWithVelocity}
+          scaleWithVelocity={scaleWithVelocity}
         >
           {text}
         </VelocityText>

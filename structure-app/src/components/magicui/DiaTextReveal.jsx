@@ -73,7 +73,7 @@ function measureWidths(el, texts) {
 export function DiaTextReveal({
   text,
   colors = DEFAULT_COLORS,
-  textColor = '#0f172a',
+  textColor = 'var(--icue-text, #0f172a)',
   duration = 2.5,
   delay = 0.35,
   repeat = false,

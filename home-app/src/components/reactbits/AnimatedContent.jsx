@@ -1,25 +1,25 @@
-import { useEffect, useRef } from 'react'
-import './AnimatedContent.css'
+'use client';
 
-const CSS_EASINGS = {
-  'power2.out': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-  'power2.in': 'cubic-bezier(0.55, 0.085, 0.68, 0.53)',
-  'power3.out': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
-  'power3.in': 'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
-  'power4.out': 'cubic-bezier(0.165, 0.84, 0.44, 1)',
-}
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import usePrefersReducedMotion from '../../../../shared/ui/usePrefersReducedMotion.js';
+import './AnimatedContent.css';
 
-function cssEase(ease) {
-  return CSS_EASINGS[ease] || ease || 'ease'
-}
+gsap.registerPlugin(ScrollTrigger);
 
-function transformFor(axis, offset, scale) {
-  const x = axis === 'x' ? offset : 0
-  const y = axis === 'y' ? offset : 0
-  return `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-}
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-export default function AnimatedContent({
+const WIPES = {
+  up: 'linear-gradient(to top, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))',
+  down: 'linear-gradient(to bottom, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))',
+  left: 'linear-gradient(to left, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))',
+  right: 'linear-gradient(to right, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))',
+  center:
+    'radial-gradient(farthest-corner at 50% 50%, #000 calc(var(--ac-wipe) * 140% - 40%), transparent calc(var(--ac-wipe) * 140%))'
+};
+
+const AnimatedContent = ({
   children,
   container,
   distance = 100,
@@ -30,130 +30,158 @@ export default function AnimatedContent({
   initialOpacity = 0,
   animateOpacity = true,
   scale = 1,
+  blur = 0,
+  rotate = 0,
+  tilt = 0,
+  wipe = 'none',
   threshold = 0.1,
   delay = 0,
+  stagger = 0,
+  staggerFrom = 'start',
+  trigger = 'scroll',
+  once = true,
+  scrub = false,
   disappearAfter = 0,
   disappearDuration = 0.5,
   disappearEase = 'power3.in',
+  onStart,
   onComplete,
   onDisappearanceComplete,
   className = '',
+  style,
   ...props
-}) {
-  const ref = useRef(null)
+}) => {
+  const ref = useRef(null);
+  const reduce = usePrefersReducedMotion();
+  const callbacksRef = useRef({ onStart, onComplete, onDisappearanceComplete });
+  callbacksRef.current = { onStart, onComplete, onDisappearanceComplete };
 
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return undefined
+  useIsomorphicLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
 
-    const axis = direction === 'horizontal' ? 'x' : 'y'
-    const offset = reverse ? -distance : distance
-    const initialTransform = transformFor(axis, offset, scale)
-    const finalTransform = transformFor(axis, 0, 1)
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let scroller = container || document.getElementById('snap-main-container') || null;
+    if (typeof scroller === 'string') scroller = document.querySelector(scroller);
 
-    if (reduceMotion) {
-      el.style.opacity = '1'
-      el.style.visibility = 'visible'
-      el.style.transform = finalTransform
-      return undefined
-    }
 
-    let scrollerTarget = container || document.getElementById('snap-main-container') || null
-    if (typeof scrollerTarget === 'string') {
-      scrollerTarget = document.querySelector(scrollerTarget)
-    }
+    const ctx = gsap.context(() => {
+      const targets = stagger > 0 && el.children.length ? Array.from(el.children) : [el];
+      const horizontal = direction === 'horizontal';
+      const axis = horizontal ? 'x' : 'y';
+      const sign = reverse ? -1 : 1;
+      const mask = WIPES[wipe];
 
-    let enterAnimation = null
-    let exitAnimation = null
-    let disappearTimer = null
+      gsap.set(el, { visibility: 'visible' });
 
-    el.style.opacity = animateOpacity ? String(initialOpacity) : '1'
-    el.style.visibility = 'visible'
-    el.style.transform = initialTransform
-
-    const finishEnter = () => {
-      el.style.opacity = '1'
-      el.style.transform = finalTransform
-      onComplete?.()
-
-      if (disappearAfter <= 0) return
-      disappearTimer = window.setTimeout(() => {
-        const exitTransform = transformFor(
-          axis,
-          reverse ? distance : -distance,
-          0.8,
-        )
-
-        if (typeof el.animate !== 'function') {
-          el.style.opacity = animateOpacity ? String(initialOpacity) : '0'
-          el.style.transform = exitTransform
-          onDisappearanceComplete?.()
-          return
-        }
-
-        exitAnimation = el.animate(
-          [
-            { opacity: 1, transform: finalTransform },
-            { opacity: animateOpacity ? initialOpacity : 0, transform: exitTransform },
-          ],
-          {
-            duration: disappearDuration * 1000,
-            easing: cssEase(disappearEase),
-            fill: 'forwards',
-          },
-        )
-        exitAnimation.addEventListener('finish', () => {
-          el.style.opacity = animateOpacity ? String(initialOpacity) : '0'
-          el.style.transform = exitTransform
-          onDisappearanceComplete?.()
-        }, { once: true })
-      }, disappearAfter * 1000)
-    }
-
-    const play = () => {
-      if (typeof el.animate !== 'function') {
-        finishEnter()
-        return
+      if (reduce) {
+        callbacksRef.current.onComplete?.();
+        return;
       }
 
-      enterAnimation = el.animate(
-        [
-          { opacity: animateOpacity ? initialOpacity : 1, transform: initialTransform },
-          { opacity: 1, transform: finalTransform },
-        ],
-        {
-          duration: duration * 1000,
-          delay: delay * 1000,
-          easing: cssEase(ease),
-          fill: 'forwards',
-        },
-      )
-      enterAnimation.addEventListener('finish', finishEnter, { once: true })
-    }
+      const from = {
+        [axis]: distance * sign,
+        scale,
+        opacity: animateOpacity ? initialOpacity : 1
+      };
+      const to = {
+        [axis]: 0,
+        scale: 1,
+        opacity: 1,
+        duration,
+        ease
+      };
 
-    const root = scrollerTarget instanceof Element ? scrollerTarget : null
-    const observer = typeof IntersectionObserver === 'undefined'
-      ? null
-      : new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return
-          observer.disconnect()
-          play()
-        },
-        { root, threshold: Math.min(Math.max(threshold, 0), 1) },
-      )
+      if (blur > 0) {
+        from.filter = `blur(${blur}px)`;
+        to.filter = 'blur(0px)';
+      }
+      if (rotate) {
+        from.rotation = rotate * sign;
+        to.rotation = 0;
+      }
+      if (tilt) {
+        const tiltAxis = horizontal ? 'rotationY' : 'rotationX';
+        from[tiltAxis] = horizontal ? -tilt * sign : tilt * sign;
+        to[tiltAxis] = 0;
+        from.transformPerspective = 900;
+        to.transformPerspective = 900;
+      }
+      if (mask) {
+        gsap.set(targets, { maskImage: mask, webkitMaskImage: mask });
+        from['--ac-wipe'] = 0;
+        to['--ac-wipe'] = 1;
+      }
+      if (stagger > 0) to.stagger = { each: stagger, from: staggerFrom };
 
-    if (observer) observer.observe(el)
-    else play()
+      const settle = () => {
+        if (scrub) return;
+        gsap.set(targets, { clearProps: mask ? 'filter,transform,maskImage,webkitMaskImage' : 'filter,transform' });
+      };
 
-    return () => {
-      observer?.disconnect()
-      enterAnimation?.cancel()
-      exitAnimation?.cancel()
-      if (disappearTimer != null) window.clearTimeout(disappearTimer)
-    }
+      const disappear = () => {
+        if (disappearAfter <= 0) return;
+        const out = {
+          [axis]: -distance * sign,
+          scale: 0.8,
+          opacity: animateOpacity ? initialOpacity : 0,
+          delay: disappearAfter,
+          duration: disappearDuration,
+          ease: disappearEase,
+          onComplete: () => callbacksRef.current.onDisappearanceComplete?.()
+        };
+        if (blur > 0) out.filter = `blur(${blur}px)`;
+        if (stagger > 0) out.stagger = { each: stagger, from: staggerFrom };
+        gsap.to(targets, out);
+      };
+
+      const tl = gsap.timeline({
+        paused: true,
+        onStart: () => callbacksRef.current.onStart?.(),
+        onComplete: () => {
+          callbacksRef.current.onComplete?.();
+          settle();
+          if (once && !scrub) disappear();
+        }
+      });
+      tl.fromTo(targets, from, to, scrub ? 0 : Math.max(delay, 0));
+
+      if (trigger === 'mount') {
+        tl.play();
+        return;
+      }
+
+      const start = `top ${(1 - threshold) * 100}%`;
+
+      if (scrub) {
+        ScrollTrigger.create({
+          trigger: el,
+          scroller,
+          start,
+          end: `top ${Math.max((1 - threshold) * 100 - 45, 5)}%`,
+          scrub: scrub === true ? true : Math.max(Number(scrub) || 0, 0.01),
+          animation: tl
+        });
+        return;
+      }
+
+      ScrollTrigger.create({
+        trigger: el,
+        scroller,
+        start,
+        once,
+        onEnter: () => tl.play(),
+        onLeaveBack: once
+          ? undefined
+          : () => {
+              if (mask) gsap.set(targets, { maskImage: mask, webkitMaskImage: mask });
+              tl.reverse();
+            }
+      });
+    }, el);
+
+    return () => ctx.revert();
   }, [
+    reduce,
     container,
     distance,
     direction,
@@ -163,18 +191,27 @@ export default function AnimatedContent({
     initialOpacity,
     animateOpacity,
     scale,
+    blur,
+    rotate,
+    tilt,
+    wipe,
     threshold,
     delay,
+    stagger,
+    staggerFrom,
+    trigger,
+    once,
+    scrub,
     disappearAfter,
     disappearDuration,
-    disappearEase,
-    onComplete,
-    onDisappearanceComplete,
-  ])
+    disappearEase
+  ]);
 
   return (
-    <div ref={ref} className={`animated-content ${className}`.trim()} {...props}>
+    <div ref={ref} className={`animated-content ${className}`.trim()} style={style} {...props}>
       {children}
     </div>
-  )
-}
+  );
+};
+
+export default AnimatedContent;

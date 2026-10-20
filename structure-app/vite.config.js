@@ -16,6 +16,7 @@ export default defineConfig({
       '@icue/chatbot': path.resolve(__dirname, '../shared/chatbot'),
       '@icue/contact-sidebar': path.resolve(__dirname, '../shared/contact-sidebar'),
       '@icue/styles': path.resolve(__dirname, '../shared/styles'),
+      '@icue/ui': path.resolve(__dirname, '../shared/ui'),
       '@icue/drawer-menu': path.resolve(__dirname, '../shared/drawer-menu'),
       '@icue/i18n': path.resolve(__dirname, '../shared/i18n'),
       '@icue/text': path.resolve(__dirname, '../shared/text'),

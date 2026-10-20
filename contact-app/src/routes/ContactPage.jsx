@@ -13,6 +13,7 @@ import ContactRail from '../components/ContactRail'
 import OfficeMap from '../components/OfficeMap'
 import { useMainSite } from '../hooks/useMainSite'
 import { useReveal } from '../hooks/useReveal'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 import '../styles/contact.css'
 
 const ContactSidebar = lazy(() => import('@icue/contact-sidebar'), { optional: true })
@@ -45,6 +46,7 @@ function DeferredContactSidebar({ locale }) {
 }
 
 export default function ContactPage() {
+  const pageTheme = usePageTheme('contact')
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
   const { base } = useMainSite()
@@ -94,6 +96,7 @@ export default function ContactPage() {
           is the only substitution: this page has six languages of its own, so
           the disc opens a menu instead of crossing to en.icue.vn. */}
       <MainSiteNav
+        pageTheme={pageTheme}
         variant="standalone"
         usePillNav
         PillHeaderComponent={PillSiteHeader}

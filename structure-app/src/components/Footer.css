@@ -63,7 +63,7 @@
   max-width: 280px;
   text-align: right;
 }
-.icue-footer__rights { margin: 4px 0 0; font-size: 13px; color: #6b7077; }
+.icue-footer__rights { margin: 4px 0 0; font-size: 13px; color: #a9b7c8; }
 
 .icue-footer__circular-text {
   position: absolute;
@@ -92,7 +92,7 @@
   gap: 16px;
 }
 .icue-footer__legal { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.icue-footer__legal a { color: #6b7077; font-size: 13px; transition: color 0.25s ease; }
+.icue-footer__legal a { color: #a9b7c8; font-size: 13px; transition: color 0.25s ease; }
 .icue-footer__legal a:hover { color: var(--icue-accent-light); text-decoration: underline; }
 .icue-footer__legal span { color: #3a3d42; }
 .icue-footer__partner { color: #cfd2cc; font-size: 14px; font-weight: 600; }

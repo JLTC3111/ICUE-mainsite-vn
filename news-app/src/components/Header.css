@@ -32,6 +32,10 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 640px) {
+  .icue-header__brand-box .icue-header__tag { display: none; }
+}
+
 .icue-header__brand {
   display: inline-flex;
   align-items: baseline;

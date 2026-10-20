@@ -168,8 +168,8 @@ export default function StructurePage() {
               <h1 className="structure-header__title">
                 <DiaTextReveal
                   text={t('instituteName')}
-                  textColor="#0f172a"
-                  colors={['#368adf', '#2821a8', '#8ec5ff', '#c679c4', '#0358f7']}
+                  textColor="var(--structure-heading-ink)"
+                  colors={['var(--structure-heading-blue)', 'var(--structure-heading-violet)', 'var(--structure-heading-cyan)', 'var(--structure-heading-pink)', 'var(--structure-heading-blue)']}
                   duration={3}
                   delay={0.5}
                   loop

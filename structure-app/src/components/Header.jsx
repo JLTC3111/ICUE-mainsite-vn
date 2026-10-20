@@ -3,12 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageSwitcher from './LanguageSwitcher'
 import DocumentSearch from './DocumentSearch'
+import ThemeToggle from '../../../shared/main-site-nav/ThemeToggle.jsx'
+import { pageThemeLabel } from '../../../shared/ui/pageTheme.js'
 import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
+import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 
-function Header() {
-  const { t } = useTranslation()
+function Header({ pageTheme }) {
+  const { t, i18n } = useTranslation()
   const { base, hashLink, peopleLink, structureLink } = useMainSite()
   const [searchOpen, setSearchOpen] = useState(false)
 
@@ -41,6 +44,7 @@ function Header() {
         </a>
 
         <nav className="structure-site-header__nav" aria-label={t('nav.mainNav')}>
+          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={pageTheme.isDark ? 'dark' : 'light'} compact />
           <DocumentSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
           <a href={hashLink('Home')} className="structure-site-header__link">
             {t('nav.home')}
@@ -49,6 +53,11 @@ function Header() {
             {t('nav.people')}
           </a>
           <LanguageSwitcher />
+          <ThemeToggle
+            checked={pageTheme.isDark}
+            onCheckedChange={pageTheme.setDark}
+            label={pageThemeLabel(i18n.resolvedLanguage || i18n.language)}
+          />
         </nav>
       </div>
     </header>

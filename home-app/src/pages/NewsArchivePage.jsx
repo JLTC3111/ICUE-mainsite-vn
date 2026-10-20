@@ -25,6 +25,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-coverflow'
 import './NewsArchivePage.css'
+import './NewsArchiveTheme.css'
 
 const NARROW_QUERY = '(max-width: 1024px)'
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'

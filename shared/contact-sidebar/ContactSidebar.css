@@ -101,12 +101,6 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   height: 70%;
 }
 
-/* Circle reads smaller than Zalo’s squircle at the same box size. */
-.contact-sidebar__item--messenger svg {
-  width: 82%;
-  height: 82%;
-}
-
 .contact-sidebar__item:hover svg {
   transform: rotate(-360deg) scale(1.25);
   transition: transform 0.3s ease-in-out;
@@ -187,15 +181,10 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
 .contact-sidebar__divider {
   width: 15px;
   height: 1px;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: var(--contact-sidebar-divider, rgba(0, 0, 0, 0.25));
   margin: -7.5px auto;
-  border-left: 0.5px dotted black;
-  border-right: 0.5px dotted black;
-}
-
-.contact-sidebar__calendar svg {
-  width: 50px;
-  height: 50px;
+  border-left: 0.5px dotted var(--contact-sidebar-divider-rule, black);
+  border-right: 0.5px dotted var(--contact-sidebar-divider-rule, black);
 }
 
 .contact-sidebar__modal {
@@ -211,7 +200,8 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
 
 .contact-sidebar__modal-panel {
   position: relative;
-  background: #fff;
+  background: var(--contact-sidebar-surface, #fff);
+  color: var(--contact-sidebar-ink, #000);
   padding: 36px;
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
@@ -232,7 +222,7 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   background: none;
   border: none;
   cursor: pointer;
-  color: #000;
+  color: inherit;
 }
 
 .contact-sidebar__modal-calendar svg {
@@ -251,11 +241,6 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   .contact-sidebar__music svg {
     width: 25px;
     height: 25px;
-  }
-
-  .contact-sidebar__item--messenger svg {
-    width: 30px;
-    height: 30px;
   }
 
   /* Hide while the mobile drawer menu covers the viewport. */

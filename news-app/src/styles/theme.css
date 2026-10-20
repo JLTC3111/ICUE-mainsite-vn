@@ -9,7 +9,7 @@
   --icue-border: #e7e8e4;
   --icue-text: #16181d;
   --icue-text-soft: #5b6068;
-  --icue-text-faint: #8c929c;
+  --icue-text-faint: #626b77;
   --icue-accent: #c8ff00;
   --icue-accent-ink: #ffffff;
   --icue-accent-light: #1db7ff;
@@ -20,7 +20,7 @@
   --icue-gradient-dark: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   /* Kept for lime brand accents elsewhere (hero, links). Pill CTAs use --icue-gradient-pill. */
   --icue-gradient-accent: linear-gradient(135deg, #c8ff00 0%, #9ee000 100%);
-  --icue-gradient-pill: linear-gradient(135deg, #1a6fd4 0%, #368adf 45%, #1db7ff 100%);
+  --icue-gradient-pill: linear-gradient(135deg, #1554a6 0%, #1e63ad 45%, #206f9e 100%);
 
   --icue-radius: 14px;
   --icue-radius-sm: 9px;

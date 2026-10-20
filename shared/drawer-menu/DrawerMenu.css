@@ -14,10 +14,10 @@
   height: 42px;
   min-height: 42px;
   padding: 9px;
-  border: 1px solid var(--icue-accent-light, var(--icue-blue, #368adf));
+  border: 1px solid var(--drawer-toggle-border, var(--icue-accent-light, var(--icue-blue, #368adf)));
   border-radius: 12px !important;
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--icue-accent-light, var(--icue-blue, #368adf));
+  background: var(--drawer-toggle-surface, rgba(255, 255, 255, 0.95));
+  color: var(--drawer-toggle-ink, #175b96);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -40,9 +40,14 @@
 }
 
 .nav-drawer__toggle:hover {
-  background: rgba(54, 138, 223, 0.08);
-  border-color: var(--icue-blue, #368adf);
-  color: var(--icue-blue, #368adf);
+  background: var(--drawer-toggle-hover, rgba(54, 138, 223, 0.08));
+  border-color: var(--drawer-toggle-border, var(--icue-blue, #368adf));
+  color: var(--drawer-toggle-hover-ink, #124f82);
+}
+
+.nav-drawer__toggle:focus-visible {
+  outline: 2px solid var(--drawer-toggle-focus, #1d4ed8);
+  outline-offset: 3px;
 }
 
 .nav-drawer__toggle-bars,
@@ -394,7 +399,7 @@
   font-family: var(--icue-font-stack);
   font-size: 0.72em;
   letter-spacing: 0.06em;
-  opacity: calc(0.45 + var(--effect, 0) * 0.55);
+  opacity: calc(0.7 + var(--effect, 0) * 0.3);
 }
 
 .nav-drawer__links > a.is-current .nav-drawer__index {

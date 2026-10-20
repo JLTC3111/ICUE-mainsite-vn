@@ -137,6 +137,8 @@
 }
 
 @media (max-width: 400px) {
+  .people-header__inner { gap: 4px; }
+  .people-header__nav { gap: 4px; }
   .people-header__tag {
     display: none;
   }

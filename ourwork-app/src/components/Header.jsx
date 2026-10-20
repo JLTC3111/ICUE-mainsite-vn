@@ -8,6 +8,7 @@ import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import { useMainSite } from '../hooks/useMainSite'
 import { useScrolled } from '../hooks/useScrolled'
 import './Header.css'
+import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 
 const SELF_HREF = import.meta.env.BASE_URL
 const LOGO_MARK = `${import.meta.env.BASE_URL}favicon.png`
@@ -70,6 +71,7 @@ function Header() {
         <span className="ow-header__spacer" aria-hidden="true" />
 
         <div className="ow-header__actions">
+          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance="dark" variant="pill" compact />
           <ThemeToggle className="ow-header__theme" />
           <LanguageFlagMenu
             languages={SUPPORTED_LANGUAGES}

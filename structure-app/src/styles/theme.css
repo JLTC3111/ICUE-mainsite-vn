@@ -14,7 +14,12 @@
   --icue-border: #d8e2ef;
   --icue-text: #16181d;
   --icue-text-soft: #5b6068;
-  --icue-text-faint: #8c929c;
+  --icue-text-faint: #5b6068;
+  --structure-heading-ink: #0f172a;
+  --structure-heading-blue: #1d4ed8;
+  --structure-heading-violet: #4338ca;
+  --structure-heading-cyan: #0e5e8c;
+  --structure-heading-pink: #7e22ce;
   --icue-accent: #368adf;
   --icue-accent-light: #1db7ff;
   --icue-accent-ink: #ffffff;

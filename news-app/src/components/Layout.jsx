@@ -39,7 +39,7 @@ function Layout() {
       {/* The header types the live search query and the grid filters on it, so
           the two have to share one provider above both. */}
       <NewsroomSearchProvider>
-        <Header />
+        <Header appearance={isThemedDark ? 'dark' : 'light'} />
         <main className="icue-main">
           <Outlet />
         </main>

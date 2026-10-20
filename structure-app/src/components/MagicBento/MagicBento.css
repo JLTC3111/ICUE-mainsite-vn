@@ -147,7 +147,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  padding: 6px;
+  padding: 1px;
   background: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
     rgba(var(--glow-color, 54, 138, 223), calc(var(--glow-intensity) * 0.8)) 0%,
@@ -179,38 +179,5 @@
     0 0 30px var(--purple-glow);
 }
 
-.particle-container {
-  position: relative;
-  overflow: hidden;
-}
 
-.particle::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: rgba(var(--glow-color, 54, 138, 223), 0.2);
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.particle-container:hover {
-  box-shadow:
-    0 4px 20px rgba(46, 24, 78, 0.2),
-    0 0 30px var(--purple-glow);
-}
-
-/* Global spotlight styles */
-.global-spotlight {
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-  z-index: 200 !important;
-  pointer-events: none;
-}
-
-.bento-section {
-  position: relative;
-  user-select: none;
-}
+.bento-section { position: relative; }

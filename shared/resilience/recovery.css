@@ -1,6 +1,125 @@
-.icue-recovery { display: grid; place-content: center; gap: 12px; min-height: 180px; padding: 24px; text-align: center; font: inherit; color: inherit; }
-.icue-recovery p { margin: 0; }
-.icue-recovery--compact { min-height: 0; padding: 12px; font-size: 0.875rem; }
-.icue-recovery__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
-.icue-recovery button { padding: 10px 16px; min-height: 44px; border: 1px solid currentColor; border-radius: 8px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
-.icue-recovery button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+/* Also inlined by bootRecovery: this UI must work without an app stylesheet. */
+.icue-recovery {
+  --recovery-surface: #f8fafc;
+  --recovery-text: #17202a;
+  --recovery-border: #64748b;
+  --recovery-action-bg: #17202a;
+  --recovery-action-text: #ffffff;
+  --recovery-action-hover: #26364b;
+  --recovery-focus: #1d4ed8;
+  --recovery-scheme: light;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid var(--recovery-border);
+  border-radius: 8px;
+  background: var(--recovery-surface);
+  color: var(--recovery-text);
+  color-scheme: var(--recovery-scheme);
+  text-align: center;
+  text-shadow: none;
+  animation: none;
+  transition: none;
+  overflow-wrap: anywhere;
+  font: 400 1rem/1.5 var(--icue-font-stack, system-ui, sans-serif);
+}
+
+@media (prefers-color-scheme: dark) {
+  .icue-recovery {
+    --recovery-surface: #161c25;
+    --recovery-text: #f1f5f9;
+    --recovery-border: #71829a;
+    --recovery-action-bg: #bfdbfe;
+    --recovery-action-text: #111827;
+    --recovery-action-hover: #dbeafe;
+    --recovery-focus: #93c5fd;
+    --recovery-scheme: dark;
+  }
+}
+
+/* A selected page mode takes precedence over the OS fallback. */
+:where([data-icue-page-theme='light'], [data-about-theme='light'], [data-theme='light'],
+  .icue-app:not(.icue-app--news-theme-dark),
+  html:not(.icue-news-theme-dark):has(.icue-app:not(.icue-app--news-theme-dark))) .icue-recovery {
+  --recovery-surface: #f8fafc;
+  --recovery-text: #17202a;
+  --recovery-border: #64748b;
+  --recovery-action-bg: #17202a;
+  --recovery-action-text: #ffffff;
+  --recovery-action-hover: #26364b;
+  --recovery-focus: #1d4ed8;
+  --recovery-scheme: light;
+}
+
+:where([data-icue-page-theme='dark'], [data-about-theme='dark'], [data-theme='dark'],
+  .icue-app--news-theme-dark, .icue-news-theme-dark) .icue-recovery {
+  --recovery-surface: #161c25;
+  --recovery-text: #f1f5f9;
+  --recovery-border: #71829a;
+  --recovery-action-bg: #bfdbfe;
+  --recovery-action-text: #111827;
+  --recovery-action-hover: #dbeafe;
+  --recovery-focus: #93c5fd;
+  --recovery-scheme: dark;
+}
+
+.icue-recovery p {
+  margin: 0;
+  color: var(--recovery-text);
+  font: inherit;
+  animation: none;
+  transition: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.icue-recovery--compact {
+  min-height: 0;
+  padding: 12px;
+  font-size: 0.875rem;
+}
+
+.icue-recovery .icue-recovery__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.icue-recovery .icue-recovery__actions > button {
+  box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 16px;
+  border: 1px solid var(--recovery-action-bg);
+  border-radius: 8px;
+  background: var(--recovery-action-bg);
+  color: var(--recovery-action-text);
+  -webkit-text-fill-color: currentColor;
+  box-shadow: none;
+  text-shadow: none;
+  animation: none;
+  transition: none;
+  font: 600 1rem/1.4 var(--icue-font-stack, system-ui, sans-serif);
+  text-align: center;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.icue-recovery .icue-recovery__actions > button:hover,
+.icue-recovery .icue-recovery__actions > button:active {
+  background: var(--recovery-action-hover);
+  border-color: var(--recovery-action-hover);
+  color: var(--recovery-action-text);
+}
+
+.icue-recovery .icue-recovery__actions > button:focus-visible {
+  outline: 3px solid var(--recovery-focus);
+  outline-offset: 3px;
+}

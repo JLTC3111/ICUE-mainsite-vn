@@ -1,0 +1,30 @@
+/* These attributes are only published by usePageTheme's explicit consumers. */
+:root[data-icue-page-theme='light'] {
+  color-scheme: light;
+  --drawer-toggle-surface: #ffffff;
+  --drawer-toggle-ink: #175b96;
+  --drawer-toggle-border: #64748b;
+  --drawer-toggle-hover: #e2e8f0;
+  --drawer-toggle-hover-ink: #124f82;
+  --drawer-toggle-focus: #1d4ed8;
+}
+
+:root[data-icue-page-theme='dark'] {
+  color-scheme: dark;
+  --drawer-toggle-surface: #161c25;
+  --drawer-toggle-ink: #f1f5f9;
+  --drawer-toggle-border: #71829a;
+  --drawer-toggle-hover: #26364b;
+  --drawer-toggle-hover-ink: #ffffff;
+  --drawer-toggle-focus: #93c5fd;
+  --contact-sidebar-divider: rgba(255, 255, 255, 0.32);
+  --contact-sidebar-divider-rule: rgba(255, 255, 255, 0.55);
+  --contact-sidebar-surface: #161c25;
+  --contact-sidebar-ink: #f1f5f9;
+  --floating-control-bg: #1c2531;
+  --floating-control-ink: #f1f5f9;
+  --floating-control-border: #465367;
+  --floating-control-hover: #2a3748;
+  --floating-control-active-bg: #93c5fd;
+  --floating-control-active-ink: #111827;
+}

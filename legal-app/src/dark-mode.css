@@ -1,0 +1,109 @@
+:root[data-icue-page-theme='dark'] {
+  --legal-ground: #0b0f14;
+  --legal-surface: #161c25;
+  --legal-raised: #1c2531;
+  --legal-ink: #f1f5f9;
+  --legal-body: #cbd5e1;
+  --legal-muted: #a9b7c8;
+  --legal-rule: #334155;
+  background: var(--legal-ground);
+  color: var(--legal-ink);
+}
+
+[data-icue-page-theme='dark'] body {
+  background: var(--legal-ground);
+}
+
+[data-icue-page-theme='dark'] .legal-hero {
+  background: linear-gradient(180deg, #182231, var(--legal-ground));
+  border-color: var(--legal-rule);
+}
+
+[data-icue-page-theme='dark'] .legal-hero::before {
+  background-image:
+    linear-gradient(rgba(203, 213, 225, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 213, 225, 0.055) 1px, transparent 1px);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-hero h1, .legal-section h2, .legal-list strong,
+  .legal-table-wrap th, .legal-info-card h3, .legal-steps h3, .legal-request h3, .cookie-toggle strong) {
+  color: var(--legal-ink);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-section__body, .legal-hero__summary,
+  .legal-callout, .legal-button--secondary, .cookie-preferences__status) {
+  color: var(--legal-body);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-hero__meta, .legal-toc > p, .legal-toc a,
+  .legal-updated, .cookie-toggle small) {
+  color: var(--legal-muted);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-hero__meta span, .legal-table-wrap, .cookie-toggle) {
+  background: var(--legal-raised);
+  border-color: var(--legal-rule);
+}
+
+[data-icue-page-theme='dark'] .legal-hero__meta span:first-child {
+  color: var(--document-accent);
+}
+
+[data-icue-page-theme='dark'] .legal-hero__meta span:first-child {
+  background: var(--document-accent-soft);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-toc nav, .legal-toc a, .legal-table-wrap th,
+  .legal-table-wrap td, .legal-button--secondary, .gooey-tabs) {
+  border-color: var(--legal-rule);
+}
+
+[data-icue-page-theme='dark'] :is(.legal-toc a:hover, .legal-toc a:focus-visible) {
+  color: var(--document-accent);
+}
+
+[data-icue-page-theme='dark'] .legal-section {
+  background: var(--legal-surface);
+  border-color: var(--legal-rule);
+  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.25);
+}
+
+[data-icue-page-theme='dark'] .legal-section.is-featured {
+  background: linear-gradient(145deg, var(--document-accent-soft), var(--legal-surface));
+  border-color: var(--document-accent);
+}
+
+[data-icue-page-theme='dark'] .legal-info-card {
+  background: var(--legal-raised);
+}
+
+[data-icue-page-theme='dark'] .legal-inline-link {
+  background: var(--legal-raised);
+}
+
+[data-icue-page-theme='dark'] .legal-callout.is-warning {
+  background: #402716;
+  color: #fed7aa;
+  border-color: #fdba74;
+}
+
+[data-icue-page-theme='dark'] :is(.legal-button:not(.legal-button--secondary),
+  .legal-info-card__number, .legal-steps li > span) {
+  color: #111827;
+}
+
+[data-icue-page-theme='dark'] .cookie-toggle i {
+  background: #53647a;
+}
+
+[data-icue-page-theme='dark'] .cookie-toggle input:checked + i::before {
+  background: #111827;
+}
+
+[data-icue-page-theme='dark'] .cookie-toggle input:focus-visible + i {
+  outline-color: var(--document-accent);
+}
+
+[data-icue-page-theme='dark'] .legal-button:focus-visible {
+  outline-color: var(--document-accent);
+}

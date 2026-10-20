@@ -1,152 +1,31 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import useBentoEffects from '../../../../shared/ui/useBentoEffects.js'
 import './MagicBento.css'
 
-/**
- * React Bits Magic Bento — structural shell for app panels.
- * Spotlight + border glow only (no tilt/magnetism — keeps forms usable).
- * @see https://reactbits.dev/components/magic-bento
- */
-
-const DEFAULT_GLOW = '160, 170, 185'
-const DEFAULT_RADIUS = 320
-
-function updateCardGlow(card, mouseX, mouseY, glow, radius) {
-  const rect = card.getBoundingClientRect()
-  const relativeX = ((mouseX - rect.left) / Math.max(rect.width, 1)) * 100
-  const relativeY = ((mouseY - rect.top) / Math.max(rect.height, 1)) * 100
-  card.style.setProperty('--glow-x', `${relativeX}%`)
-  card.style.setProperty('--glow-y', `${relativeY}%`)
-  card.style.setProperty('--glow-intensity', String(glow))
-  card.style.setProperty('--glow-radius', `${radius}px`)
-}
-
-/**
- * @param {object} props
- * @param {React.ReactNode} props.children
- * @param {string} [props.className]
- * @param {boolean} [props.enableSpotlight]
- * @param {boolean} [props.enableBorderGlow]
- * @param {number} [props.spotlightRadius]
- * @param {string} [props.glowColor] RGB triplet e.g. "160, 170, 185"
- */
+// React Bits Magic Bento, refreshed 2026-10-20. App panels keep their custom
+// content and remain stationary while typing, selecting, and using controls.
+// https://reactbits.dev/components/magic-bento
 export function MagicBentoSection({
-  children,
-  className = '',
-  enableSpotlight = true,
-  enableBorderGlow = true,
-  spotlightRadius = DEFAULT_RADIUS,
-  glowColor = DEFAULT_GLOW,
-  ...props
+  children, className = '', enableSpotlight = true, enableBorderGlow = true,
+  spotlightRadius = 320, glowColor = '160, 170, 185', clickEffect = true,
+  disableAnimations = false, style, ...props
 }) {
   const sectionRef = useRef(null)
-  const spotlightRef = useRef(null)
-
-  useEffect(() => {
-    if (!enableSpotlight || !sectionRef.current) return undefined
-    if (
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      || window.matchMedia('(pointer: coarse)').matches
-    ) {
-      return undefined
-    }
-
-    const section = sectionRef.current
-    const spotlight = document.createElement('div')
-    spotlight.className = 'magic-bento-spotlight'
-    spotlight.style.setProperty('--mb-glow', glowColor)
-    document.body.appendChild(spotlight)
-    spotlightRef.current = spotlight
-
-    const proximity = spotlightRadius * 0.5
-    const fadeDistance = spotlightRadius * 0.75
-    const cards = Array.from(section.querySelectorAll('.magic-bento-card'))
-    let frameId = null
-    let pointerX = 0
-    let pointerY = 0
-
-    const renderPointer = () => {
-      frameId = null
-      const spot = spotlightRef.current
-      if (!section || !spot) return
-
-      let minDistance = Infinity
-      cards.forEach((card) => {
-        const cardRect = card.getBoundingClientRect()
-        const centerX = cardRect.left + cardRect.width / 2
-        const centerY = cardRect.top + cardRect.height / 2
-        const distance =
-          Math.hypot(pointerX - centerX, pointerY - centerY) -
-          Math.max(cardRect.width, cardRect.height) / 2
-        const effective = Math.max(0, distance)
-        minDistance = Math.min(minDistance, effective)
-
-        let glow = 0
-        if (effective <= proximity) glow = 1
-        else if (effective <= fadeDistance) {
-          glow = (fadeDistance - effective) / (fadeDistance - proximity)
-        }
-        if (enableBorderGlow) updateCardGlow(card, pointerX, pointerY, glow, spotlightRadius)
-      })
-
-      spot.style.left = `${pointerX}px`
-      spot.style.top = `${pointerY}px`
-      const opacity =
-        minDistance <= proximity
-          ? 0.55
-          : minDistance <= fadeDistance
-            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.55
-            : 0
-      spot.style.opacity = String(opacity)
-    }
-
-    const onMove = (event) => {
-      pointerX = event.clientX
-      pointerY = event.clientY
-      if (frameId === null) frameId = requestAnimationFrame(renderPointer)
-    }
-
-    const onLeave = () => {
-      if (frameId !== null) cancelAnimationFrame(frameId)
-      frameId = null
-      if (spotlightRef.current) spotlightRef.current.style.opacity = '0'
-      cards.forEach((card) => card.style.setProperty('--glow-intensity', '0'))
-    }
-
-    section.addEventListener('pointermove', onMove, { passive: true })
-    section.addEventListener('pointerleave', onLeave)
-    return () => {
-      if (frameId !== null) cancelAnimationFrame(frameId)
-      section.removeEventListener('pointermove', onMove)
-      section.removeEventListener('pointerleave', onLeave)
-      spotlight.remove()
-      spotlightRef.current = null
-    }
-  }, [enableSpotlight, enableBorderGlow, spotlightRadius, glowColor])
-
+  useBentoEffects(sectionRef, { enableSpotlight, enableBorderGlow, spotlightRadius,
+    glowColor, clickEffect, disableAnimations, enableTilt: false, enableMagnetism: false })
   return (
-    <div
-      ref={sectionRef}
-      className={`magic-bento-section bento-section${className ? ` ${className}` : ''}`}
-      style={{ '--mb-glow': glowColor }}
-      {...props}
-    >
+    <div ref={sectionRef} className={`magic-bento-section bento-section ${className}`.trim()}
+      style={{ '--mb-glow': glowColor, ...style }} {...props}>
       {children}
     </div>
   )
 }
 
-export function MagicBentoCard({
-  children,
-  className = '',
-  as: Comp = 'div',
-  enableBorderGlow = true,
-  ...props
-}) {
+export function MagicBentoCard({ children, className = '', as: Comp = 'div', enableBorderGlow = true, ...props }) {
   return (
-    <Comp
-      className={`magic-bento-card card${enableBorderGlow ? ' card--border-glow' : ''}${className ? ` ${className}` : ''}`}
-      {...props}
-    >
+    <Comp className={`magic-bento-card icue-bento-card card${enableBorderGlow ? ' card--border-glow' : ''}${className ? ` ${className}` : ''}`} {...props}>
+      <span className="icue-bento__light" aria-hidden="true" />
+      <span className="icue-bento__wave" aria-hidden="true" />
       {children}
     </Comp>
   )

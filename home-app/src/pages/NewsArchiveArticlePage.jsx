@@ -15,6 +15,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import './NewsArchivePage.css'
+import './NewsArchiveTheme.css'
 
 function ArchiveVideo({ src, poster, caption, playLabel }) {
   const [active, setActive] = useState(false)

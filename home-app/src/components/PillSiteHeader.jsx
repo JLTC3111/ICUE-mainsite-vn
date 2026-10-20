@@ -7,6 +7,7 @@ import VideoToggle from '@icue/main-site-nav/VideoToggle';
 import ThemeToggle from '@icue/main-site-nav/ThemeToggle';
 import { NAV_LABELS } from '@icue/main-site-nav/navContent';
 import './PillSiteHeader.css';
+import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx';
 
 // ourWork is a separate app at /our-work — it must be a real navigation, not
 // a client-side route inside this SPA.
@@ -120,6 +121,7 @@ export default function PillSiteHeader({
   /* Resolved upstream by MainSiteNav. The default keeps this header usable on
      its own and matches what icue.vn showed before it took copy as a prop. */
   labels = NAV_LABELS,
+  locale = 'vi',
 }) {
   const compactLabels = labels.compact;
   const aria = labels.aria;
@@ -209,6 +211,8 @@ export default function PillSiteHeader({
           <span className="pill-site-header__brand" aria-hidden="true">ICUE</span>
         )}
       </a>
+
+      <AppSwitcher currentApp="website" locale={locale} appearance="dark" variant="pill" />
 
       {!isMobile && (
         <div className="pill-site-header__nav-wrap" ref={overflowRootRef}>

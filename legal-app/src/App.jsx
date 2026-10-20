@@ -1,6 +1,9 @@
 import { useResumeRevision } from '../../shared/resilience/usePageResume.js'
 import { RecoveryNotice } from '../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useMemo, useState } from 'react'
+import usePageTheme from '../../shared/ui/usePageTheme.js'
+import { themeLegalDocument } from './legal/theme.js'
+import './dark-mode.css'
 import { useTranslation } from 'react-i18next'
 import {
   BrowserRouter,
@@ -299,6 +302,9 @@ function LegalDocumentPage() {
 }
 
 function LegalDocument({ document, documents }) {
+  const pageTheme = usePageTheme('legal')
+  const palette = themeLegalDocument(document, pageTheme.isDark)
+  const themedDocuments = useMemo(() => documents.map(entry => themeLegalDocument(entry, pageTheme.isDark)), [documents, pageTheme.isDark])
   const { t, i18n } = useTranslation()
   const language = i18n.resolvedLanguage || i18n.language || AUTHORITATIVE_LANGUAGE
   const Icon = ICONS[document.icon]
@@ -336,14 +342,15 @@ function LegalDocument({ document, documents }) {
     <div
       className="legal-page"
       style={{
-        '--document-accent': document.accent,
-        '--document-accent-soft': document.accentSoft,
+        '--document-accent': palette.accent,
+        '--document-accent-soft': palette.accentSoft,
       }}
     >
-      <ScrollProgress color={document.accent} />
+      <ScrollProgress color={palette.accent} />
       <a className="legal-skip-link" href="#legal-document">{t('skipToContent')}</a>
 
       <MainSiteNav
+        pageTheme={pageTheme}
         variant="standalone"
         usePillNav
         PillHeaderComponent={PillSiteHeader}
@@ -372,7 +379,7 @@ function LegalDocument({ document, documents }) {
             </BlurFade>
 
             <GooeyTabs
-              documents={documents}
+              documents={themedDocuments}
               activeSlug={document.slug}
               iconMap={ICONS}
               ariaLabel={t('tabs.aria')}
@@ -400,7 +407,7 @@ function LegalDocument({ document, documents }) {
                 <BlurFade key={section.id} delay={Math.min(index * 0.025, 0.12)} inView>
                   <SpotlightSection
                     id={section.id}
-                    accent={document.accent}
+                    accent={palette.accent}
                     className={section.featured ? 'is-featured' : ''}
                   >
                     <div className="legal-section__heading">
@@ -417,7 +424,7 @@ function LegalDocument({ document, documents }) {
               ))}
             </div>
 
-            <ContactCard contact={document.contact} accent={document.accent} t={t} />
+            <ContactCard contact={document.contact} accent={palette.accent} t={t} />
             <p className="legal-updated">
               {t('article.lastUpdated')} <strong>{document.updated}</strong>
             </p>

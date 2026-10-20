@@ -3,6 +3,7 @@ import CircularText from '@icue/ui/CircularText/CircularText'
 import { FOOTER_LABELS } from './footerContent'
 import { getFooterLinks } from './footerLinks'
 import './Footer.css'
+import StaffPortalLinks from '../app-switcher/StaffPortalLinks.jsx'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
@@ -30,6 +31,7 @@ function Footer({ linkMode = 'hash', labels: labelOverrides, locale }) {
           <h4>{labels.otherPages}</h4>
           <a href={links.faqs}>{labels.faqs}</a>
           <a href={links.recruitment}>{labels.recruitment}</a>
+          <StaffPortalLinks locale={locale || 'vi'} />
         </div>
         <div className="icue-footer__brand">
           <div className="icue-footer__logo-wrap">

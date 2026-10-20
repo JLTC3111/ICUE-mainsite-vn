@@ -2,7 +2,13 @@
  * Serialized into HTML by Vite. Keep this dependency-free: it must run even
  * when none of the application's modules can be downloaded.
  */
-export function installBootRecovery(modulePaths = []) {
+export function installBootRecovery(modulePaths = [], recoveryCss = '') {
+  if (recoveryCss && !document.getElementById?.('icue-recovery-styles')) {
+    const style = document.createElement('style')
+    style.id = 'icue-recovery-styles'
+    style.textContent = recoveryCss
+    document.head.append(style)
+  }
   const retryParam = '__icue_boot_retry'
   const maxRetries = 2
   const attempt = Math.min(maxRetries, Math.max(0, Number(new URLSearchParams(window.location.search).get(retryParam)) || 0))
@@ -44,16 +50,24 @@ export function installBootRecovery(modulePaths = []) {
     if (notice || !document.body) return
     notice = document.createElement('aside')
     notice.id = 'icue-boot-recovery'
+    notice.className = 'icue-recovery icue-recovery--boot'
     notice.setAttribute('role', 'alert')
-    notice.style.cssText = 'position:fixed;z-index:2147483647;bottom:16px;left:16px;right:16px;max-width:560px;margin:auto;padding:20px;background:#fff;color:#151515;border:1px solid #888;border-radius:8px;font:16px/1.5 system-ui;box-shadow:0 4px 24px #0003'
+    notice.style.cssText = 'position:fixed;z-index:2147483647;bottom:16px;left:16px;right:16px;max-width:560px;max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:20px;background:var(--recovery-surface,#f8fafc);color:var(--recovery-text,#17202a);border:1px solid var(--recovery-border,#64748b);border-radius:8px;font:16px/1.5 system-ui;box-shadow:0 4px 24px #0003'
     const text = document.createElement('p')
     text.textContent = copy[0]
     const button = document.createElement('button')
     button.type = 'button'
     button.textContent = copy[1]
     button.style.cssText = 'min-height:44px;padding:8px 16px;font:inherit;cursor:pointer'
+    if (!recoveryCss) {
+      // Keep the standalone installer readable even without the Vite-inlined CSS.
+      button.style.cssText += ';background:#17202a;color:#fff;border:1px solid #17202a;box-shadow:none'
+    }
     button.addEventListener('click', () => window.location.reload())
-    notice.append(text, button)
+    const actions = document.createElement('div')
+    actions.className = 'icue-recovery__actions'
+    actions.append(button)
+    notice.append(text, actions)
     document.body.append(notice)
   }
 

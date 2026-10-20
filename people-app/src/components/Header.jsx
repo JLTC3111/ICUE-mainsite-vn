@@ -5,9 +5,10 @@ import { DrawerMenu } from '@icue/drawer-menu'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
+import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 
 function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { pathname } = useLocation()
   const { base, hashLink, peopleLink, structureLink } = useMainSite()
   const currentPage = pathname.includes('/experts')
@@ -33,6 +34,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle })
         </a>
 
         <nav className="people-header__nav" aria-label={t('nav.mainNav')}>
+          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={backgroundEnabled ? 'dark' : 'light'} compact />
           <a href={hashLink('Home')} className="people-header__link">{t('nav.home')}</a>
           <a href={structureLink()} className="people-header__link">{t('nav.org')}</a>
           <LanguageSwitcher />

@@ -1,12 +1,22 @@
 import StarBorder from '../reactbits/StarBorder'
 import AwardsReveal from './AwardsReveal'
 
-export default function CertificationCard({ certificate, copy, statuses, index }) {
+export default function CertificationCard({ certificate, copy, statuses, index, theme }) {
   const renewing = certificate.status === 'renewing'
 
   return (
     <AwardsReveal className="awards-grid-item" index={index}>
-      <StarBorder as="div" className="award-star-border" speed="5s" thickness={3}>
+      <StarBorder
+        as="div"
+        className="award-star-border"
+        theme={theme}
+        radius={0}
+        duration={5}
+        thickness={1}
+        backgroundColor="var(--awards-card)"
+        textColor="var(--awards-fg)"
+        borderColor="var(--awards-border-soft)"
+      >
         <article className="cert-card" aria-labelledby={`certificate-${certificate.id}`}>
           <div className="cert-logo">
             <img

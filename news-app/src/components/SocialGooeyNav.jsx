@@ -48,9 +48,14 @@ export default function SocialGooeyNav({ reduceMotion = false }) {
       items={items}
       initialActiveIndex={-1}
       activateOnHover
-      showTextEffect={false}
+      ariaCurrent={null}
+      frame={false}
+      color="#ffffff"
+      activeTextColor="#111316"
+      hoverEffect={false}
+      reduceMotion={reduceMotion}
       particleCount={reduceMotion ? 0 : 10}
-      colors={[1, 2, 3, 4]}
+      style={{ '--gn-muted': '#ffffff', '--gn-ink': '#ffffff' }}
     />
   )
 }

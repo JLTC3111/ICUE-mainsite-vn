@@ -12,6 +12,7 @@ import JobCard from '../components/JobCard'
 import Gallery from '../components/Gallery'
 import BenefitGrid from '../components/BenefitGrid'
 import { getJobs } from '../data/jobs'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 import { useMainSite } from '../hooks/useMainSite'
 import '../styles/recruitment.css'
 
@@ -50,6 +51,7 @@ function matches(job, term) {
 }
 
 export default function Page() {
+  const pageTheme = usePageTheme('recruitment')
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
   const { base, pageLink } = useMainSite()
@@ -102,6 +104,7 @@ export default function Page() {
       </a>
 
       <MainSiteNav
+        pageTheme={pageTheme}
         variant="standalone"
         usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}

@@ -1,0 +1,30 @@
+{
+  "checked": "2026-10-20",
+  "variant": "JavaScript + CSS",
+  "components": [
+    {
+      "name": "CursorGrid",
+      "registry": "https://reactbits.dev/r/CursorGrid-JS-CSS.json",
+      "sha256": "5b748b9c80796cbade4ec66aafec07640f3bf6cdef2162caeca21c60cbbd52ef",
+      "decision": "review only"
+    },
+    {
+      "name": "HalftoneReveal",
+      "registry": "https://reactbits.dev/r/HalftoneReveal-JS-CSS.json",
+      "sha256": "6e898f900d1b4e71d153507118a629971c60d1c85d937f3a9762506c5148df9b",
+      "decision": "review only"
+    },
+    {
+      "name": "CardNav",
+      "registry": "https://reactbits.dev/r/CardNav-JS-CSS.json",
+      "sha256": "c8917a0d870436818d4a5680b8cde9ad8b8772e001d1f7ec7af1e741ba08b208",
+      "decision": "implemented in icue.vn shared app menu"
+    },
+    {
+      "name": "GooeyNav",
+      "registry": "https://reactbits.dev/r/GooeyNav-JS-CSS.json",
+      "sha256": "29559c6f4a822c24e453264e27a79dc6604af58d3978a4ab110f6a9515e16b16",
+      "decision": "updated"
+    }
+  ]
+}

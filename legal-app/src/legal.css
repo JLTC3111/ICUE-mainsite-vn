@@ -166,131 +166,23 @@ a {
 }
 
 .gooey-tabs {
-  position: relative;
-  width: 100%;
-  overflow-x: auto;
-  padding: 0.45rem;
-  border: 1px solid rgba(23, 32, 42, 0.14);
-  border-radius: 1.2rem;
-  background: rgba(17, 24, 32, 0.94);
-  box-shadow: 0 16px 44px rgba(17, 24, 32, 0.16);
+  position: relative; display: flex; width: 100%; overflow-x: auto;
+  padding: 0.45rem; border: 1px solid rgba(23,32,42,.14); border-radius: 1.2rem;
+  background: rgba(17,24,32,.94); box-shadow: 0 16px 44px rgba(17,24,32,.16);
   scrollbar-width: none;
 }
-
-.gooey-tabs::-webkit-scrollbar {
-  display: none;
+.gooey-tabs::-webkit-scrollbar { display: none; }
+.gooey-tabs .gooey-nav__stage { width: 100%; min-width: 43rem; max-width: none; flex: none; }
+.gooey-tabs .gooey-nav__list { display: grid; grid-template-columns: repeat(4,minmax(10rem,1fr)); gap: 0.35rem; }
+.gooey-tabs .gooey-nav__link {
+  display: flex; flex: 1; align-items: center; justify-content: center; gap: 0.58rem;
+  min-height: 3.35rem; padding: 0.72rem 1rem; border-radius: 0.9rem;
+  font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none;
 }
-
-.gooey-tabs ul {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(10rem, 1fr));
-  gap: 0.35rem;
-  min-width: 43rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.gooey-tabs a {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.58rem;
-  min-height: 3.35rem;
-  padding: 0.72rem 1rem;
-  overflow: visible;
-  border-radius: 0.9rem;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  isolation: isolate;
-  transition:
-    color 200ms ease,
-    background-color 260ms ease,
-    transform 200ms ease;
-}
-
-.gooey-tabs a::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--tab-accent-soft);
-  opacity: 0;
-  transform: scale(0.84);
-  filter: blur(2px);
-  transition:
-    opacity 280ms ease,
-    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 280ms ease;
-}
-
-.gooey-tabs a:hover,
-.gooey-tabs a:focus-visible {
-  color: white;
-}
-
-.gooey-tabs a:focus-visible {
-  outline: 2px solid white;
-  outline-offset: 2px;
-}
-
-.gooey-tabs a.is-active {
-  color: color-mix(in srgb, var(--tab-accent) 80%, #111820);
-}
-
-.gooey-tabs a.is-active::before {
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0);
-}
-
-.gooey-tabs svg {
-  width: 1.08rem;
-  height: 1.08rem;
-  flex: 0 0 auto;
-}
-
-.gooey-tabs__particles {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  z-index: -2;
-  width: 1px;
-  height: 1px;
-  animation: gooey-particle-container 720ms ease both;
-}
-
-.gooey-tabs__particles i {
-  position: absolute;
-  width: 0.48rem;
-  height: 0.48rem;
-  border-radius: 50%;
-  background: var(--tab-accent);
-  opacity: 0;
-  animation: gooey-particle 620ms cubic-bezier(0.16, 1, 0.3, 1)
-    var(--particle-delay) both;
-}
-
-@keyframes gooey-particle-container {
-  0%,
-  100% { opacity: 1; }
-}
-
-@keyframes gooey-particle {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0);
-  }
-  30% { opacity: 0.9; }
-  100% {
-    opacity: 0;
-    transform: translate(var(--particle-x), var(--particle-y)) scale(0.2);
-  }
-}
+.gooey-tabs .gooey-nav__label { white-space: normal; }
+.gooey-tabs .gooey-nav__link:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+.gooey-tabs .gooey-nav__list--active .gooey-nav__link { color: var(--gn-active-ink); }
+.gooey-tabs .gooey-nav__icon svg { width: 1.08rem; height: 1.08rem; flex: none; }
 
 .legal-layout {
   display: grid;
@@ -922,11 +814,13 @@ a {
     border-radius: 1rem;
   }
 
-  .gooey-tabs ul {
+  .gooey-tabs .gooey-nav__stage {
     min-width: 37rem;
   }
 
-  .gooey-tabs a {
+  .gooey-tabs .gooey-nav__list { grid-template-columns: repeat(4,minmax(8.5rem,1fr)); }
+
+  .gooey-tabs .gooey-nav__link {
     min-height: 3rem;
     padding: 0.62rem 0.8rem;
     font-size: 0.82rem;
@@ -1002,8 +896,5 @@ a {
     transition-duration: 0.01ms !important;
   }
 
-  .gooey-tabs__particles {
-    display: none;
-  }
 }
 

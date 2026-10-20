@@ -1,0 +1,79 @@
+:root[data-icue-page-theme='dark'] {
+  --icue-ink: #f1f5f9;
+  --icue-surface: #161c25;
+  --icue-surface-2: #1c2531;
+  --icue-border: #334155;
+  --icue-text: #f1f5f9;
+  --icue-text-soft: #cbd5e1;
+  --icue-text-faint: #a9b7c8;
+  --structure-heading-ink: #f1f5f9;
+  --structure-heading-blue: #93c5fd;
+  --structure-heading-violet: #c4b5fd;
+  --structure-heading-cyan: #a5f3fc;
+  --structure-heading-pink: #f0abfc;
+  --icue-accent: #93c5fd;
+  --icue-accent-light: #bae6fd;
+  --icue-accent-ink: #ffffff;
+  --icue-gradient-page: linear-gradient(160deg, #0b0f14 0%, #101a29 55%, #111e30 100%);
+  --icue-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --icue-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --icue-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --np-bg: #1c2735;
+  --np-text: #e2e8f0;
+  --np-shadow-light: #2b3b50;
+  --np-shadow-dark: #080e17;
+  --np-gradient: linear-gradient(145deg, #233145, #182230);
+  --np-gradient-pressed: linear-gradient(145deg, #182230, #233145);
+  --np-shadow: -5px -5px 12px #2b3b50, 6px 6px 14px #080e17;
+  --np-shadow-pressed: inset 5px 5px 12px #080e17, inset -5px -5px 12px #2b3b50;
+  --np-shadow-search: inset 3px 3px 8px #080e17, inset -3px -3px 8px #2b3b50;
+  --np-shadow-search-surface: -3px -3px 8px #2b3b50, 4px 4px 10px #080e17;
+}
+
+[data-icue-page-theme='dark'] .structure-site-header {
+  background: rgba(11, 15, 20, 0.92);
+}
+
+[data-icue-page-theme='dark'] .structure-header {
+  background: linear-gradient(160deg, #172638, #111d2e);
+  border-color: var(--icue-border);
+  box-shadow: var(--icue-shadow-md);
+}
+
+[data-icue-page-theme='dark'] :is(.structure-header__title, .structure-section-title) {
+  color: var(--icue-text);
+}
+
+[data-icue-page-theme='dark'] .structure-header__subtitle {
+  color: var(--icue-text-soft);
+}
+
+[data-icue-page-theme='dark'] .structure-content-wrapper {
+  background: var(--icue-surface);
+  border-color: var(--icue-border);
+}
+
+[data-icue-page-theme='dark'] .documents-empty,
+[data-icue-page-theme='dark'] .document-search__input::placeholder {
+  color: var(--icue-text-faint);
+}
+
+[data-icue-page-theme='dark'] .document-search__btn {
+  color: var(--np-text);
+}
+
+[data-icue-page-theme='dark'] :is(.document-search__btn, .document-search__input):focus-visible {
+  outline: 2px solid var(--icue-accent);
+  outline-offset: 3px;
+}
+
+.structure-site-header .home-video-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.structure-site-header .animated-view-toggle {
+  color: var(--icue-text);
+  border-color: var(--icue-border);
+  background: var(--icue-surface);
+}

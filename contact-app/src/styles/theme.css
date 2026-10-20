@@ -2,10 +2,8 @@
  *
  * The page is an editorial layout on paper: a warm off-white ground, hairline
  * rules, Archivo for everything that is words and a mono for anything that is a
- * label. That is the opposite of the other ICUE apps, which are dark-first
- * with a toggle — so this file has one fixed light theme and carries no toggle.
- * `color-scheme: light` also keeps browser-native form controls in step with
- * the page when the reader's system preference is dark.
+ * label. The header switch selects paper or dark surfaces, including form
+ * fields, validation and submission feedback. Native controls follow it.
  *
  * Three blues, and they are not interchangeable:
  *   --ct-accent        text: links, eyebrows, the big address. 6.5:1 on paper.
@@ -33,6 +31,7 @@
   --ct-accent: #17619f;
   --ct-accent-hover: #0f4676;
   --ct-accent-fill: #1f68ad;
+  --ct-accent-fill-hover: #0f4676;
   --ct-accent-quiet: #557697;
   --ct-on-accent: #ffffff;
 
@@ -82,6 +81,27 @@
   --nav-text: #cfd2cc;
 
   color-scheme: light;
+}
+
+:root[data-icue-page-theme='dark'] {
+  --ct-paper: #0b0f14;
+  --ct-paper-raised: #161c25;
+  --ct-field: #1c2531;
+  --ct-field-focus: #253244;
+  --ct-ink: #f1f5f9;
+  --ct-ink-2: #cbd5e1;
+  --ct-ink-3: #a9b7c8;
+  --ct-rule: #53647a;
+  --ct-rule-soft: #334155;
+  --ct-dashed: #53647a;
+  --ct-accent: #93c5fd;
+  --ct-accent-hover: #bfdbfe;
+  --ct-accent-fill: #245d94;
+  --ct-accent-fill-hover: #1d4b77;
+  --ct-accent-quiet: #435e78;
+  --ct-danger: #fda4af;
+  --ct-figure-grad: linear-gradient(148deg, #f3a4c4 0%, #8fd4ac 48%, #f3cd87 100%);
+  --ct-figure-solid: #8fd4ac;
 }
 
 /* The flag menu opens against the nav's near-black ground, so it wants the

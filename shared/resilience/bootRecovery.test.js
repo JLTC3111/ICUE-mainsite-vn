@@ -75,7 +75,7 @@ test('automatic document reloads are bounded without relying on storage', async 
   f.window.dispatchEvent(new Event('online'))
   t.mock.timers.tick(1500)
   assert.equal(f.navigations.length, 0)
-  assert.equal(f.nodes[0].children[1].tagName, 'button')
+  assert.equal(f.nodes[0].children[1].children[0].tagName, 'button')
 })
 
 test('successful startup cancels reload and clears only its internal URL marker', async t => {

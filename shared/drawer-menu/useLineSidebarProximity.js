@@ -1,19 +1,22 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-const smoothstep = (p) => p * p * (3 - 2 * p)
-const PROXIMITY_RADIUS = 110
-const SMOOTHING_TAU = 0.1
+// React Bits Line Sidebar's configurable falloff; preserve real route links.
+const FALLOFF = { linear: p => p, smooth: p => p * p * (3 - 2 * p), sharp: p => p ** 3 }
 
-export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
+export function useLineSidebarProximity({ enabled = true, deps = [], proximityRadius = 110, smoothing = 100, falloff = 'smooth' } = {}) {
   const navRef = useRef(null)
   const rafRef = useRef(null)
   const lastRef = useRef(0)
   const fxRef = useRef({ els: [], targets: [], current: [] })
+  const options = useRef({ enabled, smoothing })
+  options.current = { enabled, smoothing }
 
   const runFrame = useCallback((now) => {
     const dt = Math.min((now - lastRef.current) / 1000, 0.05)
     lastRef.current = now
-    const k = 1 - Math.exp(-dt / SMOOTHING_TAU)
+    if (!options.current.enabled) { rafRef.current = null; return }
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    const k = reduced || options.current.smoothing <= 0 ? 1 : 1 - Math.exp(-dt / (options.current.smoothing / 1000))
 
     const { els, targets, current } = fxRef.current
     let moving = false
@@ -62,19 +65,19 @@ export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
   const handlePointerMove = useCallback(
     (e) => {
       const nav = navRef.current
-      if (!nav) return
+      if (!enabled || !nav || e.pointerType === 'touch') return
       const els = collectItems()
-      const rect = nav.getBoundingClientRect()
-      const pointerY = e.clientY - rect.top
       for (let i = 0; i < els.length; i++) {
         const el = els[i]
-        const center = el.offsetTop + el.offsetHeight / 2
-        const distance = Math.abs(pointerY - center)
-        fxRef.current.targets[i] = smoothstep(Math.max(0, 1 - distance / PROXIMITY_RADIUS))
+        // Submenus have a different offsetParent. Viewport coordinates keep
+        // their highlight aligned with the pointer when expanded or scrolled.
+        const rect = el.getBoundingClientRect()
+        const distance = Math.abs(e.clientY - rect.top - rect.height / 2)
+        fxRef.current.targets[i] = (FALLOFF[falloff] || FALLOFF.smooth)(Math.max(0, 1 - distance / Math.max(1, proximityRadius)))
       }
       startLoop()
     },
-    [collectItems, startLoop],
+    [enabled, collectItems, startLoop, falloff, proximityRadius],
   )
 
   const handlePointerLeave = useCallback(() => {
@@ -84,6 +87,8 @@ export function useLineSidebarProximity({ enabled = true, deps = [] } = {}) {
 
   useEffect(() => {
     if (!enabled) {
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
       fxRef.current.targets = []
       fxRef.current.current = []
       return

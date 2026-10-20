@@ -4,6 +4,7 @@ import CircularText from './CircularText/CircularText'
 import { getFooterLinks } from '../../../shared/site-footer/footerLinks.js'
 import { useMainSite } from '../hooks/useMainSite'
 import './Footer.css'
+import StaffPortalLinks from '../../../shared/app-switcher/StaffPortalLinks.jsx'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
@@ -27,6 +28,7 @@ function Footer() {
           <h4>{t('footer.otherPages')}</h4>
           <a href={links.faqs}>{t('footer.faqs')}</a>
           <a href={links.recruitment}>{t('footer.recruitment')}</a>
+          <StaffPortalLinks locale={uiLang} />
         </div>
         <div className="icue-footer__brand">
           <div className="icue-footer__logo-wrap">

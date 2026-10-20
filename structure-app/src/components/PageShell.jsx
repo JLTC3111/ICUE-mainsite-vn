@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
 import Header from './Header'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 import Footer from './Footer'
 import './PageShell.css'
 
 export default function PageShell({ children }) {
+  const pageTheme = usePageTheme('structure')
   const { pathname } = useLocation()
   const { i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
@@ -14,7 +16,7 @@ export default function PageShell({ children }) {
   return (
     <InteractiveBackgroundProvider active={false}>
       <div className="page-shell">
-        <Header />
+        <Header pageTheme={pageTheme} />
         <main className="page-shell__main">{children}</main>
         <div className="page-shell__site-footer">
           <Footer />

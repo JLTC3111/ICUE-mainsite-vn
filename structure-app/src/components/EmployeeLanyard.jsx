@@ -435,7 +435,6 @@ export default function EmployeeLanyard({ profile, onOpen }) {
     }
 
     let cancelled = false
-    setBadgeImage(null)
     createBadgeImage(badgeRequest).then((image) => {
       if (!cancelled) setBadgeImage(image)
     }).catch(() => {
@@ -444,7 +443,7 @@ export default function EmployeeLanyard({ profile, onOpen }) {
     return () => {
       cancelled = true
     }
-  }, [badgeRequest, phoneDisabled])
+  }, [badgeRequest, phoneDisabled, profile])
 
   if (phoneDisabled) return null
 
@@ -483,31 +482,26 @@ export default function EmployeeLanyard({ profile, onOpen }) {
         className={`employee-lanyard__stage${tabletLayout ? ' is-compact' : ''}`}
         data-motion={reducedMotion ? 'reduced' : 'full'}
       >
-        {reducedMotion || !profile ? (
+        {reducedMotion || !profile || !badgeImage ? (
           stillBadge
         ) : (
           <LanyardBoundary fallback={stillBadge}>
             <Suspense fallback={stillBadge}>
               <Lanyard
-                /*
-                 * Key on the profile only. Including the badge-image load state
-                 * tore down and rebuilt the whole WebGL scene (renderer, physics
-                 * rig, textures) a second time the moment the canvas-composited
-                 * badge finished generating — the "loads twice on profile
-                 * change". `frontImage` is already reactive inside Lanyard via
-                 * useTexture, so the texture swaps in place without a remount.
-                 */
-                key={profile?.id || 'generic'}
-                position={[0, 0, 26]}
-                gravity={[0, -34, 0]}
-                fov={22}
+                /* Keep the renderer, environment and physics rig while the
+                 * selected employee or language changes. Badge textures swap
+                 * in place after their replacement finishes loading. */
+                gravity={0.85}
                 frontImage={badgeImage}
+                cardColor="#0c1c34"
                 imageFit="cover"
-                lanyardWidth={0.82}
-                segmentLength={0.5}
-                cardScale={tabletLayout ? 2.8 : 3.05}
-                rigPosition={[0, 3.3, 0]}
+                size={tabletLayout ? 0.57 : 0.62}
+                strapWidth={0.65}
+                strapLength={0.33}
+                damping={0.65}
+                breeze={0}
                 onCardClick={profile ? onOpen : undefined}
+                fallback={stillBadge}
               />
             </Suspense>
           </LanyardBoundary>

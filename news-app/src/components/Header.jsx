@@ -14,6 +14,7 @@ import { AnimatedShinyText } from './magicui/AnimatedShinyText'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
+import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 
 const NotificationBell = lazy(() => import('./NotificationBell'))
 
@@ -173,12 +174,12 @@ function AuthorToolsMenu({ onNavigate }) {
   )
 }
 
-function Header() {
+function Header({ appearance = 'light' }) {
   const { pathname } = useLocation()
   const isReaderRoute = isNewsroomReaderRoute(pathname)
   const isAgentRoute = pathname.startsWith('/assist')
   const showThemeToggle = isReaderRoute || isAgentRoute
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, user, signOut } = useAuth()
   const navigate = useNavigate()
@@ -239,6 +240,7 @@ function Header() {
           >
             {t('brandBadge')}
           </NavLink>
+          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={appearance} compact />
         </div>
 
         {isReaderRoute && (

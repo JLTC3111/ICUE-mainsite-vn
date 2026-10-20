@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { readBackgroundSampleRgb } from './backgroundSampling.js'
 
 const FALLBACK_COLOR = '#ffffff'
@@ -46,23 +46,12 @@ function resolveMusicBarColor(musicEl) {
 
 export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
   const [color, setColor] = useState(FALLBACK_COLOR)
-  const samplingRef = useRef(false)
-  const mountedRef = useRef(true)
-
-  const sample = useCallback(async () => {
+  const sample = useCallback(() => {
     if (!enabled) return
     const el = barRef.current
-    if (!el || samplingRef.current) return
-
-    samplingRef.current = true
-    try {
-      const nextColor = await resolveMusicBarColor(el)
-      if (mountedRef.current) {
-        setColor((prev) => (prev === nextColor ? prev : nextColor))
-      }
-    } finally {
-      samplingRef.current = false
-    }
+    if (!el) return
+    const nextColor = resolveMusicBarColor(el)
+    setColor((prev) => (prev === nextColor ? prev : nextColor))
   }, [barRef, enabled])
 
   useEffect(() => {
@@ -107,6 +96,12 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       }
     }
 
+    // A theme attribute changes before a CSS background transition settles.
+    // Sample again at its end so the icon cannot keep the previous palette.
+    const handleBackgroundTransition = event => {
+      if (['background', 'background-color', 'background-image'].includes(event.propertyName)) scheduleSample()
+    }
+
     window.addEventListener('scroll', scheduleSample, { passive: true, capture: true })
     window.addEventListener('resize', scheduleSample)
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
@@ -115,6 +110,8 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     window.addEventListener('icue:aboutUsTheme', scheduleSample)
     window.addEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    document.addEventListener('transitionend', handleBackgroundTransition)
+    document.addEventListener('transitioncancel', handleBackgroundTransition)
 
     const viewport = window.visualViewport
     viewport?.addEventListener('resize', scheduleSample)
@@ -134,7 +131,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     const rootObserver = new MutationObserver(scheduleSample)
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme'],
+      attributeFilter: ['class', 'style', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme', 'data-icue-page-theme', 'data-icue-theme-page', 'data-theme'],
     })
     if (document.body) {
       rootObserver.observe(document.body, {
@@ -160,19 +157,14 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       window.removeEventListener('icue:aboutUsTheme', scheduleSample)
       window.removeEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      document.removeEventListener('transitionend', handleBackgroundTransition)
+      document.removeEventListener('transitioncancel', handleBackgroundTransition)
       viewport?.removeEventListener('resize', scheduleSample)
       viewport?.removeEventListener('scroll', scheduleSample)
       observer?.disconnect()
       rootObserver.disconnect()
     }
   }, [contentKey, enabled, sample])
-
-  useEffect(() => {
-    mountedRef.current = true
-    return () => {
-      mountedRef.current = false
-    }
-  }, [])
 
   return color
 }

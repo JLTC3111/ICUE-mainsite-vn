@@ -26,6 +26,7 @@ import {
   withLocale,
 } from '../site-routes/mainSitePaths.js';
 import MainSiteHeader from './MainSiteHeader';
+import { pageThemeLabel } from '../ui/pageTheme.js';
 import './MainSiteNav.css';
 
 const DOCK_EXPAND_SCROLL_THRESHOLD = 48;
@@ -109,12 +110,14 @@ export default function MainSiteNav({
   pillOverflowItems = [],
   LanguageControl,
   locale,
+  pageTheme,
   /* Chrome copy. Left undefined the nav speaks Vietnamese, which is what every
      page on icue.vn that has not been localized still wants. An app with UI
      languages of its own passes its current translation here — see
      navContent.js for the shape. */
   labels: labelOverrides,
 }) {
+  const hasPageTheme = Boolean(pageTheme);
   const isStandalone = variant === 'standalone';
   const initialPage = isStandalone ? pageFromPathname(window.location.pathname) : getPageFromHash();
   const initialVisibility = getPageVisibility(initialPage);
@@ -539,7 +542,7 @@ export default function MainSiteNav({
       el.style.removeProperty('display');
       el.classList.remove('pre-hidden');
     });
-  }, [showContactLink, showHomeVideoToggle, showAboutUsVideoToggle]);
+  }, [showContactLink, showHomeVideoToggle, showAboutUsVideoToggle, hasPageTheme]);
 
   const navClass = [
     'main-site-nav',
@@ -559,11 +562,12 @@ export default function MainSiteNav({
     <div className={navClass} ref={navRootRef} data-active-page={activePage}>
       <nav className={barClass} aria-label={labels.aria.nav}>
         <MainSiteHeader
+          locale={locale}
           drawerOpen={drawerOpen}
           onToggleDrawer={handleToggleDrawer}
           showContactLink={showContactLink}
           showHomeVideoToggle={showHomeVideoToggle}
-          showAboutUsVideoToggle={showAboutUsVideoToggle}
+          showAboutUsVideoToggle={hasPageTheme || showAboutUsVideoToggle}
           homeHref={localizedHomeHref}
           contactHref={localizedContactHref}
           isStandalone={isStandalone}
@@ -574,9 +578,9 @@ export default function MainSiteNav({
           aboutUsVideoEnabled={aboutUsVideoEnabled}
           aboutUsVideoToggleDisabled={aboutUsVideoToggleDisabled}
           onAboutUsVideoToggle={handleAboutUsVideoToggle}
-          aboutUsControl={aboutUsControl}
-          aboutUsThemeDark={aboutUsThemeDark}
-          onAboutUsThemeToggle={handleAboutUsThemeToggle}
+          aboutUsControl={hasPageTheme ? 'theme' : aboutUsControl}
+          aboutUsThemeDark={pageTheme?.isDark ?? aboutUsThemeDark}
+          onAboutUsThemeToggle={pageTheme?.setDark ?? handleAboutUsThemeToggle}
           menuIconRef={menuIconRef}
           menuToggleRef={menuToggleRef}
           logoLinkRef={logoLinkRef}
@@ -592,7 +596,7 @@ export default function MainSiteNav({
           onNavigate={onNavigate}
           PillHeaderComponent={PillHeaderComponent}
           pillOverflowItems={localizedOverflowItems}
-          labels={labels}
+          labels={hasPageTheme ? { ...labels, aria: { ...labels.aria, aboutUsTheme: pageThemeLabel(locale) } } : labels}
           {...(LanguageControl ? { LanguageControl } : {})}
         />
       </nav>

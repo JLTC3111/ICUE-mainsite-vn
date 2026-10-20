@@ -62,6 +62,9 @@ export function getBackgroundCanvases() {
     if (!(node instanceof HTMLCanvasElement)) return
     if (node.closest('.contact-sidebar')) return
     if (node.closest('.home-hero__title')) return
+    // Border/stardust canvases decorate cards; their transparent pixels do not
+    // describe the background behind the sidebar. Read the card's CSS instead.
+    if (node.matches('.star-border__light, .icue-bento__stars')) return
     // The lanyard is a foreground WebGL effect, not the page background.
     // Reading it back stalls the GPU and can return a mostly transparent frame.
     if (node.closest('.home-hero__lanyard, .lanyard-wrapper')) return

@@ -4,9 +4,8 @@
  * page ran in. The green accent carries ICUE's own mark rather than the
  * borrowed blue, and reads at 5.2:1 on the card ground.
  *
- * The legacy page was a fixed light layout on #f5f5f5 with white cards, and
- * this keeps that: one theme, no toggle, `color-scheme: light` so native
- * controls stay in step when the reader's system preference is dark.
+ * Both palettes cover the search, expanded postings, benefits and actions.
+ * The shared page theme keeps native controls in step with the header switch.
  */
 
 :root {
@@ -57,6 +56,24 @@
   --nav-text: #cfd2cc;
 
   color-scheme: light;
+}
+
+:root[data-icue-page-theme='dark'] {
+  --rc-ground: #0b0f14;
+  --rc-surface: #161c25;
+  --rc-surface-2: #1c2531;
+  --rc-ink: #f1f5f9;
+  --rc-ink-2: #cbd5e1;
+  --rc-ink-3: #a9b7c8;
+  --rc-rule: #334155;
+  --rc-rule-strong: #53647a;
+  --rc-accent: #86efac;
+  --rc-accent-hover: #bbf7d0;
+  --rc-tint: #17382d;
+  --rc-tint-strong: #1e4637;
+  --rc-on-accent: #102c1d;
+  --rc-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+  --rc-shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* The flag menu opens against the nav's near-black ground, so it wants the

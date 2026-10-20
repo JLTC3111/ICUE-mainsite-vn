@@ -1,5 +1,6 @@
 import { lazyWithRecovery as lazy } from '../../../shared/resilience/lazyWithRecovery.jsx'
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import { PEOPLE_SUBMENU, STANDALONE_DRAWER_LINKS } from '@icue/main-site-nav/navLinks'
@@ -29,6 +30,7 @@ function useIdle() {
 }
 
 export default function Page() {
+  const pageTheme = usePageTheme('community')
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
   const { base } = useMainSite()
@@ -100,6 +102,7 @@ export default function Page() {
       </a>
 
       <MainSiteNav
+        pageTheme={pageTheme}
         variant="standalone"
         usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}

@@ -230,7 +230,7 @@ textarea.ct-field__input {
 }
 
 .ct-send__button:hover {
-  background: var(--ct-accent-hover);
+  background: var(--ct-accent-fill-hover);
 }
 
 .ct-send__hint {
