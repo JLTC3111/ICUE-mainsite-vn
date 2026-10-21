@@ -13,8 +13,9 @@ export default function FloatingCollapseControls({ collapse, controlsId, expandL
       ref={controlsRef}
       data-over-video={overVideo || undefined}
       style={{
-        '--floating-control-ink': overVideo ? '#18334d' : iconColor,
-        '--floating-control-surface': overVideo ? '#f8fafc' : 'transparent',
+        '--floating-control-sampled-ink': iconColor,
+        '--floating-control-ink': overVideo ? '#18334d' : undefined,
+        '--floating-control-surface': overVideo ? '#f8fafc' : undefined,
       }}
     >
       <button

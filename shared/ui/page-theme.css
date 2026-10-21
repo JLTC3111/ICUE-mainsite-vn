@@ -7,6 +7,10 @@
   --drawer-toggle-hover: #e2e8f0;
   --drawer-toggle-hover-ink: #124f82;
   --drawer-toggle-focus: #1d4ed8;
+  --floating-control-bg: #f8fafc;
+  --floating-control-ink: #18334d;
+  --floating-control-border: #64748b;
+  --floating-control-hover: #e7f4fc;
 }
 
 :root[data-icue-page-theme='dark'] {

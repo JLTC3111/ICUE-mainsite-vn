@@ -2,7 +2,7 @@
  * Square corners — OPT-IN, per app.
  *
  * WHO IMPORTS THIS (from the app's main.jsx, after icue-base.css):
- *   contact-app, legal-app, ourwork-app
+ *   contact-app, legal-app, ourwork-app, faq-app, recruitment-app
  *
  * WHO DELIBERATELY DOES NOT — these keep their authored corners:
  *   home-app, structure-app, news-app, people-app
@@ -26,9 +26,11 @@
  * An `!important` declaration on a class selector outranks an `!important` one
  * on `*`, because specificity still breaks ties between two important author
  * rules. So the shell nav, its drawer, the dock, the flag menu and the Our Work
- * header keep their corners by marking their own radii `!important`. If you add
+ * header keep their corners by marking their own radii `!important`. Shared
+ * theme, collapse and mascot controls do the same to retain circular borders.
+ * If you add
  * a radius to shell chrome, mark it `!important` or it will be flattened inside
- * these four apps.
+ * these apps.
  */
 
 :root {

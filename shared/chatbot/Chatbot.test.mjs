@@ -8,10 +8,12 @@ const en = JSON.parse(await fs.readFile(new URL('../../faq-app/src/locales/en.js
 const kb = JSON.parse(await fs.readFile(new URL('../../public/chatbot/kb.vi.json', import.meta.url)))
 const authoredReply = { content: kb.intents[0].answer, meta: { source: 'intent' } }
 
-async function fixture(t, getResponse, { touch = false, musicPlaying = false, collapseMode = 'expanded' } = {}) {
+async function fixture(t, getResponse, { touch = false, musicPlaying = false, collapseMode = 'expanded', desktopCollapseMode } = {}) {
   silenceRenderer(t)
   const f = platform()
-  const storage = new Map(collapseMode ? [['icue:chat-mascot:collapse', collapseMode]] : [])
+  const collapseKey = `icue:chat-mascot:collapse${touch ? ':compact' : ''}`
+  const storage = new Map(collapseMode ? [[collapseKey, collapseMode]] : [])
+  if (desktopCollapseMode) storage.set('icue:chat-mascot:collapse', desktopCollapseMode)
   const timers = new Map()
   const frames = new Map()
   let time = 0, serial = 0, focused = null
@@ -507,12 +509,13 @@ test('automatic mascot collapse leaves chat accessible and never interrupts a dr
   assert.equal(f.timers.size, 0)
 })
 
-test('one corner X collapses the mascot and the mobile chat icon restores it without losing the thread', async t => {
-  const f = await fixture(t, () => authoredReply, { touch: true, collapseMode: 'collapsed' })
+test('mobile starts collapsed despite desktop expansion and chat restores the mascot without losing the thread', async t => {
+  const f = await fixture(t, () => authoredReply, { touch: true, collapseMode: null, desktopCollapseMode: 'expanded' })
   const mascot = () => f.find('icue-chat__mascot')
   const dismiss = () => f.find('icue-chat__collapse')
   const availableControls = () => f.find('icue-chat__launcher').findAllByType('button').filter(node => !node.props.disabled)
   assert.equal(mascot().props['aria-hidden'], true)
+  assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'expanded')
   assert.equal(availableControls().length, 1, 'only the chat icon can receive input while collapsed')
   assert.equal(dismiss().props.tabIndex, -1)
   assert.equal(f.renderer.root.findAllByProps({ className: 'floating-collapse-controls' }).length, 0)
@@ -527,7 +530,7 @@ test('one corner X collapses the mascot and the mobile chat icon restores it wit
   assert.equal(mascot().props['aria-hidden'], undefined)
   assert.equal(availableControls().length, 2, 'the mascot has just its chat target and corner X')
   assert.equal(dismiss().props['aria-controls'], mascot().props.id)
-  assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'expanded')
+  assert.equal(f.storage.get('icue:chat-mascot:collapse:compact'), 'expanded')
   // Rapidly reverse the transition: the same mascot stays mounted and an X
   // never strands keyboard focus on a disappearing control.
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -537,7 +540,8 @@ test('one corner X collapses the mascot and the mobile chat icon restores it wit
     assert.equal(f.find('icue-mascot icue-mascot--launcher').props['data-paused'], true)
     assert.equal(availableControls().length, 1)
     assert.equal(f.focused, 'icue-chat__toggle')
-    assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'collapsed')
+    assert.equal(f.storage.get('icue:chat-mascot:collapse:compact'), 'collapsed')
+    assert.equal(f.storage.get('icue:chat-mascot:collapse'), 'expanded', 'mobile keeps the desktop preference intact')
     await f.open()
     assert.equal(mascot().props['aria-hidden'], undefined)
     assert.equal(f.find('icue-chat__input').props.value, 'Keep my unfinished question')

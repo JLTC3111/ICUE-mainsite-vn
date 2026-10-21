@@ -190,6 +190,9 @@
 }
 
 :root[data-icue-home-theme='light'] .icue-footer {
+  --icue-footer-ring-ink: #172b43;
+  --icue-footer-ring-shadow: #172b43;
+  --icue-footer-ring-tint: #172b43;
   background: #eaf1f8;
   color: #526579;
   border-top-color: #cedae7;
@@ -205,8 +208,20 @@
 :root[data-icue-home-theme='light'] .icue-footer__legal a { color: #526579; }
 
 :root[data-icue-home-theme='light'] .icue-footer__col a:hover,
-:root[data-icue-home-theme='light'] .icue-footer__legal a:hover,
-:root[data-icue-home-theme='light'] .icue-footer__circular-text { color: #095f99; }
+:root[data-icue-home-theme='light'] .icue-footer__legal a:hover { color: #095f99; }
+
+:root[data-icue-home-theme='light'] .icue-footer__circular-text {
+  color: var(--icue-footer-ring-ink);
+}
+
+/* Small rotating letters need solid ink on a light surface. */
+:root[data-icue-home-theme='light'] .icue-footer__circular-text span {
+  background-image: none;
+  color: var(--icue-footer-ring-ink);
+  -webkit-text-fill-color: currentColor;
+  filter: none;
+  text-shadow: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   :root[data-icue-home-theme] body:has(.home-hero) { transition: none; }

@@ -13,8 +13,9 @@
   height: 44px;
   padding: 0;
   border: 1px solid var(--floating-control-border, rgba(20, 38, 58, 0.16));
-  border-radius: 50%;
-  background: var(--floating-control-surface, transparent);
+  /* Shared controls keep their shape in apps with square cards. */
+  border-radius: 50% !important;
+  background: var(--floating-control-surface, var(--floating-control-bg, #f8fafc));
   color: var(--floating-control-ink, #18334d);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
@@ -23,7 +24,7 @@
 }
 
 .floating-collapse-controls > button:hover {
-  background: var(--floating-control-surface, transparent);
+  background: var(--floating-control-surface, var(--floating-control-bg, #f8fafc));
   color: var(--floating-control-ink, #18334d);
 }
 
@@ -33,7 +34,14 @@
 }
 
 .floating-collapse-controls > button[aria-pressed='true'] {
-  background: var(--floating-control-surface, transparent);
+  background: var(--floating-control-surface, var(--floating-control-bg, #f8fafc));
+}
+
+/* Home samples the page beneath transparent controls; other apps use the
+   filled page-theme surface. Video alone gets the inline near-white plate. */
+:root[data-icue-home-theme] .floating-collapse-controls {
+  --floating-control-surface: transparent;
+  --floating-control-ink: var(--floating-control-sampled-ink, #ffffff);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -360,6 +360,7 @@
 }
 
 .rc-benefit__icon {
+  color: var(--rc-ink);
   width: 60px;
   height: 60px;
   display: flex;

@@ -4,6 +4,7 @@
 }
 
 .news-archive-page {
+  color-scheme: light;
   font-family: sans-serif;
   background: #ffffff;
   color: #16181d;
@@ -63,6 +64,7 @@ body:has(.news-archive-page--article) {
   width: 220px;
   height: 110px;
   padding: 0.35rem;
+  border: 1px solid transparent;
   flex-shrink: 0;
   cursor: pointer;
 }

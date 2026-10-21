@@ -633,6 +633,12 @@
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
 }
 
+/* Pill capsules supply their own contrast; legacy text shadows blur the labels. */
+.main-site-nav--pill .pill-site-header,
+.main-site-nav--pill .pill-site-header :is(a, button, span) {
+  text-shadow: none;
+}
+
 .main-site-nav.nav-on-dark .menu-bar a,
 .main-site-nav.nav-on-dark .menu-bar a:visited,
 .main-site-nav .menu-bar.nav-on-dark a,

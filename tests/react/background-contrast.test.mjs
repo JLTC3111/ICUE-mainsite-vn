@@ -60,7 +60,7 @@ async function fixture(t) {
 }
 
 
-test('collapse controls use a solid light surface only over exposed video and stay stable while sampling themselves', async t => {
+test('Home collapse controls use a solid light surface only over exposed video and stay stable while sampling themselves', async t => {
   silenceRenderer(t)
   const f = await fixture(t)
   const controls = f.document.createElement('div')
@@ -117,12 +117,12 @@ test('collapse controls use a solid light surface only over exposed video and st
   assert.equal(toggles, 1)
   f.target('.home-section__inner')
   await scroll()
-  assert.equal(surface()['--floating-control-surface'], 'transparent')
-  assert.equal(surface()['--floating-control-ink'], '#0a1a3a')
+  assert.equal(surface()['--floating-control-surface'], undefined)
+  assert.equal(surface()['--floating-control-sampled-ink'], '#0a1a3a')
   f.target('article')
   await scroll()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'an opaque dark card is not mistaken for video')
-  assert.equal(surface()['--floating-control-ink'], '#ffffff')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'an opaque dark card is not mistaken for video')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#ffffff')
   f.document.documentElement.setAttribute('data-home-bg-video', 'off')
   const warp = f.document.createElement('div')
   warp.className = 'home-hero__warp'
@@ -132,16 +132,16 @@ test('collapse controls use a solid light surface only over exposed video and st
   f.document.querySelector('.home-hero__media').appendChild(warp)
   f.target('.home-hero__content')
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'switching video off removes the surface over the warp')
-  assert.equal(surface()['--floating-control-ink'], '#0a1a3a')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'switching video off removes the surface over the warp')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#0a1a3a')
   warp.remove()
   const canvas = f.document.createElement('canvas')
   canvas.style.cssText = 'display:block;visibility:visible;opacity:1'
   canvas.getBoundingClientRect = () => box()
   f.document.querySelector('.home-hero__media').appendChild(canvas)
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'a dark canvas also stays transparent')
-  assert.equal(surface()['--floating-control-ink'], '#ffffff')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'a dark canvas also stays transparent')
+  assert.equal(surface()['--floating-control-sampled-ink'], '#ffffff')
   f.document.documentElement.setAttribute('data-home-bg-video', 'on')
   await tick()
   assert.equal(surface()['--floating-control-surface'], '#f8fafc', 'video detection updates even when the sampled icon color stays white')
@@ -151,7 +151,7 @@ test('collapse controls use a solid light surface only over exposed video and st
   Object.defineProperty(transition, 'propertyName', { value: 'grid-template-rows' })
   controls.dispatchEvent(transition)
   await tick()
-  assert.equal(surface()['--floating-control-surface'], 'transparent', 'collapse layout changes recheck the final control position')
+  assert.equal(surface()['--floating-control-surface'], undefined, 'collapse layout changes recheck the final control position')
   assert.equal(f.reads(), 0)
   assert.equal(f.document.querySelector('aside').style.visibility, '')
   assert.equal(controls.style.pointerEvents, '')

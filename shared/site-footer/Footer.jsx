@@ -41,9 +41,9 @@ function Footer({ linkMode = 'hash', labels: labelOverrides, locale }) {
               className="icue-footer__circular-text"
               spinDuration={24}
               onHover="pause"
-              lightColor="#ffffff"
-              darkColor="#ffffff"
-              tintColor="#ffffff"
+              lightColor="var(--icue-footer-ring-ink, #ffffff)"
+              darkColor="var(--icue-footer-ring-shadow, #ffffff)"
+              tintColor="var(--icue-footer-ring-tint, #ffffff)"
               brightness={1.22}
               contrast={0.5}
             />

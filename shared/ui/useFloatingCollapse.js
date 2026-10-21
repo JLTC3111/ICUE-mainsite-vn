@@ -16,19 +16,27 @@ function isCompactViewport() {
   return typeof window !== 'undefined' && Boolean(window.matchMedia?.(COMPACT_VIEWPORT).matches)
 }
 
-/** Each floating widget remembers its own preference across the site's apps. */
+function readPreference(storageKey, compact = isCompactViewport()) {
+  const key = compact ? `${storageKey}:compact` : storageKey
+  return { key, compact, mode: readMode(key) }
+}
+
+/** Desktop and compact screens remember independent choices across the apps. */
 export default function useFloatingCollapse({ storageKey, keepOpen = false }) {
-  const [mode, setMode] = useState(() => readMode(storageKey))
+  const [preference, setPreference] = useState(() => readPreference(storageKey))
+  const { key, compact, mode } = preference
   const [autoCollapsed, setAutoCollapsed] = useState(isCompactViewport)
   const [engaged, setEngaged] = useState(false)
   const interactionRef = useRef({ pointer: false, focus: false })
+  const visitModes = useRef(new Map())
   const collapsed = !keepOpen && (mode === 'collapsed' || (mode === 'auto' && autoCollapsed))
 
   const selectMode = useCallback(next => {
-    if (next === 'auto') setAutoCollapsed(isCompactViewport())
-    setMode(next)
-    try { localStorage.setItem(storageKey, next) } catch { /* The control still works without storage. */ }
-  }, [storageKey])
+    if (next === 'auto') setAutoCollapsed(compact)
+    visitModes.current.set(key, next)
+    setPreference(previous => ({ ...previous, mode: next }))
+    try { localStorage.setItem(key, next) } catch { /* The control still works without storage. */ }
+  }, [compact, key])
 
   const interact = useCallback((kind, value) => {
     interactionRef.current[kind] = value
@@ -37,29 +45,39 @@ export default function useFloatingCollapse({ storageKey, keepOpen = false }) {
   }, [])
 
   useEffect(() => {
-    if (mode !== 'auto' || keepOpen || engaged) return undefined
     const media = window.matchMedia?.(COMPACT_VIEWPORT)
+    const resize = () => {
+      const nextCompact = Boolean(media?.matches)
+      const nextKey = nextCompact ? `${storageKey}:compact` : storageKey
+      setPreference(previous => {
+        if (previous.key === nextKey) return previous
+        const next = readPreference(storageKey, nextCompact)
+        return { ...next, mode: visitModes.current.get(nextKey) ?? next.mode }
+      })
+      setAutoCollapsed(nextCompact)
+    }
+    resize()
+    media?.addEventListener?.('change', resize)
+    return () => media?.removeEventListener?.('change', resize)
+  }, [storageKey])
+
+  useEffect(() => {
+    if (mode !== 'auto' || keepOpen || engaged) return undefined
     let timer
     const clear = () => window.clearTimeout(timer)
     const schedule = () => {
       clear()
       if (document.hidden) return
-      if (media?.matches) setAutoCollapsed(true)
+      if (compact) setAutoCollapsed(true)
       else timer = window.setTimeout(() => setAutoCollapsed(true), FLOATING_COLLAPSE_DELAY_MS)
     }
-    const resize = () => {
-      setAutoCollapsed(Boolean(media?.matches))
-      schedule()
-    }
     schedule()
-    media?.addEventListener?.('change', resize)
     document.addEventListener('visibilitychange', schedule)
     return () => {
       clear()
-      media?.removeEventListener?.('change', resize)
       document.removeEventListener('visibilitychange', schedule)
     }
-  }, [engaged, keepOpen, mode])
+  }, [compact, engaged, keepOpen, mode])
 
   return {
     collapsed,

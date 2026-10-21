@@ -161,6 +161,14 @@
 .icue-chat .icue-chat__collapse:hover { background: transparent; }
 .icue-chat__collapse:hover svg { background: var(--floating-control-hover, #e7f4fc); }
 
+/* These controls keep circular borders even in apps with a square-card reset. */
+.icue-chat__compact-icon,
+.icue-chat--collapsed .icue-chat__toggle,
+.icue-chat .icue-chat__collapse,
+.icue-chat__collapse svg {
+  border-radius: 50% !important;
+}
+
 .icue-chat .icue-chat__collapse[aria-hidden='true'] {
   opacity: 0;
   visibility: hidden;

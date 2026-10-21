@@ -31,7 +31,7 @@ async function fixture(t, { saved, dark = false, denied = false, enabled = true 
   })
   let current
   function Probe({ enabled }) {
-    current = usePageTheme('archive', { enabled })
+    current = usePageTheme('faq', { enabled })
     return null
   }
   let renderer
@@ -95,7 +95,7 @@ test('cross-tab preference changes apply and clearing the preference resumes the
   await unmount(f.renderer)
 })
 
-test('inactive routes stay untouched and returning to an archive reads choices made on another page', async t => {
+test('inactive routes stay untouched and returning to a themed page reads choices made on another page', async t => {
   const f = await fixture(t, { enabled: false })
   assert.equal(f.document.documentElement.hasAttribute('data-icue-page-theme'), false)
   f.storage.set(KEY, 'dark')
@@ -162,7 +162,6 @@ test('all new dark palettes provide readable text, links, and action labels', as
     ['community-app/src/styles/theme.css', 'cm', ['ground', 'surface', 'surface-2', 'tint', 'tint-strong']],
     ['contact-app/src/styles/theme.css', 'ct', ['paper', 'paper-raised', 'field', 'field-focus']],
     ['legal-app/src/dark-mode.css', 'legal', ['ground', 'surface', 'raised']],
-    ['home-app/src/pages/NewsArchiveTheme.css', 'archive', ['ground', 'surface', 'raised']],
     ['structure-app/src/styles/dark-mode.css', 'icue', ['surface', 'surface-2']],
   ]
   for (const [file, prefix, surfaces] of specs) {
@@ -174,11 +173,11 @@ test('all new dark palettes provide readable text, links, and action labels', as
     })
     const get = name => tokens[`--${prefix}-${name}`]
     const textNames = prefix === 'icue' ? ['text', 'text-soft', 'text-faint']
-      : ['legal', 'archive'].includes(prefix) ? ['ink', 'body', 'muted'] : ['ink', 'ink-2', 'ink-3']
+      : prefix === 'legal' ? ['ink', 'body', 'muted'] : ['ink', 'ink-2', 'ink-3']
     for (const surface of surfaces) {
       for (const textName of textNames) assertContrast(get(textName), get(surface), `${prefix}: ${textName}/${surface}`)
     }
-    const accent = get(prefix === 'archive' ? 'link' : 'accent')
+    const accent = get('accent')
     if (accent) for (const surface of surfaces.slice(0, 3)) assertContrast(accent, get(surface), `${prefix}: link/${surface}`)
     if (['fq', 'rc', 'cm'].includes(prefix)) {
       assertContrast(get('on-accent'), get('accent'), `${prefix}: action`)

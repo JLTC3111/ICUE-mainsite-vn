@@ -1,7 +1,6 @@
 import { lazyWithRecovery as lazy } from '../../shared/resilience/lazyWithRecovery.jsx'
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Suspense, useEffect, useMemo } from 'react'
-import usePageTheme from '../../shared/ui/usePageTheme.js'
 import { useTranslation } from 'react-i18next'
 import MainSiteNav from '@icue/main-site-nav/MainSiteNav'
 import HomeLayoutGuard from '@icue/home-layout/HomeLayoutGuard'
@@ -15,6 +14,7 @@ import HomePage from './pages/HomePage'
 import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 import useAboutTheme from './components/aboutUs/useAboutTheme'
 import { debugLog } from './lib/debugLog'
+import '../../shared/ui/page-theme.css'
 
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'), { recoverDocument: true })
@@ -49,8 +49,6 @@ function NavSync() {
 
 function AppShell() {
   const { pathname } = useLocation()
-  const isArchive = pathname === ROUTE_PATHS.newsArchive || pathname.startsWith(`${ROUTE_PATHS.newsArchive}/`)
-  const pageTheme = usePageTheme('archive', { enabled: isArchive })
   const navigate = useNavigate()
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
@@ -103,7 +101,6 @@ function AppShell() {
       <RouteHead />
       <NavSync />
       <MainSiteNav
-        pageTheme={isArchive ? pageTheme : undefined}
         variant="standalone"
         usePillNav
         drawerLinks={STANDALONE_DRAWER_LINKS}
