@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { readElementBackdropRgb } from '@icue/contact-sidebar/backgroundSampling.js'
+import { readElementBackdropRgb } from '@icue/contact-sidebar/imageBackdropSampling.js'
 import { pickBarColor } from '@icue/contact-sidebar/useMusicBarColor.js'
 
 const THROTTLE_MS = 120

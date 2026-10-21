@@ -159,6 +159,52 @@ test('collapse controls use a solid light surface only over exposed video and st
   assert.equal(timers.size, 0)
 })
 
+test('lazy gallery photo sampling keeps image contrast and falls back to the current CSS theme when readback is blocked', async t => {
+  const f = await fixture(t)
+  const gallery = f.document.createElement('section')
+  gallery.style.background = '#f5f8fc'
+  gallery.innerHTML = '<div class="swiper-slide"><img src="/photo.jpg"></div><button></button>'
+  f.document.querySelector('main').appendChild(gallery)
+  const image = gallery.querySelector('img')
+  const arrow = gallery.querySelector('button')
+  image.getBoundingClientRect = () => box(100, 100, 400, 200)
+  arrow.getBoundingClientRect = () => box(115, 125, 40, 40)
+  arrow.style.pointerEvents = 'auto'
+  Object.defineProperties(image, {
+    complete: { value: true }, naturalWidth: { value: 400 }, naturalHeight: { value: 200 },
+  })
+  f.document.elementFromPoint = () => image
+  let contexts = 0, reads = 0, blocked = false
+  f.window.HTMLCanvasElement.prototype.getContext = function () {
+    contexts++
+    return {
+      drawImage(bitmap) { assert.equal(bitmap, image) },
+      getImageData() {
+        reads++
+        if (blocked) throw new Error('Privacy protection blocks image readback')
+        return { data: [20, 40, 80, 255, 60, 80, 120, 255, 255, 0, 0, 0] }
+      },
+    }
+  }
+  const { readElementBackdropRgb } = await sourceModule('shared/contact-sidebar/imageBackdropSampling.js', {
+    globals: { ...f.globals, HTMLImageElement: f.window.HTMLImageElement },
+  })
+  assert.equal(contexts, 0, 'loading a gallery sampler does not allocate a canvas')
+  assert.deepEqual(Array.from(readElementBackdropRgb(arrow)), [40, 60, 100])
+  assert.equal(reads, 1)
+  blocked = true
+  assert.deepEqual(Array.from(readElementBackdropRgb(arrow)), [245, 248, 252])
+  gallery.style.background = '#0c0f14'
+  assert.deepEqual(Array.from(readElementBackdropRgb(arrow)), [12, 15, 20])
+  image.remove()
+  f.document.elementFromPoint = () => gallery
+  const before = contexts
+  assert.deepEqual(Array.from(readElementBackdropRgb(arrow)), [12, 15, 20])
+  assert.equal(contexts, before, 'CSS-only surfaces never request a canvas context')
+  assert.equal(arrow.style.pointerEvents, 'auto')
+  assert.equal(f.document.querySelector('aside').style.visibility, '')
+})
+
 test('Home section and card surfaces take priority over background media in either palette', async t => {
   const f = await fixture(t)
   assert.deepEqual(Array.from(f.sample()), [245, 248, 252])
