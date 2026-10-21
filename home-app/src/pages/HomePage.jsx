@@ -7,11 +7,17 @@ import HomeBeamNetwork from '../components/HomeBeamNetwork'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { useHomeBackgroundVideo } from '../hooks/useHomeBackgroundVideo'
 import { useVisualEffectsTier } from '../hooks/useHeavyVisualEffects'
+import { useHomeBeamsEnabled } from '../hooks/useHomeBeamsEnabled.js'
+import { useHomeTheme } from '../hooks/useHomeTheme.js'
+import '../styles/home-theme.css'
 import { debugLog } from '../lib/debugLog'
 
 export default function HomePage() {
+  useHomeTheme({ applyToDocument: true })
   useHomeBackgroundVideo()
   const effectsTier = useVisualEffectsTier()
+  const [beamsEnabled] = useHomeBeamsEnabled()
+  const effectsEnabled = beamsEnabled && effectsTier !== 'none'
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
 
@@ -41,16 +47,18 @@ export default function HomePage() {
 
   return (
     <div className="home-page" ref={containerRef}>
-      <HomeHero hero={hero} beamRef={heroRef} />
-      <ErrorBoundary fallback={null}>
-        <HomeBeamNetwork
-          tier={effectsTier}
-          containerRef={containerRef}
-          heroRef={heroRef}
-          sectionRefs={sectionRefs}
-          cardRefs={cardRefs}
-        />
-      </ErrorBoundary>
+      <HomeHero hero={hero} beamRef={heroRef} effectsEnabled={effectsEnabled} />
+      {effectsEnabled && (
+        <ErrorBoundary fallback={null}>
+          <HomeBeamNetwork
+            tier={effectsTier}
+            containerRef={containerRef}
+            heroRef={heroRef}
+            sectionRefs={sectionRefs}
+            cardRefs={cardRefs}
+          />
+        </ErrorBoundary>
+      )}
       {sections.map((section, sectionIndex) => (
         <HomeSection
           key={section.id}

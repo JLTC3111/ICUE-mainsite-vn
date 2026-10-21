@@ -133,7 +133,10 @@ test('the contact rail keeps its actions out of keyboard navigation when collaps
       '@icue/zalo/zaloLink': { ICUE_ZALO_PHONE: '0', openZaloChat() {}, zaloWebUrl: () => '#' },
       './useCalendarClock': { useCalendarClock: () => ({ month: 'October', day: '14', time: '09:00' }) },
       './useAudioVisualizer': { useAudioVisualizer: () => ({ toggle() { musicToggles++ }, isPlaying: true, isAnimating: true }) },
-      './useMusicBarColor': { useMusicBarColor: () => '#fff' },
+      './useMusicBarColor': {
+        useMusicBarColor: () => '#fff',
+        useBackgroundAppearance: () => ({ color: '#fff', overVideo: false }),
+      },
     },
   })
   let renderer
@@ -147,6 +150,8 @@ test('the contact rail keeps its actions out of keyboard navigation when collaps
   assert.equal(find('contact-sidebar__music').props['data-animating'], false)
   await act(async () => find('floating-collapse__toggle').props.onClick())
   assert.equal(find('contact-sidebar').props['data-collapsed'], false)
+  assert.equal(find('floating-collapse-controls').findAllByType('button').length, 2, 'expanded rail restores the arrow and automatic-collapse control')
+  assert.equal(find('floating-collapse__toggle').props['aria-expanded'], true)
   assert.equal(find('contact-sidebar__body').props.inert, undefined)
   assert.equal(find('contact-sidebar__music').props['data-animating'], true)
   assert.equal(storage.get('icue:contact-sidebar:collapse'), 'expanded')

@@ -1,0 +1,230 @@
+:root[data-icue-home-theme='dark'] {
+  color-scheme: dark;
+  --home-page-bg: #0c0f14;
+  --home-section-bg: #0c0f14;
+  --home-section-alt: #11151c;
+  --home-ink: #f3f6fb;
+  --home-muted: #b7c4d3;
+  --home-link: #9cd6ff;
+  --home-card-bg: #171e29;
+  --home-card-edge: #344254;
+  --home-card-glow-bg: #171e29;
+  --home-card-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  --home-primary-bg: #f3f8ff;
+  --home-primary-ink: #12253b;
+  --home-ghost-bg: rgba(255, 255, 255, 0.08);
+  --home-cpu-on: #80ecff;
+}
+
+:root[data-icue-home-theme='light'] {
+  color-scheme: light;
+  --home-page-bg: #f5f8fc;
+  --home-section-bg: #f5f8fc;
+  --home-section-alt: #eaf1f8;
+  --home-ink: #172b43;
+  --home-muted: #526579;
+  --home-link: #095f99;
+  --home-card-bg: #ffffff;
+  --home-card-edge: #cedae7;
+  --home-card-glow-bg: #ffffff;
+  --home-card-shadow: 0 12px 32px rgba(24, 55, 88, 0.08);
+  --home-primary-bg: #163c63;
+  --home-primary-ink: #ffffff;
+  --home-ghost-bg: rgba(255, 255, 255, 0.7);
+  --home-cpu-on: #0076ae;
+  --drawer-toggle-surface: #ffffff;
+  --drawer-toggle-ink: #175b96;
+  --drawer-toggle-border: #64748b;
+  --floating-control-bg: #ffffff;
+  --floating-control-ink: #18334d;
+  --floating-control-border: #64748b;
+  --floating-control-hover: #e7f4fc;
+  --contact-sidebar-surface: #ffffff;
+  --contact-sidebar-ink: #172b43;
+}
+
+:root[data-icue-home-theme] body:has(.home-hero) {
+  background: var(--home-page-bg);
+  color: var(--home-ink);
+  transition: background-color 320ms ease, color 320ms ease;
+}
+
+:root[data-icue-home-theme] .home-page,
+:root[data-icue-home-theme] .home-hero,
+:root[data-icue-home-theme] .home-section,
+:root[data-icue-home-theme] .home-hero .home-hero__title {
+  color: var(--home-ink);
+}
+
+/* Hero colors follow its media, independently of the content theme. */
+:root[data-icue-home-theme] .home-hero {
+  --home-ink: #f3f6fb;
+  --home-muted: #b7c4d3;
+  --home-primary-bg: #f3f8ff;
+  --home-primary-ink: #12253b;
+  --home-ghost-bg: rgba(255, 255, 255, 0.08);
+  --home-card-edge: #344254;
+  --home-card-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  --home-hero-static: linear-gradient(160deg, #0a2530, #10231d 55%, #0c0f14);
+  --home-hero-overlay: linear-gradient(180deg, rgba(2, 10, 20, 0.55), rgba(2, 10, 20, 0.25) 45%, rgba(12, 15, 20, 0.85));
+}
+
+/* The bright warp/static fallback needs its original dark foreground. GridScan
+   keeps its own dark underlay and light foreground in the English site. */
+:root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero {
+  background: #f8fafc;
+  --home-ink: #0a1a3a;
+  --home-muted: rgba(10, 26, 58, 0.88);
+  --home-primary-bg: #0a1a3a;
+  --home-primary-ink: #ffffff;
+  --home-ghost-bg: transparent;
+  --home-card-edge: rgba(10, 26, 58, 0.35);
+  --home-card-shadow: 0 12px 28px rgba(10, 26, 58, 0.18);
+}
+
+/* In both themes, shading stays below the opaque warp/GridScan frame. */
+:root[data-icue-home-theme] .home-hero__media::before,
+:root[data-icue-home-theme] .home-hero__overlay {
+  z-index: 0;
+}
+
+:root[data-icue-home-theme] .home-hero__warp,
+:root[data-icue-home-theme] .home-hero__grid-scan {
+  z-index: 1;
+}
+
+:root[data-icue-home-theme]:not([data-home-bg-video='off']) .home-hero__media::before { background: var(--home-hero-static); }
+:root[data-icue-home-theme]:not([data-home-bg-video='off']) .home-hero__overlay { background: var(--home-hero-overlay); }
+
+:root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero__title--shadowed {
+  text-shadow: none;
+}
+
+:root[data-icue-home-theme] .home-hero__subtitle {
+  color: var(--home-muted);
+  -webkit-text-fill-color: var(--home-muted);
+  text-shadow: none;
+}
+
+
+:root[data-icue-home-theme] .home-btn--primary {
+  background: var(--home-primary-bg);
+  color: var(--home-primary-ink);
+  box-shadow: var(--home-card-shadow);
+}
+
+:root[data-icue-home-theme] .home-btn--ghost {
+  background: var(--home-ghost-bg);
+  color: var(--home-ink);
+  border-color: var(--home-card-edge);
+}
+
+:root[data-icue-home-theme] .home-hero__actions a:hover { box-shadow: var(--home-card-shadow); }
+:root[data-icue-home-theme] .home-section__bg { background: var(--home-section-bg); }
+:root[data-icue-home-theme] .home-section--alt .home-section__bg { background: var(--home-section-alt); }
+
+:root[data-icue-home-theme] .home-section__header-title,
+:root[data-icue-home-theme] .home-card__body h3 { color: var(--home-ink); }
+
+:root[data-icue-home-theme] .home-section__header-description,
+:root[data-icue-home-theme] .home-card__body p { color: var(--home-muted); }
+
+:root[data-icue-home-theme] .home-section__link { color: var(--home-link); }
+
+:root[data-icue-home-theme] .home-card__surface {
+  background: var(--home-card-bg);
+  border-color: var(--home-card-edge);
+  box-shadow: var(--home-card-shadow);
+}
+
+:root[data-icue-home-theme] .home-card__glow.border-glow-card {
+  border-color: var(--home-card-edge);
+  box-shadow: var(--home-card-shadow);
+}
+
+:root[data-icue-home-theme] .home-card:hover .home-card__surface,
+:root[data-icue-home-theme] .home-card:hover .home-card__glow.border-glow-card {
+  box-shadow: 0 18px 40px rgba(24, 55, 88, 0.18);
+}
+
+:root[data-icue-home-theme] .home-cta {
+  background: var(--home-section-alt);
+  color: var(--home-ink);
+}
+:root[data-icue-home-theme] .home-cta p { color: var(--home-muted); }
+
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) {
+  --pill-nav-base: rgba(255, 255, 255, 0.95);
+  --pill-nav-text: #16304a;
+  --pill-nav-accent: #087eb8;
+  --pill-nav-hover-text: #ffffff;
+}
+
+:root[data-icue-home-theme='light'] .pill-site-header[data-over-hero='true'] {
+  --pill-nav-base: rgba(10, 14, 20, 0.76);
+  --pill-nav-text: rgba(255, 255, 255, 0.96);
+  --pill-nav-accent: #bfe5ff;
+  --pill-nav-hover-text: #102438;
+  --home-cpu-on: #80ecff;
+}
+
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__brand-cluster,
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__items,
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .pill-site-header__actions,
+:root[data-icue-home-theme='light'] .pill-site-header--mobile:not([data-over-hero='true']) {
+  border-color: #cedae7;
+  box-shadow: 0 8px 30px rgba(24, 55, 88, 0.09);
+}
+
+:root[data-icue-home-theme] .pill-site-header,
+:root[data-icue-home-theme] .pill-site-header__brand-cluster,
+:root[data-icue-home-theme] .pill-site-header__items,
+:root[data-icue-home-theme] .pill-site-header__actions {
+  transition: background-color 260ms ease, color 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+}
+
+/* The phone header already supplies the shared outer capsule. */
+@media (max-width: 768px) {
+  :root[data-icue-home-theme='light'] .pill-site-header__brand-cluster,
+  :root[data-icue-home-theme='light'] .pill-site-header__actions { box-shadow: none; }
+}
+
+:root[data-icue-home-theme='light'] .icue-footer {
+  background: #eaf1f8;
+  color: #526579;
+  border-top-color: #cedae7;
+}
+
+:root[data-icue-home-theme='light'] .icue-footer__col h4,
+:root[data-icue-home-theme='light'] .icue-footer__logo { color: #172b43; }
+
+:root[data-icue-home-theme='light'] .icue-footer__col a,
+:root[data-icue-home-theme='light'] .icue-footer__institute,
+:root[data-icue-home-theme='light'] .icue-footer__partner,
+:root[data-icue-home-theme='light'] .icue-footer__rights,
+:root[data-icue-home-theme='light'] .icue-footer__legal a { color: #526579; }
+
+:root[data-icue-home-theme='light'] .icue-footer__col a:hover,
+:root[data-icue-home-theme='light'] .icue-footer__legal a:hover,
+:root[data-icue-home-theme='light'] .icue-footer__circular-text { color: #095f99; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-icue-home-theme] body:has(.home-hero) { transition: none; }
+  :root[data-icue-home-theme] .pill-site-header,
+  :root[data-icue-home-theme] .pill-site-header__brand-cluster,
+  :root[data-icue-home-theme] .pill-site-header__items,
+  :root[data-icue-home-theme] .pill-site-header__actions { transition: none; }
+}
+
+/* Let the native snapshot capture final palette colors during its wipe. */
+html[data-icue-view-toggle-vt='active'][data-icue-home-theme] body:has(.home-hero),
+html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header,
+html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header__brand-cluster,
+html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header__items,
+html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header__actions {
+  transition: none;
+}
+
+:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .menu-icon-metallic {
+  filter: brightness(0.34) saturate(1.1);
+}

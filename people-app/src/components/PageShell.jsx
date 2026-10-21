@@ -96,7 +96,6 @@ export default function PageShell({
         <DeferredContactSidebar
           contentKey={pathname}
           locale={lang}
-          musicIconColor={interactiveBgActive ? '#ffffff' : '#000000'}
         />
       </div>
     </InteractiveBackgroundProvider>

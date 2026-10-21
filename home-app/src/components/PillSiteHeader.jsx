@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { DockIcon } from '@icue/ui/Dock';
-import VideoText from '@icue/ui/VideoText';
 import LanguageFlagLink from '@icue/main-site-nav/LanguageFlagLink';
 import MetallicMenuIcon from '@icue/main-site-nav/MetallicMenuIcon';
 import VideoToggle from '@icue/main-site-nav/VideoToggle';
 import ThemeToggle from '@icue/main-site-nav/ThemeToggle';
 import { NAV_LABELS } from '@icue/main-site-nav/navContent';
 import './PillSiteHeader.css';
-import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx';
+import HomeBeamsToggle from './HomeBeamsToggle.jsx';
+import HomeThemeToggle from './HomeThemeToggle.jsx';
+import useHeaderOverHero from '../hooks/useHeaderOverHero.js';
 
 // ourWork is a separate app at /our-work — it must be a real navigation, not
 // a client-side route inside this SPA.
@@ -90,7 +91,6 @@ export default function PillSiteHeader({
   items,
   homeHref,
   logoMarkSrc,
-  logoVideoSrc,
   drawerOpen,
   onToggleDrawer,
   showHomeVideoToggle,
@@ -121,7 +121,6 @@ export default function PillSiteHeader({
   /* Resolved upstream by MainSiteNav. The default keeps this header usable on
      its own and matches what icue.vn showed before it took copy as a prop. */
   labels = NAV_LABELS,
-  locale = 'vi',
 }) {
   const compactLabels = labels.compact;
   const aria = labels.aria;
@@ -129,6 +128,8 @@ export default function PillSiteHeader({
   const [overflowOpen, setOverflowOpen] = useState(false);
   const overflowRootRef = useRef(null);
   const moreButtonRef = useRef(null);
+  const headerRef = useRef(null);
+  const overHero = useHeaderOverHero(headerRef, activePage === 'Home');
   const isMobile = mode === 'mobile';
   const isTablet = mode === 'tablet';
   const visibleItems = isTablet
@@ -177,42 +178,30 @@ export default function PillSiteHeader({
   };
 
   return (
-    <div className={`pill-site-header pill-site-header--${mode}`}>
-      <a
-        ref={logoLinkRef}
-        href={homeHref}
-        className="pill-site-header__logo"
-        aria-label={aria.home}
-        onClick={onNavigate
-          ? (event) => {
-              const target = sameOriginNavigationTarget(homeHref);
-              if (!target) return;
-              event.preventDefault();
-              onNavigate(target);
-            }
-          : undefined}
-      >
-        <img src={logoMarkSrc} alt="" aria-hidden="true" decoding="async" />
-        {isMobile ? (
-          <VideoText
-            className="pill-site-header__mobile-wordmark"
-            src={logoVideoSrc}
-            fontSize="72"
-            fontWeight="700"
-            fontFamily="Poppins, system-ui, sans-serif"
-            viewBox="0 0 260 120"
-            textAnchor="start"
-            textX="6%"
-            as="span"
-          >
-            ICUE
-          </VideoText>
-        ) : (
+    <div ref={headerRef} className={`pill-site-header pill-site-header--${mode}`} data-over-hero={overHero}>
+      <div className="pill-site-header__brand-cluster">
+        <a
+          ref={logoLinkRef}
+          href={homeHref}
+          className="pill-site-header__logo"
+          aria-label={aria.home}
+          onClick={onNavigate
+            ? (event) => {
+                const target = sameOriginNavigationTarget(homeHref);
+                if (!target) return;
+                event.preventDefault();
+                onNavigate(target);
+              }
+            : undefined}
+        >
+          <img src={logoMarkSrc} alt="" aria-hidden="true" decoding="async" />
           <span className="pill-site-header__brand" aria-hidden="true">ICUE</span>
-        )}
-      </a>
-
-      <AppSwitcher currentApp="website" locale={locale} appearance="dark" variant="pill" />
+        </a>
+        {activePage === 'Home' && <>
+          <HomeThemeToggle />
+          <HomeBeamsToggle />
+        </>}
+      </div>
 
       {!isMobile && (
         <div className="pill-site-header__nav-wrap" ref={overflowRootRef}>

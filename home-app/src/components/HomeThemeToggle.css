@@ -1,0 +1,53 @@
+.pill-site-header .home-theme-toggle {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--pill-nav-text, #f4f6f8);
+}
+
+.pill-site-header .home-theme-toggle:hover:not(:disabled) {
+  background: rgba(128, 160, 190, 0.12);
+}
+
+.pill-site-header .home-theme-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.pill-site-header .home-theme-toggle .animated-view-toggle__face svg {
+  width: 20px;
+  height: 20px;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-group(icue-avt-home-theme-icon) {
+  animation-duration: 320ms;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-home-theme-icon),
+html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-home-theme-icon) {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: normal;
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-home-theme-icon) {
+  animation-name: icue-avt-icon-out;
+}
+
+html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-home-theme-icon) {
+  animation-name: icue-avt-icon-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-icue-view-toggle-vt='active']::view-transition-old(icue-avt-home-theme-icon),
+  html[data-icue-view-toggle-vt='active']::view-transition-new(icue-avt-home-theme-icon) { animation: none; }
+  .pill-site-header .home-theme-toggle { transition: none; }
+}

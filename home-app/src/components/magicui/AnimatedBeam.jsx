@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useState } from 'react'
-import { motion } from 'motion/react'
+import { motion as Motion } from 'motion/react'
 import './AnimatedBeam.css'
 
 const PATH_PADDING = 16
@@ -41,6 +41,7 @@ export default function AnimatedBeam({
   pathColor = 'rgba(255, 255, 255, 0.2)',
   pathWidth = 2,
   pathOpacity = 0.35,
+  gradientOpacity = 1,
   gradientStartColor = '#1db7ff',
   gradientStopColor = '#c8ff00',
   bidirectional = false,
@@ -184,7 +185,7 @@ export default function AnimatedBeam({
       style={{ left: `${layout.x}px`, top: `${layout.y}px` }}
     >
       <defs>
-        <motion.linearGradient
+        <Motion.linearGradient
           className="animated-beam__gradient"
           id={id}
           gradientUnits="userSpaceOnUse"
@@ -208,7 +209,7 @@ export default function AnimatedBeam({
           <stop stopColor={gradientStartColor} />
           <stop offset="32.5%" stopColor={gradientStopColor} />
           <stop offset="100%" stopColor={gradientStopColor} stopOpacity="0" />
-        </motion.linearGradient>
+        </Motion.linearGradient>
       </defs>
       <path
         d={layout.pathD}
@@ -221,7 +222,7 @@ export default function AnimatedBeam({
         d={layout.pathD}
         strokeWidth={pathWidth}
         stroke={`url(#${id})`}
-        strokeOpacity="1"
+        strokeOpacity={gradientOpacity}
         strokeLinecap="round"
       />
     </svg>

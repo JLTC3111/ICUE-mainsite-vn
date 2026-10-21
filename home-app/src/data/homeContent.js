@@ -1,6 +1,9 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
 import { newsroomUrl, withLocale } from '../../../shared/site-routes/mainSitePaths.js'
+import recruitmentOffice from '../../../recruitment-app/public/media/office.webp?url'
+import recruitmentEvent from '../../../recruitment-app/public/media/event.webp?url'
+import recruitmentSurvey from '../../../recruitment-app/public/media/survey.webp?url'
 
 /**
  * Structure here, words in the locale files.
@@ -48,17 +51,16 @@ const SECTION_LAYOUT = [
     ],
   },
   {
-    // The photographs moved into recruitment-app/public/media/ when the page
-    // became its own app: it builds to /recruitment with emptyOutDir, so
-    // anything else sitting in that directory was deleted on every build.
+    // Import the photos so standalone Home builds include them without
+    // depending on the Recruitment app's separately built /media directory.
     id: 'home-recruitment',
     key: 'recruitment',
     alt: true,
     linkHref: ROUTE_PATHS.recruitment,
     cards: [
-      { key: 'culture', image: '/recruitment/media/office.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'growth', image: '/recruitment/media/event.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
-      { key: 'impact', image: '/recruitment/media/survey.webp', href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'culture', image: recruitmentOffice, href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'growth', image: recruitmentEvent, href: ROUTE_PATHS.recruitment, imageOnly: true },
+      { key: 'impact', image: recruitmentSurvey, href: ROUTE_PATHS.recruitment, imageOnly: true },
     ],
   },
 ]

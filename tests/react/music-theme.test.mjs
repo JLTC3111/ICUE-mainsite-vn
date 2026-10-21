@@ -21,9 +21,9 @@ async function fixture(t, { themeAttribute = 'data-icue-page-theme' } = {}) {
   const { useMusicBarColor } = await sourceModule('shared/contact-sidebar/useMusicBarColor.js', {
     globals: { ...f, document, MutationObserver: dom.window.MutationObserver, performance: { now: () => now } },
     imports: { './backgroundSampling.js': {
-      readBackgroundSampleRgb() {
+      readBackgroundSample() {
         samples++
-        return sampledBackground || (root.getAttribute(themeAttribute) === 'dark' ? [11, 15, 20] : [248, 250, 252])
+        return { rgb: sampledBackground || (root.getAttribute(themeAttribute) === 'dark' ? [11, 15, 20] : [248, 250, 252]), overVideo: false }
       },
     } },
   })
@@ -71,8 +71,8 @@ test('music SVG contrast reacts to shared page theme switches without scrolling 
   assert.equal(f.timers.size, 0)
 })
 
-test('legacy About and Our Work theme attributes also refresh music contrast', async t => {
-  for (const themeAttribute of ['data-about-theme', 'data-theme']) {
+test('Home, About and Our Work theme attributes also refresh music contrast', async t => {
+  for (const themeAttribute of ['data-icue-home-theme', 'data-about-theme', 'data-theme']) {
     const f = await fixture(t, { themeAttribute })
     await f.theme('dark')
     assert.equal(f.color(), '#ffffff', themeAttribute)

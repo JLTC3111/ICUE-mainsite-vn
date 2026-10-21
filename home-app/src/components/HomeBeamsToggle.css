@@ -1,0 +1,51 @@
+.pill-site-header .home-beams-toggle {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  background: transparent;
+  color: var(--pill-nav-text, #f4f6f8);
+  cursor: pointer;
+  opacity: 0.65;
+  transition: background-color 160ms ease, opacity 160ms ease;
+}
+
+.pill-site-header .home-beams-toggle[aria-pressed='true'] {
+  background: transparent;
+  color: var(--home-cpu-on, #80ecff);
+  opacity: 1;
+}
+
+.pill-site-header .home-beams-toggle:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 1;
+}
+
+.pill-site-header .home-beams-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.pill-site-header .home-beams-toggle:disabled { cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-site-header .home-beams-toggle { transition: none; }
+}
+
+.pill-site-header .home-beams-toggle svg {
+  transition: filter 250ms ease, color 250ms ease;
+}
+
+.pill-site-header .home-beams-toggle[aria-pressed='true'] svg {
+  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-site-header .home-beams-toggle svg { transition: none; }
+}

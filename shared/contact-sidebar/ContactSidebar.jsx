@@ -3,7 +3,7 @@ import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
 import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
 import { useCalendarClock } from './useCalendarClock'
 import { useAudioVisualizer } from './useAudioVisualizer'
-import { useMusicBarColor } from './useMusicBarColor'
+import { useBackgroundAppearance, useMusicBarColor } from './useMusicBarColor'
 import useFloatingCollapse from '../ui/useFloatingCollapse.js'
 import FloatingCollapseControls from '../ui/FloatingCollapseControls.jsx'
 import { floatingCollapseCopy } from '../ui/floatingCollapseCopy.js'
@@ -125,6 +125,8 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
   const controlsId = useId()
   const collapseCopy = floatingCollapseCopy(locale)
   const musicRef = useRef(null)
+  const controlsRef = useRef(null)
+  const controlsAppearance = useBackgroundAppearance(controlsRef, true, `${contentKey}:${collapse.collapsed}`)
   const { toggle: toggleMusic, isPlaying, isAnimating } = useAudioVisualizer()
   const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null && !collapse.collapsed, contentKey)
   const musicColor = musicIconColor ?? sampledMusicColor
@@ -142,6 +144,9 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
         {...collapse.interactionProps}
       >
         <FloatingCollapseControls
+          controlsRef={controlsRef}
+          iconColor={controlsAppearance.color}
+          overVideo={controlsAppearance.overVideo}
           collapse={collapse}
           controlsId={controlsId}
           expandLabel={collapseCopy.expandSidebar}

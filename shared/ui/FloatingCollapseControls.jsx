@@ -1,14 +1,22 @@
 import { useRef } from 'react'
 import './FloatingCollapseControls.css'
 
-export default function FloatingCollapseControls({ collapse, controlsId, expandLabel, collapseLabel, copy, side = 'right' }) {
+export default function FloatingCollapseControls({ collapse, controlsId, expandLabel, collapseLabel, copy, side = 'right', controlsRef, iconColor, overVideo = false }) {
   const toggleRef = useRef(null)
   const label = collapse.collapsed ? expandLabel : collapseLabel
   const pointRight = collapse.collapsed ? side === 'left' : side === 'right'
   const autoLabel = collapse.automatic ? copy.keepExpanded : copy.autoCollapse
 
   return (
-    <div className="floating-collapse-controls">
+    <div
+      className="floating-collapse-controls"
+      ref={controlsRef}
+      data-over-video={overVideo || undefined}
+      style={{
+        '--floating-control-ink': overVideo ? '#18334d' : iconColor,
+        '--floating-control-surface': overVideo ? '#f8fafc' : 'transparent',
+      }}
+    >
       <button
         ref={toggleRef}
         type="button"

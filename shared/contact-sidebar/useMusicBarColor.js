@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { readBackgroundSampleRgb } from './backgroundSampling.js'
+import { readBackgroundSample } from './backgroundSampling.js'
 
 const FALLBACK_COLOR = '#ffffff'
 const DARK_COLOR = '#0a1a3a'
@@ -39,20 +39,20 @@ export function pickBarColor(rgb) {
   return backgroundLuminance > 0.58 ? DARK_COLOR : FALLBACK_COLOR
 }
 
-function resolveMusicBarColor(musicEl) {
-  if (!musicEl) return FALLBACK_COLOR
-  return pickBarColor(readBackgroundSampleRgb(musicEl))
+function resolveBackgroundAppearance(el) {
+  const { rgb, overVideo } = readBackgroundSample(el)
+  return { color: pickBarColor(rgb), overVideo }
 }
 
-export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
-  const [color, setColor] = useState(FALLBACK_COLOR)
+export function useBackgroundAppearance(elementRef, enabled = true, contentKey = '') {
+  const [appearance, setAppearance] = useState({ color: FALLBACK_COLOR, overVideo: false })
   const sample = useCallback(() => {
     if (!enabled) return
-    const el = barRef.current
+    const el = elementRef.current
     if (!el) return
-    const nextColor = resolveMusicBarColor(el)
-    setColor((prev) => (prev === nextColor ? prev : nextColor))
-  }, [barRef, enabled])
+    const next = resolveBackgroundAppearance(el)
+    setAppearance(previous => previous.color === next.color && previous.overVideo === next.overVideo ? previous : next)
+  }, [elementRef, enabled])
 
   useEffect(() => {
     if (!enabled) return undefined
@@ -99,7 +99,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     // A theme attribute changes before a CSS background transition settles.
     // Sample again at its end so the icon cannot keep the previous palette.
     const handleBackgroundTransition = event => {
-      if (['background', 'background-color', 'background-image'].includes(event.propertyName)) scheduleSample()
+      if (['background', 'background-color', 'background-image', 'opacity', 'transform', 'grid-template-rows', 'height', 'gap'].includes(event.propertyName)) scheduleSample()
     }
 
     window.addEventListener('scroll', scheduleSample, { passive: true, capture: true })
@@ -107,6 +107,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     window.addEventListener('icue:legacy-page-ready', scheduleSample)
     window.addEventListener('icue:aboutUsVideoEnabled', scheduleSample)
     window.addEventListener('icue:homeVideoEnabled', scheduleSample)
+    window.addEventListener('icue:homeThemeChanged', scheduleSample)
     window.addEventListener('icue:aboutUsTheme', scheduleSample)
     window.addEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -117,7 +118,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     viewport?.addEventListener('resize', scheduleSample)
     viewport?.addEventListener('scroll', scheduleSample)
 
-    const content = document.getElementById('content')
+    const content = document.getElementById('content') ?? document.querySelector('main')
     const observer = content
       ? new MutationObserver(scheduleSample)
       : null
@@ -131,7 +132,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
     const rootObserver = new MutationObserver(scheduleSample)
     rootObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class', 'style', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-about-theme', 'data-icue-page-theme', 'data-icue-theme-page', 'data-theme'],
+      attributeFilter: ['class', 'style', 'data-home-bg-video', 'data-aboutus-bg-video', 'data-icue-home-theme', 'data-about-theme', 'data-icue-page-theme', 'data-icue-theme-page', 'data-theme'],
     })
     if (document.body) {
       rootObserver.observe(document.body, {
@@ -139,11 +140,18 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
         attributeFilter: ['class', 'style'],
       })
     }
-    const appRoot = document.querySelector('.icue-app')
+    const appRoot = document.querySelector('.icue-app, .page-shell')
     if (appRoot) {
       rootObserver.observe(appRoot, {
         attributes: true,
         attributeFilter: ['class'],
+      })
+    }
+    const header = elementRef.current?.closest('.pill-site-header')
+    if (header) {
+      rootObserver.observe(header, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-over-hero'],
       })
     }
 
@@ -154,6 +162,7 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       window.removeEventListener('icue:legacy-page-ready', scheduleSample)
       window.removeEventListener('icue:aboutUsVideoEnabled', scheduleSample)
       window.removeEventListener('icue:homeVideoEnabled', scheduleSample)
+      window.removeEventListener('icue:homeThemeChanged', scheduleSample)
       window.removeEventListener('icue:aboutUsTheme', scheduleSample)
       window.removeEventListener('icue:aboutUsThemeManagerReady', scheduleSample)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
@@ -164,7 +173,13 @@ export function useMusicBarColor(barRef, enabled = true, contentKey = '') {
       observer?.disconnect()
       rootObserver.disconnect()
     }
-  }, [contentKey, enabled, sample])
+  }, [contentKey, elementRef, enabled, sample])
 
-  return color
+  return appearance
 }
+
+export function useBackgroundContrastColor(elementRef, enabled = true, contentKey = '') {
+  return useBackgroundAppearance(elementRef, enabled, contentKey).color
+}
+
+export const useMusicBarColor = useBackgroundContrastColor

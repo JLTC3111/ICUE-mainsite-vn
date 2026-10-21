@@ -23,7 +23,7 @@
   box-sizing: border-box;
 }
 
-.pill-site-header__logo,
+.pill-site-header__brand-cluster,
 .pill-site-header__items,
 .pill-site-header__actions {
   min-height: var(--pill-nav-height);
@@ -32,6 +32,16 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(14px) saturate(130%);
   -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+
+.pill-site-header__brand-cluster {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 0.1rem;
+  height: var(--pill-nav-height);
+  padding-right: 0.2rem;
+  border-radius: 999px !important;
 }
 
 .pill-site-header__logo {
@@ -66,6 +76,9 @@
 }
 
 .pill-site-header__brand {
+  display: inline-block;
+  flex: none;
+  white-space: nowrap;
   font-family: var(--icue-font-stack);
   font-size: 0.92rem;
   font-weight: 750;
@@ -406,12 +419,6 @@
   max-height: 100% !important;
 }
 
-.pill-site-header__mobile-wordmark {
-  display: block;
-  width: 4.15rem;
-  height: 1.9rem;
-  flex-shrink: 0;
-}
 
 /* Desktop shell state: expanded at the top of the page, contracted into a
    centered capsule after scrolling. Tablet/mobile layouts keep their existing
@@ -459,7 +466,7 @@
   }
 
   .pill-site-header__logo {
-    width: var(--pill-nav-height);
+    width: auto;
     padding: 0.38rem;
     justify-content: center;
   }
@@ -581,12 +588,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .pill-site-header--mobile .pill-site-header__brand {
-    display: none;
-  }
-}
-
 /* Touch screens retain the neutral More button after a tap; hover should not
    become a sticky visual state on tablets. */
 @media (hover: none) and (min-width: 769px) and (max-width: 1024px) {
@@ -626,6 +627,7 @@
       max-width 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  .pill-site-header--mobile .pill-site-header__brand-cluster,
   .pill-site-header--mobile .pill-site-header__logo,
   .pill-site-header--mobile .pill-site-header__actions {
     min-height: 0;
@@ -635,6 +637,17 @@
     box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+
+  .pill-site-header--mobile .pill-site-header__brand {
+    display: inline-block;
+    font-size: clamp(0.95rem, 4.2vw, 1.12rem);
+    line-height: 1;
+  }
+
+  .pill-site-header--mobile .pill-site-header__brand-cluster {
+    gap: 0;
+    padding: 0;
   }
 
   .pill-site-header--mobile .pill-site-header__logo {
@@ -648,10 +661,6 @@
   .pill-site-header--mobile .pill-site-header__logo img {
     width: 2.15rem;
     height: 2.15rem;
-  }
-
-  .pill-site-header--mobile .pill-site-header__brand {
-    display: none;
   }
 
   .pill-site-header--mobile .pill-site-header__actions {
@@ -716,6 +725,14 @@
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+
+}
+
+@media (max-width: 360px) {
+  .pill-site-header--mobile .pill-site-header__logo img {
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
 }

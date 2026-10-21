@@ -35,8 +35,9 @@ aside.contact-sidebar {
 .contact-sidebar__actions {
   min-height: 0;
   max-height: calc(100dvh - 100px);
-  overflow: auto;
-  scrollbar-width: thin;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,6 +170,13 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   animation-play-state: running;
 }
 
+/* Preview the equalizer on hover without changing audio playback. */
+@media (hover: hover) and (pointer: fine) {
+  .contact-sidebar[data-collapsed='false'] .contact-sidebar__music:hover .contact-sidebar__music-bar {
+    animation-play-state: running;
+  }
+}
+
 /* Different periods and starting phases keep the bars from marching together. */
 @keyframes contactMusicEqualizer {
   0%, 100% { transform: scaleY(0.25); }
@@ -268,4 +276,11 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   .contact-sidebar__music svg {
     transition: none;
   }
+}
+
+/* Keep the actions scrollable on short screens without visible scrollbar chrome. */
+.contact-sidebar__actions::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }

@@ -57,7 +57,6 @@
   .main-site-nav .main-site-nav__dock--unified .main-site-nav__dock-zone { flex: 0 1 auto; max-width: none; min-width: 0; }
 }
 @media (max-width: 390px) {
-  .main-site-nav__dock-slot--brand .logo-wordmark { display: none; }
   .icue-apps__panel--cards .card-nav[data-narrow] .card-nav__card { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {

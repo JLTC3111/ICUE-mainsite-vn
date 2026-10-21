@@ -64,6 +64,7 @@
 }
 
 .warp-background__beam {
+  opacity: var(--warp-beam-opacity, 1);
   position: absolute;
   top: 0;
   left: var(--warp-x);

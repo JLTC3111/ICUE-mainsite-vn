@@ -2,9 +2,11 @@ import { useCallback, useMemo } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import './WarpBackground.css'
 
+const MotionDiv = motion.div
+
 function Beam({ width, x, delay, duration, hue, aspectRatio }) {
   return (
-    <motion.div
+    <MotionDiv
       className="warp-background__beam"
       style={{
         '--warp-x': x,
@@ -32,6 +34,8 @@ export default function WarpBackground({
   beamDelayMax = 3,
   beamDelayMin = 0,
   beamDuration = 3,
+  beamOpacity = 1,
+  animateBeams = true,
   gridColor = 'rgba(10, 26, 58, 0.08)',
   background = 'linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%)',
   ...props
@@ -71,7 +75,7 @@ export default function WarpBackground({
 
   const renderSide = (side, beams) => (
     <div className={`warp-background__side warp-background__side--${side}`}>
-      {beams.map((beam, index) => (
+      {animateBeams && !reducedMotion && beams.map((beam, index) => (
         <Beam
           key={`${side}-${index}`}
           width={`${beamSize}%`}
@@ -88,19 +92,15 @@ export default function WarpBackground({
   return (
     <div
       className={`warp-background ${className}`.trim()}
-      style={{ '--warp-background': background }}
+      style={{ '--warp-background': background, '--warp-beam-opacity': beamOpacity }}
       data-warp-background={background}
       {...props}
     >
       <div className="warp-background__stage" style={stageStyle}>
-        {!reducedMotion ? (
-          <>
-            {renderSide('top', topBeams)}
-            {renderSide('bottom', bottomBeams)}
-            {renderSide('left', leftBeams)}
-            {renderSide('right', rightBeams)}
-          </>
-        ) : null}
+        {renderSide('top', topBeams)}
+        {renderSide('bottom', bottomBeams)}
+        {renderSide('left', leftBeams)}
+        {renderSide('right', rightBeams)}
       </div>
     </div>
   )

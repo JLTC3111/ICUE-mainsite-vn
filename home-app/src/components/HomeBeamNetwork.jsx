@@ -55,10 +55,11 @@ export default function HomeBeamNetwork({
   const [allowMotion, setAllowMotion] = useState(true)
 
   useLayoutEffect(() => {
+    let secondFrame = 0
     const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setReady(true))
+      secondFrame = requestAnimationFrame(() => setReady(true))
     })
-    return () => cancelAnimationFrame(frame)
+    return () => { cancelAnimationFrame(frame); cancelAnimationFrame(secondFrame) }
   }, [])
 
   useEffect(() => {
@@ -138,9 +139,11 @@ export default function HomeBeamNetwork({
           reverse={connection.reverse}
           bidirectional
           delay={connection.delay}
-          duration={4.5}
-          pathWidth={2}
-          pathOpacity={0.3}
+          duration={7}
+          repeatDelay={0.5}
+          pathWidth={1.25}
+          pathOpacity={0.15}
+          gradientOpacity={tier === 'light' ? 0.28 : 0.4}
           gradientStartColor="#1db7ff"
           gradientStopColor="#c8ff00"
           startYOffset={connection.startYOffset}

@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import AnimatedViewToggle from '@icue/ui/AnimatedViewToggle';
+import { useBackgroundContrastColor } from '../contact-sidebar/useMusicBarColor.js';
 
 export default function VideoToggle({
   id,
@@ -12,6 +14,12 @@ export default function VideoToggle({
   onCheckedChange,
   disabled = false,
 }) {
+  const containerRef = useRef(null);
+  const iconColor = useBackgroundContrastColor(
+    containerRef,
+    visible && animated,
+    `${id}:${variant}:${checked}`,
+  );
   if (!visible) return null;
 
   const variantClass =
@@ -20,12 +28,14 @@ export default function VideoToggle({
   if (animated) {
     return (
       <div
+        ref={containerRef}
         className={`home-video-toggle ${variantClass} home-video-toggle--animated`}
         id={id}
         aria-label={label}
       >
         <AnimatedViewToggle
           className="home-video-toggle__animated"
+          style={{ color: iconColor }}
           checked={checked}
           onCheckedChange={onCheckedChange}
           disabled={disabled}

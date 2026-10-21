@@ -10,7 +10,6 @@ import ChatMascot from './mascot/ChatMascot.jsx'
 import { responseEffect, responseExpression } from './mascot/expressions.js'
 import { useBackgroundMusic } from '../contact-sidebar/useBackgroundMusic.js'
 import useFloatingCollapse from '../ui/useFloatingCollapse.js'
-import FloatingCollapseControls from '../ui/FloatingCollapseControls.jsx'
 import { floatingCollapseCopy } from '../ui/floatingCollapseCopy.js'
 import './Chatbot.css'
 
@@ -402,6 +401,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
           onClick={() => {
             if (isOpen) closeChat()
             else {
+              if (collapse.collapsed) collapse.toggle()
               if (!isThinking) setActivity({ locale, state: 'greeting' })
               setIsOpen(true)
             }
@@ -411,7 +411,7 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
           aria-haspopup="dialog"
           aria-label={isOpen ? labels.close : labels.open}
         >
-          <span id={mascotId} className="icue-chat__mascot" hidden={collapse.collapsed}>
+          <span id={mascotId} className="icue-chat__mascot" aria-hidden={collapse.collapsed || undefined}>
             <ChatMascot state={mascotState} effect={activity.locale === locale ? activity.effect : undefined} musicPlaying={musicPlaying} interactive={!isOpen} active={!collapse.collapsed} />
           </span>
           <svg className="icue-chat__compact-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -419,16 +419,25 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             <path strokeLinecap="round" d="M7.5 11.5h9M7.5 15h5" />
           </svg>
         </button>
-        {!isOpen && (
-          <FloatingCollapseControls
-            collapse={collapse}
-            controlsId={mascotId}
-            expandLabel={collapseCopy.expandMascot}
-            collapseLabel={collapseCopy.collapseMascot}
-            copy={collapseCopy}
-            side="left"
-          />
-        )}
+        <button
+          type="button"
+          className="icue-chat__collapse"
+          onClick={() => {
+            collapse.toggle()
+            launcherRef.current?.focus({ preventScroll: true })
+          }}
+          aria-label={collapseCopy.collapseMascot}
+          title={collapseCopy.collapseMascot}
+          aria-controls={mascotId}
+          aria-expanded={!collapse.collapsed}
+          aria-hidden={isOpen || collapse.collapsed || undefined}
+          disabled={isOpen || collapse.collapsed}
+          tabIndex={isOpen || collapse.collapsed ? -1 : 0}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path strokeLinecap="round" d="m7 7 10 10M17 7 7 17" />
+          </svg>
+        </button>
       </div>
     </div>
   )

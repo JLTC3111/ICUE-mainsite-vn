@@ -96,11 +96,16 @@ export function coversViewport(rect) {
 function parseColor(color) {
   if (!color || color === 'transparent') return null
 
-  const rgba = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/i)
+  const rgba = color.match(/^rgba?\(([^)]+)\)$/i)
   if (rgba) {
-    const alpha = rgba[4] !== undefined ? Number(rgba[4]) : 1
+    // Computed colors can use either commas or modern space/slash syntax.
+    const channels = rgba[1].trim().split(/[\s,/]+/)
+    const channel = (value, scale) => Number.parseFloat(value) * (value.endsWith('%') ? scale : 1)
+    const alpha = channels[3] === undefined ? 1 : channel(channels[3], 0.01)
+    const rgb = channels.slice(0, 3).map(value => channel(value, 2.55))
+    if (rgb.length !== 3 || !rgb.every(Number.isFinite) || !Number.isFinite(alpha)) return null
     if (alpha <= 0.04 || alpha < OPAQUE_ALPHA) return null
-    return [Number(rgba[1]), Number(rgba[2]), Number(rgba[3])]
+    return rgb
   }
 
   if (typeof document === 'undefined') return null
@@ -162,6 +167,38 @@ function readBackground(el) {
   }
 
   return parseColor(getComputedStyle(document.body).backgroundColor) ?? [248, 250, 252]
+}
+
+/**
+ * Read the surface above page effects first. Header capsules, cards and Home's
+ * pointer-transparent section backgrounds can cover a video or canvas.
+ * Stop at the effect's container so its underlay cannot mask live media.
+ */
+function readForegroundSurface(el, backgroundMedia = []) {
+  let node = el
+  while (node instanceof Element && node !== document.body && node !== document.documentElement) {
+    if (node.matches('.contact-sidebar, .home-hero, .about-container')) return null
+    if (backgroundMedia.some(media => node === media || node.contains(media))) return null
+
+    const style = getComputedStyle(node)
+    const rgb = parseColor(style.backgroundColor)
+      ?? parseGradientColors(style.backgroundImage)
+      ?? readPseudoBackground(node, '::before')
+      ?? readPseudoBackground(node, '::after')
+    if (rgb) return rgb
+
+    if (node.matches('.home-section')) {
+      const backdrop = node.querySelector(':scope > .home-section__bg')
+      if (backdrop) {
+        const backdropStyle = getComputedStyle(backdrop)
+        const backdropRgb = parseColor(backdropStyle.backgroundColor)
+          ?? parseGradientColors(backdropStyle.backgroundImage)
+        if (backdropRgb) return backdropRgb
+      }
+    }
+    node = node.parentElement
+  }
+  return null
 }
 
 function mapCoverPointToSource(el, x, y, intrinsicW, intrinsicH) {
@@ -378,13 +415,6 @@ function getVisibleAboutWavesBackground() {
   return waves
 }
 
-function readAboutWavesBackgroundRgb(wavesRoot) {
-  if (!(wavesRoot instanceof Element)) return null
-  const style = getComputedStyle(wavesRoot)
-  return rgbStopsFromBackgroundValue(style.backgroundImage)
-    ?? parseColor(style.backgroundColor)
-}
-
 function fillCanvasFromAboutWaves(canvas, wavesRoot) {
   if (!(wavesRoot instanceof Element)) return null
 
@@ -555,47 +585,59 @@ export function captureBackgroundSampleCanvas(musicEl, size = BACKGROUND_SAMPLE_
  * readback is treated as fingerprinting by privacy browsers; declared CSS
  * colors are deterministic, and white is the safe fallback over live media.
  */
-export function readBackgroundSampleRgb(musicEl) {
-  if (!musicEl) return null
+export function readBackgroundSampleRgb(sampleEl) {
+  return readBackgroundSample(sampleEl).rgb
+}
 
-  const rect = musicEl.getBoundingClientRect()
-  if (rect.width <= 0 || rect.height <= 0) return null
+/** Include the visible media type so controls can add a surface over video. */
+export function readBackgroundSample(sampleEl) {
+  if (!sampleEl) return { rgb: null, overVideo: false }
+  const rect = sampleEl.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return { rgb: null, overVideo: false }
 
-  const sampleX = rect.left + rect.width * 0.5
-  const sampleY = rect.top + rect.height * 0.5
+  // A camera button lives inside the header's own surface; the music button's
+  // transparent sidebar is deliberately skipped so it follows the page below.
+  const controlSurface = readForegroundSurface(sampleEl)
+  if (controlSurface) return { rgb: controlSurface, overVideo: false }
 
-  return withSidebarHidden(musicEl, () => {
-    const target = document.elementFromPoint(sampleX, sampleY)
+  const x = rect.left + rect.width / 2
+  const y = rect.top + rect.height / 2
+  return withSidebarHidden(sampleEl, () => {
+    const target = document.elementFromPoint?.(x, y)
+    const backgroundMedia = [...getBackgroundCanvases(), ...getBackgroundVideos()]
+      .filter(media => pointInRect(x, y, media.getBoundingClientRect()))
+
+    const foreground = readForegroundSurface(target, backgroundMedia)
+    if (foreground) return { rgb: foreground, overVideo: false }
+
     const warp = getVisibleWarpBackground()
-
-    if (warp && pointInRect(sampleX, sampleY, warp.getBoundingClientRect())) {
+    if (warp && pointInRect(x, y, warp.getBoundingClientRect())) {
       const warpRgb = readWarpBackgroundRgb(warp)
-      if (warpRgb) return warpRgb
+      if (warpRgb) return { rgb: warpRgb, overVideo: false }
     }
 
-    const aboutWaves = getVisibleAboutWavesBackground()
-    if (
-      aboutWaves
-      && pointNearSample(sampleX, sampleY, aboutWaves.getBoundingClientRect(), {
-        allowViewportCover: true,
-      })
-    ) {
-      const wavesRgb = readAboutWavesBackgroundRgb(aboutWaves)
-      if (wavesRgb) return wavesRgb
+    const backdrop = document.querySelector('.about-waves-bg, .interactive-bg')
+    if (backdrop && isMediaVisible(backdrop) && pointInRect(x, y, backdrop.getBoundingClientRect())) {
+      const layers = [
+        backdrop.querySelector('.interactive-bg__fallback'),
+        backdrop.querySelector('.interactive-bg__overlay'),
+        backdrop.querySelector('.interactive-bg__base'),
+        backdrop,
+      ]
+      for (const layer of layers) {
+        if (!layer || !isMediaVisible(layer)) continue
+        const style = getComputedStyle(layer)
+        const rgb = parseGradientColors(style.backgroundImage) ?? parseColor(style.backgroundColor)
+        if (rgb) return { rgb, overVideo: false }
+      }
     }
 
-    const dynamicMediaAtPoint = [
-      ...getBackgroundCanvases(),
-      ...getBackgroundVideos(),
-    ].some((media) => pointNearSample(
-      sampleX,
-      sampleY,
-      media.getBoundingClientRect(),
-      { allowViewportCover: media instanceof HTMLVideoElement },
-    ))
-
-    if (dynamicMediaAtPoint) return null
-    return readBackgroundAtPoint(target) ?? readBackground(document.body)
+    // Scrolled-away hero media must not override a light section. Unknown live
+    // media keeps its established white ink without probing protected pixels.
+    if (backgroundMedia.length) {
+      return { rgb: null, overVideo: backgroundMedia.some(media => media instanceof HTMLVideoElement) }
+    }
+    return { rgb: readBackgroundAtPoint(target) ?? readBackground(document.body), overVideo: false }
   })
 }
 

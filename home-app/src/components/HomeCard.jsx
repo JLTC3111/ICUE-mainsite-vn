@@ -63,7 +63,7 @@ export default function HomeCard({
       glowIntensity={0.9}
       edgeSensitivity={24}
       glowColor="195 90 68"
-      backgroundColor="rgba(10, 16, 30, 0.92)"
+      backgroundColor="var(--home-card-glow-bg, rgba(10, 16, 30, 0.92))"
       colors={['#1db7ff', '#c8ff00', '#368adf']}
       fillOpacity={0.28}
     >

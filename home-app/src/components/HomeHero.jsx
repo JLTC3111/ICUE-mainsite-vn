@@ -5,7 +5,7 @@ import RainbowButton from './magicui/RainbowButton'
 import HeroVideoTitle from './HeroVideoTitle'
 import WarpBackground from './magicui/WarpBackground'
 
-export default function HomeHero({ hero, beamRef }) {
+export default function HomeHero({ hero, beamRef, effectsEnabled = false }) {
   const subtitleRef = useRef(null)
   const bgVideoEnabled = useHomeBackgroundVideoEnabled()
   useRainText(subtitleRef, hero.subtitle)
@@ -13,8 +13,18 @@ export default function HomeHero({ hero, beamRef }) {
   return (
     <section className="home-hero" aria-label={hero.ariaLabel} ref={beamRef}>
       <div className="home-hero__media" aria-hidden="true">
-        {!bgVideoEnabled ? <WarpBackground className="home-hero__warp" /> : null}
-        <div className="home-hero__overlay" />
+        {!bgVideoEnabled ? (
+          <WarpBackground
+            className="home-hero__warp"
+            beamsPerSide={2}
+            beamSize={3}
+            beamDuration={7}
+            beamOpacity={0.28}
+            animateBeams={effectsEnabled}
+            gridColor="rgba(10, 26, 58, 0.035)"
+          />
+        ) : null}
+        {bgVideoEnabled && <div className="home-hero__overlay" />}
       </div>
 
       <div className="home-hero__content">

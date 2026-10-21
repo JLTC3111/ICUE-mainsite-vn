@@ -125,12 +125,28 @@
   flex-shrink: 0;
 }
 
+/* Keep the name readable even when videos are disabled or fail to paint. */
 .main-site-nav .logo-wordmark {
   display: block;
   position: relative;
-  height: var(--logo-wordmark-size);
-  width: calc(var(--logo-wordmark-size) * var(--logo-wordmark-ratio));
-  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  flex: none;
+  color: inherit;
+  font-family: var(--icue-font-stack, system-ui, sans-serif);
+  font-size: clamp(0.9rem, calc(var(--logo-wordmark-size) * 0.72), 2.4rem);
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.main-site-nav--dock-contracted .logo-wordmark {
+  color: #f4f6f8;
+}
+
+@media (max-width: 1024px) {
+  .main-site-nav .logo-wordmark { color: #f4f6f8; }
 }
 
 .main-site-nav .logo-content {

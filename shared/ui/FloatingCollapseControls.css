@@ -14,7 +14,7 @@
   padding: 0;
   border: 1px solid var(--floating-control-border, rgba(20, 38, 58, 0.16));
   border-radius: 50%;
-  background: var(--floating-control-bg, rgba(255, 255, 255, 0.94));
+  background: var(--floating-control-surface, transparent);
   color: var(--floating-control-ink, #18334d);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
@@ -23,7 +23,8 @@
 }
 
 .floating-collapse-controls > button:hover {
-  background: var(--floating-control-hover, #e7f4fc);
+  background: var(--floating-control-surface, transparent);
+  color: var(--floating-control-ink, #18334d);
 }
 
 .floating-collapse-controls > button:focus-visible {
@@ -32,8 +33,7 @@
 }
 
 .floating-collapse-controls > button[aria-pressed='true'] {
-  color: var(--floating-control-active-ink, #fff);
-  background: var(--floating-control-active-bg, #18334d);
+  background: var(--floating-control-surface, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
