@@ -333,21 +333,25 @@ function rgbStopsFromBackgroundValue(backgroundValue) {
 function readWarpBackgroundValue(warpRoot) {
   if (!(warpRoot instanceof Element)) return null
 
-  const datasetValue = warpRoot.getAttribute('data-warp-background')?.trim()
-  if (datasetValue) return datasetValue
-
-  const stage = warpRoot.querySelector('.warp-background__stage')
-  const stageStyle = stage ? getComputedStyle(stage) : null
-  const cssVar = stageStyle?.getPropertyValue('--warp-background')?.trim()
-    || getComputedStyle(warpRoot).getPropertyValue('--warp-background')?.trim()
-  if (cssVar) return cssVar
-
+  // Read the painted background before configuration hints: a hint such as
+  // var(--theme-background, <light gradient>) still contains its light fallback
+  // in dark mode. Computed background properties resolve the current palette.
   const rootStyle = getComputedStyle(warpRoot)
   if (rootStyle.backgroundImage && rootStyle.backgroundImage !== 'none') {
     return rootStyle.backgroundImage
   }
+  if (parseColor(rootStyle.backgroundColor)) return rootStyle.backgroundColor
 
-  return 'linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%)'
+  const stage = warpRoot.querySelector('.warp-background__stage')
+  const stageStyle = stage ? getComputedStyle(stage) : null
+  const cssVar = stageStyle?.getPropertyValue('--warp-background')?.trim()
+    || rootStyle.getPropertyValue('--warp-background')?.trim()
+  if (cssVar && !cssVar.includes('var(')) return cssVar
+
+  const datasetValue = warpRoot.getAttribute('data-warp-background')?.trim()
+  if (datasetValue && !datasetValue.includes('var(')) return datasetValue
+
+  return null
 }
 
 function fillCanvasFromBackgroundValue(canvas, backgroundValue) {

@@ -256,6 +256,31 @@ test('camera contrast follows its own header capsule above video and warp backgr
   assert.equal(f.reads(), 0)
 })
 
+test('warp contrast uses the painted theme instead of a light CSS variable fallback', async t => {
+  const f = await fixture(t)
+  const { pickBarColor } = await sourceModule('shared/contact-sidebar/useMusicBarColor.js', { globals: f.globals })
+  f.document.documentElement.setAttribute('data-home-bg-video', 'off')
+  f.target('.home-hero__content')
+  const warp = f.document.createElement('div')
+  warp.className = 'home-hero__warp'
+  warp.style.cssText = 'display:block;visibility:visible;opacity:1'
+  warp.setAttribute('data-warp-background', 'var(--home-warp-background, linear-gradient(180deg, #ffffff, #f8fafc, #f1f5f9))')
+  warp.getBoundingClientRect = () => box()
+  f.document.querySelector('.home-hero__media').appendChild(warp)
+  for (const [theme, background, rgb, ink] of [
+    ['dark', 'linear-gradient(180deg, #0b1018, #101a28, #0c0f14)', [13, 19, 28], '#ffffff'],
+    ['light', 'linear-gradient(180deg, #ffffff, #f8fafc, #f1f5f9)', [248, 250, 252], '#0a1a3a'],
+    ['dark', '#0c0f14', [12, 15, 20], '#ffffff'],
+  ]) {
+    f.document.documentElement.setAttribute('data-icue-home-theme', theme)
+    warp.style.background = background
+    const sample = f.sample()
+    assert.deepEqual(Array.from(sample), rgb)
+    assert.equal(pickBarColor(sample), ink, `${theme}: transparent controls follow the rendered surface`)
+  }
+  assert.equal(f.reads(), 0, 'CSS theme sampling does not read canvas pixels')
+})
+
 test('People background CSS remains sampled when WebGL is unavailable or reduced motion replaces it', async t => {
   const f = await fixture(t)
   f.video.style.display = 'none'
