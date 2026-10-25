@@ -205,6 +205,13 @@ function homeDevFallback() {
         const hasExtension = Boolean(rel && path.extname(filePath));
 
         if (hasExtension) {
+          // Vite's static server supports byte ranges, which audio needs to
+          // restore a playback position after navigating between apps.
+          if (urlPath.startsWith('/public/music/')) {
+            if (!resolveStaticPath(path.join(root, 'public'), rel.replace(/^public\//, ''))) return denyStaticPath(res);
+            req.url = req.url.replace(/^\/public/, '');
+            return next();
+          }
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.statusCode = 200;
             res.setHeader('Content-Type', MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream');

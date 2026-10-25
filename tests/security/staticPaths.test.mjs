@@ -36,7 +36,7 @@ test('the actual root Vite middleware rejects traversal in every app and the pub
     let middleware
     plugin.configureServer({ middlewares: { use: fn => { middleware = fn } } })
     const urls = [attack(plugin), attack(plugin).replace('..', '%2e%2e')]
-    if (plugin.name === 'home-dev-fallback') urls.push('/public/../../package.json')
+    if (plugin.name === 'home-dev-fallback') urls.push('/public/../../package.json', '/public/music/../../package.json', '/public/music/%2e%2e/%2e%2e/package.json')
     for (const url of urls) {
       const response = { setHeader() {}, end(body) { this.body = body } }
       middleware({ url }, response, () => assert.fail(`unsafe path fell through: ${url}`))

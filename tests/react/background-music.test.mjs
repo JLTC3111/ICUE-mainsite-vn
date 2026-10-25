@@ -73,7 +73,8 @@ test('music controls and late subscribers share actual playback, rejected starts
 
   await unmount(renderer)
   for (const event of ['playing', 'pause', 'ended', 'waiting', 'emptied', 'error']) {
-    assert.equal(getEventListeners(audio, event).length, 0, `${event} listeners are removed`)
+    const playerListeners = ['playing', 'pause', 'ended'].includes(event) ? 1 : 0
+    assert.equal(getEventListeners(audio, event).length, playerListeners, `${event}: React subscribers are removed; the document player persists`)
   }
-  assert.equal(getEventListeners(f.document, 'visibilitychange').length, 0)
+  assert.equal(getEventListeners(f.document, 'visibilitychange').length, 1, 'only the document player keeps its navigation snapshot listener')
 })

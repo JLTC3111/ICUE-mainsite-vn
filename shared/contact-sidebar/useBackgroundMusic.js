@@ -1,16 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-
-const AUDIO_SRC = '/public/music/mixkit-driving-ambition-32.mp3'
-
-function getOrCreateAudio() {
-  if (typeof window === 'undefined') return null
-  if (!window.__icueBackgroundAudio) {
-    const audio = new Audio(AUDIO_SRC)
-    audio.preload = 'none'
-    window.__icueBackgroundAudio = audio
-  }
-  return window.__icueBackgroundAudio
-}
+import { BACKGROUND_MUSIC_TITLE, getBackgroundAudio, toggleBackgroundMusic } from './backgroundMusic.js'
 
 function isAudioPlaying(audio) {
   return Boolean(audio && !audio.paused && !audio.ended && !audio.error && audio.readyState >= 3)
@@ -22,7 +11,7 @@ export function useBackgroundMusic() {
     typeof window !== 'undefined' && isAudioPlaying(window.__icueBackgroundAudio))
 
   useEffect(() => {
-    const audio = getOrCreateAudio()
+    const audio = getBackgroundAudio()
     if (!audio) return undefined
 
     const syncPlayback = () => setIsPlaying(isAudioPlaying(audio))
@@ -39,17 +28,7 @@ export function useBackgroundMusic() {
     }
   }, [])
 
-  const toggle = useCallback(async () => {
-    const audio = getOrCreateAudio()
-    if (!audio) return
+  const toggle = useCallback(() => toggleBackgroundMusic(), [])
 
-    if (audio.paused) {
-      // Only media events activate the listeners; a rejected start stays idle.
-      await audio.play().catch(() => {})
-    } else {
-      audio.pause()
-    }
-  }, [])
-
-  return { toggle, isPlaying }
+  return { toggle, isPlaying, trackTitle: BACKGROUND_MUSIC_TITLE }
 }

@@ -3,6 +3,35 @@
 Completed locally on 2026-09-24–25. No commit, push, deployment, or production
 database change has been made.
 
+## 2026-10-25 music navigation and song notification
+
+The shared document player now saves the visitor's play/pause choice and track
+position in session storage. Cross-app navigation resumes the existing track;
+SPA navigation keeps the same audio element. Seeking waits for an available
+media range, and late events from departing documents or rapid toggles cannot
+overwrite the current choice. Back/forward cache restoration reads the latest
+session state. Fresh visits stay silent. Storage failures leave manual playback
+working; browser-blocked restoration can retry on a subsequent interaction.
+
+A localized, dismissible top notification shows “Driving Ambition” when audio
+actually starts or resumes. It clears after six seconds, remains while its close
+button has keyboard focus, and sits below the header on phone and desktop.
+The music controls and bird continue to follow actual audio playback.
+
+Full document navigation has a loading gap; this does not provide gap-free
+cross-app playback. Session state is scoped to the current tab and origin, so
+it does not transfer between the Vietnamese and English hostnames. Browser
+autoplay permissions remain in effect.
+
+Validation: the complete `npm test` suite, 14 focused music tests, targeted
+ESLint, all ten app builds, locale/route checks and publish verification passed.
+Chrome checks at 1440px and 390px covered actual MP3 playback, saved positions
+through all ten sections, explicit pause restoration, banner dismissal/timeout,
+Vietnamese/English copy and mobile fit. Audio byte-range responses were checked;
+the root development server now delegates music to Vite's static media handler
+so seeking also works in local previews. Screenshots and the browser runner are
+in `/private/tmp/icue-music-qa/`. This update was not deployed.
+
 ## 2026-09-28 background music synchronization
 
 The launcher now follows actual background audio playback through the same

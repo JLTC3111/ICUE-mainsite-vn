@@ -167,6 +167,7 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
               onClick={toggleMusic}
               aria-label="Toggle background music"
               aria-pressed={isPlaying}
+              data-icue-music-toggle=""
               data-animating={isAnimating && !collapse.collapsed}
               style={{ color: musicColor }}
             >
