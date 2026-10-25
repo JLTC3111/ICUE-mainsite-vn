@@ -9,6 +9,9 @@ import LiveChatMessages from '../../../shared/chatbot/LiveChatMessages.jsx'
 import '../../../shared/chatbot/LiveChat.css'
 import './SupportInbox.css'
 
+const clientPresenceKeys = { active: 'clientActive', away: 'clientAway', left: 'clientLeft', disconnected: 'clientDisconnected', unknown: 'clientUnknown' }
+const clientState = (conversation, unavailable) => !unavailable && Object.hasOwn(clientPresenceKeys, conversation?.visitor_status) ? conversation.visitor_status : 'unknown'
+
 function InboxWorkspace({ userId, locale, labels }) {
   const [filter, setFilter] = useState('open')
   const [page, setPage] = useState(0)
@@ -133,7 +136,8 @@ function InboxWorkspace({ userId, locale, labels }) {
   const draft = drafts[selectedId] || { text: '' }
   const available = wantOnline && confirmedAt > 0 && confirmedAt > clock - 45_000
   const conversation = current?.conversation
-  const typing = !error && liveTimeLeft(current?.health, conversation?.visitor_typing_until, current?.checkedAt) > 0
+  const visitorState = clientState(conversation, error)
+  const typing = !error && !['away', 'left', 'disconnected'].includes(visitorState) && liveTimeLeft(current?.health, conversation?.visitor_typing_until, current?.checkedAt) > 0
 
   async function send(event) {
     event.preventDefault()
@@ -175,7 +179,7 @@ function InboxWorkspace({ userId, locale, labels }) {
 
   return (
     <div className="support-inbox icue-container">
-      <div className="support-inbox__heading"><div><p className="support-inbox__eyebrow">ICUE · {labels.team}</p><h1>{labels.inbox}</h1><p>{labels.inboxIntro}</p></div>
+      <div className="support-inbox__heading"><div><h1>{labels.inbox}</h1><p>{labels.inboxIntro}</p></div>
         <button type="button" className={`support-inbox__availability${available ? ' is-online' : ''}`} aria-pressed={wantOnline} onClick={() => { setWantOnline(value => !value); setConfirmedAt(0) }}>
           <span aria-hidden="true" />{wantOnline ? labels.goAway : labels.goOnline}
         </button>
@@ -191,7 +195,7 @@ function InboxWorkspace({ userId, locale, labels }) {
             {loading && <p className="support-inbox__empty">{labels.loading}</p>}
             {!loading && !rows.length && <p className="support-inbox__empty">{labels.empty}</p>}
             {rows.slice(0, 50).map(row => <button key={row.id} type="button" className={`support-inbox__row${selectedId === row.id ? ' is-selected' : ''}`} aria-pressed={selectedId === row.id} onClick={() => setSelectedId(row.id)}>
-              <span className="support-inbox__row-top"><strong>{row.visitor_name || labels.guest}</strong>{row.unread > 0 && <span className="support-inbox__unread">{row.unread}</span>}</span>
+              <span className="support-inbox__row-top"><span className="support-inbox__identity"><span className="support-inbox__client-dot" data-state={clientState(row, error)} role="img" aria-label={labels[clientPresenceKeys[clientState(row, error)]]} title={labels[clientPresenceKeys[clientState(row, error)]]} /><strong>{row.visitor_name || labels.guest}</strong></span>{row.unread > 0 && <span className="support-inbox__unread">{row.unread}</span>}</span>
               <span className="support-inbox__preview">{row.preview}</span>
               <span className="support-inbox__row-meta"><span>{row.status === 'closed' ? labels.resolved : row.status === 'waiting' ? labels.waitingLabel : labels.active}</span><span>{row.locale.toUpperCase()}</span></span>
             </button>)}
@@ -201,7 +205,8 @@ function InboxWorkspace({ userId, locale, labels }) {
         {!selectedId ? <div className="support-inbox__selection"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H4l-2 2v-10a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z" /><path d="M7 10h8m-8 4h5" /></svg><p>{labels.select}</p></div>
           : !current ? <div className="support-inbox__selection">{labels.loading}</div> : (
             <section className="support-inbox__thread icue-live" aria-label={labels.title}>
-              <div className="support-inbox__thread-heading"><div><h2>{conversation.visitor_name || labels.guest}</h2><p>{conversation.visitor_email || conversation.page_path} · {conversation.locale.toUpperCase()}</p></div><button type="button" onClick={changeStatus}>{conversation.status === 'closed' ? labels.reopen : labels.resolve}</button></div>
+              <div className="support-inbox__thread-heading"><div><h2>{conversation.visitor_name || labels.guest}</h2><p>{conversation.visitor_email || conversation.page_path} · {conversation.locale.toUpperCase()}</p><div className="support-inbox__client-presence" data-state={visitorState} role="status"><span className="support-inbox__client-dot" data-state={visitorState} aria-hidden="true" />{labels[clientPresenceKeys[visitorState]]}</div></div><button type="button" onClick={changeStatus}>{conversation.status === 'closed' ? labels.reopen : labels.resolve}</button></div>
+              {['away', 'left', 'disconnected'].includes(visitorState) && <p className="support-inbox__client-notice" role="status">{labels.clientReturnHint}</p>}
               <LiveChatMessages key={selectedId} messages={current.messages} conversation={conversation} labels={labels} locale={locale} viewer="staff" pending={draft.pending}>
                 {current.has_more && <button type="button" className="icue-live__text-button" disabled={loadingEarlier} onClick={loadEarlier}>{loadingEarlier ? labels.loading : labels.earlier}</button>}
               </LiveChatMessages>

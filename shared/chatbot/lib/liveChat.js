@@ -4,6 +4,7 @@ const STORAGE_KEY = 'icue:live-chat:v1'
 const tokenPattern = /^[a-f0-9]{64}$/
 const uuidPattern = /^[a-f0-9-]{36}$/i
 const locales = new Set(['vi', 'en', 'de', 'fr', 'ko', 'ja'])
+let loadedConfig
 
 const loadConfig = createRetryableLoader(async signal => {
   const env = import.meta.env || {}
@@ -16,22 +17,31 @@ const loadConfig = createRetryableLoader(async signal => {
   if (!config?.url || !config?.anonKey) throw Object.assign(new Error('Chat unavailable'), { code: 'UNAVAILABLE' })
   const url = new URL(config.url)
   if (url.protocol !== 'https:' && !['localhost', '127.0.0.1'].includes(url.hostname)) throw new Error('Invalid chat configuration')
+  loadedConfig = config
   return config
 }, { timeoutMs: 10_000 })
 
+async function requestChatRpc({ url, anonKey }, name, args, { signal, keepalive }) {
+  const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/support_chat_${name}`, {
+    method: 'POST', credentials: 'omit', cache: 'no-store', signal, keepalive,
+    headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+    body: JSON.stringify(args),
+  })
+  const data = await response.json().catch(() => null)
+  if (!response.ok) throw Object.assign(new Error('Chat request failed'), { code: data?.code, status: response.status })
+  return data
+}
+
 /** Public chat deliberately uses the anonymous key, never a newsroom session. */
-export async function liveChatRpc(name, args = {}, { signal } = {}) {
-  return withDeadline(async requestSignal => {
-    const { url, anonKey } = await loadConfig()
-    const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/support_chat_${name}`, {
-      method: 'POST', credentials: 'omit', cache: 'no-store', signal: requestSignal,
-      headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${anonKey}` },
-      body: JSON.stringify(args),
-    })
-    const data = await response.json().catch(() => null)
-    if (!response.ok) throw Object.assign(new Error('Chat request failed'), { code: data?.code, status: response.status })
-    return data
-  }, { signal, timeoutMs: 12_000 })
+export function liveChatRpc(name, args = {}, { signal, keepalive = false } = {}) {
+  // Start the exit request within the pagehide handler. Waiting even for an
+  // already-resolved config promise can miss the browser's unload window.
+  if (keepalive && loadedConfig) {
+    const pending = requestChatRpc(loadedConfig, name, args, { signal, keepalive })
+    return withDeadline(() => pending, { signal, timeoutMs: 12_000 })
+  }
+  return withDeadline(async requestSignal => requestChatRpc(await loadConfig(), name, args,
+    { signal: requestSignal, keepalive }), { signal, timeoutMs: 12_000 })
 }
 
 export function liveTimeLeft(health, until, checkedAt, now = Date.now()) {
@@ -71,6 +81,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     draft: record?.pending?.content || '', name: '', email: '', sessionOnly: !storage }
   const listeners = new Set()
   let generation = 0, reading = false, queuedRead = null, lastTyping = -Infinity
+  let presenceState = 'left', presenceStarted = false, connectionId = null, presenceSequence = 0, lastPresenceAt = -Infinity
   const update = patch => { state = { ...state, ...patch }; listeners.forEach(notify => notify()) }
   function persist() {
     try {
@@ -106,6 +117,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     }
     persist()
     update(patch)
+    if (presenceStarted) void setPresence(presenceState)
   }
   async function refresh({ signal } = {}) {
     if (reading) { queuedRead = { signal }; return }
@@ -167,16 +179,33 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     lastTyping = now()
     void rpc('activity', { p_token: record.token, p_typing: Boolean(value) }).catch(() => {})
   }
+  function setPresence(next, { keepalive = false, force = false } = {}) {
+    if (!['active', 'away', 'left'].includes(next)) return Promise.resolve()
+    const previous = presenceState
+    presenceState = next
+    if (next === 'active') presenceStarted = true
+    // Reading the assistant alone never reports visitor presence to staff.
+    if (!presenceStarted || !record?.token) return Promise.resolve()
+    if (!force && next === previous && now() - lastPresenceAt < 15_000) return Promise.resolve()
+    connectionId ||= random.randomUUID()
+    lastPresenceAt = now()
+    const sequence = ++presenceSequence
+    return rpc('visitor_presence', { p_token: record.token, p_connection_id: connectionId, p_sequence: sequence, p_state: next }, { keepalive })
+      .catch(() => { if (sequence === presenceSequence) lastPresenceAt = -Infinity })
+  }
   return {
     subscribe: notify => { listeners.add(notify); return () => listeners.delete(notify) },
     getSnapshot: () => state,
-    refresh, send, loadEarlier, typing,
+    refresh, send, loadEarlier, typing, setPresence,
     setDraft: draft => update({ draft: String(draft).slice(0, 4000) }),
     setDetails: details => update({ name: String(details.name ?? state.name).slice(0, 100), email: String(details.email ?? state.email).slice(0, 254) }),
     reset() {
       if (state.status !== 'missing' || state.sending) return
       generation++
       record = null
+      connectionId = null
+      presenceSequence = 0
+      lastPresenceAt = -Infinity
       persist()
       update({ conversation: null, messages: [], hasMore: false, pending: null, draft: '', status: 'idle' })
       void refresh()

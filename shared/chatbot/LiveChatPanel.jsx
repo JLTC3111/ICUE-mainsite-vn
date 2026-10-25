@@ -7,23 +7,37 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
   const state = useSyncExternalStore(client.subscribe, client.getSnapshot, client.getSnapshot)
   const inputRef = useRef(null)
 
+  useEffect(() => () => { void client.setPresence('left', { keepalive: true }) }, [client])
+
   useEffect(() => {
-    if (!active) return undefined
-    let timer, controller, disposed = false, cycle = 0
+    if (!active) { void client.setPresence('away'); return undefined }
+    let timer, controller, disposed = false, leaving = false, cycle = 0
     const pause = () => { cycle++; clearTimeout(timer); controller?.abort() }
     const poll = async () => {
       pause()
-      if (disposed || document.hidden) return
+      if (disposed || document.hidden || leaving) return
       const request = cycle
       controller = new AbortController()
+      void client.setPresence(navigator.onLine === false ? 'away' : 'active')
       await client.refresh({ signal: controller.signal })
       if (!disposed && request === cycle && !document.hidden) timer = setTimeout(poll, 2500)
     }
-    const resume = () => { if (document.hidden) pause(); else void poll() }
+    const resume = () => {
+      if (document.hidden) { pause(); if (!leaving) void client.setPresence('away', { keepalive: true }) }
+      else {
+        leaving = false
+        void client.setPresence(navigator.onLine === false ? 'away' : 'active', { force: true })
+        void poll()
+      }
+    }
+    const leave = () => { leaving = true; pause(); void client.setPresence('left', { keepalive: true }) }
+    const offline = () => { void client.setPresence('away', { keepalive: true }) }
     void poll()
     document.addEventListener('visibilitychange', resume)
     window.addEventListener('online', resume)
+    window.addEventListener('offline', offline)
     window.addEventListener('pageshow', resume)
+    window.addEventListener('pagehide', leave)
     if (window.matchMedia('(pointer: fine)').matches && document.activeElement?.getAttribute('role') !== 'tab') {
       inputRef.current?.focus({ preventScroll: true })
     }
@@ -33,21 +47,26 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
       client.typing(false)
       document.removeEventListener('visibilitychange', resume)
       window.removeEventListener('online', resume)
+      window.removeEventListener('offline', offline)
       window.removeEventListener('pageshow', resume)
+      window.removeEventListener('pagehide', leave)
     }
   }, [active, client])
 
   const ready = state.status === 'ready'
   const online = ready && liveTimeLeft(state.health, state.health?.available_until, state.checkedAt) > 0
+  const resolved = state.conversation?.status === 'closed'
+  const attending = ready && !resolved && liveTimeLeft(state.health, state.conversation?.staff_attending_until, state.checkedAt) > 0
   const unavailable = state.status === 'unavailable'
   const missing = state.status === 'missing'
   const statusLabel = state.status === 'idle' ? labels.connecting
-    : !ready && !unavailable && !missing ? labels.reconnecting : online ? labels.online : labels.away
+    : !ready && !unavailable && !missing ? labels.reconnecting
+      : resolved ? labels.resolved : attending ? labels.attending : online ? labels.online : labels.away
   const typing = ready && liveTimeLeft(state.health, state.conversation?.staff_typing_until, state.checkedAt) > 0
 
   return (
     <section id={id} role="tabpanel" aria-labelledby={labelledBy} className="icue-live" hidden={!active}>
-      <div className="icue-live__status" data-online={online}>
+      <div className="icue-live__status" data-online={!resolved && (online || attending)} data-attending={attending}>
         <span className="icue-live__dot" aria-hidden="true" />
         <span role="status">{unavailable ? labels.unavailable : missing ? labels.missing : statusLabel}</span>
       </div>
@@ -63,7 +82,7 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
           </div>
         )}
       </LiveChatMessages>
-      {state.conversation && <p className="icue-live__thread-status">{state.conversation.status === 'closed' ? labels.closed : state.conversation.status === 'waiting' ? labels.waiting : !online ? labels.awayHint : ''}</p>}
+      {state.conversation && <p className="icue-live__thread-status">{resolved ? labels.closed : attending ? '' : state.conversation.status === 'waiting' ? labels.waiting : !online ? labels.awayHint : ''}</p>}
       <div className="icue-live__typing" role="status">{typing ? labels.typing : ''}</div>
       <form className="icue-live__composer" onSubmit={event => {
         event.preventDefault()

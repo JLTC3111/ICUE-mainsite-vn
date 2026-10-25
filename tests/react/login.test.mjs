@@ -9,17 +9,18 @@ const translations = Object.fromEntries(['vi', 'en', 'de', 'fr', 'ja', 'ko'].map
   language, JSON.parse(readFileSync(new URL(`../../news-app/src/locales/${language}.json`, import.meta.url))),
 ]))
 
-async function login(t, { recovery = false, reset = async () => ({ error: null }) } = {}) {
+async function login(t, { recovery = false, reset = async () => ({ error: null }), from, signIn = async () => ({ error: { message: 'Invalid login' } }) } = {}) {
   silenceRenderer(t)
   const f = platform()
   let language = 'vi'
+  const navigations = []
   const { default: Login } = await sourceModule('news-app/src/pages/Login.jsx', {
     globals: f,
     imports: {
-      'react-router-dom': { useNavigate: () => () => {}, useLocation: () => ({}) },
-      'react-i18next': { useTranslation: () => ({ t: key => translations[language].login[key.split('.')[1]] || key }) },
+      'react-router-dom': { useNavigate: () => (...args) => navigations.push(args), useLocation: () => ({ state: { from } }) },
+      'react-i18next': { useTranslation: () => ({ t: key => translations[language].login[key.split('.')[1]] || key, i18n: { resolvedLanguage: language } }) },
       'lucide-react': { Eye: () => null, EyeOff: () => null },
-      '../context/AuthContext': { useAuth: () => ({ signIn: async () => ({ error: { message: 'Invalid login' } }) }) },
+      '../context/AuthContext': { useAuth: () => ({ signIn }) },
       '../lib/supabase': { supabase: { auth: {
         onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }),
         resetPasswordForEmail: async () => { throw new Error('Unexpected duplicate request') },
@@ -39,6 +40,7 @@ async function login(t, { recovery = false, reset = async () => ({ error: null }
   t.after(() => unmount(renderer))
   const message = () => renderer.root.findAllByType('p').find(p => p.props.className?.includes('login__msg'))?.props.children
   return {
+    renderer, navigations,
     message,
     async input(id, value) {
       await act(async () => renderer.root.findByProps({ id }).props.onChange({ target: { value } }))
@@ -62,6 +64,18 @@ async function login(t, { recovery = false, reset = async () => ({ error: null }
     },
   }
 }
+
+test('staff entry identifies the support portal and returns to chat management after sign-in', async t => {
+  const form = await login(t, { from: '/support', signIn: async () => ({ error: null }) })
+  await form.changeLanguage('en')
+  assert.equal(form.renderer.root.findByType('h1').props.children, 'Staff sign-in')
+  assert.equal(form.renderer.root.findByProps({ className: 'login__pill' }).props.children, 'Staff')
+  await form.input('email', 'staff@example.invalid')
+  await form.input('password', 'example-staff-password')
+  await form.submit()
+  assert.equal(form.navigations.at(-1)[0], '/support')
+  assert.equal(form.navigations.at(-1)[1].replace, true)
+})
 
 test('the missing-email warning changes language while visible', async t => {
   const form = await login(t)

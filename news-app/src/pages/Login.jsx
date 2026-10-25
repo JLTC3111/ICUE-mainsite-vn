@@ -8,17 +8,20 @@ import { clearPasswordRecoveryUrl, getAuthRedirectUrl, isPasswordRecoveryUrl } f
 import { authErrorKey, sendPasswordResetEmail } from '../lib/authReset'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import LanguageSwitcher from '../components/LanguageSwitcher'
+import { staffPortalCopy } from '../../../shared/contact-sidebar/staffPortal.js'
 import './Login.css'
 
 const MIN_PASSWORD_LEN = 8
 
 export default function Login() {
-  const { t } = useTranslation()
-  useDocumentTitle(t('login.title'))
+  const { t, i18n } = useTranslation()
   const { signIn } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/dashboard'
+  const staffLogin = redirectTo === '/support'
+  const staffCopy = staffPortalCopy(i18n.resolvedLanguage || i18n.language)
+  useDocumentTitle(staffLogin ? staffCopy.title : t('login.title'))
 
   const [mode, setMode] = useState(() => (isPasswordRecoveryUrl() ? 'recovery' : 'login'))
   const [email, setEmail] = useState('')
@@ -155,10 +158,10 @@ export default function Login() {
         </button>
         <div className="login__brand">
           <span className="login__logo">ICUE</span>
-          <span className="login__pill">{t('login.brandPill')}</span>
+          <span className="login__pill">{staffLogin ? staffCopy.label : t('login.brandPill')}</span>
         </div>
-        <h1 className="login__title">{isRecovery ? t('login.resetTitle') : t('login.title')}</h1>
-        <p className="login__subtitle">{isRecovery ? t('login.resetSubtitle') : t('login.subtitle')}</p>
+        <h1 className="login__title">{isRecovery ? t('login.resetTitle') : staffLogin ? staffCopy.title : t('login.title')}</h1>
+        <p className="login__subtitle">{isRecovery ? t('login.resetSubtitle') : staffLogin ? staffCopy.description : t('login.subtitle')}</p>
 
         {isRecovery ? (
           <form className="login__form" onSubmit={handleUpdatePassword} noValidate>

@@ -195,49 +195,9 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   border-right: 0.5px dotted var(--contact-sidebar-divider-rule, black);
 }
 
-.contact-sidebar__modal {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 16px;
-}
-
-.contact-sidebar__modal-panel {
-  position: relative;
-  background: var(--contact-sidebar-surface, #fff);
-  color: var(--contact-sidebar-ink, #000);
-  padding: 36px;
-  border-radius: 20px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
-  max-width: 95vw;
-  max-height: 90vh;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.contact-sidebar__modal-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 2rem;
-  line-height: 1;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-}
-
-.contact-sidebar__modal-calendar svg {
-  width: 340px;
-  height: 340px;
-  display: block;
-}
+.contact-sidebar__staff svg { width: 29px; height: 29px; }
+.contact-sidebar__staff:hover svg { transform: translateY(-1px) scale(1.05); }
+.contact-sidebar__staff:focus-visible { outline: 2px solid #5285a8; outline-offset: 2px; border-radius: 6px; }
 
 @media (max-width: 768px) {
   aside.contact-sidebar {
@@ -276,6 +236,8 @@ aside.contact-sidebar button:not(.floating-collapse__toggle, .floating-collapse_
   .contact-sidebar__music svg {
     transition: none;
   }
+
+  .contact-sidebar__staff:hover svg { transform: none; }
 }
 
 /* Keep the actions scrollable on short screens without visible scrollbar chrome. */

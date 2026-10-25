@@ -10,7 +10,7 @@ on conflict (id) do update set role = excluded.role, display_name = excluded.dis
 
 do $$ begin
   assert (select count(*) = 3 from pg_class c join pg_namespace n on c.relnamespace = n.oid
-    where n.nspname = 'icue_support' and c.relkind = 'r' and c.relrowsecurity), 'Private tables must enable RLS';
+    where n.nspname = 'icue_support' and c.relname in ('conversations','messages','presence') and c.relkind = 'r' and c.relrowsecurity), 'Private tables must enable RLS';
   assert not has_table_privilege('anon', 'icue_support.messages', 'select'), 'Anon cannot read raw messages';
   assert not has_table_privilege('authenticated', 'icue_support.conversations', 'select'), 'Staff cannot bypass the checked RPC';
   assert not has_function_privilege('anon', 'public.support_chat_inbox(text,integer)', 'execute'), 'No anonymous inbox';

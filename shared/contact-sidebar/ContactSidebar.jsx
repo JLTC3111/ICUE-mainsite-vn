@@ -1,7 +1,6 @@
-import { memo, useId, useRef, useState } from 'react'
+import { memo, useId, useRef } from 'react'
 import { ICUE_ZALO_PHONE, openZaloChat, zaloWebUrl } from '@icue/zalo/zaloLink'
-import { normalizeUiLocale } from '../site-routes/mainSitePaths.js'
-import { useCalendarClock } from './useCalendarClock'
+import { staffPortalCopy, staffPortalUrl } from './staffPortal.js'
 import { useAudioVisualizer } from './useAudioVisualizer'
 import { useBackgroundAppearance, useMusicBarColor } from './useMusicBarColor'
 import useFloatingCollapse from '../ui/useFloatingCollapse.js'
@@ -9,67 +8,12 @@ import FloatingCollapseControls from '../ui/FloatingCollapseControls.jsx'
 import { floatingCollapseCopy } from '../ui/floatingCollapseCopy.js'
 import './ContactSidebar.css'
 
-const CALENDAR_LABELS = {
-  vi: { title: 'Lịch', open: 'Mở lịch', close: 'Đóng lịch' },
-  en: { title: 'Calendar', open: 'Open calendar', close: 'Close calendar' },
-  de: { title: 'Kalender', open: 'Kalender öffnen', close: 'Kalender schließen' },
-  fr: { title: 'Calendrier', open: 'Ouvrir le calendrier', close: 'Fermer le calendrier' },
-  ko: { title: '달력', open: '달력 열기', close: '달력 닫기' },
-  ja: { title: 'カレンダー', open: 'カレンダーを開く', close: 'カレンダーを閉じる' },
-}
-
-function CalendarSvg({ month, day, time }) {
+function StaffLoginIcon() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 611.998 611.998"
-      aria-hidden="true"
-    >
-      <g>
-        <path
-          d="M598.316,113.716c0-26.534-21.587-48.123-48.123-48.123h-21.036V39.082C529.156,17.5,511.663,0,490.076,0 c-21.582,0-39.082,17.5-39.082,39.082v26.512H345.081V39.082C345.083,17.5,327.585,0,305.997,0 c-21.582,0-39.082,17.5-39.082,39.082v26.512h-105.91V39.082C161.006,17.5,143.508,0,121.924,0 c-21.586,0-39.082,17.5-39.082,39.082v26.512H61.806c-26.534,0-48.123,21.587-48.123,48.123v72.604 c0,9.05,2.514,17.522,6.876,24.761v359.671c0,22.743,18.503,41.245,41.247,41.245h488.387c22.745,0,41.248-18.502,41.248-41.245 V211.079c4.36-7.239,6.875-15.709,6.875-24.759V113.716L598.316,113.716z M75.552,557.007V234.448h460.896v322.559L75.552,557.007 L75.552,557.007z"
-          fill="white"
-          stroke="black"
-          strokeWidth="15"
-        />
-        <rect x="150" y="140" width="310" height="80" fill="white" rx="10" ry="10" />
-        <rect x="100" y="270" width="410" height="230" fill="white" rx="10" ry="10" />
-        <text
-          x="305.999"
-          y="150"
-          fontFamily="Arial, sans-serif"
-          fontSize="90"
-          fontWeight="bold"
-          fill="black"
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {month}
-        </text>
-        <text
-          x="305.999"
-          y="360"
-          fontFamily="Arial, sans-serif"
-          fontSize="140"
-          fontWeight="bold"
-          fill="black"
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {day}
-        </text>
-        <text
-          x="314"
-          y="470"
-          fontFamily="Arial, sans-serif"
-          fontSize="80"
-          fill="black"
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {time}
-        </text>
-      </g>
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5" stroke="#fff" strokeWidth="4" />
+      <path d="M3 12h12m-5-5 5 5-5 5" stroke="#fff" strokeWidth="4" />
+      <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5M3 12h12m-5-5 5 5-5 5" />
     </svg>
   )
 }
@@ -120,8 +64,7 @@ function MessengerIcon() {
 }
 
 function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
-  const [calendarOpen, setCalendarOpen] = useState(false)
-  const collapse = useFloatingCollapse({ storageKey: 'icue:contact-sidebar:collapse', keepOpen: calendarOpen })
+  const collapse = useFloatingCollapse({ storageKey: 'icue:contact-sidebar:collapse' })
   const controlsId = useId()
   const collapseCopy = floatingCollapseCopy(locale)
   const musicRef = useRef(null)
@@ -130,9 +73,7 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
   const { toggle: toggleMusic, isPlaying, isAnimating } = useAudioVisualizer()
   const sampledMusicColor = useMusicBarColor(musicRef, musicIconColor == null && !collapse.collapsed, contentKey)
   const musicColor = musicIconColor ?? sampledMusicColor
-  const calendarLocale = normalizeUiLocale(locale, 'vi')
-  const calendarLabels = CALENDAR_LABELS[calendarLocale]
-  const { month, day, time } = useCalendarClock(calendarLocale)
+  const staffCopy = staffPortalCopy(locale)
 
   return (
     <>
@@ -207,14 +148,14 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
 
             <div className="contact-sidebar__divider" aria-hidden="true" />
 
-            <button
-              type="button"
-              className="contact-sidebar__item contact-sidebar__calendar"
-              onClick={() => setCalendarOpen(true)}
-              aria-label={calendarLabels.open}
+            <a
+              href={staffPortalUrl(locale)}
+              className="contact-sidebar__item contact-sidebar__staff"
+              aria-label={staffCopy.link}
+              title={staffCopy.link}
             >
-              <CalendarSvg month={month} day={day} time={time} />
-            </button>
+              <StaffLoginIcon />
+            </a>
 
             <div className="contact-sidebar__divider" aria-hidden="true" />
 
@@ -244,31 +185,6 @@ function ContactSidebar({ musicIconColor, contentKey = '', locale = 'vi' }) {
         </div>
       </aside>
 
-      {calendarOpen && (
-        <div
-          className="contact-sidebar__modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={calendarLabels.title}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setCalendarOpen(false)
-          }}
-        >
-          <div className="contact-sidebar__modal-panel">
-            <button
-              type="button"
-              className="contact-sidebar__modal-close"
-              onClick={() => setCalendarOpen(false)}
-              aria-label={calendarLabels.close}
-            >
-              &times;
-            </button>
-            <div className="contact-sidebar__modal-calendar">
-              <CalendarSvg month={month} day={day} time={time} />
-            </div>
-          </div>
-        </div>
-      )}
     </>
   )
 }

@@ -6,14 +6,38 @@ six site languages. The second tab sends messages to people through the
 
 ## Staff use
 
-Sign in with an existing newsroom administrator account, open **Support inbox**
-from the author tools menu, and choose **Go online**. Select a visitor, read the
+Use the **login-door icon** in the shared contact bar to open chat management.
+It has an accessible staff-login name and tooltip, with no visible text label.
+It replaces the calendar and prompts signed-out visitors with **Staff sign-in**;
+after sign-in, authorized staff arrive directly at `/newsroom/support`. Existing
+sessions open the inbox immediately. The shortcut and sign-in screen follow the
+site's selected language; the English host links to the main ICUE staff portal.
+
+Use an existing newsroom administrator account. The inbox is also available
+from the author tools menu. Select a visitor, read the
 conversation and reply. The inbox shows unread visitor messages, open/resolved
 filters, conversation pagination and **Mark resolved** / **Reopen** actions.
 A visitor's next message also reopens a resolved thread. Drafts are kept per
 conversation; uncertain sends retain their message IDs so a retry is safe.
 
-Availability is an explicit choice. Heartbeats renew every 15 seconds while
+Opening or replying to a conversation automatically lets that visitor know
+**“A team member is helping you”**, with a green dot. A lease renews while the
+selected conversation is visible; it expires within 45 seconds after staff
+leave, switch conversations, or disconnect. Resolution clears it immediately.
+Each visitor sees attendance for their own conversation. Staff do not need to
+choose **Go online** to help a visitor who has already sent a message.
+
+The inbox also shows whether each client is in the chat, away, has explicitly
+left, or is inactive/disconnected. The selected thread includes a status badge
+and a notice when the client is absent; staff can still leave replies for their
+return. Closing the widget or navigating away sends a best-effort departure
+signal. A lost heartbeat is detected after about 45 seconds while the staff inbox is
+connected. Switching to the assistant or hiding the page reports away. Silence
+alone does not imply departure. Separate window IDs prevent one closed tab from
+overriding another tab where the same client is still chatting.
+
+General availability for new chats is an explicit choice. Choose **Go online**
+to advertise availability. Heartbeats renew every 15 seconds while
 the inbox is mounted, including in a background window. Choose **Go away** or
 leave the inbox to stop availability. If the browser or connection disappears,
 the database expires availability after 45 seconds. Demoted administrators
@@ -47,12 +71,23 @@ the applied migration history. The generated `news-app/supabase/schema.sql`
 includes it for fresh installations. Existing installations should apply only
 the missing migration through their normal migration workflow.
 
+`20261025123313_chat_attendance.sql` adds the per-conversation attendance lease
+and was also applied to the configured project. Existing conversations and the
+public API signatures are preserved. Staff IDs stay private; the visitor gets
+only an expiry timestamp after authorization checks.
+
+`20261025130803_client_chat_presence.sql` adds private visitor-window presence
+and the capability-checked `support_chat_visitor_presence` RPC. It was applied
+to the same project. Heartbeats are opt-in to the team tab, renewed at most every
+15 seconds, ordered by a per-window sequence and limited to 20 tracked windows
+per conversation. Older connection rows are pruned on subsequent updates.
+
 The public widget reads the existing publishable/anonymous configuration from
 `/newsroom/supabase-config.json`, or the host app's existing `VITE_SUPABASE_*`
 public settings. The staff inbox uses the existing authenticated Supabase
 client. No new service credential or browser dependency is required.
 
-The three chat tables live in the unexposed `icue_support` schema, with RLS
+The four chat tables live in the unexposed `icue_support` schema, with RLS
 enabled and direct table/sequence access revoked from anonymous and signed-in
 clients. Public RPC wrappers use invoker rights. Private implementations check
 the hashed visitor capability or the current user's database-controlled admin
@@ -76,6 +111,12 @@ these per-conversation limits are not a site-wide bot/CAPTCHA control.
   ownership, admin/author separation, retries, receipts, pagination, typing,
   expiry, resolution/reopening and message limits. The existing
   `npm run test:database` runner includes it for fresh and upgraded databases.
+- `news-app/supabase/tests/chat_attendance.sql`: staff attendance without general
+  availability, visitor isolation, expiry, reply renewal, resolution, reopened
+  conversations and immediate removal of revoked staff from the status lookup.
+- `news-app/supabase/tests/client_chat_presence.sql`: visitor ownership, private
+  connection access, stale/reordered requests, multiple tabs, explicit closes,
+  heartbeat expiry, staff visibility and the bounded connection count.
 - Local SQL verification also passed against fresh and upgraded full newsroom
   schemas in disposable PGlite databases. Only PGlite's unavailable pgcrypto
   extension declaration was omitted; the support code uses built-in SHA-256.
@@ -86,9 +127,11 @@ these per-conversation limits are not a site-wide bot/CAPTCHA control.
   using a local authentication boundary: visitor/staff replies, availability,
   typing, seen receipts, offline retries, resolution/reopening, reload recovery,
   separate assistant drafts, keyboard tabs, mobile/compact viewports and all
-  six languages. All ten site apps build; locale, route and publish checks pass.
+  six languages. Client-presence checks also cover native page exits, multiple
+  tabs, connection loss, immediate reconnection and preserved staff drafts.
+  All ten site apps build; locale, route and publish checks pass.
 - Supabase's post-migration security advisor reported no warning/error for
-  these objects. Its three informational “RLS enabled, no policy” findings are
+  these objects. Its four informational “RLS enabled, no policy” findings are
   intentional: direct table access is denied and checked RPCs are the only path.
 
 The database is ready. Website publishing is a separate deployment step; these

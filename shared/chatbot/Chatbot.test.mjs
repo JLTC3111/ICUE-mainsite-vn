@@ -108,25 +108,77 @@ test('the team tab exchanges staff messages, preserves separate drafts and stops
   await act(async () => f.renderer.root.findByType('textarea').props.onChange({ target: { value: 'Please help with my project' } }))
   await act(async () => f.find('icue-live__composer').props.onSubmit({ preventDefault() {} }))
   assert.equal(calls.find(call => call.name === 'open').args.p_message, 'Please help with my project')
+  const presence = () => calls.filter(call => call.name === 'visitor_presence').at(-1)?.args.p_state
+  assert.equal(presence(), 'active')
   assert.ok(!JSON.stringify(calls).includes('Private assistant draft'))
   snapshot = { ...snapshot, messages: [...snapshot.messages, { id: 'staff-reply', client_id: 'staff-client', seq: 2, content: 'A person from ICUE is here.', sender: 'staff', sender_name: 'ICUE colleague' }] }
   await act(async () => client.refresh())
   assert.ok(JSON.stringify(f.renderer.toJSON()).includes('A person from ICUE is here.'))
   await act(async () => f.renderer.root.findByProps({ 'data-mode': 'assistant' }).props.onClick())
+  assert.equal(presence(), 'away')
   assert.equal(f.find('icue-chat__input').props.value, 'Private assistant draft')
   await act(async () => f.renderer.root.findByProps({ 'data-mode': 'team' }).props.onClick())
   await act(async () => f.renderer.root.findByType('textarea').props.onChange({ target: { value: 'Unfinished team draft' } }))
   await act(async () => f.find('icue-chat__close').props.onClick())
+  assert.equal(presence(), 'left')
   await f.open()
+  assert.equal(presence(), 'active')
   assert.equal(f.renderer.root.findByType('textarea').props.value, 'Unfinished team draft')
   await act(async () => { f.document.hidden = true; f.document.dispatchEvent(new Event('visibilitychange')) })
+  assert.equal(presence(), 'away')
   const pausedCalls = calls.length
   await f.advance(30_000)
   assert.equal(calls.length, pausedCalls, 'hidden visitors make no chat requests')
   await act(async () => { f.document.hidden = false; f.document.dispatchEvent(new Event('visibilitychange')) })
   assert.ok(calls.length > pausedCalls, 'returning reads the latest staff response')
+  assert.equal(presence(), 'active')
+  await act(async () => f.window.dispatchEvent(new Event('pagehide')))
+  assert.equal(presence(), 'left')
+  await act(async () => { f.document.hidden = true; f.document.dispatchEvent(new Event('visibilitychange')) })
+  assert.equal(presence(), 'left', 'a late visibility event during navigation cannot downgrade a departure to away')
+  f.document.hidden = false
+  await act(async () => f.window.dispatchEvent(new Event('pageshow')))
+  assert.equal(presence(), 'active', 'a restored browser page returns to the chat')
   await unmount(f.renderer)
   assert.equal(f.timers.size, 0)
+})
+
+test('a staff member attending this chat is green without general availability and clears on expiry, resolution or disconnect', async t => {
+  const { createLiveChatClient, liveTimeLeft } = await sourceModule('shared/chatbot/lib/liveChat.js', { globals: { crypto } })
+  const health = { version: 1, server_time: new Date().toISOString(), available_until: null }
+  let snapshot = { conversation: { id: '00000000-0000-4000-8000-000000007100', status: 'waiting' }, messages: [], has_more: false, health }
+  let disconnected = false
+  const client = createLiveChatClient({
+    storage: { getItem: () => JSON.stringify({ token: 'a'.repeat(64), id: snapshot.conversation.id }), setItem() {} },
+    rpc: async () => { if (disconnected) throw new Error('Disconnected'); return snapshot },
+  })
+  const f = await fixture(t, () => authoredReply, { liveChat: { getLiveChatClient: () => client, liveTimeLeft } })
+  await f.open()
+  await act(async () => f.renderer.root.findByProps({ 'data-mode': 'team' }).props.onClick())
+  const status = () => f.find('icue-live__status')
+  assert.equal(status().props['data-online'], false)
+  snapshot = { ...snapshot, conversation: { ...snapshot.conversation, staff_attending_until: new Date(Date.now() + 45_000).toISOString() } }
+  await act(async () => client.refresh())
+  assert.equal(status().props['data-attending'], true)
+  assert.equal(status().props['data-online'], true)
+  assert.equal(status().findByProps({ role: 'status' }).props.children, 'Nhân viên đang hỗ trợ bạn')
+  assert.equal(f.find('icue-live__thread-status').props.children, '', 'do not also tell an attended visitor to wait for a person')
+  snapshot = { ...snapshot, conversation: { ...snapshot.conversation, staff_attending_until: new Date(Date.now() - 1000).toISOString() } }
+  await act(async () => client.refresh())
+  assert.equal(status().props['data-attending'], false)
+  assert.equal(status().props['data-online'], false)
+  snapshot = { ...snapshot, conversation: { ...snapshot.conversation, status: 'closed', staff_attending_until: new Date(Date.now() + 45_000).toISOString() } }
+  await act(async () => client.refresh())
+  assert.equal(status().props['data-online'], false)
+  assert.equal(status().findByProps({ role: 'status' }).props.children, 'Đã hoàn tất')
+  snapshot = { ...snapshot, conversation: { ...snapshot.conversation, status: 'active' } }
+  await act(async () => client.refresh())
+  assert.equal(status().props['data-attending'], true)
+  disconnected = true
+  await act(async () => client.refresh())
+  assert.equal(status().props['data-attending'], false)
+  assert.equal(status().props['data-online'], false)
+  await unmount(f.renderer)
 })
 
 test('real chat lifecycle selects reactions, preserves textual errors, and recovers on the next send', async t => {

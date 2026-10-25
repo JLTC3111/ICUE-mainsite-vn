@@ -21,7 +21,8 @@ export default function HomeHero({ hero, beamRef, effectsEnabled = false }) {
             beamDuration={7}
             beamOpacity={0.28}
             animateBeams={effectsEnabled}
-            gridColor="rgba(10, 26, 58, 0.035)"
+            gridColor="var(--home-warp-grid, rgba(10, 26, 58, 0.035))"
+            background="var(--home-warp-background, linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%))"
           />
         ) : null}
         {bgVideoEnabled && <div className="home-hero__overlay" />}

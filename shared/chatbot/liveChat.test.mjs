@@ -152,6 +152,41 @@ test('availability and typing expire using server time, independently of the vis
   assert.equal(mergeLiveMessages([], [{ id: 'bad', seq: 1, sender: 'admin', content: 'Forged' }]).length, 0)
 })
 
+test('visitor presence is opt-in, throttled, ordered and scoped to one browser connection', async () => {
+  const { createLiveChatClient } = await load()
+  const saved = storage(), calls = []
+  let clock = 0, data
+  const rpc = async (name, args, options) => {
+    calls.push({ name, args, options })
+    if (name === 'open') data = snapshot(args)
+    return name === 'visitor_presence' ? null : data
+  }
+  const client = createLiveChatClient({ rpc, storage: saved, now: () => clock })
+  client.setDraft('Hello'); await client.send()
+  await client.setPresence('away')
+  const updates = () => calls.filter(call => call.name === 'visitor_presence')
+  assert.equal(updates().length, 0, 'an assistant-only session does not advertise a visitor')
+  await client.setPresence('active')
+  assert.equal(updates().length, 1)
+  await client.refresh()
+  assert.equal(updates().length, 1, 'message polls do not flood the presence endpoint')
+  await client.setPresence('active', { force: true })
+  assert.equal(updates().length, 2, 'returning or reconnecting refreshes presence immediately')
+  clock = 15_001
+  await client.refresh()
+  assert.equal(updates().length, 3)
+  await client.setPresence('away', { keepalive: true })
+  await client.setPresence('left', { keepalive: true })
+  assert.deepEqual(updates().map(call => call.args.p_state), ['active', 'active', 'active', 'away', 'left'])
+  assert.deepEqual(updates().map(call => call.args.p_sequence), [1, 2, 3, 4, 5])
+  assert.equal(new Set(updates().map(call => call.args.p_connection_id)).size, 1)
+  assert.equal(updates().at(-1).options.keepalive, true)
+  const otherTab = createLiveChatClient({ rpc, storage: saved, now: () => clock })
+  await otherTab.setPresence('active')
+  assert.notEqual(updates().at(-1).args.p_connection_id, updates()[0].args.p_connection_id)
+  assert.equal(updates().at(-1).args.p_sequence, 1)
+})
+
 test('public RPC uses anonymous credentials, request deadlines and POST bodies for the capability', async () => {
   const requests = []
   const { liveChatRpc } = await load({ env: { VITE_SUPABASE_URL: 'https://example.supabase.co', VITE_SUPABASE_ANON_KEY: 'publishable-test-key' }, globals: { crypto, fetch: async (url, init) => {
@@ -166,4 +201,10 @@ test('public RPC uses anonymous credentials, request deadlines and POST bodies f
   assert.equal(JSON.parse(request.init.body).p_token, 'a'.repeat(64))
   assert.ok(!request.url.includes('a'.repeat(64)))
   assert.ok(request.init.signal instanceof AbortSignal)
+  const departing = liveChatRpc('visitor_presence', { p_token: 'a'.repeat(64), p_state: 'left' }, { keepalive: true })
+  assert.equal(requests.length, 2, 'the exit request starts synchronously before the document unloads')
+  await departing
+  assert.equal(requests[1].init.keepalive, true, 'close notifications can finish after the page exits')
+  assert.equal(requests[1].init.credentials, 'omit')
+  assert.ok(!requests[1].url.includes('a'.repeat(64)))
 })

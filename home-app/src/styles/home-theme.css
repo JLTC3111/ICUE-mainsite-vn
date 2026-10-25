@@ -14,6 +14,8 @@
   --home-primary-ink: #12253b;
   --home-ghost-bg: rgba(255, 255, 255, 0.08);
   --home-cpu-on: #80ecff;
+  --home-warp-background: linear-gradient(180deg, #0b1018 0%, #101a28 55%, #0c0f14 100%);
+  --home-warp-grid: rgba(155, 190, 220, 0.085);
 }
 
 :root[data-icue-home-theme='light'] {
@@ -32,6 +34,8 @@
   --home-primary-ink: #ffffff;
   --home-ghost-bg: rgba(255, 255, 255, 0.7);
   --home-cpu-on: #0076ae;
+  --home-warp-background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%);
+  --home-warp-grid: rgba(10, 26, 58, 0.035);
   --drawer-toggle-surface: #ffffff;
   --drawer-toggle-ink: #175b96;
   --drawer-toggle-border: #64748b;
@@ -56,7 +60,7 @@
   color: var(--home-ink);
 }
 
-/* Hero colors follow its media, independently of the content theme. */
+/* Video keeps a light foreground; the warp canvas follows the page theme. */
 :root[data-icue-home-theme] .home-hero {
   --home-ink: #f3f6fb;
   --home-muted: #b7c4d3;
@@ -69,9 +73,9 @@
   --home-hero-overlay: linear-gradient(180deg, rgba(2, 10, 20, 0.55), rgba(2, 10, 20, 0.25) 45%, rgba(12, 15, 20, 0.85));
 }
 
-/* The bright warp/static fallback needs its original dark foreground. GridScan
-   keeps its own dark underlay and light foreground in the English site. */
-:root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero {
+/* The light warp canvas needs a dark foreground. GridScan keeps its own dark
+   underlay and light foreground in the English site. */
+:root[data-icue-home-theme='light'][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero {
   background: #f8fafc;
   --home-ink: #0a1a3a;
   --home-muted: rgba(10, 26, 58, 0.88);
@@ -98,6 +102,10 @@
 
 :root[data-icue-home-theme][data-home-bg-video='off']:not([data-home-hero-grid-scan='on']) .home-hero__title--shadowed {
   text-shadow: none;
+}
+
+:root[data-icue-home-theme='dark'][data-home-bg-video='off'] .home-hero__title-stack {
+  filter: drop-shadow(0 0 0.65px rgba(232, 242, 255, 0.65));
 }
 
 :root[data-icue-home-theme] .home-hero__subtitle {
