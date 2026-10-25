@@ -5,6 +5,8 @@ import { knowledgeUrls } from './lib/knowledgeAssets.js'
 import { useChatHistory } from './hooks/useChatHistory'
 import { useHistorySync } from './hooks/useHistorySync.js'
 import HistorySettings from './HistorySettings.jsx'
+import LiveChatPanel from './LiveChatPanel.jsx'
+import { liveChatCopy } from './lib/liveChatCopy.js'
 import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
 import { responseEffect, responseExpression } from './mascot/expressions.js'
@@ -83,6 +85,8 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const collapseCopy = floatingCollapseCopy(locale)
   const mascotId = useId()
   const [showSync, setShowSync] = useState(false)
+  const [chatMode, setChatMode] = useState('assistant')
+  const liveLabels = liveChatCopy(locale)
   const { sync, state: syncState } = useHistorySync(isOpen)
   const [draft, setDraft] = useState('')
   const [activity, setActivity] = useState({ locale, state: 'idle' })
@@ -286,16 +290,16 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
       data-auto-collapse={collapse.automatic}
     >
       {isOpen && (
-        <div id={dialogId} className="icue-chat__window" role="dialog" aria-label={labels.title}>
+        <div id={dialogId} className={`icue-chat__window${chatMode === 'team' ? ' icue-chat__window--team' : ''}`} role="dialog" aria-label={chatMode === 'team' ? liveLabels.title : labels.title}>
           <div className="icue-chat__header">
             <div className="icue-chat__title">
               <span className="icue-chat__heading">
-                <span>{labels.title}</span>
-                <span className="icue-chat__subtitle">{labels.badge}</span>
+                <span>{chatMode === 'team' ? liveLabels.title : labels.title}</span>
+                <span className="icue-chat__subtitle">{chatMode === 'team' ? liveLabels.intro : labels.badge}</span>
               </span>
             </div>
             <div className="icue-chat__header-actions">
-              {labels.sync && (
+              {labels.sync && chatMode === 'assistant' && (
                 <button ref={syncButtonRef} type="button" className="icue-chat__sync" aria-label={labels.sync.title} aria-expanded={showSync} onClick={() => setShowSync(value => !value)}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                     <path d="M20 7a8 8 0 0 0-14-1L3 9m0-6v6h6M4 17a8 8 0 0 0 14 1l3-3m0 6v-6h-6" />
@@ -310,6 +314,19 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             </div>
           </div>
 
+          <div className="icue-chat__tabs" role="tablist" aria-label={labels.title} onKeyDown={event => {
+            if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+              event.preventDefault()
+              const mode = event.key === 'Home' ? 'assistant' : event.key === 'End' ? 'team' : chatMode === 'assistant' ? 'team' : 'assistant'
+              setChatMode(mode)
+              event.currentTarget.querySelector(`[data-mode="${mode}"]`)?.focus()
+            }
+          }}>
+            {['assistant', 'team'].map(mode => <button key={mode} type="button" role="tab" data-mode={mode}
+              id={`${dialogId}-${mode}-tab`} aria-controls={`${dialogId}-${mode}-panel`} aria-selected={chatMode === mode}
+              tabIndex={chatMode === mode ? 0 : -1} className="icue-chat__tab" onClick={() => setChatMode(mode)}>{liveLabels[mode]}</button>)}
+          </div>
+          <div id={`${dialogId}-assistant-panel`} role="tabpanel" aria-labelledby={`${dialogId}-assistant-tab`} className="icue-chat__assistant" hidden={chatMode !== 'assistant'}>
           {showSync && labels.sync ? (
             <HistorySettings sync={sync} state={syncState} labels={labels.sync} onBack={() => { setShowSync(false); syncButtonRef.current?.focus({ preventScroll: true }) }} />
           ) : <>
@@ -390,6 +407,8 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             )}
           </div>
           </>}
+          </div>
+          <LiveChatPanel id={`${dialogId}-team-panel`} labelledBy={`${dialogId}-team-tab`} active={chatMode === 'team'} locale={locale} labels={liveLabels} contactUrl={links.contact} />
         </div>
       )}
 

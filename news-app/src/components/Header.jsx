@@ -15,6 +15,7 @@ import useMediaQuery from '../hooks/useMediaQuery'
 import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
+import { liveChatCopy } from '../../../shared/chatbot/lib/liveChatCopy.js'
 
 const NotificationBell = lazy(() => import('./NotificationBell'))
 
@@ -77,13 +78,15 @@ function AuthorIcon({ name }) {
 }
 
 function AuthorToolsMenu({ onNavigate }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { isAdmin } = useAuth()
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const rootRef = useRef(null)
   const active = pathname.startsWith('/dashboard')
     || pathname.startsWith('/assist')
     || pathname.startsWith('/write')
+    || pathname.startsWith('/support')
 
   useEffect(() => {
     if (!menuOpen) return undefined
@@ -134,6 +137,7 @@ function AuthorToolsMenu({ onNavigate }) {
 
         {menuOpen && (
           <ul className="icue-header__author-dropdown" role="menu">
+            {isAdmin && <li role="none"><NavLink to="/support" role="menuitem" className="icue-header__author-item" onClick={go}><AuthorIcon name="articles" /><span>{liveChatCopy(i18n.resolvedLanguage || i18n.language).inbox}</span></NavLink></li>}
             <li role="none">
               <NavLink
                 to="/write"

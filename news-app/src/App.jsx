@@ -22,6 +22,7 @@ const Edit = lazyWithRetry(withSupabase(() => import('./pages/Edit')))
 const Dashboard = lazyWithRetry(withSupabase(() => import('./pages/Dashboard')))
 const Profile = lazyWithRetry(withSupabase(() => import('./pages/Profile')))
 const AiAssist = lazyWithRetry(withSupabase(() => import('./pages/AiAssist')))
+const SupportInbox = lazyWithRetry(withSupabase(() => import('./pages/SupportInbox')))
 
 function RouteFallback() {
   return (
@@ -62,6 +63,7 @@ export default function App() {
             <Route path="edit/:id" element={<ProtectedRoute><Edit /></ProtectedRoute>} />
             <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="assist" element={<ProtectedRoute><AiAssist /></ProtectedRoute>} />
+            <Route path="support" element={<ProtectedRoute><SupportInbox /></ProtectedRoute>} />
             <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />

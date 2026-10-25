@@ -1,8 +1,20 @@
 import { readSessionStorage, writeSessionStorage } from '../storage/safeSessionStorage.js'
 
-export const BACKGROUND_MUSIC_TITLE = 'Driving Ambition'
 const AUDIO_SRC = '/public/music/mixkit-driving-ambition-32.mp3'
 const STORAGE_KEY = 'icue-background-music'
+
+export function getBackgroundTrackFileName(src = AUDIO_SRC) {
+  if (typeof src !== 'string' || !src) return ''
+  const cleanPath = src.split(/[?#]/, 1)[0]
+  const fileName = cleanPath.split('/').filter(Boolean).pop() || ''
+  try {
+    return decodeURIComponent(fileName)
+  } catch {
+    return fileName
+  }
+}
+
+export const BACKGROUND_MUSIC_TITLE = getBackgroundTrackFileName(AUDIO_SRC)
 
 function readPlayback() {
   try {

@@ -7,7 +7,7 @@ async function fixture(t, { playing = false, locale = 'en' } = {}) {
   const f = platform()
   const timers = new Map()
   let serial = 0, now = 0
-  let playback = { isPlaying: playing, trackTitle: 'Driving Ambition' }
+  let playback = { isPlaying: playing, trackTitle: 'mixkit-driving-ambition-32.mp3' }
   f.window.setTimeout = (callback, delay) => {
     const id = ++serial
     timers.set(id, { callback, at: now + delay })
@@ -50,7 +50,7 @@ test('song notification waits for actual playback, hides after six seconds and r
   await f.update({ isPlaying: true })
   assert.equal(f.status().length, 1)
   assert.equal(f.status()[0].props['aria-live'], 'polite')
-  assert.deepEqual(f.status()[0].findAllByType('span').map(span => span.children.join('')), ['Now playing', 'Driving Ambition'])
+  assert.deepEqual(f.status()[0].findAllByType('span').map(span => span.children.join('')), ['Now playing', 'mixkit-driving-ambition-32.mp3'])
   assert.equal(f.timers.size, 1, 'Strict Mode leaves one auto-dismiss deadline')
   await f.tick(5999)
   assert.equal(f.status().length, 1)
@@ -73,7 +73,7 @@ test('manual dismissal changes the notification only, and paused or buffering pl
   await act(async () => f.close().props.onClick())
   assert.equal(f.status().length, 0)
   assert.equal(f.timers.size, 0)
-  await f.update({ trackTitle: 'Another track' })
+  await f.update({ trackTitle: 'another-track.mp3' })
   assert.equal(f.status().length, 1, 'a new song gets a fresh notification')
   await f.update({ isPlaying: false })
   assert.equal(f.status().length, 0, 'paused, waiting or failed audio never displays now playing')

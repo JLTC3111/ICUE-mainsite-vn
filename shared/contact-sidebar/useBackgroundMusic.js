@@ -1,20 +1,34 @@
 import { useCallback, useEffect, useState } from 'react'
-import { BACKGROUND_MUSIC_TITLE, getBackgroundAudio, toggleBackgroundMusic } from './backgroundMusic.js'
+import {
+  BACKGROUND_MUSIC_TITLE,
+  getBackgroundAudio,
+  getBackgroundTrackFileName,
+  toggleBackgroundMusic,
+} from './backgroundMusic.js'
 
 function isAudioPlaying(audio) {
   return Boolean(audio && !audio.paused && !audio.ended && !audio.error && audio.readyState >= 3)
+}
+
+function readTrackTitle(audio) {
+  return getBackgroundTrackFileName(audio?.currentSrc || audio?.src) || BACKGROUND_MUSIC_TITLE
 }
 
 /** The utility rail and bird follow the same audio element, including native pauses. */
 export function useBackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(() =>
     typeof window !== 'undefined' && isAudioPlaying(window.__icueBackgroundAudio))
+  const [trackTitle, setTrackTitle] = useState(() =>
+    typeof window !== 'undefined' ? readTrackTitle(window.__icueBackgroundAudio) : BACKGROUND_MUSIC_TITLE)
 
   useEffect(() => {
     const audio = getBackgroundAudio()
     if (!audio) return undefined
 
-    const syncPlayback = () => setIsPlaying(isAudioPlaying(audio))
+    const syncPlayback = () => {
+      setIsPlaying(isAudioPlaying(audio))
+      setTrackTitle(readTrackTitle(audio))
+    }
     const stopPlayback = () => setIsPlaying(false)
     const stopEvents = ['pause', 'ended', 'waiting', 'emptied', 'error']
 
@@ -30,5 +44,5 @@ export function useBackgroundMusic() {
 
   const toggle = useCallback(() => toggleBackgroundMusic(), [])
 
-  return { toggle, isPlaying, trackTitle: BACKGROUND_MUSIC_TITLE }
+  return { toggle, isPlaying, trackTitle }
 }

@@ -96,6 +96,7 @@
 /newsroom/edit/*     /newsroom/index.html   200
 /newsroom/dashboard  /newsroom/index.html   200
 /newsroom/assist     /newsroom/index.html   200
+/newsroom/support    /newsroom/index.html   200
 /newsroom/profile    /newsroom/index.html   200
 /newsroom/article/*  /newsroom/index.html   200
 /newsroom/*          /newsroom/index.html   200

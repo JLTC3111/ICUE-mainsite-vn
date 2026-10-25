@@ -53,6 +53,7 @@ test('music controls and late subscribers share actual playback, rejected starts
   assert.equal(controls.isAnimating, true)
   await act(async () => renderer.update(render(true)))
   assert.equal(listener.isPlaying, true, 'late subscribers observe music already playing')
+  assert.equal(listener.trackTitle, 'mixkit-driving-ambition-32.mp3')
   assert.equal(instances.length, 1)
 
   await act(async () => {

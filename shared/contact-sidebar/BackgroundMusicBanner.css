@@ -1,7 +1,7 @@
 .icue-music-banner {
   position: fixed;
-  /* Keep the temporary card below the pill header on desktop and phones. */
-  top: calc(env(safe-area-inset-top, 0px) + 72px);
+  /* Center the temporary card along the bottom edge on desktop and phones. */
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
   inset-inline: max(12px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-right, 0px));
   z-index: 1300;
   display: flex;
@@ -54,12 +54,10 @@
 }
 
 .icue-music-banner__title {
-  overflow: hidden;
   color: #f6f9ff;
   font-size: 13px;
   font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .icue-music-banner__close {
@@ -88,7 +86,7 @@
 }
 
 @keyframes icue-music-banner-enter {
-  from { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 

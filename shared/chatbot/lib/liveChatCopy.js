@@ -1,0 +1,75 @@
+const en = {
+  assistant: 'Assistant', team: 'Talk to our team', title: 'ICUE team',
+  intro: 'A real person, here to help.', description: 'Send us a message about your project or question. Our team will reply here.',
+  online: 'Team online', away: 'Team away', connecting: 'Connecting…', reconnecting: 'Reconnecting…',
+  awayHint: 'Leave a message. We’ll reply here when someone is available.',
+  waiting: 'Your message is with our team. A person will reply here.',
+  closed: 'This conversation is resolved. Send a message to continue.',
+  placeholder: 'Write to the ICUE team…', send: 'Send message', sending: 'Sending…',
+  details: 'Add your contact details (optional)', name: 'Your name', email: 'Email address',
+  privacy: 'Messages in this tab are shared with the ICUE team. Your assistant conversation stays separate.',
+  saved: 'You can return to this conversation in this browser.', sessionOnly: 'This browser cannot save the chat connection. Keep this window open to receive replies.',
+  unavailable: 'Team chat is temporarily unavailable. Please try again or use our contact page.',
+  failed: 'Could not confirm delivery. Retry to send this message safely.', retry: 'Retry', contact: 'Contact ICUE',
+  typing: 'Our team is typing…', visitorTyping: 'Visitor is typing…', you: 'You', sent: 'Sent', seen: 'Seen',
+  earlier: 'Earlier messages', loading: 'Loading…', missing: 'This conversation is no longer available.', startNew: 'Start a new conversation',
+  inbox: 'Support inbox', inboxIntro: 'Conversations from the website chatbot.',
+  goOnline: 'Go online', goAway: 'Go away', available: 'You’re available for live chat', unavailableStaff: 'You’re away',
+  presenceHint: 'Stay on this page to receive new messages. Availability expires if the connection is lost.',
+  all: 'All', open: 'Open', resolved: 'Resolved', waitingLabel: 'Waiting', active: 'In progress',
+  empty: 'No conversations here yet.', select: 'Select a conversation to reply.', guest: 'Website visitor',
+  resolve: 'Mark resolved', reopen: 'Reopen', previous: 'Previous', next: 'Next', reply: 'Reply to the visitor…',
+  staffError: 'Could not refresh the inbox. Check your connection and retry.', denied: 'Support inbox access is available to newsroom administrators.',
+}
+
+const translations = {
+  en,
+  vi: {
+    assistant: 'Trợ lý', team: 'Trò chuyện với ICUE', title: 'Đội ngũ ICUE',
+    intro: 'Kết nối với người hỗ trợ.', description: 'Gửi câu hỏi hoặc chia sẻ về dự án của bạn. Đội ngũ ICUE sẽ trả lời ngay tại đây.',
+    online: 'Đội ngũ đang trực tuyến', away: 'Đội ngũ đang vắng mặt', connecting: 'Đang kết nối…', reconnecting: 'Đang kết nối lại…',
+    awayHint: 'Hãy để lại tin nhắn. Chúng tôi sẽ trả lời tại đây khi có người hỗ trợ.', waiting: 'ICUE đã nhận tin nhắn. Nhân viên sẽ trả lời bạn tại đây.',
+    closed: 'Cuộc trò chuyện đã hoàn tất. Gửi tin nhắn để tiếp tục.', placeholder: 'Nhắn tin cho đội ngũ ICUE…', send: 'Gửi tin nhắn', sending: 'Đang gửi…',
+    details: 'Thêm thông tin liên hệ (không bắt buộc)', name: 'Tên của bạn', email: 'Địa chỉ email',
+    privacy: 'Tin nhắn trong mục này được chia sẻ với đội ngũ ICUE. Hội thoại với trợ lý được lưu riêng.',
+    saved: 'Bạn có thể quay lại cuộc trò chuyện trong trình duyệt này.', sessionOnly: 'Trình duyệt không lưu được kết nối. Hãy giữ cửa sổ này mở để nhận trả lời.',
+    unavailable: 'Trò chuyện với nhân viên tạm thời chưa khả dụng. Vui lòng thử lại hoặc dùng trang liên hệ.',
+    failed: 'Chưa xác nhận được việc gửi tin. Thử lại để gửi an toàn.', retry: 'Thử lại', contact: 'Liên hệ ICUE',
+    typing: 'Nhân viên đang nhập…', visitorTyping: 'Khách đang nhập…', you: 'Bạn', sent: 'Đã gửi', seen: 'Đã xem', earlier: 'Tin nhắn trước', loading: 'Đang tải…',
+    missing: 'Cuộc trò chuyện này không còn khả dụng.', startNew: 'Bắt đầu cuộc trò chuyện mới',
+    inbox: 'Hộp thư hỗ trợ', inboxIntro: 'Các cuộc trò chuyện từ chatbot trên website.', goOnline: 'Bắt đầu trực', goAway: 'Ngừng trực',
+    available: 'Bạn đang sẵn sàng hỗ trợ', unavailableStaff: 'Bạn đang vắng mặt', presenceHint: 'Giữ trang này mở để nhận tin nhắn. Trạng thái trực tuyến tự hết hạn khi mất kết nối.',
+    all: 'Tất cả', open: 'Đang mở', resolved: 'Đã hoàn tất', waitingLabel: 'Chờ trả lời', active: 'Đang hỗ trợ',
+    empty: 'Chưa có cuộc trò chuyện.', select: 'Chọn một cuộc trò chuyện để trả lời.', guest: 'Khách truy cập', resolve: 'Đánh dấu hoàn tất', reopen: 'Mở lại',
+    previous: 'Trước', next: 'Tiếp', reply: 'Trả lời khách…', staffError: 'Không thể cập nhật hộp thư. Kiểm tra kết nối và thử lại.', denied: 'Hộp thư hỗ trợ dành cho quản trị viên newsroom.',
+  },
+  de: {
+    assistant: 'Assistent', team: 'Mit unserem Team chatten', title: 'ICUE-Team', intro: 'Persönlich für Sie da.', description: 'Schreiben Sie uns Ihre Frage. Unser Team antwortet hier.',
+    online: 'Team online', away: 'Team abwesend', connecting: 'Verbindung wird hergestellt…', reconnecting: 'Verbindung wird wiederhergestellt…',
+    awayHint: 'Hinterlassen Sie eine Nachricht. Wir antworten hier, sobald jemand verfügbar ist.', waiting: 'Ihre Nachricht ist bei unserem Team. Wir antworten hier.', closed: 'Dieses Gespräch ist abgeschlossen. Schreiben Sie, um fortzufahren.',
+    placeholder: 'An das ICUE-Team schreiben…', send: 'Nachricht senden', sending: 'Wird gesendet…', details: 'Kontaktdaten hinzufügen (optional)', name: 'Ihr Name', email: 'E-Mail-Adresse',
+    privacy: 'Diese Nachrichten werden mit dem ICUE-Team geteilt. Ihr Assistentengespräch bleibt separat.', saved: 'Sie können das Gespräch in diesem Browser fortsetzen.',
+    sessionOnly: 'Dieser Browser kann die Verbindung nicht speichern. Lassen Sie dieses Fenster für Antworten geöffnet.', unavailable: 'Der Team-Chat ist derzeit nicht verfügbar. Versuchen Sie es erneut oder nutzen Sie unsere Kontaktseite.', failed: 'Zustellung nicht bestätigt. Versuchen Sie es erneut.', retry: 'Erneut versuchen', contact: 'ICUE kontaktieren',
+    typing: 'Unser Team schreibt…', visitorTyping: 'Besucher schreibt…', you: 'Sie', sent: 'Gesendet', seen: 'Gelesen', earlier: 'Ältere Nachrichten', loading: 'Wird geladen…', missing: 'Dieses Gespräch ist nicht mehr verfügbar.', startNew: 'Neues Gespräch beginnen',
+    inbox: 'Support-Postfach', inboxIntro: 'Gespräche aus dem Website-Chatbot.', goOnline: 'Online gehen', goAway: 'Abwesend', available: 'Sie sind für den Chat verfügbar', unavailableStaff: 'Sie sind abwesend', presenceHint: 'Lassen Sie diese Seite für neue Nachrichten geöffnet. Bei Verbindungsverlust läuft die Verfügbarkeit ab.',
+    all: 'Alle', open: 'Offen', resolved: 'Erledigt', waitingLabel: 'Wartet', active: 'In Bearbeitung', empty: 'Noch keine Gespräche.', select: 'Wählen Sie ein Gespräch aus.', guest: 'Website-Besucher', resolve: 'Als erledigt markieren', reopen: 'Wieder öffnen', previous: 'Zurück', next: 'Weiter', reply: 'Dem Besucher antworten…', staffError: 'Das Postfach konnte nicht aktualisiert werden. Prüfen Sie die Verbindung.', denied: 'Dieses Postfach ist für Newsroom-Administratoren verfügbar.',
+  },
+  fr: {
+    assistant: 'Assistant', team: 'Parler à notre équipe', title: 'Équipe ICUE', intro: 'Une personne à votre écoute.', description: 'Envoyez-nous votre question. Notre équipe vous répondra ici.',
+    online: 'Équipe en ligne', away: 'Équipe absente', connecting: 'Connexion…', reconnecting: 'Reconnexion…', awayHint: 'Laissez un message. Nous vous répondrons ici dès que possible.', waiting: 'Votre message a été transmis à notre équipe. Une personne vous répondra ici.', closed: 'Cette conversation est terminée. Envoyez un message pour continuer.',
+    placeholder: 'Écrivez à l’équipe ICUE…', send: 'Envoyer', sending: 'Envoi…', details: 'Ajouter vos coordonnées (facultatif)', name: 'Votre nom', email: 'Adresse e-mail',
+    privacy: 'Ces messages sont partagés avec l’équipe ICUE. Votre conversation avec l’assistant reste séparée.', saved: 'Vous pouvez reprendre cette conversation dans ce navigateur.', sessionOnly: 'Ce navigateur ne peut pas enregistrer la connexion. Gardez cette fenêtre ouverte pour recevoir les réponses.',
+    unavailable: 'Le chat avec l’équipe est temporairement indisponible. Réessayez ou consultez notre page de contact.', failed: 'Envoi non confirmé. Réessayez pour envoyer ce message.', retry: 'Réessayer', contact: 'Contacter ICUE', typing: 'Notre équipe écrit…', visitorTyping: 'Le visiteur écrit…', you: 'Vous', sent: 'Envoyé', seen: 'Lu', earlier: 'Messages précédents', loading: 'Chargement…', missing: 'Cette conversation n’est plus disponible.', startNew: 'Nouvelle conversation',
+    inbox: 'Messagerie d’assistance', inboxIntro: 'Conversations du chatbot du site.', goOnline: 'Se rendre disponible', goAway: 'S’absenter', available: 'Vous êtes disponible', unavailableStaff: 'Vous êtes absent', presenceHint: 'Gardez cette page ouverte. La disponibilité expire si la connexion est perdue.', all: 'Tout', open: 'Ouvert', resolved: 'Résolu', waitingLabel: 'En attente', active: 'En cours', empty: 'Aucune conversation.', select: 'Sélectionnez une conversation.', guest: 'Visiteur du site', resolve: 'Marquer comme résolu', reopen: 'Rouvrir', previous: 'Précédent', next: 'Suivant', reply: 'Répondre au visiteur…', staffError: 'Impossible d’actualiser la messagerie. Vérifiez votre connexion.', denied: 'Cette messagerie est réservée aux administrateurs du newsroom.',
+  },
+  ko: {
+    assistant: '도우미', team: '담당자와 대화', title: 'ICUE 팀', intro: '담당자가 직접 도와드립니다.', description: '질문이나 프로젝트에 대해 메시지를 보내주세요. 담당자가 여기에서 답변합니다.', online: '상담 가능', away: '담당자 부재중', connecting: '연결 중…', reconnecting: '다시 연결 중…', awayHint: '메시지를 남겨주시면 담당자가 돌아오는 대로 여기에서 답변합니다.', waiting: '메시지가 전달되었습니다. 담당자가 여기에서 답변합니다.', closed: '완료된 대화입니다. 메시지를 보내 대화를 계속하세요.', placeholder: 'ICUE 팀에 메시지 보내기…', send: '메시지 보내기', sending: '전송 중…', details: '연락처 추가 (선택)', name: '이름', email: '이메일 주소', privacy: '이 탭의 메시지는 ICUE 팀과 공유됩니다. 도우미 대화는 별도로 유지됩니다.', saved: '이 브라우저에서 대화를 이어갈 수 있습니다.', sessionOnly: '이 브라우저는 연결을 저장할 수 없습니다. 답변을 받으려면 창을 열어 두세요.', unavailable: '현재 담당자 채팅을 사용할 수 없습니다. 다시 시도하거나 문의 페이지를 이용해 주세요.', failed: '전송을 확인하지 못했습니다. 안전하게 다시 보내세요.', retry: '다시 시도', contact: 'ICUE에 문의', typing: '담당자가 입력 중…', visitorTyping: '방문자가 입력 중…', you: '나', sent: '전송됨', seen: '읽음', earlier: '이전 메시지', loading: '불러오는 중…', missing: '이 대화를 더 이상 사용할 수 없습니다.', startNew: '새 대화 시작', inbox: '지원 받은편지함', inboxIntro: '웹사이트 챗봇의 대화입니다.', goOnline: '상담 시작', goAway: '자리 비움', available: '상담 가능 상태입니다', unavailableStaff: '부재중입니다', presenceHint: '새 메시지를 받으려면 이 페이지를 열어 두세요. 연결이 끊어지면 상담 가능 상태가 만료됩니다.', all: '전체', open: '진행 중', resolved: '완료', waitingLabel: '대기 중', active: '응대 중', empty: '대화가 없습니다.', select: '답변할 대화를 선택하세요.', guest: '웹사이트 방문자', resolve: '완료로 표시', reopen: '다시 열기', previous: '이전', next: '다음', reply: '방문자에게 답변…', staffError: '받은편지함을 새로 고칠 수 없습니다. 연결을 확인해 주세요.', denied: '뉴스룸 관리자만 사용할 수 있습니다.',
+  },
+  ja: {
+    assistant: 'アシスタント', team: '担当者とチャット', title: 'ICUEチーム', intro: '担当者が直接お手伝いします。', description: 'ご質問やプロジェクトについてお聞かせください。担当者がこちらで返信します。', online: 'チームはオンラインです', away: 'チームは離席中です', connecting: '接続中…', reconnecting: '再接続中…', awayHint: 'メッセージを残してください。担当者が戻り次第、こちらで返信します。', waiting: 'チームに届きました。担当者がこちらで返信します。', closed: 'この会話は完了しました。メッセージを送ると再開できます。', placeholder: 'ICUEチームにメッセージ…', send: '送信', sending: '送信中…', details: '連絡先を追加（任意）', name: 'お名前', email: 'メールアドレス', privacy: 'このタブのメッセージはICUEチームと共有されます。アシスタントとの会話は別に保存されます。', saved: 'このブラウザで会話を続けられます。', sessionOnly: 'このブラウザでは接続を保存できません。返信を受け取るにはウィンドウを開いたままにしてください。', unavailable: '担当者とのチャットは現在利用できません。再試行するか、お問い合わせページをご利用ください。', failed: '送信を確認できませんでした。安全に再送してください。', retry: '再試行', contact: 'ICUEに問い合わせ', typing: '担当者が入力中…', visitorTyping: '訪問者が入力中…', you: 'あなた', sent: '送信済み', seen: '既読', earlier: '以前のメッセージ', loading: '読み込み中…', missing: 'この会話は利用できなくなりました。', startNew: '新しい会話を開始', inbox: 'サポート受信箱', inboxIntro: 'サイトのチャットボットからの会話。', goOnline: '対応開始', goAway: '離席する', available: 'チャット対応可能です', unavailableStaff: '離席中です', presenceHint: '新着メッセージを受け取るには、このページを開いたままにしてください。接続が切れると対応可能状態は失効します。', all: 'すべて', open: '対応中', resolved: '完了', waitingLabel: '返信待ち', active: '対応中', empty: '会話はまだありません。', select: '返信する会話を選択してください。', guest: 'サイト訪問者', resolve: '完了にする', reopen: '再開', previous: '前へ', next: '次へ', reply: '訪問者に返信…', staffError: '受信箱を更新できませんでした。接続を確認してください。', denied: 'ニュースルーム管理者のみ利用できます。',
+  },
+}
+
+export function liveChatCopy(locale = 'vi') {
+  return { ...en, ...translations[locale] }
+}

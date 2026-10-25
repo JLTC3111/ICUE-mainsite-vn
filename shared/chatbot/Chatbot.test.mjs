@@ -8,7 +8,7 @@ const en = JSON.parse(await fs.readFile(new URL('../../faq-app/src/locales/en.js
 const kb = JSON.parse(await fs.readFile(new URL('../../public/chatbot/kb.vi.json', import.meta.url)))
 const authoredReply = { content: kb.intents[0].answer, meta: { source: 'intent' } }
 
-async function fixture(t, getResponse, { touch = false, musicPlaying = false, collapseMode = 'expanded', desktopCollapseMode } = {}) {
+async function fixture(t, getResponse, { touch = false, musicPlaying = false, collapseMode = 'expanded', desktopCollapseMode, liveChat } = {}) {
   silenceRenderer(t)
   const f = platform()
   const collapseKey = `icue:chat-mascot:collapse${touch ? ':compact' : ''}`
@@ -46,6 +46,7 @@ async function fixture(t, getResponse, { touch = false, musicPlaying = false, co
   f.window.__icueBackgroundAudio = audio
   const { default: Chatbot } = await sourceModule('shared/chatbot/Chatbot.jsx', {
     imports: {
+      ...(liveChat ? { './lib/liveChat.js': liveChat } : {}),
       './icue-bird.webp': { default: '/bird.webp' },
       './icue-bird-core.webp': { default: '/bird-core.webp' },
       './lib/knowledgeAssets.js': { knowledgeUrls: {} },
@@ -85,6 +86,48 @@ async function fixture(t, getResponse, { touch = false, musicPlaying = false, co
     update: next => act(async () => renderer.update(element(next))),
   }
 }
+
+test('the team tab exchanges staff messages, preserves separate drafts and stops polling while hidden', async t => {
+  const { createLiveChatClient, liveTimeLeft } = await sourceModule('shared/chatbot/lib/liveChat.js', { globals: { crypto } })
+  const calls = []
+  const health = { version: 1, server_time: new Date().toISOString(), available_until: null }
+  let snapshot
+  const client = createLiveChatClient({ storage: { getItem() {}, setItem() {} }, rpc: async (name, args) => {
+    calls.push({ name, args })
+    if (name === 'health') return health
+    if (name === 'open') snapshot = { conversation: { id: '00000000-0000-4000-8000-000000007100', status: 'waiting' }, health,
+      messages: [{ id: args.p_client_id, client_id: args.p_client_id, seq: 1, content: args.p_message, sender: 'visitor' }], has_more: false }
+    return snapshot
+  } })
+  const f = await fixture(t, () => authoredReply, { liveChat: { getLiveChatClient: () => client, liveTimeLeft } })
+  await f.open()
+  assert.equal(calls.length, 0, 'opening the assistant never starts a staff session')
+  await act(async () => f.find('icue-chat__input').props.onChange({ target: { value: 'Private assistant draft' } }))
+  await act(async () => f.renderer.root.findByProps({ 'data-mode': 'team' }).props.onClick())
+  assert.equal(calls.filter(call => call.name === 'health').length, 1)
+  await act(async () => f.renderer.root.findByType('textarea').props.onChange({ target: { value: 'Please help with my project' } }))
+  await act(async () => f.find('icue-live__composer').props.onSubmit({ preventDefault() {} }))
+  assert.equal(calls.find(call => call.name === 'open').args.p_message, 'Please help with my project')
+  assert.ok(!JSON.stringify(calls).includes('Private assistant draft'))
+  snapshot = { ...snapshot, messages: [...snapshot.messages, { id: 'staff-reply', client_id: 'staff-client', seq: 2, content: 'A person from ICUE is here.', sender: 'staff', sender_name: 'ICUE colleague' }] }
+  await act(async () => client.refresh())
+  assert.ok(JSON.stringify(f.renderer.toJSON()).includes('A person from ICUE is here.'))
+  await act(async () => f.renderer.root.findByProps({ 'data-mode': 'assistant' }).props.onClick())
+  assert.equal(f.find('icue-chat__input').props.value, 'Private assistant draft')
+  await act(async () => f.renderer.root.findByProps({ 'data-mode': 'team' }).props.onClick())
+  await act(async () => f.renderer.root.findByType('textarea').props.onChange({ target: { value: 'Unfinished team draft' } }))
+  await act(async () => f.find('icue-chat__close').props.onClick())
+  await f.open()
+  assert.equal(f.renderer.root.findByType('textarea').props.value, 'Unfinished team draft')
+  await act(async () => { f.document.hidden = true; f.document.dispatchEvent(new Event('visibilitychange')) })
+  const pausedCalls = calls.length
+  await f.advance(30_000)
+  assert.equal(calls.length, pausedCalls, 'hidden visitors make no chat requests')
+  await act(async () => { f.document.hidden = false; f.document.dispatchEvent(new Event('visibilitychange')) })
+  assert.ok(calls.length > pausedCalls, 'returning reads the latest staff response')
+  await unmount(f.renderer)
+  assert.equal(f.timers.size, 0)
+})
 
 test('real chat lifecycle selects reactions, preserves textual errors, and recovers on the next send', async t => {
   let response = authoredReply
