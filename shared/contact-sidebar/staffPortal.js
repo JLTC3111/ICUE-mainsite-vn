@@ -13,9 +13,9 @@ export function staffPortalCopy(locale = 'vi') {
   return copy[normalizeUiLocale(locale, 'vi')]
 }
 
-/** The English home is on a separate host; staff use the main site's inbox. */
+/** The English home is on a separate host; staff use the main site's portal. */
 export function staffPortalUrl(locale = 'vi', hostname = typeof window === 'undefined' ? '' : window.location.hostname) {
   const host = String(hostname || '').toLowerCase()
   const origin = host === 'en.icue.vn' || host.endsWith('.en.icue.vn') ? SITES.vi : ''
-  return withLocale(`${origin}/newsroom/support`, normalizeUiLocale(locale, 'vi'))
+  return withLocale(`${origin}/newsroom/portal?mode=staff`, normalizeUiLocale(locale, 'vi'))
 }

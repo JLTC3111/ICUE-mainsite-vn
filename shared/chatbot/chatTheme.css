@@ -1,0 +1,57 @@
+/* Shared by the composer, its popup, and the surrounding conversation. Hosts
+   can override these tokens or set data-icue-chat-theme on an embedded chat. */
+:root, [data-icue-chat-theme='light'] {
+ --icue-chat-scheme: light;
+ --icue-chat-bg: #ffffff;
+ --icue-chat-surface: #f2f4f7;
+ --icue-chat-ink: #18334d;
+ --icue-chat-muted: #617181;
+ --icue-chat-line: #dfe5eb;
+ --icue-chat-own-bg: #18334d;
+ --icue-chat-own-ink: #ffffff;
+ --icue-chat-link: #35688e;
+ --icue-chat-success: #276d54;
+ --icue-chat-success-bg: #edf5f3;
+ --icue-chat-warning: #936a32;
+ --icue-chat-file-bg: #ffffff;
+ --icue-chat-file-hover: #f4f7fa;
+ --icue-chat-accent: #8064cb;
+ --icue-chat-prompt-bg: #f4f4f5;
+ --icue-chat-prompt-ink: #27272a;
+ --icue-chat-prompt-muted: #686871;
+ --icue-chat-prompt-border: #e0e0e5;
+ --icue-chat-prompt-control: #e4e4e7;
+ --icue-chat-prompt-control-hover: #d6d6dc;
+ --icue-chat-prompt-menu: #ffffff;
+ --icue-chat-prompt-menu-hover: #f0f0f3;
+ --icue-chat-prompt-focus: #b1a0d5;
+ --icue-chat-prompt-ring: #8064cb0c;
+}
+:root:where([data-icue-page-theme='dark'], [data-theme='dark'], .icue-news-theme-dark, [data-about-theme='dark']:not([data-icue-page-theme])):not([data-icue-chat-theme='light']),
+[data-icue-chat-theme='dark'] {
+ --icue-chat-scheme: dark;
+ --icue-chat-bg: #18181b;
+ --icue-chat-surface: #222225;
+ --icue-chat-ink: #f0f1f4;
+ --icue-chat-muted: #aaaeb9;
+ --icue-chat-line: #36363c;
+ --icue-chat-own-bg: #2a425b;
+ --icue-chat-own-ink: #f5f7fa;
+ --icue-chat-link: #a6c8ef;
+ --icue-chat-success: #80cdb0;
+ --icue-chat-success-bg: #203a32;
+ --icue-chat-warning: #d5b57e;
+ --icue-chat-file-bg: #292b32;
+ --icue-chat-file-hover: #343741;
+ --icue-chat-accent: #b39dff;
+ --icue-chat-prompt-bg: #27272a;
+ --icue-chat-prompt-ink: #f5f5f5;
+ --icue-chat-prompt-muted: #acacb5;
+ --icue-chat-prompt-border: #3b3b40;
+ --icue-chat-prompt-control: #3b3b40;
+ --icue-chat-prompt-control-hover: #47474e;
+ --icue-chat-prompt-menu: #323236;
+ --icue-chat-prompt-menu-hover: #424247;
+ --icue-chat-prompt-focus: #81709f;
+ --icue-chat-prompt-ring: #b39dff0c;
+}

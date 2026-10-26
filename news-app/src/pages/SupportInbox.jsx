@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../context/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
-import { supportChatRpc, readSupportDrafts, saveSupportDrafts } from '../lib/supportChat'
+import { supportChatRpc, readSupportDrafts, saveSupportDrafts, downloadSupportFile } from '../lib/supportChat'
 import { liveChatCopy } from '../../../shared/chatbot/lib/liveChatCopy.js'
 import { liveTimeLeft, mergeLiveMessages } from '../../../shared/chatbot/lib/liveChat.js'
 import LiveChatMessages from '../../../shared/chatbot/LiveChatMessages.jsx'
@@ -80,7 +80,7 @@ function InboxWorkspace({ userId, locale, labels }) {
           applyThread(snapshot)
         }
         setError(false)
-      } catch { if (!disposed && !requestController.signal.aborted) setError(true) }
+      } catch (error) { if (!disposed && !requestController.signal.aborted) { if (error?.code === '42501') { setThread(null); setSelectedId(null); if (selectedId) updateDraft(selectedId, { text: '' }) } setError(true) } }
       finally {
         if (!disposed && request === cycle && !requestController.signal.aborted) {
           setLoading(false)
@@ -100,7 +100,7 @@ function InboxWorkspace({ userId, locale, labels }) {
       window.removeEventListener('online', resume)
       window.removeEventListener('pageshow', resume)
     }
-  }, [filter, page, selectedId, revision, applyThread])
+  }, [filter, page, selectedId, revision, applyThread, updateDraft])
 
   // Availability is an explicit choice. Keep heartbeats when this inbox is in
   // a background window; an abandoned browser expires server-side in 45s.
@@ -207,7 +207,7 @@ function InboxWorkspace({ userId, locale, labels }) {
             <section className="support-inbox__thread icue-live" aria-label={labels.title}>
               <div className="support-inbox__thread-heading"><div><h2>{conversation.visitor_name || labels.guest}</h2><p>{conversation.visitor_email || conversation.page_path} · {conversation.locale.toUpperCase()}</p><div className="support-inbox__client-presence" data-state={visitorState} role="status"><span className="support-inbox__client-dot" data-state={visitorState} aria-hidden="true" />{labels[clientPresenceKeys[visitorState]]}</div></div><button type="button" onClick={changeStatus}>{conversation.status === 'closed' ? labels.reopen : labels.resolve}</button></div>
               {['away', 'left', 'disconnected'].includes(visitorState) && <p className="support-inbox__client-notice" role="status">{labels.clientReturnHint}</p>}
-              <LiveChatMessages key={selectedId} messages={current.messages} conversation={conversation} labels={labels} locale={locale} viewer="staff" pending={draft.pending}>
+              <LiveChatMessages key={selectedId} messages={current.messages} conversation={conversation} labels={labels} locale={locale} viewer="staff" pending={draft.pending} onDownload={file => downloadSupportFile(file, selectedId)}>
                 {current.has_more && <button type="button" className="icue-live__text-button" disabled={loadingEarlier} onClick={loadEarlier}>{loadingEarlier ? labels.loading : labels.earlier}</button>}
               </LiveChatMessages>
               <div className="icue-live__typing" role="status">{typing ? labels.visitorTyping : ''}</div>

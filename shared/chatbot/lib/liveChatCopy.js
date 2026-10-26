@@ -80,6 +80,29 @@ const clientPresenceCopy = {
   ja: { clientActive: 'お客様はチャット中です', clientAway: 'お客様は離席中です', clientLeft: 'お客様がチャットを退出しました', clientDisconnected: 'お客様は未接続または非アクティブです', clientUnknown: 'お客様の状態を確認できません', clientReturnHint: '返信は、お客様が戻ったときに読めるよう保存されます。' },
 }
 
+const attachmentCopy = {
+ en: { attachFiles:'Attach files', photosFiles:'Photos & files', fileFormats:'PDF, PNG, JPEG · up to 10 MB each', removeFile:'Remove file', uploading:'Uploading…', uploadFailed:'Upload failed', invalidFile:'Choose a PDF, PNG or JPEG file smaller than 10 MB.', fileLimit:'Attach up to 5 files per message.', downloadFailed:'The file could not be downloaded. Please retry.', download:'Download', downloading:'Downloading…', stop:'Stop', guestRetention:'Guest chats and files are deleted after 24 hours of inactivity.', keepChat:'Sign in to keep this conversation', accountSaved:'Conversation and files saved to your account.', saveFailed:'Your conversation has not been saved to your account yet. Please retry.', saveNow:'Save to my account' },
+ vi: { attachFiles:'Đính kèm tệp', photosFiles:'Ảnh & tệp', fileFormats:'PDF, PNG, JPEG · tối đa 10 MB/tệp', removeFile:'Xóa tệp', uploading:'Đang tải lên…', uploadFailed:'Tải lên thất bại', invalidFile:'Chọn tệp PDF, PNG hoặc JPEG nhỏ hơn 10 MB.', fileLimit:'Đính kèm tối đa 5 tệp mỗi tin nhắn.', downloadFailed:'Không thể tải tệp xuống. Vui lòng thử lại.', download:'Tải xuống', downloading:'Đang tải xuống…', stop:'Dừng', guestRetention:'Cuộc trò chuyện và tệp của khách sẽ bị xóa sau 24 giờ không hoạt động.', keepChat:'Đăng nhập để lưu cuộc trò chuyện', accountSaved:'Cuộc trò chuyện và tệp đã được lưu vào tài khoản.', saveFailed:'Chưa lưu được cuộc trò chuyện vào tài khoản. Vui lòng thử lại.', saveNow:'Lưu vào tài khoản' },
+ de: { attachFiles:'Dateien anhängen', photosFiles:'Fotos & Dateien', fileFormats:'PDF, PNG, JPEG · maximal 10 MB je Datei', removeFile:'Datei entfernen', uploading:'Wird hochgeladen…', uploadFailed:'Upload fehlgeschlagen', invalidFile:'Wählen Sie eine PDF-, PNG- oder JPEG-Datei unter 10 MB.', fileLimit:'Bis zu 5 Dateien pro Nachricht.', downloadFailed:'Download fehlgeschlagen. Bitte erneut versuchen.', download:'Herunterladen', downloading:'Wird heruntergeladen…', stop:'Stoppen', guestRetention:'Gastchats und Dateien werden nach 24 Stunden Inaktivität gelöscht.', keepChat:'Anmelden und Unterhaltung speichern', accountSaved:'Unterhaltung und Dateien sind im Konto gespeichert.', saveFailed:'Die Unterhaltung wurde noch nicht gespeichert. Bitte erneut versuchen.', saveNow:'Im Konto speichern' },
+ fr: { attachFiles:'Joindre des fichiers', photosFiles:'Photos et fichiers', fileFormats:'PDF, PNG, JPEG · 10 Mo maximum par fichier', removeFile:'Retirer le fichier', uploading:'Envoi en cours…', uploadFailed:'Échec de l’envoi', invalidFile:'Choisissez un PDF, PNG ou JPEG de moins de 10 Mo.', fileLimit:'Jusqu’à 5 fichiers par message.', downloadFailed:'Le téléchargement a échoué. Réessayez.', download:'Télécharger', downloading:'Téléchargement…', stop:'Arrêter', guestRetention:'Les conversations et fichiers invités sont supprimés après 24 h d’inactivité.', keepChat:'Se connecter pour conserver la conversation', accountSaved:'Conversation et fichiers enregistrés dans votre compte.', saveFailed:'La conversation n’est pas encore enregistrée. Réessayez.', saveNow:'Enregistrer dans mon compte' },
+ ko: { attachFiles:'파일 첨부', photosFiles:'사진 및 파일', fileFormats:'PDF, PNG, JPEG · 파일당 최대 10 MB', removeFile:'파일 삭제', uploading:'업로드 중…', uploadFailed:'업로드 실패', invalidFile:'10 MB 미만의 PDF, PNG 또는 JPEG 파일을 선택하세요.', fileLimit:'메시지당 최대 5개 파일을 첨부할 수 있습니다.', downloadFailed:'파일을 다운로드하지 못했습니다. 다시 시도하세요.', download:'다운로드', downloading:'다운로드 중…', stop:'중지', guestRetention:'비회원 대화와 파일은 24시간 동안 활동이 없으면 삭제됩니다.', keepChat:'로그인하여 대화 보관', accountSaved:'대화와 파일이 계정에 저장되었습니다.', saveFailed:'대화가 아직 계정에 저장되지 않았습니다. 다시 시도하세요.', saveNow:'내 계정에 저장' },
+ ja: { attachFiles:'ファイルを添付', photosFiles:'写真とファイル', fileFormats:'PDF・PNG・JPEG、1ファイル最大10 MB', removeFile:'ファイルを削除', uploading:'アップロード中…', uploadFailed:'アップロード失敗', invalidFile:'10 MB未満のPDF・PNG・JPEGを選択してください。', fileLimit:'1件のメッセージに最大5ファイルを添付できます。', downloadFailed:'ダウンロードできませんでした。再試行してください。', download:'ダウンロード', downloading:'ダウンロード中…', stop:'停止', guestRetention:'ゲストの会話とファイルは24時間操作がないと削除されます。', keepChat:'ログインして会話を保存', accountSaved:'会話とファイルをアカウントに保存しました。', saveFailed:'会話はまだ保存されていません。再試行してください。', saveNow:'アカウントに保存' },
+}
+
+const attachmentRecoveryCopy = {
+ en: { fileExpired: 'An attachment is no longer available. Remove it and attach the file again.', uploadLimit: 'Upload limit reached. Please try again later or contact the team.' },
+ vi: { fileExpired: 'Một tệp đính kèm không còn khả dụng. Hãy xóa và đính kèm lại tệp.', uploadLimit: 'Đã đạt giới hạn tải lên. Vui lòng thử lại sau hoặc liên hệ đội ngũ.' },
+ de: { fileExpired: 'Ein Anhang ist nicht mehr verfügbar. Entfernen Sie ihn und hängen Sie die Datei erneut an.', uploadLimit: 'Upload-Limit erreicht. Versuchen Sie es später erneut oder kontaktieren Sie das Team.' },
+ fr: { fileExpired: 'Une pièce jointe n’est plus disponible. Retirez-la et joignez-la de nouveau.', uploadLimit: 'Limite d’envoi atteinte. Réessayez plus tard ou contactez l’équipe.' },
+ ko: { fileExpired: '첨부 파일을 사용할 수 없습니다. 삭제한 후 다시 첨부하세요.', uploadLimit: '업로드 한도에 도달했습니다. 나중에 다시 시도하거나 팀에 문의하세요.' },
+ ja: { fileExpired: '添付ファイルを利用できません。削除して再度添付してください。', uploadLimit: 'アップロード上限に達しました。後でもう一度お試しいただくか、スタッフにお問い合わせください。' },
+}
+
+const uploadDeviceCopy = {
+ en: 'Upload from this device', vi: 'Tải lên từ thiết bị này', de: 'Von diesem Gerät hochladen',
+ fr: 'Importer depuis cet appareil', ko: '이 기기에서 업로드', ja: 'この端末からアップロード',
+}
+
 export function liveChatCopy(locale = 'vi') {
-  return { ...en, ...translations[locale], ...clientPresenceCopy[locale] }
+  return { ...en, ...translations[locale], ...clientPresenceCopy[locale], ...attachmentCopy.en, ...attachmentCopy[locale], ...attachmentRecoveryCopy.en, ...attachmentRecoveryCopy[locale], uploadDevice: uploadDeviceCopy[locale] || uploadDeviceCopy.en }
 }

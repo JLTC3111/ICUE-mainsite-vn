@@ -56,10 +56,10 @@ test('fetch deadline includes a stalled body and propagates a Request signal', a
 test('read caches expire missing translations instead of retaining them for the tab lifetime', t => {
   t.mock.timers.enable({ apis: ['Date'] }); const cache = new ExpiringCache(50); cache.set('missing', null); assert.equal(cache.has('missing'), true); t.mock.timers.tick(50); assert.equal(cache.has('missing'), false)
 })
-test('runtime configuration recovers after the first download fails', async t => {
+test('runtime configuration recovers after both configured locations fail', async t => {
   silenceRenderer(t); let calls = 0
-  const mod = await sourceModule('news-app/src/lib/supabaseConfig.js', { globals: { fetch: async () => { calls++; if (calls === 1) throw new Error('offline'); return Response.json({ url: 'https://fixture.invalid', anonKey: 'public-fixture' }) } } })
-  assert.equal(await mod.loadSupabaseConfig(), null); assert.equal((await mod.loadSupabaseConfig()).anonKey, 'public-fixture'); assert.equal(calls, 2)
+  const mod = await sourceModule('news-app/src/lib/supabaseConfig.js', { globals: { fetch: async () => { calls++; if (calls <= 2) throw new Error('offline'); return Response.json({ url: 'https://fixture.invalid', anonKey: 'public-fixture' }) } } })
+  assert.equal(await mod.loadSupabaseConfig(), null); assert.equal((await mod.loadSupabaseConfig()).anonKey, 'public-fixture'); assert.equal(calls, 3)
 })
 test('Supabase SDK imports retry a rejected chunk', async () => {
   let calls = 0; const mod = await sourceModule('news-app/src/lib/supabaseLoader.js', { dynamicImport: async () => { calls++; throw new Error('offline') } })

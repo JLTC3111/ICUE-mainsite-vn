@@ -22,3 +22,10 @@ export function readSupportDrafts(userId) {
 export function saveSupportDrafts(userId, drafts) {
   try { sessionStorage.setItem(keyFor(userId), JSON.stringify(drafts)) } catch { /* The current page retains the draft. */ }
 }
+
+export async function downloadSupportFile(file, conversationId) {
+  const [{ getLiveChatConfig }, { downloadChatFile }] = await Promise.all([import('../../../shared/chatbot/lib/liveChat.js'), import('../../../shared/chatbot/lib/liveChatFiles.js')])
+  const { data, error } = await supabase.auth.getSession()
+  if (error || !data.session) throw new Error('Sign in to download this file')
+  return downloadChatFile(await getLiveChatConfig(), file, { id: conversationId, token: null }, { accessToken: data.session.access_token })
+}

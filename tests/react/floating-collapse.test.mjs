@@ -184,7 +184,7 @@ test('the contact rail keeps its actions out of keyboard navigation when collaps
   assert.equal(musicToggles, 1)
   const staffLink = renderer.root.findByProps({ 'aria-label': 'Staff login and chat management' })
   assert.equal(staffLink.type, 'a', 'staff access uses native link navigation')
-  assert.equal(staffLink.props.href, '/newsroom/support?lang=en')
+  assert.equal(staffLink.props.href, '/newsroom/portal?mode=staff&lang=en')
   assert.equal(staffLink.props.target, undefined, 'staff access opens in the current tab')
   assert.equal(renderer.root.findAllByProps({ 'aria-label': 'Open calendar' }).length, 0)
   await act(async () => find('floating-collapse__toggle').props.onClick())
@@ -197,9 +197,9 @@ test('the contact rail keeps its actions out of keyboard navigation when collaps
 test('the staff shortcut preserves the site language and routes the English host to the main inbox', async () => {
   const { staffPortalUrl, staffPortalCopy } = await sourceModule('shared/contact-sidebar/staffPortal.js')
   for (const locale of ['vi', 'en', 'de', 'fr', 'ko', 'ja']) {
-    assert.equal(staffPortalUrl(locale, 'localhost'), `/newsroom/support?lang=${locale}`)
-    assert.equal(staffPortalUrl(locale, 'icue.vn'), `/newsroom/support?lang=${locale}`)
-    assert.equal(staffPortalUrl(locale, 'en.icue.vn'), `https://icue.vn/newsroom/support?lang=${locale}`)
+    assert.equal(staffPortalUrl(locale, 'localhost'), `/newsroom/portal?mode=staff&lang=${locale}`)
+    assert.equal(staffPortalUrl(locale, 'icue.vn'), `/newsroom/portal?mode=staff&lang=${locale}`)
+    assert.equal(staffPortalUrl(locale, 'en.icue.vn'), `https://icue.vn/newsroom/portal?mode=staff&lang=${locale}`)
     assert.ok(staffPortalCopy(locale).link)
   }
 })

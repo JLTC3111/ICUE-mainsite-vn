@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout'
+import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import { lazyWithRetry } from './lib/lazyWithRetry'
@@ -16,6 +17,7 @@ const withSupabase = (loadRoute) => async () => {
 // TipTap editor) are lazy so they never load for anonymous readers.
 const NewsGrid = lazyWithRetry(() => import('./pages/NewsGrid'))
 const ArticleDetail = lazyWithRetry(withSupabase(() => import('./pages/ArticleDetail')))
+const CustomerPortal = lazyWithRetry(withSupabase(() => import('./pages/CustomerPortal')))
 const Login = lazyWithRetry(withSupabase(() => import('./pages/Login')))
 const Upload = lazyWithRetry(withSupabase(() => import('./pages/Upload')))
 const Edit = lazyWithRetry(withSupabase(() => import('./pages/Edit')))
@@ -23,6 +25,12 @@ const Dashboard = lazyWithRetry(withSupabase(() => import('./pages/Dashboard')))
 const Profile = lazyWithRetry(withSupabase(() => import('./pages/Profile')))
 const AiAssist = lazyWithRetry(withSupabase(() => import('./pages/AiAssist')))
 const SupportInbox = lazyWithRetry(withSupabase(() => import('./pages/SupportInbox')))
+
+function FloatingSiteChatbot() {
+  const { pathname } = useLocation()
+  const { i18n } = useTranslation()
+  return pathname.startsWith('/portal') ? null : <SiteChatbot i18n={i18n} />
+}
 
 function RouteFallback() {
   return (
@@ -54,6 +62,7 @@ export default function App() {
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/portal" element={<CustomerPortal />} />
 
           <Route element={<Layout />}>
             <Route index element={<NewsGrid />} />
@@ -70,6 +79,7 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
+      <FloatingSiteChatbot />
     </BrowserRouter>
   )
 }

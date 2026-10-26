@@ -185,7 +185,7 @@ function Header({ appearance = 'light' }) {
   const showThemeToggle = isReaderRoute || isAgentRoute
   const { t, i18n } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
-  const { isAuthed, profile, user, signOut } = useAuth()
+  const { isAuthed, profile, user, signOut, canEdit } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -261,7 +261,7 @@ function Header({ appearance = 'light' }) {
               onOpenChange={handleSearchOpenChange}
             />
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && <DeferredNotificationBell key={`responsive-${user?.id}`} compact />}
+            {isAuthed && canEdit !== false && <DeferredNotificationBell key={`responsive-${user?.id}`} compact />}
           </div>
         )}
 
@@ -307,7 +307,7 @@ function Header({ appearance = 'light' }) {
             </a>
           </div>
 
-          {isAuthed && <AuthorToolsMenu key={pathname} onNavigate={close} />}
+          {isAuthed && canEdit !== false && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
             {!usesOverflowNav && (
@@ -318,7 +318,7 @@ function Header({ appearance = 'light' }) {
               />
             )}
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && !usesOverflowNav && <DeferredNotificationBell key={user?.id} />}
+            {isAuthed && canEdit !== false && !usesOverflowNav && <DeferredNotificationBell key={user?.id} />}
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>
@@ -326,7 +326,7 @@ function Header({ appearance = 'light' }) {
                 <span className="icue-header__logout-label">{t('nav.logout')}</span>
               </button>
             ) : (
-              <Link to="/login" className="btn btn-sm icue-header__login-btn" onClick={close}>
+              <Link to="/portal" className="btn btn-sm icue-header__login-btn" onClick={close}>
                 {t('nav.login')}
               </Link>
             )}

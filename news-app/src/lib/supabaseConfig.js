@@ -13,13 +13,15 @@ async function resolveRuntimeConfig() {
 
   try {
     const base = import.meta.env.BASE_URL || '/'
-    const json = await withDeadline(async (signal) => {
-      const res = await fetch(`${base}supabase-config.json`, { cache: 'no-store', signal })
-      if (!res.ok) throw new Error(`Configuration request failed (${res.status})`)
-      return res.json()
-    })
-    if (isValidConfig(json?.url, json?.anonKey)) {
-      return { url: json.url, anonKey: json.anonKey }
+    for (const path of new Set([`${base}supabase-config.json`, '/newsroom/supabase-config.json'])) {
+      try {
+        const json = await withDeadline(async (signal) => {
+          const res = await fetch(path, { cache: 'no-store', signal })
+          if (!res.ok) throw new Error(`Configuration request failed (${res.status})`)
+          return res.json()
+        })
+        if (isValidConfig(json?.url, json?.anonKey)) return { url: json.url, anonKey: json.anonKey }
+      } catch { /* Shared customer chat also runs outside the newsroom base. */ }
     }
   } catch (error) {
     console.warn('[supabase] Failed to load runtime config:', error)

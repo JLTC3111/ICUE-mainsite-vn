@@ -1,6 +1,8 @@
 import { useEffect, useRef, useSyncExternalStore } from 'react'
 import { getLiveChatClient, liveTimeLeft } from './lib/liveChat.js'
 import LiveChatMessages from './LiveChatMessages.jsx'
+import PromptBar from './PromptBar.jsx'
+import { connectAccount, customerPortalUrl } from '../customer-account/account.js'
 import './LiveChat.css'
 
 export default function LiveChatPanel({ active, locale, labels, contactUrl, id, labelledBy, client = getLiveChatClient() }) {
@@ -8,6 +10,7 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
   const inputRef = useRef(null)
 
   useEffect(() => () => { void client.setPresence('left', { keepalive: true }) }, [client])
+  useEffect(() => { if (active) void connectAccount().catch(() => {}) }, [active])
 
   useEffect(() => {
     if (!active) { void client.setPresence('away'); return undefined }
@@ -70,7 +73,7 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
         <span className="icue-live__dot" aria-hidden="true" />
         <span role="status">{unavailable ? labels.unavailable : missing ? labels.missing : statusLabel}</span>
       </div>
-      <LiveChatMessages messages={state.messages} conversation={state.conversation} labels={labels} locale={locale} pending={state.pending} active={active}>
+      <LiveChatMessages messages={state.messages} conversation={state.conversation} labels={labels} locale={locale} pending={state.pending ? { ...state.pending, attachments: state.attachments } : null} active={active} onDownload={file => client.downloadFile(file)}>
         {state.hasMore && <button className="icue-live__text-button" type="button" disabled={state.loadingEarlier} onClick={() => client.loadEarlier()}>{state.loadingEarlier ? labels.loading : labels.earlier}</button>}
         {!state.conversation && !state.pending && (
           <div className="icue-live__welcome">
@@ -103,21 +106,15 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
             <a href={contactUrl}>{labels.contact}</a>
           </div>
         )}
-        <div className="icue-live__input-row">
-          <textarea ref={inputRef} rows={2} maxLength={4000} value={state.draft} readOnly={Boolean(state.pending)} disabled={missing}
-            aria-label={labels.placeholder} placeholder={labels.placeholder}
-            onChange={event => { client.setDraft(event.target.value); client.typing(Boolean(event.target.value.trim())) }}
-            onKeyDown={event => {
-              if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
-                event.preventDefault()
-                event.currentTarget.form.requestSubmit()
-              }
-            }} />
-          <button type="submit" className="icue-live__send" disabled={state.sending || missing || (!state.pending && !state.draft.trim())} aria-label={state.sending ? labels.sending : state.pending ? labels.retry : labels.send}>
-            {state.sending ? <span className="icue-live__sending" aria-hidden="true">···</span> : <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="m5 12 7-7 7 7M12 5v15" /></svg>}
-          </button>
+        {(state.accountError || state.fileError) && <p className="icue-live__notice" role="alert">{state.accountError ? labels.saveFailed : state.fileError === 'format' ? labels.invalidFile : state.fileError === 'limit' ? labels.fileLimit : state.fileError === 'download' ? labels.downloadFailed : state.fileError === 'expired' ? labels.fileExpired : state.fileError === 'quota' ? labels.uploadLimit : labels.uploadFailed}</p>}
+        <PromptBar inputRef={inputRef} value={state.draft} placeholder={labels.placeholder} labels={labels}
+          attachments={state.attachments || []} busy={state.sending || state.attachments?.some(file => file.status === 'uploading')} disabled={missing} readOnly={Boolean(state.pending)}
+          onChange={value => { client.setDraft(value); client.typing(Boolean(value.trim())) }} onSend={() => client.send({ locale, path: window.location.pathname || '/' })} onStop={() => client.stop()}
+          onAttach={files => client.attachFiles(files, { locale, path: window.location.pathname || '/' })} onRemove={file => client.removeAttachment(file)} onRetry={file => client.retryAttachment(file)} />
+        <div className="icue-live__retention">
+          {state.conversation?.account_saved ? <p>{labels.accountSaved}</p> : <><p>{labels.guestRetention}</p>{state.account ? <button type="button" onClick={() => client.syncAccount(state.account, { force: true })}>{labels.saveNow}</button> : <a href={customerPortalUrl(locale)} aria-disabled={state.attachments?.some(file => file.status === 'uploading') || undefined} onClick={event => { if (state.attachments?.some(file => file.status === 'uploading')) event.preventDefault(); else client.saveDraft() }}>{labels.keepChat}</a>}</>}
         </div>
-        <p className="icue-live__privacy">{state.conversation ? state.sessionOnly ? labels.sessionOnly : labels.saved : labels.privacy}</p>
+        {state.sessionOnly && <p className="icue-live__privacy">{labels.sessionOnly}</p>}
       </form>
     </section>
   )

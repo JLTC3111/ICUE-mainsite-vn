@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import fs from 'node:fs/promises'
+import { createRequire } from 'node:module'
+const icons = createRequire(import.meta.url)('lucide-react')
 import { React, act, create, deferred, platform, silenceRenderer, sourceModule, unmount } from '../resilience/testHarness.js'
 
 const vi = JSON.parse(await fs.readFile(new URL('../../faq-app/src/locales/vi.json', import.meta.url)))
@@ -48,6 +50,9 @@ async function fixture(t, getResponse, { touch = false, musicPlaying = false, co
     imports: {
       ...(liveChat ? { './lib/liveChat.js': liveChat } : {}),
       './icue-bird.webp': { default: '/bird.webp' },
+      'lucide-react': icons,
+      'react-dom': { createPortal: node => node },
+      '../customer-account/account.js': { connectAccount: async () => {}, customerPortalUrl: () => '/newsroom/portal' },
       './icue-bird-core.webp': { default: '/bird-core.webp' },
       './lib/knowledgeAssets.js': { knowledgeUrls: {} },
       './lib/knowledge': { createChatbotKnowledge: ({ siteLang }) => ({ getResponse: (message, options) => getResponse(message, siteLang, options) }) },
@@ -63,7 +68,7 @@ async function fixture(t, getResponse, { touch = false, musicPlaying = false, co
   await act(async () => {
     renderer = create(element(), { createNodeMock: node => {
       if (node.props.className?.split(' ').includes('icue-chat')) return root
-      return { scrollTop: 0, scrollHeight: 100, focus: () => { focused = node.props.className } }
+      return { style: {}, scrollTop: 0, scrollHeight: 100, focus: () => { focused = node.props.className } }
     } })
   })
   const find = className => renderer.root.findByProps({ className })
@@ -472,6 +477,8 @@ test('the reusable mascot composes expressions and SVG effects without changing 
   const { default: ChatMascot } = await sourceModule('shared/chatbot/mascot/ChatMascot.jsx', {
     imports: {
       './icue-bird.webp': { default: '/bird.webp' },
+      'lucide-react': icons,
+      '../customer-account/account.js': { connectAccount: async () => {}, customerPortalUrl: () => '/newsroom/portal' },
       './icue-bird-core.webp': { default: '/bird-core.webp' },
     },
     globals: platform(),

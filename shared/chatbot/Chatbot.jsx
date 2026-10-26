@@ -80,12 +80,14 @@ function Message({ message, onLinkClick }) {
  */
 export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
   const { isPlaying: musicPlaying } = useBackgroundMusic()
-  const [isOpen, setIsOpen] = useState(false)
+  const resumeTeam = useRef((() => { try { return sessionStorage.getItem('icue:open-team-chat') === '1' } catch { return false } })())
+  const [isOpen, setIsOpen] = useState(resumeTeam.current)
   const collapse = useFloatingCollapse({ storageKey: 'icue:chat-mascot:collapse', keepOpen: isOpen })
   const collapseCopy = floatingCollapseCopy(locale)
   const mascotId = useId()
   const [showSync, setShowSync] = useState(false)
-  const [chatMode, setChatMode] = useState('assistant')
+  const [chatMode, setChatMode] = useState(resumeTeam.current ? 'team' : 'assistant')
+  useEffect(() => { if (resumeTeam.current) { try { sessionStorage.removeItem('icue:open-team-chat') } catch { /* The conversation still opens for this visit. */ } } }, [])
   const liveLabels = liveChatCopy(locale)
   const { sync, state: syncState } = useHistorySync(isOpen)
   const [draft, setDraft] = useState('')

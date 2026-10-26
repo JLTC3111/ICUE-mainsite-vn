@@ -6,6 +6,8 @@ insert into auth.users(id,email,raw_user_meta_data) values
  ('00000000-0000-4000-8000-000000000001','private-one@example.invalid','{}'),
  ('00000000-0000-4000-8000-000000000002','private-two@example.invalid','{}'),
  ('00000000-0000-4000-8000-000000000003','admin@example.invalid','{}');
+-- Newsroom authors are assigned explicitly; public signups are customers.
+update public.profiles set role = 'author' where id in ('00000000-0000-4000-8000-000000000001','00000000-0000-4000-8000-000000000002');
 update public.profiles set role = 'admin' where id = '00000000-0000-4000-8000-000000000003';
 select pg_temp.assert_ok(not exists(select 1 from public.profiles where full_name like '%@%' or display_name like 'private-%'), 'public profiles do not contain inferred email identities');
 select pg_temp.assert_ok(exists(select 1 from information_schema.columns where table_name='article_translations' and column_name='cover_info'), 'complete fresh bootstrap includes cover translations');

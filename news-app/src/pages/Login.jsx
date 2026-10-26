@@ -15,7 +15,7 @@ const MIN_PASSWORD_LEN = 8
 
 export default function Login() {
   const { t, i18n } = useTranslation()
-  const { signIn } = useAuth()
+  const { signIn, user, profile } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/dashboard'
@@ -34,6 +34,10 @@ export default function Login() {
   const busyRef = useRef(false)
   const navigationTimerRef = useRef(null)
   useEffect(() => () => clearTimeout(navigationTimerRef.current), [])
+
+  useEffect(() => {
+    if (user && profile?.role === 'customer' && mode !== 'recovery') navigate('/portal', { replace: true })
+  }, [user, profile?.role, mode, navigate])
 
   const close = useCallback(() => {
     clearPasswordRecoveryUrl()

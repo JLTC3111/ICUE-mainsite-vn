@@ -208,3 +208,87 @@ test('public RPC uses anonymous credentials, request deadlines and POST bodies f
   assert.equal(requests[1].init.credentials, 'omit')
   assert.ok(!requests[1].url.includes('a'.repeat(64)))
 })
+
+test('file-only messages prepare a conversation, upload privately and keep retry identities', async () => {
+ const { createLiveChatClient } = await load(), calls = [], saved = storage()
+ const id = '00000000-0000-4000-8000-000000008901'
+ let messages = [], fail = true
+ const view = () => ({ conversation: { id, status:'waiting', guest_expires_at:new Date(Date.now()+86_400_000).toISOString() }, messages, health:health() })
+ const client = createLiveChatClient({ storage:saved, config:async()=>({}), upload:async(_config,file,_identity,client_id)=>({id:crypto.randomUUID(),client_id,name:file.name,mime:file.type,size:file.size}), rpc:async(name,args)=>{
+  calls.push({name,args})
+  if(name==='send_files'){
+   if(!messages.length)messages=[{id:crypto.randomUUID(),client_id:args.p_client_id,seq:1,sender:'visitor',content:args.p_message,attachments:args.p_files.map(id=>({id}))}]
+   if(fail){fail=false;throw Error('Response lost')}
+  }
+  return name==='health'?health():view()
+ }})
+ await client.attachFiles([{name:'document.pdf',type:'application/pdf',size:120}],{locale:'en',path:'/contact'})
+ assert.equal(calls[0].name,'prepare');assert.equal(client.getSnapshot().attachments[0].status,'ready')
+ assert.equal(await client.send(),false)
+ const pending=client.getSnapshot().pending
+ client.removeAttachment(client.getSnapshot().attachments[0]);assert.equal(client.getSnapshot().attachments.length,1,'an uncertain send retains its file identity')
+ assert.equal(await client.send(),true)
+ const sends=calls.filter(call=>call.name==='send_files')
+ assert.deepEqual(sends[0].args,sends[1].args);assert.equal(sends[0].args.p_client_id,pending.id)
+ assert.equal(client.getSnapshot().attachments.length,0);assert.equal(client.getSnapshot().messages.length,1)
+})
+
+test('removing one uploading file leaves other selections intact and ignores its late response', async () => {
+ const {createLiveChatClient}=await load(), uploads=[]
+ const id='00000000-0000-4000-8000-000000008902'
+ const client=createLiveChatClient({storage:storage(),config:async()=>({}),rpc:async()=>({conversation:{id},messages:[],health:health()}),upload:(_config,file,_identity,client_id)=>{
+  const pending=deferred();uploads.push({file,client_id,...pending});return pending.promise
+ }})
+ const attached=client.attachFiles([{name:'a.png',type:'image/png',size:50},{name:'b.pdf',type:'application/pdf',size:50}],{locale:'en'})
+ for(let i=0;i<20&&uploads.length<2;i++)await new Promise(resolve=>setImmediate(resolve))
+ assert.equal(uploads.length,2)
+ client.removeAttachment(client.getSnapshot().attachments[0])
+ assert.equal(client.getSnapshot().attachments.length,1)
+ uploads.forEach(entry=>entry.resolve({id:crypto.randomUUID(),client_id:entry.client_id,name:entry.file.name,mime:entry.file.type,size:50}))
+ await attached
+ assert.equal(client.getSnapshot().attachments.length,1);assert.equal(client.getSnapshot().attachments[0].name,'b.pdf')
+})
+
+test('sign-in claims a guest conversation and logout clears private history and pending drafts', async () => {
+ const {createLiveChatClient}=await load(), saved=storage(), calls=[]
+ const id='00000000-0000-4000-8000-000000008903', user={id:'00000000-0000-4000-8000-000000008904',email:'customer@example.invalid'}
+ let data
+ const rpc=async(name,args)=>{
+  calls.push({name,args})
+  if(name==='health')return health()
+  if(name==='open')data={...snapshot(args),conversation:{id,status:'waiting',account_saved:false}}
+  if(name==='claim')data={...data,conversation:{...data.conversation,account_saved:true}}
+  return data
+ }
+ const client=createLiveChatClient({storage:saved,rpc});client.setDraft('Please keep this enquiry');await client.send()
+ await client.syncAccount(user)
+ assert.equal(client.getSnapshot().conversation.account_saved,true)
+ assert.equal(saved.getItem('icue:live-chat:v1'),undefined)
+ client.setDraft('Private unfinished reply')
+ await client.syncAccount(null)
+ assert.equal(client.getSnapshot().messages.length,0);assert.equal(client.getSnapshot().draft,'')
+ assert.ok(!saved.getItem(`icue:live-chat:v1:account:${user.id}`).includes('Private unfinished reply'))
+ const restored=createLiveChatClient({storage:saved,rpc});await restored.syncAccount(user)
+ assert.equal(calls.at(-1).name,'read');assert.equal(calls.at(-1).args.p_token,null);assert.equal(calls.at(-1).args.p_conversation_id,id)
+})
+
+test('expired guest sessions clear local history instead of trying to revive the server conversation', async()=>{
+ const {createLiveChatClient}=await load(),saved=storage();let now=0,calls=0
+ const client=createLiveChatClient({storage:saved,now:()=>now,rpc:async(name,args)=>{calls++;return {...snapshot(args),conversation:{id:'00000000-0000-4000-8000-000000008905',guest_expires_at:new Date(86_400_000).toISOString()}}}})
+ client.setDraft('Temporary question');await client.send();assert.equal(client.getSnapshot().messages.length,1)
+ const count=calls;now=86_400_001;await client.refresh()
+ assert.equal(calls,count);assert.equal(client.getSnapshot().messages.length,0);assert.equal(client.getSnapshot().status,'missing');assert.equal(saved.getItem('icue:live-chat:v1'),undefined)
+})
+
+test('a missing draft attachment stays recoverable without clearing the authorized conversation', async()=>{
+ const {createLiveChatClient}=await load(),id='00000000-0000-4000-8000-000000008906'
+ const data={conversation:{id,status:'waiting'},messages:[{id:'prior',seq:1,sender:'staff',content:'Previous staff response'}],health:health()}
+ const client=createLiveChatClient({storage:storage(),config:async()=>({}),upload:async(_c,file,_i,client_id)=>({id:crypto.randomUUID(),client_id,name:file.name,mime:file.type,size:file.size}),rpc:async(name)=>{if(name==='send_files')throw Object.assign(Error('File unavailable'),{code:'42501'});return data}})
+ await client.attachFiles([{name:'draft.pdf',type:'application/pdf',size:40}],{locale:'en'})
+ client.setDraft('Keep this draft and the previous messages')
+ assert.equal(await client.send(),false)
+ assert.equal(client.getSnapshot().messages[0].content,'Previous staff response')
+ assert.equal(client.getSnapshot().status,'ready');assert.equal(client.getSnapshot().pending,null);assert.equal(client.getSnapshot().fileError,'expired')
+ assert.equal(client.getSnapshot().draft,'Keep this draft and the previous messages')
+ client.removeAttachment(client.getSnapshot().attachments[0]);assert.equal(client.getSnapshot().attachments.length,0)
+})

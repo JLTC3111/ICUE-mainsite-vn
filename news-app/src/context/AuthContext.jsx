@@ -171,6 +171,7 @@ export function AuthProvider({ children }) {
       profile,
       isAuthed: !!session,
       isAdmin: profile?.role === 'admin',
+      canEdit: ['admin','author'].includes(profile?.role),
       loading,
       signIn,
       signOut,

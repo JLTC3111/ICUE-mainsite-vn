@@ -2,7 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function ProtectedRoute({ children }) {
-  const { isAuthed, loading } = useAuth()
+  const { isAuthed, loading, canEdit } = useAuth()
   const location = useLocation()
 
   if (loading) {
@@ -13,7 +13,8 @@ export default function ProtectedRoute({ children }) {
     )
   }
   if (!isAuthed) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+    return <Navigate to="/portal?mode=staff" replace state={{ from: location.pathname }} />
   }
+  if (canEdit === false) return <Navigate to="/portal" replace />
   return children
 }

@@ -1,7 +1,18 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
-export default function LiveChatMessages({ messages, conversation, labels, locale, viewer = 'visitor', pending, active = true, children }) {
+export default function LiveChatMessages({ messages, conversation, labels, locale, viewer = 'visitor', pending, active = true, onDownload, children }) {
   const logRef = useRef(null)
+  const [downloading, setDownloading] = useState(null)
+  const [downloadError, setDownloadError] = useState(false)
+  const files = (attachments, pending = false) => Array.isArray(attachments) && attachments.filter(file => typeof file?.name === 'string').map(file => (
+    <button key={file.id || file.client_id} type="button" className="icue-live__file" disabled={pending || !onDownload || Boolean(downloading)} aria-label={`${labels.download}: ${file.name}`} onClick={async () => {
+      setDownloading(file.id); setDownloadError(false)
+      try { await onDownload(file) } catch { setDownloadError(true) } finally { setDownloading(null) }
+    }}>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 15h8m-8 4h5" /></svg>
+      <span><strong>{file.name}</strong><small>{Math.ceil(file.size / 1024)} KB · {downloading === file.id ? labels.downloading : labels.download}</small></span>
+    </button>
+  ))
   const previous = useRef({ last: null, height: 0, count: 0 })
   useLayoutEffect(() => {
     const log = logRef.current
@@ -19,6 +30,7 @@ export default function LiveChatMessages({ messages, conversation, labels, local
   return (
     <div ref={logRef} className="icue-live__messages" role="log" aria-live="polite" aria-label={labels.title}>
       {children}
+      {downloadError && <p className="icue-live__notice" role="alert">{labels.downloadFailed}</p>}
       {messages.map(message => {
         const own = message.sender === viewer
         const readSeq = viewer === 'visitor' ? conversation?.staff_read_seq : conversation?.visitor_read_seq
@@ -26,7 +38,8 @@ export default function LiveChatMessages({ messages, conversation, labels, local
         return (
           <article key={message.id} className={`icue-live__message${own ? ' icue-live__message--own' : ''}`}>
             <span className="icue-live__sender">{own ? labels.you : message.sender_name || (viewer === 'visitor' ? labels.title : labels.guest)}</span>
-            <p>{message.content}</p>
+            {message.content && <p>{message.content}</p>}
+            {files(message.attachments)}
             <small>
               {Number.isFinite(time.getTime()) && <time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(time)}</time>}
               {own && <span> · {message.seq <= readSeq ? labels.seen : labels.sent}</span>}
@@ -36,7 +49,7 @@ export default function LiveChatMessages({ messages, conversation, labels, local
       })}
       {pending && !messages.some(message => message.client_id === pending.id) && (
         <article className="icue-live__message icue-live__message--own icue-live__message--pending">
-          <span className="icue-live__sender">{labels.you}</span><p>{pending.content}</p>
+          <span className="icue-live__sender">{labels.you}</span>{pending.content && <p>{pending.content}</p>}{files(pending.attachments, true)}
         </article>
       )}
     </div>
