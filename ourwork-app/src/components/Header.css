@@ -349,6 +349,28 @@
   flex-shrink: 0;
 }
 
+.ow-header__actions .icue-apps .icue-apps__trigger {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50% !important;
+  color: var(--icue-chrome-text-strong);
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  box-shadow: inset 0 0 0 1px var(--icue-chrome-border);
+}
+
+.ow-header__actions .icue-apps .icue-apps__trigger:hover,
+.ow-header__actions .icue-apps .icue-apps__trigger[aria-expanded='true'] {
+  background: #0a0e14e6;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 28%, transparent);
+}
+
+.ow-header__actions .icue-apps .icue-apps__trigger[aria-expanded='true'] {
+  box-shadow: inset 0 0 0 1px var(--icue-chrome-accent);
+}
+
 /* Both controls ship square-and-hairlined for the page ground (§8). Round them
    onto the chrome so they sit with the flag disc. */
 .ow-header__actions .animated-theme-toggler {
@@ -409,6 +431,12 @@ body.nav-drawer-open .nav-drawer {
 }
 
 /* ---------- responsive ---------- */
+
+@media (min-width: 1025px) and (max-width: 1180px) {
+  .ow-header__link {
+    padding-inline: 0.42rem;
+  }
+}
 
 /* Below 1024 the nav pill is gone and the contracted design merges brand and
    actions into a single pill — which is exactly the one thing the expanded

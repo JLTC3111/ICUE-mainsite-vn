@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { useReducedMotion } from 'motion/react'
+import { ShinyButton } from '../../../news-app/src/components/magicui/ShinyButton.jsx'
 import { TOPICS } from '../data/contactChannels'
 import { composeMailto } from '../lib/netlifyForm'
 import { useContactForm } from '../hooks/useContactForm'
@@ -60,6 +62,8 @@ export default function ContactForm() {
 
   const ready = form.missing.length === 0
   const sending = form.status === 'sending'
+  const reducedMotion = useReducedMotion()
+  const shineStopped = reducedMotion || sending
 
   // The mockup's static "Still needs a name, an email, …" line, computed. It
   // names what is actually outstanding, so it stays useful as the form fills
@@ -176,15 +180,20 @@ export default function ContactForm() {
           {/* Never `disabled`: a dead button explains nothing. Until the four
               fields are there it is quiet rather than inert, and pressing it
               shows the errors and jumps to the first thing missing. */}
-          <button
+          <ShinyButton
             type="submit"
             className={`ct-send__button${ready ? ' is-ready' : ''}`}
             aria-describedby="ct-send-hint"
+            aria-busy={sending || undefined}
+            initial={{ '--x': '100%', scale: 1 }}
+            animate={{ '--x': shineStopped ? '100%' : '-100%', scale: 1 }}
+            transition={shineStopped ? { duration: 0 } : { '--x': { duration: 1.6, ease: 'easeInOut', repeat: Infinity, repeatDelay: 1 } }}
+            whileTap={reducedMotion ? undefined : { scale: 0.97 }}
           >
             <span className="ct-send__label">
               {sending ? t('form.submitting') : t('form.submit')}
             </span>
-          </button>
+          </ShinyButton>
           <p className="ct-send__hint" id="ct-send-hint" aria-live="polite">
             {hint}
           </p>

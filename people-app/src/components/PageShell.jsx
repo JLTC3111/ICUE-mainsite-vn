@@ -5,7 +5,6 @@ import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackground
 import Header from './Header'
 import Footer from './Footer'
 import InteractiveBackground from './InteractiveBackground/InteractiveBackground'
-import ShinyButton from './ShinyButton/ShinyButton'
 import ShimmerButton from './ShimmerButton/ShimmerButton'
 import './PageShell.css'
 
@@ -69,18 +68,21 @@ export default function PageShell({
           {showHrLink && (
             <div className="page-shell__footer-actions">
               {interactiveBgActive ? (
-                <ShinyButton
+                <a
+                  className="page-shell__hr-link"
                   href="https://hr.icue.vn"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t('hrLink')}
-                </ShinyButton>
+                  <span className="page-shell__hr-label shimmer">{t('hrLink')}</span>
+                </a>
               ) : (
                 <ShimmerButton
                   href="https://hr.icue.vn"
                   target="_blank"
                   rel="noopener noreferrer"
+                  borderRadius="999px"
+                  background="rgba(0, 0, 0, 0.85)"
                 >
                   {t('hrLink')}
                 </ShimmerButton>

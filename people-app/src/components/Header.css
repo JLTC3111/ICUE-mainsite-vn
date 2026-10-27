@@ -89,6 +89,21 @@
   background: var(--icue-accent-muted);
 }
 
+/* The bar is frosted white. Over the dark page that reads as milk-ivory.
+   Opaque fills on these two controls sat brighter than the bar. */
+.people-header .nav-drawer__toggle {
+  background: transparent;
+}
+
+.people-header .lang-switcher__field {
+  background: transparent;
+}
+
+.people-header .lang-switcher__field:hover,
+.people-header .lang-switcher:focus-within .lang-switcher__field {
+  background: color-mix(in srgb, var(--icue-ink) 6%, transparent);
+}
+
 /* Language switcher layout/styles come from @icue/i18n/LanguageSwitcher.css */
 
 @media (max-width: 768px) {

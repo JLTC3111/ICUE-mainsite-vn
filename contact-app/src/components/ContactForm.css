@@ -186,8 +186,11 @@ textarea.ct-field__input {
   margin-top: 24px;
 }
 
-.ct-send__button {
+.ct-send__button.shiny-button {
+  --primary: #fff;
+  --x: 100%;
   padding: 11px 22px;
+  border: 1px solid color-mix(in srgb, var(--ct-on-accent) 35%, transparent);
   background: var(--ct-accent-quiet);
   color: var(--ct-on-accent);
   font-size: 14px;
@@ -196,34 +199,31 @@ textarea.ct-field__input {
   transition: background 0.22s var(--ct-ease);
 }
 
-/* Magic UI's Animated Shiny Text pattern, constrained to the ready state so
-   the form's affordance gets one quiet cue instead of a permanent light show. */
+/* Keep the white label opaque and confine the moving shine to the border. */
 .ct-send__label {
   display: inline-block;
 }
 
-.ct-send__button.is-ready .ct-send__label {
-  color: transparent;
-  background: linear-gradient(
-    110deg,
-    var(--ct-on-accent) 36%,
-    rgba(255, 255, 255, 0.58) 47%,
-    var(--ct-on-accent) 58%
-  );
-  background-size: 230% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: ct-send-shine 2.8s linear infinite;
+.ct-send__button .shiny-button__label {
+  color: var(--ct-on-accent);
+  font: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  /* Override the shared component's inline transparency mask. */
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
 }
 
-@keyframes ct-send-shine {
-  from {
-    background-position: 110% 0;
-  }
-  to {
-    background-position: -120% 0;
-  }
+.ct-send__button .shiny-button__shine {
+  background-image: linear-gradient(
+    -75deg,
+    #ffffff1a calc(var(--x) + 20%),
+    #ffffffe6 calc(var(--x) + 25%),
+    #ffffff1a calc(var(--x) + 100%)
+  ) !important;
 }
+
+.ct-send__button[aria-busy='true'] .shiny-button__shine { display: none; }
 
 .ct-send__button.is-ready {
   background: var(--ct-accent-fill);
@@ -303,10 +303,10 @@ textarea.ct-field__input {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ct-send__button.is-ready .ct-send__label {
-    color: var(--ct-on-accent);
-    background: none;
-    animation: none;
-  }
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .ct-send__button .shiny-button__shine { display: none; }
+}
+
+@media (forced-colors: active) {
+  .ct-send__button .shiny-button__label { color: ButtonText; }
 }

@@ -10,10 +10,9 @@ import HomeBeamsToggle from './HomeBeamsToggle.jsx';
 import HomeThemeToggle from './HomeThemeToggle.jsx';
 import useHeaderOverHero from '../hooks/useHeaderOverHero.js';
 
-// ourWork is a separate app at /our-work — it must be a real navigation, not
-// a client-side route inside this SPA.
+// Our Work and People are separate apps and need native navigation.
 const INTERNAL_PAGES = new Set(['Home', 'pastProjects', 'aboutUs']);
-const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourWork', 'pastProjects', 'News']);
+const TABLET_PRIMARY_PAGES = new Set(['Home', 'ourPeople', 'ourWork', 'pastProjects', 'News']);
 
 function sameOriginNavigationTarget(href) {
   try {
@@ -209,6 +208,7 @@ export default function PillSiteHeader({
             <ul className="pill-site-header__list">
             {visibleItems.map((item) => {
               const active = item.page === activePage
+                || (item.page === 'ourPeople' && ['meetOurExperts', 'coreTeam'].includes(activePage))
                 || (item.page === 'News' && activePage === 'newsArchive');
               return (
                 <li key={item.page}>

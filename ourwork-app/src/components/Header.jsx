@@ -19,11 +19,12 @@ function Header() {
   const scrolled = useScrolled()
   const selfHref = withLocale(SELF_HREF, i18n.resolvedLanguage || i18n.language)
 
-  // The main site's pill nav, same six destinations in the same order. This app
+  // The main site's pill nav, with the same destination order. This app
   // *is* the Our Work page, so that pill is the active one and links to itself.
   const items = [
     { key: 'home', href: hashLink('Home'), label: t('nav.home') },
     { key: 'org', href: structureLink(), label: t('nav.org') },
+    { key: 'people', href: peopleLink('experts'), label: t('nav.people') },
     { key: 'work', href: selfHref, label: t('nav.work'), active: true },
     { key: 'projects', href: hashLink('pastProjects'), label: t('nav.projects') },
     { key: 'news', href: newsroomHref, label: t('nav.news') },

@@ -25,6 +25,7 @@ async function fixture(context, file, imports, props = {}) {
     Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   }
   Object.defineProperty(dom.window, 'innerWidth', { value: 1280, configurable: true });
+  const dependencies = typeof imports === 'function' ? imports(dom.window) : imports;
   const module = { exports: {} };
   const source = await readFile(file, 'utf8');
   const { code } = await transformWithEsbuild(source, file.pathname, { loader: 'jsx', format: 'cjs', jsx: 'transform' });
@@ -35,7 +36,7 @@ async function fixture(context, file, imports, props = {}) {
       if (specifier === 'react') return React;
       if (specifier === 'lucide-react') return icons;
       if (specifier.endsWith('.css')) return {};
-      if (specifier in imports) return imports[specifier];
+      if (specifier in dependencies) return dependencies[specifier];
       throw new Error('Unexpected import: ' + specifier);
     },
   });
@@ -51,6 +52,7 @@ async function fixture(context, file, imports, props = {}) {
   await act(async () => root.render(React.createElement(module.exports.default, props)));
   return {
     document: dom.window.document,
+    storage: dom.window.localStorage,
     async click(node) { await act(async () => node.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }))); },
   };
 }
@@ -86,7 +88,7 @@ test('HR cross-app links live in its existing sidebar, including the collapsed r
 
 test('Contract cross-app links are direct sidebar rows that survive collapse', { skip: !existsSync(contractFile) }, async context => {
   const empty = { __esModule: true, default: () => null };
-  const f = await fixture(context, contractFile, {
+  const f = await fixture(context, contractFile, window => ({
     'react-router-dom': { useLocation: () => ({ pathname: '/' }), useNavigate: () => () => {} },
     'react-i18next': { useTranslation: () => ({ t, i18n: { language: 'en', resolvedLanguage: 'en' } }) },
     '../../hooks/useUser': { useUser: () => ({ user: { id: 'fixture' }, isDemoMode: false }) },
@@ -94,13 +96,16 @@ test('Contract cross-app links are direct sidebar rows that survive collapse', {
     'react-hot-toast': { __esModule: true, default: { success() {}, error() {} } },
     '../../utils/supaBaseClient': { supabase: {} },
     '../../utils/permissions': { canEditContracts: () => false },
+    '../../utils/browserStorage': { browserStorage: window.localStorage },
     '../../pages/ContractRecord': { LAST_RECORD_KEY: 'fixture-last-record' },
     './RssPulse': empty, './PasswordChangeModal': empty, './SidebarMobile': empty, '../FeedbackDialog': empty,
-  });
+  }));
   const expected = ['https://en.icue.vn/', 'https://hr.icue.vn/'];
   assertLinks(f.document, expected);
+  assert.equal(f.storage.getItem('collapsed'), 'false');
   assert.equal(f.document.querySelector('.rail__portals').querySelectorAll('a').length, 2);
   await f.click(f.document.querySelector('.rail__toggle'));
+  assert.equal(f.storage.getItem('collapsed'), 'true');
   assertLinks(f.document, expected);
 });
 

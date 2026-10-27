@@ -393,6 +393,13 @@ export default function MainSiteNav({
   );
   const localizedHomeHref = localeHomeHref(homeHref, locale);
   const localizedContactHref = withLocale(contactHref, locale);
+  const peopleHref = localeHrefForNavLink(PEOPLE_SUBMENU.items[0], locale);
+  const pillItems = drawerLinkConfig.filter((link) => !link.drawerOnly);
+  pillItems.splice(
+    pillItems.findIndex((link) => link.page === 'orgStructure') + 1,
+    0,
+    { page: PEOPLE_SUBMENU.page, href: peopleHref, label: peopleSubmenu.label },
+  );
 
   const { navLinks, people } = useMemo(
     () => buildMainSiteDrawerNav({
@@ -570,6 +577,7 @@ export default function MainSiteNav({
           showAboutUsVideoToggle={hasPageTheme || showAboutUsVideoToggle}
           homeHref={localizedHomeHref}
           contactHref={localizedContactHref}
+          peopleHref={peopleHref}
           isStandalone={isStandalone}
           assetPrefix={isStandalone ? '/' : 'public/'}
           homeVideoEnabled={homeVideoEnabled}
@@ -588,11 +596,9 @@ export default function MainSiteNav({
           flagLinkRef={flagLinkRef}
           usePillNav={usePillNav}
           activePage={activePage}
-          /* The drawer is the full menu; the pill bar is the condensed
-             primary nav. An entry marked drawerOnly appears in the former and
-             not the latter — community-activities is one, so the pill stays at
-             seven items rather than growing an eighth long label. */
-          pillItems={drawerLinkConfig.filter((link) => !link.drawerOnly)}
+          /* Keep the People landing link in the bar and its two destinations
+             in the full drawer. Entries marked drawerOnly stay in the drawer. */
+          pillItems={pillItems}
           onNavigate={onNavigate}
           PillHeaderComponent={PillHeaderComponent}
           pillOverflowItems={localizedOverflowItems}

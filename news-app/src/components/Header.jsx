@@ -300,6 +300,11 @@ function Header({ appearance = 'light' }) {
                 {t('nav.mainSite')}
               </AnimatedShinyText>
             </a>
+            <a href={peopleLink('experts')} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
+              <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72} animate={false}>
+                {t('drawer.people')}
+              </AnimatedShinyText>
+            </a>
             <a href={archiveLink()} className="icue-header__link" onClick={close} tabIndex={compactSearchOpen ? -1 : undefined}>
               <AnimatedShinyText className="icue-header__shiny" shimmerWidth={72} animate={false}>
                 {t('nav.archive')}
