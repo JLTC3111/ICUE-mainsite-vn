@@ -27,7 +27,7 @@ async function login(t, { recovery = false, reset = async () => ({ error: null }
         updateUser: async () => ({ error: null }),
       } } },
       '../lib/authRedirect': {
-        getAuthRedirectUrl: () => 'https://icue.vn/newsroom/login', isPasswordRecoveryUrl: () => recovery,
+        getAuthRedirectUrl: () => 'https://vi.icue.vn/newsroom/login', isPasswordRecoveryUrl: () => recovery,
         clearPasswordRecoveryUrl() {},
       },
       '../lib/authReset': { authErrorKey: () => 'login.resetError', sendPasswordResetEmail: reset },

@@ -65,7 +65,7 @@ if (pastProjectsEntryPath) {
 // bookmarks before BrowserRouter mounts.
 if (externalHashPath) {
   window.location.replace(
-    withLocale(`https://icue.vn${externalHashPath}`, hasLocaleHint || storedLang || 'vi'),
+    withLocale(`https://vi.icue.vn${externalHashPath}`, hasLocaleHint || storedLang || 'vi'),
   )
 } else {
   const nextPath = awardsEntryPath || pastProjectsEntryPath || homeAppHashPath || window.location.pathname

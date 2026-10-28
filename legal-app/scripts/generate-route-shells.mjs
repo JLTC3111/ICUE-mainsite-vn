@@ -13,7 +13,7 @@ const LEGAL_DOCUMENTS = buildLegalDocuments(AUTHORITATIVE_LANGUAGE)
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outputRoot = path.resolve(appRoot, '../legal')
 const sourceIndex = path.join(outputRoot, 'index.html')
-const siteUrl = 'https://icue.vn'
+const siteUrl = 'https://vi.icue.vn'
 
 function escapeHtml(value) {
   return String(value)

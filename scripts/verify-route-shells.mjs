@@ -214,7 +214,7 @@ for (const slug of ['privacy', 'terms', 'gdpr', 'cookies']) {
   }
   const legalRouteHtml = fs.readFileSync(legalRouteFile, 'utf8')
   if (
-    !legalRouteHtml.includes(`href="https://icue.vn/legal/${slug}"`)
+    !legalRouteHtml.includes(`href="https://vi.icue.vn/legal/${slug}"`)
     || !legalRouteHtml.includes('"@type":"WebPage"')
   ) {
     throw new Error(`/legal/${slug}: canonical metadata is incomplete`)
@@ -235,18 +235,18 @@ const robots = fs.readFileSync(path.join(dist, 'robots.txt'), 'utf8')
 if (
   !sitemap.includes('<urlset')
   || !sitemap.includes('xmlns:xhtml="http://www.w3.org/1999/xhtml"')
-  || !sitemap.includes('https://icue.vn/about-us')
-  || !sitemap.includes('https://icue.vn/past-projects/1')
-  || !sitemap.includes('https://icue.vn/news-archive/1')
-  || !sitemap.includes('https://icue.vn/news-archive/1?lang=en')
+  || !sitemap.includes('https://vi.icue.vn/about-us')
+  || !sitemap.includes('https://vi.icue.vn/past-projects/1')
+  || !sitemap.includes('https://vi.icue.vn/news-archive/1')
+  || !sitemap.includes('https://vi.icue.vn/news-archive/1?lang=en')
   || !sitemap.includes('hreflang="ja"')
-  || !sitemap.includes('https://icue.vn/legal/privacy')
+  || !sitemap.includes('https://vi.icue.vn/legal/privacy')
 ) {
   throw new Error('sitemap.xml is missing expected routes')
 }
 if (
-  sitemap.includes('https://icue.vn/about-us?lang=')
-  || sitemap.includes('https://icue.vn/past-projects/1?lang=')
+  sitemap.includes('https://vi.icue.vn/about-us?lang=')
+  || sitemap.includes('https://vi.icue.vn/past-projects/1?lang=')
 ) {
   throw new Error('sitemap.xml must only emit xhtml locale alternates for news-archive URLs')
 }
@@ -254,8 +254,8 @@ if (
 const listingShell = fs.readFileSync(path.join(dist, 'route-shells/news-archive.html'), 'utf8')
 if (
   !listingShell.includes('hreflang="ja"')
-  || !listingShell.includes('https://icue.vn/news-archive?lang=en')
-  || listingShell.includes('https://icue.vn/news-archive?lang=vi')
+  || !listingShell.includes('https://vi.icue.vn/news-archive?lang=en')
+  || listingShell.includes('https://vi.icue.vn/news-archive?lang=vi')
 ) {
   throw new Error('news-archive listing shell is missing locale alternate tags')
 }
@@ -269,7 +269,7 @@ if (
   !articleShell.includes(`${articleOneMeta.title} | ICUE Vietnam`)
   || !articleShell.includes(articleOneMeta.lead)
   || !articleShell.includes('hreflang="ja"')
-  || !articleShell.includes('https://icue.vn/news-archive/1?lang=en')
+  || !articleShell.includes('https://vi.icue.vn/news-archive/1?lang=en')
   || articleShell.includes('Kho tin tức | ICUE Vietnam')
 ) {
   throw new Error('news-archive article 1 shell is missing Vietnamese title/lead or locale alternates')
@@ -280,7 +280,7 @@ for (const articleId of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
     throw new Error(`/news-archive/${articleId}: missing article shell`)
   }
 }
-if (!robots.includes('Sitemap: https://icue.vn/sitemap.xml')) {
+if (!robots.includes('Sitemap: https://vi.icue.vn/sitemap.xml')) {
   throw new Error('robots.txt is missing the sitemap declaration')
 }
 

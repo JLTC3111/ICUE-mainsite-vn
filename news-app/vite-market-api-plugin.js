@@ -40,7 +40,7 @@ async function handleForgotPassword(body, env) {
   if (!url || !key) throw new Error('config_missing')
 
   const email = String(body.email || '').trim().toLowerCase()
-  const redirectTo = String(body.redirectTo || 'https://icue.vn/newsroom/login')
+  const redirectTo = String(body.redirectTo || 'https://vi.icue.vn/newsroom/login')
   if (!EMAIL_RE.test(email)) {
     const err = new Error('invalid email')
     err.code = 'email_address_invalid'

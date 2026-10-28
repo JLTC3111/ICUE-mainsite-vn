@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { supportChatRpc, readSupportDrafts, saveSupportDrafts, downloadSupportFile } from '../lib/supportChat'
 import { liveChatCopy } from '../../../shared/chatbot/lib/liveChatCopy.js'
 import { liveTimeLeft, mergeLiveMessages } from '../../../shared/chatbot/lib/liveChat.js'
 import LiveChatMessages from '../../../shared/chatbot/LiveChatMessages.jsx'
+import SupportChatAlertToggle from '../components/SupportChatAlertToggle'
+import { isSupportConversationId } from '../lib/supportAlerts'
 import '../../../shared/chatbot/LiveChat.css'
 import './SupportInbox.css'
 
@@ -13,10 +16,17 @@ const clientPresenceKeys = { active: 'clientActive', away: 'clientAway', left: '
 const clientState = (conversation, unavailable) => !unavailable && Object.hasOwn(clientPresenceKeys, conversation?.visitor_status) ? conversation.visitor_status : 'unknown'
 
 function InboxWorkspace({ userId, locale, labels }) {
-  const [filter, setFilter] = useState('open')
-  const [page, setPage] = useState(0)
+  const [search, setSearch] = useSearchParams()
+  const filter = ['open', 'closed', 'all'].includes(search.get('status')) ? search.get('status') : 'open'
+  const requestedPage = Number(search.get('page') || 0)
+  const page = Number.isSafeInteger(requestedPage) && requestedPage >= 0 && requestedPage <= 2000 ? requestedPage : 0
+  const selectedId = isSupportConversationId(search.get('conversation')) ? search.get('conversation') : null
+  const updateView = values => setSearch(previous => {
+    const next = new URLSearchParams(previous)
+    for (const [key, value] of Object.entries(values)) next.set(key, String(value))
+    return next
+  })
   const [rows, setRows] = useState([])
-  const [selectedId, setSelectedId] = useState(null)
   const [thread, setThread] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -80,7 +90,7 @@ function InboxWorkspace({ userId, locale, labels }) {
           applyThread(snapshot)
         }
         setError(false)
-      } catch (error) { if (!disposed && !requestController.signal.aborted) { if (error?.code === '42501') { setThread(null); setSelectedId(null); if (selectedId) updateDraft(selectedId, { text: '' }) } setError(true) } }
+      } catch (error) { if (!disposed && !requestController.signal.aborted) { if (error?.code === '42501') { setThread(null); if (selectedId) updateDraft(selectedId, { text: '' }) } setError(true) } }
       finally {
         if (!disposed && request === cycle && !requestController.signal.aborted) {
           setLoading(false)
@@ -180,27 +190,30 @@ function InboxWorkspace({ userId, locale, labels }) {
   return (
     <div className="support-inbox icue-container">
       <div className="support-inbox__heading"><div><h1>{labels.inbox}</h1><p>{labels.inboxIntro}</p></div>
-        <button type="button" className={`support-inbox__availability${available ? ' is-online' : ''}`} aria-pressed={wantOnline} onClick={() => { setWantOnline(value => !value); setConfirmedAt(0) }}>
-          <span aria-hidden="true" />{wantOnline ? labels.goAway : labels.goOnline}
-        </button>
+        <div className="support-alerts__controls">
+          <SupportChatAlertToggle />
+          <button type="button" className={`support-inbox__availability${available ? ' is-online' : ''}`} aria-pressed={wantOnline} onClick={() => { setWantOnline(value => !value); setConfirmedAt(0) }}>
+            <span aria-hidden="true" />{wantOnline ? labels.goAway : labels.goOnline}
+          </button>
+        </div>
       </div>
       <div className="support-inbox__presence" role="status"><strong>{presenceError ? labels.reconnecting : available ? labels.available : wantOnline ? labels.connecting : labels.unavailableStaff}</strong><span>{labels.presenceHint}</span></div>
       {error && <div className="support-inbox__error" role="alert">{labels.staffError} <button type="button" onClick={() => setRevision(value => value + 1)}>{labels.retry}</button></div>}
       <div className="support-inbox__workspace">
         <aside className="support-inbox__queue">
           <div className="support-inbox__filters" role="group" aria-label={labels.inbox}>
-            {['open', 'closed', 'all'].map(value => <button key={value} type="button" aria-pressed={filter === value} onClick={() => { setFilter(value); setPage(0) }}>{value === 'closed' ? labels.resolved : labels[value]}</button>)}
+            {['open', 'closed', 'all'].map(value => <button key={value} type="button" aria-pressed={filter === value} onClick={() => updateView({ status: value, page: 0 })}>{value === 'closed' ? labels.resolved : labels[value]}</button>)}
           </div>
           <div className="support-inbox__rows">
             {loading && <p className="support-inbox__empty">{labels.loading}</p>}
             {!loading && !rows.length && <p className="support-inbox__empty">{labels.empty}</p>}
-            {rows.slice(0, 50).map(row => <button key={row.id} type="button" className={`support-inbox__row${selectedId === row.id ? ' is-selected' : ''}`} aria-pressed={selectedId === row.id} onClick={() => setSelectedId(row.id)}>
+            {rows.slice(0, 50).map(row => <button key={row.id} type="button" className={`support-inbox__row${selectedId === row.id ? ' is-selected' : ''}`} aria-pressed={selectedId === row.id} onClick={() => updateView({ conversation: row.id })}>
               <span className="support-inbox__row-top"><span className="support-inbox__identity"><span className="support-inbox__client-dot" data-state={clientState(row, error)} role="img" aria-label={labels[clientPresenceKeys[clientState(row, error)]]} title={labels[clientPresenceKeys[clientState(row, error)]]} /><strong>{row.visitor_name || labels.guest}</strong></span>{row.unread > 0 && <span className="support-inbox__unread">{row.unread}</span>}</span>
               <span className="support-inbox__preview">{row.preview}</span>
               <span className="support-inbox__row-meta"><span>{row.status === 'closed' ? labels.resolved : row.status === 'waiting' ? labels.waitingLabel : labels.active}</span><span>{row.locale.toUpperCase()}</span></span>
             </button>)}
           </div>
-          <div className="support-inbox__pagination"><button type="button" disabled={!page} onClick={() => setPage(value => value - 1)}>{labels.previous}</button><span>{page + 1}</span><button type="button" disabled={rows.length <= 50} onClick={() => setPage(value => value + 1)}>{labels.next}</button></div>
+          <div className="support-inbox__pagination"><button type="button" disabled={!page} onClick={() => updateView({ page: page - 1 })}>{labels.previous}</button><span>{page + 1}</span><button type="button" disabled={rows.length <= 50 || page >= 2000} onClick={() => updateView({ page: page + 1 })}>{labels.next}</button></div>
         </aside>
         {!selectedId ? <div className="support-inbox__selection"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H4l-2 2v-10a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z" /><path d="M7 10h8m-8 4h5" /></svg><p>{labels.select}</p></div>
           : !current ? <div className="support-inbox__selection">{labels.loading}</div> : (

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://icue.vn/sitemap.xml
+Sitemap: https://vi.icue.vn/sitemap.xml

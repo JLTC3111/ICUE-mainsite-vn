@@ -13,7 +13,7 @@ export default function MainSiteHeader({
   showContactLink,
   showHomeVideoToggle,
   showAboutUsVideoToggle,
-  homeHref = 'https://icue.vn',
+  homeHref = 'https://vi.icue.vn',
   contactHref = '#/aboutUs',
   peopleHref = '/people/experts',
   isStandalone = false,

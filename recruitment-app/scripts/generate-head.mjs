@@ -14,7 +14,7 @@ import { AUTHORITATIVE_LANGUAGE, getJobs } from '../src/data/jobs.js'
  */
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const indexPath = path.join(appRoot, 'index.html')
-const siteUrl = 'https://icue.vn'
+const siteUrl = 'https://vi.icue.vn'
 const route = '/recruitment'
 
 const jobs = getJobs(AUTHORITATIVE_LANGUAGE)

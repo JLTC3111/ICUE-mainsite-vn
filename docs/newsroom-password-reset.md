@@ -2,7 +2,7 @@
 
 The newsroom uses the shared Supabase project `idkfmgdfzcsydrqnjcla`. Its reset
 screen is the recovery mode of `news-app/src/pages/Login.jsx`, served at
-`https://icue.vn/newsroom/login`. A recovery callback opens the new-password and
+`https://vi.icue.vn/newsroom/login`. A recovery callback opens the new-password and
 confirmation fields. Password updates use the session established by Supabase.
 
 ## Production redirect configuration
@@ -31,6 +31,27 @@ callback with `otp_expired`, confirming both redirect destinations without
 issuing or consuming a real recovery token. The live form was also checked in
 the browser in Vietnamese. The local preview passed browser checks for language
 switching and completing recovery with a delayed modal and mocked auth responses.
+
+## Domain move to vi.icue.vn
+
+On 2026-10-28 the website was assigned `https://vi.icue.vn`, and `icue.vn` was
+given to a separate landing page. On 2026-10-29 this wildcard was added to the
+Redirect URLs. It covers every newsroom callback, including `/newsroom/login`
+and `/newsroom/portal`, with or without a query string:
+
+```text
+https://vi.icue.vn/**
+```
+
+`https://icue.vn/newsroom/login` was removed the same day, after the reset
+emails sent to it had expired. The Site URL stays `https://hr.icue.vn`, because
+HR and Contract Manager rely on it.
+
+The invalid-token check returned HTTP 303 to each `vi.icue.vn` address tested,
+and the HR, Contract and local preview callbacks were unchanged.
+`https://icue.vn/newsroom/login` now falls back to HR, so a reset or sign-up
+started on `icue.vn` only returns to the newsroom once the build in which
+`news-app/src/lib/authRedirect.js` maps `icue.vn` to `vi.icue.vn` is live.
 
 ## Related website fixes
 

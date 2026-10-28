@@ -29,7 +29,7 @@ import './NewsArchivePage.css'
 const NARROW_QUERY = '(max-width: 1024px)'
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const COVERFLOW_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'Home', 'End'])
-const NEWSROOM_CTA_HREF = 'https://icue.vn/newsroom/?from=vi-news'
+const NEWSROOM_CTA_HREF = 'https://vi.icue.vn/newsroom/?from=vi-news'
 
 function refreshCoverflowLoop(swiper) {
   if (!swiper?.params?.loop || swiper.destroyed) return

@@ -14,7 +14,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist-home')
 const indexPath = path.join(dist, 'index.html')
 const shellDir = path.join(dist, 'route-shells')
-const siteUrl = 'https://icue.vn'
+const siteUrl = 'https://vi.icue.vn'
 const previewImage = `${siteUrl}/preview.jpg`
 
 const routes = [

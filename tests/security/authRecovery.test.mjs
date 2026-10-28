@@ -32,7 +32,7 @@ test('a delayed login still recognizes recovery after the real SDK consumes the 
   const accessToken = [{ alg: 'HS256', typ: 'JWT' }, { sub: user.id, exp: expiresAt, role: 'authenticated' }]
     .map(value => Buffer.from(JSON.stringify(value)).toString('base64url')).join('.') + '.test-signature'
   const hash = new URLSearchParams({ access_token: accessToken, refresh_token: 'test-refresh', expires_in: '3600', expires_at: String(expiresAt), token_type: 'bearer', type: 'recovery' })
-  browser(t, `https://icue.vn/newsroom/login#${hash}`)
+  browser(t, `https://vi.icue.vn/newsroom/login#${hash}`)
   capturePasswordRecoveryUrl()
   const client = createClient('https://auth.example.invalid', 'test-public-key', {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: true },
@@ -53,7 +53,7 @@ test('a delayed login still recognizes recovery after the real SDK consumes the 
 })
 
 test('recovery detection matches exact parameters and ignores unrelated URLs', t => {
-  browser(t, 'https://icue.vn/newsroom/login?return_type=recovery#type=recovery-other')
+  browser(t, 'https://vi.icue.vn/newsroom/login?return_type=recovery#type=recovery-other')
   assert.equal(isPasswordRecoveryUrl(), false)
   window.location.search = '?type=recovery'
   assert.equal(isPasswordRecoveryUrl(), true)

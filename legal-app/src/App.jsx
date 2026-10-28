@@ -63,7 +63,7 @@ function setMeta(selector, attribute, value) {
  */
 function useDocumentMeta(document, meta, language) {
   useEffect(() => {
-    const url = `https://icue.vn/legal/${document.slug}`
+    const url = `https://vi.icue.vn/legal/${document.slug}`
     const title = `${meta.title} | ICUE Vietnam`
 
     window.document.title = title

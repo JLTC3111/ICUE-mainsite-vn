@@ -15,7 +15,7 @@ import { AUTHORITATIVE_LANGUAGE, getFaqCategories } from '../../shared/faq-conte
  */
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const indexPath = path.join(appRoot, 'index.html')
-const siteUrl = 'https://icue.vn'
+const siteUrl = 'https://vi.icue.vn'
 const route = '/faqs'
 
 const categories = getFaqCategories(AUTHORITATIVE_LANGUAGE)

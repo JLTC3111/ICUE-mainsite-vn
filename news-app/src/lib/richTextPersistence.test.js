@@ -37,12 +37,12 @@ test('removes executable elements and unwraps unknown presentation tags', () => 
 })
 
 test('allows only inert attributes and explicitly safe URL schemes', () => {
-  const source = '<p><a href="java&#x09;script:alert(1)" onclick="x" id="clobber" target="_blank">bad</a><a href="https://icue.vn/news" target="_blank" rel="opener nofollow">safe</a><a href="mailto:hello@icue.vn">mail</a><img src="data:image/svg+xml;base64,AAAA" onerror="x" srcset="javascript:x" alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>'
+  const source = '<p><a href="java&#x09;script:alert(1)" onclick="x" id="clobber" target="_blank">bad</a><a href="https://vi.icue.vn/news" target="_blank" rel="opener nofollow">safe</a><a href="mailto:hello@icue.vn">mail</a><img src="data:image/svg+xml;base64,AAAA" onerror="x" srcset="javascript:x" alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>'
   const sanitized = sanitizeArticleHtmlFallback(source)
 
   assert.equal(
     sanitized,
-    '<p><a target="_blank" rel="noopener noreferrer">bad</a><a href="https://icue.vn/news" target="_blank" rel="nofollow noopener noreferrer">safe</a><a href="mailto:hello@icue.vn">mail</a><img alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>',
+    '<p><a target="_blank" rel="noopener noreferrer">bad</a><a href="https://vi.icue.vn/news" target="_blank" rel="nofollow noopener noreferrer">safe</a><a href="mailto:hello@icue.vn">mail</a><img alt="bad"><img src="/public/news/photo.jpg" alt="safe" loading="lazy" decoding="async"></p>',
   )
   assert.doesNotMatch(sanitized, /javascript:|data:image|onclick|onerror|srcset|id=/iu)
   assert.equal(sanitizeArticleHtmlFallback(sanitized), sanitized)

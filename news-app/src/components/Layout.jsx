@@ -9,6 +9,7 @@ import { NewsroomSearchProvider } from '../context/NewsroomSearchProvider'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import { isNewsroomReaderRoute, syncNewsroomDocumentTheme } from '../lib/newsroomTheme'
+import SupportAlertsProvider from '../context/SupportAlertsProvider'
 
 function Layout() {
   const { pathname } = useLocation()
@@ -26,27 +27,29 @@ function Layout() {
   }, [isThemedDark])
 
   return (
-    <div
-      className={`icue-app${
-        isReaderRoute ? ' icue-app--news-home' : ''
-      }${isThemedDark ? ' icue-app--news-theme-dark' : ''}${
-        isAgentRoute ? ' icue-app--agent' : ''
-      }${isAgentRoute && !isDark ? ' icue-app--agent-light' : ''}${
-        reduceBlur ? ' icue-app--perf-minimal' : tier === 'reduced' ? ' icue-app--perf-reduced' : ''
-      }`}
-    >
-      {!isAgentRoute && <MarketStrip />}
-      {/* The header types the live search query and the grid filters on it, so
-          the two have to share one provider above both. */}
-      <NewsroomSearchProvider>
-        <Header appearance={isThemedDark ? 'dark' : 'light'} />
-        <main className="icue-main">
-          <Outlet />
-        </main>
-      </NewsroomSearchProvider>
-      {!isAgentRoute && <Footer />}
-      {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} locale={lang} />}
-    </div>
+    <SupportAlertsProvider>
+      <div
+        className={`icue-app${
+          isReaderRoute ? ' icue-app--news-home' : ''
+        }${isThemedDark ? ' icue-app--news-theme-dark' : ''}${
+          isAgentRoute ? ' icue-app--agent' : ''
+        }${isAgentRoute && !isDark ? ' icue-app--agent-light' : ''}${
+          reduceBlur ? ' icue-app--perf-minimal' : tier === 'reduced' ? ' icue-app--perf-reduced' : ''
+        }`}
+      >
+        {!isAgentRoute && <MarketStrip />}
+        {/* The header types the live search query and the grid filters on it, so
+            the two have to share one provider above both. */}
+        <NewsroomSearchProvider>
+          <Header appearance={isThemedDark ? 'dark' : 'light'} />
+          <main className="icue-main">
+            <Outlet />
+          </main>
+        </NewsroomSearchProvider>
+        {!isAgentRoute && <Footer />}
+        {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} locale={lang} />}
+      </div>
+    </SupportAlertsProvider>
   )
 }
 

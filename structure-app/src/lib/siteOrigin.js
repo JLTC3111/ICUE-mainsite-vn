@@ -7,7 +7,7 @@ import {
 } from '../../../shared/site-routes/mainSitePaths.js'
 
 export const SITES = {
-  vi: 'https://icue.vn',
+  vi: 'https://vi.icue.vn',
   en: 'https://en.icue.vn',
 }
 
@@ -18,7 +18,7 @@ function isEnHost(hostname) {
 
 function isViHost(hostname) {
   const host = hostname.toLowerCase()
-  return host === 'icue.vn' || host === 'www.icue.vn'
+  return host === 'vi.icue.vn'
 }
 
 function referrerSiteHint() {

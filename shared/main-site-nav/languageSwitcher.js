@@ -6,7 +6,7 @@ import {
 
 const SITE_CONFIG = {
   vietnamese: {
-    domain: 'icue.vn',
+    domain: 'vi.icue.vn',
     flagClass: 'flag-icon-vn',
     language: 'vi',
   },

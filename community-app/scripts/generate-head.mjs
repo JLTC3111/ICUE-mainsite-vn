@@ -13,7 +13,7 @@ import { AUTHORITATIVE_LANGUAGE, getProgrammes } from '../src/data/programmes.js
  */
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const indexPath = path.join(appRoot, 'index.html')
-const siteUrl = 'https://icue.vn'
+const siteUrl = 'https://vi.icue.vn'
 const route = '/community-activities'
 
 const programmes = getProgrammes(AUTHORITATIVE_LANGUAGE)

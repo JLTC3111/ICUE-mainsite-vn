@@ -102,7 +102,7 @@ function getPageVisibility(page) {
 export default function MainSiteNav({
   variant = 'hash',
   drawerLinks,
-  homeHref = 'https://icue.vn',
+  homeHref = 'https://vi.icue.vn',
   contactHref = '#/aboutUs',
   usePillNav = false,
   onNavigate,

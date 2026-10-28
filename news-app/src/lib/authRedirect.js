@@ -11,9 +11,9 @@ export function getAuthRedirectUrl(path = 'login') {
 
 /** Prefer stable icue.vn origins over www/http variants for Supabase allowlist. */
 function canonicalOrigin() {
-  if (typeof window === 'undefined') return 'https://icue.vn'
+  if (typeof window === 'undefined') return 'https://vi.icue.vn'
   const host = window.location.hostname.toLowerCase()
-  if (host === 'icue.vn' || host === 'www.icue.vn') return 'https://icue.vn'
+  if (host === 'icue.vn' || host === 'www.icue.vn') return 'https://vi.icue.vn'
   if (host === 'en.icue.vn' || host.endsWith('.en.icue.vn')) return 'https://en.icue.vn'
   return window.location.origin
 }

@@ -50,7 +50,7 @@ test('paid AI endpoints have platform limits and reject oversized bodies without
   assert.equal(geminiConfig.rateLimit.windowLimit, 12)
   assert.equal(fluxConfig.rateLimit.windowLimit, 6)
   const fetch = t.mock.method(globalThis, 'fetch', () => { throw new Error('unexpected external call') })
-  const response = await gemini(new Request('https://icue.vn/.netlify/functions/gemini-article', { method: 'POST', body: 'x'.repeat(512 * 1024 + 1) }))
+  const response = await gemini(new Request('https://vi.icue.vn/.netlify/functions/gemini-article', { method: 'POST', body: 'x'.repeat(512 * 1024 + 1) }))
   assert.equal(response.status, 413)
   assert.equal(fetch.mock.callCount(), 0)
 })

@@ -38,8 +38,8 @@ test('the DOM sanitizer removes executable descendants in legacy bold and italic
 
 test('normalizing legacy tags preserves safe text, formatting, and links', t => {
   documentForTest(t)
-  const clean = sanitizeArticleHtml('<b style="color: #2563eb"><i>Tiếng Việt 한국어</i> <a href="https://icue.vn" target="_blank">ICUE</a></b>')
-  assert.equal(clean, '<strong style="color: #2563eb"><em>Tiếng Việt 한국어</em> <a href="https://icue.vn" target="_blank" rel="noopener noreferrer">ICUE</a></strong>')
+  const clean = sanitizeArticleHtml('<b style="color: #2563eb"><i>Tiếng Việt 한국어</i> <a href="https://vi.icue.vn" target="_blank">ICUE</a></b>')
+  assert.equal(clean, '<strong style="color: #2563eb"><em>Tiếng Việt 한국어</em> <a href="https://vi.icue.vn" target="_blank" rel="noopener noreferrer">ICUE</a></strong>')
 })
 
 test('video links within prose retain all text and remain valid inline links', t => {

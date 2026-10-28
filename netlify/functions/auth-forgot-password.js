@@ -41,7 +41,7 @@ exports.handler = async (event) => {
   }
 
   const email = String(payload.email || '').trim().toLowerCase()
-  const redirectTo = String(payload.redirectTo || 'https://icue.vn/newsroom/login')
+  const redirectTo = String(payload.redirectTo || 'https://vi.icue.vn/newsroom/login')
 
   if (!EMAIL_RE.test(email)) {
     return {

@@ -72,7 +72,7 @@ function metaForPath(pathname, t, lang) {
 function syncArchiveHeadLinks(pathname, lang) {
   const canonicalHref = isNewsArchivePath(pathname)
     ? absoluteLocaleUrl(pathname, lang)
-    : `https://icue.vn${pathname === '/' ? '/' : pathname}`
+    : `https://vi.icue.vn${pathname === '/' ? '/' : pathname}`
   const canonicalTag = document.querySelector('link[rel="canonical"]')
   if (canonicalTag) canonicalTag.setAttribute('href', canonicalHref)
   const ogUrl = document.querySelector('meta[property="og:url"]')

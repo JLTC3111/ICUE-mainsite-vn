@@ -22,7 +22,7 @@ function graphics({ compile = true } = {}) {
 }
 
 const ITEMS = [
-  { label: 'Website', href: 'https://icue.vn/', target: '_blank', ariaLabel: 'ICUE Website' },
+  { label: 'Website', href: 'https://vi.icue.vn/', target: '_blank', ariaLabel: 'ICUE Website' },
   { label: 'HR Portal', href: 'https://hr.icue.vn/', target: '_blank' },
 ];
 

@@ -59,7 +59,7 @@ for (const source of APP_SOURCES) {
         locale,
         mainSiteOriginForLocale(locale),
       )
-      const url = new URL(href, 'https://icue.vn')
+      const url = new URL(href, 'https://vi.icue.vn')
 
       assert.equal(
         url.searchParams.get('lang'),
@@ -72,7 +72,7 @@ for (const source of APP_SOURCES) {
       if (page === 'Home') {
         assert.equal(url.origin, mainSiteOriginForLocale(locale))
       } else {
-        assert.equal(url.origin, 'https://icue.vn')
+        assert.equal(url.origin, 'https://vi.icue.vn')
         assert.ok(VI_ONLY_APP_PAGES.has(page) && ICUE_VN_HOSTED_PAGES.has(page))
       }
 
@@ -87,7 +87,7 @@ for (const source of APP_SOURCES) {
 for (const locale of SUPPORTED_UI_LOCALES) {
   assert.equal(
     new URL(resolveMainSiteLink('Home', locale)).origin,
-    locale === 'en' ? 'https://en.icue.vn' : 'https://icue.vn',
+    locale === 'en' ? 'https://en.icue.vn' : 'https://vi.icue.vn',
     `Home must cross domains only for English, not ${locale}`,
   )
 }
@@ -96,19 +96,19 @@ assert.equal(hostedPathForPage('pastProjects', '/past-projects/12'), '/past-proj
 assert.equal(hostedPathForPage('newsArchive', '/news-archive/4'), '/news-archive/4')
 assert.equal(
   resolveMainSiteLink('pastProjects', 'en', undefined, '/past-projects/12'),
-  'https://icue.vn/past-projects/12?lang=en',
+  'https://vi.icue.vn/past-projects/12?lang=en',
 )
 assert.equal(
   resolveMainSiteLink('newsArchive', 'ja', undefined, '/news-archive/4'),
-  'https://icue.vn/news-archive/4?lang=ja',
+  'https://vi.icue.vn/news-archive/4?lang=ja',
 )
 assert.equal(
   resolveMainSiteDetailLink('pastProjects', 3, 'en'),
-  'https://icue.vn/past-projects/3?lang=en',
+  'https://vi.icue.vn/past-projects/3?lang=en',
 )
 assert.equal(
   resolveMainSiteDetailLink('newsArchive', 8, 'fr'),
-  'https://icue.vn/news-archive/8?lang=fr',
+  'https://vi.icue.vn/news-archive/8?lang=fr',
 )
 
 assert.equal(normalizeUiLocale('kr'), 'ko')
@@ -125,15 +125,15 @@ assert.equal(MAIN_SITE_PAGE_PATHS.Home, '/')
 assert.equal(pathnameForLocaleDetection({ pathname: '/', hash: '#/aboutUs' }), '/about-us')
 assert.equal(
   absoluteLocaleUrl('/news-archive/4', 'vi'),
-  'https://icue.vn/news-archive/4',
+  'https://vi.icue.vn/news-archive/4',
 )
 assert.equal(
   absoluteLocaleUrl('/news-archive/4', 'ja'),
-  'https://icue.vn/news-archive/4?lang=ja',
+  'https://vi.icue.vn/news-archive/4?lang=ja',
 )
 assert.equal(
   absoluteLocaleUrl('/news-archive', 'en'),
-  'https://icue.vn/news-archive?lang=en',
+  'https://vi.icue.vn/news-archive?lang=en',
 )
 assert.deepEqual(
   hreflangAlternates('/news-archive/4').map((entry) => entry.hreflang),
@@ -141,7 +141,7 @@ assert.deepEqual(
 )
 assert.equal(
   hreflangAlternates('/news-archive/4').find((entry) => entry.hreflang === 'x-default')?.href,
-  'https://icue.vn/news-archive/4',
+  'https://vi.icue.vn/news-archive/4',
 )
 
 assert.equal(pathnameForLocaleDetection({ pathname: '/', hash: '#/News' }), '/news-archive')

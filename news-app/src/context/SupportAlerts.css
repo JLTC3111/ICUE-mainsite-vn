@@ -1,0 +1,34 @@
+.support-alerts__toasts {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 1700;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: min(356px, calc(100vw - 32px));
+  max-height: min(70vh, 700px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  font-family: var(--icue-font-stack, system-ui, sans-serif);
+}
+
+.support-alerts__toasts:empty { display: none; }
+.support-alerts__toasts .swipe-toast__title,
+.support-alerts__toasts .swipe-toast__desc { overflow-wrap: anywhere; }
+.support-inbox__heading { flex-wrap: wrap; }
+.support-alerts__controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; max-width: 100%; }
+.support-alerts__toggle { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.support-alerts__toggle .bell-toggle__button { font-size: var(--bt-fs); }
+.support-alerts__error { max-width: 30ch; color: #92603a; font-size: 11px; }
+
+@media (max-width: 640px) {
+  .support-alerts__controls { justify-content: flex-start; }
+  .support-alerts__toggle { align-items: flex-start; }
+  .support-alerts__toasts {
+    right: 12px;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    max-height: min(50vh, 400px);
+  }
+}

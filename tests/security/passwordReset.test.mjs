@@ -22,7 +22,7 @@ test('password reset works with the bundled public config when Functions env is 
   const fetch = t.mock.method(globalThis, 'fetch', async (url, options) => {
     assert.equal(new URL(url).origin, new URL(config.url).origin)
     assert.equal(options.headers.apikey, config.anonKey)
-    assert.equal(new URL(url).searchParams.get('redirect_to'), 'https://icue.vn/newsroom/login')
+    assert.equal(new URL(url).searchParams.get('redirect_to'), 'https://vi.icue.vn/newsroom/login')
     return new Response('{}', { status: 200 })
   })
   const response = await handler({ httpMethod: 'POST', body: JSON.stringify({ email: 'editor@example.invalid' }) })
@@ -46,7 +46,7 @@ test('explicit Vite environment credentials take precedence over bundled config'
 
 test('production password reset passes the exact callback as a query parameter', async t => {
   configureAuth(t)
-  const redirectTo = 'https://icue.vn/newsroom/login?lang=vi&from=vi'
+  const redirectTo = 'https://vi.icue.vn/newsroom/login?lang=vi&from=vi'
   const calls = []
   t.mock.method(globalThis, 'fetch', async (url, options) => {
     calls.push({ url: new URL(url), body: JSON.parse(options.body) })

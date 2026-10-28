@@ -199,7 +199,7 @@ test('the staff shortcut preserves the site language and routes the English host
   for (const locale of ['vi', 'en', 'de', 'fr', 'ko', 'ja']) {
     assert.equal(staffPortalUrl(locale, 'localhost'), `/newsroom/portal?mode=staff&lang=${locale}`)
     assert.equal(staffPortalUrl(locale, 'icue.vn'), `/newsroom/portal?mode=staff&lang=${locale}`)
-    assert.equal(staffPortalUrl(locale, 'en.icue.vn'), `https://icue.vn/newsroom/portal?mode=staff&lang=${locale}`)
+    assert.equal(staffPortalUrl(locale, 'en.icue.vn'), `https://vi.icue.vn/newsroom/portal?mode=staff&lang=${locale}`)
     assert.ok(staffPortalCopy(locale).link)
   }
 })

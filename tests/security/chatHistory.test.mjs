@@ -4,7 +4,7 @@ import test from 'node:test'
 import handler from '../../netlify/functions/chat-history.mjs'
 const token = 'a'.repeat(64)
 const payload = { version: 1, iv: 'A'.repeat(16), data: 'B'.repeat(32) }
-const call = (method = 'GET', body, headers = {}) => handler(new Request('https://icue.vn/.netlify/functions/chat-history', {
+const call = (method = 'GET', body, headers = {}) => handler(new Request('https://vi.icue.vn/.netlify/functions/chat-history', {
   method, headers: { Authorization: `Bearer ${token}`, ...headers }, ...(body === undefined ? {} : { body: JSON.stringify(body) }),
 }))
 function env(t) {

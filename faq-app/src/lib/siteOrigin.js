@@ -16,7 +16,7 @@ function isEnHost(hostname) {
 
 function isViHost(hostname) {
   const host = hostname.toLowerCase()
-  return host === 'icue.vn' || host === 'www.icue.vn'
+  return host === 'vi.icue.vn'
 }
 
 function referrerSiteHint() {

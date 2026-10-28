@@ -156,14 +156,14 @@ test('an outbound click closes the menu without intercepting native link navigat
 
 test('app links normalize existing language codes and localize website destinations', async () => {
   const { getAppNavigation } = await sourceModule('shared/app-switcher/appLinks.js');
-  for (const code of ['vi', 'vn', 'vi-VN']) assert.equal(getAppNavigation(code).apps[0].href, 'https://icue.vn/');
+  for (const code of ['vi', 'vn', 'vi-VN']) assert.equal(getAppNavigation(code).apps[0].href, 'https://vi.icue.vn/');
   assert.equal(getAppNavigation('en-US').apps[0].href, 'https://en.icue.vn/');
-  assert.equal(getAppNavigation('jp').apps[0].href, 'https://icue.vn/?lang=ja');
-  assert.equal(getAppNavigation('kr').apps[0].href, 'https://icue.vn/?lang=ko');
-  assert.equal(getAppNavigation('fr').apps[0].href, 'https://icue.vn/?lang=fr');
+  assert.equal(getAppNavigation('jp').apps[0].href, 'https://vi.icue.vn/?lang=ja');
+  assert.equal(getAppNavigation('kr').apps[0].href, 'https://vi.icue.vn/?lang=ko');
+  assert.equal(getAppNavigation('fr').apps[0].href, 'https://vi.icue.vn/?lang=fr');
   assert.equal(getAppNavigation('th').apps[0].href, 'https://en.icue.vn/');
   assert.equal(getAppNavigation('unknown').trigger, 'ICUE Apps');
-  assert.equal(getAppNavigation('unknown').apps[0].href, 'https://icue.vn/');
+  assert.equal(getAppNavigation('unknown').apps[0].href, 'https://vi.icue.vn/');
 });
 
 test('staff portal footer links render the two external portals in the same order', async t => {
