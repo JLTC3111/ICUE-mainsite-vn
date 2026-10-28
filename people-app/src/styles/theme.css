@@ -45,6 +45,22 @@ html {
   color-scheme: light;
 }
 
+:root[data-icue-page-theme='dark'] {
+  color-scheme: dark;
+  --icue-ink: #eef3fb;
+  --icue-surface: #182230;
+  --icue-surface-2: #222f40;
+  --icue-border: #425169;
+  --icue-text: #eef3fb;
+  --icue-text-soft: #bbc8da;
+  --icue-text-faint: #9cacc0;
+  --icue-accent: #72b7ff;
+  --icue-accent-muted: rgba(114, 183, 255, .15);
+  --icue-gradient-page: linear-gradient(160deg, #101923, #172536 55%, #111c2b);
+}
+:root[data-icue-page-theme='dark'] .people-header { background: rgba(16, 25, 35, .92); }
+:root[data-icue-page-theme='dark'] .page-shell__tabs { background: var(--icue-surface); border-color: var(--icue-border); }
+
 body {
   margin: 0;
   font-family: var(--icue-sans);

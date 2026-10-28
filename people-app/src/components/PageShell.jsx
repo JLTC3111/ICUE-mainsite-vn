@@ -7,6 +7,7 @@ import Footer from './Footer'
 import InteractiveBackground from './InteractiveBackground/InteractiveBackground'
 import ShimmerButton from './ShimmerButton/ShimmerButton'
 import './PageShell.css'
+import usePageTheme from '../../../shared/ui/usePageTheme.js'
 
 export default function PageShell({
   pageKey,
@@ -17,6 +18,7 @@ export default function PageShell({
   onBackgroundToggle,
 }) {
   const { t, i18n } = useTranslation()
+  usePageTheme('people')
   const lang = i18n.resolvedLanguage || i18n.language
   const { pathname } = useLocation()
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled

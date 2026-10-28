@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
+import { readIncomingTheme } from '../../../shared/ui/incomingTheme.js'
 
 const STORAGE_KEY = 'people_bg_video_enabled'
 
@@ -14,6 +15,7 @@ function prefersSlowNetwork() {
 }
 
 function readInitialEnabled() {
+  if (readIncomingTheme() === 'light') return false
   if (prefersReducedMotion() || prefersSlowNetwork()) return false
   const stored = readLocalStorage(STORAGE_KEY)
   return stored === null ? true : stored === 'true'

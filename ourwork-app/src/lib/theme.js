@@ -1,3 +1,4 @@
+import { readIncomingTheme, rememberThemePreference } from '../../../shared/ui/incomingTheme.js'
 export const THEME_STORAGE_KEY = 'icue-ourwork-theme'
 export const THEME_DARK = 'dark'
 export const THEME_LIGHT = 'light'
@@ -7,12 +8,14 @@ export const THEME_LIGHT = 'light'
  * the first frame, this module owns every frame after it.
  */
 export function readStoredTheme() {
+  const incoming = readIncomingTheme()
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY)
     if (stored === THEME_LIGHT || stored === THEME_DARK) return stored
   } catch {
     /* private mode / blocked storage */
   }
+  if (incoming) return incoming
   if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: light)').matches) {
     return THEME_LIGHT
   }
@@ -20,11 +23,7 @@ export function readStoredTheme() {
 }
 
 export function writeStoredTheme(theme) {
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, theme)
-  } catch {
-    /* ignore */
-  }
+  rememberThemePreference(theme)
 }
 
 export function syncDocumentTheme(theme) {

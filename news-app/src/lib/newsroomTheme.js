@@ -1,3 +1,4 @@
+import { readIncomingTheme, rememberThemePreference } from '../../../shared/ui/incomingTheme.js'
 export const NEWSROOM_THEME_STORAGE_KEY = 'icue-newsroom-theme'
 
 export const NEWSROOM_THEME_DARK = 'dark'
@@ -9,6 +10,7 @@ export function isNewsroomReaderRoute(pathname = '') {
 }
 
 export function readNewsroomTheme() {
+  const incoming = readIncomingTheme()
   try {
     const stored = localStorage.getItem(NEWSROOM_THEME_STORAGE_KEY)
     if (stored === NEWSROOM_THEME_LIGHT || stored === NEWSROOM_THEME_DARK) {
@@ -17,15 +19,11 @@ export function readNewsroomTheme() {
   } catch {
     /* private mode / blocked storage */
   }
-  return NEWSROOM_THEME_DARK
+  return incoming || NEWSROOM_THEME_DARK
 }
 
 export function writeNewsroomTheme(theme) {
-  try {
-    localStorage.setItem(NEWSROOM_THEME_STORAGE_KEY, theme)
-  } catch {
-    /* ignore */
-  }
+  rememberThemePreference(theme)
 }
 
 /** Keep document-level color-scheme in sync with reader dark mode (useLayoutEffect-safe). */

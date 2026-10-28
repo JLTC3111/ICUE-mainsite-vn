@@ -1,19 +1,22 @@
 import { useLayoutEffect, useSyncExternalStore } from 'react'
+import { readIncomingTheme, rememberThemePreference } from '../../../shared/ui/incomingTheme.js'
 
 export const HOME_THEME_STORAGE_KEY = 'icue_home_theme'
 const CHANGE_EVENT = 'icue:homeThemeChanged'
 let runtimeTheme
 
 export function readHomeTheme() {
+  const incoming = readIncomingTheme()
+  if (incoming) runtimeTheme = incoming
   if (runtimeTheme !== undefined) return runtimeTheme
-  try { return window.localStorage.getItem(HOME_THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light' }
-  catch { return 'light' }
+  try { const stored = window.localStorage.getItem(HOME_THEME_STORAGE_KEY); return stored === 'dark' || stored === 'light' ? stored : incoming || 'light' }
+  catch { return incoming || 'light' }
 }
 
 export function setHomeTheme(next) {
   const value = typeof next === 'function' ? next(readHomeTheme()) : next
   runtimeTheme = value === 'dark' ? 'dark' : 'light'
-  try { window.localStorage.setItem(HOME_THEME_STORAGE_KEY, runtimeTheme) } catch { /* Keep the choice for this visit. */ }
+  rememberThemePreference(runtimeTheme)
   if (typeof window !== 'undefined') window.dispatchEvent(new window.Event(CHANGE_EVENT))
 }
 
@@ -21,6 +24,7 @@ function subscribe(listener) {
   if (typeof window === 'undefined') return () => {}
   const onStorage = event => {
     if (event.key !== HOME_THEME_STORAGE_KEY && event.key !== null) return
+    if (event.newValue === 'dark' || event.newValue === 'light') rememberThemePreference(event.newValue)
     runtimeTheme = undefined
     listener()
   }

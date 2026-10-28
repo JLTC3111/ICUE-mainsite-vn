@@ -30,7 +30,8 @@
     <script>
       (function () {
         try {
-          var stored = localStorage.getItem('icue-ourwork-theme')
+          var stored = new URLSearchParams(location.search).get('theme')
+          if (stored !== 'light' && stored !== 'dark') stored = localStorage.getItem('icue-ourwork-theme')
           var theme =
             stored === 'light' || stored === 'dark'
               ? stored

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { readIncomingTheme, rememberThemePreference } from '../../../../shared/ui/incomingTheme.js'
 
 const STORAGE_KEY = 'aboutUs_theme'
 const ROOT_ATTRIBUTE = 'data-about-theme'
@@ -22,20 +23,17 @@ const ROOT_ATTRIBUTE = 'data-about-theme'
  */
 
 function readStoredTheme() {
+  const incoming = readIncomingTheme()
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    return raw === 'dark' || raw === 'light' ? raw : null
+    return raw === 'dark' || raw === 'light' ? raw : incoming
   } catch {
-    return null
+    return incoming
   }
 }
 
 function writeStoredTheme(theme) {
-  try {
-    localStorage.setItem(STORAGE_KEY, theme)
-  } catch {
-    // Storage can be unavailable in privacy-restricted contexts.
-  }
+  rememberThemePreference(theme)
 }
 
 function systemTheme() {

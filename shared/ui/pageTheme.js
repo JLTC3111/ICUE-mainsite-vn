@@ -1,13 +1,15 @@
+import { readIncomingTheme } from './incomingTheme.js'
 // Retain the preference already used by About, Awards, and Past Projects.
 // People, Our Work, and Newsroom keep their existing theme systems.
 export const PAGE_THEME_STORAGE_KEY = 'aboutUs_theme'
 
 export function readPageThemePreference() {
+  const incoming = readIncomingTheme()
   try {
     const stored = localStorage.getItem(PAGE_THEME_STORAGE_KEY)
-    return stored === 'dark' || stored === 'light' ? stored : null
+    return stored === 'dark' || stored === 'light' ? stored : incoming
   } catch {
-    return null
+    return incoming
   }
 }
 

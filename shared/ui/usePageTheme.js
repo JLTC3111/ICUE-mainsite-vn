@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { PAGE_THEME_STORAGE_KEY, readPageThemePreference, systemPageTheme } from './pageTheme.js'
+import { rememberThemePreference } from './incomingTheme.js'
 import './page-theme.css'
 
 /** Only pages that call this hook opt into the shared palette and control. */
@@ -11,7 +12,7 @@ export default function usePageTheme(page, { enabled = true } = {}) {
     const value = next === 'dark' ? 'dark' : 'light'
     manual.current = true
     setThemeState(value)
-    try { localStorage.setItem(PAGE_THEME_STORAGE_KEY, value) } catch { /* Switching still works. */ }
+    rememberThemePreference(value)
   }, [])
   const setDark = useCallback(dark => setTheme(dark ? 'dark' : 'light'), [setTheme])
 
