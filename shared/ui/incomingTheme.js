@@ -7,7 +7,7 @@ const valid = (value) => value === 'light' || value === 'dark'
 
 function persist(value) {
   for (const key of STORAGE_KEYS) {
-    try { localStorage.setItem(key, value) } catch { /* The runtime value still works. */ }
+    try { (window.localStorage ?? localStorage).setItem(key, value) } catch { /* The runtime value still works. */ }
   }
 }
 
