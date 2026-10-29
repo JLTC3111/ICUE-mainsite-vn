@@ -67,8 +67,26 @@ user changes languages. Regression coverage lives in
 `tests/security/passwordReset.test.mjs`, `tests/security/authRecovery.test.mjs`,
 and `tests/react/login.test.mjs`.
 
-At the time of the redirect fix, these website changes had not been deployed:
-the live reset-request endpoint still returned `503 config_missing`. Deploy the
-website changes before verifying actual email delivery through the live form.
-Request a fresh email afterward; an older email may already contain the HR
-destination.
+## Live verification on 2026-10-29
+
+The deployed staff portal at
+`https://vi.icue.vn/newsroom/portal?mode=staff` sends
+`https://vi.icue.vn/newsroom/login` as its callback. A browser check intercepted
+the reset requests and verified both the normal proxy request and the SDK
+fallback after a mocked HTTP 404. Both showed the success notice without
+leaving the staff portal. No reset email was sent by this check.
+
+The live Auth logs also record a recovery request at 04:32:19 UTC and a
+successful verification at 04:34:48 UTC with the Newsroom callback. An older
+reset email, sent at 17:12:57 UTC on October 28, explicitly contains
+`redirect_to=https://hr.icue.vn`; its matching Auth log records the HR callback.
+That older message is evidence of an HR destination, but does not establish
+that the current staff portal generated it. Changing the redirect allow list
+does not rewrite a link already delivered in an email.
+
+Request a fresh email from the staff portal after a callback configuration
+change. Supabase intentionally returns success for a nonexistent Auth address
+without sending it a reset email; keep that generic behavior. An address may
+exist in this shared Auth project even if it has never signed in or has no
+Newsroom profile. See the
+[Supabase password reset documentation](https://supabase.com/docs/guides/auth/passwords).

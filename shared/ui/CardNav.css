@@ -46,6 +46,9 @@
   box-sizing: border-box;
 }
 
+.card-nav__heading-title { margin: 0; font: inherit; }
+.card-nav__subtitle { margin: 4px 0 0; color: var(--cn-muted); font-size: 12px; line-height: 1.5; }
+
 .card-nav__menu {
   display: inline-flex;
   align-items: center;

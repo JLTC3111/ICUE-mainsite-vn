@@ -27,7 +27,7 @@ async function fixture(t, file, currentApp, { width = 1280, height = 800, locale
   window.cancelAnimationFrame = id => frames.delete(id);
   const media = Object.assign(new window.EventTarget(), { matches: false });
   window.matchMedia = () => media;
-  Object.defineProperty(window.HTMLElement.prototype, 'offsetWidth', { configurable: true, get() { return Math.min(740, window.innerWidth - 24); } });
+  Object.defineProperty(window.HTMLElement.prototype, 'offsetWidth', { configurable: true, get() { return Math.min(860, window.innerWidth - 24); } });
   Object.defineProperty(window.HTMLElement.prototype, 'offsetHeight', { configurable: true, get() { return this.classList.contains('card-nav__content') ? (window.innerWidth < 584 ? 440 : 204) : 52; } });
   const flush = async (count = 240) => { await act(async () => {
     for (let i = 0; i < count && frames.size; i++) {
@@ -93,7 +93,7 @@ for (const [name, file, currentApp] of implementations) {
       assert.equal(link.rel, 'noopener noreferrer');
     }
     assert.equal(f.document.activeElement, links[0]);
-    assert.equal(parseFloat(panel.style.left), name === 'Vietnamese site' ? 528 : 916, 'Desktop menu stays within the viewport');
+    assert.equal(parseFloat(panel.style.left), name === 'Vietnamese site' ? 408 : 916, 'Desktop menu stays within the viewport');
     await f.key('Escape');
     assert.equal(f.panel(), null);
     assert.equal(f.document.activeElement, f.trigger);
@@ -114,12 +114,13 @@ test('mobile app sheet traps focus, closes accessibly, and restores page scrolli
   assert.equal(f.document.body.style.overflow, 'hidden');
   assert.equal(f.trigger.getAttribute('aria-label'), 'Ứng dụng ICUE');
   const close = f.panel().querySelector('button');
-  const links = f.panel().querySelectorAll('a');
-  links[links.length - 1].focus();
+  const toggles = f.panel().querySelectorAll('.icue-ecosystem__toggle');
+  assert.equal(f.document.activeElement, toggles[0]);
+  toggles[toggles.length - 1].focus();
   assert.equal((await f.key('Tab')).defaultPrevented, true);
   assert.equal(f.document.activeElement, close);
   assert.equal((await f.key('Tab', { shiftKey: true })).defaultPrevented, true);
-  assert.equal(f.document.activeElement, links[links.length - 1]);
+  assert.equal(f.document.activeElement, toggles[toggles.length - 1]);
   await f.click(close);
   assert.equal(f.panel(), null);
   assert.equal(f.document.body.style.overflow, 'auto');
@@ -237,4 +238,78 @@ test('Card Nav reflows at mobile widths and honors live reduced-motion changes',
   await f.click(f.panel().querySelector('button'));
   assert.equal(f.panel(), null);
   assert.equal(f.frames.size, 0);
+});
+
+test('the ecosystem cards contain the requested functions and mark each possible current platform', async t => {
+  const expected = [
+    ['Giới thiệu & đội ngũ', 'Nghiên cứu & dự án', 'Tin tức & hoạt động', 'Khám phá ICUE'],
+    ['Hồ sơ nhân sự', 'Chấm công & giờ làm', 'Nghỉ phép & phê duyệt', 'Báo cáo hàng tháng'],
+    ['Danh sách hợp đồng', 'Thông tin & hồ sơ', 'Theo dõi trạng thái', 'Tra cứu & quản lý'],
+  ];
+  for (const currentApp of ['website', 'hr', 'contracts']) await t.test(currentApp, async context => {
+    const f = await fixture(context, implementations[0][1], currentApp, { locale: 'vi' });
+    await f.open();
+    assert.equal(f.panel().querySelector('h2').textContent, 'Khám phá hệ sinh thái ICUE');
+    assert.ok(f.panel().querySelector('.card-nav__subtitle').textContent);
+    const cards = [...f.panel().querySelectorAll('.card-nav__card')];
+    cards.forEach((card, index) => {
+      assert.deepEqual([...card.querySelectorAll('.icue-ecosystem__features li')].map(li => li.textContent), expected[index]);
+      assert.equal(card.querySelector('.icue-ecosystem__category').textContent, index === 0 ? 'CÔNG KHAI' : 'NỘI BỘ');
+      assert.equal(card.querySelector('.icue-ecosystem__features h4').textContent, 'CHỨC NĂNG CHÍNH');
+      assert.ok(card.querySelector('.icue-ecosystem__domain').textContent.endsWith('icue.vn'));
+    });
+    const current = f.panel().querySelector('[aria-current="page"]');
+    assert.equal(current.querySelector('h3').textContent, { website: 'Website ICUE', hr: 'Cổng nhân sự', contracts: 'Quản lý hợp đồng' }[currentApp]);
+    assert.equal(current.querySelector('.card-nav__current').textContent, 'Bạn đang ở đây');
+    assert.equal(current.querySelector('a'), null);
+    assert.equal(f.panel().querySelectorAll('.icue-ecosystem__action').length, 2);
+  });
+});
+
+test('mobile accordions expose one platform at a time and keyboard focus skips hidden actions', async t => {
+  const f = await fixture(t, implementations[0][1], 'website', { width: 390, locale: 'vi' });
+  await f.open();
+  const toggles = [...f.panel().querySelectorAll('.icue-ecosystem__toggle')];
+  const details = () => [...f.panel().querySelectorAll('.icue-ecosystem__body')];
+  assert.deepEqual(toggles.map(button => button.getAttribute('aria-expanded')), ['true', 'false', 'false']);
+  assert.deepEqual(details().map(body => body.hidden), [false, true, true]);
+  assert.equal((await f.key('ArrowDown')).defaultPrevented, true);
+  assert.equal(f.document.activeElement, toggles[1]);
+  await f.click(toggles[1]);
+  assert.deepEqual(details().map(body => body.hidden), [true, false, true]);
+  assert.equal(toggles[1].getAttribute('aria-controls'), details()[1].id);
+  assert.equal(f.panel().querySelector('[aria-current="page"] .card-nav__current').textContent, 'Bạn đang ở đây');
+  const hiddenLink = details()[2].querySelector('a');
+  assert.equal(hiddenLink.tabIndex, -1);
+  await f.key('End');
+  assert.equal(f.document.activeElement, toggles[2]);
+  await f.key('Tab');
+  assert.equal(f.document.activeElement, f.panel().querySelector('.card-nav__menu'));
+  await f.key('Tab', { shiftKey: true });
+  assert.equal(f.document.activeElement, toggles[2]);
+  await f.click(toggles[1]);
+  assert.ok(details().every(body => body.hidden));
+  toggles[2].focus();
+  await f.key('Home');
+  assert.equal(f.document.activeElement, toggles[0]);
+  await f.key('ArrowUp');
+  assert.equal(f.document.activeElement, toggles[2]);
+  f.window.innerWidth = 1280;
+  await act(async () => f.window.dispatchEvent(new f.window.Event('resize')));
+  assert.ok(details().every(body => !body.hidden));
+});
+
+test('ecosystem details follow existing locale aliases and keep all destination URLs', async () => {
+  const { getEcosystemNavigation } = await sourceModule('shared/app-switcher/ecosystemCopy.js');
+  const { getAppNavigation } = await sourceModule('shared/app-switcher/appLinks.js');
+  for (const locale of ['vi', 'vn', 'vi-VN', 'en', 'en-US', 'de', 'fr', 'es', 'ja', 'jp', 'ko', 'kr', 'th', 'ru', 'zh', 'unknown']) {
+    const copy = getEcosystemNavigation(locale);
+    assert.deepEqual(Array.from(copy.apps, app => app.href), Array.from(getAppNavigation(locale).apps, app => app.href));
+    for (const app of copy.apps) {
+      assert.equal(app.features.length, 4);
+      assert.ok(app.category && app.action && app.description);
+    }
+  }
+  assert.equal(getEcosystemNavigation('vn').current, 'Bạn đang ở đây');
+  assert.equal(getEcosystemNavigation('unknown').heading, 'Explore the ICUE ecosystem');
 });

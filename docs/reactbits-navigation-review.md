@@ -8,7 +8,7 @@ requested for the shared app menu on icue.vn and has now been implemented there.
 | --- | --- | --- |
 | [Cursor Grid](https://reactbits.dev/animations/cursor-grid) | A restrained background for a home or Our Work introduction. The current WebGL2 source supports grid styles, cursor trails, click pulses, bounded DPR, visibility pause and a reduced-motion path. | Review only. A contained section would keep pointer effects away from long reading and data-entry sessions. |
 | [Halftone Reveal](https://reactbits.dev/animations/halftone-reveal) | An editorial treatment for selected project or community photographs, with the original image available on touch devices and when graphics are unavailable. The source uses an image texture and a persistent reveal mask. | Review only. Preserve the site's existing image loading, accessible alternative text and local assets if adopted. |
-| [Card Nav](https://reactbits.dev/components/card-nav) | App menu in icue.vn's dedicated Newsroom, People, Structure and Our Work headers. | Implemented with three app cards, a custom three-dot vertical SVG toggle, inset rims, spring height animation and staggered card entrances. Uses existing Lucide icons without the registry's two Hugeicons packages. |
+| [Card Nav](https://reactbits.dev/components/card-nav) | App menu in the dedicated Newsroom, People, Structure and Our Work headers. | Implemented with three app cards, a custom three-dot vertical SVG toggle, inset rims and restrained height animation. Uses existing Lucide icons without the registry's two Hugeicons packages. |
 | [Gooey Nav](https://reactbits.dev/components/gooey-nav) | Existing Newsroom social links and route-aware legal document tabs. | Updated to the current WebGL2 pill/drop renderer, shared by both consumers. |
 
 ## Navigation cleanup
@@ -34,12 +34,25 @@ links with localized accessible labels. The website card is informational while
 the visitor is on the website.
 
 The panel remains portalled beyond transformed or clipped headers. It uses the
-source's spring/stagger engine, stops requesting frames after settling, keeps
+source's spring engine without bounce or stagger, stops requesting frames after settling, keeps
 closing content inert, supports live reduced-motion changes, and falls back to
 window resize events when ResizeObserver is unavailable. Desktop placement uses
-expanded content height before animation; small screens stack cards according to
-the component's measured width. Escape, outside dismissal, restored focus and the
+expanded content height before animation. Escape, outside dismissal, restored focus and the
 mobile focus/scroll guard are retained in the dedicated section headers.
+
+On 2026-10-29, the submenu became the ICUE ecosystem navigator. Its localized
+header introduces the three platforms. Each card includes its public/internal
+category, description, four core functions, and a footer with the destination
+domain. The current platform has a subtle highlight and a localized “You are
+here” status; the other two retain native links opening in a new tab. Desktop
+cards share grid rows so their dividers and footer actions align. At 760px and
+below they become a single-open accordion, initially expanded on the current
+platform. Hidden actions leave the tab order, arrow/Home/End keys navigate the
+accordion headings, and the mobile focus guard considers only visible controls.
+
+The ecosystem browser review covered light and dark themes from 320px to 1440px,
+including the desktop/mobile boundary, divider alignment and keyboard behavior.
+The shared URL data and the People app's HR button are unchanged.
 
 ## Gooey Nav adaptation
 

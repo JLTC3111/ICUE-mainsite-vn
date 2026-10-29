@@ -1,39 +1,41 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FileText, Globe, Users } from 'lucide-react';
 import CardNav from '../ui/CardNav.jsx';
-import { getAppNavigation } from './appLinks.js';
+import EcosystemCard from './EcosystemCard.jsx';
+import { getEcosystemNavigation } from './ecosystemCopy.js';
 import './AppSwitcher.css';
 
-const ICONS = { website: Globe, hr: Users, contracts: FileText };
+const PANEL_WIDTH = 860;
+const MOBILE_WIDTH = 760;
 
 export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'light', variant = 'plain', compact = false }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [expandedApp, setExpandedApp] = useState(currentApp);
   const [position, setPosition] = useState({ top: 0, left: 0, mobile: false });
   const triggerRef = useRef(null);
   const panelRef = useRef(null);
   const id = useId();
-  const copy = getAppNavigation(locale);
-  const expand = () => { setMounted(true); setOpen(true); };
+  const copy = getEcosystemNavigation(locale);
+  const expand = () => { setExpandedApp(currentApp); setMounted(true); setOpen(true); };
 
   useLayoutEffect(() => {
     if (!open) return undefined;
     const place = () => {
       const rect = triggerRef.current.getBoundingClientRect();
-      const width = Math.min(740, window.innerWidth - 24);
+      const width = Math.min(PANEL_WIDTH, window.innerWidth - 24);
       // Measure expanded content before the spring starts, so a menu near the
       // bottom edge does not jump from below its trigger to above it mid-open.
       const content = panelRef.current?.querySelector('.card-nav__content');
       const bar = panelRef.current?.querySelector('.card-nav__bar');
-      const height = Math.min(window.innerHeight - 24, (content?.scrollHeight || content?.getBoundingClientRect().height || 204) + (bar?.getBoundingClientRect().height || 52));
+      const height = Math.min(window.innerHeight - 24, (content?.scrollHeight || content?.getBoundingClientRect().height || 400) + (bar?.getBoundingClientRect().height || 88));
       const below = rect.bottom + 8;
       const top = below + height <= window.innerHeight - 12
         ? below : Math.max(12, rect.top - height - 8);
       const next = {
         top,
         left: Math.max(12, Math.min(rect.left, window.innerWidth - width - 12)),
-        mobile: window.innerWidth <= 640,
+        mobile: window.innerWidth <= MOBILE_WIDTH,
       };
       setPosition(previous => previous.top === next.top && previous.left === next.left && previous.mobile === next.mobile ? previous : next);
     };
@@ -65,7 +67,8 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
         close();
       }
       if (event.key === 'Tab' && position.mobile) {
-        const nodes = panelRef.current?.querySelectorAll('a[href], button:not([disabled])');
+        const nodes = [...(panelRef.current?.querySelectorAll('a[href], button:not([disabled])') || [])]
+          .filter(node => node.tabIndex >= 0 && !node.closest('[hidden]'));
         const first = nodes?.[0];
         const last = nodes?.[nodes.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
@@ -81,8 +84,8 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
   }, [open, position.mobile]);
 
   useEffect(() => {
-    if (open) panelRef.current?.querySelector('a[href]')?.focus();
-  }, [open]);
+    if (open) panelRef.current?.querySelector(position.mobile ? '.icue-ecosystem__toggle' : 'a[href]')?.focus({ preventScroll: true });
+  }, [open, position.mobile]);
 
   useEffect(() => {
     if (!open || !position.mobile) return undefined;
@@ -135,6 +138,15 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
             onBlur={event => {
               if (!position.mobile && event.relatedTarget && !event.currentTarget.contains(event.relatedTarget) && event.relatedTarget !== triggerRef.current) setOpen(false);
             }}
+            onKeyDown={event => {
+              if (!event.target.matches('.icue-ecosystem__toggle') || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+              const toggles = [...event.currentTarget.querySelectorAll('.icue-ecosystem__toggle')];
+              const index = toggles.indexOf(event.target);
+              const next = event.key === 'Home' ? 0 : event.key === 'End' ? toggles.length - 1
+                : (index + (event.key === 'ArrowDown' ? 1 : -1) + toggles.length) % toggles.length;
+              event.preventDefault();
+              toggles[next]?.focus();
+            }}
           >
             <CardNav
               open={open}
@@ -143,6 +155,7 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
               theme={appearance}
               surface="solid"
               heading={copy.heading}
+              subtitle={copy.subtitle}
               ariaLabel={copy.trigger}
               menuLabel={false}
               menuText={copy.trigger}
@@ -150,30 +163,23 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
               intro={false}
               animateOnMount
               interactionManaged
-              maxWidth={740}
-              cardHeight={196}
-              style={{ '--cn-bar': '52px' }}
-              bounce={0.12}
-              stagger={0.1}
-              items={copy.apps.map(app => {
-                const Icon = ICONS[app.id];
-                const current = app.id === currentApp;
-                return {
-                  label: app.label,
-                  description: app.description,
-                  icon: <Icon size={22} strokeWidth={1.65} />,
-                  current,
-                  currentLabel: copy.current,
-                  links: current ? [] : [{
-                    label: new URL(app.href).hostname,
-                    ariaLabel: `${app.label} — ${copy.newTab}`,
-                    href: app.href,
-                    target: '_blank',
-                    rel: 'noopener noreferrer',
-                  }],
-                };
-              })}
-              onLinkClick={closeAndFocus}
+              maxWidth={PANEL_WIDTH}
+              narrow={position.mobile}
+              cardHeight={0}
+              style={{ '--cn-bar': position.mobile ? '112px' : '88px', '--cn-inset': '12px', '--cn-gap': '12px' }}
+              bounce={0}
+              stagger={0}
+              speed={1.6}
+              items={copy.apps.map(app => ({ ...app, current: app.id === currentApp }))}
+              renderCard={(app, { open, narrow }) => <EcosystemCard
+                app={app}
+                copy={copy}
+                open={open}
+                narrow={narrow}
+                expanded={app.id === expandedApp}
+                onToggle={() => setExpandedApp(previous => previous === app.id ? null : app.id)}
+                onNavigate={closeAndFocus}
+              />}
             />
           </section>
         </>, document.body,

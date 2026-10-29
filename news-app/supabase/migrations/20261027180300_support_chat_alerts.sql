@@ -1,8 +1,9 @@
 -- Staff alerts have their own cursor. Reading a selected thread must not hide
 -- a new message before the alert poll observes it.
+-- Allow reapplication after an earlier run or the complete schema bootstrap.
 begin;
 
-create function icue_support.alerts(p_after bigint) returns jsonb
+create or replace function icue_support.alerts(p_after bigint) returns jsonb
 language plpgsql stable security definer set search_path = '' as $$
 declare v_events jsonb; v_cursor bigint; v_unread bigint; v_more boolean; v_seen jsonb; v_overlap jsonb := '[]'::jsonb;
 begin
@@ -77,7 +78,7 @@ $$;
 revoke all on function icue_support.alerts(bigint) from public, anon, authenticated;
 grant execute on function icue_support.alerts(bigint) to authenticated;
 
-create function public.support_chat_alerts(p_after bigint default null) returns jsonb
+create or replace function public.support_chat_alerts(p_after bigint default null) returns jsonb
 language sql security invoker set search_path = '' as $$ select icue_support.alerts(p_after); $$;
 revoke all on function public.support_chat_alerts(bigint) from public, anon, authenticated;
 grant execute on function public.support_chat_alerts(bigint) to authenticated;

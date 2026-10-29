@@ -155,6 +155,9 @@ const CardNav = ({
   className = '',
   style,
   heading,
+  subtitle,
+  renderCard,
+  narrow: narrowProp,
   menuText = 'Menu',
   closeText = 'Close menu',
   interactionManaged = false,
@@ -175,7 +178,8 @@ const CardNav = ({
   const progressRef = useRef(null);
   onRestRef.current = onRest;
   const [openState, setOpenState] = useState(defaultOpen);
-  const [narrow, setNarrow] = useState(false);
+  const [measuredNarrow, setNarrow] = useState(false);
+  const narrow = narrowProp ?? measuredNarrow;
   const [shown, setShown] = useState(defaultOpen);
 
   const controlled = openProp !== undefined;
@@ -337,6 +341,7 @@ const CardNav = ({
   });
 
   useLayoutEffect(() => {
+    if (narrowProp !== undefined) return undefined;
     const root = rootRef.current;
     if (!root) return undefined;
     const measure = () => setNarrow(root.offsetWidth < NARROW);
@@ -345,7 +350,7 @@ const CardNav = ({
     observer?.observe(root);
     window.addEventListener('resize', measure);
     return () => { observer?.disconnect(); window.removeEventListener('resize', measure); };
-  }, []);
+  }, [narrowProp]);
 
   useEffect(() => {
     if (!open || interactionManaged) return undefined;
@@ -478,7 +483,10 @@ const CardNav = ({
             )}
           </button>
 
-          {heading && <span className="card-nav__heading">{heading}</span>}
+          {heading && <div className="card-nav__heading">
+            <h2 className="card-nav__heading-title">{heading}</h2>
+            {subtitle && <p className="card-nav__subtitle">{subtitle}</p>}
+          </div>}
           {logo && (
             <LinkComponent href={logoHref} className={LOGO} aria-label={logoAlt}>
               {typeof logo === 'string' ? <img src={logo} alt="" draggable={false} /> : logo}
@@ -502,37 +510,39 @@ const CardNav = ({
                 aria-current={item.current ? 'page' : undefined}
                 style={item.bgColor ? { background: item.bgColor, color: item.textColor } : undefined}
               >
-                <div className={CARD_HEAD}>
-                  {item.icon && <span className="card-nav__app-icon" aria-hidden="true">{item.icon}</span>}
-                  <span className={LABEL}>{item.label}</span>
-                  {item.description && <p className={DESCRIPTION}>{item.description}</p>}
-                </div>
-                {item.current && <span className="card-nav__current">{item.currentLabel}</span>}
-                <ul className={LINKS}>
-                  {(item.links ?? []).map((link, linkIndex) => (
-                    <li key={`${link.label}-${linkIndex}`}>
-                      {anchor(
-                        link,
-                        {
-                          className: LINK,
-                          'aria-label': link.ariaLabel,
-                          tabIndex: open ? undefined : -1,
-                          onClick: event => {
-                            onLinkClick?.(link, item, event);
-                            setOpen(false);
-                          }
-                        },
-                        <>
-                          <span className={ARROW} aria-hidden="true">
-                            <ArrowUpRight className={ARROW_OUT} size={14} strokeWidth={2} />
-                            <ArrowUpRight className={ARROW_IN} size={14} strokeWidth={2} />
-                          </span>
-                          {link.label}
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                {renderCard ? renderCard(item, { open, narrow }) : <>
+                  <div className={CARD_HEAD}>
+                    {item.icon && <span className="card-nav__app-icon" aria-hidden="true">{item.icon}</span>}
+                    <span className={LABEL}>{item.label}</span>
+                    {item.description && <p className={DESCRIPTION}>{item.description}</p>}
+                  </div>
+                  {item.current && <span className="card-nav__current">{item.currentLabel}</span>}
+                  <ul className={LINKS}>
+                    {(item.links ?? []).map((link, linkIndex) => (
+                      <li key={`${link.label}-${linkIndex}`}>
+                        {anchor(
+                          link,
+                          {
+                            className: LINK,
+                            'aria-label': link.ariaLabel,
+                            tabIndex: open ? undefined : -1,
+                            onClick: event => {
+                              onLinkClick?.(link, item, event);
+                              setOpen(false);
+                            }
+                          },
+                          <>
+                            <span className={ARROW} aria-hidden="true">
+                              <ArrowUpRight className={ARROW_OUT} size={14} strokeWidth={2} />
+                              <ArrowUpRight className={ARROW_IN} size={14} strokeWidth={2} />
+                            </span>
+                            {link.label}
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </>}
               </div>
             ))}
           </div>
