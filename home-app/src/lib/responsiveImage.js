@@ -1,8 +1,11 @@
+import { PAST_PROJECT_COVERS } from '../data/pastProjectCovers.js'
+
 const VARIANT_WIDTHS = [480, 960]
 const LOGO_VARIANT_WIDTHS = [220, 440]
 
 /** Intrinsic widths of listing/home covers this app generates variants for. */
 const COVER_WIDTHS = {
+  ...Object.fromEntries(Object.values(PAST_PROJECT_COVERS).map(cover => [cover.src, cover.width])),
   '/news/articles/card_4.jpg': 3504,
   '/news/articles/Card_1.webp': 720,
   '/news/articles/card_9.jpg': 1168,
@@ -57,7 +60,9 @@ export function heroSrcSet(src, intrinsicWidth) {
   if (!src) return undefined
   const width = intrinsicWidth || COVER_WIDTHS[src]
   const canUse960 = width > 960 && (
-    src.includes('/pastProjects/project_') || (COVER_WIDTHS[src] || 0) > 960
+    src.includes('/pastProjects/project_') ||
+    src.startsWith('/pastProjects/covers/') ||
+    (COVER_WIDTHS[src] || 0) > 960
   )
   return srcSetFrom(src, width, canUse960 ? [960] : [])
 }

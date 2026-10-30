@@ -1,16 +1,24 @@
 /** Static past-project records. Copy lives in `projects.items` locale keys. */
+import { PAST_PROJECT_COVERS } from './pastProjectCovers.js'
+
+function projectCover(id) {
+  const cover = PAST_PROJECT_COVERS[id]
+  return {
+    cover: cover.src,
+    width: cover.width,
+    height: cover.height,
+    hero: cover.src,
+    heroWidth: cover.width,
+    heroHeight: cover.height,
+  }
+}
 
 export const PAST_PROJECTS = [
   {
     id: '1',
     key: 'laoCai',
     year: '2024',
-    cover: '/pastProjects/pp_1.webp',
-    width: 720,
-    height: 425,
-    hero: '/pastProjects/pp_1.jpg',
-    heroWidth: 2394,
-    heroHeight: 1413,
+    ...projectCover('1'),
     images: [
       { src: '/pastProjects/project_1/pp_1a.jpg', width: 2047, height: 1448 },
       { src: '/pastProjects/project_1/pp_1b.jpg', width: 1015, height: 657 },
@@ -23,9 +31,7 @@ export const PAST_PROJECTS = [
     id: '2',
     key: 'hopThanh',
     year: '2025',
-    cover: '/pastProjects/pp_2.jpg',
-    width: 2084,
-    height: 1300,
+    ...projectCover('2'),
     images: [
       { src: '/pastProjects/project_2/pp_2a.jpg', width: 1904, height: 1070 },
       { src: '/pastProjects/project_2/pp_2b.jpg', width: 900, height: 716 },
@@ -38,39 +44,31 @@ export const PAST_PROJECTS = [
     id: '3',
     key: 'subdivision6b',
     year: '2025',
-    cover: '/pastProjects/pp_3.webp',
-    width: 720,
-    height: 801,
-    hero: '/pastProjects/pp_3.jpg',
-    heroWidth: 1079,
-    heroHeight: 1200,
+    ...projectCover('3'),
     images: [
       { src: '/pastProjects/project_3/pp_3a.jpg', width: 1125, height: 819 },
       { src: '/pastProjects/project_3/pp_3b.jpg', width: 1412, height: 1842 },
       { src: '/pastProjects/project_3/pp_3c.jpg', width: 1920, height: 980 },
-      { src: '/pastProjects/project_3/pp_3d.jpg', width: 819, height: 614 },
+      { src: '/pastProjects/project_3/pp_3d.jpg', width: 960, height: 720 },
     ],
   },
   {
     id: '4',
     key: 'cocSan',
     year: '2025',
-    cover: '/pastProjects/pp_4.jpg',
-    width: 1200,
-    height: 1096,
+    ...projectCover('4'),
     images: [
       { src: '/pastProjects/project_4/pp_4a.webp', width: 460, height: 312 },
       { src: '/pastProjects/project_4/pp_4b.webp', width: 474, height: 316 },
       { src: '/pastProjects/project_4/pp_4c.webp', width: 1200, height: 630 },
+      { src: '/pastProjects/project_4/pp_4d.webp', width: 960, height: 720 },
     ],
   },
   {
     id: '5',
     key: 'dongYen',
     year: '2024',
-    cover: '/pastProjects/pp_5.jpg',
-    width: 1054,
-    height: 1320,
+    ...projectCover('5'),
     images: [
       { src: '/pastProjects/project_5/pp_5a.jpg', width: 1500, height: 1033 },
       { src: '/pastProjects/project_5/pp_5b.jpg', width: 768, height: 1007 },
@@ -83,9 +81,7 @@ export const PAST_PROJECTS = [
     id: '6',
     key: 'naChi',
     year: '2024',
-    cover: '/pastProjects/pp_6.jpg',
-    width: 460,
-    height: 647,
+    ...projectCover('6'),
     images: [
       { src: '/pastProjects/project_6/pp_6a.jpg', width: 1462, height: 664 },
       { src: '/pastProjects/project_6/pp_6b.jpg', width: 1200, height: 857 },
@@ -99,9 +95,7 @@ export const PAST_PROJECTS = [
     id: '7',
     key: 'tanBac',
     year: '2024',
-    cover: '/pastProjects/pp_7.jpg',
-    width: 793,
-    height: 1000,
+    ...projectCover('7'),
     images: [
       { src: '/pastProjects/project_7/pp_7a.jpg', width: 1020, height: 1072 },
       { src: '/pastProjects/project_7/pp_7b.jpg', width: 1076, height: 1222 },
@@ -113,9 +107,7 @@ export const PAST_PROJECTS = [
     id: '8',
     key: 'namDong',
     year: '2024',
-    cover: '/pastProjects/pp_8.jpg',
-    width: 1117,
-    height: 1200,
+    ...projectCover('8'),
     images: [
       { src: '/pastProjects/project_8/pp_8a.jpg', width: 1706, height: 1556 },
       { src: '/pastProjects/project_8/pp_8b.jpg', width: 1718, height: 1502 },
@@ -131,9 +123,7 @@ export const PAST_PROJECTS = [
     id: '9',
     key: 'xuanAn',
     year: '2024',
-    cover: '/pastProjects/pp_9.jpg',
-    width: 1200,
-    height: 871,
+    ...projectCover('9'),
     images: [
       { src: '/pastProjects/project_9/pp_9a.jpg', width: 1000, height: 681 },
       { src: '/pastProjects/project_9/pp_9b.jpg', width: 1000, height: 678 },
@@ -153,15 +143,17 @@ function heroCandidate(src, width, height) {
 
 /**
  * Full-bleed detail hero. Listing cards keep the smaller `cover`.
- * Prefer the widest gallery image so a collage thumbnail is not blown up
- * across the viewport.
+ * Honor an explicitly selected hero. Without one, use the widest gallery image
+ * so a small collage thumbnail is not blown up across the viewport.
  */
 export function pastProjectHeroMedia(project) {
   if (!project) return heroCandidate('', 0, 0)
 
-  let best = project.hero
-    ? heroCandidate(project.hero, project.heroWidth || project.width, project.heroHeight || project.height)
-    : heroCandidate(project.cover, project.width, project.height)
+  if (project.hero) {
+    return heroCandidate(project.hero, project.heroWidth || project.width, project.heroHeight || project.height)
+  }
+
+  let best = heroCandidate(project.cover, project.width, project.height)
 
   for (const image of project.images || []) {
     if ((image.width || 0) > (best.width || 0)) {

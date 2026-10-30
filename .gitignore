@@ -22,6 +22,16 @@ dist-home/
 /route-shells/
 /index.html
 
+# Root/mobile icons are synced from public/ during home-app dev/build.
+/favicon.png
+/favicon.ico
+/apple-touch-icon.png
+/apple-touch-icon-precomposed.png
+/home-app/public/favicon.png
+/home-app/public/favicon.ico
+/home-app/public/apple-touch-icon.png
+/home-app/public/apple-touch-icon-precomposed.png
+
 # Sibling-app Vite outDirs. Source lives in *-app/; public assets stay in public/.
 /newsroom/
 /people/

@@ -27,6 +27,9 @@ if (!fs.existsSync(homeDist)) {
 }
 
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
+for (const file of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'apple-touch-icon-precomposed.png']) {
+  copyFile(path.join(homeDist, file), path.join(root, file));
+}
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 
 // 'recruitment' is deliberately absent: it is recruitment-app's build output

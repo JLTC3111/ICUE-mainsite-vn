@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useId, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, Navigate, useOutletContext, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import {
@@ -16,17 +16,29 @@ import { ROUTE_PATHS } from '../lib/routes'
 import { useDesktopFinePointer, useDesktopScrollExpand } from '../hooks/useHeavyVisualEffects'
 import { useSwiperNavContrast } from '../hooks/useSwiperNavContrast'
 import ScrollExpand from '../components/reactbits/ScrollExpand'
+import ProjectLightbox from '../components/ProjectLightbox'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import './PastProjectsPage.css'
 
-function ProjectDetailHero({ expand, src, srcSet, sizes, width, height, alt, title, location, year }) {
+function ProjectDetailHero({ expand, src, srcSet, sizes, width, height, alt, title, location, year, scrollHint, photo, photoCredit, mediaTitle }) {
   const meta = (
     <p className="past-project-detail__hero-meta">
       {location}
       <span aria-hidden="true"> · </span>
       {year}
+      {photo ? (
+        <span className="past-project-detail__photo-credit">
+          <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" title={photo.title}>
+            {photoCredit}: {photo.author}
+          </a>
+          <span aria-hidden="true"> · </span>
+          <a href={photo.licenseUrl} target="_blank" rel="noopener noreferrer">
+            {photo.license}
+          </a>
+        </span>
+      ) : null}
     </p>
   )
 
@@ -41,6 +53,8 @@ function ProjectDetailHero({ expand, src, srcSet, sizes, width, height, alt, tit
         height={height}
         alt={alt}
         title={title}
+        mediaTitle={mediaTitle}
+        scrollHint={scrollHint}
         useWindowScroll
         enabled
         startRadius={0}
@@ -62,11 +76,12 @@ function ProjectDetailHero({ expand, src, srcSet, sizes, width, height, alt, tit
         width={width}
         height={height}
         alt={alt}
+        title={mediaTitle}
         decoding="async"
         fetchPriority="high"
       />
-      <div className="past-project-detail__hero-static-copy" aria-hidden="true">
-        <p className="past-project-detail__hero-static-title">{title}</p>
+      <div className="past-project-detail__hero-static-copy">
+        <p className="past-project-detail__hero-static-title" aria-hidden="true">{title}</p>
         {meta}
       </div>
     </div>
@@ -88,47 +103,16 @@ export default function PastProjectDetailPage() {
   const hero = project ? pastProjectHeroMedia(project) : null
   const [lightboxIndex, setLightboxIndex] = useState(null)
   const [swiper, setSwiper] = useState(null)
+  const lightboxTriggerRef = useRef(null)
   const titleId = useId()
-  const lightboxImage = lightboxIndex == null ? null : images[lightboxIndex]
-  const lightboxSrc = lightboxImage?.src
-  const canStepLightbox = images.length > 1
 
   useSwiperNavContrast(swiper, theme)
 
-  const stepLightbox = useCallback((delta) => {
-    setLightboxIndex((current) => {
-      if (current == null || images.length < 2) return current
-      return (current + delta + images.length) % images.length
-    })
-  }, [images.length])
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
 
   useEffect(() => {
     setLightboxIndex(null)
   }, [projectId])
-
-  useEffect(() => {
-    if (lightboxIndex == null) return undefined
-
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') setLightboxIndex(null)
-      if (event.key === 'ArrowRight') {
-        event.preventDefault()
-        stepLightbox(1)
-      }
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault()
-        stepLightbox(-1)
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = previousOverflow
-    }
-  }, [lightboxIndex, stepLightbox])
 
   if (!project || !copy) {
     return <Navigate to={ROUTE_PATHS.pastProjects} replace />
@@ -151,10 +135,14 @@ export default function PastProjectDetailPage() {
             sizes={PAST_PROJECT_HERO_SIZES}
             width={hero.width}
             height={hero.height}
-            alt={copy.imageAlt}
+            alt={project.photo ? t('projects.page.illustrationAlt', { location: project.photo.region }) : copy.imageAlt}
             title={copy.title}
+            mediaTitle={project.photo ? `${page.photoCredit}: ${project.photo.title} — ${project.photo.author} (${project.photo.license})` : undefined}
             location={copy.location}
             year={project.year}
+            scrollHint={page.scrollHint}
+            photo={project.photo}
+            photoCredit={page.photoCredit}
           />
         </div>
 
@@ -186,7 +174,11 @@ export default function PastProjectDetailPage() {
                 <button
                   type="button"
                   className="past-project-gallery__trigger"
-                  onClick={() => setLightboxIndex(index)}
+                  aria-haspopup="dialog"
+                  onClick={(event) => {
+                    lightboxTriggerRef.current = event.currentTarget
+                    setLightboxIndex(index)
+                  }}
                 >
                   <img
                     src={gallerySlideSrc(image, desktopGallery)}
@@ -218,51 +210,16 @@ export default function PastProjectDetailPage() {
         </nav>
       </article>
 
-      {lightboxSrc ? (
-        <div
-          className="past-project-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={copy.title}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setLightboxIndex(null)
-          }}
-        >
-          <button
-            type="button"
-            className="past-project-lightbox__close"
-            onClick={() => setLightboxIndex(null)}
-            aria-label={page.closeImage}
-          >
-            <X size={28} aria-hidden="true" />
-          </button>
-          {canStepLightbox ? (
-            <button
-              type="button"
-              className="past-project-lightbox__prev"
-              onClick={() => stepLightbox(-1)}
-              aria-label={page.previousImage}
-            >
-              <ChevronLeft size={36} aria-hidden="true" />
-            </button>
-          ) : null}
-          <img
-            src={lightboxSrc}
-            width={lightboxImage.width}
-            height={lightboxImage.height}
-            alt={`${copy.title} — ${lightboxIndex + 1}`}
-          />
-          {canStepLightbox ? (
-            <button
-              type="button"
-              className="past-project-lightbox__next"
-              onClick={() => stepLightbox(1)}
-              aria-label={page.nextImage}
-            >
-              <ChevronRight size={36} aria-hidden="true" />
-            </button>
-          ) : null}
-        </div>
+      {lightboxIndex != null && images[lightboxIndex] ? (
+        <ProjectLightbox
+          key={project.id}
+          images={images}
+          initialIndex={lightboxIndex}
+          title={copy.title}
+          labels={page}
+          onClose={closeLightbox}
+          returnFocus={lightboxTriggerRef.current}
+        />
       ) : null}
     </div>
   )

@@ -1,5 +1,6 @@
 import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
+import { getPastProject } from './pastProjectsContent.js'
 import { newsroomUrl, withLocale } from '../../../shared/site-routes/mainSitePaths.js'
 import recruitmentOffice from '../../../recruitment-app/public/media/office.webp?url'
 import recruitmentEvent from '../../../recruitment-app/public/media/event.webp?url'
@@ -23,9 +24,9 @@ const SECTION_LAYOUT = [
     key: 'pastProjects',
     linkHref: ROUTE_PATHS.pastProjects,
     cards: [
-      { key: 'laoCai', image: '/pastProjects/pp_1.webp', href: projectCardUrl(1) },
-      { key: 'subdivision6b', image: '/pastProjects/pp_3.webp', href: projectCardUrl(3) },
-      { key: 'dongYen', image: '/pastProjects/pp_5.jpg', href: projectCardUrl(5) },
+      { key: 'laoCai', image: getPastProject(1).cover, href: projectCardUrl(1) },
+      { key: 'subdivision6b', image: getPastProject(3).cover, href: projectCardUrl(3) },
+      { key: 'dongYen', image: getPastProject(5).cover, href: projectCardUrl(5) },
     ],
   },
   {

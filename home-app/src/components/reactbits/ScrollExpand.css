@@ -83,6 +83,7 @@
   text-align: center;
   padding: 6%;
   opacity: 0;
+  visibility: hidden;
   will-change: opacity, transform;
   pointer-events: none;
   view-transition-name: none;
@@ -118,6 +119,10 @@
   left: 0;
   right: 0;
   bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   text-align: center;
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
@@ -127,6 +132,16 @@
   view-transition-name: none;
 }
 
+.scroll-expand__hint-chevron {
+  flex: 0 0 auto;
+  animation: scroll-expand-hint-nudge 1.4s ease-in-out 3;
+}
+
+@keyframes scroll-expand-hint-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-expand__frame,
   .scroll-expand__media,
@@ -134,5 +149,9 @@
   .scroll-expand__title,
   .scroll-expand__hint {
     will-change: auto;
+  }
+
+  .scroll-expand__hint-chevron {
+    animation: none;
   }
 }

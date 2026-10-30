@@ -11,6 +11,10 @@ const requiredFiles = [
   'index.html',
   '_redirects',
   '_headers',
+  'favicon.png',
+  'favicon.ico',
+  'apple-touch-icon.png',
+  'apple-touch-icon-precomposed.png',
   'newsroom/index.html',
   'people/index.html',
   'structure/index.html',
@@ -75,6 +79,12 @@ if (!fs.existsSync(publishDir)) {
   const homeIndexPath = path.join(publishDir, 'index.html')
   if (fs.statSync(homeIndexPath, { throwIfNoEntry: false })?.isFile()) {
     const homeIndex = fs.readFileSync(homeIndexPath, 'utf8')
+    const headLinks = homeIndex.match(/<link\b[^>]*>/gi) || []
+    for (const [rel, href] of [['icon', '/favicon.png'], ['apple-touch-icon', '/apple-touch-icon.png']]) {
+      if (!headLinks.some(link => link.includes(`rel="${rel}"`) && link.includes(`href="${href}"`))) {
+        fail(`home page is missing its ${rel} declaration: ${href}`)
+      }
+    }
     const entryMatch = homeIndex.match(/<script\b[^>]*\bsrc="([^"]+\.js)"[^>]*><\/script>/i)
 
     if (!entryMatch) {
@@ -97,6 +107,22 @@ if (!fs.existsSync(publishDir)) {
         }
       }
     }
+  }
+
+  // A successful SPA fallback is still HTML, not a usable mobile icon.
+  const pngSignature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
+  for (const [file, size] of [['favicon.png', 192], ['apple-touch-icon.png', 180], ['apple-touch-icon-precomposed.png', 180]]) {
+    const iconPath = path.join(publishDir, file)
+    if (!fs.existsSync(iconPath)) continue
+    const bytes = fs.readFileSync(iconPath)
+    if (bytes.length < 24 || !bytes.subarray(0, 8).equals(pngSignature) ||
+        bytes.readUInt32BE(16) !== size || bytes.readUInt32BE(20) !== size) {
+      fail(`mobile icon must be a square ${size}px PNG: ${file}`)
+    }
+  }
+  const faviconIcoPath = path.join(publishDir, 'favicon.ico')
+  if (fs.existsSync(faviconIcoPath) && !fs.readFileSync(faviconIcoPath).subarray(0, 4).equals(Buffer.from([0, 0, 1, 0]))) {
+    fail('favicon.ico must be a real ICO image')
   }
 
   if (!fs.statSync(sourceFontsDir, { throwIfNoEntry: false })?.isDirectory()) {

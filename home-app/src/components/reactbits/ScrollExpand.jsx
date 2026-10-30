@@ -36,6 +36,7 @@ export default function ScrollExpand({
   poster = '',
   alt = '',
   title = '',
+  mediaTitle,
   scrollHint = '',
   startWidth = 42,
   startHeight = 58,
@@ -112,6 +113,7 @@ export default function ScrollExpand({
     if (overlayRef.current) {
       const inn = smoothstep(0.68, 1, p)
       overlayRef.current.style.opacity = `${inn}`
+      overlayRef.current.style.visibility = inn > 0 ? 'visible' : 'hidden'
       overlayRef.current.style.transform = `translate3d(0, ${18 * (1 - inn)}px, 0)`
     }
   }, [])
@@ -214,6 +216,7 @@ export default function ScrollExpand({
         className="scroll-expand__media"
         src={src}
         poster={poster}
+        title={mediaTitle}
         autoPlay
         muted
         loop
@@ -229,6 +232,7 @@ export default function ScrollExpand({
         width={width}
         height={height}
         alt={alt}
+        title={mediaTitle}
         draggable={false}
         decoding="async"
         fetchPriority="high"
@@ -261,7 +265,22 @@ export default function ScrollExpand({
           ) : null}
           {scrollHint ? (
             <div ref={hintRef} className="scroll-expand__hint">
-              {scrollHint}
+              <span>{scrollHint}</span>
+              <svg
+                className="scroll-expand__hint-chevron"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="m7 6 5 5 5-5M7 13l5 5 5-5" />
+              </svg>
             </div>
           ) : null}
         </div>

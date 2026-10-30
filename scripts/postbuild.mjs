@@ -117,6 +117,9 @@ if (!fs.existsSync(builtIndex)) {
 
 // Mirror selected home-app output to repo root (do not overwrite entire src/).
 copyFile(builtIndex, path.join(root, 'index.html'));
+for (const file of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'apple-touch-icon-precomposed.png']) {
+  copyFile(path.join(homeDist, file), path.join(root, file));
+}
 removeDir(path.join(root, 'assets'));
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));
 

@@ -1,0 +1,154 @@
+.project-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: max(4.5rem, env(safe-area-inset-top)) clamp(0.75rem, 4vw, 4rem) max(3.5rem, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: #080b10;
+  color: #fff;
+  color-scheme: dark;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.project-lightbox[open] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.project-lightbox::backdrop {
+  background: #080b10;
+}
+
+.project-lightbox .project-lightbox__swiper {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  touch-action: pan-y pinch-zoom;
+}
+
+.project-lightbox .project-lightbox__slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.project-lightbox .project-lightbox__image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.project-lightbox button.project-lightbox__control {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 32%);
+  border-radius: 999px;
+  background: #20252d;
+  background-image: none;
+  color: #fff;
+  -webkit-text-fill-color: currentColor;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 28%);
+  cursor: pointer;
+  transform: none;
+  touch-action: manipulation;
+}
+
+.project-lightbox button.project-lightbox__control::before,
+.project-lightbox button.project-lightbox__control::after {
+  content: none;
+}
+
+.project-lightbox button.project-lightbox__control:hover,
+.project-lightbox button.project-lightbox__control:active {
+  background: #343d49;
+  color: #fff;
+  transform: none;
+}
+
+.project-lightbox button.project-lightbox__control:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.project-lightbox__control svg {
+  flex: none;
+  pointer-events: none;
+}
+
+.project-lightbox button.project-lightbox__close {
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  width: 3rem;
+  height: 3rem;
+}
+
+.project-lightbox button.project-lightbox__prev,
+.project-lightbox button.project-lightbox__next {
+  top: calc(50% - 1.75rem);
+}
+
+.project-lightbox__prev {
+  left: max(0.75rem, env(safe-area-inset-left));
+}
+
+.project-lightbox__next {
+  right: max(0.75rem, env(safe-area-inset-right));
+}
+
+.project-lightbox__count {
+  position: absolute;
+  right: 0;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: 0;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (max-width: 550px) {
+  .project-lightbox button.project-lightbox__prev,
+  .project-lightbox button.project-lightbox__next {
+    width: 3rem;
+    height: 3rem;
+    top: calc(50% - 1.5rem);
+  }
+
+  .project-lightbox__prev svg,
+  .project-lightbox__next svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-lightbox .swiper-wrapper {
+    transition-duration: 0ms !important;
+  }
+}

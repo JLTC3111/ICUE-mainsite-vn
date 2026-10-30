@@ -27,7 +27,7 @@ function useNarrowViewport() {
   return narrow
 }
 
-function ProjectCard({ project, copy, yearLabel }) {
+function ProjectCard({ project, copy, yearLabel, imageAlt, imageTitle }) {
   return (
     <Link
       to={pastProjectPath(project.id)}
@@ -39,7 +39,8 @@ function ProjectCard({ project, copy, yearLabel }) {
           src={project.cover}
           srcSet={coverSrcSet(project.cover, project.width)}
           sizes={PAST_PROJECT_CARD_SIZES}
-          alt={copy.imageAlt}
+          alt={imageAlt || copy.imageAlt}
+          title={imageTitle}
           width={project.width}
           height={project.height}
           loading="lazy"
@@ -69,6 +70,8 @@ export default function PastProjectsPage() {
       project={project}
       copy={items[project.key]}
       yearLabel={page.yearCompleted}
+      imageAlt={project.photo ? t('projects.page.illustrationAlt', { location: project.photo.region }) : undefined}
+      imageTitle={project.photo ? `${page.photoCredit}: ${project.photo.title} — ${project.photo.author} (${project.photo.license})` : undefined}
     />
   ))
 
@@ -96,6 +99,8 @@ export default function PastProjectsPage() {
                 project={project}
                 copy={items[project.key]}
                 yearLabel={page.yearCompleted}
+                imageAlt={project.photo ? t('projects.page.illustrationAlt', { location: project.photo.region }) : undefined}
+                imageTitle={project.photo ? `${page.photoCredit}: ${project.photo.title} — ${project.photo.author} (${project.photo.license})` : undefined}
               />
             </SwiperSlide>
           ))}

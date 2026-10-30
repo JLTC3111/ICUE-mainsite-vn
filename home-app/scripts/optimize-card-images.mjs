@@ -109,6 +109,14 @@ function copyGalleryVariant(rel, variant) {
 }
 
 for (const rel of COVERS) optimize(rel, COVER_WIDTHS)
+// Editorial project photos share the listing and detail hero source.
+const projectCoversDir = path.join(siteRoot, 'public/pastProjects/covers')
+if (fs.existsSync(projectCoversDir)) {
+  for (const name of fs.readdirSync(projectCoversDir)) {
+    if (!/\.(jpe?g|png|webp)$/i.test(name) || VARIANT_NAME.test(name)) continue
+    optimize(`public/pastProjects/covers/${name}`, COVER_WIDTHS)
+  }
+}
 for (const rel of galleryRels()) {
   optimize(rel, GALLERY_WIDTHS)
   for (const variant of GALLERY_WIDTHS) copyGalleryVariant(rel, variant)
