@@ -15,6 +15,7 @@ import { pageFromPathname, ROUTE_PATHS } from './lib/routes'
 import useAboutTheme from './components/aboutUs/useAboutTheme'
 import { debugLog } from './lib/debugLog'
 import '../../shared/ui/page-theme.css'
+import { RecoveryNotice } from '../../shared/resilience/RecoveryBoundary.jsx'
 
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage'))
 const NotableAwardsPage = lazy(() => import('./pages/NotableAwardsPage'), { recoverDocument: true })
@@ -115,7 +116,7 @@ function AppShell() {
       />
       <HomeLayoutGuard />
       <main id="content">
-        <Suspense fallback={null}>
+        <Suspense fallback={<RecoveryNotice loading />}>
           <Routes>
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
             {/* No /contact route: like /our-work, it is a separate app now, and

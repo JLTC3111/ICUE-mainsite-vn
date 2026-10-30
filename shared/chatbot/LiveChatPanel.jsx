@@ -2,6 +2,7 @@ import { useEffect, useRef, useSyncExternalStore } from 'react'
 import { getLiveChatClient, liveTimeLeft } from './lib/liveChat.js'
 import LiveChatMessages from './LiveChatMessages.jsx'
 import PromptBar from './PromptBar.jsx'
+import LatticeLoader from '../ui/LatticeLoader.jsx'
 import { connectAccount, customerPortalUrl } from '../customer-account/account.js'
 import './LiveChat.css'
 
@@ -71,10 +72,10 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
     <section id={id} role="tabpanel" aria-labelledby={labelledBy} className="icue-live" hidden={!active}>
       <div className="icue-live__status" data-online={!resolved && (online || attending)} data-attending={attending}>
         <span className="icue-live__dot" aria-hidden="true" />
-        <span role="status">{unavailable ? labels.unavailable : missing ? labels.missing : statusLabel}</span>
+        <span role="status">{state.status === 'idle' ? <LatticeLoader label={statusLabel} compact inline showTimer={false} announce={false} /> : unavailable ? labels.unavailable : missing ? labels.missing : statusLabel}</span>
       </div>
       <LiveChatMessages messages={state.messages} conversation={state.conversation} labels={labels} locale={locale} pending={state.pending ? { ...state.pending, attachments: state.attachments } : null} active={active} onDownload={file => client.downloadFile(file)}>
-        {state.hasMore && <button className="icue-live__text-button" type="button" disabled={state.loadingEarlier} onClick={() => client.loadEarlier()}>{state.loadingEarlier ? labels.loading : labels.earlier}</button>}
+        {state.hasMore && <button className="icue-live__text-button" type="button" disabled={state.loadingEarlier} onClick={() => client.loadEarlier()}>{state.loadingEarlier ? <LatticeLoader label={labels.loading} compact inline showTimer={false} announce={false} /> : labels.earlier}</button>}
         {!state.conversation && !state.pending && (
           <div className="icue-live__welcome">
             <span className="icue-live__welcome-icon" aria-hidden="true">

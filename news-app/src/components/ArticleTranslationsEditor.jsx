@@ -2,6 +2,8 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 import { Check, CircleAlert, Trash2 } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import {
@@ -341,31 +343,17 @@ export default function ArticleTranslationsEditor({
         )}
       </div>
 
-      <div className="translations-editor__tabs" role="tablist">
-        {locales.map((l) => {
+      <div className="icue-segment-scroll" style={{ marginBottom: 16 }}>
+        <RubberSegment role="tablist" aria-label={t('translationsEditor.title')} value={active} equalSlots={false}
+          onChange={code => { setSelectedLocale(code); setSaved('') }}
+          items={locales.map(l => {
           const localeStatus = storedCompleteness.locales[l.code]
           const complete = state === 'ready' && localeStatus?.complete
-          return (
-            <button
-              key={l.code}
-              type="button"
-              role="tab"
-              aria-selected={active === l.code}
-              className={`translations-editor__tab${active === l.code ? ' is-active' : ''}${state === 'ready' ? complete ? ' is-complete' : ' is-incomplete' : ''}`}
-              onClick={() => { setSelectedLocale(l.code); setSaved('') }}
-            >
-              {l.label}
-              {complete ? (
-                <Check size={14} strokeWidth={2.5} aria-hidden />
-              ) : state === 'ready' ? (
-                <CircleAlert size={14} strokeWidth={2.2} aria-hidden />
-              ) : null}
-            </button>
-          )
-        })}
+          return { value: l.code, label: l.label, icon: complete ? <Check size={14} strokeWidth={2.5} aria-hidden /> : state === 'ready' ? <CircleAlert size={14} strokeWidth={2.2} aria-hidden /> : null }
+        })} />
       </div>
 
-      {state === 'loading' && <p className="translations-editor__status">{t('translationsEditor.loading')}</p>}
+      {state === 'loading' && <p className="translations-editor__status"><LatticeLoader label={t('translationsEditor.loading')} compact /></p>}
       {state === 'error' && (
         <><p className="translations-editor__status is-error">{t('translationsEditor.loadError')}</p><RecoveryNotice onRetry={retry} /></>
       )}
@@ -484,7 +472,7 @@ export default function ArticleTranslationsEditor({
                   title={t('translationsEditor.suggestSourcesHint')}
                 >
                   {suggestingSources
-                    ? t('translate.translating')
+                    ? <LatticeLoader label={t('translate.translating')} compact inline showTimer={false} announce={false} />
                     : t('translationsEditor.suggestSources')}
                 </button>
               )}
@@ -534,7 +522,7 @@ export default function ArticleTranslationsEditor({
               onClick={handleSave}
               disabled={busy || !isDirty}
             >
-              {busy ? t('translationsEditor.saving') : t('translationsEditor.save')}
+              {busy ? <LatticeLoader label={t('translationsEditor.saving')} compact inline showTimer={false} announce={false} /> : t('translationsEditor.save')}
             </button>
 
             {stored[active] && (

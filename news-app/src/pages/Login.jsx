@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
@@ -207,10 +208,7 @@ export default function Login() {
 
             <button className="btn btn-block login__submit" type="submit" disabled={status === 'loading'}>
               {status === 'loading' ? (
-                <>
-                  <span className="spin" />
-                  {t('login.loading')}
-                </>
+                <LatticeLoader label={t('login.loading')} compact inline showTimer={false} announce={false} />
               ) : (
                 t('login.resetSubmit')
               )}
@@ -265,10 +263,7 @@ export default function Login() {
 
             <button className="btn btn-block login__submit" type="submit" disabled={status === 'loading'}>
               {status === 'loading' ? (
-                <>
-                  <span className="spin" />
-                  {t('login.loading')}
-                </>
+                <LatticeLoader label={t('login.loading')} compact inline showTimer={false} announce={false} />
               ) : (
                 t('login.submit')
               )}

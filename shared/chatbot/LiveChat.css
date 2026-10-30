@@ -1,4 +1,5 @@
 @import './chatTheme.css';
+.icue-chat__segment-row { flex: none; padding: 8px 10px; background: var(--icue-chat-surface); border-bottom: 1px solid var(--icue-chat-line); }
 
 .icue-chat .icue-chat__window--team { height: 560px; }
 .icue-chat__tabs { display: flex; flex: none; gap: 4px; padding: 8px 10px; background: var(--icue-chat-surface); border-bottom: 1px solid var(--icue-chat-line); }

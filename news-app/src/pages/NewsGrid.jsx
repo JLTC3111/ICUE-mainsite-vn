@@ -35,7 +35,9 @@ import {
 } from '../lib/newsroom'
 import { searchArticles } from '../lib/searchArticles'
 import { resolveArticlePreviewText } from '../lib/translateUtils'
+import { articleBodyPreview } from '../lib/articleBodyPreview'
 import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import './NewsGrid.css'
 
 const DEFAULT_ROTATING_TAGS = ['LATEST NEWS', 'LEARNING & KNOWLEDGE', 'BUILD & EXPLORE']
@@ -140,6 +142,7 @@ function buildCard(article, {
   const comparison = resolveArticleCoverComparison(article)
 
   return {
+    article,
     id: article.id,
     slug: article.slug,
     title: normalizeUnicode(title),
@@ -151,6 +154,7 @@ function buildCard(article, {
     readMinutes: Number(article.read_minutes) || 0,
     byline: article.author_name || author.display_name || author.full_name || fallbackByline,
     viewCount: article.view_count ?? 0,
+    bodyPreview: isFeatured ? articleBodyPreview(featuredPending ? '' : featuredText?.contentHtml, 520, [featuredText?.title, featuredText?.subtitle]) : '',
   }
 }
 
@@ -211,33 +215,48 @@ function StoryMeta({ card, locale, t, query }) {
   )
 }
 
-function LeadStory({ card, t, query }) {
+function LeadStory({ card, locale, t, query }) {
   return (
     <article className={`news-lead${card.cover ? '' : ' news-lead--no-image'}`}>
-      <Link
-        to={`/article/${card.slug}`}
-        className="news-lead__link"
-        aria-label={card.title || undefined}
-      >
-        <div className="news-lead__body">
-          <div className="news-lead__kicker">
-            <span className="news-lead__featured">{t('newsroom.featuredReporting')}</span>
-          </div>
-          <Headline card={card} as="h2" className="news-lead__title" shinyOnHover query={query} />
-          {card.subtitle && (
-            <p className="news-lead__subtitle">
-              <HighlightedText text={card.subtitle} query={query} />
-            </p>
-          )}
-        </div>
-        {card.cover && (
+      {card.cover && (
+        <Link
+          to={`/article/${card.slug}`}
+          className="news-lead__media-link"
+          aria-label={card.title || undefined}
+        >
           <div className="news-lead__media">
-            <img src={card.cover} alt="" decoding="async" />
+            <img src={card.cover} alt="" decoding="async" fetchPriority="high" />
           </div>
+        </Link>
+      )}
+      <div className="news-lead__body">
+        <div className="news-lead__kicker">
+          <span className="news-lead__featured">{t('newsroom.latest')}</span>
+          <CategoryTag category={card.category} t={t} />
+        </div>
+        <Link to={`/article/${card.slug}`} className="news-lead__headline-link">
+          <Headline card={card} as="h2" className="news-lead__title" shinyOnHover query={query} />
+        </Link>
+        {card.subtitle && (
+          <p className="news-lead__subtitle">
+            <HighlightedText text={card.subtitle} query={query} />
+          </p>
         )}
-      </Link>
+        {card.bodyPreview && <p className="news-lead__excerpt"><HighlightedText text={card.bodyPreview} query={query} /></p>}
+        <StoryMeta card={card} locale={locale} t={t} query={query} />
+        <Link to={`/article/${card.slug}`} className="news-lead__action">
+          {t('news.readMore')}<span aria-hidden="true">↗</span>
+        </Link>
+      </div>
     </article>
   )
+}
+
+function TopStoryBodyPreview({ article, locale, query }) {
+  const { translation, pending } = useArticlePreviewTranslation(article, locale)
+  const copy = resolveArticlePreviewText(article, translation, pending)
+  const preview = articleBodyPreview(copy.contentHtml, 320, [copy.title, copy.subtitle])
+  return preview ? <p className="news-card__excerpt"><HighlightedText text={preview} query={query} /></p> : null
 }
 
 function StoryCard({ card, locale, t, query }) {
@@ -265,6 +284,7 @@ function StoryCard({ card, locale, t, query }) {
               <HighlightedText text={card.subtitle} query={query} />
             </p>
           )}
+          <TopStoryBodyPreview article={card.article} locale={locale} query={query} />
           <StoryMeta card={card} locale={locale} t={t} query={query} />
         </div>
       </div>
@@ -568,7 +588,9 @@ export default function NewsGrid() {
 
       <div className="icue-container icue-container--newsroom news-front">
         {state === 'loading' && (
-          <div className="news-gallery-skeleton" aria-hidden />
+          <div className="news-loading">
+            <LatticeLoader label={t('news.loading')} />
+          </div>
         )}
 
         {(state === 'ready' && filtered.length === 0) && (
@@ -579,7 +601,7 @@ export default function NewsGrid() {
         {state === 'error' && <RecoveryNotice onRetry={loadArticles} />}
 
         {state === 'ready' && lead && (
-          <LeadStory card={lead} t={t} query={searchQuery} />
+          <LeadStory card={lead} locale={locale} t={t} query={searchQuery} />
         )}
 
         {state === 'ready' && topStories.length > 0 && (

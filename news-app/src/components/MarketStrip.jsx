@@ -1,6 +1,7 @@
 import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { fetchMarketQuotes } from '../lib/marketTicker'
 import { fetchVnMarketQuotes } from '../lib/vnMarketTicker'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
@@ -149,7 +150,7 @@ export default function MarketStrip() {
       <div className="market-strip" aria-label={t('market.label')} aria-live="off">
         <div className="market-strip__inner">
           <span className="market-strip__note">
-            {failed ? t('market.unavailable') : t('market.loading')}
+            {failed ? t('market.unavailable') : <LatticeLoader label={t('market.loading')} compact inline showTimer={false} announce={false} />}
           </span>
         </div>
       </div>

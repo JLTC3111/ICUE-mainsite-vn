@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import { InteractiveBackgroundProvider } from '../contexts/InteractiveBackgroundContext'
@@ -8,6 +8,7 @@ import InteractiveBackground from './InteractiveBackground/InteractiveBackground
 import ShimmerButton from './ShimmerButton/ShimmerButton'
 import './PageShell.css'
 import usePageTheme from '../../../shared/ui/usePageTheme.js'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 
 export default function PageShell({
   pageKey,
@@ -21,6 +22,8 @@ export default function PageShell({
   const pageTheme = usePageTheme('people')
   const lang = i18n.resolvedLanguage || i18n.language
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const profileGroupLinks = [{ value: 'experts', path: '/experts', label: t('tabs.experts') }, { value: 'core', path: '/core-team', label: t('tabs.coreTeam') }]
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled
 
   return (
@@ -39,24 +42,12 @@ export default function PageShell({
 
         <main className="page-shell__main icue-container">
           <div className="page-shell__header">
-            <nav className="page-shell__tabs" aria-label={t('tabs.groupAria')}>
-              <NavLink
-                to="/experts"
-                className={({ isActive }) =>
-                  `page-shell__tab ${isActive ? 'page-shell__tab--active' : ''}`
-                }
-              >
-                {t('tabs.experts')}
-              </NavLink>
-              <NavLink
-                to="/core-team"
-                className={({ isActive }) =>
-                  `page-shell__tab ${isActive ? 'page-shell__tab--active' : ''}`
-                }
-              >
-                {t('tabs.coreTeam')}
-              </NavLink>
-            </nav>
+            <div className="icue-segment-scroll" style={{ marginBottom: 24 }}>
+              <RubberSegment role="navigation" aria-label={t('tabs.groupAria')} value={pageKey} size="lg" radius={24}
+                trackColor="var(--icue-surface)" thumbColor="var(--icue-gradient-accent)" textColor="var(--icue-text-soft)" activeTextColor="#fff"
+                items={profileGroupLinks.map(item => ({ value: item.value, label: item.label, href: `${import.meta.env.BASE_URL || '/people/'}${item.path.slice(1)}`,
+                  itemProps: { onClick: event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && event.button === 0) { event.preventDefault(); navigate(item.path) } } } }))} />
+            </div>
 
             <div className="page-shell__intro">
               <div className="page-shell__titles">

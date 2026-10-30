@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import LatticeLoader from '../ui/LatticeLoader.jsx'
 
 export default function LiveChatMessages({ messages, conversation, labels, locale, viewer = 'visitor', pending, active = true, onDownload, children }) {
   const logRef = useRef(null)
@@ -10,7 +11,7 @@ export default function LiveChatMessages({ messages, conversation, labels, local
       try { await onDownload(file) } catch { setDownloadError(true) } finally { setDownloading(null) }
     }}>
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 15h8m-8 4h5" /></svg>
-      <span><strong>{file.name}</strong><small>{Math.ceil(file.size / 1024)} KB · {downloading === file.id ? labels.downloading : labels.download}</small></span>
+      <span><strong>{file.name}</strong><small>{Math.ceil(file.size / 1024)} KB · {downloading === file.id ? <LatticeLoader label={labels.downloading} compact inline showTimer={false} announce={false} /> : labels.download}</small></span>
     </button>
   ))
   const previous = useRef({ last: null, height: 0, count: 0 })

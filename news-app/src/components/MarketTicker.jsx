@@ -1,6 +1,7 @@
 import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { fetchMarketQuotes } from '../lib/marketTicker'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './MarketTicker.css'
@@ -65,7 +66,7 @@ export default function MarketTicker() {
     <div className="market-ticker" aria-label={t('market.label')}>
       <div className="icue-container market-ticker__inner">
         {status === 'loading' && !quotes.length ? (
-          <span className="market-ticker__loading">{t('market.loading')}</span>
+          <span className="market-ticker__loading"><LatticeLoader label={t('market.loading')} compact inline showTimer={false} announce={false} /></span>
         ) : (
           quotes.map((q) => {
             const up = q.changePct >= 0

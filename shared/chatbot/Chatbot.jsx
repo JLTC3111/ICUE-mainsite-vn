@@ -6,6 +6,7 @@ import { useChatHistory } from './hooks/useChatHistory'
 import { useHistorySync } from './hooks/useHistorySync.js'
 import HistorySettings from './HistorySettings.jsx'
 import LiveChatPanel from './LiveChatPanel.jsx'
+import RubberSegment from '../ui/RubberSegment.jsx'
 import { liveChatCopy } from './lib/liveChatCopy.js'
 import AssistantAvatar from './AssistantAvatar.jsx'
 import ChatMascot from './mascot/ChatMascot.jsx'
@@ -316,17 +317,10 @@ export default function Chatbot({ locale = 'vi', labels, links, onEvent }) {
             </div>
           </div>
 
-          <div className="icue-chat__tabs" role="tablist" aria-label={labels.title} onKeyDown={event => {
-            if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
-              event.preventDefault()
-              const mode = event.key === 'Home' ? 'assistant' : event.key === 'End' ? 'team' : chatMode === 'assistant' ? 'team' : 'assistant'
-              setChatMode(mode)
-              event.currentTarget.querySelector(`[data-mode="${mode}"]`)?.focus()
-            }
-          }}>
-            {['assistant', 'team'].map(mode => <button key={mode} type="button" role="tab" data-mode={mode}
-              id={`${dialogId}-${mode}-tab`} aria-controls={`${dialogId}-${mode}-panel`} aria-selected={chatMode === mode}
-              tabIndex={chatMode === mode ? 0 : -1} className="icue-chat__tab" onClick={() => setChatMode(mode)}>{liveLabels[mode]}</button>)}
+          <div className="icue-chat__segment-row">
+            <RubberSegment role="tablist" aria-label={labels.title} value={chatMode} onChange={setChatMode} size="lg" style={{ width: '100%' }}
+              trackColor="var(--icue-chat-surface)" thumbColor="var(--icue-chat-own-bg)" textColor="var(--icue-chat-ink)" activeTextColor="var(--icue-chat-own-ink)"
+              items={['assistant', 'team'].map(mode => ({ value: mode, label: liveLabels[mode], id: `${dialogId}-${mode}-tab`, ariaControls: `${dialogId}-${mode}-panel`, itemProps: { 'data-mode': mode } }))} />
           </div>
           <div id={`${dialogId}-assistant-panel`} role="tabpanel" aria-labelledby={`${dialogId}-assistant-tab`} className="icue-chat__assistant" hidden={chatMode !== 'assistant'}>
           {showSync && labels.sync ? (

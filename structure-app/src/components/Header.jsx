@@ -9,6 +9,7 @@ import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 
 function Header({ pageTheme }) {
   const { t, i18n } = useTranslation()
@@ -46,12 +47,8 @@ function Header({ pageTheme }) {
         <nav className="structure-site-header__nav" aria-label={t('nav.mainNav')}>
           <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={pageTheme.isDark ? 'dark' : 'light'} compact />
           <DocumentSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
-          <a href={hashLink('Home')} className="structure-site-header__link">
-            {t('nav.home')}
-          </a>
-          <a href={peopleLink('experts')} className="structure-site-header__link">
-            {t('nav.people')}
-          </a>
+          <RubberSegment className="structure-site-header__segments" role="navigation" aria-label={t('nav.mainNav')} size="sm" value={null} equalSlots={false} disabled={searchOpen}
+            items={[{ value: 'home', label: t('nav.home'), href: hashLink('Home') }, { value: 'people', label: t('nav.people'), href: peopleLink('experts') }]} />
           <LanguageSwitcher />
           <ThemeToggle
             checked={pageTheme.isDark}

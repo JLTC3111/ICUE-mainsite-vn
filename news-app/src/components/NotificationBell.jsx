@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { Bell, FileText, Trash2, X } from 'lucide-react'
 import useNotifications from '../hooks/useNotifications'
 import useClickOutside from '../hooks/useClickOutside'
@@ -148,7 +149,7 @@ export default function NotificationBell({ compact = false }) {
 
           {error && <p className="notif__msg notif__msg--error">{t('notifications.loadError')}</p>}
 
-          {loading && !loadedOnce && <p className="notif__msg">{t('notifications.loading')}</p>}
+          {loading && !loadedOnce && <p className="notif__msg"><LatticeLoader label={t('notifications.loading')} compact showTimer={false} /></p>}
 
           {loadedOnce && !items.length && !error && (
             <p className="notif__msg">{t('notifications.empty')}</p>

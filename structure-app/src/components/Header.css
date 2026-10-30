@@ -116,6 +116,7 @@
 }
 
 @media (max-width: 768px) {
+  .structure-site-header__segments,
   .structure-site-header__tag,
   .structure-site-header__link {
     display: none;

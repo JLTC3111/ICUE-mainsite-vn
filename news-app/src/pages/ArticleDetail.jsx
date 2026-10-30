@@ -316,7 +316,7 @@ export default function ArticleDetail() {
   if (state === 'loading') {
     return (
       <div className="route-loading">
-        <span className="spin" />
+        <RecoveryNotice loading compact />
       </div>
     )
   }

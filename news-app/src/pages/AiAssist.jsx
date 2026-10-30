@@ -2,6 +2,8 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader, { loadingLabelForLocale } from '../../../shared/ui/LatticeLoader.jsx'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 import { useAuth } from '../context/AuthContext'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
 import { fetchMyArticles } from '../lib/articles'
@@ -636,7 +638,7 @@ export default function AiAssist() {
 
         {articlesState === 'loading' && (
           <div className="agent__sidebar-loading">
-            <span className="spin" style={{ borderColor: 'currentColor', borderTopColor: 'transparent' }} />
+            <LatticeLoader label={t('news.loading')} compact />
           </div>
         )}
         {articlesState === 'error' && <p className="agent__hint">{t('aiAssist.articlesError')}</p>}
@@ -750,25 +752,15 @@ export default function AiAssist() {
               onClick={generateImage}
               disabled={busy || localizing || imageBusy}
             >
-              {imageBusy ? t('aiAssist.generatingImage') : t('aiAssist.generateImage')}
+              {imageBusy ? <LatticeLoader label={t('aiAssist.generatingImage')} compact inline showTimer={false} announce={false} /> : t('aiAssist.generateImage')}
             </RainbowButton>
           </div>
         </header>
 
-        <div className="agent__modes" role="tablist" aria-label={t('aiAssist.modes')}>
-          {MODES.map((m) => (
-            <button
-              key={m.id}
-              type="button"
-              role="tab"
-              aria-selected={mode === m.id}
-              className={`agent__mode${mode === m.id ? ' is-on' : ''}`}
-              onClick={() => setMode((prev) => (prev === m.id ? 'chat' : m.id))}
-            >
-              <Icon name={m.icon} />
-              {t(m.labelKey)}
-            </button>
-          ))}
+        <div className="icue-segment-scroll" style={{ margin: '0 0 16px' }}>
+          <RubberSegment role="group" aria-label={t('aiAssist.modes')} value={mode}
+            items={MODES.map(m => ({ value: m.id, label: t(m.labelKey), icon: <Icon name={m.icon} /> }))}
+            onChange={value => setMode(previous => previous === value ? 'chat' : value)} />
         </div>
 
         <div className="agent__transcript" ref={listRef} key={chatKey}>
@@ -867,17 +859,8 @@ export default function AiAssist() {
 
           {(busy || localizing || imageBusy) && (
             <div className="agent__msg agent__msg--assistant agent__msg--thinking">
-              <div className="agent__msg-role" aria-live="polite">
-                <Icon name="bot" />
-                {localizing ? (
-                  t('translate.translating')
-                ) : imageBusy ? (
-                  t('aiAssist.generatingImage')
-                ) : (
-                  <AnimatedShinyText className="agent__thinking-shiny" shimmerWidth={80}>
-                    {t('aiAssist.thinking')}
-                  </AnimatedShinyText>
-                )}
+              <div className="agent__msg-role">
+                <LatticeLoader label={localizing ? t('translate.translating') : imageBusy ? t('aiAssist.generatingImage') : t('aiAssist.thinking')} compact />
               </div>
               {localizing ? (
                 <div className="agent__msg-translating" aria-busy="true">
@@ -911,7 +894,7 @@ export default function AiAssist() {
               disabled={busy || localizing || imageBusy || !input.trim()}
             >
               <Icon name="send" />
-              {busy ? t('aiAssist.thinking') : localizing ? t('translate.translating') : t('aiAssist.send')}
+              {busy || localizing || imageBusy ? <LatticeLoader label={busy ? t('aiAssist.thinking') : localizing ? t('translate.translating') : t('aiAssist.generatingImage')} compact inline showTimer={false} announce={false} /> : t('aiAssist.send')}
             </button>
           </div>
         </form>
@@ -949,7 +932,7 @@ export default function AiAssist() {
 
           {historyState === 'loading' && (
             <div className="agent__sidebar-loading">
-              <span className="spin" style={{ borderColor: 'currentColor', borderTopColor: 'transparent' }} />
+              <LatticeLoader label={loadingLabelForLocale(uiLang)} compact />
             </div>
           )}
           {historyState === 'unavailable' && (

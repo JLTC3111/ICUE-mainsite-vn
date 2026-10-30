@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import { subscribeToPageResume } from './pageResume.js'
+import LatticeLoader from '../ui/LatticeLoader.jsx'
 import './recovery.css'
 
 const COPY = {
@@ -15,8 +16,8 @@ export function RecoveryNotice({ loading = false, onRetry, allowReload = false, 
   const lang = typeof document === 'undefined' ? 'en' : document.documentElement.lang.split('-')[0]
   const copy = COPY[lang] || COPY.en
   return (
-    <div className={`icue-recovery${compact ? ' icue-recovery--compact' : ''}`} role={loading ? 'status' : 'alert'}>
-      <p>{copy[loading ? 0 : 1]}</p>
+    <div className={`icue-recovery${compact ? ' icue-recovery--compact' : ''}`} role={loading ? undefined : 'alert'}>
+      {loading ? <LatticeLoader label={copy[0]} compact={compact} /> : <p>{copy[1]}</p>}
       {!loading && <div className="icue-recovery__actions">
         {onRetry && <button type="button" onClick={onRetry}>{copy[2]}</button>}
         {allowReload && <button type="button" onClick={() => window.location.reload()}>{copy[3]}</button>}

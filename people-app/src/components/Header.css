@@ -144,6 +144,7 @@
 }
 
 @media (max-width: 640px) {
+  .people-header__segments { display: none; }
   .people-header__link {
     display: none;
   }

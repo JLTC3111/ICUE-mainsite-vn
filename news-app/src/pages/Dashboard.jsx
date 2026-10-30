@@ -3,6 +3,7 @@ import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useState, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 import { Check, CircleAlert } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { fetchMyArticles, deleteArticle } from '../lib/articles'
@@ -99,17 +100,14 @@ export default function Dashboard() {
         <Link to="/write" className="btn btn-accent btn-sm">{t('nav.write')}</Link>
       </div>
 
-      <div className="dash__tabs" role="group" aria-label={t('drafts.filterLabel')}>
-        {['all', 'drafts', 'published'].map(value => (
-          <button key={value} className={`dash__tab${tab === value ? ' dash__tab--active' : ''}`}
-            aria-pressed={tab === value} onClick={() => setParams(value === 'all' ? {} : { tab: value })}>
-            {t(`drafts.${value}`)}{value === 'drafts' ? ` (${draftCount})` : ''}
-          </button>
-        ))}
+      <div className="icue-segment-scroll" style={{ marginBottom: 20 }}>
+        <RubberSegment role="group" aria-label={t('drafts.filterLabel')} value={tab}
+          items={['all', 'drafts', 'published'].map(value => ({ value, label: `${t(`drafts.${value}`)}${value === 'drafts' ? ` (${draftCount})` : ''}` }))}
+          onChange={value => setParams(value === 'all' ? {} : { tab: value })} />
       </div>
 
       {error && <RecoveryNotice onRetry={retry} />}
-      {state === 'loading' && <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>}
+      {state === 'loading' && <div className="route-loading"><RecoveryNotice loading compact /></div>}
       {state === 'ready' && visibleArticles.length === 0 && <p className="dash__empty">{t(tab === 'drafts' ? 'drafts.empty' : 'news.empty')}</p>}
 
       {state === 'ready' && visibleArticles.length > 0 && (

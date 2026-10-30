@@ -72,7 +72,7 @@ export default function Edit() {
     return <div className="icue-container" style={{ padding: '80px 24px', textAlign: 'center' }}><RecoveryNotice onRetry={retry} /></div>
   }
   if (state === 'loading' || !canShowArticle) {
-    return <div className="route-loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
+    return <div className="route-loading"><RecoveryNotice loading compact /></div>
   }
 
   return (

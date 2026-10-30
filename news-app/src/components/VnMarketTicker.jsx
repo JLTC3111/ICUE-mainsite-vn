@@ -1,6 +1,7 @@
 import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { fetchVnMarketQuotes } from '../lib/vnMarketTicker'
 import { usePerformanceProfile } from '../context/PerformanceProfileContext'
 import './VnMarketTicker.css'
@@ -93,7 +94,7 @@ export default function VnMarketTicker() {
   const ohlcLabel = t('market.ohlc')
 
   const track = status === 'loading' && !quotes.length
-    ? <span className="vn-ticker__loading">{t('market.vnLoading')}</span>
+    ? <span className="vn-ticker__loading"><LatticeLoader label={t('market.vnLoading')} compact inline showTimer={false} announce={false} /></span>
     : (
       <>
         <div className="vn-ticker__row" aria-hidden="true">

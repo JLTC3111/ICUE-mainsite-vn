@@ -3,13 +3,14 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
+import { bootRecovery } from '../shared/vite/bootRecovery.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   base: '/structure/',
   assetsInclude: ['**/*.glb'],
-  plugins: [react(), serveSiteFonts(path.resolve(__dirname, '..'))],
+  plugins: [bootRecovery(), react(), serveSiteFonts(path.resolve(__dirname, '..'))],
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {

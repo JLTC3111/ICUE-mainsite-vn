@@ -17,6 +17,8 @@ import { WordRotate } from '../components/magicui/WordRotate'
 import { RippleButton } from '../components/magicui/RippleButton'
 import { TransitionPanel } from '../components/motion-primitives/TransitionPanel'
 import { useDocumentMeta } from '../../../shared/site-meta/useDocumentMeta'
+import LatticeLoader, { loadingLabelForLocale } from '../../../shared/ui/LatticeLoader.jsx'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 
 const loadDepartmentsGrid = () => import('../components/DepartmentsGrid')
 const loadLegalDocuments = () => import('../components/LegalDocuments')
@@ -26,7 +28,7 @@ const LegalDocuments = lazy(loadLegalDocuments)
 const EmployeeLanyard = lazy(loadEmployeeLanyard)
 
 function EmployeeLanyardPlaceholder({ profile, onOpen }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const label = t(profile ? `orgChart.people.${profile.id}.displayName` : 'orgChart.badgeGeneric')
   const role = t(profile ? `orgChart.people.${profile.id}.title` : 'orgChart.badgeGenericRole')
 
@@ -50,6 +52,7 @@ function EmployeeLanyardPlaceholder({ profile, onOpen }) {
         <strong>{label}</strong>
         <span>{role}</span>
         <p>{t(profile ? 'orgChart.badgeOpenProfile' : 'orgChart.badgeSelectHint')}</p>
+        {profile && <LatticeLoader compact label={loadingLabelForLocale(i18n?.resolvedLanguage || i18n?.language)} />}
       </div>
     </aside>
   )
@@ -245,7 +248,7 @@ export default function StructurePage() {
                   <h2 className="structure-section-title structure-section-title--on-dark">
                     {t('departments.title')}
                   </h2>
-                  <Suspense fallback={null}>
+                  <Suspense fallback={<RecoveryNotice loading compact />}>
                     <DepartmentsGrid departments={departmentCards} />
                   </Suspense>
                 </section>
@@ -259,7 +262,7 @@ export default function StructurePage() {
                   <h2 className="structure-section-title structure-section-title--on-dark">
                     {t('documents.title')}
                   </h2>
-                  <Suspense fallback={null}>
+                  <Suspense fallback={<RecoveryNotice loading compact />}>
                     <LegalDocuments
                       categories={documentCategories}
                       searchTerm={searchTerm}

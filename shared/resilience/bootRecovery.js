@@ -36,7 +36,13 @@ export function installBootRecovery(modulePaths = [], recoveryCss = '') {
   let retryable = false
   let retryTimer
   let notice
+  let loadingNotice
+  let loadingDelayElapsed = false
   const language = new URLSearchParams(window.location.search).get('lang') || document.documentElement.lang
+  const loadingLabel = {
+    vi: 'Đang tải…', en: 'Loading…', de: 'Wird geladen…',
+    fr: 'Chargement…', ko: '불러오는 중…', ja: '読み込み中…',
+  }[language?.split('-')[0]] || 'Loading…'
   const copy = {
     vi: ['Trang chưa tải xong. Vui lòng kiểm tra kết nối hoặc tải lại trang.', 'Tải lại trang'],
     en: ['The page could not finish loading. Check your connection or reload the page.', 'Reload page'],
@@ -46,7 +52,53 @@ export function installBootRecovery(modulePaths = [], recoveryCss = '') {
     ja: ['ページを読み込めませんでした。接続を確認するか、ページを再読み込みしてください。', 'ページを再読み込み'],
   }[language?.split('-')[0]] || ['The page could not be loaded.', 'Reload page']
 
+  // This small CSS-only lattice is available before React or its stylesheet
+  // arrives. React's localized loader takes over as soon as the app mounts.
+  function clearLoading() {
+    loadingNotice?.remove()
+    loadingNotice = null
+  }
+
+  function showLoading() {
+    if (mounted || failed || notice || loadingNotice || !document.body) return
+    loadingNotice = document.createElement('aside')
+    loadingNotice.id = 'icue-boot-loading'
+    loadingNotice.className = 'icue-recovery icue-recovery--compact'
+    loadingNotice.setAttribute('role', 'status')
+    loadingNotice.style.cssText = 'position:fixed;z-index:2147483646;top:50%;left:50%;transform:translate(-50%,-50%);width:max-content;max-width:calc(100% - 32px);margin:0;padding:18px 24px;font:14px/1.5 system-ui'
+    const row = document.createElement('span')
+    row.className = 'lattice-loader'
+    row.setAttribute('data-status', 'working')
+    row.setAttribute('data-shape', 'round')
+    if (document.hidden) row.setAttribute('data-paused', '')
+    const grid = document.createElement('span')
+    grid.className = 'lattice-loader__grid'
+    grid.setAttribute('aria-hidden', 'true')
+    const layer = document.createElement('span')
+    layer.className = 'lattice-loader__layer lattice-loader__run'
+    for (const delay of [0, 108, 216, 756, null, 324, 648, 540, 432]) {
+      const cell = document.createElement('span')
+      cell.className = 'lattice-loader__cell'
+      if (delay == null) cell.setAttribute('data-hole', '')
+      else cell.style.animationDelay = `${delay}ms`
+      layer.append(cell)
+    }
+    grid.append(layer)
+    const label = document.createElement('span')
+    label.className = 'lattice-loader__label'
+    label.textContent = loadingLabel
+    row.append(grid, label)
+    loadingNotice.append(row)
+    document.body.append(loadingNotice)
+  }
+
+  const loadingTimer = window.setTimeout(() => {
+    loadingDelayElapsed = true
+    showLoading()
+  }, 1500)
+
   function showNotice() {
+    clearLoading()
     if (notice || !document.body) return
     notice = document.createElement('aside')
     notice.id = 'icue-boot-recovery'
@@ -140,9 +192,17 @@ export function installBootRecovery(modulePaths = [], recoveryCss = '') {
   window.addEventListener('unhandledrejection', () => failBoot(false))
   window.addEventListener('online', recover)
   window.addEventListener('pageshow', recover)
-  document.addEventListener('visibilitychange', recover)
+  document.addEventListener('visibilitychange', () => {
+    const row = loadingNotice?.children[0]
+    if (document.hidden) row?.setAttribute('data-paused', '')
+    else row?.removeAttribute?.('data-paused')
+    recover()
+  })
   document.addEventListener('resume', recover)
-  document.addEventListener('DOMContentLoaded', () => { if (failed || failedStyles.size) showNotice() }, { once: true })
+  document.addEventListener('DOMContentLoaded', () => {
+    if (failed || failedStyles.size) showNotice()
+    else if (loadingDelayElapsed) showLoading()
+  }, { once: true })
   const deadline = window.setTimeout(() => failBoot(true), 20_000)
 
   function markReady() {
@@ -162,6 +222,8 @@ export function installBootRecovery(modulePaths = [], recoveryCss = '') {
   }
   window.addEventListener('icue:app-ready', () => {
     mounted = true
+    window.clearTimeout(loadingTimer)
+    clearLoading()
     markReady()
   }, { once: true })
   // Only explicitly opted-in, read-only routes may recover with a document

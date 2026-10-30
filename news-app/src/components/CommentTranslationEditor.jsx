@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader, { loadingLabelForLocale } from '../../../shared/ui/LatticeLoader.jsx'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 
 const LANG_LABELS = Object.fromEntries(SUPPORTED_LANGUAGES.map((l) => [l.code, l.label]))
@@ -21,7 +22,7 @@ export default function CommentTranslationEditor({
   onDelete,
   onClose,
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   // Prefilled once on mount: the editor is mounted fresh each time it opens, and
   // a machine translation landing mid-edit must not overwrite what is typed.
   const [value, setValue] = useState(initialValue || suggestion || '')
@@ -79,7 +80,7 @@ export default function CommentTranslationEditor({
           disabled={busy || !trimmed}
           onClick={() => run(() => onSave(trimmed))}
         >
-          {t('engagement.saveTranslation')}
+          {busy ? <LatticeLoader label={loadingLabelForLocale(i18n.resolvedLanguage || i18n.language)} compact inline showTimer={false} announce={false} /> : t('engagement.saveTranslation')}
         </button>
       </div>
     </div>

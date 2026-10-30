@@ -6,11 +6,13 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
+import RubberSegment, { toggleSegmentLabels } from '../../../shared/ui/RubberSegment.jsx'
 
 function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle, appearance = 'light' }) {
   const { t, i18n } = useTranslation()
   const { pathname } = useLocation()
   const { base, hashLink, peopleLink, structureLink } = useMainSite()
+  const [offLabel, onLabel] = toggleSegmentLabels(i18n.resolvedLanguage || i18n.language)
   const currentPage = pathname.includes('/experts')
     ? 'experts'
     : pathname.includes('/core-team')
@@ -35,19 +37,14 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle, a
 
         <nav className="people-header__nav" aria-label={t('nav.mainNav')}>
           <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={appearance} compact />
-          <a href={hashLink('Home')} className="people-header__link">{t('nav.home')}</a>
-          <a href={structureLink()} className="people-header__link">{t('nav.org')}</a>
+          <RubberSegment className="people-header__segments" role="navigation" aria-label={t('nav.mainNav')} size="sm" value={null} equalSlots={false}
+            items={[{ value: 'home', label: t('nav.home'), href: hashLink('Home') }, { value: 'org', label: t('nav.org'), href: structureLink() }]} />
           <LanguageSwitcher />
           {showBackgroundToggle && (
-            <button
-              type="button"
-              className="people-header__video-toggle"
-              onClick={onBackgroundToggle}
-              aria-pressed={backgroundEnabled}
-              aria-label={backgroundEnabled ? t('video.disableAria') : t('video.enableAria')}
-            >
-              {backgroundEnabled ? t('video.on') : t('video.off')}
-            </button>
+            <RubberSegment role="group" aria-label={backgroundEnabled ? t('video.disableAria') : t('video.enableAria')} size="sm" radius={18}
+              value={backgroundEnabled ? 'on' : 'off'}
+              items={[{ value: 'off', label: offLabel, itemProps: { 'aria-label': t('video.disableAria') } }, { value: 'on', label: onLabel, itemProps: { 'aria-label': t('video.enableAria') } }]}
+              onChange={value => { if ((value === 'on') !== backgroundEnabled) onBackgroundToggle?.() }} />
           )}
         </nav>
       </div>

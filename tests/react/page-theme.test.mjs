@@ -204,7 +204,7 @@ test('People navigation follows the page palette independently of the background
   const Empty = () => null
   const { default: PageShell } = await sourceModule('people-app/src/components/PageShell.jsx', {
     imports: {
-      'react-router-dom': { NavLink: Empty, useLocation: () => ({ pathname: '/experts' }) },
+      'react-router-dom': { useNavigate: () => () => {}, useLocation: () => ({ pathname: '/experts' }) },
       'react-i18next': { useTranslation: () => ({ t: key => key, i18n: { resolvedLanguage: 'en' } }) },
       '@icue/contact-sidebar/DeferredContactSidebar': { default: Empty },
       '../../../shared/ui/usePageTheme.js': { default: () => ({ isDark }) },

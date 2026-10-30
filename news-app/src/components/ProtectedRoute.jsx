@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 
 export default function ProtectedRoute({ children }) {
   const { isAuthed, loading, canEdit } = useAuth()
@@ -7,9 +8,7 @@ export default function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="route-loading">
-        <span className="spin" style={{ borderTopColor: '#111', borderColor: '#ddd' }} />
-      </div>
+      <div className="route-loading"><RecoveryNotice loading compact /></div>
     )
   }
   if (!isAuthed) {

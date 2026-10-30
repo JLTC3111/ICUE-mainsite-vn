@@ -2,6 +2,7 @@ import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { uploadAvatar } from '../lib/articles'
@@ -130,7 +131,7 @@ export default function Profile() {
 
       <div className="profile__foot">
         <button className="btn btn-primary" onClick={save} disabled={busy}>
-          {busy ? <span className="spin" /> : t('profile.save')}
+          {busy ? <LatticeLoader label={t('translationsEditor.saving')} compact inline showTimer={false} announce={false} /> : t('profile.save')}
         </button>
         <button type="button" className="btn btn-ghost" onClick={goBack} disabled={busy}>
           {t('common.cancel')}

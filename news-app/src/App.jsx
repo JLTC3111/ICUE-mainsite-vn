@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Layout from './components/Layout'
 import SiteChatbot from '../../shared/chatbot/SiteChatbot.jsx'
 import ProtectedRoute from './components/ProtectedRoute'
+import { RecoveryNotice } from '../../shared/resilience/RecoveryBoundary.jsx'
 
 import { lazyWithRetry } from './lib/lazyWithRetry'
 import { loadSupabaseClient } from './lib/supabaseLoader'
@@ -35,7 +36,7 @@ function FloatingSiteChatbot() {
 function RouteFallback() {
   return (
     <div className="route-loading">
-      <span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} />
+      <RecoveryNotice loading compact />
     </div>
   )
 }

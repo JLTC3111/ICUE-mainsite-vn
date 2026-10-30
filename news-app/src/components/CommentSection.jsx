@@ -2,6 +2,7 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { fetchComments, addComment } from '../lib/engagement'
 import {
   fetchCommentTranslations,
@@ -228,7 +229,7 @@ export default function CommentSection({ articleId, canEdit = false }) {
         {error && <p className="comments__error">{error}</p>}
         <div className="comments__actions">
           <button className="btn btn-accent btn-sm" type="submit" disabled={busy || !body.trim()}>
-            {busy ? t('engagement.posting') : t('engagement.post')}
+            {busy ? <LatticeLoader label={t('engagement.posting')} compact inline showTimer={false} announce={false} /> : t('engagement.post')}
           </button>
         </div>
       </form>
@@ -237,10 +238,9 @@ export default function CommentSection({ articleId, canEdit = false }) {
         <div className="comments__translate-bar">
           {mtPhase === 'busy' ? (
             <p className="comments__translate-status">
-              <span className="translator__spin" aria-hidden />
-              {progress > 0 && progress < 1
+              <LatticeLoader label={progress > 0 && progress < 1
                 ? t('engagement.translateDownloading', { percent: Math.round(progress * 100) })
-                : t('translate.translating')}
+                : t('translate.translating')} compact />
             </p>
           ) : (
             <button

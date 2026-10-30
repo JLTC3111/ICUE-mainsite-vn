@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -192,20 +194,22 @@ function InboxWorkspace({ userId, locale, labels }) {
       <div className="support-inbox__heading"><div><h1>{labels.inbox}</h1><p>{labels.inboxIntro}</p></div>
         <div className="support-alerts__controls">
           <SupportChatAlertToggle />
-          <button type="button" className={`support-inbox__availability${available ? ' is-online' : ''}`} aria-pressed={wantOnline} onClick={() => { setWantOnline(value => !value); setConfirmedAt(0) }}>
-            <span aria-hidden="true" />{wantOnline ? labels.goAway : labels.goOnline}
-          </button>
+          <RubberSegment role="group" aria-label={labels.presenceHint} size="sm" value={wantOnline ? 'online' : 'away'}
+            items={[{ value: 'away', label: labels.goAway }, { value: 'online', label: labels.goOnline }]}
+            onChange={value => { setWantOnline(value === 'online'); setConfirmedAt(0) }} />
         </div>
       </div>
-      <div className="support-inbox__presence" role="status"><strong>{presenceError ? labels.reconnecting : available ? labels.available : wantOnline ? labels.connecting : labels.unavailableStaff}</strong><span>{labels.presenceHint}</span></div>
+      <div className="support-inbox__presence" role="status"><strong>{presenceError ? labels.reconnecting : available ? labels.available : wantOnline ? <LatticeLoader label={labels.connecting} compact inline showTimer={false} announce={false} /> : labels.unavailableStaff}</strong><span>{labels.presenceHint}</span></div>
       {error && <div className="support-inbox__error" role="alert">{labels.staffError} <button type="button" onClick={() => setRevision(value => value + 1)}>{labels.retry}</button></div>}
       <div className="support-inbox__workspace">
         <aside className="support-inbox__queue">
-          <div className="support-inbox__filters" role="group" aria-label={labels.inbox}>
-            {['open', 'closed', 'all'].map(value => <button key={value} type="button" aria-pressed={filter === value} onClick={() => updateView({ status: value, page: 0 })}>{value === 'closed' ? labels.resolved : labels[value]}</button>)}
+          <div className="icue-segment-scroll" style={{ padding: 10, margin: 0 }}>
+            <RubberSegment role="group" aria-label={labels.inbox} value={filter} size="sm" style={{ width: '100%' }}
+              items={['open', 'closed', 'all'].map(value => ({ value, label: value === 'closed' ? labels.resolved : labels[value] }))}
+              onChange={value => updateView({ status: value, page: 0 })} />
           </div>
           <div className="support-inbox__rows">
-            {loading && <p className="support-inbox__empty">{labels.loading}</p>}
+            {loading && <p className="support-inbox__empty"><LatticeLoader label={labels.loading} compact /></p>}
             {!loading && !rows.length && <p className="support-inbox__empty">{labels.empty}</p>}
             {rows.slice(0, 50).map(row => <button key={row.id} type="button" className={`support-inbox__row${selectedId === row.id ? ' is-selected' : ''}`} aria-pressed={selectedId === row.id} onClick={() => updateView({ conversation: row.id })}>
               <span className="support-inbox__row-top"><span className="support-inbox__identity"><span className="support-inbox__client-dot" data-state={clientState(row, error)} role="img" aria-label={labels[clientPresenceKeys[clientState(row, error)]]} title={labels[clientPresenceKeys[clientState(row, error)]]} /><strong>{row.visitor_name || labels.guest}</strong></span>{row.unread > 0 && <span className="support-inbox__unread">{row.unread}</span>}</span>
@@ -216,12 +220,12 @@ function InboxWorkspace({ userId, locale, labels }) {
           <div className="support-inbox__pagination"><button type="button" disabled={!page} onClick={() => updateView({ page: page - 1 })}>{labels.previous}</button><span>{page + 1}</span><button type="button" disabled={rows.length <= 50 || page >= 2000} onClick={() => updateView({ page: page + 1 })}>{labels.next}</button></div>
         </aside>
         {!selectedId ? <div className="support-inbox__selection"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H4l-2 2v-10a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z" /><path d="M7 10h8m-8 4h5" /></svg><p>{labels.select}</p></div>
-          : !current ? <div className="support-inbox__selection">{labels.loading}</div> : (
+          : !current ? <div className="support-inbox__selection"><LatticeLoader label={labels.loading} /></div> : (
             <section className="support-inbox__thread icue-live" aria-label={labels.title}>
               <div className="support-inbox__thread-heading"><div><h2>{conversation.visitor_name || labels.guest}</h2><p>{conversation.visitor_email || conversation.page_path} · {conversation.locale.toUpperCase()}</p><div className="support-inbox__client-presence" data-state={visitorState} role="status"><span className="support-inbox__client-dot" data-state={visitorState} aria-hidden="true" />{labels[clientPresenceKeys[visitorState]]}</div></div><button type="button" onClick={changeStatus}>{conversation.status === 'closed' ? labels.reopen : labels.resolve}</button></div>
               {['away', 'left', 'disconnected'].includes(visitorState) && <p className="support-inbox__client-notice" role="status">{labels.clientReturnHint}</p>}
               <LiveChatMessages key={selectedId} messages={current.messages} conversation={conversation} labels={labels} locale={locale} viewer="staff" pending={draft.pending} onDownload={file => downloadSupportFile(file, selectedId)}>
-                {current.has_more && <button type="button" className="icue-live__text-button" disabled={loadingEarlier} onClick={loadEarlier}>{loadingEarlier ? labels.loading : labels.earlier}</button>}
+                {current.has_more && <button type="button" className="icue-live__text-button" disabled={loadingEarlier} onClick={loadEarlier}>{loadingEarlier ? <LatticeLoader label={labels.loading} compact inline showTimer={false} announce={false} /> : labels.earlier}</button>}
               </LiveChatMessages>
               <div className="icue-live__typing" role="status">{typing ? labels.visitorTyping : ''}</div>
               <form className="icue-live__composer" onSubmit={send}>

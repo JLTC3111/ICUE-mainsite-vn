@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { serveSiteFonts } from '../shared/vite/serveSiteFonts.js'
+import { bootRecovery } from '../shared/vite/bootRecovery.js'
 import { marketApiPlugin } from './vite-market-api-plugin.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -24,7 +25,7 @@ export default defineConfig(({ mode }) => {
   return {
     // Distinct from legacy #/News — served at icue.vn/newsroom/
     base: '/newsroom/',
-    plugins: [react(), marketApiPlugin(), serveSiteFonts(path.resolve(__dirname, '..'))],
+    plugins: [bootRecovery(), react(), marketApiPlugin(), serveSiteFonts(path.resolve(__dirname, '..'))],
     define: {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(url),
       'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(anonKey),

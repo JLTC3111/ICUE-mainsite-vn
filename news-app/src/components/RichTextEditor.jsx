@@ -1,5 +1,6 @@
 import { useEffect, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader, { loadingLabelForLocale } from '../../../shared/ui/LatticeLoader.jsx'
 import {
   AlignCenter,
   AlignLeft,
@@ -269,7 +270,7 @@ function RichTextEditor({ value, onChange, placeholder = 'Tell your story…', l
   const activeColor = editor?.getAttributes('textStyle').color
   const inTable = editor?.isActive('table')
 
-  if (!editor) return <div className="rte rte--loading"><span className="spin" style={{ borderColor: '#ddd', borderTopColor: '#111' }} /></div>
+  if (!editor) return <div className="rte rte--loading"><LatticeLoader label={loadingLabelForLocale(i18n.resolvedLanguage || i18n.language)} compact /></div>
 
   return (
     <div className="rte" lang={highlightLocale}>

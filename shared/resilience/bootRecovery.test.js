@@ -99,6 +99,34 @@ test('stalled bootstrap has a deadline; a ready page is never reloaded on resume
   assert.equal(f.navigations.length, 0)
 })
 
+test('slow startup shows a localized lattice before React and removes it on mount', async t => {
+  const f = await boot(t, 'https://icue.test/newsroom/?lang=vi')
+  t.mock.timers.tick(1499)
+  assert.equal(f.nodes.length, 0, 'fast startup does not flash an indicator')
+  t.mock.timers.tick(1)
+  const loading = f.nodes[0]
+  assert.equal(loading.id, 'icue-boot-loading')
+  const row = loading.children[0]
+  assert.equal(row.children[0].children[0].children.length, 9)
+  assert.equal(row.children[1].textContent, 'Đang tải…')
+  assert.equal(f.navigations.length, 0)
+  f.window.dispatchEvent(new Event('icue:app-ready'))
+  assert.equal(f.nodes.length, 0)
+  t.mock.timers.tick(25_000)
+  assert.equal(f.nodes.length, 0)
+  assert.equal(f.navigations.length, 0)
+})
+
+test('startup failure replaces the lattice with the existing recovery action', async t => {
+  const f = await boot(t)
+  t.mock.timers.tick(1500)
+  assert.equal(f.nodes[0].id, 'icue-boot-loading')
+  f.fail()
+  assert.equal(f.nodes.length, 1)
+  assert.equal(f.nodes[0].id, 'icue-boot-recovery')
+  assert.equal(f.nodes[0].children[1].children[0].tagName, 'button')
+})
+
 test('a pending route keeps the reload budget until its module really loads', async t => {
   const f = await boot(t, 'https://icue.test/notable-awards?lang=en&__icue_boot_retry=1')
   f.window.dispatchEvent(Object.assign(new Event('icue:route-loading'), { detail: 'awards' }))

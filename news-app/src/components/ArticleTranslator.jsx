@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import './ArticleTranslator.css'
 
 const LANG_LABELS = Object.fromEntries(
@@ -24,8 +25,7 @@ export default function ArticleTranslator({
     <div className="translator">
       {busy && (
         <p className="translator__status">
-          <span className="translator__spin" aria-hidden />
-          {t('translate.translating')}
+          <LatticeLoader label={t('translate.translating')} compact />
         </p>
       )}
 

@@ -2,6 +2,7 @@
 **/.DS_Store
 # Dependencies are installed by the build (npm ci) — never commit them.
 node_modules/
+/.cache/
 *.local
 
 # Vite / postbuild output. Netlify runs `npm run build` and publishes `dist-home/`.

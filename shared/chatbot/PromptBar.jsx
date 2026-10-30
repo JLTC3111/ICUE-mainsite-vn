@@ -1,6 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Plus, Paperclip, ArrowUp, Square, X, FileText, Image, RotateCcw } from 'lucide-react'
+import LatticeLoader from '../ui/LatticeLoader.jsx'
 import './chatTheme.css'
 import './PromptBar.css'
 
@@ -64,7 +65,7 @@ export default function PromptBar({ value, onChange, attachments = [], onRemove,
  return <div ref={rootRef} className="icue-prompt" data-menu-open={menu || undefined} style={{ ...customStyle, width, borderRadius: radius }}>
   {attachments.length > 0 && <div className="icue-prompt__attachments">{attachments.map(file => <div className="icue-prompt__file" key={file.client_id || file.id} data-state={file.status}>
    {file.mime?.startsWith('image/') || file.type?.startsWith('image/') ? <Image size={16} aria-hidden="true" /> : <FileText size={16} aria-hidden="true" />}
-   <span><strong>{file.name}</strong><small>{file.status === 'uploading' ? labels.uploading : file.status === 'failed' ? labels.uploadFailed : `${Math.ceil(file.size / 1024)} KB`}</small></span>
+   <span><strong>{file.name}</strong><small>{file.status === 'uploading' ? <LatticeLoader label={labels.uploading} compact inline showTimer={false} announce={false} /> : file.status === 'failed' ? labels.uploadFailed : `${Math.ceil(file.size / 1024)} KB`}</small></span>
    {file.status === 'failed' && file.canRetry !== false && onRetry && <button type="button" disabled={readOnly} aria-label={`${labels.retry}: ${file.name}`} onClick={() => onRetry(file)}><RotateCcw size={13} aria-hidden="true" /></button>}
    <button type="button" disabled={readOnly} onClick={() => onRemove(file)} aria-label={`${labels.removeFile}: ${file.name}`}><X size={14} aria-hidden="true" /></button>
   </div>)}</div>}

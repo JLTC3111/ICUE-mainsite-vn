@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import { useAuth } from '../context/AuthContext'
 import { DEFAULT_AVATAR } from '../lib/defaults'
 import { CATEGORY_SLUGS, DEFAULT_CATEGORY } from '../lib/categories'
@@ -347,11 +348,11 @@ export default function ArticleForm({ mode = 'create', initial, onSubmit, draftS
             {t('common.cancel')}
           </button>
           {canSaveDraft && <button className="btn btn-ghost btn-sm" disabled={!!busy} onClick={() => submit('draft')}>
-            {busy === 'draft' ? <span className="spin" style={{ borderColor: '#ccc', borderTopColor: '#111' }} /> : t('editor.saveDraft')}
+            {busy === 'draft' ? <LatticeLoader label={t('drafts.saving')} compact inline showTimer={false} announce={false} /> : t('editor.saveDraft')}
           </button>}
           <button className="btn btn-accent btn-sm" disabled={!!busy} onClick={() => submit('published')}>
             {busy === 'publish' || busy === 'update' ? (
-              <><span className="spin" style={{ borderColor: 'rgba(255,255,255,.35)', borderTopColor: '#fff' }} />{t('editor.publishing')}</>
+              <LatticeLoader label={t('editor.publishing')} compact inline showTimer={false} announce={false} />
             ) : canSaveDraft ? t('editor.publish') : t('editor.update')}
           </button>
         </div>

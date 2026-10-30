@@ -2,6 +2,8 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { RecoveryNotice } from '../../../shared/resilience/RecoveryBoundary.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
+import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 import { X } from 'lucide-react'
 import { SUPPORTED_LANGUAGES } from '../lib/i18n'
 import {
@@ -175,24 +177,15 @@ export default function CaptionsDrawer({
           </button>
         </header>
 
-        <div className="captions-drawer__tabs" role="tablist">
-          {locales.map((l) => (
-            <button
-              key={l.code}
-              type="button"
-              role="tab"
-              aria-selected={active === l.code}
-              className={`captions-drawer__tab${active === l.code ? ' is-active' : ''}`}
-              onClick={() => { setActive(l.code); setSaved('') }}
-            >
-              {l.label}
-            </button>
-          ))}
+        <div className="icue-segment-scroll" style={{ margin: '0 12px 12px' }}>
+          <RubberSegment role="tablist" aria-label={t('captionsDrawer.title')} value={active} equalSlots={false}
+            items={locales.map(l => ({ value: l.code, label: l.label }))}
+            onChange={code => { setActive(code); setSaved('') }} />
         </div>
 
         <div className="captions-drawer__body">
           {state === 'loading' && (
-            <p className="captions-drawer__status">{t('translationsEditor.loading')}</p>
+            <p className="captions-drawer__status"><LatticeLoader label={t('translationsEditor.loading')} compact /></p>
           )}
           {state === 'error' && (
             <><p className="captions-drawer__status is-error">{t('translationsEditor.loadError')}</p><RecoveryNotice onRetry={retry} /></>
@@ -254,7 +247,7 @@ export default function CaptionsDrawer({
             onClick={handleSave}
             disabled={busy || !isDirty || state !== 'ready'}
           >
-            {busy ? t('translationsEditor.saving') : t('translationsEditor.save')}
+            {busy ? <LatticeLoader label={t('translationsEditor.saving')} compact inline showTimer={false} announce={false} /> : t('translationsEditor.save')}
           </button>
         </footer>
       </div>

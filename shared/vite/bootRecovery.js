@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 /** Inline before module scripts, including every generated deep-link shell. */
 export function bootRecovery() {
   const recoveryCss = readFileSync(new URL('../resilience/recovery.css', import.meta.url), 'utf8')
+    + '\n' + readFileSync(new URL('../ui/LatticeLoader.css', import.meta.url), 'utf8')
   let base = '/'
   return {
     name: 'icue-boot-recovery',
