@@ -27,7 +27,7 @@ const GLOW_PROPS_DARK = {
 }
 
 function cardBackground(interactiveBgActive) {
-  return interactiveBgActive ? '#120F17' : 'rgba(255, 255, 255, 0.72)'
+  return interactiveBgActive ? '#120F17' : 'var(--people-card-background)'
 }
 
 function ProfilePanel({ person, direction, isActive }) {
@@ -43,6 +43,7 @@ function ProfilePanel({ person, direction, isActive }) {
     <article
       className={`profile-panel ${isActive ? 'profile-panel--active' : ''} ${slideClass}`}
       aria-hidden={!isActive}
+      inert={!isActive}
     >
       <BorderGlow
         className="profile-panel__glow profile-panel__glow--content"
@@ -76,6 +77,7 @@ function ProfilePanel({ person, direction, isActive }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="profile-panel__link"
+                  tabIndex={isActive ? undefined : -1}
                 >
                   {link.label}
                 </a>

@@ -18,7 +18,7 @@ export default function PageShell({
   onBackgroundToggle,
 }) {
   const { t, i18n } = useTranslation()
-  usePageTheme('people')
+  const pageTheme = usePageTheme('people')
   const lang = i18n.resolvedLanguage || i18n.language
   const { pathname } = useLocation()
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled
@@ -31,6 +31,7 @@ export default function PageShell({
         )}
 
         <Header
+          appearance={interactiveBgActive || pageTheme.isDark ? 'dark' : 'light'}
           backgroundEnabled={backgroundEnabled}
           onBackgroundToggle={onBackgroundToggle}
           showBackgroundToggle={showBackgroundToggle}

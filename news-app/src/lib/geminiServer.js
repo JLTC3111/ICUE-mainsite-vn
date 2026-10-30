@@ -1,5 +1,6 @@
 import { withDeadline } from '../../../shared/resilience/requests.js'
 import { resolveServerEnv, envString } from './serverEnv.js'
+import { requireNewsroomEditor } from './newsroomServerAuth.js'
 
 const CORS = {
   'Content-Type': 'application/json',
@@ -98,24 +99,6 @@ function truncate(text, max) {
   const s = String(text || '')
   if (s.length <= max) return s
   return `${s.slice(0, max)}…`
-}
-
-async function verifyUser(accessToken, env, signal) {
-  const { url, anonKey } = supabaseConfig(env)
-  if (!url || !anonKey) throw Object.assign(new Error('supabase_not_configured'), { status: 500 })
-  if (!accessToken) throw Object.assign(new Error('unauthorized'), { status: 401 })
-
-  const res = await fetch(`${url}/auth/v1/user`, {
-    signal,
-    headers: {
-      apikey: anonKey,
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-  if (!res.ok) throw Object.assign(new Error('unauthorized'), { status: 401 })
-  const user = await res.json()
-  if (!user?.id) throw Object.assign(new Error('unauthorized'), { status: 401 })
-  return user
 }
 
 async function fetchArticlesForUser(articleIds, accessToken, env, signal) {
@@ -364,7 +347,7 @@ async function handleRequest(event, rawEnv, signal) {
       ? authHeader.slice(7).trim()
       : ''
 
-    await verifyUser(accessToken, env, signal)
+    await requireNewsroomEditor(accessToken, env, signal)
     signal.throwIfAborted()
 
     let body = {}

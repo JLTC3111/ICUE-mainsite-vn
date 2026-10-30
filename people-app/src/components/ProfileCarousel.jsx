@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import ProfilePanel from './ProfilePanel'
 import ProfilePhoto from './ProfilePhoto'
@@ -39,6 +39,7 @@ export default function ProfileCarousel({ profiles, group, requestedProfileId = 
     return stored < localizedProfiles.length ? stored : 0
   })
   const [direction, setDirection] = useState('right')
+  const appliedRequest = useRef(null)
 
   const goTo = useCallback((index, dir = 'right') => {
     setDirection(dir)
@@ -59,11 +60,19 @@ export default function ProfileCarousel({ profiles, group, requestedProfileId = 
   const swipeHandlers = useSwipe({ onSwipeLeft: goNext, onSwipeRight: goPrev })
 
   useEffect(() => {
-    if (!requestedProfileId) return
+    if (appliedRequest.current?.group === group && appliedRequest.current?.id === requestedProfileId) return
+    if (!requestedProfileId) {
+      appliedRequest.current = { group, id: requestedProfileId }
+      return
+    }
     const requested = localizedProfiles.findIndex((person) => person.id === requestedProfileId)
-    if (requested < 0 || requested === currentIndex) return
+    if (requested < 0) return
+    // A route request selects its profile once. Carousel navigation and locale
+    // changes must not keep reapplying the original deep link.
+    appliedRequest.current = { group, id: requestedProfileId }
+    if (requested === currentIndex) return
     goTo(requested, requested > currentIndex ? 'right' : 'left')
-  }, [requestedProfileId, localizedProfiles, currentIndex, goTo])
+  }, [group, requestedProfileId, localizedProfiles, currentIndex, goTo])
 
   useEffect(() => {
     const onKey = (e) => {

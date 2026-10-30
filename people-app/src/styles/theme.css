@@ -18,6 +18,11 @@
   --icue-gradient-dark: linear-gradient(135deg, #0a1628 0%, #1a2a42 100%);
   --icue-gradient-accent: linear-gradient(135deg, #4d5053 0%, #368adf 100%);
   --icue-gradient-page: linear-gradient(160deg, #eef4fc 0%, #e3ecf8 45%, #d6e4f5 100%);
+  --people-card-background: rgba(255, 255, 255, 0.72);
+  --people-card-border: rgba(255, 255, 255, 0.6);
+  --people-name-gradient: linear-gradient(135deg, #0a1628 0%, #3d3d3d 40%, #368adf 100%);
+  --people-tag-ink: #1e4a8a;
+  --people-tag-border: rgba(54, 138, 223, 0.35);
 
   --icue-radius: 14px;
   --icue-radius-sm: 9px;
@@ -57,6 +62,11 @@ html {
   --icue-accent: #72b7ff;
   --icue-accent-muted: rgba(114, 183, 255, .15);
   --icue-gradient-page: linear-gradient(160deg, #101923, #172536 55%, #111c2b);
+  --people-card-background: #182230;
+  --people-card-border: #425169;
+  --people-name-gradient: linear-gradient(135deg, #eef3fb 0%, #c9def7 40%, #72b7ff 100%);
+  --people-tag-ink: #b8dbff;
+  --people-tag-border: rgba(114, 183, 255, 0.4);
 }
 :root[data-icue-page-theme='dark'] .people-header { background: rgba(16, 25, 35, .92); }
 :root[data-icue-page-theme='dark'] .page-shell__tabs { background: var(--icue-surface); border-color: var(--icue-border); }

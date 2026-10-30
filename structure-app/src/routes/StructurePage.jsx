@@ -9,7 +9,7 @@ import PageShell from '../components/PageShell'
 import OrgChart from '../components/OrgChart'
 import ProfileModal from '../components/ProfileModal'
 import DeptIcon from '../components/DeptIcon'
-import { EMPLOYEE_LANYARD_PHONE_QUERY, ICUE_BADGE_LOGO_SRC } from '../components/employeeLanyardConfig'
+import { ICUE_BADGE_LOGO_SRC } from '../components/employeeLanyardConfig'
 import '../components/EmployeeLanyard.css'
 import { InteractiveGridPattern } from '../components/magicui/InteractiveGridPattern'
 import { DiaTextReveal } from '../components/magicui/DiaTextReveal'
@@ -25,10 +25,10 @@ const DepartmentsGrid = lazy(loadDepartmentsGrid)
 const LegalDocuments = lazy(loadLegalDocuments)
 const EmployeeLanyard = lazy(loadEmployeeLanyard)
 
-function EmployeeLanyardPlaceholder() {
+function EmployeeLanyardPlaceholder({ profile, onOpen }) {
   const { t } = useTranslation()
-  const genericLabel = t('orgChart.badgeGeneric')
-  const genericRole = t('orgChart.badgeGenericRole')
+  const label = t(profile ? `orgChart.people.${profile.id}.displayName` : 'orgChart.badgeGeneric')
+  const role = t(profile ? `orgChart.people.${profile.id}.title` : 'orgChart.badgeGenericRole')
 
   return (
     <aside className="employee-lanyard" aria-live="polite">
@@ -37,19 +37,19 @@ function EmployeeLanyardPlaceholder() {
         <span>{t('orgChart.badgePanelLabel')}</span>
       </div>
       <div className="employee-lanyard__stage" data-motion="reduced">
-        <button type="button" className="employee-badge-static" disabled>
+        <button type="button" className="employee-badge-static" disabled={!profile} onClick={onOpen}>
           <span className="employee-badge-static__brand">ICUE</span>
           <span className="employee-badge-static__monogram">
-            <img src={ICUE_BADGE_LOGO_SRC} alt="" />
+            <img src={profile?.img || ICUE_BADGE_LOGO_SRC} alt="" />
           </span>
-          <strong>{genericLabel}</strong>
-          <span>{genericRole}</span>
+          <strong>{label}</strong>
+          <span>{role}</span>
         </button>
       </div>
       <div className="employee-lanyard__identity">
-        <strong>{genericLabel}</strong>
-        <span>{genericRole}</span>
-        <p>{t('orgChart.badgeSelectHint')}</p>
+        <strong>{label}</strong>
+        <span>{role}</span>
+        <p>{t(profile ? 'orgChart.badgeOpenProfile' : 'orgChart.badgeSelectHint')}</p>
       </div>
     </aside>
   )
@@ -135,22 +135,9 @@ export default function StructurePage() {
 
   function selectBadgeProfile(profile) {
     if (!profile) return
-    void loadEmployeeLanyard()
     setBadgeProfile(profile)
-
-    if (window.matchMedia(EMPLOYEE_LANYARD_PHONE_QUERY).matches) {
-      setSelectedProfile(profile)
-      return
-    }
-
-    if (window.matchMedia('(max-width: 1200px)').matches) {
-      requestAnimationFrame(() => {
-        document.querySelector('.employee-lanyard')?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        })
-      })
-    }
+    setSelectedProfile(profile)
+    void loadEmployeeLanyard()
   }
 
   return (
@@ -237,7 +224,7 @@ export default function StructurePage() {
                       />
                     </div>
                     {badgeProfile ? (
-                      <Suspense fallback={<EmployeeLanyardPlaceholder />}>
+                      <Suspense fallback={<EmployeeLanyardPlaceholder profile={badgeProfile} onOpen={() => setSelectedProfile(badgeProfile)} />}>
                         <EmployeeLanyard
                           profile={badgeProfile}
                           onOpen={() => setSelectedProfile(badgeProfile)}

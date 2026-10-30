@@ -18,6 +18,8 @@ import './CustomerPortal.css'
 export default function CustomerPortal() {
  const { t, i18n } = useTranslation(), navigate = useNavigate(), location = useLocation()
  const { user, profile, signIn, signOut, loading } = useAuth()
+ const identity = user?.id || null
+ const [stateIdentity, setStateIdentity] = useState(identity)
  const locale = i18n.resolvedLanguage || i18n.language || 'vi', copy = portalCopy(locale), labels = liveChatCopy(locale)
  const params = new URLSearchParams(location.search), staff = params.get('mode') === 'staff'
  const [mode, setMode] = useState('login'), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [name, setName] = useState(''), [showPassword, setShowPassword] = useState(false)
@@ -38,6 +40,16 @@ export default function CustomerPortal() {
   }).catch(() => { if (alive) setListError(true) })
   return () => { alive = false }
  }, [user, staff, lastMessageId, state.conversation?.id, revision])
+ // Discard identity-bound state before React commits this account's view.
+ // Keep the pending submit mounted so its handoff errors and native return
+ // navigation still complete after a successful sign-in changes the identity.
+ if (stateIdentity !== identity) {
+  setStateIdentity(identity); setMode('login'); setEmail(''); setName(''); clearCredentials()
+  setChats([]); setListError(false)
+ }
+ function clearCredentials() {
+  setPassword(''); setConfirmPassword(''); setConfirmTouched(false); setShowPassword(false); setShowConfirmPassword(false)
+ }
  function formMode(next) {
   setMode(next); setError(''); setNotice(''); setConfirmPassword(''); setConfirmTouched(false); setShowConfirmPassword(false)
  }
@@ -62,12 +74,13 @@ export default function CustomerPortal() {
    if (!staff && mode === 'signup') {
     const result = await supabase.auth.signUp({email:email.trim(),password,options:{data:{display_name:name.trim()},emailRedirectTo:getAuthRedirectUrl('login')}})
     if (result.error) throw result.error
-    if (!result.data?.session) { setNotice(copy.confirmEmail); return }
+    if (!result.data?.session) { clearCredentials(); setNotice(copy.confirmEmail); return }
     const signed = await signIn(email.trim(),password); if (signed.error) throw signed.error
    } else {
     const result = await signIn(email.trim(),password)
     if (result.error) throw result.error
    }
+   clearCredentials()
    const {data:account,error:accountError} = await supabase.rpc('support_chat_account')
    if (accountError || !account) throw accountError || new Error('ACCOUNT_UNAVAILABLE')
    if (staff) {
@@ -88,7 +101,7 @@ export default function CustomerPortal() {
   } catch (err) { setError(err?.code === 'invalid_credentials' ? t('login.error') : mode === 'reset' ? t(authErrorKey(err)) : err?.code === 'email_not_confirmed' ? copy.confirmEmail : err?.code === 'weak_password' ? t('login.resetTooShort') : /rate_limit/.test(err?.code || '') ? t('login.resetRateLimit') : copy.connectionError) }
   finally { busyRef.current = false; setBusy(false) }
  }
- async function logout() { if (busyRef.current) return; setBusy(true); try { const result = await signOut(); if (result.error) throw result.error; await live.syncAccount(null); setChats([]); setError('') } catch { setError(copy.connectionError) } finally { setBusy(false) } }
+ async function logout() { if (busyRef.current) return; setBusy(true); try { const result = await signOut(); if (result.error) throw result.error; clearCredentials(); await live.syncAccount(null); setChats([]); setError('') } catch { setError(copy.connectionError) } finally { setBusy(false) } }
  const selected = state.conversation?.id
  const tabs = <nav className="customer-portal__tabs" aria-label={copy.customer}><button type="button" aria-pressed={!staff} onClick={() => portal(false)}><UserRound size={16} aria-hidden="true" />{copy.customer}</button><button type="button" aria-pressed={staff} onClick={() => portal(true)}><ShieldCheck size={16} aria-hidden="true" />{copy.staff}</button></nav>
  const brand = <a className="customer-portal__brand" href={`/?lang=${locale}`} aria-label="ICUE"><img className="customer-portal__brand-mark" src="/logoIcons/ICUE_Radial_Parcel_Dark_A_Transparent.svg" width="36" height="36" alt="" aria-hidden="true" />ICUE</a>

@@ -23,7 +23,7 @@
 
 .profile-panel__glow.border-glow-card {
   box-shadow: var(--icue-shadow-md);
-  border-color: rgba(255, 255, 255, 0.6);
+  border-color: var(--people-card-border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -82,7 +82,7 @@
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: normal;
-  background: linear-gradient(135deg, #0a1628 0%, #3d3d3d 40%, #368adf 100%);
+  background: var(--people-name-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -122,8 +122,8 @@ html:lang(vi) .profile-panel__tag {
   padding: 5px 12px;
   border-radius: 999px;
   background: var(--icue-accent-muted);
-  color: #1e4a8a;
-  border: 1px solid rgba(54, 138, 223, 0.35);
+  color: var(--people-tag-ink);
+  border: 1px solid var(--people-tag-border);
 }
 
 .profile-panel__links {

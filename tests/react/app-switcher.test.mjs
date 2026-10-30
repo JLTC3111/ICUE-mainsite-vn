@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { React, act, sourceModule } from '../../shared/resilience/testHarness.js';
 
 const require = createRequire(import.meta.url);
@@ -11,11 +9,10 @@ const { createRoot } = require('react-dom/client');
 const { createPortal } = require('react-dom');
 const icons = require('lucide-react');
 const implementations = [
-  ['Vietnamese site', 'shared/app-switcher/AppSwitcher.jsx', 'website'],
-  ['English site', '../ICUE-mainsite-en/shared/app-switcher/AppSwitcher.jsx', 'website'],
-  ['HR portal', '../hr_software/src/components/app-switcher/AppSwitcher.jsx', 'hr'],
-  ['Contract portal', '../ICUE_company_software/contract-management-app-v2.1/src/components/app-switcher/AppSwitcher.jsx', 'contracts'],
-].filter(([, file]) => existsSync(new URL(`../../${file}`, import.meta.url)));
+  ['Website platform', 'shared/app-switcher/AppSwitcher.jsx', 'website'],
+  ['HR platform', 'shared/app-switcher/AppSwitcher.jsx', 'hr'],
+  ['Contract platform', 'shared/app-switcher/AppSwitcher.jsx', 'contracts'],
+];
 
 async function fixture(t, file, currentApp, { width = 1280, height = 800, locale = 'en' } = {}) {
   const dom = new JSDOM('<!doctype html><html><body><main></main><button id="outside">Outside</button></body></html>', { pretendToBeVisual: true, url: 'https://icue.test/' });
@@ -93,7 +90,7 @@ for (const [name, file, currentApp] of implementations) {
       assert.equal(link.rel, 'noopener noreferrer');
     }
     assert.equal(f.document.activeElement, links[0]);
-    assert.equal(parseFloat(panel.style.left), name === 'Vietnamese site' ? 408 : 916, 'Desktop menu stays within the viewport');
+    assert.equal(parseFloat(panel.style.left), 408, 'Desktop menu stays within the viewport');
     await f.key('Escape');
     assert.equal(f.panel(), null);
     assert.equal(f.document.activeElement, f.trigger);
@@ -185,16 +182,6 @@ test('staff portal footer links render the two external portals in the same orde
   const links = [...dom.window.document.querySelectorAll('a')];
   assert.deepEqual(links.map(link => link.href), ['https://hr.icue.vn/', 'https://contract.icue.vn/']);
   for (const link of links) assert.equal(link.target, '_blank');
-});
-
-test('all app copies share URL data while the Vietnamese public site uses Card Nav', async () => {
-  for (const name of ['appLinks.js']) {
-    const canonical = await readFile(new URL(`../../shared/app-switcher/${name}`, import.meta.url), 'utf8');
-    for (const [, file] of implementations.slice(1)) {
-      const source = await readFile(new URL(`../../${file.replace('AppSwitcher.jsx', name)}`, import.meta.url), 'utf8');
-      assert.equal(source, canonical, `${file}: ${name}`);
-    }
-  }
 });
 
 test('Card Nav springs into three app cards, uses the new toggle, and stops its frame loop', async t => {

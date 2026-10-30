@@ -7,7 +7,7 @@ import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
 import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 
-function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle }) {
+function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle, appearance = 'light' }) {
   const { t, i18n } = useTranslation()
   const { pathname } = useLocation()
   const { base, hashLink, peopleLink, structureLink } = useMainSite()
@@ -34,7 +34,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle })
         </a>
 
         <nav className="people-header__nav" aria-label={t('nav.mainNav')}>
-          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={backgroundEnabled ? 'dark' : 'light'} compact />
+          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={appearance} compact />
           <a href={hashLink('Home')} className="people-header__link">{t('nav.home')}</a>
           <a href={structureLink()} className="people-header__link">{t('nav.org')}</a>
           <LanguageSwitcher />

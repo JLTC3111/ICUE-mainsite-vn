@@ -1,5 +1,6 @@
 import { withDeadline } from '../../../shared/resilience/requests.js'
 import { resolveServerEnv, envString } from './serverEnv.js'
+import { requireNewsroomEditor } from './newsroomServerAuth.js'
 
 const CORS = {
   'Content-Type': 'application/json',
@@ -20,13 +21,6 @@ function json(statusCode, body) {
   }
 }
 
-function supabaseConfig(env) {
-  return {
-    url: env.SUPABASE_URL || env.VITE_SUPABASE_URL || '',
-    anonKey: env.SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || '',
-  }
-}
-
 export function cloudflareAccountId(env = {}) {
   return envString(env, ['CLOUDFLARE_ACCOUNT_ID', 'CF_ACCOUNT_ID'])
 }
@@ -37,24 +31,6 @@ export function cloudflareApiToken(env = {}) {
 
 export function fluxModel(env = {}) {
   return envString(env, ['CLOUDFLARE_FLUX_MODEL', 'CF_FLUX_MODEL']) || DEFAULT_MODEL
-}
-
-async function verifyUser(accessToken, env, signal) {
-  const { url, anonKey } = supabaseConfig(env)
-  if (!url || !anonKey) throw Object.assign(new Error('supabase_not_configured'), { status: 500 })
-  if (!accessToken) throw Object.assign(new Error('unauthorized'), { status: 401, code: 'unauthorized' })
-
-  const res = await fetch(`${url}/auth/v1/user`, {
-    signal,
-    headers: {
-      apikey: anonKey,
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-  if (!res.ok) throw Object.assign(new Error('unauthorized'), { status: 401, code: 'unauthorized' })
-  const user = await res.json()
-  if (!user?.id) throw Object.assign(new Error('unauthorized'), { status: 401, code: 'unauthorized' })
-  return user
 }
 
 function normalizePrompt(raw) {
@@ -130,7 +106,7 @@ async function handleRequest(event, rawEnv, signal) {
     const accessToken = authHeader.startsWith('Bearer ')
       ? authHeader.slice(7).trim()
       : ''
-    await verifyUser(accessToken, env, signal)
+    await requireNewsroomEditor(accessToken, env, signal)
     signal.throwIfAborted()
 
     let body = {}

@@ -29,7 +29,7 @@ const GLOW_PROPS_DARK = {
 const PIXEL_TRANSITION_COLOR = '#120F17'
 
 function cardBackground(interactiveBgActive) {
-  return interactiveBgActive ? '#120F17' : 'rgba(255, 255, 255, 0.72)'
+  return interactiveBgActive ? '#120F17' : 'var(--people-card-background)'
 }
 
 function ProfilePhotoImage({ person }) {

@@ -250,6 +250,33 @@ test('employee image changes keep the renderer, reject stale loads, and bound th
   assert.equal(f.card().children[1].material.map, frontMap, 'face textures update in place')
 })
 
+test('front, back and strap image inputs update independently without rebuilding the lanyard', async t => {
+  const f = await fixture(t, { frontImage: 'portrait', backImage: 'card-back', strapImage: 'woven-band' })
+  const front = f.images.find(image => image.url === 'portrait')
+  const back = f.images.find(image => image.url === 'card-back')
+  const strapImage = f.images.find(image => image.url === 'woven-band')
+  await act(async () => { front.onload(); back.onload(); strapImage.onload() })
+  const frontMap = f.card().children[1].material.map
+  const backMap = f.card().children[2].material.map
+  const strap = f.renderer.scene.children.find(child => child.geometry?.getAttribute('position')?.count === 72 * 4)
+  const strapMap = strap.material.map
+  const paintedImage = map => f.contexts.get(map.image).draws.at(-1)[0]
+  assert.equal(paintedImage(frontMap), front)
+  assert.equal(paintedImage(backMap), back)
+  assert.equal(paintedImage(strapMap), strapImage)
+
+  await f.update({ frontImage: 'next-portrait' })
+  const next = f.images.find(image => image.url === 'next-portrait')
+  await act(async () => next.onload())
+  assert.equal(paintedImage(frontMap), next)
+  assert.equal(paintedImage(backMap), back, 'selecting a staff member preserves the supplied reverse artwork')
+  assert.equal(paintedImage(strapMap), strapImage, 'selecting a staff member preserves the supplied band artwork')
+  assert.equal(f.card().children[1].material.map, frontMap)
+  assert.equal(f.card().children[2].material.map, backMap)
+  assert.equal(strap.material.map, strapMap)
+  assert.equal(f.mounts(), 1)
+})
+
 test('unmount releases geometry, textures, observers and a captured drag under Strict Mode', async t => {
   const f = await fixture(t, {}, { strict: true })
   assert.equal(f.mounts(), 2)

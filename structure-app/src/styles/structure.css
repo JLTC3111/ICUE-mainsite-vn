@@ -273,6 +273,9 @@
 .person-card .text-shimmer-wave {
   display: block;
   width: 100%;
+  /* Keep the button as the pointer target when hover/focus replaces the
+     animated lettering during a click. */
+  pointer-events: none;
 }
 
 .person-card .title.text-shimmer-wave--active {

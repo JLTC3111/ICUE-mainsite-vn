@@ -90,10 +90,10 @@ export function newsroomLink(lang) {
 
 export function cleanSiteParams() {
   const params = new URLSearchParams(window.location.search)
-  if (!params.has('site') && !params.has('lang')) return
+  if (!params.has('site')) return
   params.delete('site')
-  params.delete('lang')
+  // Keep the explicit locale in copied and bookmarked app URLs.
   const qs = params.toString()
   const next = `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`
-  window.history.replaceState({}, '', next)
+  window.history.replaceState(window.history.state, '', next)
 }

@@ -8,6 +8,13 @@ import { config as fluxConfig } from '../../netlify/functions/flux-image.mjs'
 
 const env = { SUPABASE_URL: 'https://storage.example.invalid', SUPABASE_ANON_KEY: 'fixture-public-key', GEMINI_API_KEY: 'fixture-provider-key', CLOUDFLARE_ACCOUNT_ID: 'fixture-account', CLOUDFLARE_API_TOKEN: 'fixture-token' }
 const request = body => ({ httpMethod: 'POST', headers: { authorization: 'Bearer fixture-session' }, body: JSON.stringify(body) })
+const userId = '00000000-0000-4000-8000-000000000111'
+function staffAuthResponse(url, role = 'author') {
+  const endpoint = new URL(url)
+  if (endpoint.pathname === '/auth/v1/user') return Response.json({ id: userId })
+  if (endpoint.pathname === '/rest/v1/profiles') return Response.json([{ id: userId, role }])
+  return null
+}
 
 for (const [name, handler, body] of [
   ['Gemini', handleGeminiArticleRequest, { messages: [{ role: 'user', content: 'Hello' }] }],
@@ -24,25 +31,85 @@ for (const [name, handler, body] of [
     assert.equal(calls, 1)
   })
   test(`${name} rejects invalid JSON payload types before provider calls`, async t => {
-    const fetch = t.mock.method(globalThis, 'fetch', async () => Response.json({ id: 'fixture-user' }))
+    const fetch = t.mock.method(globalThis, 'fetch', async url => staffAuthResponse(url))
     for (const body of ['null', '[]']) {
       const response = await handler({ ...request({}), body }, env)
       assert.equal(response.statusCode, 400)
       assert.equal(JSON.parse(response.body).code, 'invalid_payload')
     }
-    assert.equal(fetch.mock.callCount(), 2)
+    assert.equal(fetch.mock.callCount(), 4)
   })
   test(`${name} includes a stalled provider body in the request deadline`, async t => {
     let calls = 0
     let signal
-    t.mock.method(globalThis, 'fetch', async (_url, options) => {
+    t.mock.method(globalThis, 'fetch', async (url, options) => {
       calls++; signal = options.signal
-      return calls === 1 ? Response.json({ id: 'fixture-user' }) : { ok: true, status: 200, json: () => new Promise(() => {}) }
+      return staffAuthResponse(url) || { ok: true, status: 200, json: () => new Promise(() => {}) }
     })
     const response = await handler(request(body), env, { timeoutMs: 10 })
     assert.equal(response.statusCode, 504)
     assert.equal(signal.aborted, true)
-    assert.equal(calls, 2)
+    assert.equal(calls, 3)
+  })
+
+  test(`${name} denies customers and missing/unknown roles despite spoofed Auth metadata`, async t => {
+    let profileRole = 'customer'
+    const calls = []
+    t.mock.method(globalThis, 'fetch', async (url, options) => {
+      const endpoint = new URL(url)
+      calls.push(endpoint.pathname)
+      assert.equal(options.headers.Authorization, 'Bearer fixture-session')
+      assert.equal(options.headers.apikey, env.SUPABASE_ANON_KEY)
+      if (endpoint.pathname === '/auth/v1/user') return Response.json({ id: userId, user_metadata: { role: 'admin' }, app_metadata: { role: 'admin' } })
+      assert.equal(endpoint.pathname, '/rest/v1/profiles', 'denied users never reach a paid provider')
+      assert.equal(endpoint.searchParams.get('id'), `eq.${userId}`)
+      assert.equal(endpoint.searchParams.get('select'), 'id,role')
+      return Response.json(profileRole ? [{ id: userId, role: profileRole }] : [])
+    })
+    for (profileRole of ['customer', 'unknown', null]) {
+      const result = await handler(request({ ...body, user_id: 'forged-owner', role: 'admin' }), env)
+      assert.equal(result.statusCode, 403)
+      assert.equal(JSON.parse(result.body).code, 'forbidden')
+    }
+    assert.equal(calls.length, 6)
+  })
+
+  test(`${name} authorizes current author/admin database roles before the provider call`, async t => {
+    let profileRole = 'author'
+    let providerCalls = 0
+    t.mock.method(globalThis, 'fetch', async url => {
+      const auth = staffAuthResponse(url, profileRole)
+      if (auth) return auth
+      providerCalls++
+      return name === 'FLUX'
+        ? Response.json({ success: true, result: { image: 'fixture-image' } })
+        : Response.json({ candidates: [{ content: { parts: [{ text: 'Fixture reply' }] } }] })
+    })
+    for (profileRole of ['author', 'admin']) assert.equal((await handler(request(body), env)).statusCode, 200)
+    profileRole = 'customer'
+    assert.equal((await handler(request(body), env)).statusCode, 403, 'a revoked role is checked again with the same JWT')
+    assert.equal(providerCalls, 2)
+  })
+
+  test(`${name} fails closed when the role check fails or stalls`, async t => {
+    let stalled = false
+    let roleSignal
+    t.mock.method(globalThis, 'fetch', async (url, options) => {
+      const endpoint = new URL(url)
+      if (endpoint.pathname === '/auth/v1/user') return Response.json({ id: userId })
+      assert.equal(endpoint.pathname, '/rest/v1/profiles', 'a role lookup failure never reaches the provider')
+      roleSignal = options.signal
+      return stalled ? { ok: true, status: 200, json: () => new Promise(() => {}) }
+        : new Response('database error details must stay private', { status: 500 })
+    })
+    const unavailable = await handler(request(body), env)
+    assert.equal(unavailable.statusCode, 503)
+    assert.equal(JSON.parse(unavailable.body).code, 'authorization_unavailable')
+    assert.doesNotMatch(unavailable.body, /database error details/)
+    stalled = true
+    const expired = await handler(request(body), env, { timeoutMs: 10 })
+    assert.equal(expired.statusCode, 504)
+    assert.equal(roleSignal.aborted, true)
   })
 }
 

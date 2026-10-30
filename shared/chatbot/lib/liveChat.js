@@ -101,7 +101,10 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
       if (record) {
         record.draft = state.draft
         record.files = state.attachments.filter(file => file.status === 'ready').map(({ id,client_id,name,mime,size }) => ({ id,client_id,name,mime,size }))
-        if (record.ownerId) { storage.setItem(ownerKey(record.ownerId), JSON.stringify({ ...record, token: null })); storage.removeItem(STORAGE_KEY) }
+        // An unsent or unacknowledged first message still needs its creation
+        // capability after navigation. Once the server ID is known, ownership
+        // alone authorizes reloads and the capability can be discarded.
+        if (record.ownerId) { storage.setItem(ownerKey(record.ownerId), JSON.stringify({ ...record, token: uuidPattern.test(record.id) ? null : record.token })); storage.removeItem(STORAGE_KEY) }
         else storage.setItem(STORAGE_KEY, JSON.stringify(record))
       } else storage.removeItem(STORAGE_KEY)
     } catch { update({ sessionOnly: true }) }
@@ -134,6 +137,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     const acknowledged = record.pending && data.messages.some(message => message.client_id === record.pending.id)
     const patch = { conversation: data.conversation, messages: mergeLiveMessages(state.messages, data.messages),
       health: data.health, checkedAt: now(), status: 'ready' }
+    if (data.conversation.account_saved === true) patch.accountError = false
     if (older || !state.messages.length) patch.hasMore = Boolean(data.has_more)
     // If the newest page no longer overlaps our cache, discard the stale gap
     // and let the visitor load contiguous older pages from the server.
@@ -188,13 +192,21 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     update({ sending: true, pending: record.pending })
     try {
       const pending = record.pending
-      const data = record.id
+      let data = record.id
         ? pending.files?.length
           ? await rpc('send_files', { ...identity(), p_client_id: pending.id, p_message: pending.content, p_files: pending.files }, { signal: operationController.signal })
           : await rpc('send', { ...identity(), p_client_id: pending.id, p_message: pending.content }, { signal: operationController.signal })
         : await rpc('open', { p_token: record.token, p_client_id: pending.id, p_message: pending.content,
           p_locale: pending.locale, p_name: pending.name, p_email: pending.email, p_path: pending.path }, { signal: operationController.signal })
       if (request !== generation) return false
+      if (record.ownerId && record.token && data?.conversation?.account_saved === false) {
+        // A guest first-send may have committed before sign-in but lost its
+        // acknowledgement. Claim that now-known thread before discarding the
+        // capability; otherwise its owner-scoped reload would be unauthorized.
+        try { data = await rpc('claim', { p_token: record.token }, { signal: operationController.signal }) }
+        catch { if (request === generation) update({ accountError: true }); return false }
+        if (request !== generation) return false
+      }
       apply(data)
       return true
     } catch (error) {
@@ -252,7 +264,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     accountId = nextId
     const request = ++generation
     operationController?.abort(); localFiles.forEach(entry => entry.controller?.abort())
-    if (oldId && record?.ownerId === oldId) { try { storage?.setItem(ownerKey(oldId), JSON.stringify({ id: record.id, ownerId: oldId })) } catch { /* Memory-only. */ } }
+    if (oldId && oldId !== nextId && record?.ownerId === oldId) { try { storage?.setItem(ownerKey(oldId), JSON.stringify({ id: record.id, ownerId: oldId })) } catch { /* Memory-only. */ } }
     update({ account: user || null, accountError: false, sending: false, loadingEarlier: false, attachments: state.attachments.map(file => file.status === 'uploading' ? { ...file, status: 'failed' } : file) })
     accountTask = (async () => {
       if (nextId && guest?.id) {
@@ -262,7 +274,12 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
           record = { ...guest, ownerId: nextId }; apply(data)
         } catch { if (request === generation) update({ accountError: true }); return }
       } else {
-        record = nextId ? readSaved(ownerKey(nextId)) || (guest ? { ...guest, ownerId: nextId } : null) : readSaved(STORAGE_KEY)
+        // Keep the question that led to sign-in instead of replacing it with
+        // the account's last conversation. An empty guest record is not work
+        // to carry over, so it must not displace that saved account selection.
+        const guestComposer = guest && (state.draft.trim() || guest.pending || state.attachments.length > 0)
+        record = nextId ? (guestComposer ? { ...guest, ownerId: nextId } : readSaved(ownerKey(nextId)))
+          || (guest ? { ...guest, ownerId: nextId } : null) : readSaved(STORAGE_KEY)
         localFiles.clear()
         update({ conversation: null, messages: [], hasMore: false, pending: record?.pending || null, draft: record?.pending?.content || record?.draft || '', attachments: (record?.files || []).map(file => ({ ...file, status: 'ready' })), status: 'idle' })
         persist()
@@ -278,7 +295,17 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     ensureRecord(); persist()
     const request = generation
     preparing = rpc('prepare', { p_token: record.token, p_locale: locales.has(locale) ? locale : 'vi', p_name: state.name, p_email: state.email, p_path: path.split(/[?#]/)[0].slice(0,500) })
-      .then(data => { if (request !== generation) throw new Error('CHAT_CHANGED'); apply(data) }).finally(() => { preparing = null })
+      .then(async data => {
+        if (request !== generation) throw new Error('CHAT_CHANGED')
+        // Preparing an upload can also recover an anonymous creation whose
+        // response was lost before sign-in. Adopt it before persisting its ID.
+        if (record.ownerId && record.token && data?.conversation?.account_saved === false) {
+          try { data = await rpc('claim', { p_token: record.token }) }
+          catch (error) { if (request === generation) update({ accountError: true }); throw error }
+          if (request !== generation) throw new Error('CHAT_CHANGED')
+        }
+        apply(data)
+      }).finally(() => { preparing = null })
     return preparing
   }
   async function runUpload(entry, options) {
@@ -324,7 +351,7 @@ export function createLiveChatClient({ rpc = liveChatRpc, storage, random = glob
     saveDraft() { ensureRecord(); persist() },
     newConversation() { stop(); generation++; record = null; localFiles.clear(); try { if (accountId) storage?.removeItem(ownerKey(accountId)) } catch { /* Memory-only session. */ } update({ conversation: null, messages: [], pending: null, draft: '', attachments: [], status: 'idle', fileError: null }); persist(); void refresh() },
     async downloadFile(file) { try { await download(await config(), file, { id: record.id, token: record.token }) } catch { update({ fileError: 'download' }) } },
-    setDraft: draft => { update({ draft: String(draft).slice(0, 4000) }); if (record) persist() },
+    setDraft: draft => { update({ draft: String(draft).slice(0, 4000) }); if (record || accountId) { ensureRecord(); persist() } },
     setDetails: details => update({ name: String(details.name ?? state.name).slice(0, 100), email: String(details.email ?? state.email).slice(0, 254) }),
     reset() {
       if (state.status !== 'missing' || state.sending) return

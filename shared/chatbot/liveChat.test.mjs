@@ -272,6 +272,159 @@ test('sign-in claims a guest conversation and logout clears private history and 
  assert.equal(calls.at(-1).name,'read');assert.equal(calls.at(-1).args.p_token,null);assert.equal(calls.at(-1).args.p_conversation_id,id)
 })
 
+test('Keep chat preserves an unsent guest question through sign-in and document navigation', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008907',email:'customer@example.invalid'}
+ const rpc=async(name,args)=>{calls.push({name,args});return name==='health'?health():snapshot(args)}
+ const guest=createLiveChatClient({storage:saved,rpc})
+ guest.setDraft('Please keep this question while I sign in');guest.saveDraft()
+ const capability=JSON.parse(saved.getItem('icue:live-chat:v1')).token
+ await guest.syncAccount(user);guest.saveDraft()
+ assert.equal(saved.getItem('icue:live-chat:v1'),undefined)
+ const restored=createLiveChatClient({storage:saved,rpc});await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().draft,'Please keep this question while I sign in')
+ assert.equal(await restored.send({locale:'en'}),true)
+ const sent=calls.find(call=>call.name==='open')
+ assert.equal(sent.args.p_token,capability)
+ assert.equal(sent.args.p_message,'Please keep this question while I sign in')
+ const committed=JSON.parse(saved.getItem(`icue:live-chat:v1:account:${user.id}`))
+ assert.equal(committed.token,null,'an established owned conversation no longer stores its creation capability')
+ assert.equal(committed.id,messageId)
+})
+
+test('an account first-send acknowledgement lost before a reload retains its message identity and capability', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008908',email:'customer@example.invalid'}
+ let committed
+ const first=createLiveChatClient({storage:saved,rpc:async(name,args)=>{
+  if(name==='health')return health()
+  calls.push({name,args});committed=snapshot(args);throw new Error('Response lost after commit')
+ }})
+ await first.syncAccount(user);first.setDraft('Recover this first account message')
+ assert.equal(await first.send({locale:'en'}),false)
+ const restored=createLiveChatClient({storage:saved,rpc:async(name,args)=>{
+  if(name==='health')return health()
+  calls.push({name,args});return committed
+ }})
+ await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().pending.id,first.getSnapshot().pending.id)
+ assert.equal(await restored.send(),true)
+ assert.deepEqual(calls[1],calls[0],'retrying a lost response uses exactly the same creation request')
+ assert.equal(restored.getSnapshot().messages.length,1)
+ assert.equal(restored.getSnapshot().pending,null)
+})
+
+test('a returning account keeps the guest question instead of replacing it with its last saved conversation', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008909'},prior='00000000-0000-4000-8000-000000008910'
+ const key=`icue:live-chat:v1:account:${user.id}`
+ saved.setItem(key,JSON.stringify({ownerId:user.id,id:prior,token:null}))
+ const rpc=async(name,args)=>{calls.push({name,args});return name==='health'?health():snapshot(args)}
+ const guest=createLiveChatClient({storage:saved,rpc})
+ guest.setDraft('A new enquiry, separate from my earlier conversation');guest.saveDraft()
+ const capability=JSON.parse(saved.getItem('icue:live-chat:v1')).token
+ await guest.syncAccount(user);guest.saveDraft()
+ assert.equal(guest.getSnapshot().draft,'A new enquiry, separate from my earlier conversation')
+ assert.equal(guest.getSnapshot().conversation,null)
+ assert.equal(calls.some(call=>call.name==='read'),false,'the old selection does not consume the new composer')
+ const restored=createLiveChatClient({storage:saved,rpc});await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().draft,'A new enquiry, separate from my earlier conversation')
+ assert.equal(await restored.send(),true)
+ assert.equal(calls.find(call=>call.name==='open').args.p_token,capability)
+})
+
+test('an empty guest record restores the returning account selection', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008911'},prior='00000000-0000-4000-8000-000000008912'
+ saved.setItem(`icue:live-chat:v1:account:${user.id}`,JSON.stringify({ownerId:user.id,id:prior,token:null}))
+ const rpc=async(name,args)=>{calls.push({name,args});return {conversation:{id:prior,account_saved:true},messages:[],health:health()}}
+ const guest=createLiveChatClient({storage:saved,rpc});guest.setDraft('   ');guest.saveDraft()
+ await guest.syncAccount(user)
+ assert.equal(guest.getSnapshot().conversation.id,prior)
+ assert.equal(guest.getSnapshot().draft,'')
+ assert.equal(calls.at(-1).name,'read');assert.equal(calls.at(-1).args.p_conversation_id,prior)
+})
+
+test('an uncertain guest first send takes precedence over a returning account selection', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008913'},prior='00000000-0000-4000-8000-000000008914'
+ saved.setItem(`icue:live-chat:v1:account:${user.id}`,JSON.stringify({ownerId:user.id,id:prior,token:null}))
+ let committed
+ const guest=createLiveChatClient({storage:saved,rpc:async(name,args)=>{
+  if(name==='health')return health()
+  calls.push({name,args});committed={...snapshot(args),conversation:{id:messageId,account_saved:false}};throw new Error('Response lost')
+ }})
+ guest.setDraft('Recover the question already sent from this browser');assert.equal(await guest.send(),false)
+ const pending=guest.getSnapshot().pending
+ await guest.syncAccount(user)
+ const restored=createLiveChatClient({storage:saved,rpc:async(name,args)=>{
+  if(name==='health')return health()
+  calls.push({name,args})
+  if(name==='claim')committed={...committed,conversation:{...committed.conversation,account_saved:true}}
+  return committed
+ }});await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().pending.id,pending.id)
+ assert.equal(await restored.send(),true)
+ assert.deepEqual(calls[1],calls[0])
+ assert.equal(calls[2].name,'claim','a recovered guest creation is claimed before its capability is discarded')
+ const final=createLiveChatClient({storage:saved,rpc:async(name,args)=>{
+  calls.push({name,args});return committed
+ }});await final.syncAccount(user)
+ assert.equal(final.getSnapshot().conversation.account_saved,true)
+ assert.equal(final.getSnapshot().messages.length,1)
+ assert.equal(calls.at(-1).name,'read');assert.equal(calls.at(-1).args.p_token,null)
+})
+
+test('plain signed-in new-conversation drafts survive a same-account save and reload', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008915'}
+ const rpc=async(name,args)=>{calls.push({name,args});return name==='health'?health():snapshot(args)}
+ const client=createLiveChatClient({storage:saved,rpc});await client.syncAccount(user)
+ client.newConversation();client.setDraft('My unsent signed-in question')
+ const reloaded=createLiveChatClient({storage:saved,rpc});await reloaded.syncAccount(user)
+ assert.equal(reloaded.getSnapshot().draft,'My unsent signed-in question')
+ await reloaded.syncAccount(user,{force:true})
+ const restored=createLiveChatClient({storage:saved,rpc});await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().draft,'My unsent signed-in question')
+ assert.equal(await restored.send(),true)
+ assert.equal(calls.find(call=>call.name==='open').args.p_message,'My unsent signed-in question')
+})
+
+test('a lost anonymous upload preparation is claimed on the signed-in retry before its capability is discarded', async () => {
+ const {createLiveChatClient}=await load(),saved=storage(),calls=[]
+ const user={id:'00000000-0000-4000-8000-000000008916'},id='00000000-0000-4000-8000-000000008917'
+ let prepared,losePrepare=true,claimed=false
+ const rpc=async(name,args)=>{
+  calls.push({name,args})
+  if(name==='health')return health()
+  if(name==='prepare'){
+   prepared ||= {conversation:{id,account_saved:false},messages:[],health:health()}
+   if(losePrepare){losePrepare=false;throw new Error('Response lost after preparation committed')}
+  }
+  if(name==='claim'){claimed=true;prepared={...prepared,conversation:{...prepared.conversation,account_saved:true}}}
+  if(name==='read'){assert.equal(claimed,true);assert.equal(args.p_token,null)}
+  return prepared
+ }
+ const upload=async(_config,file,_identity,client_id)=>({id:crypto.randomUUID(),client_id,name:file.name,mime:file.type,size:file.size})
+ const client=createLiveChatClient({storage:saved,rpc,config:async()=>({}),upload})
+ const file={name:'draft.pdf',type:'application/pdf',size:40}
+ await client.attachFiles([file],{locale:'en'})
+ assert.equal(client.getSnapshot().attachments[0].status,'failed')
+ const capability=JSON.parse(saved.getItem('icue:live-chat:v1')).token
+ await client.syncAccount(user)
+ await client.attachFiles([file],{locale:'en'})
+ assert.equal(client.getSnapshot().attachments[0].status,'ready')
+ assert.equal(client.getSnapshot().conversation.account_saved,true)
+ assert.deepEqual(calls.filter(call=>['prepare','claim'].includes(call.name)).map(call=>call.name),['prepare','prepare','claim'])
+ assert.equal(calls.find(call=>call.name==='claim').args.p_token,capability)
+ const record=JSON.parse(saved.getItem(`icue:live-chat:v1:account:${user.id}`))
+ assert.equal(record.id,id);assert.equal(record.token,null)
+ const restored=createLiveChatClient({storage:saved,rpc});await restored.syncAccount(user)
+ assert.equal(restored.getSnapshot().conversation.id,id)
+ assert.equal(restored.getSnapshot().conversation.account_saved,true)
+ assert.equal(restored.getSnapshot().attachments[0].name,'draft.pdf')
+})
+
 test('expired guest sessions clear local history instead of trying to revive the server conversation', async()=>{
  const {createLiveChatClient}=await load(),saved=storage();let now=0,calls=0
  const client=createLiveChatClient({storage:saved,now:()=>now,rpc:async(name,args)=>{calls++;return {...snapshot(args),conversation:{id:'00000000-0000-4000-8000-000000008905',guest_expires_at:new Date(86_400_000).toISOString()}}}})

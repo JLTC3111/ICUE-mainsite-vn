@@ -23,7 +23,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "jsdom": "26.1.0",
     "react-test-renderer": "19.2.7",
-    "vite": "^6.3.2"
+    "vite": "6.4.5"
   },
   "scripts": {
     "dev": "npm run build:home && npm run build:newsroom && npm run build:people && npm run build:structure && npm run build:ourwork && npm run build:contact && npm run build:legal && npm run build:faq && npm run build:recruitment && npm run build:community && node scripts/sync-home-dev.mjs && vite",

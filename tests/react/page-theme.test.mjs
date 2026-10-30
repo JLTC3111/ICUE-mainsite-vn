@@ -163,6 +163,7 @@ test('all new dark palettes provide readable text, links, and action labels', as
     ['contact-app/src/styles/theme.css', 'ct', ['paper', 'paper-raised', 'field', 'field-focus']],
     ['legal-app/src/dark-mode.css', 'legal', ['ground', 'surface', 'raised']],
     ['structure-app/src/styles/dark-mode.css', 'icue', ['surface', 'surface-2']],
+    ['people-app/src/styles/theme.css', 'icue', ['surface', 'surface-2']],
   ]
   for (const [file, prefix, surfaces] of specs) {
     const tokens = {}
@@ -194,4 +195,41 @@ test('all new dark palettes provide readable text, links, and action labels', as
     assertContrast(palette.accent, palette.accentSoft, `legal ${slug}: accent text`)
     assertContrast('#111827', palette.accent, `legal ${slug}: action label`)
   }
+})
+
+test('People navigation follows the page palette independently of the background toggle', async t => {
+  silenceRenderer(t)
+  let isDark = true
+  let header
+  const Empty = () => null
+  const { default: PageShell } = await sourceModule('people-app/src/components/PageShell.jsx', {
+    imports: {
+      'react-router-dom': { NavLink: Empty, useLocation: () => ({ pathname: '/experts' }) },
+      'react-i18next': { useTranslation: () => ({ t: key => key, i18n: { resolvedLanguage: 'en' } }) },
+      '@icue/contact-sidebar/DeferredContactSidebar': { default: Empty },
+      '../../../shared/ui/usePageTheme.js': { default: () => ({ isDark }) },
+      './Header': { default: props => { header = props; return null } },
+      './Footer': { default: Empty },
+      './InteractiveBackground/InteractiveBackground': { default: Empty },
+      './ShimmerButton/ShimmerButton': { default: Empty },
+    },
+  })
+  let renderer
+  const render = async backgroundEnabled => {
+    const element = React.createElement(PageShell, { pageKey: 'experts', showBackgroundToggle: true, backgroundEnabled })
+    await act(async () => {
+      if (renderer) renderer.update(element)
+      else renderer = create(element)
+    })
+  }
+  t.after(async () => { if (renderer) await unmount(renderer) })
+  await render(false)
+  assert.equal(header.appearance, 'dark', 'background off retains the saved dark palette')
+  isDark = false
+  await render(false)
+  assert.equal(header.appearance, 'light')
+  await render(true)
+  assert.equal(header.appearance, 'dark', 'the galaxy keeps its dark navigation surface')
+  await render(false)
+  assert.equal(header.appearance, 'light', 'turning the background off restores the page palette')
 })

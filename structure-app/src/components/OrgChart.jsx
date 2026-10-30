@@ -27,7 +27,9 @@ const PersonCard = forwardRef(function PersonCard(
         isSelected ? ' person-card--selected' : ''
       }`}
       onClick={() => onSelectPerson(person)}
+      aria-label={`${displayName} — ${title}`}
       aria-pressed={isSelected}
+      aria-haspopup="dialog"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
