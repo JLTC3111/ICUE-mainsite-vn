@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -27,3 +28,6 @@ for (const directory of ['bgVideos', 'flags', 'logoIcons']) {
 }
 
 console.log('Synced legal-app navigation assets.')
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)

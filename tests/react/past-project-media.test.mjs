@@ -37,24 +37,41 @@ test('selected project heroes remain selected even when a gallery drawing is wid
 
 test('all nine project collages ship matching responsive images without obsolete photo attribution', () => {
   assert.equal(PAST_PROJECTS.length, 9)
+  assert.equal(new Set(PAST_PROJECTS.map(project => project.hero)).size, 9)
   assert.equal(new Set(PAST_PROJECTS.map(project => project.cover)).size, 9)
   for (const project of PAST_PROJECTS) {
-    assert.equal(pastProjectHeroMedia(project).src, project.cover)
+    assert.equal(pastProjectHeroMedia(project).src, project.hero)
+    assert.notEqual(project.hero, project.cover)
+    assert.match(project.cover, /^\/pastProjects\/grid_card_images\/pp_\d+\.jpg$/)
+    assert.equal(project.images.some(image => image.src === project.cover), false)
     assert.equal(project.photo, undefined, 'a collage must not inherit the prior regional photo author or license')
-    const original = webpSize(new URL(`../../public${project.cover}`, import.meta.url))
-    assert.deepEqual(original, { width: project.width, height: project.height }, 'intrinsic dimensions must describe the selected collage')
+    const original = webpSize(new URL(`../../public${project.hero}`, import.meta.url))
+    assert.deepEqual(original, { width: project.heroWidth, height: project.heroHeight }, 'intrinsic dimensions must describe the selected collage')
     const card = coverSrcSet(project.cover, project.width)
+    const homeCard = coverSrcSet(project.cover)
     const hero = heroSrcSet(project.hero, project.heroWidth)
-    assert.match(card, /-480\.webp 480w/)
+    assert.equal(card, homeCard, 'home cards resolve the same gallery srcset without an explicit width')
     assert.match(hero, /-960\.webp 960w/)
     assert.doesNotMatch(hero, /480w/)
-    for (const candidate of card.split(', ')) {
-      const [src, descriptor] = candidate.split(' ')
+    if (project.width > 960) {
+      assert.match(card, /-480\.webp 480w/)
+      assert.match(card, /-960\.webp 960w/)
+    } else if (project.width > 480) {
+      assert.match(card, /-480\.webp 480w/)
+      assert.doesNotMatch(card, /960w/)
+    } else {
+      assert.equal(card, undefined)
+    }
+    for (const candidate of `${card || project.cover}, ${hero}`.split(', ')) {
+      const [src, descriptor] = candidate.trim().split(' ')
       const file = new URL(`../../public${src}`, import.meta.url)
       assert.ok(fs.existsSync(file), src)
+      if (!src.endsWith('.webp') || !descriptor) continue
       const size = webpSize(file)
       assert.equal(size.width, Number.parseInt(descriptor, 10), src)
-      assert.ok(Math.abs(size.height - Math.round(original.height * size.width / original.width)) <= 1, 'responsive images preserve the collage proportions')
+      if (src.startsWith('/pastProjects/covers/')) {
+        assert.ok(Math.abs(size.height - Math.round(original.height * size.width / original.width)) <= 1, 'responsive images preserve the collage proportions')
+      }
     }
     assert.ok(project.images.length > 0, 'original project gallery remains available')
   }

@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -60,10 +61,6 @@ for (const rel of ASSET_DIRS) {
   copyDir(path.join(siteRoot, 'public', rel), path.join(appRoot, 'public', rel))
 }
 
-// Mobile browsers probe these root URLs independently of the desktop favicon.
-for (const file of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'apple-touch-icon-precomposed.png']) {
-  copyFile(path.join(siteRoot, 'public', file), path.join(appRoot, 'public', file))
-}
 
 // The home dev server also needs the sidebar's on-demand background track.
 copyFile(
@@ -117,3 +114,6 @@ copyFile(
 console.log(
   `Synced home-app assets: ${ASSET_DIRS.join(', ')}, ${HOME_BG_VIDEOS.length} bg videos, ${HOME_MODELS.length} models, card galleries, and redirects`,
 )
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)

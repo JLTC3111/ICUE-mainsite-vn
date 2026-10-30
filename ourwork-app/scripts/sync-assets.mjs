@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -47,3 +48,6 @@ copyRequired(srcFavicon, destFavicon, 'favicon')
 console.log(
   `Synced ${WORK_IMAGES.length} scope images, ${FLAG_FILES.length} flags, and favicon into ourwork-app/public/`,
 )
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)

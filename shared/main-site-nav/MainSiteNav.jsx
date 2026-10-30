@@ -6,6 +6,7 @@ import {
   useState,
 } from 'react';
 import DrawerMenuPanel from '@icue/drawer-menu/DrawerMenuPanel.jsx';
+import useDrawerMotion, { DRAWER_MOTION_STYLE } from '../drawer-menu/useDrawerMotion';
 import { registerMainSiteNavBridge } from './bridge';
 import { pageFromPathname } from './languageSwitcher';
 import {
@@ -123,6 +124,11 @@ export default function MainSiteNav({
   const initialVisibility = getPageVisibility(initialPage);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const {
+    closing: drawerClosing,
+    visible: drawerVisible,
+    onTransitionEnd: onDrawerTransitionEnd,
+  } = useDrawerMotion(drawerOpen);
   const [peopleOpen, setPeopleOpen] = useState(true);
   const [activePage, setActivePage] = useState(initialPage);
   const [darkNav, setDarkNav] = useState(initialVisibility.darkNav);
@@ -417,13 +423,13 @@ export default function MainSiteNav({
   drawerOpenRef.current = drawerOpen;
 
   useEffect(() => {
-    document.body.classList.toggle('nav-drawer-open', drawerOpen);
-    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    document.body.classList.toggle('nav-drawer-open', drawerVisible);
+    document.body.style.overflow = drawerVisible ? 'hidden' : '';
     return () => {
       document.body.classList.remove('nav-drawer-open');
       document.body.style.overflow = '';
     };
-  }, [drawerOpen]);
+  }, [drawerVisible]);
 
   useEffect(() => {
     registerMainSiteNavBridge({
@@ -556,7 +562,8 @@ export default function MainSiteNav({
     usePillNav ? 'main-site-nav--pill' : '',
     dockExpanded ? 'main-site-nav--dock-expanded' : 'main-site-nav--dock-contracted',
     darkNav ? 'nav-on-dark' : '',
-    drawerOpen ? 'drawer-open' : '',
+    drawerVisible ? 'drawer-open' : '',
+    drawerClosing ? 'drawer-closing' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -566,7 +573,7 @@ export default function MainSiteNav({
     .join(' ');
 
   return (
-    <div className={navClass} ref={navRootRef} data-active-page={activePage}>
+    <div className={navClass} ref={navRootRef} data-active-page={activePage} style={DRAWER_MOTION_STYLE} onTransitionEnd={onDrawerTransitionEnd}>
       <nav className={barClass} aria-label={labels.aria.nav}>
         <MainSiteHeader
           locale={locale}
@@ -615,7 +622,6 @@ export default function MainSiteNav({
         showToggle={false}
         showClose={false}
         portal={false}
-        resizable
         drawerId="drawerMenu"
         overlayId="mainSiteDrawerOverlay"
         menuToggleId="menuToggle"

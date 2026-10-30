@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -57,3 +58,6 @@ for (const file of FLAG_FILES) {
 }
 
 console.log(`Synced ${PHOTOS.length} profile photos, ${FLAG_FILES.length} flags, and favicon into people-app/public/`)
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)

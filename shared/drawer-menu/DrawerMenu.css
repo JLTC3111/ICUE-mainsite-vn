@@ -110,6 +110,24 @@
   transform: translate(-50%, -50%) rotate(0deg) scale(1);
 }
 
+/* Keep the header's X through the spin and slide, then crossfade back to bars. */
+.nav-drawer__toggle--morph.is-closing .nav-drawer__toggle-x {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%) rotate(180deg) scale(0.85);
+  transition:
+    transform var(--drawer-spin-duration) ease-in-out,
+    opacity var(--drawer-fade-duration) ease var(--drawer-fade-delay),
+    visibility 0s linear var(--drawer-close-duration);
+}
+
+.nav-drawer__toggle--morph.is-closing .nav-drawer__toggle-bars {
+  transition:
+    opacity var(--drawer-fade-duration) ease var(--drawer-fade-delay),
+    transform var(--drawer-fade-duration) ease var(--drawer-fade-delay),
+    visibility 0s linear var(--drawer-fade-delay);
+}
+
 .nav-drawer__toggle:hover .nav-drawer__toggle-bars > span {
   background: currentColor;
 }
@@ -120,7 +138,9 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  margin: 0 0 0.25rem;
+  justify-content: flex-end;
+  width: min(100%, 42rem);
+  margin: 0 auto 0.25rem;
   padding: calc(env(safe-area-inset-top, 0px) + 11px) 0 0.65rem calc(env(safe-area-inset-left, 0px) + 8px);
 }
 
@@ -139,6 +159,8 @@
   background: rgba(15, 23, 42, 0.55);
   color: #f8fafc;
   cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
   outline: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -149,6 +171,11 @@
     border-color 0.2s ease;
 }
 
+.nav-drawer.is-open .nav-drawer__close {
+  opacity: 1;
+  visibility: visible;
+}
+
 .nav-drawer__close:hover {
   background: rgba(15, 23, 42, 0.95);
   border-color: rgba(255, 255, 255, 0.55);
@@ -157,6 +184,11 @@
 .nav-drawer__close:focus,
 .nav-drawer__close:focus-visible {
   outline: none;
+}
+
+.nav-drawer__close:focus-visible {
+  outline: 2px solid #c4b5fd;
+  outline-offset: 3px;
 }
 
 .nav-drawer__close-icon,
@@ -185,14 +217,28 @@
   transition: transform 0.5s ease, opacity 0.35s ease, visibility 0.35s ease;
 }
 
-/* Structure and People: the panel stays put while the X fades out, then slides away. */
-.nav-drawer.nav-drawer--fade-close:not(.is-open) {
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+/* Counter the panel's closing translation so its X stays at the same screen
+   position. The whole close control fades only in the last part of the slide. */
+.nav-drawer.is-closing .nav-drawer__header {
+  animation: nav-drawer-close-anchor var(--drawer-slide-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--drawer-spin-duration) both;
 }
 
-.nav-drawer.nav-drawer--fade-close:not(.is-open) .nav-drawer__close-icon,
-.nav-drawer.nav-drawer--fade-close:not(.is-open) .nav-drawer__close-icon path {
-  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+.nav-drawer.is-closing .nav-drawer__close {
+  transition:
+    opacity var(--drawer-fade-duration) ease var(--drawer-fade-delay),
+    visibility 0s linear var(--drawer-close-duration);
+}
+
+.nav-drawer.is-closing .nav-drawer__close-icon {
+  opacity: 1;
+  visibility: visible;
+  transform: rotate(180deg) scale(0.85);
+  transition: transform var(--drawer-spin-duration) ease-in-out;
+}
+
+@keyframes nav-drawer-close-anchor {
+  from { transform: translateX(0); }
+  to { transform: translateX(100vw); }
 }
 
 .nav-drawer__overlay {
@@ -210,6 +256,12 @@
 .nav-drawer__overlay.is-open {
   opacity: 1;
   visibility: visible;
+}
+
+.nav-drawer__overlay.is-closing {
+  transition:
+    opacity var(--drawer-slide-duration) ease var(--drawer-spin-duration),
+    visibility 0s linear var(--drawer-close-duration);
 }
 
 /* The Home shell has no universal border-box reset. Keep full-width menu
@@ -230,21 +282,22 @@
   left: 0;
   height: 100vh;
   height: 100dvh;
-  width: min(380px, 90vw);
+  width: 100%;
+  max-width: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0 2rem max(2rem, env(safe-area-inset-bottom, 0px));
-  background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.22), #05080d 72%);
+  padding: 0 max(0.75rem, env(safe-area-inset-right, 0px)) max(1.5rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
+  background: radial-gradient(circle at 85% 10%, #173552, #05080d 78%);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
-  box-shadow: 4px 0 28px rgba(0, 0, 0, 0.55);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  border: 0;
   transform: translateX(-100%);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 1210;
   overflow-y: auto;
-  overflow-x: visible;
+  overflow-x: hidden;
   overscroll-behavior-y: contain;
 }
 
@@ -252,30 +305,44 @@
   transform: translateX(0);
 }
 
+.nav-drawer.is-closing {
+  /* The anchored close control must not be clipped by the moving panel. */
+  overflow: visible;
+  pointer-events: none;
+  transition: transform var(--drawer-slide-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--drawer-spin-duration);
+}
+
 .nav-drawer__links {
   position: relative;
   min-width: 0;
-  max-width: 100%;
+  width: 100%;
+  max-width: 42rem;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
   /* Auto margins center a short menu without putting overflowing links
      above the scrollable area on phones in landscape. */
   flex-shrink: 0;
   margin-block: auto;
+  margin-inline: auto;
   /* Room for the LineSidebar ruler markers on the left */
-  padding-left: 40px;
+  padding: 0;
+  padding-left: var(--drawer-marker-gutter);
   --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
   --nav-hover: var(--nav-accent);
   --drawer-icon-col: 22px;
-  --drawer-item-gap: 0.75rem;
-  --drawer-index-col: 2.25rem;
+  --drawer-item-gap: 0.5rem;
+  --drawer-marker-gutter: clamp(26px, 6vw, 54px);
+  --drawer-index-ink: #c4b5fd;
   --drawer-label-indent: calc(
-    0.6rem + var(--drawer-icon-col) + var(--drawer-item-gap) +
-    var(--drawer-index-col) + var(--drawer-item-gap)
+    0.25rem + var(--drawer-icon-col) + var(--drawer-item-gap)
   );
-  --marker-length: 32px;
-  --marker-scale-min: 0.35;
-  --marker-scale-max: 1.65;
+  --marker-length: clamp(20px, 5vw, 44px);
+  --marker-scale-min: 0.6;
+  --marker-scale-max: 1.1;
 }
 
 /* ReactBits LineSidebar styling: each item exposes --effect (0..1), eased by
@@ -285,13 +352,17 @@
 .nav-drawer__submenu-toggle {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: var(--drawer-item-gap);
   width: 100%;
-  padding: 0.85rem 0.5rem;
-  padding-left: calc(0.6rem + var(--effect, 0) * 12px);
+  min-height: 44px;
+  margin: 0;
+  padding: 0.75rem 0.25rem;
+  padding-left: calc(0.25rem + var(--effect, 0) * 4px);
   color: #fff;
-  font-size: clamp(0.95rem, 2.8vh, 1.15rem);
+  font-size: clamp(1rem, 4vw, 1.25rem);
   font-weight: 500;
   text-decoration: none;
   text-align: left;
@@ -325,11 +396,21 @@
 }
 
 .nav-drawer__label {
-  flex: 1;
+  display: block;
+  flex: 0 1 auto;
   min-width: 0;
   line-height: 1.3;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  /* At unusually large text zoom, retain the complete label on one line and
+     allow it to pan rather than clipping words or overriding the user's font. */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav-drawer__label::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-drawer__label-group {
@@ -338,6 +419,7 @@
   gap: 0.3rem;
   flex: 0 1 auto;
   min-width: 0;
+  max-width: 100%;
 }
 
 .nav-drawer__label-group .nav-drawer__label {
@@ -355,22 +437,22 @@
   font-weight: 600;
   background-color: rgba(54, 138, 223, 0.16);
   box-shadow: inset 3px 0 0 var(--nav-accent);
-  padding-left: 0.6rem;
+  padding-left: 0.25rem;
 }
 
 .nav-drawer__links > a.is-current .nav-drawer__index,
 .nav-drawer__submenu-inner > a.is-current .nav-drawer__index {
   opacity: 1;
-  color: var(--nav-accent);
+  color: var(--drawer-index-ink);
 }
 
 /* Ruler marker: purple on proximity for non-active top-level items */
-.nav-drawer__links > a:not(.is-current)::before,
+.nav-drawer__links > a::before,
 .nav-drawer__submenu-toggle::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: -40px;
+  left: calc(-1 * var(--drawer-marker-gutter));
   width: var(--marker-length);
   height: 1px;
   background-color: color-mix(
@@ -398,7 +480,7 @@
   content: '';
   position: absolute;
   top: 100%;
-  left: -40px;
+  left: calc(-1 * var(--drawer-marker-gutter));
   width: 14px;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.16);
@@ -406,11 +488,15 @@
 }
 
 .nav-drawer__index {
+  align-self: flex-start;
   flex: none;
+  margin-top: -0.12em;
+  color: var(--drawer-index-ink);
   font-family: var(--icue-font-stack);
-  font-size: 0.72em;
+  font-size: 0.62em;
+  line-height: 1;
   letter-spacing: 0.06em;
-  opacity: calc(0.7 + var(--effect, 0) * 0.3);
+  opacity: calc(0.9 + var(--effect, 0) * 0.1);
 }
 
 .nav-drawer__links > a.is-current .nav-drawer__index {
@@ -436,12 +522,12 @@
   width: 22px;
   height: 22px;
   flex: none;
-  margin-top: 0.12em;
+  margin-top: 0;
 }
 
 .nav-drawer__submenu-toggle {
   align-items: center;
-  padding-right: 0.75rem;
+  padding-right: 0.25rem;
 }
 
 .nav-drawer__submenu-toggle .nav-drawer__icon {
@@ -468,31 +554,21 @@
   transform: rotate(180deg);
 }
 
-/* Sub-items only: indent to label column, center under parent label text */
+/* Sub-items share the label column; their widths never pull them into the
+   ruler gutter when another language has a longer label than its parent. */
 .nav-drawer__submenu-row {
-  display: flex;
-  align-items: flex-start;
+  display: block;
   width: 100%;
   padding-right: 0.5rem;
-  padding-left: calc(0.6rem + var(--effect, 0) * 12px);
-}
-
-.nav-drawer__submenu-gutter {
-  flex-shrink: 0;
-  width: calc(
-    var(--drawer-icon-col) + var(--drawer-item-gap) +
-    var(--drawer-index-col) + var(--drawer-item-gap)
-  );
+  padding-left: var(--drawer-label-indent);
 }
 
 .nav-drawer__submenu-wrap {
-  flex: 0 1 auto;
-  width: max-content;
-  max-width: calc(100% - var(--drawer-label-indent));
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  transform: translateX(calc((var(--people-label-width, 0px) - 100%) / 2));
+  align-items: flex-start;
 }
 
 .nav-drawer__submenu-row .nav-drawer__submenu {
@@ -503,13 +579,14 @@
 }
 
 .nav-drawer__submenu-row .nav-drawer__submenu-inner {
-  align-items: center;
+  align-items: flex-start;
 }
 
 .nav-drawer__submenu-row .nav-drawer__submenu-inner > a {
-  justify-content: center;
-  width: auto;
-  min-width: 100%;
+  justify-content: flex-start;
+  width: max-content;
+  min-width: 0;
+  max-width: 100%;
   padding-inline: 0.35rem;
   padding-left: 0.35rem;
   transform: translateX(calc(var(--effect, 0) * 4px));
@@ -540,12 +617,16 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 0;
+  min-height: 44px;
+  margin: 0;
   padding: 0.6rem 0.5rem;
   padding-left: calc(0.35rem + var(--effect, 0) * 6px);
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.95rem;
   text-decoration: none;
+  text-align: left;
   border-radius: 4px !important;
   background-color: transparent;
   box-shadow: none;
@@ -615,7 +696,7 @@
   }
 
   .nav-drawer {
-    background: radial-gradient(circle at 85% 10%, rgba(54, 138, 223, 0.28), #05080d 78%);
+    background: radial-gradient(circle at 85% 10%, #173552, #05080d 78%);
     backdrop-filter: blur(48px);
     -webkit-backdrop-filter: blur(48px);
   }

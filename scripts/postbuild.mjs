@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteIconFiles } from '../shared/site-icons/icons.mjs';
 import { HOME_BG_VIDEOS, HOME_MODELS } from '../home-app/scripts/deployMedia.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -117,7 +118,7 @@ if (!fs.existsSync(builtIndex)) {
 
 // Mirror selected home-app output to repo root (do not overwrite entire src/).
 copyFile(builtIndex, path.join(root, 'index.html'));
-for (const file of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'apple-touch-icon-precomposed.png']) {
+for (const file of siteIconFiles()) {
   copyFile(path.join(homeDist, file), path.join(root, file));
 }
 removeDir(path.join(root, 'assets'));

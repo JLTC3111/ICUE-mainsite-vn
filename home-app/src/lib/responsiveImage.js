@@ -1,4 +1,5 @@
 import { PAST_PROJECT_COVERS } from '../data/pastProjectCovers.js'
+import { PAST_PROJECTS } from '../data/pastProjectsContent.js'
 
 const VARIANT_WIDTHS = [480, 960]
 const LOGO_VARIANT_WIDTHS = [220, 440]
@@ -6,6 +7,7 @@ const LOGO_VARIANT_WIDTHS = [220, 440]
 /** Intrinsic widths of listing/home covers this app generates variants for. */
 const COVER_WIDTHS = {
   ...Object.fromEntries(Object.values(PAST_PROJECT_COVERS).map(cover => [cover.src, cover.width])),
+  ...Object.fromEntries(PAST_PROJECTS.map(project => [project.cover, project.width])),
   '/news/articles/card_4.jpg': 3504,
   '/news/articles/Card_1.webp': 720,
   '/news/articles/card_9.jpg': 1168,
@@ -15,15 +17,6 @@ const COVER_WIDTHS = {
   '/news/articles/card_6.jpg': 1000,
   '/news/articles/card_7.jpg': 1454,
   '/news/articles/card_5.jpg': 1080,
-  '/pastProjects/pp_1.webp': 720,
-  '/pastProjects/pp_2.jpg': 2084,
-  '/pastProjects/pp_3.webp': 720,
-  '/pastProjects/pp_4.jpg': 1200,
-  '/pastProjects/pp_5.jpg': 1054,
-  '/pastProjects/pp_6.jpg': 460,
-  '/pastProjects/pp_7.jpg': 793,
-  '/pastProjects/pp_8.jpg': 1117,
-  '/pastProjects/pp_9.jpg': 1200,
   '/work/ourWork_img1.webp': 1920,
   '/work/ourWork_img2.webp': 1920,
   '/work/ourWork_img3.webp': 1280,
@@ -48,7 +41,9 @@ function srcSetFrom(src, intrinsicWidth, widths) {
 }
 
 export function coverSrcSet(src, intrinsicWidth) {
-  return srcSetFrom(src, intrinsicWidth, VARIANT_WIDTHS)
+  // Gallery cards have a 960px WebP. They do not have the 480px collage variant.
+  const widths = src?.includes('/pastProjects/project_') ? [960] : VARIANT_WIDTHS
+  return srcSetFrom(src, intrinsicWidth, widths)
 }
 
 /**

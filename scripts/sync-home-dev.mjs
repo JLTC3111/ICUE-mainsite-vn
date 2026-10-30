@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteIconFiles } from '../shared/site-icons/icons.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const homeDist = path.join(root, 'dist-home');
@@ -27,7 +28,7 @@ if (!fs.existsSync(homeDist)) {
 }
 
 copyFile(path.join(homeDist, 'index.html'), path.join(root, 'index.html'));
-for (const file of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'apple-touch-icon-precomposed.png']) {
+for (const file of siteIconFiles()) {
   copyFile(path.join(homeDist, file), path.join(root, file));
 }
 copyDir(path.join(homeDist, 'assets'), path.join(root, 'assets'));

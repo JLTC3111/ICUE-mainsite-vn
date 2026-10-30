@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -60,3 +61,6 @@ for (const file of FLAG_FILES) {
 console.log(
   `Synced ${PHOTOS.length} org-structure photos, ${FLAG_FILES.length} flags, and favicon into structure-app/public/`,
 )
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)

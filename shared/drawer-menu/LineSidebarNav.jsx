@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useRef } from 'react'
+import { memo } from 'react'
 
 const IndexNo = ({ n }) => (
   <span className="nav-drawer__index" aria-hidden="true">
@@ -23,31 +23,6 @@ function LineSidebarNav({
   onPointerLeave,
   ariaLabel = 'Site',
 }) {
-  const peopleLabelRef = useRef(null)
-  const submenuRowRef = useRef(null)
-
-  useLayoutEffect(() => {
-    const label = peopleLabelRef.current
-    const row = submenuRowRef.current
-    if (!label || !row) return undefined
-
-    const syncLabelWidth = () => {
-      row.style.setProperty('--people-label-width', `${label.getBoundingClientRect().width}px`)
-    }
-
-    syncLabelWidth()
-    window.addEventListener('resize', syncLabelWidth)
-    const observer = typeof ResizeObserver !== 'undefined'
-      ? new ResizeObserver(syncLabelWidth)
-      : null
-    observer?.observe(label)
-
-    return () => {
-      window.removeEventListener('resize', syncLabelWidth)
-      observer?.disconnect()
-    }
-  }, [people?.label, people?.open])
-
   return (
     <nav
       className="nav-drawer__links"
@@ -66,8 +41,10 @@ function LineSidebarNav({
           onClick={link.onClick}
         >
           <NavIcon icon={link.icon} />
-          {link.index != null && <IndexNo n={link.index} />}
-          <span className="nav-drawer__label">{link.label}</span>
+          <span className="nav-drawer__label-group">
+            <span className="nav-drawer__label" tabIndex={-1}>{link.label}</span>
+            {link.index != null && <IndexNo n={link.index} />}
+          </span>
         </a>
       ))}
 
@@ -80,9 +57,9 @@ function LineSidebarNav({
             onClick={people.onToggle}
           >
             <NavIcon icon={people.icon} />
-            {people.index != null && <IndexNo n={people.index} />}
             <span className="nav-drawer__label-group">
-              <span className="nav-drawer__label" ref={peopleLabelRef}>{people.label}</span>
+              <span className="nav-drawer__label" tabIndex={-1}>{people.label}</span>
+              {people.index != null && <IndexNo n={people.index} />}
               <svg
                 className="nav-drawer__chevron"
                 viewBox="0 0 24 24"
@@ -96,8 +73,7 @@ function LineSidebarNav({
             </span>
           </button>
 
-          <div className="nav-drawer__submenu-row" ref={submenuRowRef}>
-            <span className="nav-drawer__submenu-gutter" aria-hidden="true" />
+          <div className="nav-drawer__submenu-row" aria-hidden={!people.open} inert={!people.open}>
             <div className="nav-drawer__submenu-wrap">
               <div className={`nav-drawer__submenu ${people.open ? 'is-open' : ''}`}>
                 <div className="nav-drawer__submenu-inner">
@@ -112,7 +88,7 @@ function LineSidebarNav({
                     >
                       <span className="nav-drawer__submenu-link">
                         <NavIcon icon={item.icon} />
-                        <span className="nav-drawer__label">{item.label}</span>
+                        <span className="nav-drawer__label" tabIndex={-1}>{item.label}</span>
                       </span>
                     </a>
                   ))}

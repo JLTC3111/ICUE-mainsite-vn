@@ -22,7 +22,7 @@ dist-home/
 /route-shells/
 /index.html
 
-# Root/mobile icons are synced from public/ during home-app dev/build.
+# Root/mobile icons are generated from public/logoIcons/ during app dev/build.
 /favicon.png
 /favicon.ico
 /apple-touch-icon.png
@@ -31,6 +31,24 @@ dist-home/
 /home-app/public/favicon.ico
 /home-app/public/apple-touch-icon.png
 /home-app/public/apple-touch-icon-precomposed.png
+
+# Content-addressed icon copies are generated from public/logoIcons/.
+/*-app/public/favicon*.ico
+/*-app/public/favicon*.png
+/*-app/public/apple-touch-icon*.png
+/favicon-*.png
+/favicon-*.ico
+/apple-touch-icon-*.png
+
+# Home and Legal also mirror the canonical logoIcons directory for legacy links.
+/home-app/public/logoIcons/apple-touch-icon.png
+/home-app/public/logoIcons/apple-touch-icon-precomposed.png
+/home-app/public/logoIcons/favicon-browser.png
+/home-app/public/logoIcons/favicon.ico
+/legal-app/public/logoIcons/apple-touch-icon.png
+/legal-app/public/logoIcons/apple-touch-icon-precomposed.png
+/legal-app/public/logoIcons/favicon-browser.png
+/legal-app/public/logoIcons/favicon.ico
 
 # Sibling-app Vite outDirs. Source lives in *-app/; public assets stay in public/.
 /newsroom/

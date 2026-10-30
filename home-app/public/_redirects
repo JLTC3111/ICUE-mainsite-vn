@@ -167,10 +167,10 @@
 /legacy-embed/pages/orgStructure.html /structure/ 301!
 
 # Icon compatibility paths must resolve to images before the SPA fallback.
-/favicon.ico                      /public/favicon.ico                       200
-/favicon.png                      /public/favicon.png                       200
-/apple-touch-icon.png             /public/apple-touch-icon.png              200
-/apple-touch-icon-precomposed.png  /public/apple-touch-icon-precomposed.png  200
+/favicon.ico                      /public/logoIcons/favicon.ico                       200
+/favicon.png                      /public/logoIcons/favicon.png                       200
+/apple-touch-icon.png             /public/logoIcons/apple-touch-icon.png              200
+/apple-touch-icon-precomposed.png  /public/logoIcons/apple-touch-icon-precomposed.png  200
 
 # Static assets live under /public in the repo root deploy layout.
 /zalo-link.js        /public/zalo-link.js            200

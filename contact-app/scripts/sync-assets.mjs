@@ -1,3 +1,4 @@
+import { syncSiteIcons } from '../../shared/site-icons/icons.mjs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -41,3 +42,6 @@ for (const [from, to, label] of files) {
 }
 
 console.log(`Synced ${files.length} assets into contact-app/public/`)
+
+// Keep browser and touch icons consistent across standalone app entry points.
+syncSiteIcons(appRoot)
