@@ -28,6 +28,7 @@ function Header({ backgroundEnabled, onBackgroundToggle, showBackgroundToggle, a
           orgHref={structureLink()}
           currentPage={currentPage}
           drawerClassName="nav-drawer--fade-close"
+          headerAboveDrawer
         />
 
         <a href={base} className="people-header__brand" aria-label={t('nav.mainAria')}>

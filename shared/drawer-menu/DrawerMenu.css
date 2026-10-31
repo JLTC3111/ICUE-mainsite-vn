@@ -238,7 +238,7 @@
 
 @keyframes nav-drawer-close-anchor {
   from { transform: translateX(0); }
-  to { transform: translateX(100vw); }
+  to { transform: translateX(var(--drawer-panel-width)); }
 }
 
 .nav-drawer__overlay {
@@ -277,12 +277,14 @@
   /* The legacy/home shell has no universal border-box reset. Padding must
      fit inside the viewport height so the final links remain reachable. */
   box-sizing: border-box;
+  --drawer-panel-width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   height: 100dvh;
-  width: 100%;
+  width: var(--drawer-panel-width);
+  min-width: 0;
   max-width: none;
   display: flex;
   flex-direction: column;
@@ -299,6 +301,17 @@
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior-y: contain;
+}
+
+/* Phones use the available screen; tablets and desktops keep a side panel. */
+@media (min-width: 640px) {
+  .nav-drawer {
+    --drawer-panel-width: min(30rem, calc(100vw - 3rem));
+  }
+}
+
+.nav-drawer--header-above {
+  padding-top: var(--drawer-header-offset, 0px);
 }
 
 .nav-drawer.is-open {

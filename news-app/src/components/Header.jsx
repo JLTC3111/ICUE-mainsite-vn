@@ -226,6 +226,7 @@ function Header({ appearance = 'light' }) {
           peopleLink={peopleLink}
           orgHref={structureLink()}
           drawerClassName="nav-drawer--fade-close"
+          headerAboveDrawer
         />
 
         <div className="icue-header__brand-box">

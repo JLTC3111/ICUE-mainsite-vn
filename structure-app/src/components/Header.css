@@ -8,6 +8,15 @@
   border-bottom: 1px solid var(--icue-border);
 }
 
+/* Let the header stack independently above the body-portalled drawer. */
+body.nav-drawer-open .page-shell {
+  z-index: auto;
+}
+
+body.nav-drawer-open .structure-site-header {
+  z-index: 1300;
+}
+
 .structure-site-header__rays {
   z-index: 0;
   border-radius: inherit;

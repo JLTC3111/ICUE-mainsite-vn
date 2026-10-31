@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback, useRef } from 'react'
+import { memo, useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import LineSidebarNav from './LineSidebarNav'
 import { useLineSidebarProximity } from './useLineSidebarProximity'
@@ -42,6 +42,7 @@ function DrawerMenuPanel({
   showToggle = true,
   showClose = true,
   morphToggle = false,
+  headerAboveDrawer = false,
   portal = true,
   resizable = false,
   drawerId = 'drawerMenu',
@@ -99,13 +100,43 @@ function DrawerMenuPanel({
   const getForegroundRoots = useCallback(() => {
     const drawer = drawerRef.current
     const toggleElement = getToggle()
-    const foregroundHeader = showClose ? null : (
+    const foregroundHeader = showClose && !headerAboveDrawer ? null : (
       portal
         ? toggleElement?.closest('header')
         : drawer?.closest('.main-site-nav')?.querySelector('.main-site-nav__bar')
     )
-    return [drawer, foregroundHeader || (!showClose ? toggleElement : null)].filter(Boolean)
-  }, [getToggle, portal, showClose])
+    const roots = [drawer, foregroundHeader || (!showClose ? toggleElement : null)].filter(Boolean)
+    // Header menus such as the ecosystem navigator render their panels in
+    // document.body. Follow their controls so the drawer does not steal focus.
+    foregroundHeader?.querySelectorAll('[aria-expanded="true"][aria-controls]').forEach(trigger => {
+      for (const id of trigger.getAttribute('aria-controls').split(/\s+/)) {
+        const panel = document.getElementById(id)
+        if (panel && !roots.some(root => root.contains(panel))) roots.push(panel)
+      }
+    })
+    return roots
+  }, [getToggle, headerAboveDrawer, portal, showClose])
+
+  useLayoutEffect(() => {
+    if (!visible || !headerAboveDrawer) return undefined
+    const drawer = drawerRef.current
+    const header = getToggle()?.closest('header')
+    if (!drawer || !header) return undefined
+    const update = () => drawer.style.setProperty(
+      '--drawer-header-offset', `${Math.max(0, Math.ceil(header.getBoundingClientRect().bottom))}px`,
+    )
+    update()
+    const observer = typeof window.ResizeObserver === 'function' ? new window.ResizeObserver(update) : null
+    observer?.observe(header)
+    window.addEventListener('resize', update)
+    window.addEventListener('scroll', update, true)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', update, true)
+      drawer.style.removeProperty('--drawer-header-offset')
+    }
+  }, [getToggle, headerAboveDrawer, visible])
 
   useEffect(() => {
     if (!visible) return undefined
@@ -269,6 +300,7 @@ function DrawerMenuPanel({
   const drawerPanelClass = [
     'nav-drawer',
     drawerClassName,
+    headerAboveDrawer ? 'nav-drawer--header-above' : '',
     open ? 'is-open open' : closing ? 'is-closing' : '',
   ]
     .filter(Boolean)

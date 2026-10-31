@@ -37,6 +37,7 @@ function Header({ pageTheme }) {
           orgHref={structureLink()}
           currentPage="org"
           drawerClassName="nav-drawer--fade-close"
+          headerAboveDrawer
         />
 
         <a href={base} className="structure-site-header__brand" aria-label={t('nav.mainAria')}>

@@ -8,6 +8,15 @@
   border-bottom: 1px solid var(--icue-border);
 }
 
+/* These stay above the portalled drawer (1210), including its closing phase. */
+body.nav-drawer-open .icue-app .icue-header {
+  z-index: 1300;
+}
+
+body.nav-drawer-open .market-strip {
+  z-index: 1301;
+}
+
 .icue-header__inner {
   max-width: 1440px;
   padding-inline: 40px;

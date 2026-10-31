@@ -853,9 +853,6 @@
   left: 0;
   height: 100vh;
   height: 100dvh;
-  width: 100%;
-  min-width: 0;
-  max-width: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1332,11 +1329,7 @@
   }
 
   .main-site-nav #drawerMenu.main-site-drawer {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
     transform: translateX(-100%);
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     align-items: stretch;
     justify-content: flex-start;
   }

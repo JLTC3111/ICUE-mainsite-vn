@@ -69,13 +69,23 @@ async function fixture(t, mode = 'panel', { alreadyOpen = false, reducedMotion =
     }
     const panel = React.createElement(DrawerMenuPanel, {
       links, people, open, onOpenChange: value => { changes.push(revision); setOpen(value) },
-      showToggle: mode !== 'main', showClose: mode === 'panel', morphToggle: mode === 'work',
+      showToggle: mode !== 'main', showClose: mode === 'panel' || mode === 'header', morphToggle: mode === 'work',
+      headerAboveDrawer: mode === 'header',
       portal: mode !== 'main', drawerId: 'drawerMenu', menuToggleId: 'menuToggle',
       menuLabel: 'Menu', closeLabel: 'Close menu',
     })
     const language = React.createElement(React.Fragment, null,
-      React.createElement('button', { id: 'language', onClick: () => setLanguageOpen(value => !value) }, 'Language'),
-      languageOpen ? React.createElement('button', { id: 'french' }, 'Français') : null,
+      React.createElement('button', {
+        id: 'language',
+        'aria-expanded': languageOpen,
+        'aria-controls': languageOpen && mode === 'header' ? 'header-tools' : undefined,
+        onClick: () => setLanguageOpen(value => !value),
+      }, 'Language'),
+      languageOpen ? (mode === 'header'
+        ? createPortal(React.createElement('section', { id: 'header-tools', role: 'dialog' },
+          React.createElement('button', { id: 'french' }, 'Français'),
+        ), document.body)
+        : React.createElement('button', { id: 'french' }, 'Français')) : null,
     )
     if (mode === 'main') return React.createElement('div', { className: 'main-site-nav' },
       React.createElement('nav', { className: 'main-site-nav__bar' },
@@ -84,6 +94,9 @@ async function fixture(t, mode = 'panel', { alreadyOpen = false, reducedMotion =
     )
     if (mode === 'work') return React.createElement('header', null,
       React.createElement('a', { id: 'brand', href: '/' }, 'ICUE'), language, panel,
+    )
+    if (mode === 'header') return React.createElement('header', null,
+      panel, React.createElement('a', { id: 'brand', href: '/' }, 'ICUE'), language,
     )
     return panel
   }
@@ -190,6 +203,39 @@ test('main-site drawer keeps its external header close and language controls wit
   await f.key('Escape')
   assert.equal(f.document.activeElement, f.trigger())
   assert.equal(f.document.body.style.overflow, 'clip')
+})
+
+test('raised page headers clear the close control and keep their portalled menus reachable', async t => {
+  const f = await fixture(t, 'header')
+  const header = f.document.querySelector('header')
+  let bottom = 103
+  header.getBoundingClientRect = () => ({ bottom })
+  await f.open()
+  assert.equal(f.drawer().style.getPropertyValue('--drawer-header-offset'), '103px', 'the header and market strip leave room for the drawer close button')
+  assert.equal(f.document.activeElement, f.drawer().querySelector('.nav-drawer__close'))
+
+  const language = f.document.getElementById('language')
+  language.focus()
+  assert.equal(f.document.activeElement, language, 'the raised header remains keyboard accessible')
+  await f.click(language)
+  const french = f.document.getElementById('french')
+  french.focus()
+  assert.equal(f.document.activeElement, french, 'a header-controlled portal belongs to the foreground')
+  f.document.getElementById('background').focus()
+  assert.equal(f.document.activeElement, french, 'covered page controls still cannot take focus')
+  await f.key('Tab')
+  assert.ok(header.contains(f.document.activeElement) || f.drawer().contains(f.document.activeElement))
+  await f.click(language)
+
+  bottom = 57
+  f.window.dispatchEvent(new f.window.Event('resize'))
+  assert.equal(f.drawer().style.getPropertyValue('--drawer-header-offset'), '57px', 'responsive header heights update the drawer clearance')
+  await f.key('Escape')
+  assert.equal(f.document.activeElement, f.trigger())
+  assert.equal(f.drawer().style.getPropertyValue('--drawer-header-offset'), '', 'closing removes the measured clearance')
+  bottom = 120
+  f.window.dispatchEvent(new f.window.Event('resize'))
+  assert.equal(f.drawer().style.getPropertyValue('--drawer-header-offset'), '', 'closed drawers have no remaining measurement listeners')
 })
 
 test('Our Work morphing header toggle stays reachable across a portalled drawer without visiting background links', async t => {
