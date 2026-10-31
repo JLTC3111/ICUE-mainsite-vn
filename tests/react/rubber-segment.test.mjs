@@ -120,6 +120,31 @@ test('RubberSegment settles immediately for live reduced motion and releases hid
   assert.equal(f.document.querySelector('.rubber-segment').style.getPropertyValue('--rs-left'), '0px')
 })
 
+test('hover never moves the selected thumb or previews a selection across navigation and toggle roles', async t => {
+  const f = await fixture(t)
+  const calls = []
+  for (const [role, value] of [['navigation', 'one'], ['navigation', null], ['group', 'one'], ['tablist', 'one'], ['radiogroup', 'one']]) {
+    await f.render({ role, value, items: [
+      { value: 'one', label: 'One', href: role === 'navigation' ? '#one' : undefined },
+      { value: 'two', label: 'Two', href: role === 'navigation' ? '#two' : undefined },
+    ], onChange: next => calls.push(next) })
+    await f.flush()
+    const track = f.document.querySelector('.rubber-segment')
+    const controls = [...track.querySelectorAll('a, button')]
+    const before = track.style.cssText
+    const selection = controls.map(control => [control.getAttribute('aria-current'), control.getAttribute('aria-pressed'), control.getAttribute('aria-selected'), control.getAttribute('aria-checked')])
+    await f.pointer(controls[1], 'pointerover', { pointerType: 'mouse', relatedTarget: null })
+    await f.flush()
+    assert.equal(track.hasAttribute('data-preview'), false, `${role}: hovering must not imitate an active selection`)
+    assert.equal(track.style.cssText, before, `${role}: the thumb stays on the selected destination`)
+    assert.deepEqual(controls.map(control => [control.getAttribute('aria-current'), control.getAttribute('aria-pressed'), control.getAttribute('aria-selected'), control.getAttribute('aria-checked')]), selection)
+    await f.pointer(controls[1], 'pointerout', { pointerType: 'mouse', relatedTarget: f.document.body })
+    await f.flush()
+    assert.equal(track.style.cssText, before, `${role}: leaving does not animate an unrequested selection`)
+  }
+  assert.deepEqual(calls, [], 'hover cannot invoke navigation, filter, or toggle callbacks')
+})
+
 test('RubberSegment navigation preserves anchors, modified clicks and disabled destinations', async t => {
   const f = await fixture(t)
   const calls = []
@@ -154,6 +179,12 @@ test('People section segments keep router navigation and the customized HR actio
   const links = f.document.querySelectorAll('.rubber-segment a')
   assert.equal(links[0].getAttribute('href'), '/people/experts')
   assert.equal(links[0].getAttribute('aria-current'), 'page')
+  const track = f.document.querySelector('.rubber-segment')
+  const selectedPosition = track.style.cssText
+  await f.pointer(links[1], 'pointerover', { pointerType: 'mouse', relatedTarget: null })
+  await f.flush()
+  assert.deepEqual(paths, [], 'hovering Staff does not navigate away from Experts')
+  assert.equal(track.style.cssText, selectedPosition, 'Experts stays highlighted until Staff is activated')
   await act(async () => links[1].dispatchEvent(new f.window.MouseEvent('click', { bubbles: true, cancelable: true, button: 0 })))
   assert.deepEqual(paths, ['/core-team'])
   assert.equal(f.document.querySelector('.page-shell__hr-link').getAttribute('href'), 'https://hr.icue.vn')

@@ -19,12 +19,12 @@ export default function PageShell({
   onBackgroundToggle,
 }) {
   const { t, i18n } = useTranslation()
-  const pageTheme = usePageTheme('people')
   const lang = i18n.resolvedLanguage || i18n.language
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const profileGroupLinks = [{ value: 'experts', path: '/experts', label: t('tabs.experts') }, { value: 'core', path: '/core-team', label: t('tabs.coreTeam') }]
   const interactiveBgActive = showBackgroundToggle && backgroundEnabled
+  const pageTheme = usePageTheme('people', { theme: interactiveBgActive ? 'dark' : 'light' })
 
   return (
     <InteractiveBackgroundProvider active={interactiveBgActive}>
@@ -34,7 +34,7 @@ export default function PageShell({
         )}
 
         <Header
-          appearance={interactiveBgActive || pageTheme.isDark ? 'dark' : 'light'}
+          appearance={pageTheme.theme}
           backgroundEnabled={backgroundEnabled}
           onBackgroundToggle={onBackgroundToggle}
           showBackgroundToggle={showBackgroundToggle}

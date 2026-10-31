@@ -1,6 +1,65 @@
 /* Drawer menu: Our Work’s hamburger crossfades into an X. The other apps hide
    that control while the drawer is open and use the panel’s own X. */
 
+/* The panel and its body-portalled backdrop share the page's resolved theme. */
+.nav-drawer,
+.nav-drawer__overlay {
+  --drawer-color-scheme: dark;
+  --drawer-surface: linear-gradient(180deg, #161a20, #111419);
+  --drawer-ink: #ffffff;
+  --drawer-secondary-ink: rgba(255, 255, 255, 0.82);
+  --drawer-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
+  --drawer-index-ink: #c4b5fd;
+  --drawer-expert-ink: #1db7ff;
+  --drawer-core-ink: #ffff03;
+  --drawer-rule: rgba(255, 255, 255, 0.32);
+  --drawer-tick: rgba(255, 255, 255, 0.16);
+  --drawer-effect-rgb: 54, 138, 223;
+  --drawer-active-surface: rgba(54, 138, 223, 0.16);
+  --drawer-marker-glow: rgba(54, 138, 223, 0.75);
+  --drawer-focus: #c4b5fd;
+  --drawer-close-surface: rgba(15, 23, 42, 0.55);
+  --drawer-close-ink: #f8fafc;
+  --drawer-close-border: rgba(248, 250, 252, 0.35);
+  --drawer-close-hover-surface: rgba(15, 23, 42, 0.95);
+  --drawer-close-hover-border: rgba(255, 255, 255, 0.55);
+  --drawer-backdrop: rgba(2, 6, 12, 0.65);
+  --drawer-backdrop-mobile: rgba(2, 6, 12, 0.72);
+}
+
+/* The shared page preference is authoritative. Legacy apps publish their
+   existing root attributes/classes; pages without a dark signal use light. */
+:root[data-icue-page-theme='light'] :is(.nav-drawer, .nav-drawer__overlay),
+:root:not(:is(
+  [data-icue-page-theme='dark'],
+  [data-about-theme='dark'],
+  [data-icue-home-theme='dark'],
+  [data-theme='dark'],
+  .icue-news-theme-dark
+)) :is(.nav-drawer, .nav-drawer__overlay) {
+  --drawer-color-scheme: light;
+  --drawer-surface: linear-gradient(135deg, #e8edf2, #fbfbfc);
+  --drawer-ink: #172638;
+  --drawer-secondary-ink: #334155;
+  --drawer-accent: #175b96;
+  --drawer-index-ink: #6d28d9;
+  --drawer-expert-ink: #17659b;
+  --drawer-core-ink: #825b08;
+  --drawer-rule: #76889f;
+  --drawer-tick: rgba(23, 38, 56, 0.24);
+  --drawer-effect-rgb: 23, 91, 150;
+  --drawer-active-surface: #e0ebf8;
+  --drawer-marker-glow: rgba(23, 91, 150, 0.24);
+  --drawer-focus: #6d28d9;
+  --drawer-close-surface: rgba(255, 255, 255, 0.9);
+  --drawer-close-ink: #172638;
+  --drawer-close-border: #94a3b8;
+  --drawer-close-hover-surface: #e2e8f0;
+  --drawer-close-hover-border: #64748b;
+  --drawer-backdrop: rgba(15, 23, 42, 0.22);
+  --drawer-backdrop-mobile: rgba(15, 23, 42, 0.26);
+}
+
 .nav-drawer__toggle {
   position: relative;
   z-index: 60;
@@ -154,10 +213,10 @@
   height: 42px;
   margin: 0;
   padding: 0;
-  border: 1px solid rgba(248, 250, 252, 0.35);
+  border: 1px solid var(--drawer-close-border);
   border-radius: 12px !important;
-  background: rgba(15, 23, 42, 0.55);
-  color: #f8fafc;
+  background: var(--drawer-close-surface);
+  color: var(--drawer-close-ink);
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
@@ -177,8 +236,8 @@
 }
 
 .nav-drawer__close:hover {
-  background: rgba(15, 23, 42, 0.95);
-  border-color: rgba(255, 255, 255, 0.55);
+  background: var(--drawer-close-hover-surface);
+  border-color: var(--drawer-close-hover-border);
 }
 
 .nav-drawer__close:focus,
@@ -187,7 +246,7 @@
 }
 
 .nav-drawer__close:focus-visible {
-  outline: 2px solid #c4b5fd;
+  outline: 2px solid var(--drawer-focus);
   outline-offset: 3px;
 }
 
@@ -244,7 +303,7 @@
 .nav-drawer__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 12, 0.65);
+  background: var(--drawer-backdrop);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
@@ -290,7 +349,9 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 0 max(0.75rem, env(safe-area-inset-right, 0px)) max(1.5rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
-  background: radial-gradient(circle at 85% 10%, #173552, #05080d 78%);
+  color-scheme: var(--drawer-color-scheme);
+  color: var(--drawer-ink);
+  background: var(--drawer-surface);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   box-shadow: none;
@@ -344,12 +405,11 @@
   /* Room for the LineSidebar ruler markers on the left */
   padding: 0;
   padding-left: var(--drawer-marker-gutter);
-  --nav-accent: var(--icue-accent-light, var(--icue-blue-2, #1db7ff));
+  --nav-accent: var(--drawer-accent);
   --nav-hover: var(--nav-accent);
   --drawer-icon-col: 22px;
   --drawer-item-gap: 0.5rem;
   --drawer-marker-gutter: clamp(26px, 6vw, 54px);
-  --drawer-index-ink: #c4b5fd;
   --drawer-label-indent: calc(
     0.25rem + var(--drawer-icon-col) + var(--drawer-item-gap)
   );
@@ -374,7 +434,7 @@
   margin: 0;
   padding: 0.75rem 0.25rem;
   padding-left: calc(0.25rem + var(--effect, 0) * 4px);
-  color: #fff;
+  color: var(--drawer-ink);
   font-size: clamp(1rem, 4vw, 1.25rem);
   font-weight: 500;
   text-decoration: none;
@@ -390,22 +450,29 @@
 
 /* Pointer proximity: lighter blue preview on non-active top-level links */
 .nav-drawer__links > a:not(.is-current) {
-  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
-  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), var(--drawer-ink));
+  background: rgba(var(--drawer-effect-rgb), calc(var(--effect, 0) * 0.14));
 }
 
 /* Submenu toggle: open state is neutral; blue only on pointer proximity */
 .nav-drawer__submenu-toggle,
 .nav-drawer__submenu-toggle:hover {
-  color: #fff;
+  color: var(--drawer-ink);
   background: transparent;
   box-shadow: none;
 }
 
 .nav-drawer__submenu-toggle:not(.is-current),
 .nav-drawer__submenu-toggle:not(.is-current):hover {
-  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), #fff);
-  background: rgba(54, 138, 223, calc(var(--effect, 0) * 0.14));
+  color: color-mix(in srgb, var(--nav-hover) calc(var(--effect, 0) * 100%), var(--drawer-ink));
+  background: rgba(var(--drawer-effect-rgb), calc(var(--effect, 0) * 0.14));
+}
+
+.nav-drawer__links > a:focus-visible,
+.nav-drawer__submenu-toggle:focus-visible,
+.nav-drawer__submenu-inner > a:focus-visible {
+  outline: 2px solid var(--drawer-focus);
+  outline-offset: 2px;
 }
 
 .nav-drawer__label {
@@ -448,7 +515,7 @@
 .nav-drawer__submenu-inner > a.is-current {
   color: var(--nav-accent);
   font-weight: 600;
-  background-color: rgba(54, 138, 223, 0.16);
+  background-color: var(--drawer-active-surface);
   box-shadow: inset 3px 0 0 var(--nav-accent);
   padding-left: 0.25rem;
 }
@@ -471,7 +538,7 @@
   background-color: color-mix(
     in srgb,
     var(--nav-hover) calc(var(--effect, 0) * 100%),
-    rgba(255, 255, 255, 0.32)
+    var(--drawer-rule)
   );
   transform-origin: left center;
   transform: translateY(-50%) scaleX(calc(
@@ -484,7 +551,7 @@
 .nav-drawer__submenu-inner > a.is-current::before {
   height: 2px;
   background-color: var(--nav-accent);
-  box-shadow: 0 0 10px rgba(54, 138, 223, 0.75);
+  box-shadow: 0 0 10px var(--drawer-marker-glow);
   transform: translateY(-50%) scaleX(calc(1 + var(--effect, 0) * 0.25));
 }
 
@@ -496,7 +563,7 @@
   left: calc(-1 * var(--drawer-marker-gutter));
   width: 14px;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.16);
+  background-color: var(--drawer-tick);
   transform: translateY(-50%);
 }
 
@@ -636,7 +703,7 @@
   margin: 0;
   padding: 0.6rem 0.5rem;
   padding-left: calc(0.35rem + var(--effect, 0) * 6px);
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--drawer-secondary-ink);
   font-size: 0.95rem;
   text-decoration: none;
   text-align: left;
@@ -650,20 +717,20 @@
   color: color-mix(
     in srgb,
     var(--nav-hover) calc(var(--effect, 0) * 100%),
-    rgba(255, 255, 255, 0.82)
+    var(--drawer-secondary-ink)
   );
-  background-color: rgba(54, 138, 223, calc(var(--effect, 0) * 0.12));
+  background-color: rgba(var(--drawer-effect-rgb), calc(var(--effect, 0) * 0.12));
 }
 
 /* Expert / core team brand colors */
 .nav-drawer__submenu-inner > a.moe-subMenu,
 .nav-drawer__submenu-inner > a.moe-subMenu:not(.is-current) {
-  color: #1db7ff;
+  color: var(--drawer-expert-ink);
 }
 
 .nav-drawer__submenu-inner > a.core-subMenu,
 .nav-drawer__submenu-inner > a.core-subMenu:not(.is-current) {
-  color: #ffff03;
+  color: var(--drawer-core-ink);
 }
 
 .nav-drawer__submenu-inner > a.moe-subMenu .nav-drawer__icon-wrap svg,
@@ -703,13 +770,12 @@
   }
 
   .nav-drawer__overlay {
-    background: rgba(2, 6, 12, 0.72);
+    background: var(--drawer-backdrop-mobile);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
 
   .nav-drawer {
-    background: radial-gradient(circle at 85% 10%, #173552, #05080d 78%);
     backdrop-filter: blur(48px);
     -webkit-backdrop-filter: blur(48px);
   }

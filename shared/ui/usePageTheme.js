@@ -4,8 +4,12 @@ import { rememberThemePreference } from './incomingTheme.js'
 import './page-theme.css'
 
 /** Only pages that call this hook opt into the shared palette and control. */
-export default function usePageTheme(page, { enabled = true } = {}) {
-  const [theme, setThemeState] = useState(() => readPageThemePreference() || systemPageTheme())
+export default function usePageTheme(page, { enabled = true, theme: controlledTheme } = {}) {
+  const controlled = controlledTheme === 'light' || controlledTheme === 'dark'
+  const [preference, setThemeState] = useState(() => readPageThemePreference() || systemPageTheme())
+  // Apps with an existing appearance switch can publish its resolved theme
+  // without a second preference or control competing with that switch.
+  const theme = controlled ? controlledTheme : preference
   const manual = useRef(readPageThemePreference() != null)
 
   const setTheme = useCallback(next => {
@@ -17,7 +21,7 @@ export default function usePageTheme(page, { enabled = true } = {}) {
   const setDark = useCallback(dark => setTheme(dark ? 'dark' : 'light'), [setTheme])
 
   useLayoutEffect(() => {
-    if (!enabled) return
+    if (!enabled || controlled) return
     const preference = readPageThemePreference()
     if (preference != null) {
       manual.current = true
@@ -25,7 +29,7 @@ export default function usePageTheme(page, { enabled = true } = {}) {
     } else if (!manual.current) {
       setThemeState(systemPageTheme())
     }
-  }, [enabled])
+  }, [enabled, controlled])
 
   useLayoutEffect(() => {
     if (!enabled) return undefined
@@ -52,6 +56,7 @@ export default function usePageTheme(page, { enabled = true } = {}) {
   }, [enabled, page, theme])
 
   useEffect(() => {
+    if (controlled) return undefined
     const media = window.matchMedia?.('(prefers-color-scheme: dark)')
     const onSystemChange = event => {
       if (!manual.current) setThemeState(event.matches ? 'dark' : 'light')
@@ -68,7 +73,7 @@ export default function usePageTheme(page, { enabled = true } = {}) {
       media?.removeEventListener('change', onSystemChange)
       window.removeEventListener('storage', onStorage)
     }
-  }, [])
+  }, [controlled])
 
   return useMemo(() => ({ theme, isDark: theme === 'dark', setTheme, setDark }), [theme, setTheme, setDark])
 }

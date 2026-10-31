@@ -112,7 +112,7 @@
   clip-path: inset(0 var(--rs-right, 100%) 0 var(--rs-left, 0px) round var(--rs-thumb-radius));
 }
 
-.rubber-segment:not([data-active]):not([data-preview]) .rubber-segment__thumb { visibility: hidden; }
+.rubber-segment:not([data-active]) .rubber-segment__thumb { visibility: hidden; }
 .rubber-segment .rubber-segment__item:disabled,
 .rubber-segment .rubber-segment__item[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; }
 .rubber-segment .rubber-segment__copy { color: var(--rs-ink-active); opacity: 1; }

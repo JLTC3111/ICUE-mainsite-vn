@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { readLocalStorage, writeLocalStorage } from '../../../shared/storage/safeLocalStorage.js'
-import { readIncomingTheme } from '../../../shared/ui/incomingTheme.js'
+import { readIncomingTheme, rememberThemePreference } from '../../../shared/ui/incomingTheme.js'
 
 const STORAGE_KEY = 'people_bg_video_enabled'
 
@@ -28,6 +28,7 @@ export function useBackgroundVideo() {
     setEnabled((prev) => {
       const next = !prev
       writeLocalStorage(STORAGE_KEY, next)
+      rememberThemePreference(next ? 'dark' : 'light')
       return next
     })
   }, [])

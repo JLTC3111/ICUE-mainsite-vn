@@ -205,7 +205,6 @@ export default function RubberSegment({
       aria-disabled={disabled || undefined} data-equal={equalSlots || undefined}
       data-active={index >= 0 || undefined} data-draggable={draggable && !disabled && role !== 'navigation' || undefined}
       className={`rubber-segment ${className}`.trim()}
-      onPointerLeave={() => { if (role === 'navigation') { trackRef.current?.removeAttribute('data-preview'); engine.current?.travel(latest.current.index) } }}
       style={{ '--rs-track': trackColor, '--rs-thumb': thumbColor, '--rs-ink': textColor, '--rs-ink-active': activeTextColor,
         '--rs-radius': `${radius}px`, '--rs-inset': `${inset}px`, '--rs-thumb-radius': `${Math.max(0, radius - inset)}px`,
         '--rs-h': `${dimensions[0]}px`, '--rs-font': `${dimensions[1]}px`, '--rs-pad': `${dimensions[2]}px`, ...style }}
@@ -223,7 +222,6 @@ export default function RubberSegment({
           tabIndex={isDisabled ? -1 : role === 'navigation' || role === 'group' || i === tabStop ? 0 : -1}
           className={`rubber-segment__item ${itemClassName} ${item.className || ''}`.trim()}
           onKeyDown={event => keydown(event, i)} onPointerDown={event => engine.current?.down(event, i)}
-          onPointerEnter={() => { if (role === 'navigation' && !isDisabled) { trackRef.current?.setAttribute('data-preview', ''); engine.current?.travel(i) } }}
           onClick={(event = {}) => {
             if (engine.current?.suppress(event)) return
             if (isDisabled) { event.preventDefault(); return }
