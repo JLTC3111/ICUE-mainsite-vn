@@ -6,7 +6,7 @@ export const NEWSROOM_THEME_LIGHT = 'light'
 
 /** Public reader surfaces that follow the newsroom light/dark preference. */
 export function isNewsroomReaderRoute(pathname = '') {
-  return pathname === '/' || pathname.startsWith('/article/')
+  return pathname === '/' || pathname.startsWith('/article/') || pathname === '/newsletter'
 }
 
 export function readNewsroomTheme() {

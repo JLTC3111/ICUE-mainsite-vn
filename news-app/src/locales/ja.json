@@ -115,7 +115,7 @@
     "instituteCalloutCopy": "ICUEの活動を形づくる最新の研究、現地活動、対話をご覧ください。",
     "instituteReports": "私たちの仕事",
     "instituteEvents": "イベント・活動",
-    "instituteNewsletter": "ICUEブリーフィングをフォロー"
+    "instituteNewsletter": "ニュースレターを購読する"
   },
   "theme": {
     "dark": "ダーク",
@@ -544,5 +544,81 @@
     "saved": "アカウントに下書きを保存しました。",
     "unsaved": "未保存の変更があります。",
     "hint": "未完成の記事をアカウントに保存し、後で再開できます。"
+  },
+  "newsletter": {
+    "eyebrow": "最新情報をお届け",
+    "title": "ニュースレターを購読",
+    "description": "新しい記事の公開時にメールでお知らせします。アイデア、研究、最新情報を受信トレイへお届けします。",
+    "emailLabel": "メールアドレス",
+    "placeholder": "you@example.com",
+    "subscribe": "購読する",
+    "submitting": "登録中…",
+    "note": "確認メールのリンクを開くと購読が有効になります。各メール内のリンクからいつでも購読を解除できます。",
+    "success": "メールをご確認のうえ、購読を確定してください。届かない場合は迷惑メールフォルダーもご確認ください。",
+    "error": "購読の登録を処理できませんでした。もう一度お試しください。",
+    "rateLimited": "リクエストが多すぎます。しばらくしてからもう一度お試しください。",
+    "consentTitle": "ニュースレターの購読管理",
+    "confirmTitle": "購読を確定する",
+    "unsubscribeTitle": "ニュースレターの購読解除",
+    "confirmDescription": "下のボタンを押してメールアドレスを確認すると、ICUEの新しい記事が公開されるたびにメールでお知らせします。",
+    "unsubscribeDescription": "下のボタンを押すと、ICUEの新しい記事に関するメールの配信を停止します。",
+    "confirmButton": "購読を確定する",
+    "unsubscribeButton": "購読を解除する",
+    "working": "お待ちください…",
+    "confirmedTitle": "購読が確定しました",
+    "confirmedDescription": "メールアドレスを確認しました。新しい記事の公開時にメールでお知らせします。各ニュースレター内のリンクからいつでも購読を解除できます。",
+    "unsubscribedTitle": "購読を解除しました",
+    "unsubscribedDescription": "ICUEの新しい記事に関するメールは配信されなくなります。",
+    "invalid": "このリンクは無効か、有効期限が切れています。ニュースルームに戻り、新しい登録リンクをリクエストしてください。",
+    "consentError": "リクエストを完了できませんでした。もう一度お試しください。",
+    "backToNews": "ニュースルームに戻る"
+  },
+  "publicationDirectory": {
+    "partnersTitle": "パートナー・メディア",
+    "partnersDescription": "都市、建築、自然保全を扱うベトナムの媒体や関連団体をご紹介します。",
+    "relatedTitle": "関連出版物",
+    "relatedDescription": "建築、計画、都市開発、ランドスケープを伝える海外の6媒体。",
+    "publication": "媒体・団体",
+    "editorialFocus": "主な分野",
+    "website": "ウェブサイト",
+    "visit": "サイトを見る",
+    "visitLabel": "{{name}}を見る（新しいタブで開きます）",
+    "attribution": "名称、ロゴ、プレビュー画像は各発行元・団体に帰属します。参考情報として外部サイトへのリンクを掲載しています。",
+    "focus": {
+      "nguoiDoThi": "都市生活、文化、建築、社会",
+      "nguoiLaoDong": "時事、労働、社会政策",
+      "doThiMoi": "都市開発、住宅、不動産市場",
+      "iucn": "自然保全、生物多様性、自然を活用した解決策",
+      "kienTruc": "建築、都市計画、専門研究",
+      "quyHoachDoThi": "都市開発、空間計画、都市計画政策",
+      "quyHoachXayDung": "都市・農村計画、交通インフラ、研究",
+      "xayDung": "建設工学、産業政策、インフラ",
+      "kienTrucVietNam": "建築、文化財保護、都市管理",
+      "reatimes": "不動産経済、開発、投資、政策",
+      "archDaily": "建築、大規模プロジェクト、都市デザイン",
+      "planetizen": "都市計画、政策、開発研究",
+      "urbanLand": "不動産経済、都市投資、土地開発",
+      "nextCity": "持続可能な都市、都市政策、コミュニティ",
+      "placesJournal": "建築、ランドスケープ、都市研究",
+      "landscapeArchitecture": "ランドスケープ建築、公共空間、生態学"
+    },
+    "expandPreview": "{{name}}のプレビューを開く",
+    "collapsePreview": "{{name}}のプレビューを閉じる",
+    "previewAlt": "{{name}}のプレビュー",
+    "logoAlt": "{{name}}のロゴ",
+    "previewSource": "プレビューの出典",
+    "logoSource": "ロゴの出典",
+    "previewUnavailable": "詳しくは発行元のウェブサイトをご覧ください。",
+    "language": "言語",
+    "languages": {
+      "vi": "ベトナム語",
+      "en": "英語",
+      "multiple": "多言語"
+    },
+    "previewTypes": {
+      "photo": "発行元の画像",
+      "website": "ウェブサイトのプレビュー",
+      "document": "出版関連資料"
+    }
   }
 }

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import DeferredContactSidebar from '@icue/contact-sidebar/DeferredContactSidebar'
 import Header from './Header'
 import Footer from './Footer'
+import NewsletterSubscribe from './NewsletterSubscribe'
 import MarketStrip from './MarketStrip'
 import { NewsroomSearchProvider } from '../context/NewsroomSearchProvider'
 import { useNewsroomTheme } from '../context/NewsroomThemeContext'
@@ -46,6 +47,7 @@ function Layout() {
             <Outlet />
           </main>
         </NewsroomSearchProvider>
+        {(pathname === '/' || pathname.startsWith('/article/')) && <NewsletterSubscribe />}
         {!isAgentRoute && <Footer />}
         {!isAgentRoute && <DeferredContactSidebar contentKey={pathname} locale={lang} />}
       </div>

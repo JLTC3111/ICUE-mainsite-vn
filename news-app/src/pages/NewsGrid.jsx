@@ -8,6 +8,7 @@ import ArticleViewCounter from '../components/ArticleViewCounter'
 import AuthorLink from '../components/AuthorLink'
 import HighlightedText from '../components/HighlightedText'
 import TranslationLineSkeleton from '../components/TranslationSkeleton'
+import NewsroomPublications from '../components/NewsroomPublications'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useMainSite } from '../hooks/useMainSite'
@@ -336,7 +337,7 @@ function InstituteCallout({ links, t }) {
       <nav className="news-institute__links" aria-label={t('newsroom.fromInstitute')}>
         <a href={links.work}>{t('newsroom.instituteReports')}<span aria-hidden="true">↗</span></a>
         <a href={links.events}>{t('newsroom.instituteEvents')}<span aria-hidden="true">↗</span></a>
-        <a href={links.contact}>{t('newsroom.instituteNewsletter')}<span aria-hidden="true">↗</span></a>
+        <a href="#newsletter">{t('newsroom.instituteNewsletter')}<span aria-hidden="true">↓</span></a>
       </nav>
     </aside>
   )
@@ -649,6 +650,7 @@ export default function NewsGrid() {
           <InstituteCallout links={instituteLinks} t={t} />
         )}
 
+        <NewsroomPublications />
         <EditorialFooter archiveHref={archiveLink()} t={t} />
       </div>
     </div>

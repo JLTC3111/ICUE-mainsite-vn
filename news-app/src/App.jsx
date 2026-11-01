@@ -17,6 +17,7 @@ const withSupabase = (loadRoute) => async () => {
 // Public landing path is eager-friendly but still split; author tools (heavy
 // TipTap editor) are lazy so they never load for anonymous readers.
 const NewsGrid = lazyWithRetry(() => import('./pages/NewsGrid'))
+const NewsletterConsent = lazyWithRetry(() => import('./pages/NewsletterConsent'))
 const ArticleDetail = lazyWithRetry(withSupabase(() => import('./pages/ArticleDetail')))
 const CustomerPortal = lazyWithRetry(withSupabase(() => import('./pages/CustomerPortal')))
 const Login = lazyWithRetry(withSupabase(() => import('./pages/Login')))
@@ -67,6 +68,7 @@ export default function App() {
 
           <Route element={<Layout />}>
             <Route index element={<NewsGrid />} />
+            <Route path="newsletter" element={<NewsletterConsent />} />
             <Route path="article/:slug" element={<ArticleDetail />} />
 
             <Route path="write" element={<ProtectedRoute><Upload /></ProtectedRoute>} />

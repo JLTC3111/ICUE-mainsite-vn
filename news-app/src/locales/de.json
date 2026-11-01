@@ -115,7 +115,7 @@
     "instituteCalloutCopy": "Verfolgen Sie neue Forschung, Feldarbeit und die Gespräche, die die Arbeit von ICUE prägen.",
     "instituteReports": "Unsere Arbeit",
     "instituteEvents": "Veranstaltungen & Aktivitäten",
-    "instituteNewsletter": "ICUE-Briefing verfolgen"
+    "instituteNewsletter": "Unseren Newsletter abonnieren"
   },
   "theme": {
     "dark": "Dunkel",
@@ -544,5 +544,81 @@
     "saved": "Entwurf in Ihrem Konto gespeichert.",
     "unsaved": "Sie haben ungespeicherte Änderungen.",
     "hint": "Speichern Sie einen unfertigen Artikel, um ihn später fortzusetzen."
+  },
+  "newsletter": {
+    "eyebrow": "Auf dem Laufenden bleiben",
+    "title": "Unseren Newsletter abonnieren",
+    "description": "Erhalten Sie eine E-Mail, sobald wir einen neuen Artikel veröffentlichen. Ideen, Forschung und Neuigkeiten direkt in Ihr Postfach.",
+    "emailLabel": "Ihre E-Mail-Adresse",
+    "placeholder": "sie@example.com",
+    "subscribe": "Abonnieren",
+    "submitting": "Wird abonniert…",
+    "note": "Bestätigen Sie Ihre E-Mail-Adresse, um das Abonnement zu aktivieren. Über den Link in jeder E-Mail können Sie sich jederzeit abmelden.",
+    "success": "Bitte prüfen Sie Ihre E-Mails und bestätigen Sie Ihr Abonnement. Prüfen Sie gegebenenfalls auch den Spamordner.",
+    "error": "Ihr Abonnement konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.",
+    "rateLimited": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+    "consentTitle": "Newsletter-Abonnement verwalten",
+    "confirmTitle": "Abonnement bestätigen",
+    "unsubscribeTitle": "Newsletter abbestellen",
+    "confirmDescription": "Bestätigen Sie mit der Schaltfläche unten Ihre E-Mail-Adresse, um bei jedem neuen ICUE-Artikel eine E-Mail zu erhalten.",
+    "unsubscribeDescription": "Über die Schaltfläche unten können Sie die Benachrichtigungen zu neuen ICUE-Artikeln abbestellen.",
+    "confirmButton": "Abonnement bestätigen",
+    "unsubscribeButton": "Abbestellen",
+    "working": "Bitte warten…",
+    "confirmedTitle": "Sie haben den Newsletter abonniert",
+    "confirmedDescription": "Ihre E-Mail-Adresse ist bestätigt. Wir informieren Sie über neue Artikel. Über den Link in jeder Newsletter-E-Mail können Sie sich abmelden.",
+    "unsubscribedTitle": "Sie haben sich abgemeldet",
+    "unsubscribedDescription": "Sie erhalten keine E-Mails mehr zu neuen ICUE-Artikeln.",
+    "invalid": "Dieser Link ist ungültig oder abgelaufen. Fordern Sie im Newsroom einen neuen Anmeldelink an.",
+    "consentError": "Ihre Anfrage konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut.",
+    "backToNews": "Zurück zum Newsroom"
+  },
+  "publicationDirectory": {
+    "partnersTitle": "Partner & Medien",
+    "partnersDescription": "Vietnamesische Publikationen und Organisationen zu Städten, Architektur und Naturschutz.",
+    "relatedTitle": "Weitere Publikationen",
+    "relatedDescription": "Sechs internationale Perspektiven auf Architektur, Planung, Stadtentwicklung und Landschaft.",
+    "publication": "Publikation / Organisation",
+    "editorialFocus": "Themenschwerpunkt",
+    "website": "Website",
+    "visit": "Besuchen",
+    "visitLabel": "{{name}} besuchen (öffnet in einem neuen Tab)",
+    "attribution": "Namen, Logos und Vorschaubilder gehören den jeweiligen Herausgebern und Organisationen. Diese Links dienen als weiterführende Hinweise.",
+    "focus": {
+      "nguoiDoThi": "Stadtleben, Kultur, Architektur und Gesellschaft",
+      "nguoiLaoDong": "Aktuelles, Arbeitswelt und Sozialpolitik",
+      "doThiMoi": "Stadtentwicklung, Wohnen und Immobilienmärkte",
+      "iucn": "Naturschutz, Biodiversität und naturbasierte Lösungen",
+      "kienTruc": "Architektur, Stadtplanung und Fachforschung",
+      "quyHoachDoThi": "Stadtentwicklung, Raumplanung und Planungspolitik",
+      "quyHoachXayDung": "Stadt- und Landplanung, Verkehrsinfrastruktur und Forschung",
+      "xayDung": "Bauingenieurwesen, Branchenpolitik und Infrastruktur",
+      "kienTrucVietNam": "Architektur, Denkmalpflege und Stadtmanagement",
+      "reatimes": "Immobilienwirtschaft, Entwicklung, Investitionen und Politik",
+      "archDaily": "Architektur, Großprojekte und Städtebau",
+      "planetizen": "Stadtplanung, Politik und Entwicklungsforschung",
+      "urbanLand": "Immobilienwirtschaft, städtische Investitionen und Flächenentwicklung",
+      "nextCity": "Nachhaltige Städte, Stadtpolitik und Gemeinschaften",
+      "placesJournal": "Architektur, Landschaft und Stadtforschung",
+      "landscapeArchitecture": "Landschaftsarchitektur, öffentliche Räume und Ökologie"
+    },
+    "expandPreview": "Vorschau von {{name}} anzeigen",
+    "collapsePreview": "Vorschau von {{name}} schließen",
+    "previewAlt": "Vorschau von {{name}}",
+    "logoAlt": "Logo von {{name}}",
+    "previewSource": "Quelle der Vorschau",
+    "logoSource": "Logoquelle",
+    "previewUnavailable": "Weitere Informationen finden Sie auf der Website des Herausgebers.",
+    "language": "Sprache",
+    "languages": {
+      "vi": "Vietnamesisch",
+      "en": "Englisch",
+      "multiple": "Mehrere Sprachen"
+    },
+    "previewTypes": {
+      "photo": "Redaktionelles Bild",
+      "website": "Website-Vorschau",
+      "document": "Publikationsdokument"
+    }
   }
 }

@@ -115,7 +115,7 @@
     "instituteCalloutCopy": "Follow new research, field activity and the conversations shaping ICUE's work.",
     "instituteReports": "Our Work",
     "instituteEvents": "Events & activity",
-    "instituteNewsletter": "Follow the ICUE briefing"
+    "instituteNewsletter": "Subscribe to our newsletter"
   },
   "theme": {
     "dark": "Dark",
@@ -544,5 +544,81 @@
     "saved": "Draft saved to your account.",
     "unsaved": "You have unsaved changes.",
     "hint": "Save an incomplete article to your account and resume it here."
+  },
+  "newsletter": {
+    "eyebrow": "Stay informed",
+    "title": "Subscribe to our newsletter",
+    "description": "Receive an email whenever we publish a new article. Ideas, research, and updates, straight to your inbox.",
+    "emailLabel": "Your email address",
+    "placeholder": "you@example.com",
+    "subscribe": "Subscribe",
+    "submitting": "Subscribing…",
+    "note": "Confirm your email to subscribe. Unsubscribe at any time using the link in each email.",
+    "success": "Check your email to confirm your subscription. If it does not arrive, check your spam folder.",
+    "error": "We could not process your subscription. Please try again.",
+    "rateLimited": "Too many requests. Please try again later.",
+    "consentTitle": "Manage your newsletter subscription",
+    "confirmTitle": "Confirm your subscription",
+    "unsubscribeTitle": "Unsubscribe from our newsletter",
+    "confirmDescription": "Select the button below to confirm your email and receive an email whenever ICUE publishes a new article.",
+    "unsubscribeDescription": "Select the button below to stop receiving new article emails from ICUE.",
+    "confirmButton": "Confirm subscription",
+    "unsubscribeButton": "Unsubscribe",
+    "working": "Please wait…",
+    "confirmedTitle": "You’re subscribed",
+    "confirmedDescription": "Your email is confirmed. We’ll email you when a new article is published. You can unsubscribe using the link in any newsletter email.",
+    "unsubscribedTitle": "You’re unsubscribed",
+    "unsubscribedDescription": "You will no longer receive new article emails from ICUE.",
+    "invalid": "This link is invalid or has expired. Please return to the newsroom to request a new subscription link.",
+    "consentError": "We could not complete your request. Please try again.",
+    "backToNews": "Return to the newsroom"
+  },
+  "publicationDirectory": {
+    "partnersTitle": "Partners & media",
+    "partnersDescription": "Vietnamese publications and organizations covering cities, architecture and conservation.",
+    "relatedTitle": "Related Publications",
+    "relatedDescription": "Six international perspectives on architecture, planning, urban development and landscapes.",
+    "publication": "Publication / organization",
+    "editorialFocus": "Editorial focus",
+    "website": "Website",
+    "visit": "Visit",
+    "visitLabel": "Visit {{name}} (opens in a new tab)",
+    "attribution": "Names, logos and preview images belong to the respective publishers and organizations. These links are provided for reference.",
+    "focus": {
+      "nguoiDoThi": "Urban life, culture, architecture and society",
+      "nguoiLaoDong": "Current affairs, work and social policy",
+      "doThiMoi": "Urban development, housing and property markets",
+      "iucn": "Nature conservation, biodiversity and nature-based solutions",
+      "kienTruc": "Architecture, urban planning and professional research",
+      "quyHoachDoThi": "Urban development, spatial planning and planning policy",
+      "quyHoachXayDung": "Urban and rural planning, transport infrastructure and research",
+      "xayDung": "Construction engineering, industry policy and infrastructure",
+      "kienTrucVietNam": "Architecture, conservation and urban management",
+      "reatimes": "Property economics, development, investment and policy",
+      "archDaily": "Architecture, major projects and urban design",
+      "planetizen": "Urban planning, policy and development research",
+      "urbanLand": "Property economics, urban investment and land development",
+      "nextCity": "Sustainable cities, urban policy and communities",
+      "placesJournal": "Architecture, landscape and urban research",
+      "landscapeArchitecture": "Landscape architecture, public space and ecology"
+    },
+    "expandPreview": "Show preview of {{name}}",
+    "collapsePreview": "Close preview of {{name}}",
+    "previewAlt": "Preview of {{name}}",
+    "logoAlt": "{{name}} logo",
+    "previewSource": "Preview source",
+    "logoSource": "Logo source",
+    "previewUnavailable": "Visit the publisher’s website to explore more.",
+    "language": "Language",
+    "languages": {
+      "vi": "Vietnamese",
+      "en": "English",
+      "multiple": "Multiple languages"
+    },
+    "previewTypes": {
+      "photo": "Editorial image",
+      "website": "Website preview",
+      "document": "Publication document"
+    }
   }
 }

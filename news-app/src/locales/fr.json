@@ -115,7 +115,7 @@
     "instituteCalloutCopy": "Suivez les nouvelles recherches, les activités de terrain et les échanges qui façonnent le travail d’ICUE.",
     "instituteReports": "Notre travail",
     "instituteEvents": "Événements et activités",
-    "instituteNewsletter": "Suivre la lettre d’ICUE"
+    "instituteNewsletter": "Abonnez-vous à notre newsletter"
   },
   "theme": {
     "dark": "Sombre",
@@ -544,5 +544,81 @@
     "saved": "Brouillon enregistré dans votre compte.",
     "unsaved": "Modifications non enregistrées.",
     "hint": "Enregistrez un article inachevé pour le reprendre plus tard."
+  },
+  "newsletter": {
+    "eyebrow": "Restez informé",
+    "title": "Abonnez-vous à notre newsletter",
+    "description": "Recevez un e-mail à chaque nouvel article. Idées, recherches et actualités directement dans votre boîte de réception.",
+    "emailLabel": "Votre adresse e-mail",
+    "placeholder": "vous@example.com",
+    "subscribe": "S’abonner",
+    "submitting": "Inscription…",
+    "note": "Confirmez votre adresse e-mail pour vous abonner. Vous pouvez vous désabonner à tout moment via le lien présent dans chaque e-mail.",
+    "success": "Consultez votre messagerie pour confirmer votre abonnement. Pensez à vérifier le dossier des courriers indésirables.",
+    "error": "Votre abonnement n’a pas pu être traité. Veuillez réessayer.",
+    "rateLimited": "Trop de demandes. Veuillez réessayer plus tard.",
+    "consentTitle": "Gérer votre abonnement",
+    "confirmTitle": "Confirmez votre abonnement",
+    "unsubscribeTitle": "Se désabonner de la newsletter",
+    "confirmDescription": "Cliquez sur le bouton ci-dessous pour confirmer votre adresse e-mail et recevoir un message à chaque nouvel article d’ICUE.",
+    "unsubscribeDescription": "Cliquez sur le bouton ci-dessous pour ne plus recevoir les nouveaux articles d’ICUE par e-mail.",
+    "confirmButton": "Confirmer l’abonnement",
+    "unsubscribeButton": "Se désabonner",
+    "working": "Veuillez patienter…",
+    "confirmedTitle": "Votre abonnement est confirmé",
+    "confirmedDescription": "Votre adresse e-mail est confirmée. Nous vous informerons de chaque nouvel article. Vous pouvez vous désabonner via le lien présent dans chaque newsletter.",
+    "unsubscribedTitle": "Vous êtes désabonné",
+    "unsubscribedDescription": "Vous ne recevrez plus d’e-mails concernant les nouveaux articles d’ICUE.",
+    "invalid": "Ce lien est invalide ou a expiré. Retournez à la rubrique Actualités pour demander un nouveau lien d’inscription.",
+    "consentError": "Votre demande n’a pas pu être traitée. Veuillez réessayer.",
+    "backToNews": "Retour aux actualités"
+  },
+  "publicationDirectory": {
+    "partnersTitle": "Partenaires et médias",
+    "partnersDescription": "Publications vietnamiennes et organisations consacrées aux villes, à l’architecture et à la conservation de la nature.",
+    "relatedTitle": "Publications connexes",
+    "relatedDescription": "Six regards internationaux sur l’architecture, la planification, le développement urbain et les paysages.",
+    "publication": "Publication / organisation",
+    "editorialFocus": "Domaines couverts",
+    "website": "Site web",
+    "visit": "Consulter",
+    "visitLabel": "Consulter {{name}} (s’ouvre dans un nouvel onglet)",
+    "attribution": "Les noms, logos et images d’aperçu appartiennent aux éditeurs et organisations respectifs. Ces liens sont fournis à titre de référence.",
+    "focus": {
+      "nguoiDoThi": "Vie urbaine, culture, architecture et société",
+      "nguoiLaoDong": "Actualité, travail et politique sociale",
+      "doThiMoi": "Développement urbain, logement et marchés immobiliers",
+      "iucn": "Conservation de la nature, biodiversité et solutions fondées sur la nature",
+      "kienTruc": "Architecture, urbanisme et recherche professionnelle",
+      "quyHoachDoThi": "Développement urbain, aménagement du territoire et politiques de planification",
+      "quyHoachXayDung": "Planification urbaine et rurale, infrastructures de transport et recherche",
+      "xayDung": "Ingénierie de la construction, politique sectorielle et infrastructures",
+      "kienTrucVietNam": "Architecture, conservation du patrimoine et gestion urbaine",
+      "reatimes": "Économie immobilière, développement, investissement et politiques publiques",
+      "archDaily": "Architecture, grands projets et conception urbaine",
+      "planetizen": "Urbanisme, politiques publiques et recherche sur le développement",
+      "urbanLand": "Économie immobilière, investissement urbain et aménagement foncier",
+      "nextCity": "Villes durables, politiques urbaines et communautés",
+      "placesJournal": "Architecture, paysage et recherche urbaine",
+      "landscapeArchitecture": "Architecture paysagère, espaces publics et écologie"
+    },
+    "expandPreview": "Afficher l’aperçu de {{name}}",
+    "collapsePreview": "Fermer l’aperçu de {{name}}",
+    "previewAlt": "Aperçu de {{name}}",
+    "logoAlt": "Logo de {{name}}",
+    "previewSource": "Source de l’aperçu",
+    "logoSource": "Source du logo",
+    "previewUnavailable": "Consultez le site de l’éditeur pour en savoir plus.",
+    "language": "Langue",
+    "languages": {
+      "vi": "Vietnamien",
+      "en": "Anglais",
+      "multiple": "Plusieurs langues"
+    },
+    "previewTypes": {
+      "photo": "Image éditoriale",
+      "website": "Aperçu du site",
+      "document": "Document de la publication"
+    }
   }
 }

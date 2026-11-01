@@ -1,0 +1,176 @@
+{
+  "nguoiDoThi": {
+    "logoRemote": "https://nguoidothi.net.vn/Content/Images/logo-2023-head2.svg",
+    "previewRemote": "https://uploads.nguoidothi.net.vn/Avatar/m_14a4492c-9779-48bb-8455-f6be20717825.jpg",
+    "previewSource": "https://nguoidothi.net.vn/nha-o-xa-hoi-phat-thai-thap-loi-giai-cho-do-thi-xanh-54379.html",
+    "logoSource": "https://nguoidothi.net.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Người Đô Thị",
+    "logo": "/newsroom/publications/nguoiDoThi-logo.svg",
+    "previewImage": "/newsroom/publications/nguoiDoThi-preview.webp"
+  },
+  "nguoiLaoDong": {
+    "logoRemote": "https://static.mediacdn.vn/thumb_w/230/nld.com.vn/image/logo-nld.png",
+    "previewRemote": "https://cdn2.tuoitre.vn/nld/291774122806476800/2025/4/29/thumb-12-ban-cong-17458492031341532494726-1745853617178352201497-0-0-449-719-crop-17458912815441193698055.jpg",
+    "previewSource": "https://tuoitre.vn/nld/bao-nguoi-lao-dong-ra-mat-ban-tin-tieng-nuoc-ngoai-196250428222009784.htm",
+    "logoSource": "https://nld.com.vn/",
+    "language": "vi",
+    "previewKind": "website",
+    "previewCredit": "Báo Người Lao Động",
+    "logo": "/newsroom/publications/nguoiLaoDong-logo.webp",
+    "previewImage": "/newsroom/publications/nguoiLaoDong-preview.webp",
+    "previewFit": "contain"
+  },
+  "doThiMoi": {
+    "logoRemote": "https://static.mediacdn.vn/reatimes/dothi/images/logo-dothimoi-full-1710228241.png",
+    "previewRemote": "https://cdn1z.reatimes.vn/zoom/960_600/652356615132086272/2026/8/24/1787563587494-7453173525351745055-7453173525351745055-bf27db211fb5badf141eb011cf24b47f-17875658119031534800075-0-0-1250-2000-crop-17875658176122058876829.jpg",
+    "previewSource": "https://dothi.reatimes.vn/hoa-lac-metro-city-khoi-cong-gop-them-manh-ghep-cho-khong-gian-do-thi-moi-tai-hoa-lac-202260824170822219.htm",
+    "logoSource": "https://dothi.reatimes.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Đô Thị Mới / Reatimes",
+    "logo": "/newsroom/publications/doThiMoi-logo.webp",
+    "previewImage": "/newsroom/publications/doThiMoi-preview.webp"
+  },
+  "iucn": {
+    "logoRemote": "https://iucn.org/themes/custom/iucn_revamp/logo.svg",
+    "previewRemote": "https://iucn.org/sites/default/files/2026-09/WCK%20Photo%202_0.jpg",
+    "previewSource": "https://iucn.org/",
+    "logoSource": "https://iucn.org/",
+    "language": "multiple",
+    "previewKind": "photo",
+    "previewCredit": "IUCN",
+    "logo": "/newsroom/publications/iucn-logo.svg",
+    "previewImage": "/newsroom/publications/iucn-preview.webp"
+  },
+  "kienTruc": {
+    "logoRemote": "https://hn.ss.bfcplatform.vn/tckt/2023/08/logo-tap-chi-kien-truc-1.png",
+    "previewRemote": "https://hn.ss.bfcplatform.vn/tckt/2026/10/TCKT-092026.jpg",
+    "previewSource": "https://www.tapchikientruc.com.vn/tap-chi-kien-truc/tap-chi-kien-truc-so-09-2026.html",
+    "logoSource": "https://www.tapchikientruc.com.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Tạp chí Kiến trúc",
+    "logo": "/newsroom/publications/kienTruc-logo.webp",
+    "previewImage": "/newsroom/publications/kienTruc-preview.webp"
+  },
+  "quyHoachDoThi": {
+    "logoRemote": "https://ashui.com/wp-content/uploads/2010/06/qhdt300x110.jpg",
+    "previewRemote": "https://ashui.com/wp-content/uploads/2010/06/863_GP_BTTTT.jpg",
+    "previewSource": "https://ashui.com/tap-chi-quy-hoach-do-thi/",
+    "logoSource": "https://ashui.com/tap-chi-quy-hoach-do-thi/",
+    "language": "vi",
+    "previewKind": "document",
+    "previewCredit": "Official journal publication licence · Tạp chí Quy hoạch Đô thị / Ashui",
+    "logo": "/newsroom/publications/quyHoachDoThi-logo.webp",
+    "previewImage": "/newsroom/publications/quyHoachDoThi-preview.webp",
+    "previewNote": "The archived Issuu magazine embed is unavailable; this is the original licence document published in the journal profile.",
+    "previewFit": "contain"
+  },
+  "quyHoachXayDung": {
+    "logoRemote": "https://www.viup.vn/images/logo.png",
+    "previewRemote": "https://www.viup.vn/media/ckfinder/files/Books/141.jpg",
+    "previewSource": "https://www.viup.vn/vn/Tap-chi-QHXD-m17.html",
+    "logoSource": "https://www.viup.vn/vn/Tap-chi-Quy-hoach-xay-dung-n106.html",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Tạp chí Quy hoạch Xây dựng / VIUP",
+    "logo": "/newsroom/publications/quyHoachXayDung-logo.webp",
+    "previewImage": "/newsroom/publications/quyHoachXayDung-preview.webp",
+    "previewFit": "contain"
+  },
+  "xayDung": {
+    "logoRemote": "https://tapchixaydung.vn/template_v2/images/logo_v2.png",
+    "previewRemote": "https://cmsnews.tapchixaydung.vn/upload/2026/11/01/anh_01112026064141.jpg",
+    "previewSource": "https://tapchixaydung.vn/chu-dong-phong-chong-ung-pho-voi-anh-huong-cua-el-nino-20201224000042108.html",
+    "logoSource": "https://tapchixaydung.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Tạp chí Xây dựng",
+    "logo": "/newsroom/publications/xayDung-logo.webp",
+    "previewImage": "/newsroom/publications/xayDung-preview.webp"
+  },
+  "kienTrucVietNam": {
+    "logoRemote": "https://vietnamarchi.vn/template_vietnamarchi/images/logo-vietnamarchi.jpg?6",
+    "previewRemote": "https://media.vietnamarchi.vn/upload/userfiles/images/cong-trinh/banh-my-house/a-15_31102026165810_731.jpg",
+    "previewSource": "https://vietnamarchi.vn/nha-banh-mi-noi-an-tru-dung-di-countryhousearchitecture-5322.html",
+    "logoSource": "https://vietnamarchi.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Tạp chí Kiến trúc Việt Nam",
+    "logo": "/newsroom/publications/kienTrucVietNam-logo.webp",
+    "previewImage": "/newsroom/publications/kienTrucVietNam-preview.webp"
+  },
+  "reatimes": {
+    "logoRemote": "https://static.mediacdn.vn/reatimes/images/logo-web.svg",
+    "previewRemote": "https://cdn1z.reatimes.vn/zoom/960_600/652356615132086272/2026/10/27/dji-0764-3-1793119064851621659937-0-98-1125-1897-crop-17931191092581250732549.jpg",
+    "previewSource": "https://reatimes.vn/ha-noi-can-canh-19ha-dat-vang-du-an-cua-vnpt-bo-hoang-day-co-dai-o-cau-giay-202261028080137412.htm",
+    "logoSource": "https://reatimes.vn/",
+    "language": "vi",
+    "previewKind": "photo",
+    "previewCredit": "Reatimes",
+    "logo": "/newsroom/publications/reatimes-logo.svg",
+    "previewImage": "/newsroom/publications/reatimes-preview.webp"
+  },
+  "archDaily": {
+    "logoSource": "https://assets.adsttc.com/doodles/flat/logo-blue-full.svg",
+    "previewSource": "https://www.archdaily.com/1187430/damdam-house-studio-sma-plus-ground-architects",
+    "previewKind": "photo",
+    "language": "en",
+    "previewCredit": "Donggyu Kim / ArchDaily",
+    "logo": "/newsroom/publications/archDaily-logo.svg",
+    "previewImage": "/newsroom/publications/archDaily-preview.webp",
+    "previewFit": "contain"
+  },
+  "urbanLand": {
+    "logoSource": "https://cdn-ul.uli.org/30/b9/08865e8c43fe81880ec82784952b/uli-logo.svg",
+    "previewSource": "https://www.urbanland.uli.org/",
+    "previewKind": "photo",
+    "language": "en",
+    "previewCredit": "Urban Land Institute",
+    "logo": "/newsroom/publications/urbanLand-logo.svg",
+    "previewImage": "/newsroom/publications/urbanLand-preview.webp"
+  },
+  "landscapeArchitecture": {
+    "logoSource": "https://landscapearchitecturemagazine.org/getContentAsset/b2cf1117-bfdf-4aa5-866a-fcc0028848c8/e477a59e-1df6-4e2f-9986-20ab37342540/LAM-Header_296x125_ffffff.webp?language=en-US",
+    "previewSource": "https://landscapearchitecturemagazine.org/",
+    "previewKind": "photo",
+    "language": "en",
+    "previewCredit": "Landscape Architecture Magazine",
+    "logo": "/newsroom/publications/landscapeArchitecture-logo.webp",
+    "previewImage": "/newsroom/publications/landscapeArchitecture-preview.webp",
+    "previewFit": "contain"
+  },
+  "placesJournal": {
+    "logo": "/newsroom/publications/placesJournal-logo.webp",
+    "previewImage": "/newsroom/publications/placesJournal-preview.webp",
+    "logoSource": "https://placesjournal.org/wp-content/themes/places/img/article-footer-logo.png",
+    "previewSource": "https://designobserver.com/announcing-the-new-places-journal/",
+    "previewKind": "website",
+    "previewCredit": "Archived Places Journal website preview / Design Observer",
+    "language": "en",
+    "previewFit": "contain"
+  },
+  "planetizen": {
+    "logo": "/newsroom/publications/planetizen-logo.webp",
+    "previewImage": "/newsroom/publications/planetizen-preview.webp",
+    "logoSource": "https://store.planetizen.com/",
+    "logoCredit": "Planetizen Store — official publisher store",
+    "previewSource": "https://store.planetizen.com/collections/books",
+    "previewKind": "photo",
+    "previewCredit": "Planetizen Guide to Graduate Urban Planning Programs / Planetizen Store",
+    "language": "en"
+  },
+  "nextCity": {
+    "logo": "/newsroom/publications/nextCity-logo.webp",
+    "previewImage": "/newsroom/publications/nextCity-preview.webp",
+    "logoSource": "https://thenatureofcities.com/TNOC/big_file/TheJustCityEssays.pdf#page=2",
+    "logoCredit": "Next City logo from The Just City Essays (2015)",
+    "previewSource": "https://thenatureofcities.com/TNOC/big_file/TheJustCityEssays.pdf",
+    "previewKind": "photo",
+    "previewCredit": "The Just City Essays (2015); cover illustration: Andrea Posada",
+    "language": "en",
+    "previewFit": "contain"
+  }
+}
