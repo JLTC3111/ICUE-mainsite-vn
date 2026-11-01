@@ -594,8 +594,8 @@ export default function ArticleDetail() {
         {article.status === 'published' && (
           <div className="article-detail__engagement">
             <ArticleViewCounter count={viewCount} />
-            <ClapButton articleId={article.id} />
-            <HeartButton articleId={article.id} />
+            <ClapButton key={`claps-${article.id}`} articleId={article.id} />
+            <HeartButton key={`hearts-${article.id}`} articleId={article.id} />
           </div>
         )}
       </div>

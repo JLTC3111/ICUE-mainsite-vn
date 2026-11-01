@@ -2,12 +2,13 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import PhosphorHandsClapping from './icons/PhosphorHandsClapping'
+import PulseHeart from './react-bits/PulseHeart'
 import { getClaps, toggleClap } from '../lib/engagement'
 import './Engagement.css'
 
 // IP-based clap for an article. Independent from hearts — visitors can use both.
 export default function ClapButton({ articleId }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [clapped, setClapped] = useState(false)
   const [count, setCount] = useState(0)
   const [busy, setBusy] = useState(false)
@@ -51,17 +52,16 @@ export default function ClapButton({ articleId }) {
   }, [articleId, clapped])
 
   return (
-    <button
-      type="button"
-      className={`engagement-chip clap-btn${clapped ? ' is-active' : ''}`}
-      onClick={onClick}
+    <PulseHeart
+      className="clap-btn"
+      liked={clapped}
+      count={count}
+      onChange={onClick}
       disabled={busy || !ready}
-      aria-pressed={clapped}
-      aria-label={clapped ? t('engagement.clapped') : t('engagement.clap')}
-      title={clapped ? t('engagement.clapped') : t('engagement.clap')}
-    >
-      <PhosphorHandsClapping filled={clapped} className="engagement-chip__icon" />
-      <span className="engagement-chip__count">{count}</span>
-    </button>
+      busy={busy}
+      label={clapped ? t('engagement.clapped') : t('engagement.clap')}
+      locale={i18n.resolvedLanguage || i18n.language}
+      icon={isLiked => <PhosphorHandsClapping filled={isLiked} />}
+    />
   )
 }

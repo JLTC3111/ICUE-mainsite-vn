@@ -16,6 +16,8 @@ export default function NewsletterConsent() {
   const locale = params.get('locale')
   const valid = (action === 'confirm' || action === 'unsubscribe') && /^[a-f0-9]{64}$/i.test(token)
   const submitting = useRef(false)
+  const appliedLocaleHint = useRef(null)
+  const localeHint = `${action || ''}:${token}:${locale || ''}`
   const [result, setResult] = useState({ query: search, status: 'idle' })
   const status = result.query === search ? result.status : 'idle'
   const success = status === 'success'
@@ -23,10 +25,16 @@ export default function NewsletterConsent() {
   const isConfirm = action === 'confirm'
 
   useEffect(() => {
-    if (LOCALES.includes(locale) && i18n.resolvedLanguage !== locale) {
+    if (!LOCALES.includes(locale) || appliedLocaleHint.current === localeHint) return
+    // The email supplies an initial language, not a persistent preference.
+    // react-i18next replaces its wrapper when the visitor changes language;
+    // consume this hint before requesting a change so that rerender cannot
+    // force the visitor back to the email's locale.
+    appliedLocaleHint.current = localeHint
+    if (i18n.resolvedLanguage !== locale) {
       i18n.changeLanguage(locale)
     }
-  }, [i18n, locale])
+  }, [i18n, locale, localeHint])
 
   useEffect(() => {
     let meta = document.querySelector('meta[name="referrer"]')

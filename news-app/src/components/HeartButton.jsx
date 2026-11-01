@@ -2,12 +2,13 @@ import { useResumeRevision } from '../../../shared/resilience/usePageResume.js'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import PhosphorHeart from './icons/PhosphorHeart'
+import PulseHeart from './react-bits/PulseHeart'
 import { getHearts, toggleHeart } from '../lib/engagement'
 import './Engagement.css'
 
 // IP-based heart for an article. Independent from claps — visitors can use both.
 export default function HeartButton({ articleId }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [liked, setLiked] = useState(false)
   const [count, setCount] = useState(0)
   const [busy, setBusy] = useState(false)
@@ -51,17 +52,16 @@ export default function HeartButton({ articleId }) {
   }, [articleId, liked])
 
   return (
-    <button
-      type="button"
-      className={`engagement-chip heart-btn${liked ? ' is-active' : ''}`}
-      onClick={onClick}
+    <PulseHeart
+      className="heart-btn"
+      liked={liked}
+      count={count}
+      onChange={onClick}
       disabled={busy || !ready}
-      aria-pressed={liked}
-      aria-label={liked ? t('engagement.liked') : t('engagement.like')}
-      title={liked ? t('engagement.liked') : t('engagement.like')}
-    >
-      <PhosphorHeart filled={liked} className="engagement-chip__icon" />
-      <span className="engagement-chip__count">{count}</span>
-    </button>
+      busy={busy}
+      label={liked ? t('engagement.liked') : t('engagement.like')}
+      locale={i18n.resolvedLanguage || i18n.language}
+      icon={isLiked => <PhosphorHeart filled={isLiked} />}
+    />
   )
 }

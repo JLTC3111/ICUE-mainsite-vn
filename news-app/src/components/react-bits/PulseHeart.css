@@ -1,0 +1,85 @@
+/* React Bits Pulse Heart, adapted to the newsroom's two reader themes.
+   https://reactbits.dev/micro/pulse-heart */
+.pulse-heart {
+  --ph-size: 24px;
+  --ph-corner: 32px;
+  --ph-pill: var(--icue-surface-2, #f6f7f5);
+  --ph-idle: var(--icue-text-soft, #5b6068);
+  --ph-liked: #c61d4a;
+  --ph-text: var(--icue-text, #16181d);
+  --ph-roll: 350ms;
+  --ph-ease-out: cubic-bezier(.23, 1, .32, 1);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ph-corner);
+  background: none;
+  color: var(--ph-text);
+  font: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 160ms var(--ph-ease-out);
+}
+.pulse-heart.clap-btn { --ph-liked: #966002; }
+.icue-app--news-theme-dark .pulse-heart { --ph-liked: #ff6b92; }
+.icue-app--news-theme-dark .pulse-heart.clap-btn { --ph-liked: #fbbf24; }
+.pulse-heart[data-pressed] { transform: scale(.97); }
+.pulse-heart:focus-visible { outline: 2px solid var(--ph-liked); outline-offset: 4px; }
+.pulse-heart:disabled { cursor: default; }
+.pulse-heart[aria-busy='true'] { cursor: wait; }
+.pulse-heart__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 17px 10px 13px;
+  border-radius: var(--ph-corner);
+  background: var(--ph-pill);
+  box-shadow: inset 0 0 0 1px var(--icue-border, #e7e8e4);
+  transform-origin: center;
+}
+.pulse-heart__heart {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--ph-size);
+  height: var(--ph-size);
+  color: var(--ph-idle);
+  transform-origin: center;
+  transition: color 160ms ease;
+}
+.pulse-heart__heart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.pulse-heart[data-liked='true'] .pulse-heart__heart { color: var(--ph-liked); }
+.pulse-heart[data-running] .pulse-heart__heart { transition: none; }
+.pulse-heart__count {
+  display: inline-flex;
+  min-width: 1ch;
+  color: var(--ph-text);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.pulse-heart__count > span { display: block; height: 1em; }
+.pulse-heart__slot { position: relative; overflow: hidden; }
+.pulse-heart__roll { display: flex; flex-direction: column; transition: transform var(--ph-roll) var(--ph-ease-out); }
+.pulse-heart__roll > span { display: block; height: 1em; line-height: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .pulse-heart:not([data-liked='true']):not(:disabled):hover .pulse-heart__heart {
+    color: color-mix(in srgb, var(--ph-idle) 45%, var(--ph-liked));
+  }
+}
+@media (prefers-contrast: more) {
+  .pulse-heart__pill { box-shadow: inset 0 0 0 1px var(--ph-text); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-heart, .pulse-heart__heart, .pulse-heart__roll { transition: none; }
+}
