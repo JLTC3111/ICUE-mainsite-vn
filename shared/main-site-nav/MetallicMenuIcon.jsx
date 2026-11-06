@@ -1,21 +1,10 @@
+import useMetallicMenuPalette from './useMetallicMenuPalette.js';
 import { useResumeRevision } from '../resilience/usePageResume.js';
 import { withDeadline } from '../resilience/requests.js';
 import { useCallback, useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { supportsMetallicMenuPaint } from './metallicPaintSupport';
 
-const METALLIC_PROPS = {
-  seed: 200,
-  scale: 5,
-  blur: 0.1,
-  mouseAnimation: false,
-  lightColor: '#ffffff',
-  darkColor: '#80ecff',
-  tintColor: '#80ecff',
-  brightness: 1.35,
-  contrast: 0.5,
-  angle: 180,
-};
 
 const ICON_MASK_COVERAGE_RANGE = [0.02, 0.45];
 const EMPTY_READY_STATE = { menu: false, close: false };
@@ -46,6 +35,7 @@ function prefersReducedMotion() {
 }
 
 export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
+  const { surfaceRef, surface, paintProps } = useMetallicMenuPalette();
   const [paintMode, setPaintMode] = useState('checking');
   const [revision] = useResumeRevision({ enabled: paintMode === 'fallback', minHiddenMs: 0 });
   const [PaintComponent, setPaintComponent] = useState(null);
@@ -111,9 +101,10 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
         metallicReady ? 'is-metallic-ready' : '',
       ].filter(Boolean).join(' ')}
       data-renderer={metallicReady ? 'metallic' : 'static'}
+      data-surface={surface}
       aria-hidden="true"
     >
-      <span className="menu-icon-metallic__layer menu-icon-metallic__layer--menu">
+      <span ref={surfaceRef} className="menu-icon-metallic__layer menu-icon-metallic__layer--menu">
         <Menu
           className="menu-icon-metallic__lucide menu-icon-metallic__lucide-menu"
           size="100%"
@@ -128,7 +119,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             maskCoverageRange={ICON_MASK_COVERAGE_RANGE}
             onTextureReady={markMenuReady}
             onTextureError={useFallback}
-            {...METALLIC_PROPS}
+            {...paintProps}
           />
         ) : null}
       </span>
@@ -147,7 +138,7 @@ export default function MetallicMenuIcon({ isOpen = false, menuIconRef }) {
             maskCoverageRange={ICON_MASK_COVERAGE_RANGE}
             onTextureReady={markCloseReady}
             onTextureError={useFallback}
-            {...METALLIC_PROPS}
+            {...paintProps}
           />
         ) : null}
       </span>

@@ -547,8 +547,17 @@ export default function MetallicPaint({
     gl.uniform1f(u.u_distort, distortion);
     gl.uniform1f(u.u_contour, contour);
     gl.uniform3f(u.u_tint, tint[0], tint[1], tint[2]);
+
+    // A paused canvas has no animation frame to display an updated palette.
+    if (paused && textureReady && inViewport && !gl.isContextLost()) {
+      gl.uniform1f(u.u_time, animTimeRef.current);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
   }, [
     ready,
+    textureReady,
+    paused,
+    inViewport,
     seed,
     scale,
     refraction,

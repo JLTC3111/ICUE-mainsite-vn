@@ -571,9 +571,9 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden !important;
-  color: #80ecff;
-  stroke: #80ecff;
-  filter: drop-shadow(0 0 0.22em rgba(128, 236, 255, 0.55));
+  color: var(--metallic-menu-fallback-ink, #80ecff);
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
+  filter: var(--metallic-menu-fallback-shadow, drop-shadow(0 0 0.22em rgba(128, 236, 255, 0.55)));
   pointer-events: none;
   opacity: 1;
   transition: opacity 200ms ease;
@@ -606,7 +606,7 @@
 .main-site-nav .menu-icon-metallic__lucide-menu line,
 .main-site-nav .menu-icon-metallic__lucide-close path,
 .main-site-nav .menu-icon-metallic__lucide-close line {
-  stroke: #80ecff;
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
   fill: none;
 }
 
@@ -614,8 +614,8 @@
 .main-site-nav.drawer-open .menu-icon-metallic__lucide-close,
 .main-site-nav:has(#drawerMenu.open) .menu-icon-metallic__lucide-close path,
 .main-site-nav.drawer-open .menu-icon-metallic__lucide-close path {
-  color: #80ecff;
-  stroke: #80ecff;
+  color: var(--metallic-menu-fallback-ink, #80ecff);
+  stroke: var(--metallic-menu-fallback-ink, #80ecff);
 }
 
 .main-site-nav .menu-toggle svg:not(.menu-icon-metallic__lucide) rect,

@@ -163,6 +163,9 @@
 
 :root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) {
   --pill-nav-base: rgba(255, 255, 255, 0.95);
+  --metallic-menu-surface: light;
+  --metallic-menu-fallback-ink: #175b96;
+  --metallic-menu-fallback-shadow: none;
   --pill-nav-text: #16304a;
   --pill-nav-accent: #087eb8;
   --pill-nav-hover-text: #ffffff;
@@ -246,8 +249,4 @@ html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header_
 html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header__items,
 html[data-icue-view-toggle-vt='active'][data-icue-home-theme] .pill-site-header__actions {
   transition: none;
-}
-
-:root[data-icue-home-theme='light'] .pill-site-header:not([data-over-hero='true']) .menu-icon-metallic {
-  filter: brightness(0.34) saturate(1.1);
 }
