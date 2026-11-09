@@ -4,6 +4,7 @@ import LiveChatMessages from './LiveChatMessages.jsx'
 import PromptBar from './PromptBar.jsx'
 import LatticeLoader from '../ui/LatticeLoader.jsx'
 import { connectAccount, customerPortalUrl } from '../customer-account/account.js'
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js'
 import './LiveChat.css'
 
 export default function LiveChatPanel({ active, locale, labels, contactUrl, id, labelledBy, client = getLiveChatClient() }) {
@@ -115,6 +116,9 @@ export default function LiveChatPanel({ active, locale, labels, contactUrl, id, 
         <div className="icue-live__retention">
           {state.conversation?.account_saved ? <p>{labels.accountSaved}</p> : <><p>{labels.guestRetention}</p>{state.account ? <button type="button" onClick={() => client.syncAccount(state.account, { force: true })}>{labels.saveNow}</button> : <a href={customerPortalUrl(locale)} aria-disabled={state.attachments?.some(file => file.status === 'uploading') || undefined} onClick={event => { if (state.attachments?.some(file => file.status === 'uploading')) event.preventDefault(); else client.saveDraft() }}>{labels.keepChat}</a>}</>}
         </div>
+        <a className="icue-live__chatrooms-link" href={customerChatroomUrl(locale)} aria-disabled={state.attachments?.some(file => file.status === 'uploading') || undefined} onClick={event => { if (state.attachments?.some(file => file.status === 'uploading')) event.preventDefault(); else client.saveDraft() }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>{labels.chatrooms}
+        </a>
         {state.sessionOnly && <p className="icue-live__privacy">{labels.sessionOnly}</p>}
       </form>
     </section>

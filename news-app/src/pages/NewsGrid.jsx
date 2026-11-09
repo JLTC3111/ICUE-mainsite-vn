@@ -12,6 +12,7 @@ import NewsroomPublications from '../components/NewsroomPublications'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useMainSite } from '../hooks/useMainSite'
+import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroom.js'
 import { usePageResume } from '../hooks/usePageResume'
 import {
   useArticlePreviewTranslation,
@@ -472,7 +473,7 @@ export default function NewsGrid() {
   const instituteLinks = {
     work: hashLink('ourWork'),
     events: hashLink('communityActivities'),
-    contact: hashLink('Contact'),
+    contact: customerChatroomUrl(i18n.resolvedLanguage || i18n.language),
   }
 
   const lastUpdated = articles[0]?.published_at || articles[0]?.article_date || ''

@@ -26,7 +26,9 @@ export function buildMainSiteDrawerNav({
     label: link.label,
     index: index + 1,
     icon: link.icon,
-    isCurrent: link.page === activePage,
+    // Contact now opens the customer workspace, including from the contact
+    // details page itself; it is no longer that page's current-page shortcut.
+    isCurrent: link.page === activePage && link.page !== 'Contact',
     onClick: (e) => {
       e.preventDefault();
       navigateDrawerLink(link, onClose);

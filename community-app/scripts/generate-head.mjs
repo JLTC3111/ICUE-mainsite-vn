@@ -95,7 +95,7 @@ const noscript = `<noscript data-generated="community">
           <nav aria-label="Các trang chính">
             <a href="/">ICUE Vietnam</a>
             <a href="/about-us">Về ICUE Vietnam</a>
-            <a href="/contact">Liên hệ</a>
+            <a href="/newsroom/chatrooms?lang=vi">Liên hệ</a>
           </nav>
         </main>
       </noscript>`

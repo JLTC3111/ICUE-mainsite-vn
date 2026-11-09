@@ -27,6 +27,7 @@ import {
   withLocale,
 } from '../site-routes/mainSitePaths.js';
 import MainSiteHeader from './MainSiteHeader';
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js';
 import { pageThemeLabel } from '../ui/pageTheme.js';
 import './MainSiteNav.css';
 
@@ -42,6 +43,7 @@ function shouldExpandDock(scrollY = 0) {
 }
 
 function localeHrefForNavLink(link, locale) {
+  if (link.page === 'Contact') return customerChatroomUrl(locale);
   if (typeof window === 'undefined' || !locale || !MAIN_SITE_PAGE_PATHS[link.page]) {
     return withLocale(link.href, locale);
   }

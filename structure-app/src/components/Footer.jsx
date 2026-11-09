@@ -4,6 +4,7 @@ import { useMainSite } from '../hooks/useMainSite'
 import CircularText from './CircularText/CircularText'
 import './Footer.css'
 import StaffPortalLinks from '../../../shared/app-switcher/StaffPortalLinks.jsx'
+import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroom.js'
 
 const CIRCULAR_TEXT = '@ICUE*©COPY*RIGHTS*'
 
@@ -50,7 +51,7 @@ function Footer() {
           <a href={hashLink('gdpr')}>{t('footer.gdpr')}</a><span>|</span>
           <a href={hashLink('cookies')}>{t('footer.cookies')}</a>
         </div>
-        <a href={hashLink('Contact')} className="icue-footer__partner">
+        <a href={customerChatroomUrl(i18n.resolvedLanguage || i18n.language)} className="icue-footer__partner">
           {t('footer.partner')}
         </a>
       </div>

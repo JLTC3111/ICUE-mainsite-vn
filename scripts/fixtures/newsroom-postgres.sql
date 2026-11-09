@@ -7,6 +7,9 @@ create schema storage;
 create table auth.users (
   id uuid primary key,
   email text,
+  email_confirmed_at timestamptz default now(),
+  banned_until timestamptz,
+  deleted_at timestamptz,
   is_anonymous boolean default false,
   raw_user_meta_data jsonb not null default '{}'::jsonb
 );

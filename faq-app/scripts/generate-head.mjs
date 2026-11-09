@@ -75,7 +75,7 @@ const noscript = `<noscript data-generated="faq">
             .join('\n          ')}
           <nav aria-label="Các trang chính">
             <a href="/">ICUE Vietnam</a>
-            <a href="/contact">Liên hệ</a>
+            <a href="/newsroom/chatrooms?lang=vi">Liên hệ</a>
             <a href="/recruitment">Tuyển dụng</a>
           </nav>
         </main>

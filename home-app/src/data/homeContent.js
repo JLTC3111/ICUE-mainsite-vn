@@ -2,6 +2,7 @@ import { articleUrl, projectCardUrl } from '../lib/siteLinks'
 import { ROUTE_PATHS } from '../lib/routes'
 import { getPastProject } from './pastProjectsContent.js'
 import { newsroomUrl, withLocale } from '../../../shared/site-routes/mainSitePaths.js'
+import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroom.js'
 import recruitmentOffice from '../../../recruitment-app/public/media/office.webp?url'
 import recruitmentEvent from '../../../recruitment-app/public/media/event.webp?url'
 import recruitmentSurvey from '../../../recruitment-app/public/media/survey.webp?url'
@@ -74,7 +75,7 @@ export function buildHero(t, locale) {
     subtitle: t('home.hero.subtitle'),
     ariaLabel: t('home.hero.ariaLabel'),
     actions: [
-      { label: t('home.hero.actions.contact'), href: withLocale(ROUTE_PATHS.contact, locale), variant: 'primary' },
+      { label: t('home.hero.actions.contact'), href: customerChatroomUrl(locale), variant: 'primary' },
       { label: t('home.hero.actions.pastProjects'), href: withLocale(ROUTE_PATHS.pastProjects, locale), variant: 'ghost' },
     ],
   }

@@ -12,9 +12,11 @@ import { portalCopy } from '../../../shared/customer-account/portalCopy.js'
 import { connectAccount } from '../../../shared/customer-account/account.js'
 import { getLiveChatClient } from '../../../shared/chatbot/lib/liveChat.js'
 import { liveChatCopy } from '../../../shared/chatbot/lib/liveChatCopy.js'
+import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroom.js'
 import LiveChatPanel from '../../../shared/chatbot/LiveChatPanel.jsx'
 import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
+import { roomChatCopy } from '../lib/roomChatCopy'
 import './CustomerPortal.css'
 
 export default function CustomerPortal() {
@@ -94,6 +96,7 @@ export default function CustomerPortal() {
    }
    const client = await connectAccount(), session = await client.auth.getSession()
    await live.syncAccount(session.data.session?.user)
+   if (params.get('next') === 'chatrooms') { navigate(`/chatrooms?lang=${locale}`, { replace: true }); return }
    const back = params.get('return')
    if (back?.startsWith('/') && !back.startsWith('//') && !back.startsWith('/newsroom')) {
     live.saveDraft()
@@ -112,7 +115,7 @@ export default function CustomerPortal() {
  const brand = <a className="customer-portal__brand" href={`/?lang=${locale}`} aria-label="ICUE"><img className="customer-portal__brand-mark" src="/logoIcons/ICUE_Radial_Parcel_Dark_A_Transparent.svg" width="36" height="36" alt="" aria-hidden="true" />ICUE</a>
  if (user && !staff) return <main className="customer-portal customer-portal--workspace" data-icue-chat-theme="light">
   <header className="customer-portal__workspace-header">{brand}<span>{copy.customer}</span><LanguageSwitcher /><button type="button" onClick={logout} disabled={busy}><LogOut size={16} aria-hidden="true" />{copy.signOut}</button></header>
-  <div className="customer-portal__workspace-title"><div><h1>{copy.savedChats}</h1><p>{user.email}</p></div><a href={`/?lang=${locale}`}><ArrowLeft size={16} aria-hidden="true" />{copy.back}</a></div>
+  <div className="customer-portal__workspace-title"><div><h1>{copy.savedChats}</h1><p>{user.email}</p></div><div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}><a className="customer-portal__room-link" href={`/newsroom/chatrooms?lang=${locale}`}><MessageSquare size={16} aria-hidden="true" />{roomChatCopy(locale).title}</a><a href={`/?lang=${locale}`}><ArrowLeft size={16} aria-hidden="true" />{copy.back}</a></div></div>
   {error && <p className="customer-portal__error" role="alert">{error}</p>}
   <div className="customer-portal__workspace-grid"><aside className="customer-portal__conversations"><button type="button" className="customer-portal__new" onClick={() => live.newConversation()}><Plus size={17} aria-hidden="true" />{copy.newChat}</button>
    {listError && <p role="alert">{copy.saveError} <button type="button" onClick={() => { setListLoading(true); setListError(false); setRevision(n => n+1) }}>{labels.retry}</button></p>}
@@ -120,7 +123,7 @@ export default function CustomerPortal() {
    {!listLoading && !chats.length && !listError && <p>{copy.empty}</p>}
    {chats.map(chat => <button key={chat.id} type="button" className="customer-portal__conversation" aria-pressed={selected === chat.id} onClick={() => live.selectConversation(chat.id)}><strong>{chat.preview || labels.photosFiles}</strong><small>{new Intl.DateTimeFormat(locale,{dateStyle:'medium'}).format(new Date(chat.updated_at))} · {chat.status === 'closed' ? labels.resolved : labels.active}</small></button>)}
    <div className="customer-portal__portal-links">{tabs}</div>
-  </aside><section className="customer-portal__chat" aria-label={labels.title}><div className="customer-portal__chat-heading"><MessageSquare size={19} aria-hidden="true" /><h2 id="customer-chat-title">{labels.title}</h2></div><LiveChatPanel active locale={locale} labels={labels} contactUrl={`/contact?lang=${locale}`} client={live} id="customer-chat" labelledBy="customer-chat-title" /></section></div>
+  </aside><section className="customer-portal__chat" aria-label={labels.title}><div className="customer-portal__chat-heading"><MessageSquare size={19} aria-hidden="true" /><h2 id="customer-chat-title">{labels.title}</h2></div><LiveChatPanel active locale={locale} labels={labels} contactUrl={customerChatroomUrl(locale)} client={live} id="customer-chat" labelledBy="customer-chat-title" /></section></div>
  </main>
  return <main className="customer-portal" data-icue-chat-theme="light"><section className="customer-portal__intro"><header>{brand}<a href={`/?lang=${locale}`}><ArrowLeft size={15} aria-hidden="true" />{copy.back}</a></header><div className="customer-portal__intro-content"><span className="customer-portal__eyebrow">{staff ? copy.staff : copy.customer}</span><h1>{staff ? copy.staff : copy.title}</h1><p>{staff ? copy.staffIntro : copy.intro}</p><ul>{[[MessageSquare,copy.keep],[FileText,copy.files],[Monitor,copy.anyDevice]].map(([Icon,text]) => <li key={text}><Icon size={18} strokeWidth={1.5} aria-hidden="true" />{text}</li>)}</ul></div><p className="customer-portal__intro-note">{staff ? copy.staffOnly : labels.guestRetention}</p></section>
   <section className="customer-portal__entry"><div className="customer-portal__language"><LanguageSwitcher /></div><div className="customer-portal__form-shell">{tabs}<h2>{mode === 'reset' ? t('login.forgot') : !staff && mode === 'signup' ? copy.signup : staff ? copy.staff : t('login.title')}</h2><p>{staff ? copy.staffOnly : mode === 'signup' ? copy.signupHint : copy.intro}</p>

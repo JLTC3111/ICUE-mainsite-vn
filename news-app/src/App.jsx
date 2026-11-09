@@ -27,11 +27,12 @@ const Dashboard = lazyWithRetry(withSupabase(() => import('./pages/Dashboard')))
 const Profile = lazyWithRetry(withSupabase(() => import('./pages/Profile')))
 const AiAssist = lazyWithRetry(withSupabase(() => import('./pages/AiAssist')))
 const SupportInbox = lazyWithRetry(withSupabase(() => import('./pages/SupportInbox')))
+const ChatRooms = lazyWithRetry(withSupabase(() => import('./pages/ChatRooms')))
 
 function FloatingSiteChatbot() {
   const { pathname } = useLocation()
   const { i18n } = useTranslation()
-  return pathname.startsWith('/portal') ? null : <SiteChatbot i18n={i18n} />
+  return pathname.startsWith('/portal') || pathname.startsWith('/chatrooms') ? null : <SiteChatbot i18n={i18n} />
 }
 
 function RouteFallback() {
@@ -65,6 +66,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/portal" element={<CustomerPortal />} />
+          <Route path="/chatrooms" element={<ChatRooms />} />
 
           <Route element={<Layout />}>
             <Route index element={<NewsGrid />} />

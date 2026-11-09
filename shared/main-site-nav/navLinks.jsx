@@ -1,4 +1,5 @@
 import { newsroomUrl } from '../site-routes/mainSitePaths.js';
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js';
 
 const IconHome = () => (
   <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" aria-hidden="true">
@@ -78,7 +79,7 @@ export const DRAWER_LINKS = [
   { page: 'News', href: '#/News', label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
   { page: 'communityActivities', href: '#/communityActivities', label: 'Hoạt Động Cộng Đồng', icon: IconCommunity, closeOnly: true, drawerOnly: true },
   { page: 'aboutUs', href: '#/aboutUs', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
-  { page: 'Contact', href: '#/Contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
+  { page: 'Contact', href: customerChatroomUrl('vi'), label: 'Liên Hệ', icon: IconContact },
 ];
 
 /** Path-based drawer links for the standalone home React app. */
@@ -90,7 +91,7 @@ export const STANDALONE_DRAWER_LINKS = [
   { page: 'News', href: newsroomUrl('vi'), label: 'Tin Tức & Sự Kiện', icon: IconNews, closeOnly: true },
   { page: 'communityActivities', href: '/community-activities', label: 'Hoạt Động Cộng Đồng', icon: IconCommunity, closeOnly: true, drawerOnly: true },
   { page: 'aboutUs', href: '/about-us', label: 'Về Chúng Tôi', icon: IconAbout, closeOnly: true },
-  { page: 'Contact', href: '/contact', label: 'Liên Hệ', icon: IconContact, closeOnly: true },
+  { page: 'Contact', href: customerChatroomUrl('vi'), label: 'Liên Hệ', icon: IconContact },
 ];
 
 export const PEOPLE_SUBMENU = {

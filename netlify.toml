@@ -50,3 +50,10 @@
     "shared/resilience/requests.js",
     "shared/resilience/package.json"
   ]
+
+# Keep media processing on a native server runtime; the Edge fallback accepts
+# images only. Binaries are installed for the build host's platform by npm.
+[functions."room-chat-files"]
+  node_bundler = "esbuild"
+  external_node_modules = ["ffmpeg-static", "@ffprobe-installer/ffprobe", "@ffprobe-installer/linux-x64", "@supabase/supabase-js"]
+  included_files = ["news-app/supabase/functions/room-chat-files/handler.mjs", "news-app/supabase/functions/room-chat-files/imageSanitizer.mjs", "node_modules/ffmpeg-static/ffmpeg", "node_modules/@ffprobe-installer/linux-x64/ffprobe"]

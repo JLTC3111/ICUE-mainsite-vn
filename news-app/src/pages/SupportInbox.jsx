@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { supportChatRpc, readSupportDrafts, saveSupportDrafts, downloadSupportFile } from '../lib/supportChat'
@@ -11,6 +11,7 @@ import { liveTimeLeft, mergeLiveMessages } from '../../../shared/chatbot/lib/liv
 import LiveChatMessages from '../../../shared/chatbot/LiveChatMessages.jsx'
 import SupportChatAlertToggle from '../components/SupportChatAlertToggle'
 import { isSupportConversationId } from '../lib/supportAlerts'
+import { roomChatCopy } from '../lib/roomChatCopy'
 import '../../../shared/chatbot/LiveChat.css'
 import './SupportInbox.css'
 
@@ -193,6 +194,7 @@ function InboxWorkspace({ userId, locale, labels }) {
     <div className="support-inbox icue-container">
       <div className="support-inbox__heading"><div><h1>{labels.inbox}</h1><p>{labels.inboxIntro}</p></div>
         <div className="support-alerts__controls">
+          <Link className="support-inbox__room-link" to={`/chatrooms?lang=${locale}`}>{roomChatCopy(locale).title}</Link>
           <SupportChatAlertToggle />
           <RubberSegment role="group" aria-label={labels.presenceHint} size="sm" value={wantOnline ? 'online' : 'away'}
             items={[{ value: 'away', label: labels.goAway }, { value: 'online', label: labels.goOnline }]}

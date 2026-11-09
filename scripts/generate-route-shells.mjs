@@ -209,7 +209,7 @@ function renderFallback(route) {
     .filter((item) => ['home', 'about-us', 'our-work', 'past-projects', 'recruitment', 'contact'].includes(item.key))
     .map(
       (item) =>
-        `<a href="${escapeHtml(item.path)}">${escapeHtml(item.heading)}</a>`,
+        `<a href="${escapeHtml(item.key === 'contact' ? '/newsroom/chatrooms?lang=vi' : item.path)}">${escapeHtml(item.heading)}</a>`,
     )
     .join('\n          ')
 

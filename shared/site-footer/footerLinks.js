@@ -1,4 +1,5 @@
 import { MAIN_SITE_PAGE_PATHS, withLocale } from '../site-routes/mainSitePaths.js'
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js'
 
 function buildFooterLinks(locale) {
   const p = MAIN_SITE_PAGE_PATHS
@@ -13,7 +14,7 @@ function buildFooterLinks(locale) {
     terms: p.terms,
     gdpr: p.gdpr,
     cookies: p.cookies,
-    contact: p.Contact,
+    contact: customerChatroomUrl(locale),
   }
 
   return Object.fromEntries(

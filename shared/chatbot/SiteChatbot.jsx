@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react'
 import { normalizeUiLocale, withLocale } from '../site-routes/mainSitePaths.js'
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js'
 import Chatbot from './Chatbot.jsx'
 import BackgroundMusicBanner from '../contact-sidebar/BackgroundMusicBanner.jsx'
 import vi from './locales/vi.json'
@@ -20,7 +21,7 @@ export default function SiteChatbot({ i18n }) {
   const snapshot = useCallback(() => normalizeUiLocale(i18n.resolvedLanguage || i18n.language) || 'vi', [i18n])
   const locale = useSyncExternalStore(subscribe, snapshot, snapshot)
   const labels = useMemo(() => ({ ...copy[locale], ...i18n.getResource(locale, 'translation', 'chat') }), [i18n, locale])
-  const links = useMemo(() => ({ faqs: withLocale('/faqs', locale), contact: withLocale('/contact', locale) }), [locale])
+  const links = useMemo(() => ({ faqs: withLocale('/faqs', locale), contact: customerChatroomUrl(locale) }), [locale])
   return (
     <>
       <Chatbot locale={locale} labels={labels} links={links} />

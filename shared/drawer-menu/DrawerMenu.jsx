@@ -1,6 +1,7 @@
 import { memo, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import DrawerMenuPanel from './DrawerMenuPanel'
+import { customerChatroomUrl } from '../site-routes/customerChatroom.js'
 
 const Icon = ({ children }) => (
   <svg
@@ -15,7 +16,7 @@ const Icon = ({ children }) => (
   </svg>
 )
 
-function buildSubAppLinks({ hashLink, orgHref, currentPage, close, t }) {
+function buildSubAppLinks({ hashLink, orgHref, currentPage, close, t, locale }) {
   return [
     {
       key: 'home',
@@ -83,10 +84,9 @@ function buildSubAppLinks({ hashLink, orgHref, currentPage, close, t }) {
     },
     {
       key: 'contact',
-      href: hashLink('Contact'),
+      href: customerChatroomUrl(locale),
       label: t('drawer.contact'),
       index: 7,
-      isCurrent: currentPage === 'contact',
       onClick: close,
       icon: () => (
         <Icon>
@@ -132,7 +132,7 @@ function buildSubAppPeople({ peopleLink, currentPage, close, t, peopleOpen, setP
 }
 
 function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage, ...panelProps }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [peopleOpen, setPeopleOpen] = useState(true)
   const [open, setOpen] = useState(false)
 
@@ -140,7 +140,7 @@ function DrawerMenu({ hashLink, peopleLink, orgHref, currentPage, ...panelProps 
     setOpen(false)
   }, [])
 
-  const links = buildSubAppLinks({ hashLink, orgHref, currentPage, close, t })
+  const links = buildSubAppLinks({ hashLink, orgHref, currentPage, close, t, locale: i18n?.resolvedLanguage || i18n?.language })
   const people = buildSubAppPeople({ peopleLink, currentPage, close, t, peopleOpen, setPeopleOpen })
 
   return (

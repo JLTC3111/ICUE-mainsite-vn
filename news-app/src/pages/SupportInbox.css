@@ -61,3 +61,4 @@
   .support-inbox__pagination { padding: 4px 12px; }
   .support-inbox__thread-heading, .support-inbox__thread .icue-live__composer { padding: 12px; }
 }
+.support-inbox__room-link { display:inline-flex; gap:7px; align-items:center; font-size:12px; }

@@ -11,6 +11,7 @@ import PageLanguageMenu from '../components/PageLanguageMenu'
 import FaqAccordion from '../components/FaqAccordion'
 import { useMainSite } from '../hooks/useMainSite'
 import usePageTheme from '../../../shared/ui/usePageTheme.js'
+import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroom.js'
 import '../styles/faq.css'
 
 /*
@@ -37,7 +38,7 @@ export default function Page() {
   const pageTheme = usePageTheme('faqs')
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage || i18n.language
-  const { base, pageLink } = useMainSite()
+  const { base } = useMainSite()
   const sidebarReady = useIdle()
 
   // The static <head> ships Vietnamese; retitle when the reader picks another.
@@ -104,7 +105,7 @@ export default function Page() {
           <aside className="fq-stuck">
             <h2 className="fq-stuck__heading">{t('stillStuck.heading')}</h2>
             <p className="fq-stuck__body">{t('stillStuck.body')}</p>
-            <a className="fq-stuck__cta" href={pageLink('Contact')}>
+            <a className="fq-stuck__cta" href={customerChatroomUrl(lang)}>
               {t('stillStuck.cta')}
             </a>
           </aside>

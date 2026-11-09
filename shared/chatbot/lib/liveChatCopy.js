@@ -103,6 +103,11 @@ const uploadDeviceCopy = {
  fr: 'Importer depuis cet appareil', ko: '이 기기에서 업로드', ja: 'この端末からアップロード',
 }
 
+const chatroomTitles = {
+ en: 'ICUE chatrooms', vi: 'Phòng trò chuyện ICUE', de: 'ICUE-Chaträume',
+ fr: 'Salons ICUE', ko: 'ICUE 채팅방', ja: 'ICUEチャットルーム',
+}
+
 export function liveChatCopy(locale = 'vi') {
-  return { ...en, ...translations[locale], ...clientPresenceCopy[locale], ...attachmentCopy.en, ...attachmentCopy[locale], ...attachmentRecoveryCopy.en, ...attachmentRecoveryCopy[locale], uploadDevice: uploadDeviceCopy[locale] || uploadDeviceCopy.en }
+  return { ...en, ...translations[locale], ...clientPresenceCopy[locale], ...attachmentCopy.en, ...attachmentCopy[locale], ...attachmentRecoveryCopy.en, ...attachmentRecoveryCopy[locale], uploadDevice: uploadDeviceCopy[locale] || uploadDeviceCopy.en, chatrooms: chatroomTitles[locale] || chatroomTitles.en }
 }

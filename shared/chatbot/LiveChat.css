@@ -65,3 +65,7 @@
 .icue-live__file:focus-visible { outline: 2px solid var(--icue-chat-accent); outline-offset: 2px; }
 
 .icue-live__retention a[aria-disabled='true'] { opacity: .5; cursor: wait; }
+.icue-live__chatrooms-link { display:inline-flex; align-items:center; gap:6px; margin-top:9px; color:var(--icue-chat-link); font-size:10px; line-height:1.6; text-decoration:none; }
+.icue-live__chatrooms-link:hover { text-decoration:underline; }
+.icue-live__chatrooms-link:focus-visible { outline:2px solid var(--icue-chat-accent); outline-offset:3px; }
+.icue-live__chatrooms-link[aria-disabled='true'] { opacity:.5; cursor:wait; }

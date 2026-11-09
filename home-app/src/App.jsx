@@ -121,8 +121,8 @@ function AppShell() {
             <Route path={ROUTE_PATHS.home} element={<HomePage />} />
             {/* No /contact route: like /our-work, it is a separate app now, and
                 a client-side route here would shadow it on in-app navigation.
-                ROUTE_PATHS.contact stays — the drawer and footer still link to
-                it, as a real navigation. */}
+                ROUTE_PATHS.contact stays for the contact details page;
+                customer contact CTAs open the newsroom chatroom workspace. */}
             <Route path={ROUTE_PATHS.aboutUs} element={<AboutUsPage />} />
             <Route element={<PastProjectsLayout />}>
               <Route path={ROUTE_PATHS.pastProjects} element={<PastProjectsPage />} />
