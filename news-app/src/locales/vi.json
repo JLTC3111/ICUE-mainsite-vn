@@ -230,6 +230,8 @@
   "profile": {
     "title": "Hồ sơ cá nhân",
     "displayName": "Tên hiển thị",
+    "firstName": "Tên",
+    "lastName": "Họ",
     "fullName": "Họ và tên",
     "bio": "Giới thiệu",
     "avatar": "Ảnh đại diện",

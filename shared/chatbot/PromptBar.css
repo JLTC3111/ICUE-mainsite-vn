@@ -29,6 +29,9 @@
 .icue-prompt .icue-prompt__recipient { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11px; line-height: 1.5; font-weight: 400; color: var(--icue-chat-prompt-muted); }
 .icue-prompt .icue-prompt__send { margin-left: auto; }
 .icue-prompt .icue-prompt__send:disabled { color: var(--icue-chat-prompt-muted); opacity: .55; }
+.icue-prompt .icue-prompt__send:not(:disabled) { color: #fff; }
+.icue-prompt .icue-prompt__send:not(:disabled) > span,
+.icue-prompt .icue-prompt__send:not(:disabled):hover > span { background: var(--icue-chat-prompt-send); color: #fff; }
 .icue-prompt__attachments { display: flex; gap: 6px; padding-bottom: 9px; overflow-x: auto; scrollbar-width: thin; }
 .icue-prompt__file { display: flex; flex: none; align-items: center; gap: 7px; min-width: 150px; max-width: min(250px, 100%); padding: 7px 5px 7px 8px; border: 1px solid var(--icue-chat-prompt-border); border-radius: 9px; background: var(--icue-chat-prompt-control); }
 .icue-prompt__file > span { flex: 1; min-width: 0; }

@@ -1,7 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
+import { EventEmitter } from 'node:events'
 import { createRoomFilesHandler, inspectMedia, readBounded, IMAGE_LIMIT } from '../../news-app/supabase/functions/room-chat-files/handler.mjs'
+import { roomFilesDevPlugin } from '../../news-app/vite-room-files-plugin.js'
+
+const jpeg = Uint8Array.from([255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 255, 218, 0, 8, 1, 1, 0, 0, 63, 0, 0, 255, 217, 0, 10])
 
 const room = '00000000-0000-4000-8000-000000009101', id = '00000000-0000-4000-8000-000000009102'
 const path = `${room}/${id}.png`
@@ -59,6 +63,15 @@ test('files require backend room authorization before decoding; storage contains
  assert.equal((await denied.handler(action())).status, 403)
  assert.ok(!denied.calls.some(call => ['sanitize', 'upload', 'download'].includes(call.name)))
  assert.equal((await f.handler(upload(png, 'test.png', 'image/png', false))).status, 401)
+})
+
+test('a complete jpg keeps bytes after its end marker and accepts jpeg MIME aliases', async () => {
+  assert.equal(inspectMedia(jpeg, 'photo.jpg', 'image/jpg'), 'image/jpeg')
+  assert.equal(inspectMedia(jpeg, 'photo.jpeg', 'image/pjpeg'), 'image/jpeg')
+  assert.throws(() => inspectMedia(jpeg.subarray(0, jpeg.length - 4), 'photo.jpg', 'image/jpeg'))
+  const f = fixture()
+  assert.equal((await f.handler(upload(jpeg, 'photo.jpg', 'image/jpg'))).status, 200)
+  assert.equal(f.calls.find(call => call.name === 'sanitize').mime, 'image/jpeg')
 })
 
 test('unsupported, spoofed, incomplete and decoder-rejected media never create a reservation or object', async () => {
@@ -132,6 +145,26 @@ test('discard stays ownership checked; scheduled cleanup retains queue entries u
  assert.equal((await f.handler(action('cleanup', { 'x-cleanup-key': 'a'.repeat(64) }, false))).status, 200)
  assert.equal(f.objects.size, 0)
  assert.ok(f.calls.some(call => call.name === 'room_chat_cleanup_ack'))
+})
+
+test('the newsroom dev server answers room file uploads instead of the base-path 404', async () => {
+ let middleware
+ const plugin = roomFilesDevPlugin()
+ plugin.config({}, { mode: 'development' })
+ plugin.configureServer({ middlewares: { use: fn => { middleware = fn } } })
+ const ignored = await new Promise(resolve => {
+  middleware(Object.assign(new EventEmitter(), { url: '/newsroom/', method: 'GET', headers: {} }), {}, () => resolve(true))
+ })
+ assert.equal(ignored, true)
+ const req = Object.assign(new EventEmitter(), { url: '/.netlify/functions/room-chat-files', method: 'POST', headers: { 'content-type': 'application/json' } })
+ const result = await new Promise((resolve, reject) => {
+  const res = { statusCode: 0, setHeader() {}, end(body) { resolve({ status: this.statusCode, body: JSON.parse(body) }) } }
+  middleware(req, res, () => reject(new Error('room file route was not handled')))
+  req.emit('data', '{}')
+  req.emit('end')
+ })
+ assert.ok([401, 503].includes(result.status))
+ assert.equal(typeof result.body.error, 'string')
 })
 
 test('stream limits cancel oversized bodies without relying on Content-Length', async () => {

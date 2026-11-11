@@ -11,17 +11,52 @@ const ascii = (bytes, start, count) => String.fromCharCode(...bytes.subarray(sta
 const extensions = { 'image/png': ['png'], 'image/jpeg': ['jpg', 'jpeg'], 'image/webp': ['webp'], 'video/mp4': ['mp4'] }
 const extensionFor = mime => extensions[mime]?.[0]
 
+// A complete JPEG ends at its EOI marker. Cameras and editors often leave
+// padding after that marker; sanitizing rewrites the image and drops the tail.
+function completeJpeg(bytes) {
+ if (bytes.length < 12 || bytes[0] !== 255 || bytes[1] !== 216) return false
+ let index = 2
+ const marker = () => {
+  if (index >= bytes.length || bytes[index] !== 255) return -1
+  while (index < bytes.length && bytes[index] === 255) index += 1
+  if (index >= bytes.length) return -1
+  return bytes[index++]
+ }
+ while (index < bytes.length) {
+  const kind = marker()
+  if (kind < 0 || kind === 216) return false
+  if (kind === 217) return true
+  if (kind === 1 || (kind >= 208 && kind <= 215)) continue
+  if (index + 2 > bytes.length) return false
+  const length = (bytes[index] << 8) | bytes[index + 1]
+  if (length < 2 || index + length > bytes.length) return false
+  index += length
+  if (kind !== 218) continue
+  while (index < bytes.length) {
+   if (bytes[index] !== 255) { index += 1; continue }
+   const next = marker()
+   if (next === 0) continue
+   if (next === 217) return true
+   if (next >= 208 && next <= 215) continue
+   return false
+  }
+  return false
+ }
+ return false
+}
+
 export function inspectMedia(bytes, name, declared = '') {
  if (!(bytes instanceof Uint8Array) || !bytes.length || bytes.length > VIDEO_LIMIT) throw mediaIssue('Choose a complete image or MP4 video up to 4 MB.', 413)
  let mime
  if (bytes.length >= 33 && [137,80,78,71,13,10,26,10].every((value, index) => bytes[index] === value)) mime = 'image/png'
- else if (bytes.length >= 12 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255 && bytes.at(-2) === 255 && bytes.at(-1) === 217) mime = 'image/jpeg'
+ else if (completeJpeg(bytes)) mime = 'image/jpeg'
  else if (bytes.length >= 20 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'WEBP') {
   if (new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(4, true) + 8 !== bytes.length) throw mediaIssue('This WebP file is incomplete or corrupt.')
   mime = 'image/webp'
  } else if (bytes.length >= 24 && ascii(bytes, 4, 4) === 'ftyp') mime = 'video/mp4'
  const extension = name.toLowerCase().split('.').at(-1)
- if (!mime || !extensions[mime].includes(extension) || (declared && declared !== 'application/octet-stream' && declared !== mime)) throw mediaIssue('Only PNG, JPG, JPEG, WebP and MP4 files with matching file content are accepted.', 415)
+ const jpegAlias = mime === 'image/jpeg' && (declared === 'image/jpg' || declared === 'image/pjpeg')
+ if (!mime || !extensions[mime].includes(extension) || (declared && declared !== 'application/octet-stream' && declared !== mime && !jpegAlias)) throw mediaIssue('Only PNG, JPG, JPEG, WebP and MP4 files with matching file content are accepted.', 415)
  if (mime !== 'video/mp4' && bytes.length > IMAGE_LIMIT) throw mediaIssue('Images must be no larger than 4 MB.', 413)
  return mime
 }

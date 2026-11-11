@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { React, act, create, sourceModule, silenceRenderer, unmount } from '../../shared/resilience/testHarness.js'
+import { roomChatCopy } from '../../news-app/src/lib/roomChatCopy.js'
 
 const newsRequire = createRequire(new URL('../../news-app/package.json', import.meta.url))
 const { Editor } = newsRequire('@tiptap/core')
@@ -59,4 +60,44 @@ test('Shift+Enter inserts a real Tiptap paragraph, Enter sends, and IME confirma
   assert.equal(sends, 1)
   assert.equal(prevented, 2)
   assert.equal(editor.getJSON().content.length, 2)
+})
+
+test('editing a sent message saves in place and does not offer another upload', async t => {
+  silenceRenderer(t)
+  const labels = roomChatCopy('en')
+  let editor
+  const { default: RoomComposer } = await sourceModule('news-app/src/components/RoomComposer.jsx', {
+    imports: {
+      '@tiptap/react': {
+        useEditor(next) {
+          editor ||= new Editor({ ...next, content: JSON.parse(JSON.stringify(next.content)), element: null, injectCSS: false })
+          editor.setOptions({ ...next })
+          return editor
+        },
+        EditorContent: Null,
+      },
+      '@tiptap/starter-kit': { default: { configure: options => StarterKit.configure(JSON.parse(JSON.stringify(options))) } },
+      '@tiptap/extension-placeholder': { default: { configure: options => Placeholder.configure(JSON.parse(JSON.stringify(options))) } },
+      'lucide-react': icons,
+      './RoomMessage': { RoomDocument: Null, RoomSticker: Null },
+      '../lib/roomChat': { discardRoomFile: async () => {}, uploadRoomFile: async () => {}, validateRoomFile() {} },
+    },
+  })
+  const draft = { document: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello room' }] }] }, stickers: [], files: [], sticker: null, pending: null }
+  let renderer
+  await act(async () => { renderer = create(React.createElement(RoomComposer, { roomId: 'room-one', draft, onDraft() {}, onSend() {}, sending: false, labels, editing: true, onCancel() {} })) })
+  t.after(async () => { await unmount(renderer); editor.destroy() })
+  const buttons = renderer.root.findAllByType('button')
+  assert.equal(buttons.some(node => node.props['aria-label'] === labels.attach), false)
+  assert.ok(buttons.some(node => node.props['aria-label'] === labels.saveEdit))
+  assert.ok(buttons.some(node => node.props.children === labels.cancel))
+})
+
+test('a .jpg is accepted when the browser labels it image/jpg', async () => {
+  const { validateRoomFile } = await sourceModule('news-app/src/lib/roomChat.js', {
+    imports: { './supabase': { supabase: {} } },
+  })
+  for (const type of ['image/jpeg', 'image/jpg', 'image/pjpeg', '']) validateRoomFile({ name: 'photo.jpg', size: 1200, type })
+  assert.throws(() => validateRoomFile({ name: 'photo.jpg', size: 1200, type: 'image/png' }), /ROOM_FILE_TYPE_SIZE/)
+  assert.throws(() => validateRoomFile({ name: 'photo.jpg', size: 0, type: 'image/jpeg' }), /ROOM_FILE_TYPE_SIZE/)
 })

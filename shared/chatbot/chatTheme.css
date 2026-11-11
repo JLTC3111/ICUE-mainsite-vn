@@ -24,8 +24,9 @@
  --icue-chat-prompt-control-hover: #d6d6dc;
  --icue-chat-prompt-menu: #ffffff;
  --icue-chat-prompt-menu-hover: #f0f0f3;
- --icue-chat-prompt-focus: #b1a0d5;
- --icue-chat-prompt-ring: #8064cb0c;
+ --icue-chat-prompt-focus: #7097b5;
+ --icue-chat-prompt-ring: #7097b50c;
+ --icue-chat-prompt-send: #2563eb;
 }
 :root:where([data-icue-page-theme='dark'], [data-theme='dark'], .icue-news-theme-dark, [data-about-theme='dark']:not([data-icue-page-theme])):not([data-icue-chat-theme='light']),
 [data-icue-chat-theme='dark'] {
@@ -52,6 +53,7 @@
  --icue-chat-prompt-control-hover: #47474e;
  --icue-chat-prompt-menu: #323236;
  --icue-chat-prompt-menu-hover: #424247;
- --icue-chat-prompt-focus: #81709f;
- --icue-chat-prompt-ring: #b39dff0c;
+ --icue-chat-prompt-focus: #8eafc9;
+ --icue-chat-prompt-ring: #8eafc90c;
+ --icue-chat-prompt-send: #2563eb;
 }

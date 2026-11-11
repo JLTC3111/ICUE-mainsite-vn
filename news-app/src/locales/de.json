@@ -230,6 +230,8 @@
   "profile": {
     "title": "Profil",
     "displayName": "Anzeigename",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
     "fullName": "Vollständiger Name",
     "bio": "Biografie",
     "avatar": "Profilbild",

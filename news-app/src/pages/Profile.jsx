@@ -23,6 +23,8 @@ export default function Profile() {
   }, [navigate])
 
   const [displayName, setDisplayName] = useState(profile?.display_name || '')
+  const [firstName, setFirstName] = useState(profile?.first_name || '')
+  const [lastName, setLastName] = useState(profile?.last_name || '')
   const [fullName, setFullName] = useState(profile?.full_name || '')
   const [bio, setBio] = useState(profile?.bio || '')
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || '')
@@ -47,6 +49,8 @@ export default function Profile() {
   useEffect(() => {
     if (dirtyRef.current || savingRef.current || !profile) return
     setDisplayName(profile.display_name || '')
+    setFirstName(profile.first_name || '')
+    setLastName(profile.last_name || '')
     setFullName(profile.full_name || '')
     setBio(profile.bio || '')
     setAvatarUrl(profile.avatar_url || '')
@@ -77,9 +81,11 @@ export default function Profile() {
         avatarFile.current = null
         if (mountedRef.current) setAvatarUrl(url)
       }
+      const given = firstName.trim()
+      const family = lastName.trim()
       const { error: updateError } = await supabase
         .from('profiles')
-        .update({ display_name: displayName, full_name: fullName, bio, avatar_url: url })
+        .update({ display_name: displayName, first_name: given || null, last_name: family || null, full_name: given && family ? `${given} ${family}` : fullName, bio, avatar_url: url })
         .eq('id', user.id)
         .select('id')
         .single()
@@ -95,7 +101,7 @@ export default function Profile() {
       savingRef.current = false
       if (mountedRef.current) setBusy(false)
     }
-  }, [avatarUrl, displayName, fullName, bio, user, refreshProfile, goBack])
+  }, [avatarUrl, displayName, firstName, lastName, fullName, bio, user, refreshProfile, goBack])
 
   return (
     <div className="profile icue-container">
@@ -118,6 +124,14 @@ export default function Profile() {
         <label className="field">
           <span>{t('profile.displayName')}</span>
           <input className="input" value={displayName} disabled={busy} onChange={(e) => { dirtyRef.current = true; setDisplayName(e.target.value) }} />
+        </label>
+        <label className="field">
+          <span>{t('profile.firstName')}</span>
+          <input className="input" value={firstName} disabled={busy} onChange={(e) => { dirtyRef.current = true; setFirstName(e.target.value) }} />
+        </label>
+        <label className="field">
+          <span>{t('profile.lastName')}</span>
+          <input className="input" value={lastName} disabled={busy} onChange={(e) => { dirtyRef.current = true; setLastName(e.target.value) }} />
         </label>
         <label className="field">
           <span>{t('profile.fullName')}</span>

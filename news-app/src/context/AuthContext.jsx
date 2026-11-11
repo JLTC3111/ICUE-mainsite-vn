@@ -37,6 +37,8 @@ export function AuthProvider({ children }) {
       const { data: created, error: insertError } = await client.from('profiles').insert({
         id: user.id,
         full_name: meta.full_name || null,
+        first_name: meta.first_name || null,
+        last_name: meta.last_name || null,
         display_name: meta.display_name || 'Author',
         avatar_url: meta.avatar_url || null,
       }).select('*').single()

@@ -230,6 +230,8 @@
   "profile": {
     "title": "プロフィール",
     "displayName": "表示名",
+    "firstName": "名",
+    "lastName": "姓",
     "fullName": "氏名",
     "bio": "自己紹介",
     "avatar": "プロフィール画像",

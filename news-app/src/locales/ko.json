@@ -230,6 +230,8 @@
   "profile": {
     "title": "프로필",
     "displayName": "표시 이름",
+    "firstName": "이름",
+    "lastName": "성",
     "fullName": "전체 이름",
     "bio": "소개",
     "avatar": "프로필 사진",

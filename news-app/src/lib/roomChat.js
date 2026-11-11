@@ -12,7 +12,9 @@ export async function roomChatRpc(name, args = {}, { signal } = {}) {
 export function validateRoomFile(file) {
   const extension = file?.name?.split('.').at(-1)?.toLowerCase()
   const mime = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', mp4: 'video/mp4' }[extension]
-  if (!mime || !file.size || file.size > 4 * 1024 * 1024 || !['', 'application/octet-stream', mime].includes(file.type)) throw new Error('ROOM_FILE_TYPE_SIZE')
+  const types = new Set(['', 'application/octet-stream', mime])
+  if (mime === 'image/jpeg') { types.add('image/jpg'); types.add('image/pjpeg') }
+  if (!mime || !file.size || file.size > 4 * 1024 * 1024 || !types.has(file.type)) throw new Error('ROOM_FILE_TYPE_SIZE')
 }
 
 async function roomFileRequest(body, { signal } = {}) {

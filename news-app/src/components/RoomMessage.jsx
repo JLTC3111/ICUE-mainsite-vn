@@ -1,7 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
-import { Download, FileImage, Film } from 'lucide-react'
-import { normalizeRoomDocument } from '../lib/roomDocument'
-import { downloadRoomFile } from '../lib/roomChat'
+import { Download, FileImage, Film, X } from 'lucide-react'
+import { normalizeRoomDocument, roomDocumentHasContent, ROOM_STICKERS } from '../lib/roomDocument'
+import { downloadRoomFile, roomChatRpc } from '../lib/roomChat'
+import RoomComposer from './RoomComposer'
+
+const EDIT_WINDOW = 48 * 60 * 60 * 1000
+const DELETE_WINDOW = 24 * 60 * 60 * 1000
+const editDocument = message => {
+  const blocks = message.document?.content || []
+  const paragraphs = blocks.filter(block => block.type !== 'sticker')
+  return {
+    document: { type: 'doc', content: paragraphs.length ? paragraphs : [{ type: 'paragraph' }] },
+    stickers: blocks.filter(block => block.type === 'sticker' && ROOM_STICKERS.includes(block.attrs?.name)).map(block => block.attrs.name),
+    sticker: null,
+    files: [],
+    pending: null,
+  }
+}
 
 export function RoomSticker({ name, label }) {
   return <svg className={`room-sticker room-sticker--${name}`} viewBox="0 0 80 80" width="64" height="64" role="img" aria-label={label}>
@@ -28,22 +43,58 @@ export function RoomDocument({ document, labels }) {
     })}</p>)
 }
 
-export default function RoomMessage({ message, roomId, userId, locale, labels }) {
-  const [busy, setBusy] = useState(null), [error, setError] = useState(false)
+export default function RoomMessage({ message, roomId, userId, locale, labels, archived = false, onUpdated }) {
+  const [busy, setBusy] = useState(null), [error, setError] = useState(false), [editing, setEditing] = useState(false), [editDraft, setEditDraft] = useState(null), [confirm, setConfirm] = useState(null)
+  const [now, setNow] = useState(() => Date.now())
   const controller = useRef(null), alive = useRef(true)
   useEffect(() => { alive.current = true; return () => { alive.current = false; controller.current?.abort() } }, [])
+  const own = message.user_id === userId
+  const deleted = Boolean(message.deleted_at)
+  const sentAt = new Date(message.created_at).getTime()
+  const age = now - sentAt
+  useEffect(() => {
+    if (!own || deleted || archived || !Number.isFinite(sentAt)) return undefined
+    const next = [sentAt + DELETE_WINDOW, sentAt + EDIT_WINDOW].find(limit => limit > Date.now())
+    if (!next) return undefined
+    const timer = setTimeout(() => setNow(Date.now()), Math.min(next - Date.now() + 50, 2 ** 31 - 1))
+    return () => clearTimeout(timer)
+  }, [own, deleted, archived, sentAt, now])
+  const canEdit = own && !deleted && !archived && age < EDIT_WINDOW && roomDocumentHasContent(message.document)
+  const canDelete = own && !deleted && !archived && age < DELETE_WINDOW
   async function download(file) {
     if (busy) return
     setBusy(file.id); setError(false)
     controller.current = new AbortController()
     try { await downloadRoomFile(roomId, file, { signal: controller.current.signal }) } catch { if (alive.current) setError(true) } finally { if (alive.current) setBusy(null) }
   }
-  return <article className={`room-message${message.user_id === userId ? ' room-message--self' : ''}`}>
-    <header><strong>{message.display_name}</strong><time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time></header>
-    <div className="room-message__body"><RoomDocument document={message.document} labels={labels} /></div>
-    {message.files?.length > 0 && <div className="room-message__files">{message.files.map(file => <button type="button" key={file.id} onClick={() => download(file)} disabled={Boolean(busy)} aria-label={`${labels.download}: ${file.name}`}>
+  async function change(name, args) {
+    if (busy) return
+    setBusy(name); setError(false)
+    try {
+      const data = await roomChatRpc(name, { p_room_id: roomId, ...args })
+      if (!data?.message) throw new Error('ROOM_RESPONSE')
+      onUpdated?.(data.message)
+      if (alive.current) { setEditing(false); setConfirm(null) }
+    } catch (cause) {
+      if (alive.current) setError(cause?.code === '22023' ? 'expired' : 'error')
+    } finally { if (alive.current) setBusy(null) }
+  }
+  function saveEdit() {
+    let document
+    try {
+      document = normalizeRoomDocument({ type: 'doc', content: [...(editDraft?.document?.content || []).filter(block => block.type !== 'sticker'), ...(editDraft?.stickers || []).map(name => ({ type: 'sticker', attrs: { name } }))] })
+    } catch { setError('error'); return }
+    if (!roomDocumentHasContent(document)) return
+    void change('edit', { p_message_id: message.id, p_document: document })
+  }
+  return <article className={`room-message${own ? ' room-message--self' : ''}`}>
+    <header><strong>{message.display_name}</strong><time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time>{message.edited_at && !deleted && <span className="room-message__edited">{labels.edited}</span>}</header>
+    {editing ? <RoomComposer roomId={roomId} draft={editDraft} onDraft={setEditDraft} onSend={saveEdit} sending={busy === 'edit'} labels={labels} editing onCancel={() => { setEditing(false); setError(false) }} /> : <div className="room-message__body">{deleted ? <p className="room-message__notice">{labels.deleted}</p> : <RoomDocument document={message.document} labels={labels} />}</div>}
+    {!editing && message.files?.length > 0 && <div className="room-message__files">{message.files.map(file => <div className="room-message__file" key={file.id}>{confirm === file.id ? <p className="room-message__confirm">{labels.confirmDeleteFile} <button type="button" onClick={() => change('delete_file', { p_file: file.id })} disabled={Boolean(busy)}>{labels.deleteFile}</button> <button type="button" onClick={() => setConfirm(null)} disabled={Boolean(busy)}>{labels.cancel}</button></p> : <><button className="room-message__download" type="button" onClick={() => download(file)} disabled={Boolean(busy)} aria-label={`${labels.download}: ${file.name}`}>
       {file.mime === 'video/mp4' ? <Film size={20} aria-hidden="true" /> : <FileImage size={20} aria-hidden="true" />}<span><strong>{file.name}</strong><small>{(file.size / 1024 / 1024).toFixed(2)} MB</small></span><Download size={16} aria-hidden="true" />
-    </button>)}</div>}
-    {error && <p className="room-chat__error" role="alert">{labels.error} <button type="button" onClick={() => setError(false)}>{labels.close}</button></p>}
+    </button>{canDelete && <button className="room-message__file-delete" type="button" aria-label={`${labels.deleteFile}: ${file.name}`} disabled={Boolean(busy)} onClick={() => setConfirm(file.id)}><X size={14} aria-hidden="true" /></button>}</>}</div>)}</div>}
+    {!editing && confirm === 'message' && <p className="room-message__confirm">{labels.confirmDelete} <button type="button" onClick={() => change('delete', { p_message_id: message.id })} disabled={Boolean(busy)}>{labels.deleteMessage}</button> <button type="button" onClick={() => setConfirm(null)} disabled={Boolean(busy)}>{labels.cancel}</button></p>}
+    {!editing && confirm !== 'message' && (canEdit || canDelete) && <div className="room-message__actions">{canEdit && <button type="button" onClick={() => { setEditDraft(editDocument(message)); setEditing(true); setError(false) }} disabled={Boolean(busy)}>{labels.edit}</button>}{canDelete && <button type="button" onClick={() => setConfirm('message')} disabled={Boolean(busy)}>{labels.deleteMessage}</button>}</div>}
+    {error && <p className="room-chat__error" role="alert">{labels[error] || labels.error} <button type="button" onClick={() => setError(false)}>{labels.close}</button></p>}
   </article>
 }
