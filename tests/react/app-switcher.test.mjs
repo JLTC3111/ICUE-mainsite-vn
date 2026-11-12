@@ -186,7 +186,7 @@ test('staff portal footer links render the two external portals in the same orde
 
 test('Card Nav springs into three app cards, uses the new toggle, and stops its frame loop', async t => {
   const f = await fixture(t, implementations[0][1], 'website');
-  assert.equal(f.trigger.querySelectorAll('svg.icue-apps__toggle > circle').length, 3);
+  assert.ok(f.trigger.querySelector('svg.icue-apps__toggle').classList.contains('lucide-spell-check'));
   assert.equal(f.trigger.querySelector('svg').getAttribute('aria-hidden'), 'true');
   await f.click(f.trigger, false);
   assert.equal(f.panel().querySelectorAll('.card-nav__card').length, 3);

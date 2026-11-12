@@ -10,7 +10,9 @@
     "home": "Startseite",
     "people": "Unser Team",
     "mainAria": "ICUE — zur Startseite",
-    "mainNav": "Hauptnavigation"
+    "mainNav": "Hauptnavigation",
+    "moreOptions": "Weitere Optionen",
+    "darkMode": "Dunkelmodus"
   },
   "drawer": {
     "menu": "Menü",
@@ -171,8 +173,6 @@
       "bao_cao_kiem_toan": "Jährlicher Prüfbericht (PDF, 129KB)",
       "danh_sach_tuan_thu": "Compliance-Checkliste (PDF, 152KB)"
     },
-    "searchOpen": "Suche öffnen",
-    "searchBack": "Zurück",
     "searchClear": "Löschen"
   },
   "modal": {

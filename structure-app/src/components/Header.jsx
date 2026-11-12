@@ -1,10 +1,7 @@
-import { memo, useCallback, useState } from 'react'
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DrawerMenu } from '@icue/drawer-menu'
-import LanguageSwitcher from './LanguageSwitcher'
-import DocumentSearch from './DocumentSearch'
-import ThemeToggle from '../../../shared/main-site-nav/ThemeToggle.jsx'
-import { pageThemeLabel } from '../../../shared/ui/pageTheme.js'
+import HeaderMenu from './HeaderMenu'
 import { LightRays } from './magicui/LightRays'
 import { useMainSite } from '../hooks/useMainSite'
 import './Header.css'
@@ -14,14 +11,9 @@ import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
 function Header({ pageTheme }) {
   const { t, i18n } = useTranslation()
   const { base, hashLink, peopleLink, structureLink } = useMainSite()
-  const [searchOpen, setSearchOpen] = useState(false)
-
-  const handleSearchOpenChange = useCallback((next) => {
-    setSearchOpen(next)
-  }, [])
 
   return (
-    <header className={`structure-site-header${searchOpen ? ' is-search-open' : ''}`}>
+    <header className="structure-site-header">
       <LightRays
         className="structure-site-header__rays"
         count={6}
@@ -47,15 +39,9 @@ function Header({ pageTheme }) {
 
         <nav className="structure-site-header__nav" aria-label={t('nav.mainNav')}>
           <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={pageTheme.isDark ? 'dark' : 'light'} compact />
-          <DocumentSearch open={searchOpen} onOpenChange={handleSearchOpenChange} />
-          <RubberSegment className="structure-site-header__segments" role="navigation" aria-label={t('nav.mainNav')} size="sm" value={null} equalSlots={false} disabled={searchOpen}
+          <RubberSegment className="structure-site-header__segments" role="navigation" aria-label={t('nav.mainNav')} size="sm" value={null} equalSlots={false}
             items={[{ value: 'home', label: t('nav.home'), href: hashLink('Home') }, { value: 'people', label: t('nav.people'), href: peopleLink('experts') }]} />
-          <LanguageSwitcher />
-          <ThemeToggle
-            checked={pageTheme.isDark}
-            onCheckedChange={pageTheme.setDark}
-            label={pageThemeLabel(i18n.resolvedLanguage || i18n.language)}
-          />
+          <HeaderMenu pageTheme={pageTheme} />
         </nav>
       </div>
     </header>

@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { SpellCheck } from 'lucide-react';
 import CardNav from '../ui/CardNav.jsx';
 import EcosystemCard from './EcosystemCard.jsx';
 import { getEcosystemNavigation } from './ecosystemCopy.js';
@@ -8,7 +9,7 @@ import './AppSwitcher.css';
 const PANEL_WIDTH = 860;
 const MOBILE_WIDTH = 760;
 
-export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'light', variant = 'plain', compact = false }) {
+export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'light', variant = 'plain', compact = false, className = '' }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [expandedApp, setExpandedApp] = useState(currentApp);
@@ -100,7 +101,7 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
   }
 
   return (
-    <div className={`icue-apps icue-apps--${variant}${compact ? ' icue-apps--compact' : ''}`}>
+    <div className={`icue-apps icue-apps--${variant}${compact ? ' icue-apps--compact' : ''}${className ? ` ${className}` : ''}`}>
       <button
         ref={triggerRef}
         type="button"
@@ -114,11 +115,7 @@ export default function AppSwitcher({ currentApp, locale = 'en', appearance = 'l
           if (event.key === 'ArrowDown') { event.preventDefault(); expand(); }
         }}
       >
-        <svg className="icue-apps__toggle" width="18" height="22" viewBox="0 0 20 24" fill="currentColor" aria-hidden="true" focusable="false">
-          <circle cx="10" cy="5" r="1.8" />
-          <circle cx="10" cy="12" r="1.8" />
-          <circle cx="10" cy="19" r="1.8" />
-        </svg>
+        <SpellCheck className="icue-apps__toggle" size={18} strokeWidth={1.9} aria-hidden="true" focusable="false" />
         <span className="icue-apps__trigger-label">{copy.trigger}</span>
       </button>
       {mounted && createPortal(

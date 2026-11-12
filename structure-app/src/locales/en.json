@@ -10,7 +10,9 @@
     "home": "Home",
     "people": "Our People",
     "mainAria": "ICUE — back to home",
-    "mainNav": "Main navigation"
+    "mainNav": "Main navigation",
+    "moreOptions": "More options",
+    "darkMode": "Dark mode"
   },
   "drawer": {
     "menu": "Menu",
@@ -171,8 +173,6 @@
       "bao_cao_kiem_toan": "Annual Audit Report (PDF, 129KB)",
       "danh_sach_tuan_thu": "Compliance Checklist (PDF, 152KB)"
     },
-    "searchOpen": "Open search",
-    "searchBack": "Back",
     "searchClear": "Clear"
   },
   "modal": {

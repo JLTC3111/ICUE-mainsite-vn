@@ -8,6 +8,8 @@ import { useMainSite } from '../hooks/useMainSite'
 import LanguageSwitcher from './LanguageSwitcher'
 import { DrawerMenu } from '@icue/drawer-menu'
 import ArticleSearch from './ArticleSearch'
+import DevIcon218 from './icons/DevIcon218'
+import { useNewsroomSearch } from '../context/NewsroomSearchContext'
 import NewsroomThemeToggle from './NewsroomThemeToggle'
 import PerformanceModeToggle from './PerformanceModeToggle'
 import { AnimatedShinyText } from './magicui/AnimatedShinyText'
@@ -186,6 +188,7 @@ function Header({ appearance = 'light' }) {
   const { t, i18n } = useTranslation()
   const { base, archiveLink, hashLink, peopleLink, structureLink } = useMainSite()
   const { isAuthed, profile, user, signOut, canEdit } = useAuth()
+  const { query, hasQuery } = useNewsroomSearch()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -245,7 +248,13 @@ function Header({ appearance = 'light' }) {
           >
             {t('brandBadge')}
           </NavLink>
-          <AppSwitcher currentApp="website" locale={i18n.resolvedLanguage || i18n.language} appearance={appearance} compact />
+          <AppSwitcher
+            currentApp="website"
+            locale={i18n.resolvedLanguage || i18n.language}
+            appearance={appearance}
+            compact
+            className="icue-header__apps"
+          />
         </div>
 
         {isReaderRoute && (
@@ -257,12 +266,11 @@ function Header({ appearance = 'light' }) {
 
         {usesOverflowNav && (
           <div className="icue-header__responsive-actions">
+            {/* Only the open overlay shows here; the More menu opens it. */}
             <ArticleSearch
               open={searchOpen}
               onOpenChange={handleSearchOpenChange}
             />
-            {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && canEdit !== false && <DeferredNotificationBell key={`responsive-${user?.id}`} compact />}
           </div>
         )}
 
@@ -311,7 +319,17 @@ function Header({ appearance = 'light' }) {
           {isAuthed && canEdit !== false && <AuthorToolsMenu key={pathname} onNavigate={close} />}
 
           <div className="icue-header__right">
-            {!usesOverflowNav && (
+            {usesOverflowNav ? (
+              <button
+                type="button"
+                className="icue-header__menu-action"
+                onClick={() => handleSearchOpenChange(true)}
+              >
+                <DevIcon218 className="icue-header__menu-action-icon" />
+                <span>{t('search.label')}</span>
+                {hasQuery && <span className="icue-header__menu-action-dot" aria-label={t('search.showing', { query: query.trim() })} />}
+              </button>
+            ) : (
               <ArticleSearch
                 open={searchOpen}
                 expanded={showExpandedSearch}
@@ -319,7 +337,7 @@ function Header({ appearance = 'light' }) {
               />
             )}
             {/* Keyed by account so notification state resets on user switch. */}
-            {isAuthed && canEdit !== false && !usesOverflowNav && <DeferredNotificationBell key={user?.id} />}
+            {isAuthed && canEdit !== false && <DeferredNotificationBell key={user?.id} />}
             <LanguageSwitcher />
             {isAuthed ? (
               <button className="icue-header__avatar-btn" onClick={handleSignOut} title={t('nav.logout')}>

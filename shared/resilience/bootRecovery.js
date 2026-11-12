@@ -38,7 +38,25 @@ export function installBootRecovery(modulePaths = [], recoveryCss = '') {
   let notice
   let loadingNotice
   let loadingDelayElapsed = false
-  const language = new URLSearchParams(window.location.search).get('lang') || document.documentElement.lang
+  const normalizeLanguage = value => {
+    const base = String(value || '').trim().toLowerCase().split(/[-_]/)[0]
+    const code = { vn: 'vi', gb: 'en', uk: 'en', kr: 'ko', jp: 'ja' }[base] || base
+    return ['vi', 'en', 'de', 'fr', 'ko', 'ja'].includes(code) ? code : null
+  }
+  let storedLanguage = null
+  try {
+    storedLanguage = window.localStorage?.getItem('icue_news_lang')
+  } catch {
+    // Storage may be unavailable in privacy-restricted browsing contexts.
+  }
+  const entryParams = new URLSearchParams(window.location.search)
+  const language = normalizeLanguage(entryParams.get('lang'))
+    || (entryParams.get('site') === 'en' || entryParams.get('from') === 'en-news' ? 'en' : null)
+    || normalizeLanguage(storedLanguage)
+    || normalizeLanguage(document.documentElement.lang)
+  // Every index.html ships lang="vi" and apps correct it only after mounting,
+  // so React loading notices shown before then would read the wrong language.
+  if (language) document.documentElement.lang = language
   const loadingLabel = {
     vi: 'Đang tải…', en: 'Loading…', de: 'Wird geladen…',
     fr: 'Chargement…', ko: '불러오는 중…', ja: '読み込み中…',

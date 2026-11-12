@@ -2,9 +2,11 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { sourceModule, platform } from './testHarness.js'
 
-async function boot(t, href = 'https://icue.test/notable-awards?lang=en&test=1#certifications', modules = []) {
+async function boot(t, href = 'https://icue.test/notable-awards?lang=en&test=1#certifications', modules = [], { storedLanguage, htmlLang } = {}) {
   t.mock.timers.enable({ apis: ['setTimeout'] })
   const f = platform()
+  if (htmlLang) f.document.documentElement.lang = htmlLang
+  if (storedLanguage) f.window.localStorage = { getItem: key => key === 'icue_news_lang' ? storedLanguage : null }
   const nodes = []
   const maps = []
   f.document.head = { append: node => maps.push(node) }
@@ -115,6 +117,18 @@ test('slow startup shows a localized lattice before React and removes it on moun
   t.mock.timers.tick(25_000)
   assert.equal(f.nodes.length, 0)
   assert.equal(f.navigations.length, 0)
+})
+
+test('without ?lang= the stored preference outranks the static lang="vi"', async t => {
+  const f = await boot(t, 'https://icue.test/contact/', [], { storedLanguage: 'de', htmlLang: 'vi' })
+  assert.equal(f.document.documentElement.lang, 'de', 'React loading notices read <html lang> before the app mounts')
+  t.mock.timers.tick(1500)
+  assert.equal(f.nodes[0].children[0].children[1].textContent, 'Wird geladen…')
+})
+
+test('an English-site hand-off outranks the stored preference', async t => {
+  const f = await boot(t, 'https://icue.test/contact/?site=en', [], { storedLanguage: 'vi', htmlLang: 'vi' })
+  assert.equal(f.document.documentElement.lang, 'en')
 })
 
 test('startup failure replaces the lattice with the existing recovery action', async t => {

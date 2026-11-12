@@ -54,6 +54,14 @@ body.nav-drawer-open .market-strip {
   transition: opacity 0.18s ease;
 }
 .icue-header__brand:hover { opacity: 0.82; }
+.icue-header .icue-header__apps .icue-apps__trigger {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
 .icue-header__logo { font-size: 22px; color: var(--icue-black); }
 .icue-header__tag {
   display: inline-flex;
@@ -338,6 +346,63 @@ body.nav-drawer-open .market-strip {
 .icue-header__author-item.active {
   background: var(--icue-surface-2);
   color: var(--icue-text);
+}
+
+.icue-header__menu-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--icue-surface) 70%, var(--icue-border));
+  border-radius: 12px;
+  background: var(--icue-surface);
+  color: var(--icue-text-soft);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    5px 5px 12px rgba(16, 19, 24, 0.1),
+    -4px -4px 10px rgba(255, 255, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.icue-header__menu-action:hover {
+  color: var(--icue-text);
+  border-color: color-mix(in srgb, var(--icue-border) 55%, var(--icue-text));
+}
+
+.icue-header__menu-action-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
+.icue-header__menu-action-dot {
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--icue-nav-hover-line);
+}
+
+.icue-app--news-theme-dark .icue-header__menu-action {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: #171717;
+  color: #9aa0a6;
+  box-shadow:
+    5px 5px 12px rgba(0, 0, 0, 0.55),
+    -3px -3px 8px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.icue-app--news-theme-dark .icue-header__menu-action:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 
 /* Compact: icon-only author menu when header space is tight */
@@ -688,9 +753,15 @@ body.nav-drawer-open .market-strip {
   color: #fff;
 }
 
-.icue-app--news-theme-dark .icue-header__brand-box {
-  border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+@media (min-width: 1025px) {
+  .icue-app--news-theme-dark .icue-header__brand-box {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.icue-app--news-theme-dark .icue-header__brand-box .icue-apps {
+  color: #f3f4f6;
 }
 
 .icue-app--news-theme-dark .icue-header__link {
@@ -869,6 +940,10 @@ body.nav-drawer-open .market-strip {
     justify-content: space-between;
   }
 
+  .icue-header__inner > .icue-header__brand-box {
+    margin-right: auto;
+  }
+
   .icue-header__theme-toggle {
     display: none;
   }
@@ -883,6 +958,10 @@ body.nav-drawer-open .market-strip {
     display: contents;
   }
 
+  .icue-header__responsive-actions .article-search:not(.is-open) {
+    display: none;
+  }
+
   .icue-header__burger {
     margin-left: 0;
   }
@@ -890,13 +969,7 @@ body.nav-drawer-open .market-strip {
 
 @media (max-width: 600px) {
   .icue-header__inner {
-    gap: 6px;
-  }
-
-  .icue-header__responsive-actions .article-search:not(.is-open) .article-search__motion,
-  .icue-header__responsive-actions .article-search:not(.is-open) .article-search__btn {
-    width: 36px;
-    height: 36px;
+    gap: 10px;
   }
 
   .icue-header__theme-toggle--mobile.newsroom-theme-toggle--compact-label.animated-theme-toggler--header {
@@ -919,7 +992,7 @@ body.nav-drawer-open .market-strip {
 
 @media (max-width: 480px) {
   .icue-header__inner {
-    gap: 3px;
+    gap: 8px;
     padding-inline: 8px;
   }
 
@@ -936,6 +1009,13 @@ body.nav-drawer-open .market-strip {
     gap: 4px;
   }
 
+  .icue-header .icue-header__apps .icue-apps__trigger {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+  }
+
   .icue-header__logo {
     font-size: 19px;
   }
@@ -946,9 +1026,6 @@ body.nav-drawer-open .market-strip {
     font-size: 10px;
   }
 
-  .icue-header__responsive-actions .article-search:not(.is-open) .article-search__motion,
-  .icue-header__responsive-actions .article-search:not(.is-open) .article-search__btn,
-  .icue-header__responsive-actions .notif--compact .notif__trigger,
   .icue-header__theme-toggle--mobile.newsroom-theme-toggle--compact-label.animated-theme-toggler--header {
     width: 34px;
     height: 34px;

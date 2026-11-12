@@ -100,6 +100,18 @@ test('notification reconnect supersedes a hung badge read and ignores its late r
   let renderer; await act(async () => { renderer = create(React.createElement(Fixture)) }); await act(async () => f.window.dispatchEvent(new Event('online')))
   assert.equal(firstSignal.aborted, true); assert.equal(latest.unreadCount, 5); await act(async () => pending.resolve(99)); assert.equal(latest.unreadCount, 5); await unmount(renderer)
 })
+test('notification badge reloads after a strict-mode remount aborts its first read', async t => {
+  silenceRenderer(t); const f = platform(); let calls = 0, latest; const unhandled = []
+  const onUnhandled = reason => unhandled.push(reason); process.on('unhandledRejection', onUnhandled); t.after(() => process.off('unhandledRejection', onUnhandled))
+  const mod = await sourceModule('news-app/src/hooks/useNotifications.js', { globals: f, imports: {
+    '../context/AuthContext': { useAuth: () => ({ user: { id: 'u' }, isAuthed: true }) },
+    '../lib/notifications': { fetchUnreadCount: ({ signal }) => { calls++; if (calls > 1) return Promise.resolve(3); return new Promise((_, reject) => signal.addEventListener('abort', () => reject({ message: 'AbortError: signal is aborted without reason' }), { once: true })) }, fetchNotifications: async () => [], isMissingNotificationsSchema: () => false, subscribeToNotifications: () => () => {}, markNotificationRead: async () => {}, markAllNotificationsRead: async () => {}, dismissNotification: async () => {} },
+  } })
+  function Fixture() { latest = mod.default(); return null }
+  let renderer; await act(async () => { renderer = create(React.createElement(React.StrictMode, null, React.createElement(Fixture))) })
+  await act(async () => new Promise(resolve => setImmediate(resolve)))
+  assert.equal(calls, 2); assert.equal(latest.unreadCount, 3); assert.deepEqual(unhandled, []); await unmount(renderer)
+})
 async function authFixture(t, { read, getSession, initialSession } = {}) {
   silenceRenderer(t); const f = platform(); let authChanged, latest, inserts = 0
   const session = initialSession ?? { user: { id: 'u', email: 'fixture@example.test' } }

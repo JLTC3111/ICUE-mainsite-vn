@@ -53,18 +53,8 @@
   border-color: var(--icue-border);
 }
 
-[data-icue-page-theme='dark'] .documents-empty,
-[data-icue-page-theme='dark'] .document-search__input::placeholder {
+[data-icue-page-theme='dark'] .documents-empty {
   color: var(--icue-text-faint);
-}
-
-[data-icue-page-theme='dark'] .document-search__btn {
-  color: var(--np-text);
-}
-
-[data-icue-page-theme='dark'] :is(.document-search__btn, .document-search__input):focus-visible {
-  outline: 2px solid var(--icue-accent);
-  outline-offset: 3px;
 }
 
 .structure-site-header .home-video-toggle {

@@ -55,30 +55,35 @@ export default function useNotifications() {
   const refreshCount = useCallback(async ({ force = false } = {}) => {
     if (!userId) return
     if (pendingMutationCountRef.current > 0) return
-    if (countRequestRef.current && !force) return countRequestRef.current
+    if (countRequestRef.current && !force && !countAbortRef.current?.signal.aborted) {
+      return countRequestRef.current
+    }
     countAbortRef.current?.abort()
     const controller = new AbortController()
     countAbortRef.current = controller
 
     const mutationVersion = mutationVersionRef.current
+    // Shared with deduplicated callers, which do not await it — it must never reject.
     const request = fetchUnreadCount({ signal: controller.signal })
+      .then((nextCount) => {
+        if (controller.signal.aborted) return
+        if (
+          pendingMutationCountRef.current > 0
+          || mutationVersion !== mutationVersionRef.current
+        ) {
+          return
+        }
+        setUnreadCount(nextCount)
+        setError(false)
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) handleError(e)
+      })
+      .finally(() => {
+        if (countRequestRef.current === request) countRequestRef.current = null
+      })
     countRequestRef.current = request
-    try {
-      const nextCount = await request
-      if (controller.signal.aborted) return
-      if (
-        pendingMutationCountRef.current > 0
-        || mutationVersion !== mutationVersionRef.current
-      ) {
-        return
-      }
-      setUnreadCount(nextCount)
-      setError(false)
-    } catch (e) {
-      if (!controller.signal.aborted) handleError(e)
-    } finally {
-      if (countRequestRef.current === request) countRequestRef.current = null
-    }
+    return request
   }, [userId, handleError])
 
   const refreshList = useCallback(async function refreshListSnapshot({ ensureFresh = false } = {}) {
