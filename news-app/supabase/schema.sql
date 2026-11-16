@@ -4370,3 +4370,353 @@ revoke all on function public.handle_new_user() from public,anon,authenticated;
 grant insert (first_name, last_name) on table public.profiles to authenticated;
 grant update (first_name, last_name) on table public.profiles to authenticated;
 commit;
+
+
+-- Source: migrations/20261112081500_room_direct_messages.sql
+-- One-to-one direct messages between internal accounts. Only the two participants
+-- can read a DM; it turns read-only once either side stops being an active internal account.
+begin;
+alter table icue_rooms.rooms drop constraint rooms_kind_check;
+alter table icue_rooms.rooms add constraint rooms_kind_check check (kind in ('members','customers','staff','dm'));
+
+create table icue_rooms.direct_rooms(
+ room_id uuid primary key references icue_rooms.rooms(id) on delete cascade,
+ user_low uuid not null references auth.users(id) on delete cascade,
+ user_high uuid not null references auth.users(id) on delete cascade,
+ check(user_low<user_high),unique(user_low,user_high)
+);
+create index room_direct_high_idx on icue_rooms.direct_rooms(user_high);
+alter table icue_rooms.direct_rooms enable row level security;
+revoke all on icue_rooms.direct_rooms from public,anon,authenticated;
+
+create function icue_rooms.active_internal(p_user_id uuid) returns boolean language sql stable security definer set search_path='' as $$
+ select exists(select 1 from public.profiles p join auth.users u on u.id=p.id where p.id=p_user_id
+  and p.role::text in ('member','author','manager','admin','owner')
+  and not coalesce(u.is_anonymous,false) and u.email_confirmed_at is not null and u.deleted_at is null
+  and (u.banned_until is null or u.banned_until<=clock_timestamp()));
+$$;
+
+create function icue_rooms.direct_writable(p_room_id uuid,p_user_id uuid) returns boolean language sql stable security definer set search_path='' as $$
+ select icue_rooms.active_internal(p_user_id)
+  and exists(select 1 from icue_rooms.participants where room_id=p_room_id and user_id=p_user_id)
+  and exists(select 1 from icue_rooms.participants x where x.room_id=p_room_id and x.user_id<>p_user_id and icue_rooms.active_internal(x.user_id));
+$$;
+
+create or replace function icue_rooms.authorize(p_room_id uuid,p_write boolean default false) returns void language plpgsql stable security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();begin
+ if not exists(select 1 from icue_rooms.rooms r where r.id=p_room_id and (not p_write or not r.archived)
+  and ((r.kind in ('members','staff') and a->>'role' in ('member','author','manager','admin','owner'))
+    or (r.kind='customers' and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid()))
+    or (r.kind='dm' and a->>'role' in ('member','author','manager','admin','owner')
+      and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid())
+      and (not p_write or icue_rooms.direct_writable(r.id,auth.uid())))))
+ then raise insufficient_privilege using message='Room unavailable.';end if;
+end $$;
+
+create function icue_rooms.room_json(p_room_id uuid) returns jsonb language sql stable security definer set search_path='' as $$
+ select to_jsonb(r) || case when r.kind='dm' then jsonb_build_object(
+  'peer',(select jsonb_strip_nulls(jsonb_build_object('id',p.id,'display_name',p.display_name,'full_name',nullif(trim(p.full_name),''),'email',nullif(trim(u.email),'')))
+   from icue_rooms.participants x join public.profiles p on p.id=x.user_id join auth.users u on u.id=p.id
+   where x.room_id=r.id and x.user_id<>auth.uid() limit 1),
+  'read_only',not icue_rooms.direct_writable(r.id,auth.uid())) else '{}'::jsonb end
+ from icue_rooms.rooms r where r.id=p_room_id;
+$$;
+
+create or replace function icue_rooms.bootstrap() returns jsonb language plpgsql security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();v jsonb;begin
+ select coalesce(jsonb_agg(icue_rooms.room_json(r.id) order by r.updated_at desc,r.id),'[]'::jsonb) into v from icue_rooms.rooms r
+ where (r.kind in ('members','staff') and a->>'role' in ('member','author','manager','admin','owner'))
+ or (r.kind='customers' and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid()))
+ or (r.kind='dm' and a->>'role' in ('member','author','manager','admin','owner')
+  and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid()));
+ return jsonb_build_object('account',a,'rooms',v,'can_manage',icue_rooms.can_manage());
+end $$;
+
+create or replace function icue_rooms.file_ready(p_id uuid,p_size integer,p_sha256 text) returns jsonb language plpgsql security definer set search_path='' as $$
+declare f icue_rooms.files;begin
+ select * into f from icue_rooms.files where id=p_id;
+ if f.id is null then raise insufficient_privilege using message='File unavailable.';end if;
+ perform 1 from icue_rooms.rooms where id=f.room_id for update;
+ select * into f from icue_rooms.files where id=p_id for update;
+ if f.id is null or p_size is null or p_sha256 is null or f.size<>p_size or f.sha256<>p_sha256 or f.created_at<=clock_timestamp()-interval '1 hour'
+ or not exists(select 1 from auth.users u join public.profiles p on p.id=u.id join icue_rooms.rooms r on r.id=f.room_id
+ where u.id=f.user_id and u.email_confirmed_at is not null and not coalesce(u.is_anonymous,false) and u.deleted_at is null
+ and (u.banned_until is null or u.banned_until<=clock_timestamp()) and not r.archived
+ and ((r.kind in ('members','staff') and p.role::text in ('member','author','manager','admin','owner'))
+ or (r.kind='customers' and exists(select 1 from icue_rooms.participants x where x.room_id=r.id and x.user_id=u.id))
+ or (r.kind='dm' and icue_rooms.direct_writable(r.id,u.id))))
+ then raise insufficient_privilege using message='File unavailable or expired.';end if;
+ update icue_rooms.files set state='ready' where id=p_id;
+ return jsonb_build_object('id',f.id,'name',f.name,'mime',f.mime,'size',f.size,'sha256',f.sha256,'path',f.path,'status','ready');
+end $$;
+
+-- Managers never see a DM's participants or network records, even when they are in it.
+create or replace function icue_rooms.participant_list(p_room_id uuid) returns jsonb language plpgsql security definer set search_path='' as $$
+begin
+ perform icue_rooms.authorize(p_room_id);
+ if not icue_rooms.can_manage() or exists(select 1 from icue_rooms.rooms where id=p_room_id and kind='dm')
+ then raise insufficient_privilege using message='Room manager required.';end if;
+ return jsonb_build_object('participants',coalesce((select jsonb_agg(jsonb_build_object('id',p.id,'display_name',p.display_name,'role',p.role) order by p.display_name,p.id)
+ from icue_rooms.participants x join public.profiles p on p.id=x.user_id where x.room_id=p_room_id),'[]'::jsonb));
+end $$;
+
+create or replace function icue_rooms.network_events(p_room_id uuid) returns jsonb language plpgsql security definer set search_path='' as $$
+begin
+ perform icue_rooms.authorize(p_room_id);
+ if not icue_rooms.can_manage() or exists(select 1 from icue_rooms.rooms where id=p_room_id and kind='dm')
+ then raise insufficient_privilege using message='Room manager required.';end if;
+ return jsonb_build_object('events',coalesce((select jsonb_agg(to_jsonb(s)) from (select e.id,e.user_id,p.display_name,e.ip,e.source,e.vpn_status,e.proxy_status,e.provider,e.created_at
+ from icue_rooms.network_events e join public.profiles p on p.id=e.user_id join icue_rooms.rooms r on r.id=p_room_id
+ where e.created_at>clock_timestamp()-interval '7 days' and ((r.kind in ('members','staff') and p.role::text in ('member','author','manager','admin','owner'))
+ or (r.kind='customers' and exists(select 1 from icue_rooms.participants x where x.room_id=r.id and x.user_id=e.user_id)))
+ order by e.created_at desc,e.id desc limit 100)s),'[]'::jsonb));
+end $$;
+
+create or replace function icue_rooms.create_room(p_name text,p_customer_ids uuid[]) returns jsonb language plpgsql security definer set search_path='' as $$
+declare v_id uuid;begin
+ if not icue_rooms.can_manage() then raise insufficient_privilege using message='Room manager required.';end if;
+ if p_name is null or char_length(btrim(p_name)) not between 1 and 100 or p_name ~ '[[:cntrl:]]'
+ or p_customer_ids is null or cardinality(p_customer_ids) not between 1 and 50 or array_position(p_customer_ids,null) is not null
+ or (select count(distinct x) from unnest(p_customer_ids)x)<>cardinality(p_customer_ids)
+ then raise invalid_parameter_value using message='Room name and 1–50 customers required.';end if;
+ if (select count(*) from public.profiles p join auth.users u on u.id=p.id where p.id=any(p_customer_ids) and p.role::text='customer'
+ and not coalesce(u.is_anonymous,false) and u.email_confirmed_at is not null and u.deleted_at is null and (u.banned_until is null or u.banned_until<=clock_timestamp()))<>cardinality(p_customer_ids)
+ then raise insufficient_privilege using message='Customer unavailable.';end if;
+ perform 1 from public.profiles where id=auth.uid() for update;
+ if (select count(*) from icue_rooms.rooms where created_by=auth.uid() and kind<>'dm' and created_at>clock_timestamp()-interval '1 day')>=30
+ then raise program_limit_exceeded using message='Room creation limit reached.';end if;
+ insert into icue_rooms.rooms(name,kind,created_by) values(btrim(p_name),'customers',auth.uid()) returning id into v_id;
+ insert into icue_rooms.participants(room_id,user_id) select v_id,x from unnest(array_append(p_customer_ids,auth.uid()))x;
+ return jsonb_build_object('room',(select to_jsonb(r) from icue_rooms.rooms r where id=v_id));
+end $$;
+
+create or replace function icue_rooms.create_staff_room(p_name text) returns jsonb language plpgsql security definer set search_path='' as $$
+declare v_id uuid;begin
+ if not icue_rooms.can_manage() then raise insufficient_privilege using message='Room manager required.';end if;
+ if p_name is null or char_length(btrim(p_name)) not between 1 and 100 or p_name ~ '[[:cntrl:]]'
+ then raise invalid_parameter_value using message='Room name required.';end if;
+ perform 1 from public.profiles where id=auth.uid() for update;
+ if (select count(*) from icue_rooms.rooms where created_by=auth.uid() and kind<>'dm' and created_at>clock_timestamp()-interval '1 day')>=30
+ then raise program_limit_exceeded using message='Room creation limit reached.';end if;
+ insert into icue_rooms.rooms(name,kind,created_by) values(btrim(p_name),'staff',auth.uid()) returning id into v_id;
+ return jsonb_build_object('room',(select to_jsonb(r) from icue_rooms.rooms r where id=v_id));
+end $$;
+
+-- Both account rows are locked in id order, so concurrent opens of the same pair serialize.
+create function icue_rooms.open_direct(p_user_id uuid) returns jsonb language plpgsql security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();v_low uuid;v_high uuid;v_id uuid;begin
+ if a->>'role' not in ('member','author','manager','admin','owner') then raise insufficient_privilege using message='Chat membership required.';end if;
+ if p_user_id is null or p_user_id=auth.uid() then raise invalid_parameter_value using message='Choose another account.';end if;
+ v_low:=least(auth.uid(),p_user_id);v_high:=greatest(auth.uid(),p_user_id);
+ perform 1 from public.profiles where id=v_low for update;
+ perform 1 from public.profiles where id=v_high for update;
+ if not icue_rooms.active_internal(auth.uid()) or not icue_rooms.active_internal(p_user_id)
+ then raise insufficient_privilege using message='Account unavailable.';end if;
+ select room_id into v_id from icue_rooms.direct_rooms where user_low=v_low and user_high=v_high;
+ if v_id is null then
+  if (select count(*) from icue_rooms.rooms where created_by=auth.uid() and kind='dm' and created_at>clock_timestamp()-interval '1 day')>=30
+  then raise program_limit_exceeded using message='Direct message limit reached.';end if;
+  insert into icue_rooms.rooms(name,kind,created_by) values('Direct message','dm',auth.uid()) returning id into v_id;
+  insert into icue_rooms.direct_rooms(room_id,user_low,user_high) values(v_id,v_low,v_high);
+  insert into icue_rooms.participants(room_id,user_id) values(v_id,v_low),(v_id,v_high);
+ end if;
+ return jsonb_build_object('room',icue_rooms.room_json(v_id));
+end $$;
+
+create function public.room_chat_direct(p_user_id uuid) returns jsonb language sql security invoker set search_path='' as $$
+ select icue_rooms.open_direct(p_user_id);
+$$;
+
+revoke all on function icue_rooms.active_internal(uuid),icue_rooms.direct_writable(uuid,uuid),icue_rooms.room_json(uuid) from public,anon,authenticated,service_role;
+revoke all on function icue_rooms.open_direct(uuid) from public,anon,authenticated,service_role;
+revoke all on function public.room_chat_direct(uuid) from public,anon,authenticated,service_role;
+grant execute on function icue_rooms.open_direct(uuid),public.room_chat_direct(uuid) to authenticated;
+commit;
+
+
+-- Source: migrations/20261112090000_room_rich_text.sql
+-- Chat messages may contain bullet and numbered lists (three levels) and text
+-- colour/size from a fixed palette. Colours and sizes must match roomDocument.js.
+begin;
+create or replace function icue_rooms.validate_document(d jsonb) returns integer language plpgsql immutable set search_path='' as $$
+declare
+ v_colors constant text[]:=array['#b42318','#c4320a','#a15c07','#067647','#175cd3','#6927da','#c11574','#475467'];
+ v_sizes constant text[]:=array['11px','17px','22px'];
+ v_stack jsonb;e jsonb;n jsonb;p text;l integer;t jsonb;m jsonb;a jsonb;v_types text[];
+ v_size integer:=0;v_chars integer:=0;v_nodes integer:=0;v_blocks integer:=0;
+begin
+ if jsonb_typeof(d) is distinct from 'object' or d->>'type' is distinct from 'doc' or d-array['type','content']<>'{}'::jsonb
+ or jsonb_typeof(d->'content') is distinct from 'array' or octet_length(d::text)>64000 or jsonb_array_length(d->'content')>100
+ then raise invalid_parameter_value using message='Unsupported message document.';end if;
+ select coalesce(jsonb_agg(jsonb_build_object('n',value,'p','doc','l',0)),'[]'::jsonb) into v_stack from jsonb_array_elements(d->'content');
+ while jsonb_array_length(v_stack)>0 loop
+  e:=v_stack->(jsonb_array_length(v_stack)-1);v_stack:=v_stack-(jsonb_array_length(v_stack)-1);
+  n:=e->'n';p:=e->>'p';l:=(e->>'l')::integer;
+  v_blocks:=v_blocks+1;
+  if v_blocks>500 or jsonb_typeof(n) is distinct from 'object' then raise invalid_parameter_value using message='Unsupported message node.';end if;
+  if n->>'type'='sticker' and p='doc' then
+   if n-array['type','attrs']<>'{}'::jsonb or jsonb_typeof(n->'attrs') is distinct from 'object'
+    or (n->'attrs')-'name'<>'{}'::jsonb or (n->'attrs'->>'name') is null or n->'attrs'->>'name' not in ('wave','celebrate','heart')
+   then raise invalid_parameter_value using message='Unsupported sticker.';end if;
+   v_size:=v_size+1;
+  elsif n->>'type'='paragraph' and p in ('doc','listItem') then
+   if n-array['type','content']<>'{}'::jsonb or (n ? 'content' and jsonb_typeof(n->'content') is distinct from 'array')
+   then raise invalid_parameter_value using message='Unsupported paragraph.';end if;
+   for t in select value from jsonb_array_elements(coalesce(n->'content','[]'::jsonb)) loop
+    v_nodes:=v_nodes+1;
+    if v_nodes>1000 or jsonb_typeof(t) is distinct from 'object' or t->>'type' is distinct from 'text'
+     or t-array['type','text','marks']<>'{}'::jsonb or jsonb_typeof(t->'text') is distinct from 'string'
+     or (t ? 'marks' and jsonb_typeof(t->'marks') is distinct from 'array')
+    then raise invalid_parameter_value using message='Unsupported text.';end if;
+    v_size:=v_size+char_length(btrim(t->>'text'));
+    v_chars:=v_chars+char_length(t->>'text');
+    if jsonb_array_length(coalesce(t->'marks','[]'::jsonb))>5 then raise invalid_parameter_value using message='Too many text marks.';end if;
+    v_types:='{}';
+    for m in select value from jsonb_array_elements(coalesce(t->'marks','[]'::jsonb)) loop
+     if jsonb_typeof(m) is distinct from 'object' or m->>'type' is null or m->>'type'=any(v_types)
+     then raise invalid_parameter_value using message='Unsupported text mark.';end if;
+     v_types:=v_types||(m->>'type');
+     if m->>'type' in ('bold','italic','underline','strike') then
+      if m-'type'<>'{}'::jsonb then raise invalid_parameter_value using message='Unsupported text mark.';end if;
+     elsif m->>'type'='textStyle' then
+      a:=m->'attrs';
+      if m-array['type','attrs']<>'{}'::jsonb or jsonb_typeof(a) is distinct from 'object' or a-array['color','fontSize']<>'{}'::jsonb
+       or (a ? 'color' and jsonb_typeof(a->'color')<>'null' and (jsonb_typeof(a->'color')<>'string' or not (a->>'color'=any(v_colors))))
+       or (a ? 'fontSize' and jsonb_typeof(a->'fontSize')<>'null' and (jsonb_typeof(a->'fontSize')<>'string' or not (a->>'fontSize'=any(v_sizes))))
+       or coalesce(a->>'color',a->>'fontSize') is null
+      then raise invalid_parameter_value using message='Unsupported text style.';end if;
+     else raise invalid_parameter_value using message='Unsupported text mark.';
+     end if;
+    end loop;
+   end loop;
+  elsif n->>'type' in ('bulletList','orderedList') and p in ('doc','listItem') then
+   if l>=3 then raise invalid_parameter_value using message='Lists are nested too deeply.';end if;
+   if n-array['type','content','attrs']<>'{}'::jsonb or jsonb_typeof(n->'content') is distinct from 'array'
+    or jsonb_array_length(n->'content') not between 1 and 100
+    or (n ? 'attrs' and (n->>'type'='bulletList' or jsonb_typeof(n->'attrs') is distinct from 'object'
+     or (n->'attrs')-array['start','type']<>'{}'::jsonb
+     or (n->'attrs' ? 'type' and jsonb_typeof(n->'attrs'->'type') is distinct from 'null')
+     or (n->'attrs' ? 'start' and (jsonb_typeof(n->'attrs'->'start') is distinct from 'number'
+      or (n->'attrs'->>'start') !~ '^[0-9]{1,4}$' or (n->'attrs'->>'start')::integer<1))))
+   then raise invalid_parameter_value using message='Unsupported list.';end if;
+   v_stack:=v_stack||(select jsonb_agg(jsonb_build_object('n',value,'p','list','l',l+1)) from jsonb_array_elements(n->'content'));
+  elsif n->>'type'='listItem' and p='list' then
+   if n-array['type','content']<>'{}'::jsonb or jsonb_typeof(n->'content') is distinct from 'array'
+    or jsonb_array_length(n->'content') not between 1 and 50 or n->'content'->0->>'type' is distinct from 'paragraph'
+   then raise invalid_parameter_value using message='Unsupported list item.';end if;
+   v_stack:=v_stack||(select jsonb_agg(jsonb_build_object('n',value,'p','listItem','l',l)) from jsonb_array_elements(n->'content'));
+  else raise invalid_parameter_value using message='Unsupported message node.';
+  end if;
+ end loop;
+ if v_chars>4000 then raise invalid_parameter_value using message='Message too long.';end if;
+ return v_size;
+end $$;
+revoke all on function icue_rooms.validate_document(jsonb) from public,anon,authenticated,service_role;
+commit;
+
+
+-- Source: migrations/20261112100000_room_chat_alias.sql
+-- Internal accounts can show a chat alias, changeable once every 30 days. The
+-- real name stays visible beside it, and the newsroom display name is untouched.
+begin;
+create table icue_rooms.aliases(
+ user_id uuid primary key references auth.users(id) on delete cascade,
+ alias text check(alias is null or (char_length(alias) between 2 and 40 and alias=btrim(alias) and alias !~ '[[:cntrl:]]' and alias !~ '\s{2,}')),
+ changed_at timestamptz not null default clock_timestamp()
+);
+create unique index room_alias_unique on icue_rooms.aliases(lower(alias)) where alias is not null;
+alter table icue_rooms.aliases enable row level security;
+revoke all on icue_rooms.aliases from public,anon,authenticated;
+
+-- Only current internal accounts show an alias.
+create function icue_rooms.alias_of(p_user_id uuid) returns text language sql stable security definer set search_path='' as $$
+ select a.alias from icue_rooms.aliases a where a.user_id=p_user_id and icue_rooms.active_internal(p_user_id);
+$$;
+
+create function icue_rooms.alias_state(p_user_id uuid) returns jsonb language sql stable security definer set search_path='' as $$
+ select coalesce((select jsonb_build_object('alias',a.alias,'changed_at',a.changed_at,'next_change_at',a.changed_at+interval '30 days')
+  from icue_rooms.aliases a where a.user_id=p_user_id),jsonb_build_object('alias',null,'changed_at',null,'next_change_at',null));
+$$;
+
+create function icue_rooms.set_alias(p_alias text) returns jsonb language plpgsql security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();v text:=nullif(btrim(coalesce(p_alias,'')),'');r icue_rooms.aliases;begin
+ if a->>'role' not in ('member','author','manager','admin','owner') then raise insufficient_privilege using message='Chat membership required.';end if;
+ if v is not null and (char_length(v) not between 2 and 40 or v ~ '[[:cntrl:]]' or v ~ '\s{2,}')
+ then raise invalid_parameter_value using message='Alias must be 2–40 characters.';end if;
+ perform 1 from public.profiles where id=auth.uid() for update;
+ select * into r from icue_rooms.aliases where user_id=auth.uid();
+ if r.alias is not distinct from v then return icue_rooms.alias_state(auth.uid());end if;
+ if r.changed_at>clock_timestamp()-interval '30 days' then raise program_limit_exceeded using message='The alias can change once every 30 days.';end if;
+ if v is not null and (exists(select 1 from icue_rooms.aliases x where x.user_id<>auth.uid() and lower(x.alias)=lower(v))
+  or exists(select 1 from public.profiles p where p.id<>auth.uid() and p.role::text in ('member','author','manager','admin','owner')
+   and (lower(btrim(p.display_name))=lower(v) or lower(btrim(p.full_name))=lower(v))))
+ then raise unique_violation using message='This alias is already in use.';end if;
+ insert into icue_rooms.aliases(user_id,alias,changed_at) values(auth.uid(),v,clock_timestamp())
+ on conflict(user_id) do update set alias=excluded.alias,changed_at=excluded.changed_at;
+ return icue_rooms.alias_state(auth.uid());
+end $$;
+
+create function public.room_chat_set_alias(p_alias text) returns jsonb language sql security invoker set search_path='' as $$
+ select icue_rooms.set_alias(p_alias);
+$$;
+
+-- The real full name accompanies an alias so colleagues can always tell who it is.
+create or replace function icue_rooms.message_json(p_id bigint) returns jsonb language sql stable security definer set search_path='' as $$
+ select jsonb_build_object('id',m.id,'client_id',m.client_id,'user_id',m.user_id,'display_name',p.display_name,
+ 'alias',icue_rooms.alias_of(m.user_id),'full_name',case when icue_rooms.alias_of(m.user_id) is not null then nullif(trim(p.full_name),'') end,
+ 'document',case when m.deleted_at is null then m.document else '{"type":"doc","content":[]}'::jsonb end,
+ 'created_at',m.created_at,'edited_at',m.edited_at,'deleted_at',m.deleted_at,
+ 'files',case when m.deleted_at is null then coalesce((select jsonb_agg(jsonb_build_object('id',f.id,'name',f.name,'mime',f.mime,'size',f.size) order by f.created_at,f.id) from icue_rooms.files f where f.message_id=m.id and f.state='ready'),'[]'::jsonb) else '[]'::jsonb end)
+ from icue_rooms.messages m join public.profiles p on p.id=m.user_id where m.id=p_id;
+$$;
+
+create or replace function icue_rooms.set_presence(p_status text) returns jsonb language plpgsql security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();
+begin
+ if a->>'role' not in ('member','author','manager','admin','owner') then raise insufficient_privilege using message='Chat membership required.';end if;
+ if p_status is null or p_status not in ('available','busy') then raise invalid_parameter_value using message='Status must be available or busy.';end if;
+ insert into icue_rooms.presence(user_id,status,seen_at) values(auth.uid(),p_status,clock_timestamp())
+ on conflict(user_id) do update set status=excluded.status,seen_at=excluded.seen_at;
+ return jsonb_build_object('members',coalesce((
+  select jsonb_agg(jsonb_strip_nulls(jsonb_build_object('id',s.id,'display_name',s.display_name,'full_name',s.full_name,'email',s.email,'role',s.role,'status',s.presence,'alias',s.alias))
+   order by case s.presence when 'available' then 0 when 'busy' then 1 else 2 end,
+    coalesce(s.alias, s.full_name, case when lower(s.display_name) in ('author','customer') then null else nullif(trim(s.display_name),'') end, s.email), s.id)
+  from (
+   select p.id,p.display_name,nullif(trim(p.full_name),'') as full_name,nullif(trim(u.email),'') as email,p.role::text as role,x.alias,
+    case when h.seen_at>clock_timestamp()-interval '45 seconds' then h.status else 'offline' end as presence
+   from public.profiles p
+   join auth.users u on u.id=p.id
+   left join icue_rooms.presence h on h.user_id=p.id
+   left join icue_rooms.aliases x on x.user_id=p.id
+   where p.role::text in ('member','author','manager','admin','owner')
+    and not coalesce(u.is_anonymous,false) and u.email_confirmed_at is not null and u.deleted_at is null
+    and (u.banned_until is null or u.banned_until<=clock_timestamp())
+  ) s
+ ),'[]'::jsonb));
+end $$;
+
+create or replace function icue_rooms.room_json(p_room_id uuid) returns jsonb language sql stable security definer set search_path='' as $$
+ select to_jsonb(r) || case when r.kind='dm' then jsonb_build_object(
+  'peer',(select jsonb_strip_nulls(jsonb_build_object('id',p.id,'display_name',p.display_name,'full_name',nullif(trim(p.full_name),''),'email',nullif(trim(u.email),''),'alias',icue_rooms.alias_of(p.id)))
+   from icue_rooms.participants x join public.profiles p on p.id=x.user_id join auth.users u on u.id=p.id
+   where x.room_id=r.id and x.user_id<>auth.uid() limit 1),
+  'read_only',not icue_rooms.direct_writable(r.id,auth.uid())) else '{}'::jsonb end
+ from icue_rooms.rooms r where r.id=p_room_id;
+$$;
+
+create or replace function icue_rooms.bootstrap() returns jsonb language plpgsql security definer set search_path='' as $$
+declare a jsonb:=icue_rooms.account();v jsonb;begin
+ select coalesce(jsonb_agg(icue_rooms.room_json(r.id) order by r.updated_at desc,r.id),'[]'::jsonb) into v from icue_rooms.rooms r
+ where (r.kind in ('members','staff') and a->>'role' in ('member','author','manager','admin','owner'))
+ or (r.kind='customers' and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid()))
+ or (r.kind='dm' and a->>'role' in ('member','author','manager','admin','owner')
+  and exists(select 1 from icue_rooms.participants p where p.room_id=r.id and p.user_id=auth.uid()));
+ return jsonb_build_object('account',a,'rooms',v,'can_manage',icue_rooms.can_manage(),
+  'alias',case when a->>'role' in ('member','author','manager','admin','owner') then icue_rooms.alias_state(auth.uid()) end);
+end $$;
+
+revoke all on function icue_rooms.alias_of(uuid),icue_rooms.alias_state(uuid) from public,anon,authenticated,service_role;
+revoke all on function icue_rooms.set_alias(text) from public,anon,authenticated,service_role;
+revoke all on function public.room_chat_set_alias(text) from public,anon,authenticated,service_role;
+grant execute on function icue_rooms.set_alias(text),public.room_chat_set_alias(text) to authenticated;
+commit;

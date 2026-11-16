@@ -29,6 +29,47 @@ role. Public signup continues to create a `customer`.
 - New chat roles do not gain newsroom publishing, business-table or general
   Storage permissions. Existing author/admin access remains intact.
 
+## Chat aliases
+
+Internal accounts can set a chat alias in the sidebar's My Account panel. It
+is shown in messages, the Members directory and direct messages, always with
+the account's real full name in smaller text beside it, so colleagues can tell
+who it is. The newsroom display name and author byline are unchanged.
+
+- An alias is 2–40 characters, without line breaks or double spaces. It must
+  differ, ignoring case, from every other alias and from other internal
+  accounts' display names and full names, so it cannot impersonate a colleague.
+- Setting, changing or removing an alias is allowed once every 30 days,
+  enforced by `room_chat_set_alias` in the database. The panel asks for
+  confirmation first and shows the next allowed date. Saving the same alias
+  again does not use up the change.
+- Aliases are stored in the locked-down `icue_rooms.aliases` table. Only
+  current internal accounts show an alias; a demoted or banned account's alias
+  stops appearing. Customers cannot set one.
+
+## Direct messages
+
+Internal accounts (`member`, `author`, `manager`, `admin`, `owner`) can open a
+one-to-one conversation with another internal account from the Members
+directory. Customers cannot start, receive or see direct messages.
+
+- A DM is a `dm` room with exactly two participants. `icue_rooms.direct_rooms`
+  holds one row per account pair, so either side reopening the conversation
+  reaches the same room. Opening locks both accounts, which serializes
+  concurrent opens.
+- Only the two participants can read messages or download files. A privileged
+  role grants nothing: managers cannot list a DM's participants, read its
+  network records, add members or archive it, even in their own DMs.
+- A DM is read-only when either side is no longer an active internal account
+  (demoted, banned, unconfirmed or deleted). The demoted side loses access on
+  its next request. The other side keeps its history but cannot send, edit,
+  delete or upload. Restoring the role reopens the same conversation.
+- Each account can open 30 new DMs per day. Existing DMs always reopen, and
+  DMs do not count toward the room-creation limit.
+- Messages, edits, uploads and downloads go through the same checked RPCs and
+  media pipeline as rooms. Messages are protected by server-side access
+  checks, not end-to-end encryption.
+
 Raw room tables are in the unexposed `icue_rooms` schema with RLS and revoked
 browser access. Public RPC wrappers use invoker rights; checked private
 implementations provide the only data path. Private files cannot be fetched
@@ -36,16 +77,38 @@ directly through public Storage or a guessed URL.
 
 ## Messages and interface
 
-The responsive workspace includes six-language copy, room switching, earlier
+The chatrooms and the signed-in customer portal (saved support chats) share one
+chat header in the newsroom's style. It has the site drawer, the ICUE brand with
+a Chat badge, the app switcher, Chatrooms and Support chats navigation (plus the
+Support inbox for admins, whose access the inbox itself still enforces), Main
+Site and News links, the language switcher and sign-in/sign-out. Newsroom-only
+tools (article search, article notifications, author tools) are left out.
+Signing in from it returns to the chatrooms; signing out keeps the visitor on
+the current page's sign-in screen, and the portal still runs its own sign-out
+cleanup. The portal's sign-in screen keeps its existing split layout. The
+responsive workspace includes six-language copy, room switching, earlier
 messages, per-room in-memory drafts, failure/retry states and private file
 downloads. It refreshes every 2.5 seconds while visible, pauses when hidden,
 and refreshes after reconnect/page restoration. History uses 50-message pages.
 
-The Tiptap composer exposes bold, italic, underline and strikethrough. Enter
-sends; Shift+Enter starts a new paragraph. Rich content is a bounded JSON
-document, validated again in PostgreSQL and rendered with React elements.
-Links, images, scripts, arbitrary HTML, arbitrary SVG and unsupported marks
-cannot enter the message document. Messages allow 4,000 text characters, five
+The Tiptap composer has a formatting row under the text box: bold, italic,
+underline, strikethrough, text size, text colour, clear formatting, bulleted
+and numbered lists, increase/decrease indent, undo, redo and an expand toggle
+for a taller editor. The text box can also be resized by dragging its corner
+(66 px up to 70% of the window). Cmd+Shift+X (Ctrl+Shift+X elsewhere) or the toolbar's
+formatting button hides or shows the row; the choice is remembered on the
+device. Enter sends; Shift+Enter starts a new paragraph or list item.
+
+Rich content is a bounded JSON document, validated again in PostgreSQL by
+`icue_rooms.validate_document` and rendered with React elements. Lists nest at
+most three levels. Text size is limited to small, large and huge (11, 17 and
+22 px) and text colour to an eight-colour palette; the values in
+`news-app/src/lib/roomDocument.js` and the database function must stay
+identical. The browser drops unrecognised colours or sizes (for example from
+pasted text) before sending, and the database rejects them, so no free-form
+CSS reaches a message. Links, images, headings, scripts, arbitrary HTML,
+arbitrary SVG and unsupported marks cannot enter the message document. A
+stored document is limited to 64,000 bytes. Messages allow 4,000 text characters, five
 files, and 30 sends per account per minute. Stable message IDs make uncertain
 send retries idempotent and reject a changed payload under the same ID.
 
@@ -118,7 +181,11 @@ Provider documentation: <https://proxycheck.io/api/>. Trusted IP context:
 1. Apply `news-app/supabase/migrations/20261109071612_authenticated_chatrooms.sql`
    to the existing configured project through the normal migration workflow.
    Fresh installations use the generated `schema.sql` instead. The migration
-   must be run as a whole: new enum values commit before use.
+   must be run as a whole: new enum values commit before use. The later room
+   migrations through `20261112081500_room_direct_messages.sql` (direct
+   messages), `20261112090000_room_rich_text.sql` (lists, text colour and
+   size) and `20261112100000_room_chat_alias.sql` (chat aliases) apply in
+   order after it.
 2. Deploy the Supabase Edge `room-chat-files` function with its pinned Deno lock
    and gateway JWT verification disabled for Vault-authenticated Cron calls.
    The handler itself verifies account access through checked RPCs and verifies

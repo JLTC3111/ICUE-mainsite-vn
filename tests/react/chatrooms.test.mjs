@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
-import { React, act, create, deferred, platform, sourceModule, silenceRenderer, unmount } from '../../shared/resilience/testHarness.js'
+import { React, act, create, deferred, i18n, platform, sourceModule, silenceRenderer, unmount } from '../../shared/resilience/testHarness.js'
 import { roomChatCopy } from '../../news-app/src/lib/roomChatCopy.js'
 
 const icons = createRequire(import.meta.url)('lucide-react')
@@ -16,6 +16,7 @@ function Composer(props) { return React.createElement('composer', props) }
 async function fixture(t, options = {}) {
   silenceRenderer(t)
   const f = platform(), listeners = new Set(), calls = [], timers = new Map(), storage = options.storage || new Map()
+  f.window.confirm = options.confirm || (() => true)
   const localStorage = { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(String(key), String(value)) }
   let auth = { user: firstUser, profile: { full_name: 'Ada Author' }, loading: false }, timer = 0, clientId = 0
   let read = options.read || (async () => ({ messages: [], has_more: false }))
@@ -28,7 +29,7 @@ async function fixture(t, options = {}) {
       'lucide-react': icons,
       '../context/AuthContext': { useAuth: () => React.useSyncExternalStore(listener => { listeners.add(listener); return () => listeners.delete(listener) }, () => auth, () => auth) },
       '../hooks/useDocumentTitle': { useDocumentTitle() {} },
-      '../components/LanguageSwitcher': { default: Null },
+      '../components/ChatHeader': { default: Null },
       '../../../shared/ui/LatticeLoader.jsx': { default: Null },
       '../components/RoomComposer': { default: Composer },
       '../components/RoomMessage': { default: props => React.createElement('p', null, props.message.document.content[0].content[0].text) },
@@ -38,6 +39,8 @@ async function fixture(t, options = {}) {
         if (name === 'messages') return read(args, request)
         if (name === 'send') return send(args, request)
         if (name === 'presence') return options.presence ? options.presence(args) : Promise.reject(new Error('Unexpected RPC presence'))
+        if (name === 'direct' && options.direct) return options.direct(args)
+        if (name === 'set_alias' && options.setAlias) return options.setAlias(args)
         throw new Error(`Unexpected RPC ${name}`)
       } },
     },
@@ -152,6 +155,184 @@ test('managers can open the staff room form', async t => {
   assert.ok(f.output().includes('Every internal account can join. Customers cannot see this room.'))
 })
 
+const colleague = { id: 'account-c', display_name: 'Busy Colleague', full_name: 'Busy Person', email: 'busy@example.invalid' }
+const colleagues = [{ id: 'account-a', display_name: 'Ada Author', role: 'author', status: 'available' }, { ...colleague, role: 'member', status: 'busy' }]
+const directRoom = (overrides = {}) => ({ id: 'dm-c', name: 'Direct message', kind: 'dm', archived: false, read_only: false, peer: colleague, ...overrides })
+const internal = (role, list) => ({ account: { id: firstUser.id, role, display_name: 'Ada Author' }, rooms: list, can_manage: role === 'manager' })
+const threadLabel = f => f.renderer.root.find(node => node.type === 'section' && node.props.className === 'room-chat__thread').props['aria-label']
+
+test('a directory member opens a private direct message named after them', async t => {
+  const labels = roomChatCopy('en')
+  let opened = false
+  const f = await fixture(t, {
+    bootstrap: () => internal('manager', opened ? [directRoom(), ...rooms] : rooms),
+    presence: async () => ({ members: colleagues }),
+    direct: async args => { opened = true; return { room: directRoom({ peer: { ...colleague, id: args.p_user_id } }) } },
+  })
+  const buttons = () => f.renderer.root.findAllByType('button')
+  assert.equal(buttons().some(node => node.props['aria-label']?.startsWith(`${labels.messagePerson}: Ada Author`)), false, 'Your own row is not a DM target')
+  assert.ok(buttons().some(node => node.props['aria-label'] === labels.manage), 'Managers keep the Manage button in shared rooms')
+  await act(async () => buttons().find(node => node.props['aria-label'] === `${labels.messagePerson}: Busy Person, ${labels.busy}`).props.onClick())
+  assert.equal(f.calls.find(call => call.name === 'direct').args.p_user_id, 'account-c')
+  assert.equal(threadLabel(f), 'Busy Person')
+  assert.ok(f.output().includes(labels.dmHint))
+  assert.ok(f.calls.some(call => call.name === 'messages' && call.args.p_room_id === 'dm-c'))
+  assert.equal(buttons().some(node => node.props['aria-label'] === labels.manage), false, 'DMs have no manager controls')
+  const direct = f.renderer.root.find(node => node.props.className === 'room-chat__direct')
+  assert.ok(JSON.stringify(direct.findAllByType('button').map(node => node.props['aria-pressed'])).includes('true'))
+})
+
+test('a direct message for another person is rejected and nothing opens', async t => {
+  const labels = roomChatCopy('en')
+  const f = await fixture(t, {
+    bootstrap: () => internal('member', rooms),
+    presence: async () => ({ members: colleagues }),
+    direct: async () => ({ room: directRoom({ peer: { ...colleague, id: 'someone-else' } }) }),
+  })
+  await act(async () => f.renderer.root.findAllByType('button').find(node => node.props['aria-label'] === `${labels.messagePerson}: Busy Person, ${labels.busy}`).props.onClick())
+  assert.ok(f.output().includes(labels.dmError))
+  assert.equal(threadLabel(f), 'Customer A project')
+})
+
+test('a recent DM does not open by default, and a read-only DM keeps history but cannot send', async t => {
+  const labels = roomChatCopy('en')
+  const commons = { id: 'commons', name: 'ICUE members', kind: 'members', archived: false }
+  const f = await fixture(t, {
+    bootstrap: () => internal('member', [directRoom({ read_only: true }), commons]),
+    presence: async () => ({ members: colleagues }),
+    read: async args => ({ messages: [message(1, args.p_room_id === 'dm-c' ? 'Earlier DM' : 'Commons')], has_more: false }),
+  })
+  assert.equal(f.calls.find(call => call.name === 'messages').args.p_room_id, 'commons')
+  assert.equal(threadLabel(f), labels.members)
+  await act(async () => f.renderer.root.find(node => node.props.className === 'room-chat__direct').findAllByType('button')[0].props.onClick())
+  assert.equal(threadLabel(f), 'Busy Person')
+  assert.ok(f.output().includes('Earlier DM'))
+  assert.ok(f.output().includes(labels.dmReadOnly))
+  assert.equal(f.composer().props.archived, true)
+  await f.draft('Should not send')
+  await f.send()
+  assert.equal(f.calls.filter(call => call.name === 'send').length, 0)
+})
+
+test('the account section has no portal link and customers get no alias editor', async t => {
+  const f = await fixture(t)
+  const identity = f.renderer.root.find(node => node.type === 'section' && node.props.className?.startsWith('room-chat__identity'))
+  assert.equal(identity.findAllByType('a').length, 0)
+  assert.equal(JSON.stringify(identity.findAll(() => true).map(node => node.props.className || '')).includes('room-chat__portal'), false)
+  assert.equal(identity.findAllByType('form').length, 0)
+})
+
+test('an internal account saves a chat alias after confirming, then waits 30 days to change it again', async t => {
+  const labels = roomChatCopy('en')
+  const confirms = []
+  const nextChange = '2026-12-12T09:00:00Z'
+  const f = await fixture(t, {
+    confirm: message => { confirms.push(message); return true },
+    bootstrap: () => ({ account: { id: firstUser.id, role: 'member', display_name: 'Ada' }, rooms, can_manage: false, alias: { alias: null, changed_at: null, next_change_at: null } }),
+    presence: async () => ({ members: [{ id: firstUser.id, display_name: 'Ada', role: 'member', status: 'available' }] }),
+    setAlias: async args => ({ alias: args.p_alias, changed_at: '2026-11-12T09:00:00Z', next_change_at: nextChange }),
+  })
+  const form = () => f.renderer.root.find(node => node.type === 'form' && node.props.className === 'room-chat__alias')
+  assert.ok(f.output().includes(labels.aliasHint))
+  await act(async () => form().findByType('input').props.onChange({ target: { value: '  Night   Owl ' } }))
+  await act(async () => form().props.onSubmit({ preventDefault() {} }))
+  assert.deepEqual(confirms, [labels.aliasConfirm])
+  assert.equal(f.calls.find(call => call.name === 'set_alias').args.p_alias, 'Night Owl')
+  assert.equal(form().findByType('input').props.disabled, true)
+  assert.equal(form().findByType('input').props.value, 'Night Owl')
+  const date = new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(nextChange))
+  assert.ok(f.output().includes(labels.aliasNext.replace('{date}', date)))
+  assert.equal(form().findAllByType('button').length, 0, 'No save button while the alias is locked')
+  const memberList = f.renderer.root.find(node => node.type === 'ul' && node.props.className === 'room-chat__members')
+  assert.equal(memberList.findAll(node => node.type === 'strong')[0].children[0], 'Night Owl', 'Your own directory row shows the new alias')
+})
+
+test('a declined confirmation or a taken alias does not change anything', async t => {
+  const labels = roomChatCopy('en')
+  let allow = false
+  const f = await fixture(t, {
+    confirm: () => allow,
+    bootstrap: () => ({ account: { id: firstUser.id, role: 'author', display_name: 'Ada' }, rooms, can_manage: false, alias: { alias: null, changed_at: null, next_change_at: null } }),
+    presence: async () => ({ members: [] }),
+    setAlias: async () => { throw Object.assign(new Error('taken'), { code: '23505' }) },
+  })
+  const form = () => f.renderer.root.find(node => node.type === 'form' && node.props.className === 'room-chat__alias')
+  await act(async () => form().findByType('input').props.onChange({ target: { value: 'Bao Tran' } }))
+  await act(async () => form().props.onSubmit({ preventDefault() {} }))
+  assert.equal(f.calls.some(call => call.name === 'set_alias'), false)
+  allow = true
+  await act(async () => form().props.onSubmit({ preventDefault() {} }))
+  assert.ok(f.output().includes(labels.aliasTaken))
+  assert.equal(form().findByType('input').props.disabled, false)
+})
+
+test('colleague aliases appear with the real name in the directory and direct messages', async t => {
+  const labels = roomChatCopy('en')
+  const f = await fixture(t, {
+    bootstrap: () => internal('member', [directRoom({ peer: { ...colleague, alias: 'Night Owl' } }), ...rooms]),
+    presence: async () => ({ members: [{ ...colleague, alias: 'Night Owl', role: 'member', status: 'busy' }] }),
+  })
+  const memberList = JSON.stringify(f.renderer.root.find(node => node.type === 'ul' && node.props.className === 'room-chat__members').findAll(node => node.type === 'li').map(node => node.findAll(child => child.type === 'strong' || child.type === 'small').map(child => child.children[0])))
+  assert.ok(memberList.includes('"Night Owl","Busy Person"'))
+  assert.ok(f.renderer.root.findAllByType('button').some(node => node.props['aria-label'] === `${labels.messagePerson}: Night Owl, ${labels.busy}`))
+  await act(async () => f.renderer.root.find(node => node.props.className === 'room-chat__direct').findAllByType('button')[0].props.onClick())
+  assert.equal(threadLabel(f), 'Night Owl')
+  assert.ok(f.output().includes('(Busy Person)'))
+})
+
+test('the chatrooms header keeps site navigation and account controls without newsroom tools', async t => {
+  silenceRenderer(t)
+  const labels = roomChatCopy('en')
+  let auth = { isAuthed: false, profile: null }, signOuts = 0
+  const anchor = ({ to, end, ...props }) => React.createElement('a', { ...props, href: to })
+  const { default: ChatHeader } = await sourceModule('news-app/src/components/ChatHeader.jsx', {
+    globals: platform(),
+    imports: {
+      'react-router-dom': { Link: anchor, NavLink: anchor },
+      'react-i18next': i18n,
+      '@icue/drawer-menu': { DrawerMenu: Null },
+      '../context/AuthContext': { useAuth: () => auth },
+      '../lib/defaults': { DEFAULT_AVATAR: 'avatar.png' },
+      '../hooks/useMainSite': { useMainSite: () => ({ base: '/?lang=en', hashLink: () => '/', peopleLink: () => '/people', structureLink: () => '/structure' }) },
+      '../hooks/useMediaQuery': { default: () => false },
+      './LanguageSwitcher': { default: () => React.createElement('lang-switcher') },
+      './magicui/AnimatedShinyText': { AnimatedShinyText: props => props.children },
+      '../../../shared/app-switcher/AppSwitcher.jsx': { default: Null },
+    },
+  })
+  let renderer
+  const render = (props = {}) => React.createElement(ChatHeader, { key: `${auth.isAuthed}-${auth.isAdmin}-${Boolean(props.onSignOut)}`, locale: 'en', ...props })
+  await act(async () => { renderer = create(render()) })
+  t.after(() => unmount(renderer))
+  const links = () => renderer.root.findAllByType('a').map(node => node.props.href)
+  const output = () => JSON.stringify(renderer.toJSON())
+  assert.ok(output().includes(labels.navBadge))
+  assert.ok(output().includes(labels.navRooms) && output().includes(labels.supportChats))
+  assert.ok(links().includes('/chatrooms?lang=en'), 'Links to the chatrooms')
+  assert.ok(links().includes('/portal?lang=en'), 'Links to the support chats')
+  assert.ok(links().includes('/'), 'Links back to the newsroom')
+  assert.ok(links().includes('/portal?next=chatrooms&lang=en'), 'Signing in returns to chatrooms')
+  assert.equal(renderer.root.findAllByType('lang-switcher').length, 1)
+  for (const newsroomOnly of ['search.label', 'nav.archive', 'nav.authorTools', 'notifications']) assert.equal(output().includes(newsroomOnly), false, newsroomOnly)
+  auth = { isAuthed: true, profile: { avatar_url: null }, signOut: async () => { signOuts++; return {} } }
+  await act(async () => renderer.update(render()))
+  assert.equal(links().includes('/portal?next=chatrooms&lang=en'), false)
+  assert.ok(links().includes('/portal?lang=en'))
+  assert.equal(links().includes('/support?lang=en'), false, 'Only admins see the support inbox link')
+  auth = { ...auth, isAdmin: true }
+  await act(async () => renderer.update(render()))
+  assert.ok(links().includes('/support?lang=en'))
+  assert.ok(output().includes('Support inbox'))
+  const signOut = () => act(async () => renderer.root.findAllByType('button').find(node => node.props.title === 'nav.logout').props.onClick())
+  await signOut()
+  assert.equal(signOuts, 1)
+  let pageSignOuts = 0
+  await act(async () => renderer.update(render({ onSignOut: async () => { pageSignOuts++ } })))
+  await signOut()
+  assert.equal(pageSignOuts, 1, 'A page can supply its own sign-out')
+  assert.equal(signOuts, 1)
+})
+
 test('an unconfirmed send retries the same immutable payload and only the sender can acknowledge it', async t => {
   const firstSend = deferred()
   const f = await fixture(t, { send: () => firstSend.promise })
@@ -252,6 +433,12 @@ test('the sender can edit or delete a recent message, and a deleted message leav
   const rendered = JSON.stringify(renderer.toJSON())
   assert.ok(rendered.includes(labels.deleted))
   assert.equal(rendered.includes('Secret wording'), false)
+  await act(async () => renderer.update(show({ ...own, user_id: secondUser.id, display_name: 'Alice', alias: 'Night Owl', full_name: 'Alice Nguyen' })))
+  const header = JSON.stringify(renderer.toJSON().children[0])
+  assert.ok(header.includes('{"type":"strong","props":{},"children":["Night Owl"]}'))
+  assert.ok(header.includes('{"type":"span","props":{"className":"room-message__realname"},"children":["Alice Nguyen"]}'))
+  await act(async () => renderer.update(show({ ...own, user_id: 'plain-sender', display_name: 'Plain Name' })))
+  assert.equal(JSON.stringify(renderer.toJSON().children[0]).includes('room-message__realname'), false)
 })
 
 test('oversize visible drafts cannot silently send a previous shorter message', async t => {

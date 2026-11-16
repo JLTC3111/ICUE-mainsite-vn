@@ -1,0 +1,18 @@
+/* Chat pages have no market ticker above the header. */
+.chat-header {
+  --icue-ticker-h: 0px;
+}
+
+/* The newsroom hides its links at this width to fit search; chat navigation has to stay. */
+@media (min-width: 835px) and (max-width: 1175px) {
+  .chat-header .chat-header__chats {
+    display: flex;
+  }
+}
+
+@media (min-width: 1176px) {
+  .chat-header__chats {
+    padding-right: 22px;
+    border-right: 1px solid var(--icue-border);
+  }
+}

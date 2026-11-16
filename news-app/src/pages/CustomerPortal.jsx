@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ArrowRight, Eye, EyeOff, MessageSquare, ShieldCheck, FileText, Monitor, UserRound, Users, Plus, LogOut } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Eye, EyeOff, MessageSquare, ShieldCheck, FileText, Monitor, UserRound, Users, Plus } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { getAuthRedirectUrl } from '../lib/authRedirect'
@@ -16,7 +16,7 @@ import { customerChatroomUrl } from '../../../shared/site-routes/customerChatroo
 import LiveChatPanel from '../../../shared/chatbot/LiveChatPanel.jsx'
 import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import RubberSegment from '../../../shared/ui/RubberSegment.jsx'
-import { roomChatCopy } from '../lib/roomChatCopy'
+import ChatHeader from '../components/ChatHeader'
 import './CustomerPortal.css'
 
 export default function CustomerPortal() {
@@ -113,9 +113,8 @@ export default function CustomerPortal() {
   items={[{ value: 'customer', label: copy.customer, icon: <UserRound size={16} aria-hidden="true" /> }, { value: 'staff', label: copy.staff, icon: <ShieldCheck size={16} aria-hidden="true" /> }]}
   onChange={value => portal(value === 'staff')} trackColor="#e8edf2" thumbColor="#172a43" textColor="#35465b" activeTextColor="#fff" style={{ width: '100%' }} /></div>
  const brand = <a className="customer-portal__brand" href={`/?lang=${locale}`} aria-label="ICUE"><img className="customer-portal__brand-mark" src="/logoIcons/ICUE_Radial_Parcel_Dark_A_Transparent.svg" width="36" height="36" alt="" aria-hidden="true" />ICUE</a>
- if (user && !staff) return <main className="customer-portal customer-portal--workspace" data-icue-chat-theme="light">
-  <header className="customer-portal__workspace-header">{brand}<span>{copy.customer}</span><LanguageSwitcher /><button type="button" onClick={logout} disabled={busy}><LogOut size={16} aria-hidden="true" />{copy.signOut}</button></header>
-  <div className="customer-portal__workspace-title"><div><h1>{copy.savedChats}</h1><p>{user.email}</p></div><div className="customer-portal__workspace-actions"><a className="customer-portal__room-link" href={`/newsroom/chatrooms?lang=${locale}`}><MessageSquare size={16} aria-hidden="true" />{roomChatCopy(locale).title}</a><a className="customer-portal__back" href={`/?lang=${locale}`}><ArrowLeft size={16} aria-hidden="true" />{copy.back}</a></div></div>
+ if (user && !staff) return <div className="icue-app customer-portal-page"><ChatHeader locale={locale} onSignOut={logout} /><main className="customer-portal customer-portal--workspace" data-icue-chat-theme="light">
+  <div className="customer-portal__workspace-title"><div><span className="customer-portal__eyebrow">{copy.customer}</span><h1>{copy.savedChats}</h1><p>{user.email}</p></div></div>
   {error && <p className="customer-portal__error" role="alert">{error}</p>}
   <div className="customer-portal__workspace-grid"><aside className="customer-portal__conversations"><button type="button" className="customer-portal__new" onClick={() => live.newConversation()}><Plus size={17} aria-hidden="true" />{copy.newChat}</button>
    {listError && <p role="alert">{copy.saveError} <button type="button" onClick={() => { setListLoading(true); setListError(false); setRevision(n => n+1) }}>{labels.retry}</button></p>}
@@ -124,7 +123,7 @@ export default function CustomerPortal() {
    {chats.map(chat => <button key={chat.id} type="button" className="customer-portal__conversation" aria-pressed={selected === chat.id} onClick={() => live.selectConversation(chat.id)}><strong>{chat.preview || labels.photosFiles}</strong><small>{new Intl.DateTimeFormat(locale,{dateStyle:'medium'}).format(new Date(chat.updated_at))} · {chat.status === 'closed' ? labels.resolved : labels.active}</small></button>)}
    <div className="customer-portal__portal-links">{tabs}</div>
   </aside><section className="customer-portal__chat" aria-label={labels.title}><div className="customer-portal__chat-heading"><Users size={19} aria-hidden="true" /><h2 id="customer-chat-title">{labels.title}</h2></div><LiveChatPanel active locale={locale} labels={labels} contactUrl={customerChatroomUrl(locale)} client={live} id="customer-chat" labelledBy="customer-chat-title" /></section></div>
- </main>
+ </main></div>
  return <main className="customer-portal" data-icue-chat-theme="light"><section className="customer-portal__intro"><header>{brand}<a href={`/?lang=${locale}`}><ArrowLeft size={15} aria-hidden="true" />{copy.back}</a></header><div className="customer-portal__intro-content"><span className="customer-portal__eyebrow">{staff ? copy.staff : copy.customer}</span><h1>{staff ? copy.staff : copy.title}</h1><p>{staff ? copy.staffIntro : copy.intro}</p><ul>{[[MessageSquare,copy.keep],[FileText,copy.files],[Monitor,copy.anyDevice]].map(([Icon,text]) => <li key={text}><Icon size={18} strokeWidth={1.5} aria-hidden="true" />{text}</li>)}</ul></div><p className="customer-portal__intro-note">{staff ? copy.staffOnly : labels.guestRetention}</p></section>
   <section className="customer-portal__entry"><div className="customer-portal__language"><LanguageSwitcher /></div><div className="customer-portal__form-shell">{tabs}<h2>{mode === 'reset' ? t('login.forgot') : !staff && mode === 'signup' ? copy.signup : staff ? copy.staff : t('login.title')}</h2><p>{staff ? copy.staffOnly : mode === 'signup' ? copy.signupHint : copy.intro}</p>
    {user && staff ? <div className="customer-portal__account-choice">{['admin','author'].includes(profile?.role) ? <button type="button" className="customer-portal__primary" onClick={() => navigate(profile.role === 'admin' ? '/support' : '/dashboard')}>{profile.role === 'admin' ? labels.inbox : t('login.submit')}<ArrowRight size={17} aria-hidden="true" /></button> : <p role="alert">{copy.staffDenied}</p>}<button type="button" onClick={logout} disabled={busy}>{copy.signOut}</button></div> : <form onSubmit={submit}>

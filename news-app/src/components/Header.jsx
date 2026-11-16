@@ -18,6 +18,7 @@ import { isNewsroomReaderRoute } from '../lib/newsroomTheme'
 import './Header.css'
 import AppSwitcher from '../../../shared/app-switcher/AppSwitcher.jsx'
 import { liveChatCopy } from '../../../shared/chatbot/lib/liveChatCopy.js'
+import { roomChatCopy } from '../lib/roomChatCopy'
 
 const NotificationBell = lazy(() => import('./NotificationBell'))
 
@@ -61,6 +62,14 @@ function AuthorIcon({ name }) {
     )
   }
 
+  if (name === 'chat') {
+    return (
+      <svg {...common}>
+        <path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+      </svg>
+    )
+  }
+
   if (name === 'write') {
     return (
       <svg {...common}>
@@ -89,6 +98,7 @@ function AuthorToolsMenu({ onNavigate }) {
     || pathname.startsWith('/assist')
     || pathname.startsWith('/write')
     || pathname.startsWith('/support')
+    || pathname.startsWith('/chatrooms')
 
   useEffect(() => {
     if (!menuOpen) return undefined
@@ -140,6 +150,7 @@ function AuthorToolsMenu({ onNavigate }) {
         {menuOpen && (
           <ul className="icue-header__author-dropdown" role="menu">
             {isAdmin && <li role="none"><NavLink to="/support" role="menuitem" className="icue-header__author-item" onClick={go}><AuthorIcon name="articles" /><span>{liveChatCopy(i18n.resolvedLanguage || i18n.language).inbox}</span></NavLink></li>}
+            <li role="none"><NavLink to="/chatrooms" role="menuitem" className="icue-header__author-item" onClick={go}><AuthorIcon name="chat" /><span>{roomChatCopy(i18n.resolvedLanguage || i18n.language).title}</span></NavLink></li>
             <li role="none">
               <NavLink
                 to="/write"

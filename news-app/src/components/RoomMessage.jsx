@@ -26,21 +26,32 @@ export function RoomSticker({ name, label }) {
   </svg>
 }
 
+function RoomText({ child }) {
+  let value = child.text
+  for (const mark of child.marks || []) {
+    if (mark.type === 'bold') value = <strong key="bold">{value}</strong>
+    if (mark.type === 'italic') value = <em key="italic">{value}</em>
+    if (mark.type === 'underline') value = <u key="underline">{value}</u>
+    if (mark.type === 'strike') value = <s key="strike">{value}</s>
+    // Normalised colours and sizes come only from the fixed room palette.
+    if (mark.type === 'textStyle') value = <span key="style" style={{ color: mark.attrs.color, fontSize: mark.attrs.fontSize }}>{value}</span>
+  }
+  return value
+}
+
+function RoomBlocks({ blocks, labels }) {
+  return blocks.map((block, index) => {
+    if (block.type === 'sticker') return <RoomSticker key={index} name={block.attrs.name} label={labels[block.attrs.name]} />
+    if (block.type === 'paragraph') return <p key={index}>{(block.content || []).map((child, i) => <span key={i}><RoomText child={child} /></span>)}</p>
+    const items = block.content.map((item, i) => <li key={i}><RoomBlocks blocks={item.content} labels={labels} /></li>)
+    return block.type === 'orderedList' ? <ol key={index} start={block.attrs?.start}>{items}</ol> : <ul key={index}>{items}</ul>
+  })
+}
+
 export function RoomDocument({ document, labels }) {
   let safe
   try { safe = normalizeRoomDocument(document) } catch { return null }
-  return safe.content.map((block, index) => block.type === 'sticker'
-    ? <RoomSticker key={index} name={block.attrs.name} label={labels[block.attrs.name]} />
-    : <p key={index}>{(block.content || []).map((child, i) => {
-      let value = child.text
-      for (const mark of child.marks || []) {
-        if (mark.type === 'bold') value = <strong key="bold">{value}</strong>
-        if (mark.type === 'italic') value = <em key="italic">{value}</em>
-        if (mark.type === 'underline') value = <u key="underline">{value}</u>
-        if (mark.type === 'strike') value = <s key="strike">{value}</s>
-      }
-      return <span key={i}>{value}</span>
-    })}</p>)
+  return <RoomBlocks blocks={safe.content} labels={labels} />
 }
 
 export default function RoomMessage({ message, roomId, userId, locale, labels, archived = false, onUpdated }) {
@@ -88,7 +99,7 @@ export default function RoomMessage({ message, roomId, userId, locale, labels, a
     void change('edit', { p_message_id: message.id, p_document: document })
   }
   return <article className={`room-message${own ? ' room-message--self' : ''}`}>
-    <header><strong>{message.display_name}</strong><time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time>{message.edited_at && !deleted && <span className="room-message__edited">{labels.edited}</span>}</header>
+    <header><strong>{message.alias || message.display_name}</strong>{message.alias && (message.full_name || message.display_name) ? <span className="room-message__realname">{message.full_name || message.display_name}</span> : null}<time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time>{message.edited_at && !deleted && <span className="room-message__edited">{labels.edited}</span>}</header>
     {editing ? <RoomComposer roomId={roomId} draft={editDraft} onDraft={setEditDraft} onSend={saveEdit} sending={busy === 'edit'} labels={labels} editing onCancel={() => { setEditing(false); setError(false) }} /> : <div className="room-message__body">{deleted ? <p className="room-message__notice">{labels.deleted}</p> : <RoomDocument document={message.document} labels={labels} />}</div>}
     {!editing && message.files?.length > 0 && <div className="room-message__files">{message.files.map(file => <div className="room-message__file" key={file.id}>{confirm === file.id ? <p className="room-message__confirm">{labels.confirmDeleteFile} <button type="button" onClick={() => change('delete_file', { p_file: file.id })} disabled={Boolean(busy)}>{labels.deleteFile}</button> <button type="button" onClick={() => setConfirm(null)} disabled={Boolean(busy)}>{labels.cancel}</button></p> : <><button className="room-message__download" type="button" onClick={() => download(file)} disabled={Boolean(busy)} aria-label={`${labels.download}: ${file.name}`}>
       {file.mime === 'video/mp4' ? <Film size={20} aria-hidden="true" /> : <FileImage size={20} aria-hidden="true" />}<span><strong>{file.name}</strong><small>{(file.size / 1024 / 1024).toFixed(2)} MB</small></span><Download size={16} aria-hidden="true" />

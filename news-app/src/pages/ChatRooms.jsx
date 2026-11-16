@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, ChevronDown, Hash, LockKeyhole, MessageSquare, Plus, Settings2, ShieldCheck, Users, X } from 'lucide-react'
+import { ChevronDown, Hash, LockKeyhole, MessageSquare, Plus, Settings2, ShieldCheck, Users, X } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
-import LanguageSwitcher from '../components/LanguageSwitcher'
+import ChatHeader from '../components/ChatHeader'
 import LatticeLoader from '../../../shared/ui/LatticeLoader.jsx'
 import RoomMessage from '../components/RoomMessage'
 import RoomComposer from '../components/RoomComposer'
@@ -16,9 +16,11 @@ import './ChatRooms.css'
 const newDraft = () => ({ document: EMPTY_ROOM_DOCUMENT, sticker: null, files: [], pending: null })
 const emptyThread = () => ({ messages: [], has_more: false })
 const chatMemberRoles = new Set(['member', 'author', 'manager', 'admin', 'owner'])
-const roomLabel = (item, labels) => item.kind === 'members' ? labels.members : item.name
-const roomDetail = (item, labels) => item.archived ? labels.archived : item.kind === 'members' ? 'ICUE' : item.kind === 'staff' ? labels.staffRoom : labels.private
-const roomMark = (item, size) => item.kind === 'customers' ? <LockKeyhole size={size} aria-hidden="true" /> : <Hash size={size} aria-hidden="true" />
+const peerName = item => personName(item.peer?.full_name, item.peer?.display_name, item.peer?.email)
+const roomLabel = (item, labels) => item.kind === 'members' ? labels.members : item.kind === 'dm' ? item.peer?.alias || peerName(item) || labels.direct : item.name
+const roomDetail = (item, labels) => item.archived ? labels.archived : item.kind === 'members' ? 'ICUE' : item.kind === 'staff' ? labels.staffRoom : item.kind === 'dm' ? labels.direct : labels.private
+const roomMark = (item, size) => item.kind === 'customers' || item.kind === 'dm' ? <LockKeyhole size={size} aria-hidden="true" /> : <Hash size={size} aria-hidden="true" />
+const readOnly = item => Boolean(item?.archived || item?.read_only)
 const sidebarLimits = { min: 200, max: 520, start: 260 }
 const stored = (key, fallback) => {
   try {
@@ -36,7 +38,8 @@ const personName = (...values) => values.map(value => value?.trim()).find(value 
 const directoryPerson = (person = {}, extras = {}) => {
   const email = (extras.email || person.email || '').trim()
   const name = personName(extras.fullName, person.full_name, person.display_name, email)
-  return { id: person.id || extras.id, name, email: email && email.toLowerCase() !== name.toLowerCase() ? email : '', status: extras.status || person.status }
+  const alias = (extras.alias ?? person.alias)?.trim() || ''
+  return { id: person.id || extras.id, name, alias, email: email && email.toLowerCase() !== name.toLowerCase() ? email : '', status: extras.status || person.status }
 }
 
 function SidebarResize({ width, onWidth, label }) {
@@ -182,7 +185,44 @@ function ManageRoom({ room, userId, labels, locale, onClose, onChanged }) {
   </section>
 }
 
-function AccountSummary({ account, user, profile, locale, labels }) {
+const aliasErrors = { 54000: 'aliasWait', 23505: 'aliasTaken', 22023: 'aliasInvalid' }
+
+function AliasEditor({ alias, locale, labels, onSaved }) {
+  const current = alias?.alias || ''
+  const [value, setValue] = useState(current), [busy, setBusy] = useState(false), [error, setError] = useState('')
+  const alive = useRef(true)
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => { alive.current = true; return () => { alive.current = false } }, [])
+  const nextAt = alias?.next_change_at ? new Date(alias.next_change_at).getTime() : 0
+  useEffect(() => {
+    if (!nextAt || nextAt <= now) return undefined
+    const timer = setTimeout(() => setNow(Date.now()), Math.min(nextAt - now + 50, 2 ** 31 - 1))
+    return () => clearTimeout(timer)
+  }, [nextAt, now])
+  const next = nextAt ? new Date(nextAt) : null
+  const locked = nextAt > now
+  const nextLabel = next ? new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(next) : ''
+  const trimmed = value.trim().replace(/\s+/g, ' ')
+  async function save(event) {
+    event.preventDefault()
+    if (busy || locked || trimmed === current || (trimmed && trimmed.length < 2)) return
+    if (typeof window !== 'undefined' && !window.confirm(labels.aliasConfirm)) return
+    setBusy(true); setError('')
+    try {
+      const result = await roomChatRpc('set_alias', { p_alias: trimmed })
+      if (alive.current) onSaved(result)
+    } catch (cause) { if (alive.current) setError(aliasErrors[cause?.code] || 'error') }
+    finally { if (alive.current) setBusy(false) }
+  }
+  return <form className="room-chat__alias" onSubmit={save}>
+    <label>{labels.alias}<input value={value} maxLength={40} disabled={busy || locked} placeholder={labels.aliasPlaceholder} onChange={event => setValue(event.target.value)} /></label>
+    <small>{locked ? labels.aliasNext.replace('{date}', nextLabel) : labels.aliasHint}</small>
+    {error && <p className="room-chat__error" role="alert">{labels[error]}</p>}
+    {!locked && <button type="submit" disabled={busy || trimmed === current || (trimmed.length > 0 && trimmed.length < 2)}>{busy ? labels.loading : current && !trimmed ? labels.aliasClear : labels.aliasSave}</button>}
+  </form>
+}
+
+function AccountSummary({ account, user, profile, locale, labels, alias, onAlias }) {
   const [open, setOpen] = useState(() => stored('icue.room.account', 'open') !== 'closed')
   const fullName = profile?.full_name?.trim()
   const email = user?.email?.trim()
@@ -191,16 +231,17 @@ function AccountSummary({ account, user, profile, locale, labels }) {
   return <section className={`room-chat__identity${open ? ' room-chat__identity--open' : ''}`}>
     <button type="button" aria-expanded={open} aria-controls="room-account-details" onClick={() => setOpen(value => { const next = !value; remember('icue.room.account', next ? 'open' : 'closed'); return next })}><strong>{labels.myAccount}</strong><ChevronDown size={16} aria-hidden="true" /></button>
     {open && rows.length > 0 && <dl id="room-account-details">{rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
+    {open && alias !== undefined && alias !== null && <AliasEditor key={`${alias.alias || ''}-${alias.changed_at || ''}`} alias={alias} locale={locale} labels={labels} onSaved={onAlias} />}
   </section>
 }
 
 function RoomWorkspace({ userId, user, profile, locale, labels }) {
   const [bootstrap, setBootstrap] = useState(null), [selectedId, setSelectedId] = useState(''), [threads, setThreads] = useState({}), [drafts, setDrafts] = useState({})
   const [loading, setLoading] = useState(true), [error, setError] = useState(false), [denied, setDenied] = useState(false), [revision, setRevision] = useState(0), [sending, setSending] = useState(null), [older, setOlder] = useState(false), [panel, setPanel] = useState(null)
-  const [directory, setDirectory] = useState([]), [availability, setAvailability] = useState('available'), [presenceTick, setPresenceTick] = useState(0)
+  const [directory, setDirectory] = useState([]), [availability, setAvailability] = useState('available'), [presenceTick, setPresenceTick] = useState(0), [opening, setOpening] = useState(null), [directError, setDirectError] = useState(false)
   const [sidebarWidth, setSidebarWidth] = useState(() => { const saved = Number(stored('icue.room.sidebar', '')); return saved >= sidebarLimits.min && saved <= sidebarLimits.max ? saved : sidebarLimits.start })
   const resizeSidebar = next => { const width = clampSidebar(next); setSidebarWidth(width); remember('icue.room.sidebar', String(width)) }
-  const alive = useRef(true), selectedRef = useRef(selectedId), draftsRef = useRef(drafts), sendingRef = useRef(false), lastNetwork = useRef(0), viewRef = useRef(null), sendController = useRef(null), scrollRestore = useRef(null), availabilityRef = useRef('available')
+  const alive = useRef(true), selectedRef = useRef(selectedId), draftsRef = useRef(drafts), sendingRef = useRef(false), openingRef = useRef(false), lastNetwork = useRef(0), viewRef = useRef(null), sendController = useRef(null), scrollRestore = useRef(null), availabilityRef = useRef('available')
   useEffect(() => { alive.current = true; return () => { alive.current = false; sendController.current?.abort() } }, [])
   useEffect(() => {
     if (!chatMemberRoles.has(bootstrap?.account?.role)) return undefined
@@ -254,7 +295,7 @@ function RoomWorkspace({ userId, user, profile, locale, labels }) {
         const nextDrafts = Object.fromEntries(Object.entries(draftsRef.current).filter(([id]) => allowed.has(id)))
         draftsRef.current = nextDrafts; setDrafts(nextDrafts)
         if (Date.now() - lastNetwork.current > 60_000) { lastNetwork.current = Date.now(); void recordRoomNetwork({ signal: currentController.signal }).catch(() => {}) }
-        if (!allowed.has(selectedId)) setSelectedId(result.rooms[0]?.id || '')
+        if (!allowed.has(selectedId)) setSelectedId((result.rooms.find(item => item.kind === 'members') || result.rooms[0])?.id || '')
         else if (selectedId) {
           const snapshot = await roomChatRpc('messages', { p_room_id: selectedId }, { signal: controller.signal })
           if (disposed || currentController.signal.aborted) return
@@ -289,7 +330,7 @@ function RoomWorkspace({ userId, user, profile, locale, labels }) {
 
   async function send() {
     const id = selectedRef.current, saved = draftsRef.current[id] || newDraft()
-    if (!id || !room || room.archived || sendingRef.current) return
+    if (!id || !room || readOnly(room) || sendingRef.current) return
     let document
     try { document = normalizeRoomDocument({ ...saved.document, content: [...saved.document.content, ...(saved.sticker ? [{ type: 'sticker', attrs: { name: saved.sticker } }] : [])] }) }
     catch { setError(true); return }
@@ -325,7 +366,20 @@ function RoomWorkspace({ userId, user, profile, locale, labels }) {
     catch { if (alive.current) setError(true) }
     finally { if (alive.current) setOlder(false) }
   }
-  const canManageRoom = bootstrap?.can_manage && (room?.kind === 'members' || Boolean(room))
+  async function openDirect(personId) {
+    if (openingRef.current) return
+    openingRef.current = true; setOpening(personId); setDirectError(false)
+    try {
+      const data = await roomChatRpc('direct', { p_user_id: personId })
+      if (!alive.current) return
+      const opened = data?.room
+      if (opened?.kind !== 'dm' || !opened.id || opened.peer?.id !== personId) throw new Error('ROOM_RESPONSE')
+      setBootstrap(previous => previous && !previous.rooms.some(item => item.id === opened.id) ? { ...previous, rooms: [opened, ...previous.rooms] } : previous)
+      setSelectedId(opened.id); setPanel(null); setRevision(value => value + 1)
+    } catch { if (alive.current) setDirectError(true) }
+    finally { openingRef.current = false; if (alive.current) setOpening(null) }
+  }
+  const canManageRoom = Boolean(bootstrap?.can_manage && room && room.kind !== 'dm')
   const showDirectory = chatMemberRoles.has(bootstrap?.account?.role)
   const chooseStatus = next => {
     if (next === availabilityRef.current) return
@@ -333,9 +387,13 @@ function RoomWorkspace({ userId, user, profile, locale, labels }) {
     setAvailability(next)
     setPresenceTick(value => value + 1)
   }
-  const roomButtons = bootstrap?.rooms.map(item => <button type="button" key={item.id} aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setPanel(null) }}>{roomMark(item, item.kind === 'members' ? 18 : 16)}<span><strong>{roomLabel(item, labels)}</strong><small>{roomDetail(item, labels)}</small></span></button>)
+  const sharedRooms = bootstrap?.rooms.filter(item => item.kind !== 'dm') || []
+  const directRooms = showDirectory ? bootstrap.rooms.filter(item => item.kind === 'dm') : []
+  const statusOf = id => directory.find(person => person.id === id)?.status || 'offline'
+  const sharedNav = showDirectory && (sharedRooms.length > 1 || room?.kind === 'dm')
+  const roomButtons = sharedRooms.map(item => <button type="button" key={item.id} aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setPanel(null) }}>{roomMark(item, item.kind === 'members' ? 18 : 16)}<span><strong>{roomLabel(item, labels)}</strong><small>{roomDetail(item, labels)}</small></span></button>)
   const self = directory.find(person => person.id === userId)
-  const people = showDirectory ? [directoryPerson(self || { id: userId, display_name: bootstrap.account?.display_name }, { fullName: profile?.full_name, email: user?.email, status: availability }), ...directory.filter(person => person.id !== userId).map(person => directoryPerson(person))] : []
+  const people = showDirectory ? [directoryPerson(self || { id: userId, display_name: bootstrap.account?.display_name }, { fullName: profile?.full_name, email: user?.email, status: availability, alias: bootstrap.alias ? bootstrap.alias.alias || '' : undefined }), ...directory.filter(person => person.id !== userId).map(person => directoryPerson(person))] : []
   const createRoom = bootstrap?.can_manage ? <button type="button" aria-label={labels.newRoom} title={labels.newRoom} onClick={() => setPanel(panel === 'create' ? null : 'create')}><Plus size={18} aria-hidden="true" /></button> : null
   const createStaff = bootstrap?.can_manage ? <button type="button" aria-label={labels.newStaffRoom} title={labels.newStaffRoom} onClick={() => setPanel(panel === 'staff' ? null : 'staff')}><Users size={18} aria-hidden="true" /></button> : null
   return <>
@@ -343,17 +401,26 @@ function RoomWorkspace({ userId, user, profile, locale, labels }) {
     {error && <div className="room-chat__error" role="alert">{denied ? labels.denied : labels.error} <button type="button" onClick={() => setRevision(value => value + 1)}>{labels.retry}</button></div>}
     {bootstrap && <div className={`room-chat__workspace${panel ? ' room-chat__workspace--panel' : ''}`} style={{ '--room-sidebar': `${sidebarWidth}px` }}>
       <aside className={`room-chat__sidebar${showDirectory ? ' room-chat__sidebar--directory' : ''}`}>
-        {showDirectory ? <><div className="room-chat__sidebar-heading"><h2>{labels.directory}</h2></div><div className="room-chat__status" role="group" aria-label={labels.setStatus}><button type="button" aria-pressed={availability === 'available'} onClick={() => chooseStatus('available')}>{labels.available}</button><button type="button" aria-pressed={availability === 'busy'} onClick={() => chooseStatus('busy')}>{labels.busy}</button></div><ul className="room-chat__members" aria-label={labels.directory}>{people.map(person => <li key={person.id}><span className="room-chat__presence" data-status={person.status} aria-hidden="true" /><span><strong>{person.name}</strong>{person.email ? <small>{person.email}</small> : null}<small>{labels[person.status] || labels.offline}</small></span></li>)}</ul></> : <><div className="room-chat__sidebar-heading"><h2>{labels.rooms}</h2>{createRoom}</div><nav aria-label={labels.rooms}>{roomButtons}</nav>{!bootstrap.rooms.length && <p>{labels.noRooms}</p>}</>}
-        <AccountSummary account={bootstrap.account} user={user} profile={profile} locale={locale} labels={labels} />
+        {showDirectory ? <><div className="room-chat__sidebar-heading"><h2>{labels.directory}</h2></div><div className="room-chat__status" role="group" aria-label={labels.setStatus}><button type="button" aria-pressed={availability === 'available'} onClick={() => chooseStatus('available')}>{labels.available}</button><button type="button" aria-pressed={availability === 'busy'} onClick={() => chooseStatus('busy')}>{labels.busy}</button></div><ul className="room-chat__members" aria-label={labels.directory}>{people.map(person => {
+          const status = labels[person.status] || labels.offline, name = person.alias || person.name || person.email
+          const content = <><span className="room-chat__presence" data-status={person.status} aria-hidden="true" /><span><strong>{person.alias || person.name}</strong>{person.alias && person.name ? <small className="room-chat__realname">{person.name}</small> : null}{person.email ? <small>{person.email}</small> : null}<small>{status}</small></span></>
+          return <li key={person.id}>{person.id === userId ? content : <button type="button" className="room-chat__member" title={`${labels.messagePerson}: ${name}`} aria-label={`${labels.messagePerson}: ${name}, ${status}`} aria-pressed={room?.kind === 'dm' && room.peer?.id === person.id} disabled={Boolean(opening)} onClick={() => openDirect(person.id)}>{content}</button>}</li>
+        })}</ul>
+          <section className="room-chat__direct" aria-label={labels.directMessages}><h2>{labels.directMessages}</h2>
+            {directError && <p className="room-chat__error" role="alert">{labels.dmError}</p>}
+            {directRooms.length ? <ul>{directRooms.map(item => <li key={item.id}><button type="button" aria-pressed={item.id === selectedId} onClick={() => { setSelectedId(item.id); setPanel(null) }}><span className="room-chat__presence" data-status={statusOf(item.peer?.id)} aria-hidden="true" /><span><strong>{roomLabel(item, labels)}</strong><small>{labels[statusOf(item.peer?.id)]}</small></span></button></li>)}</ul> : <p>{labels.noDirect}</p>}
+          </section></> : <><div className="room-chat__sidebar-heading"><h2>{labels.rooms}</h2>{createRoom}</div><nav aria-label={labels.rooms}>{roomButtons}</nav>{!bootstrap.rooms.length && <p>{labels.noRooms}</p>}</>}
+        <AccountSummary account={bootstrap.account} user={user} profile={profile} locale={locale} labels={labels} alias={bootstrap.alias} onAlias={next => { setBootstrap(previous => previous && { ...previous, alias: next }); setPresenceTick(value => value + 1) }} />
         <SidebarResize width={sidebarWidth} onWidth={resizeSidebar} label={labels.resize} />
       </aside>
       <div className="room-chat__main">
-      {room ? <section className="room-chat__thread" aria-label={room.name}><header className="room-chat__thread-heading">{showDirectory && bootstrap.rooms.length > 1 ? <nav aria-label={labels.rooms}>{roomButtons}</nav> : <div>{roomMark(room, room.kind === 'customers' ? 20 : 22)}<span><h2>{roomLabel(room, labels)}</h2><small>{room.archived ? labels.archived : room.kind === 'members' ? labels.title : room.kind === 'staff' ? labels.staffHint : labels.customerHint}</small></span></div>}{(showDirectory && bootstrap.can_manage || canManageRoom) && <div className="room-chat__thread-actions">{showDirectory && createStaff}{showDirectory && createRoom}{canManageRoom && <button type="button" aria-label={labels.manage} title={labels.manage} onClick={() => setPanel(panel === 'manage' ? null : 'manage')}><Settings2 size={19} aria-hidden="true" /></button>}</div>}</header>
+      {room ? <section className="room-chat__thread" aria-label={roomLabel(room, labels)}><header className="room-chat__thread-heading">{sharedNav ? <nav aria-label={labels.rooms}>{roomButtons}</nav> : <div>{roomMark(room, room.kind === 'customers' || room.kind === 'dm' ? 20 : 22)}<span><h2>{roomLabel(room, labels)}</h2><small>{room.archived ? labels.archived : room.kind === 'members' ? labels.title : room.kind === 'staff' ? labels.staffHint : room.kind === 'dm' ? labels.dmHint : labels.customerHint}</small></span></div>}{(showDirectory && bootstrap.can_manage || canManageRoom) && <div className="room-chat__thread-actions">{showDirectory && createStaff}{showDirectory && createRoom}{canManageRoom && <button type="button" aria-label={labels.manage} title={labels.manage} onClick={() => setPanel(panel === 'manage' ? null : 'manage')}><Settings2 size={19} aria-hidden="true" /></button>}</div>}</header>
+        {room.kind === 'dm' && <p className="room-chat__direct-banner"><LockKeyhole size={14} aria-hidden="true" /><span><strong>{roomLabel(room, labels)}</strong>{room.peer?.alias && peerName(room) ? ` (${peerName(room)})` : ''} · {room.read_only ? labels.dmReadOnly : labels.dmHint}</span></p>}
         <div ref={viewRef} className="room-chat__messages" role="log" aria-label={labels.editor} aria-live="polite" aria-relevant="additions text">
           {current?.has_more && <button className="room-chat__earlier" type="button" disabled={older} onClick={loadEarlier}>{older ? labels.loading : labels.earlier}</button>}
-          {!current ? <div className="room-chat__notice"><LatticeLoader label={labels.loading} compact /></div> : !current.messages.length ? <p className="room-chat__empty"><MessageSquare size={28} aria-hidden="true" />{labels.empty}</p> : current.messages.map(message => <RoomMessage key={message.id} roomId={room.id} userId={userId} message={message} labels={labels} locale={locale} archived={room.archived} onUpdated={next => setThreads(previous => ({ ...previous, [room.id]: { ...(previous[room.id] || emptyThread()), messages: mergeRoomMessages(previous[room.id]?.messages || [], [next]) } }))} />)}
+          {!current ? <div className="room-chat__notice"><LatticeLoader label={labels.loading} compact /></div> : !current.messages.length ? <p className="room-chat__empty"><MessageSquare size={28} aria-hidden="true" />{labels.empty}</p> : current.messages.map(message => <RoomMessage key={message.id} roomId={room.id} userId={userId} message={message} labels={labels} locale={locale} archived={readOnly(room)} onUpdated={next => setThreads(previous => ({ ...previous, [room.id]: { ...(previous[room.id] || emptyThread()), messages: mergeRoomMessages(previous[room.id]?.messages || [], [next]) } }))} />)}
         </div>
-        {current && <RoomComposer key={room.id} roomId={room.id} draft={draft} onDraft={next => updateDraft(room.id, next)} onSend={send} sending={Boolean(sending)} labels={labels} archived={room.archived} />}
+        {current && <RoomComposer key={room.id} roomId={room.id} draft={draft} onDraft={next => updateDraft(room.id, next)} onSend={send} sending={Boolean(sending)} labels={labels} archived={readOnly(room)} />}
       </section> : <div className="room-chat__empty"><MessageSquare size={32} aria-hidden="true" /><p>{bootstrap.rooms.length ? labels.choose : labels.noRooms}</p></div>}</div>
       {panel === 'create' && bootstrap.can_manage && <CreateRoom labels={labels} onClose={() => setPanel(null)} onCreated={created => { if (created.id) setSelectedId(created.id); setPanel(null); setRevision(value => value + 1) }} />}
       {panel === 'staff' && bootstrap.can_manage && <CreateStaffRoom labels={labels} onClose={() => setPanel(null)} onCreated={created => { if (created.id) setSelectedId(created.id); setPanel(null); setRevision(value => value + 1) }} />}
@@ -366,9 +433,9 @@ export default function ChatRooms() {
   const { user, profile, loading } = useAuth(), { i18n } = useTranslation()
   const locale = i18n.resolvedLanguage || i18n.language || 'vi', labels = roomChatCopy(locale)
   useDocumentTitle(labels.title)
-  return <main className="room-chat" lang={locale}><div className="room-chat__shell"><header className="room-chat__header"><a className="room-chat__brand" href={`/?lang=${locale}`}><img src="/logoIcons/ICUE_Radial_Parcel_Dark_A_Transparent.svg" alt="" width="30" height="30" />ICUE</a><nav><Link to={`/portal?lang=${locale}`}>{labels.account}</Link><a href={`/?lang=${locale}`}><ArrowLeft size={15} aria-hidden="true" />{labels.back}</a><LanguageSwitcher /></nav></header>
-    <div className="room-chat__title"><span><ShieldCheck size={18} aria-hidden="true" />ICUE</span><h1>{labels.title}</h1><p>{labels.intro}</p></div>
+  return <div className="icue-app room-chat-page"><ChatHeader locale={locale} /><main className="room-chat" lang={locale}><div className="room-chat__shell">
+    <div className="room-chat__title"><h1>{labels.title}</h1><p>{labels.intro}</p></div>
     {loading ? <div className="room-chat__notice"><LatticeLoader label={labels.checking} /></div> : !user ? <section className="room-chat__login"><LockKeyhole size={28} aria-hidden="true" /><h2>{labels.signIn}</h2><p>{labels.signInHint}</p><Link className="room-chat__primary" to={`/portal?next=chatrooms&lang=${locale}`}>{labels.signIn}</Link></section> : <RoomWorkspace key={user.id} userId={user.id} user={user} profile={profile} locale={locale} labels={labels} />}
     <p className="room-chat__privacy">{labels.privacy}</p>
-  </div></main>
+  </div></main></div>
 }

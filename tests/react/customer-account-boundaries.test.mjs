@@ -48,6 +48,7 @@ async function fixture(t, { initialUser = null, readChats = async () => [], sign
       '../lib/authReset': { authErrorKey: () => 'login.resetError', sendPasswordResetEmail: async () => ({}) },
       '../hooks/useDocumentTitle': { useDocumentTitle() {} },
       '../components/LanguageSwitcher': { default: Null },
+      '../components/ChatHeader': { default: props => React.createElement('chat-header', { locale: props.locale }, React.createElement('button', { type: 'button', onClick: props.onSignOut })) },
       '../../../shared/customer-account/account.js': { connectAccount: async () => ({ auth: { getSession: async () => ({ data: { session: auth.user ? { user: auth.user } : null } }) } }) },
       '../../../shared/chatbot/lib/liveChat.js': { getLiveChatClient: () => live },
       '../../../shared/chatbot/LiveChatPanel.jsx': { default: Null },
@@ -63,7 +64,7 @@ async function fixture(t, { initialUser = null, readChats = async () => [], sign
     change: (name, value) => act(async () => renderer.root.findByProps({ name }).props.onChange({ target: { value } })),
     submit: () => act(async () => renderer.root.findByType('form').props.onSubmit({ preventDefault() {} })),
     user: next => act(async () => emit(next)),
-    logout: () => act(async () => renderer.root.findByProps({ className: 'customer-portal__workspace-header' }).findByType('button').props.onClick()),
+    logout: () => act(async () => renderer.root.findByType('chat-header').findByType('button').props.onClick()),
   }
 }
 
@@ -73,9 +74,13 @@ test('signing in and out discards credentials and password visibility', async t 
   await f.change('password', 'synthetic-password')
   await act(async () => f.renderer.root.findByProps({ 'aria-label': 'login.showPassword' }).props.onClick())
   assert.equal(f.field('password').props.type, 'text')
+  assert.equal(f.renderer.root.findAllByType('chat-header').length, 0, 'The sign-in screen keeps its own layout')
   await f.submit()
   assert.ok(f.output().includes('customer-portal--workspace'))
+  assert.equal(f.renderer.root.findByType('chat-header').props.locale, 'en', 'The workspace shares the chat header')
   await f.logout()
+  assert.equal(f.calls.at(-1).name, 'syncAccount', 'Header sign-out runs the portal sign-out')
+  assert.equal(f.calls.at(-1).user, null)
   assert.equal(f.field('password').props.value, '')
   assert.equal(f.field('password').props.type, 'password')
   assert.equal(f.field('email').props.value, '')

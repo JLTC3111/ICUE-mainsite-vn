@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { marketApiPlugin } from './news-app/vite-market-api-plugin.js'
+import { roomFilesDevPlugin } from './news-app/vite-room-files-plugin.js'
 import { NOTABLE_AWARDS_REDIRECTS } from './shared/site-routes/notableAwardsRedirects.js'
 import { resolvePastProjectRedirect } from './shared/site-routes/pastProjectsRedirects.js'
 import { resolveNewsArchiveRedirect } from './shared/site-routes/newsArchiveRedirects.js'
@@ -256,6 +257,7 @@ export default {
   plugins: [
     react(),
     marketApiPlugin(),
+    roomFilesDevPlugin(),
     spaDevFallback({ name: 'newsroom-dev-fallback', basePath: '/newsroom', outDirName: 'newsroom', buildScript: 'build:newsroom' }),
     spaDevFallback({ name: 'people-dev-fallback', basePath: '/people', outDirName: 'people', buildScript: 'build:people' }),
     spaDevFallback({ name: 'structure-dev-fallback', basePath: '/structure', outDirName: 'structure', buildScript: 'build:structure' }),

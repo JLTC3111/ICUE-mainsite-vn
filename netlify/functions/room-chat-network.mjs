@@ -1,4 +1,5 @@
 import { isIP } from 'node:net'
+import { resolveServerEnv } from '../../news-app/src/lib/serverEnv.js'
 
 const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }
 const reply = (body, status = 200) => Response.json(body, { status, headers })
@@ -6,7 +7,7 @@ const unknown = () => ({ vpn_status: 'unknown', proxy_status: 'unknown', provide
 
 // Keyless proxycheck queries have a free, provider-enforced quota. Deliberately
 // accept no paid API key, subscription, credits, or user-supplied endpoint.
-export function createNetworkHandler({ env = process.env, fetchImpl = fetch, now = Date.now } = {}) {
+export function createNetworkHandler({ env = resolveServerEnv(), fetchImpl = fetch, now = Date.now } = {}) {
   const cache = new Map(), requests = new Map()
   let exhaustedUntil = 0
   return async (request, context = {}) => {

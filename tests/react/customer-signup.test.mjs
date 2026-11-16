@@ -18,6 +18,7 @@ async function signup(t) {
   '../lib/authReset': { authErrorKey: () => '', sendPasswordResetEmail: async () => ({}) },
   '../hooks/useDocumentTitle': title,
   '../components/LanguageSwitcher': { default: Null },
+  '../components/ChatHeader': { default: Null },
   '../../../shared/customer-account/account.js': { connectAccount: async () => ({}) },
   '../../../shared/chatbot/lib/liveChat.js': { getLiveChatClient: () => ({ getSnapshot: () => snapshot, subscribe: () => () => {} }) },
   '../../../shared/chatbot/LiveChatPanel.jsx': { default: Null },
